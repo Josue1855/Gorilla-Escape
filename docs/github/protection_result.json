@@ -1,0 +1,24 @@
+{
+  "main": {
+    "success": true,
+    "required_approvals": 1,
+    "required_check": "management-validation",
+    "strict_checks": true,
+    "enforce_admins": true,
+    "required_conversation_resolution": true,
+    "force_pushes": false,
+    "deletions": false,
+    "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/main/protection"
+  },
+  "develop": {
+    "success": true,
+    "required_approvals": 1,
+    "required_check": "management-validation",
+    "strict_checks": true,
+    "enforce_admins": true,
+    "required_conversation_resolution": true,
+    "force_pushes": false,
+    "deletions": false,
+    "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection"
+  }
+}

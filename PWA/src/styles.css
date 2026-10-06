@@ -1,0 +1,12 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; color: #f6f5df; background: #173d32; }
+main { max-width: 34rem; margin: auto; padding: 2.5rem 1.25rem; }
+h1 { font-size: clamp(2.4rem, 9vw, 4rem); line-height: 1.08; }
+h2 { font-size: 1.3rem; }
+p { line-height: 1.65; }
+.eyebrow { color: #f3cf65; letter-spacing: .2em; font-weight: 700; }
+section { margin: 2rem 0; padding: 1.5rem; border: 1px solid #729084; border-radius: 1rem; }
+button { width: 100%; min-height: 48px; padding: .8rem; border: 0; border-radius: .6rem; font: inherit; font-weight: 700; color: #173d32; background: #f3cf65; cursor: pointer; }
+button:disabled { opacity: .65; cursor: wait; }
+button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+.safety { color: #d5ddcc; }

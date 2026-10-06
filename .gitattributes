@@ -1,0 +1,15 @@
+* text=auto
+*.cs text eol=lf
+*.java text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.unity text eol=lf
+*.prefab text eol=lf
+*.asset text eol=lf
+*.meta text eol=lf
+*.sh text eol=lf
+mvnw text eol=lf
+mvnw.cmd text eol=crlf

@@ -1,0 +1,33 @@
+# Preparación documental: sólo residuos locales conocidos.
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# Añadir ignores de Unity/.NET/frontend cuando existan esos proyectos.
+# Conservar Assets, .meta, Packages, ProjectSettings y configuraciones necesarias.
+
+# Herramientas Python de gestión
+__pycache__/
+*.pyc
+
+# Unity generated files; source assets and .meta remain tracked
+/Unity/[Ll]ibrary/
+/Unity/[Tt]emp/
+/Unity/[Oo]bj/
+/Unity/[Ll]ogs/
+/Unity/[Uu]ser[Ss]ettings/
+/Unity/Builds/
+/Unity/*.csproj
+/Unity/*.sln
+# Java and frontend outputs
+**/target/
+/PWA/node_modules/
+/PWA/dist/
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.jks

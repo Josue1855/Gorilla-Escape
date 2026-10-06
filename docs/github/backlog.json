@@ -1,0 +1,2928 @@
+{
+  "schema_version": 1,
+  "source": "docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md",
+  "project_title": "Gorilla Escape — Product Development",
+  "items": [
+    {
+      "key": "E0",
+      "title": "Base técnica y viabilidad",
+      "type": "Epic",
+      "phase": "0",
+      "area": "Unity/Core",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Base técnica y viabilidad",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "E1",
+      "title": "Vertical Slice Gorilla Smash",
+      "type": "Epic",
+      "phase": "1",
+      "area": "Unity/Core",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Vertical Slice Gorilla Smash",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "E2",
+      "title": "Sistemas reutilizables",
+      "type": "Epic",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Sistemas reutilizables",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "E3",
+      "title": "Cuatro minijuegos restantes",
+      "type": "Epic",
+      "phase": "3",
+      "area": "Unity/Core",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Cuatro minijuegos restantes",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "E4",
+      "title": "Integración del torneo",
+      "type": "Epic",
+      "phase": "4",
+      "area": "Unity/Core",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Integración del torneo",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "E5",
+      "title": "Polish y balance",
+      "type": "Epic",
+      "phase": "5",
+      "area": "Unity/Core",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Polish y balance",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "E6",
+      "title": "Freeze, QA y entrega",
+      "type": "Epic",
+      "phase": "6",
+      "area": "Unity/Core",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Freeze, QA y entrega",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "EFuturo",
+      "title": "Opcionales y roadmap fuera del MVP",
+      "type": "Epic",
+      "phase": "Futuro",
+      "area": "Documentation",
+      "sources": [
+        "50",
+        "2",
+        "49"
+      ],
+      "objective": "Opcionales y roadmap fuera del MVP",
+      "acceptance": [
+        "Aceptar únicamente con evidencia de todas las features incluidas.",
+        "Respetar la fase y la Definition of Done v4."
+      ],
+      "parent": "",
+      "blocked_by": [],
+      "scope": "P1/P2",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "F00",
+      "title": "Decisiones de viabilidad y hardware",
+      "type": "Feature",
+      "phase": "0",
+      "area": "Documentation",
+      "sources": [
+        "3",
+        "41",
+        "42",
+        "43",
+        "50",
+        "57"
+      ],
+      "objective": "Decisiones de viabilidad y hardware",
+      "acceptance": [
+        "Hardware y límites de fase documentados.",
+        "Decisiones sin alterar stack ni aceptación silenciosamente."
+      ],
+      "parent": "E0",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T001",
+      "title": "Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+      "type": "Documentation",
+      "phase": "0",
+      "area": "Documentation",
+      "sources": [
+        "3.3",
+        "5",
+        "42",
+        "50",
+        "57"
+      ],
+      "objective": "Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+      "acceptance": [
+        "Josue registra resolución de frontera 42/50.",
+        "Precisar qué componente confirma resultado oficial; no duplicar autoridad.",
+        "Resolver slow motion P1 frente a sección 26 antes de incluirlo en MVP."
+      ],
+      "parent": "F00",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T002",
+      "title": "Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+      "type": "Documentation",
+      "phase": "0",
+      "area": "CI/QA",
+      "sources": [
+        "41",
+        "57"
+      ],
+      "objective": "Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+      "acceptance": [
+        "Inventario con OS, CPU/GPU/RAM, cámara y modelos/OS/navegadores móviles.",
+        "Definir hardware oficial y registrar restricciones reales."
+      ],
+      "parent": "F00",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T003",
+      "title": "Validar versiones Unity/Java y ruta de integración nativa",
+      "type": "Spike",
+      "phase": "0",
+      "area": "Unity/Core",
+      "sources": [
+        "3",
+        "42",
+        "57"
+      ],
+      "objective": "Validar versiones Unity/Java y ruta de integración nativa",
+      "acceptance": [
+        "Comparar candidatos de investigación contra build mínimo.",
+        "Fijar versiones sólo con evidencia; compatibilidad de plugin/modelos documentada."
+      ],
+      "parent": "F00",
+      "blocked_by": [
+        "T002"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F01",
+      "title": "Monorepo y base ejecutable",
+      "type": "Feature",
+      "phase": "0",
+      "area": "Unity/Core",
+      "sources": [
+        "3",
+        "4",
+        "39",
+        "50"
+      ],
+      "objective": "Monorepo y base ejecutable",
+      "acceptance": [
+        "Proyectos Unity/Server/PWA propios en un repo.",
+        "Build y contratos compatibles comprobados."
+      ],
+      "parent": "E0",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T004",
+      "title": "Crear base Unity con Bootstrap y separación inicial",
+      "type": "Task",
+      "phase": "0",
+      "area": "Unity/Core",
+      "sources": [
+        "3",
+        "4",
+        "50"
+      ],
+      "objective": "Crear base Unity con Bootstrap y separación inicial",
+      "acceptance": [
+        "Proyecto PC compila en versión fijada.",
+        "Bootstrap inicia/cierra base técnica; sin gameplay adelantado.",
+        "Assets/meta y configuración adecuados al repo."
+      ],
+      "parent": "F01",
+      "blocked_by": [
+        "T003"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T005",
+      "title": "Preparar host Java/Spring Boot local y ciclo de vida",
+      "type": "Task",
+      "phase": "0",
+      "area": "Server",
+      "sources": [
+        "3",
+        "14",
+        "25",
+        "40",
+        "50"
+      ],
+      "objective": "Preparar host Java/Spring Boot local y ciclo de vida",
+      "acceptance": [
+        "Host sirve recursos locales; puertos y límites configurables.",
+        "Arranque/cierre, puerto ocupado y fallo recuperable tratados.",
+        "Puente con Unity documentado según decisión de autoridad."
+      ],
+      "parent": "F01",
+      "blocked_by": [
+        "T001",
+        "T003"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T006",
+      "title": "Configurar contratos React/Java/Unity y fixtures JSON v1",
+      "type": "Task",
+      "phase": "0",
+      "area": "Protocol",
+      "sources": [
+        "8",
+        "9",
+        "10"
+      ],
+      "objective": "Configurar contratos React/Java/Unity y fixtures JSON v1",
+      "acceptance": [
+        "Envelope y tipos de mensajes de v1 representados sin UnityEngine en DTO de red.",
+        "Unidades, timestamp, sequence y null/rangos definidos.",
+        "Fixtures consumidas por React/Java/Unity y mensajes inválidos rechazados."
+      ],
+      "parent": "F01",
+      "blocked_by": [
+        "T001",
+        "T003"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T007",
+      "title": "Configurar CI por componentes y build reproducible inicial",
+      "type": "Task",
+      "phase": "0",
+      "area": "CI/QA",
+      "sources": [
+        "38",
+        "39",
+        "49"
+      ],
+      "objective": "Configurar CI por componentes y build reproducible inicial",
+      "acceptance": [
+        "Jobs reales restore/tests/build según proyectos existentes.",
+        "Cambios de contratos validan todos los consumidores.",
+        "Licencia Unity y artifacts comprobados; no fingir QA física."
+      ],
+      "parent": "F01",
+      "blocked_by": [
+        "T004",
+        "T005",
+        "T006"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F02",
+      "title": "Control móvil seguro y offline",
+      "type": "Feature",
+      "phase": "0",
+      "area": "Mobile/PWA",
+      "sources": [
+        "7",
+        "8",
+        "24",
+        "33",
+        "42",
+        "47"
+      ],
+      "objective": "Control móvil seguro y offline",
+      "acceptance": [
+        "PWA conecta por QR y entrega input en navegadores oficiales.",
+        "Partida no requiere Internet."
+      ],
+      "parent": "E0",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T008",
+      "title": "Resolver HTTPS/WSS local e incorporación por QR",
+      "type": "Spike",
+      "phase": "0",
+      "area": "Network",
+      "sources": [
+        "3",
+        "7",
+        "24",
+        "42",
+        "47"
+      ],
+      "objective": "Resolver HTTPS/WSS local e incorporación por QR",
+      "acceptance": [
+        "Validar contexto seguro y confianza del certificado en Android/iPhone oficiales.",
+        "QR lleva al origen local correcto.",
+        "Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.",
+        "Registrar fallo/alternativas antes de activar Plan B."
+      ],
+      "parent": "F02",
+      "blocked_by": [
+        "T002",
+        "T005"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test",
+        "security",
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T009",
+      "title": "Crear shell PWA y flujo de permisos",
+      "type": "Task",
+      "phase": "0",
+      "area": "Mobile/PWA",
+      "sources": [
+        "24",
+        "25",
+        "32",
+        "42"
+      ],
+      "objective": "Crear shell PWA y flujo de permisos",
+      "acceptance": [
+        "Pantallas CONNECT y permiso accionado por usuario.",
+        "Negar permiso/no sensor devuelve explicación y recuperación.",
+        "Advertencia de no soltar teléfono visible."
+      ],
+      "parent": "F02",
+      "blocked_by": [
+        "T008"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T010",
+      "title": "Capturar aceleración, giro y orientación con frecuencia efectiva",
+      "type": "Task",
+      "phase": "0",
+      "area": "Mobile/PWA",
+      "sources": [
+        "8.4",
+        "8.5",
+        "10",
+        "14",
+        "36",
+        "37"
+      ],
+      "objective": "Capturar aceleración, giro y orientación con frecuencia efectiva",
+      "acceptance": [
+        "Muestras válidas y únicas; unidades y ejes trazables.",
+        "Medir objetivo 50 Hz y degradaciones 60/50/30/20 según capacidad.",
+        "No simular Hz repitiendo muestras ni admitir potencia infinita."
+      ],
+      "parent": "F02",
+      "blocked_by": [
+        "T006",
+        "T009"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test",
+        "performance"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T011",
+      "title": "Validar PWA/red sin WAN y recuperación de visibilidad",
+      "type": "Spike",
+      "phase": "0",
+      "area": "Mobile/PWA",
+      "sources": [
+        "3",
+        "24",
+        "25",
+        "33",
+        "42"
+      ],
+      "objective": "Validar PWA/red sin WAN y recuperación de visibilidad",
+      "acceptance": [
+        "Conectar sin cache previo y con WAN desconectada.",
+        "Recursos/modelos disponibles localmente.",
+        "Suspensión/retorno del teléfono produce pausa o recuperación segura."
+      ],
+      "parent": "F02",
+      "blocked_by": [
+        "T009",
+        "T010"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F03",
+      "title": "Red local y adaptador Unity",
+      "type": "Feature",
+      "phase": "0",
+      "area": "Network",
+      "sources": [
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "25"
+      ],
+      "objective": "Red local y adaptador Unity",
+      "acceptance": [
+        "1–4 controles asociados correctamente.",
+        "Datos de red convertidos a PhoneInput; reconexión segura."
+      ],
+      "parent": "E0",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T012",
+      "title": "Implementar WebSocket v1 y validación de entrada",
+      "type": "Task",
+      "phase": "0",
+      "area": "Network",
+      "sources": [
+        "8",
+        "14",
+        "40"
+      ],
+      "objective": "Implementar WebSocket v1 y validación de entrada",
+      "acceptance": [
+        "Envelope/version/session/player/sequence validados.",
+        "Heartbeat, mensajes fragmentados y límites de tasa/tamaño probados.",
+        "Colas acotadas sin perder indiscriminadamente eventos discretos."
+      ],
+      "parent": "F03",
+      "blocked_by": [
+        "T005",
+        "T006"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T013",
+      "title": "Implementar admisión y asociación de controles al lobby",
+      "type": "Task",
+      "phase": "0",
+      "area": "Server",
+      "sources": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "objective": "Implementar admisión y asociación de controles al lobby",
+      "acceptance": [
+        "Sesión admite 1–4 jugadores; rechazo de quinto control.",
+        "PlayerId preservado; entrada nueva impedida después de inicio.",
+        "Identidad y READY coherentes con autoridad definida."
+      ],
+      "parent": "F03",
+      "blocked_by": [
+        "T001",
+        "T012"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T014",
+      "title": "Conectar adaptador Unity a PhoneInput",
+      "type": "Task",
+      "phase": "0",
+      "area": "Unity/Core",
+      "sources": [
+        "3.4",
+        "9",
+        "42"
+      ],
+      "objective": "Conectar adaptador Unity a PhoneInput",
+      "acceptance": [
+        "Input del teléfono llega a Unity con conversión de tipos documentada.",
+        "Red desacoplada de gameplay y ciclo de vida cancelable.",
+        "Prueba integrada JS→host→Unity con trazas."
+      ],
+      "parent": "F03",
+      "blocked_by": [
+        "T004",
+        "T010",
+        "T012"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T015",
+      "title": "Implementar heartbeat, reconexión y cancelación segura",
+      "type": "Task",
+      "phase": "0",
+      "area": "Network",
+      "sources": [
+        "5",
+        "8.6",
+        "8.7",
+        "25"
+      ],
+      "objective": "Implementar heartbeat, reconexión y cancelación segura",
+      "acceptance": [
+        "Desconexión detectada y comunicada; PlayerId conservado.",
+        "Acción sin validar se cancela y resultado confirmado se conserva.",
+        "Duplicados/atrasados no reproducen acciones oficiales."
+      ],
+      "parent": "F03",
+      "blocked_by": [
+        "T013",
+        "T014"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F04",
+      "title": "Cámara local y viabilidad de tracking",
+      "type": "Feature",
+      "phase": "0",
+      "area": "Camera/Tracking",
+      "sources": [
+        "3",
+        "9",
+        "12",
+        "33",
+        "42",
+        "43"
+      ],
+      "objective": "Cámara local y viabilidad de tracking",
+      "acceptance": [
+        "Captura e inferencia locales en build PC.",
+        "ROI y Player Lock sin reasignación automática."
+      ],
+      "parent": "E0",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T016",
+      "title": "Integrar webcam, MediaPipe/OpenCV y CameraInput",
+      "type": "Task",
+      "phase": "0",
+      "area": "Camera/Tracking",
+      "sources": [
+        "3",
+        "9",
+        "14",
+        "33",
+        "36",
+        "42"
+      ],
+      "objective": "Integrar webcam, MediaPipe/OpenCV y CameraInput",
+      "acceptance": [
+        "Medir captura >=30 FPS e inferencia separada en PC oficial.",
+        "Build incluye modelos/nativos/recursos offline.",
+        "No guardar imágenes/video ni reconocer caras."
+      ],
+      "parent": "F04",
+      "blocked_by": [
+        "T003",
+        "T004"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test",
+        "performance"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T017",
+      "title": "Validar ROI, Player Lock y recuperación de tracking",
+      "type": "Task",
+      "phase": "0",
+      "area": "Camera/Tracking",
+      "sources": [
+        "9",
+        "12",
+        "25",
+        "37",
+        "43"
+      ],
+      "objective": "Validar ROI, Player Lock y recuperación de tracking",
+      "acceptance": [
+        "20 entradas de otra persona: cero cambios accidentales.",
+        "Oclusión/tracking perdido pausa; retorno recuperable.",
+        "Nunca seleccionar automáticamente otro jugador."
+      ],
+      "parent": "F04",
+      "blocked_by": [
+        "T016"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F05",
+      "title": "Evidencia de viabilidad técnica end-to-end",
+      "type": "Feature",
+      "phase": "0",
+      "area": "CI/QA",
+      "sources": [
+        "36",
+        "37",
+        "38",
+        "41",
+        "42",
+        "43"
+      ],
+      "objective": "Evidencia de viabilidad técnica end-to-end",
+      "acceptance": [
+        "Pruebas base reproducibles y riesgos documentados.",
+        "Salida completa del Spike condicionada a aclaración 42/50 y slice posterior."
+      ],
+      "parent": "E0",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T018",
+      "title": "Instrumentar latencia, Hz, FPS y errores locales",
+      "type": "Task",
+      "phase": "0",
+      "area": "CI/QA",
+      "sources": [
+        "35",
+        "36",
+        "40",
+        "47"
+      ],
+      "objective": "Instrumentar latencia, Hz, FPS y errores locales",
+      "acceptance": [
+        "Trazas correlacionadas con reloj/unidad/error de sincronización definidos.",
+        "P50/P95, Hz efectivos, FPS y pérdidas con tamaño muestral.",
+        "Buffer de telemetría no afecta perceptiblemente framerate; sin video."
+      ],
+      "parent": "F05",
+      "blocked_by": [
+        "T014",
+        "T016"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "performance"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T019",
+      "title": "Ejecutar validación base con cuatro teléfonos y fallos",
+      "type": "Task",
+      "phase": "0",
+      "area": "CI/QA",
+      "sources": [
+        "25",
+        "36",
+        "37",
+        "42"
+      ],
+      "objective": "Ejecutar validación base con cuatro teléfonos y fallos",
+      "acceptance": [
+        "1 y 4 controles; 20 conexiones y 20 reconexiones, >=95% exitosas.",
+        "Probar pérdida red/cámara, permiso negado, teléfono bloqueado y datos inválidos.",
+        "P95 <150 ms y demás objetivos con mediciones reales; documentar incumplimientos."
+      ],
+      "parent": "F05",
+      "blocked_by": [
+        "T011",
+        "T015",
+        "T017",
+        "T018"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test",
+        "performance"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T020",
+      "title": "Validar build mínima en PC limpia y dictamen de viabilidad",
+      "type": "Spike",
+      "phase": "0",
+      "area": "CI/QA",
+      "sources": [
+        "39",
+        "41",
+        "42",
+        "43",
+        "57"
+      ],
+      "objective": "Validar build mínima en PC limpia y dictamen de viabilidad",
+      "acceptance": [
+        "Build base funciona fuera del entorno de desarrollo sin SDK/Editor.",
+        "Recursos locales, cierre y errores comprobados.",
+        "Dictamen distingue base técnica de slice jugable; activar Plan B sólo con evidencia y decisión."
+      ],
+      "parent": "F05",
+      "blocked_by": [
+        "T007",
+        "T019",
+        "T001"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test",
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F10",
+      "title": "Gorilla Smash de extremo a extremo",
+      "type": "Feature",
+      "phase": "1",
+      "area": "Gameplay",
+      "sources": [
+        "17",
+        "23",
+        "26",
+        "27",
+        "42",
+        "49"
+      ],
+      "objective": "Gorilla Smash de extremo a extremo",
+      "acceptance": [
+        "Tutorial, input real, gameplay, scoring, feedback, resultado, reinicio y turnos integrados.",
+        "3 intentos/jugador; score 0–10000 y validación de gesto."
+      ],
+      "parent": "E1",
+      "blocked_by": [
+        "T020"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T021",
+      "title": "Construir gesto Smash con calibración y validación mínima",
+      "type": "Task",
+      "phase": "1",
+      "area": "Unity/Core",
+      "sources": [
+        "11",
+        "12",
+        "13",
+        "17",
+        "32"
+      ],
+      "objective": "Construir gesto Smash con calibración y validación mínima",
+      "acceptance": [
+        "Ventana temporal, neutral/calibración, patrón descendente, ARMED y cooldown.",
+        "Fusión exige teléfono+cámara y confianza/ventana configurables.",
+        "Saturación de valores extremos; nunca soltar teléfono."
+      ],
+      "parent": "F10",
+      "blocked_by": [
+        "T020"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T022",
+      "title": "Implementar Smash: intentos, scoring y loop de resultado",
+      "type": "Task",
+      "phase": "1",
+      "area": "Gameplay",
+      "sources": [
+        "17",
+        "49"
+      ],
+      "objective": "Implementar Smash: intentos, scoring y loop de resultado",
+      "acceptance": [
+        "3 intentos por jugador y score hasta 10000 según tuning documentado.",
+        "Resultado, reinicio y avance de turno 1–4 sin score duplicado.",
+        "Pruebas de scoring y estado/reinicio."
+      ],
+      "parent": "F10",
+      "blocked_by": [
+        "T021"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T023",
+      "title": "Integrar tutorial, escena y feedback del slice",
+      "type": "Task",
+      "phase": "1",
+      "area": "UI/Art",
+      "sources": [
+        "1",
+        "17",
+        "23",
+        "26",
+        "27",
+        "32"
+      ],
+      "objective": "Integrar tutorial, escena y feedback del slice",
+      "acceptance": [
+        "Tutorial visual, demo, práctica opcional y READY; 10–20 s sin práctica.",
+        "Score y niveles visibles; encuadre y audio básicos.",
+        "Seguridad y recuperación comprensibles; no modelar quinto personaje obligatorio."
+      ],
+      "parent": "F10",
+      "blocked_by": [
+        "T022"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T024",
+      "title": "Validar slice Smash con hardware y jugadores externos",
+      "type": "Task",
+      "phase": "1",
+      "area": "CI/QA",
+      "sources": [
+        "36",
+        "37",
+        "42",
+        "49",
+        "54"
+      ],
+      "objective": "Validar slice Smash con hardware y jugadores externos",
+      "acceptance": [
+        "50 gestos críticos >=95% detectados; 100 movimientos pequeños <=2 falsos positivos.",
+        "Medir latencia y calibración <30 s; loop completo y recuperación sin crashes conocidos.",
+        "Registrar feedback de personas externas y aceptación del PO."
+      ],
+      "parent": "F10",
+      "blocked_by": [
+        "T023"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F20",
+      "title": "Sesión, jugadores y calibración reutilizables",
+      "type": "Feature",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "5",
+        "6",
+        "7",
+        "13",
+        "14"
+      ],
+      "objective": "Sesión, jugadores y calibración reutilizables",
+      "acceptance": [
+        "Extraer lo validado en slice sin refactor masivo.",
+        "Estados, identidad y calibración común conservan comportamiento."
+      ],
+      "parent": "E2",
+      "blocked_by": [
+        "T024"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T025",
+      "title": "Generalizar sesión y jugadores con estado único",
+      "type": "Task",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "5",
+        "6",
+        "7"
+      ],
+      "objective": "Generalizar sesión y jugadores con estado único",
+      "acceptance": [
+        "Estados v4, turnos y pausa/reconexión preservados para 1–4.",
+        "No admitir nuevos jugadores después de inicio; recalibrar sólo entre intentos.",
+        "Tests de transiciones y recuperación."
+      ],
+      "parent": "F20",
+      "blocked_by": [
+        "T024"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T026",
+      "title": "Generalizar calibración adaptativa y configuración central",
+      "type": "Task",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "13",
+        "14",
+        "53"
+      ],
+      "objective": "Generalizar calibración adaptativa y configuración central",
+      "acceptance": [
+        "Perfil neutral, ruido, fuerza controlada, cuerpo y alcance por jugador.",
+        "Calibración <30 s probada; divisiones/rangos inválidos manejados.",
+        "ScriptableObjects Unity y configuración central; tuning sin constantes innecesarias."
+      ],
+      "parent": "F20",
+      "blocked_by": [
+        "T025"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F21",
+      "title": "Motion Analyzer y Input Fusion reutilizables",
+      "type": "Feature",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "9",
+        "10",
+        "11",
+        "12",
+        "14"
+      ],
+      "objective": "Motion Analyzer y Input Fusion reutilizables",
+      "acceptance": [
+        "Minijuegos consumen PlayerInput sin dependencia directa de hardware."
+      ],
+      "parent": "E2",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T027",
+      "title": "Generalizar análisis temporal, filtros y coordenadas",
+      "type": "Task",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "9",
+        "10",
+        "11",
+        "53"
+      ],
+      "objective": "Generalizar análisis temporal, filtros y coordenadas",
+      "acceptance": [
+        "Validación tiempo, neutral, filtro, dead zone, saturación y extracción de features.",
+        "Comparar jitter/lag con mismos gestos; unidades y rangos de v4.",
+        "Pruebas de normalización, transformación y señales límite."
+      ],
+      "parent": "F21",
+      "blocked_by": [
+        "T026"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "performance"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T028",
+      "title": "Generalizar fusión, InputValidator y recuperación",
+      "type": "Task",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "9",
+        "12",
+        "25"
+      ],
+      "objective": "Generalizar fusión, InputValidator y recuperación",
+      "acceptance": [
+        "Validación cruzada según ventana/confianza/estado/cooldown.",
+        "PlayerInput normalizado; minijuegos no conocen WebSocket/MediaPipe.",
+        "Pruebas cámara→fusion→input; pausa y no reasignación automática."
+      ],
+      "parent": "F21",
+      "blocked_by": [
+        "T027",
+        "T017"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F22",
+      "title": "Scoring, GP, resultados y persistencia comunes",
+      "type": "Feature",
+      "phase": "2",
+      "area": "Gameplay",
+      "sources": [
+        "15",
+        "16",
+        "34",
+        "35",
+        "40"
+      ],
+      "objective": "Scoring, GP, resultados y persistencia comunes",
+      "acceptance": [
+        "Unidades naturales separadas de GP y resultados coherentes."
+      ],
+      "parent": "E2",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T029",
+      "title": "Implementar Gorilla Points y desempates comunes",
+      "type": "Task",
+      "phase": "2",
+      "area": "Gameplay",
+      "sources": [
+        "15",
+        "16"
+      ],
+      "objective": "Implementar Gorilla Points y desempates comunes",
+      "acceptance": [
+        "10/7/5/3 GP por posición sin sumar metros y puntos directamente.",
+        "1 jugador sin rivales falsos.",
+        "Desempates por primeros/segundos/terceros y Sudden Smash si persiste."
+      ],
+      "parent": "F22",
+      "blocked_by": [
+        "T025"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T030",
+      "title": "Generalizar resultados, JSON local y telemetría",
+      "type": "Task",
+      "phase": "2",
+      "area": "Unity/Core",
+      "sources": [
+        "16",
+        "24",
+        "34",
+        "35",
+        "40"
+      ],
+      "objective": "Generalizar resultados, JSON local y telemetría",
+      "acceptance": [
+        "Resultados oficiales y feedback no anticipan información.",
+        "Configuración/volumen JSON local con recuperación de archivo inválido.",
+        "Logs estructurados y escritura controlada; datos personales mínimos."
+      ],
+      "parent": "F22",
+      "blocked_by": [
+        "T028",
+        "T029"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F30",
+      "title": "Coconut Throw completo",
+      "type": "Feature",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "18",
+        "23",
+        "49"
+      ],
+      "objective": "Coconut Throw completo",
+      "acceptance": [
+        "3 intentos, metros y curva jugable de potencia/elevación/release.",
+        "Tutorial, input real, feedback, resultado, reinicio y turnos."
+      ],
+      "parent": "E3",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T031",
+      "title": "Implementar mecánica y scoring de Coconut Throw",
+      "type": "Task",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "18",
+        "14",
+        "32"
+      ],
+      "objective": "Implementar mecánica y scoring de Coconut Throw",
+      "acceptance": [
+        "3 intentos, metros y curva jugable de potencia/elevación/release.",
+        "Usar curva jugable; elevación/release/dirección afectan distancia.",
+        "Potencia controlada técnicamente correcta puede superar fuerza mal ejecutada."
+      ],
+      "parent": "F30",
+      "blocked_by": [
+        "T030",
+        "T028"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T032",
+      "title": "Integrar tutorial, feedback, resultado y turnos de Coconut Throw",
+      "type": "Task",
+      "phase": "3",
+      "area": "UI/Art",
+      "sources": [
+        "18",
+        "23",
+        "24",
+        "26",
+        "27",
+        "49"
+      ],
+      "objective": "Integrar tutorial, feedback, resultado y turnos de Coconut Throw",
+      "acceptance": [
+        "Loop completo para 1–4 con reinicio y feedback legible.",
+        "Tutorial 10–20 s, práctica/READY; cámara virtual propia.",
+        "No soltar teléfono; UI móvil sólo controles relevantes."
+      ],
+      "parent": "F30",
+      "blocked_by": [
+        "T031"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T033",
+      "title": "Validar Coconut Throw con input real y recuperación",
+      "type": "Task",
+      "phase": "3",
+      "area": "CI/QA",
+      "sources": [
+        "18",
+        "25",
+        "37",
+        "38",
+        "49"
+      ],
+      "objective": "Validar Coconut Throw con input real y recuperación",
+      "acceptance": [
+        "Tests scoring/física/colisiones aplicables y PlayMode de loop.",
+        "Hardware real, gesto seguro, recuperación y ausencia de crash conocido.",
+        "Aceptar disciplina antes de comenzar la siguiente."
+      ],
+      "parent": "F30",
+      "blocked_by": [
+        "T032"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F31",
+      "title": "Jungle Archery completo",
+      "type": "Feature",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "19",
+        "23",
+        "49"
+      ],
+      "objective": "Jungle Archery completo",
+      "acceptance": [
+        "5 flechas, orientación, tensado, estabilidad y zonas 100/75/50/25/0.",
+        "Tutorial, input real, feedback, resultado, reinicio y turnos."
+      ],
+      "parent": "E3",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T034",
+      "title": "Implementar mecánica y scoring de Jungle Archery",
+      "type": "Task",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "19",
+        "14",
+        "32"
+      ],
+      "objective": "Implementar mecánica y scoring de Jungle Archery",
+      "acceptance": [
+        "5 flechas, orientación, tensado, estabilidad y zonas 100/75/50/25/0.",
+        "Orientación mueve mira; mantener botón tensa y soltar botón dispara.",
+        "Estabilidad previa limita dispersión sin corregir proyectil después de disparo."
+      ],
+      "parent": "F31",
+      "blocked_by": [
+        "T033",
+        "T028"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T035",
+      "title": "Integrar tutorial, feedback, resultado y turnos de Jungle Archery",
+      "type": "Task",
+      "phase": "3",
+      "area": "UI/Art",
+      "sources": [
+        "19",
+        "23",
+        "24",
+        "26",
+        "27",
+        "49"
+      ],
+      "objective": "Integrar tutorial, feedback, resultado y turnos de Jungle Archery",
+      "acceptance": [
+        "Loop completo para 1–4 con reinicio y feedback legible.",
+        "Tutorial 10–20 s, práctica/READY; cámara virtual propia.",
+        "No soltar teléfono; UI móvil sólo controles relevantes."
+      ],
+      "parent": "F31",
+      "blocked_by": [
+        "T034"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T036",
+      "title": "Validar Jungle Archery con input real y recuperación",
+      "type": "Task",
+      "phase": "3",
+      "area": "CI/QA",
+      "sources": [
+        "19",
+        "25",
+        "37",
+        "38",
+        "49"
+      ],
+      "objective": "Validar Jungle Archery con input real y recuperación",
+      "acceptance": [
+        "Tests scoring/física/colisiones aplicables y PlayMode de loop.",
+        "Hardware real, gesto seguro, recuperación y ausencia de crash conocido.",
+        "Aceptar disciplina antes de comenzar la siguiente."
+      ],
+      "parent": "F31",
+      "blocked_by": [
+        "T035"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F32",
+      "title": "Coconut Bowling completo",
+      "type": "Feature",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "20",
+        "23",
+        "49"
+      ],
+      "objective": "Coconut Bowling completo",
+      "acceptance": [
+        "3 rondas, dirección/potencia/spin limitado, strike/spare.",
+        "Tutorial, input real, feedback, resultado, reinicio y turnos."
+      ],
+      "parent": "E3",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T037",
+      "title": "Implementar mecánica y scoring de Coconut Bowling",
+      "type": "Task",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "20",
+        "14",
+        "32"
+      ],
+      "objective": "Implementar mecánica y scoring de Coconut Bowling",
+      "acceptance": [
+        "3 rondas, dirección/potencia/spin limitado, strike/spare.",
+        "Potencia/dirección/torque desde input normalizado; spin -1..+1.",
+        "Exceso spin puede penalizar control; scoring strike/spare consistente."
+      ],
+      "parent": "F32",
+      "blocked_by": [
+        "T036",
+        "T028"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T038",
+      "title": "Integrar tutorial, feedback, resultado y turnos de Coconut Bowling",
+      "type": "Task",
+      "phase": "3",
+      "area": "UI/Art",
+      "sources": [
+        "20",
+        "23",
+        "24",
+        "26",
+        "27",
+        "49"
+      ],
+      "objective": "Integrar tutorial, feedback, resultado y turnos de Coconut Bowling",
+      "acceptance": [
+        "Loop completo para 1–4 con reinicio y feedback legible.",
+        "Tutorial 10–20 s, práctica/READY; cámara virtual propia.",
+        "No soltar teléfono; UI móvil sólo controles relevantes."
+      ],
+      "parent": "F32",
+      "blocked_by": [
+        "T037"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T039",
+      "title": "Validar Coconut Bowling con input real y recuperación",
+      "type": "Task",
+      "phase": "3",
+      "area": "CI/QA",
+      "sources": [
+        "20",
+        "25",
+        "37",
+        "38",
+        "49"
+      ],
+      "objective": "Validar Coconut Bowling con input real y recuperación",
+      "acceptance": [
+        "Tests scoring/física/colisiones aplicables y PlayMode de loop.",
+        "Hardware real, gesto seguro, recuperación y ausencia de crash conocido.",
+        "Aceptar disciplina antes de comenzar la siguiente."
+      ],
+      "parent": "F32",
+      "blocked_by": [
+        "T038"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F33",
+      "title": "Jungle Slice completo",
+      "type": "Feature",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "21",
+        "23",
+        "49"
+      ],
+      "objective": "Jungle Slice completo",
+      "acceptance": [
+        "60 s, trayectoria manos, cortes válidos, combo limitado y objetos negativos.",
+        "Tutorial, input real, feedback, resultado, reinicio y turnos."
+      ],
+      "parent": "E3",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T040",
+      "title": "Implementar mecánica y scoring de Jungle Slice",
+      "type": "Task",
+      "phase": "3",
+      "area": "Gameplay",
+      "sources": [
+        "21",
+        "14",
+        "32"
+      ],
+      "objective": "Implementar mecánica y scoring de Jungle Slice",
+      "acceptance": [
+        "60 s, trayectoria manos, cortes válidos, combo limitado y objetos negativos.",
+        "Velocidad mínima/confianza y segmento intersectando hitbox validan corte.",
+        "Fruta +100, multicorte +50 desde segunda, negativo -250 como tuning inicial.",
+        "Combo limitado; fallo/negativo lo reinicia."
+      ],
+      "parent": "F33",
+      "blocked_by": [
+        "T039",
+        "T028"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T041",
+      "title": "Integrar tutorial, feedback, resultado y turnos de Jungle Slice",
+      "type": "Task",
+      "phase": "3",
+      "area": "UI/Art",
+      "sources": [
+        "21",
+        "23",
+        "24",
+        "26",
+        "27",
+        "49"
+      ],
+      "objective": "Integrar tutorial, feedback, resultado y turnos de Jungle Slice",
+      "acceptance": [
+        "Loop completo para 1–4 con reinicio y feedback legible.",
+        "Tutorial 10–20 s, práctica/READY; cámara virtual propia.",
+        "No soltar teléfono; UI móvil sólo controles relevantes."
+      ],
+      "parent": "F33",
+      "blocked_by": [
+        "T040"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T042",
+      "title": "Validar Jungle Slice con input real y recuperación",
+      "type": "Task",
+      "phase": "3",
+      "area": "CI/QA",
+      "sources": [
+        "21",
+        "25",
+        "37",
+        "38",
+        "49"
+      ],
+      "objective": "Validar Jungle Slice con input real y recuperación",
+      "acceptance": [
+        "Tests scoring/física/colisiones aplicables y PlayMode de loop.",
+        "Hardware real, gesto seguro, recuperación y ausencia de crash conocido.",
+        "Aceptar disciplina antes de comenzar la siguiente."
+      ],
+      "parent": "F33",
+      "blocked_by": [
+        "T041"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F40",
+      "title": "Torneo completo y flujo de producto",
+      "type": "Feature",
+      "phase": "4",
+      "area": "Gameplay",
+      "sources": [
+        "1",
+        "5",
+        "7",
+        "15",
+        "54"
+      ],
+      "objective": "Torneo completo y flujo de producto",
+      "acceptance": [
+        "Cinco pruebas, GP, campeón y retorno al menú integrados."
+      ],
+      "parent": "E4",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T043",
+      "title": "Integrar secuencia del torneo, transiciones y final",
+      "type": "Task",
+      "phase": "4",
+      "area": "Gameplay",
+      "sources": [
+        "1",
+        "5",
+        "7",
+        "15",
+        "54"
+      ],
+      "objective": "Integrar secuencia del torneo, transiciones y final",
+      "acceptance": [
+        "Cinco disciplinas en orden acordado con PO; continuidad de jugadores/GP.",
+        "Tabla provisional, desempate y campeón.",
+        "Volver al menú y reiniciar sin estado residual."
+      ],
+      "parent": "F40",
+      "blocked_by": [
+        "T042",
+        "T029",
+        "T030"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T044",
+      "title": "Integrar narrativa funcional, menús y Modo Fiesta Próximamente",
+      "type": "Task",
+      "phase": "4",
+      "area": "UI/Art",
+      "sources": [
+        "1",
+        "2",
+        "28",
+        "54",
+        "57"
+      ],
+      "objective": "Integrar narrativa funcional, menús y Modo Fiesta Próximamente",
+      "acceptance": [
+        "Apertura/turno/objetivo/progreso/cierre comunican causa y consecuencia.",
+        "Pantalla Fiesta Próximamente; no modo jugable adelantado.",
+        "Guion/storyboard y naming revisados sin añadir personajes innecesarios."
+      ],
+      "parent": "F40",
+      "blocked_by": [
+        "T043"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F41",
+      "title": "Presentación común, móvil y accesibilidad P0",
+      "type": "Feature",
+      "phase": "4",
+      "area": "UI/Art",
+      "sources": [
+        "24",
+        "25",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32"
+      ],
+      "objective": "Presentación común, móvil y accesibilidad P0",
+      "acceptance": [
+        "Presentación identifica jugadores y comunica estados sin explicación técnica."
+      ],
+      "parent": "E4",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T045",
+      "title": "Producir cuatro avatares y assets/animaciones P0",
+      "type": "Task",
+      "phase": "4",
+      "area": "UI/Art",
+      "sources": [
+        "28",
+        "29",
+        "57"
+      ],
+      "objective": "Producir cuatro avatares y assets/animaciones P0",
+      "acceptance": [
+        "Art Bible low-poly tropical, cuatro avatares sin diferencias estadísticas.",
+        "Animaciones P0 v4 integradas con estados/resultado.",
+        "Origen/licencias de assets y fuentes/exportaciones registrados."
+      ],
+      "parent": "F41",
+      "blocked_by": [
+        "T024"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T046",
+      "title": "Integrar UI móvil de turnos, resultados y errores",
+      "type": "Task",
+      "phase": "4",
+      "area": "Mobile/PWA",
+      "sources": [
+        "24",
+        "25",
+        "31"
+      ],
+      "objective": "Integrar UI móvil de turnos, resultados y errores",
+      "acceptance": [
+        "WAITING muestra turno/prueba/intento/posición/siguiente turno.",
+        "YOUR_TURN inequívoco; GAME_CONTROL sólo controles relevantes.",
+        "RESULT/PAUSED/CONNECTION_LOST/RECONNECTING coherentes con PC."
+      ],
+      "parent": "F41",
+      "blocked_by": [
+        "T043",
+        "T015"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T047",
+      "title": "Integrar audio, accesibilidad básica y seguridad",
+      "type": "Task",
+      "phase": "4",
+      "area": "UI/Art",
+      "sources": [
+        "30",
+        "31",
+        "32",
+        "33"
+      ],
+      "objective": "Integrar audio, accesibilidad básica y seguridad",
+      "acceptance": [
+        "AudioMixer MUSIC/SFX/UI/CHARACTER/AMBIENCE y volumen ajustable.",
+        "Texto grande, instrucciones visuales+texto y señales no sólo color.",
+        "Seguridad visible antes de jugar; sin imágenes almacenadas ni biometría."
+      ],
+      "parent": "F41",
+      "blocked_by": [
+        "T044",
+        "T045",
+        "T046"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F50",
+      "title": "Balance, game feel y rendimiento del MVP",
+      "type": "Feature",
+      "phase": "5",
+      "area": "Gameplay",
+      "sources": [
+        "14",
+        "22",
+        "26",
+        "27",
+        "36",
+        "47",
+        "53"
+      ],
+      "objective": "Balance, game feel y rendimiento del MVP",
+      "acceptance": [
+        "Tuning basado en medición y experiencia de jugadores externos."
+      ],
+      "parent": "E5",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T048",
+      "title": "Ajustar curvas, filtros y balance de cinco disciplinas",
+      "type": "Task",
+      "phase": "5",
+      "area": "Gameplay",
+      "sources": [
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "53"
+      ],
+      "objective": "Ajustar curvas, filtros y balance de cinco disciplinas",
+      "acceptance": [
+        "Dificultad común sin menú Easy/Normal/Hard.",
+        "Perfiles de tuning medidos; técnica importa y fuerza extrema no da ventaja ilimitada.",
+        "No activar asistencia avanzada P1 mientras haya P0 pendiente."
+      ],
+      "parent": "F50",
+      "blocked_by": [
+        "T047"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T049",
+      "title": "Pulir feedback audiovisual y cámaras virtuales",
+      "type": "Task",
+      "phase": "5",
+      "area": "UI/Art",
+      "sources": [
+        "16",
+        "26",
+        "27",
+        "31"
+      ],
+      "objective": "Pulir feedback audiovisual y cámaras virtuales",
+      "acceptance": [
+        "Niveles de feedback y score comprensibles desde TV/proyector.",
+        "Enfoques/cámaras por disciplina y ritmo sin demora innecesaria.",
+        "Slow motion/haptics sólo según resolución de discrepancia y alcance autorizado."
+      ],
+      "parent": "F50",
+      "blocked_by": [
+        "T048",
+        "T001"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T050",
+      "title": "Optimizar rendimiento y experiencia de incorporación",
+      "type": "Task",
+      "phase": "5",
+      "area": "CI/QA",
+      "sources": [
+        "35",
+        "36",
+        "37",
+        "47"
+      ],
+      "objective": "Optimizar rendimiento y experiencia de incorporación",
+      "acceptance": [
+        "Unity 60 FPS, webcam >=30 FPS, sensores 50 Hz objetivo y P95 <150 ms medidos juntos.",
+        "Usuario nuevo conecta <60 s, calibra <30 s y entiende <20 s.",
+        "Registrar degradaciones y Plan B sin falsear métricas."
+      ],
+      "parent": "F50",
+      "blocked_by": [
+        "T049"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "performance",
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F60",
+      "title": "QA de aceptación y cierre de defectos",
+      "type": "Feature",
+      "phase": "6",
+      "area": "CI/QA",
+      "sources": [
+        "37",
+        "38",
+        "49",
+        "54",
+        "Anexo C"
+      ],
+      "objective": "QA de aceptación y cierre de defectos",
+      "acceptance": [
+        "Freeze sin nuevas features y P0 cumple pruebas/aceptación."
+      ],
+      "parent": "E6",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T051",
+      "title": "Ejecutar matriz cuantitativa y pruebas de regresión",
+      "type": "Task",
+      "phase": "6",
+      "area": "CI/QA",
+      "sources": [
+        "37",
+        "38",
+        "49"
+      ],
+      "objective": "Ejecutar matriz cuantitativa y pruebas de regresión",
+      "acceptance": [
+        "20 conexiones/reconexiones >=95%; 100 movimientos pequeños <=2 falsos positivos.",
+        "50 intentos por gesto crítico >=95%; 20 pruebas lock sin cambio.",
+        "10 sesiones completas sin crashes/estados imposibles; registrar bugs reales."
+      ],
+      "parent": "F60",
+      "blocked_by": [
+        "T050"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T052",
+      "title": "Validar experiencia externa, seguridad y privacidad",
+      "type": "Task",
+      "phase": "6",
+      "area": "CI/QA",
+      "sources": [
+        "31",
+        "32",
+        "33",
+        "37",
+        "54",
+        "55"
+      ],
+      "objective": "Validar experiencia externa, seguridad y privacidad",
+      "acceptance": [
+        "Al menos 5 personas externas conectan/calibran/juegan/interpretan resultado.",
+        "Recorrido completo de 5 pruebas, campeón y retorno sin asistencia técnica constante.",
+        "Checklist seguridad y ausencia de grabación de cámara comprobados."
+      ],
+      "parent": "F60",
+      "blocked_by": [
+        "T051"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T053",
+      "title": "Cerrar bugs reales y verificar aceptación P0",
+      "type": "Task",
+      "phase": "6",
+      "area": "CI/QA",
+      "sources": [
+        "2",
+        "38",
+        "49",
+        "56"
+      ],
+      "objective": "Cerrar bugs reales y verificar aceptación P0",
+      "acceptance": [
+        "Registrar/reproducir/corregir defects detectados; no bugs ficticios anticipados.",
+        "Regresión tras fixes; cero crashes conocidos y pendientes críticos resueltos.",
+        "PO revisa criterios con evidencia y registra excepciones explícitas."
+      ],
+      "parent": "F60",
+      "blocked_by": [
+        "T052"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "F61",
+      "title": "Build final, evidencia y presentación",
+      "type": "Feature",
+      "phase": "6",
+      "area": "CI/QA",
+      "sources": [
+        "39",
+        "41",
+        "49",
+        "54",
+        "57"
+      ],
+      "objective": "Build final, evidencia y presentación",
+      "acceptance": [
+        "Entrega identificada y reproducible desde tag aprobado."
+      ],
+      "parent": "E6",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T054",
+      "title": "Preparar build final y documentación de uso/compatibilidad",
+      "type": "Task",
+      "phase": "6",
+      "area": "CI/QA",
+      "sources": [
+        "39",
+        "41",
+        "49",
+        "57"
+      ],
+      "objective": "Preparar build final y documentación de uso/compatibilidad",
+      "acceptance": [
+        "Instalar y ejecutar en PC oficial limpia, WAN desconectada y recursos completos.",
+        "Guía red/permisos/espacio, versiones/modelos y matriz de compatibilidad.",
+        "Licencias/atribuciones, hashes y logs de entrega conservados."
+      ],
+      "parent": "F61",
+      "blocked_by": [
+        "T053"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [
+        "needs-device-test"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T055",
+      "title": "Preparar evidencia y presentación del MVP para aceptación",
+      "type": "Documentation",
+      "phase": "6",
+      "area": "Documentation",
+      "sources": [
+        "44",
+        "49",
+        "54",
+        "57"
+      ],
+      "objective": "Preparar evidencia y presentación del MVP para aceptación",
+      "acceptance": [
+        "Demo y reporte muestran implementación/mediciones reales y limitaciones.",
+        "Modelo financiero distingue estimaciones de cotizaciones, precio/canal sin inventar aprobación.",
+        "Promoción develop→main, tag y release sólo tras aceptación; sin fecha nueva inventada."
+      ],
+      "parent": "F61",
+      "blocked_by": [
+        "T054"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "FF1",
+      "title": "Opcionales P1 — sólo tras completar P0",
+      "type": "Feature",
+      "phase": "Futuro",
+      "area": "Gameplay",
+      "sources": [
+        "2",
+        "22",
+        "28",
+        "31",
+        "46"
+      ],
+      "objective": "Opcionales P1 — sólo tras completar P0",
+      "acceptance": [
+        "Ninguna opción se considera autorizada para desarrollo actual.",
+        "Evaluar coste/valor y decisión PO antes de crear tareas ejecutables."
+      ],
+      "parent": "EFuturo",
+      "blocked_by": [],
+      "scope": "P1",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T056",
+      "title": "Evaluar feedback extra, animaciones y móvil enriquecido",
+      "type": "Spike",
+      "phase": "Futuro",
+      "area": "UI/Art",
+      "sources": [
+        "2",
+        "26",
+        "28"
+      ],
+      "objective": "Evaluar feedback extra, animaciones y móvil enriquecido",
+      "acceptance": [
+        "Registrar vibración, replays, slow motion, celebraciones, animaciones extra, presentador y pantallas enriquecidas como candidatos P1.",
+        "Replays no pueden almacenar video/fotos de cámara; definir alternativa o rechazar.",
+        "Sin implementación hasta cerrar P0 y aprobar alcance."
+      ],
+      "parent": "FF1",
+      "blocked_by": [],
+      "scope": "P1",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T057",
+      "title": "Evaluar récords, estadísticas, asistencia y accesibilidad ampliada",
+      "type": "Spike",
+      "phase": "Futuro",
+      "area": "Gameplay",
+      "sources": [
+        "2",
+        "22",
+        "31",
+        "34",
+        "46"
+      ],
+      "objective": "Evaluar récords, estadísticas, asistencia y accesibilidad ampliada",
+      "acceptance": [
+        "Registrar récord local, estadísticas, asistencia y accesibilidad ampliada.",
+        "Asistencia no regala puntos ni altera ganador.",
+        "Sin compromiso de fechas ni ejecución anticipada."
+      ],
+      "parent": "FF1",
+      "blocked_by": [],
+      "scope": "P1",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "FF2",
+      "title": "Roadmap P2 condicionado fuera del MVP",
+      "type": "Feature",
+      "phase": "Futuro",
+      "area": "Documentation",
+      "sources": [
+        "2",
+        "43",
+        "44",
+        "45",
+        "46"
+      ],
+      "objective": "Roadmap P2 condicionado fuera del MVP",
+      "acceptance": [
+        "Opciones futuras se catalogan sin cambiar stack congelado o privacidad."
+      ],
+      "parent": "EFuturo",
+      "blocked_by": [],
+      "scope": "P2",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [],
+      "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
+    },
+    {
+      "key": "T058",
+      "title": "Catalogar Fiesta, contenido, personalización y eventos futuros",
+      "type": "Documentation",
+      "phase": "Futuro",
+      "area": "Documentation",
+      "sources": [
+        "2",
+        "44",
+        "45",
+        "46"
+      ],
+      "objective": "Catalogar Fiesta, contenido, personalización y eventos futuros",
+      "acceptance": [
+        "Registrar Fiesta, selección libre, nuevos minijuegos/packs/DLC, gorilas, personalización, estadísticas, eventos, torneos locales y cooperativo.",
+        "Cada futura iniciativa necesita discovery/alcance/aprobación propios; no crear tareas de implementación hoy."
+      ],
+      "parent": "FF2",
+      "blocked_by": [],
+      "scope": "P2",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T059",
+      "title": "Catalogar opciones de plataforma y red bajo revisión de alcance",
+      "type": "Documentation",
+      "phase": "Futuro",
+      "area": "Documentation",
+      "sources": [
+        "2",
+        "33",
+        "43",
+        "45",
+        "46",
+        "52"
+      ],
+      "objective": "Catalogar opciones de plataforma y red bajo revisión de alcance",
+      "acceptance": [
+        "Registrar online, cuentas, nube, matchmaking, ranking, tienda, tracking simultáneo, dos cámaras/profundidad, IA, voz y otras plataformas como opciones futuras no aprobadas.",
+        "Reconocimiento facial sigue prohibido por privacidad; no crear tarea para implementarlo.",
+        "App nativa únicamente Plan B activado por evidencia o futuro cambio explícito; no anticipar."
+      ],
+      "parent": "FF2",
+      "blocked_by": [],
+      "scope": "P2",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [
+        "needs-decision"
+      ],
+      "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    }
+  ]
+}

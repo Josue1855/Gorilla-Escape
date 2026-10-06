@@ -1,0 +1,320 @@
+{
+  "owner": "Josue1855",
+  "repository": "Josue1855/Gorilla-Escape",
+  "project_id": "PVT_kwHOBFweE84Bl2mT",
+  "project_number": 1,
+  "project_url": "https://github.com/users/Josue1855/projects/1",
+  "fields": [
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzWs",
+      "name": "Title",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzWw",
+      "name": "Assignees",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+      "name": "Status",
+      "options": [
+        {
+          "id": "0b2823c5",
+          "name": "Backlog"
+        },
+        {
+          "id": "6ecf9cc2",
+          "name": "Ready"
+        },
+        {
+          "id": "c4217f5e",
+          "name": "In Progress"
+        },
+        {
+          "id": "cb74130a",
+          "name": "In Review"
+        },
+        {
+          "id": "9fb36150",
+          "name": "Validation"
+        },
+        {
+          "id": "05f75440",
+          "name": "PO Review"
+        },
+        {
+          "id": "563deb79",
+          "name": "Done"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzW4",
+      "name": "Labels",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzW8",
+      "name": "Linked pull requests",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXA",
+      "name": "Milestone",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXE",
+      "name": "Repository",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXM",
+      "name": "Reviewers",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXQ",
+      "name": "Parent issue",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXU",
+      "name": "Sub-issues progress",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXY",
+      "name": "Created",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXc",
+      "name": "Updated",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXg",
+      "name": "Closed",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KQ",
+      "name": "Priority",
+      "options": [
+        {
+          "id": "2315b011",
+          "name": "Critical"
+        },
+        {
+          "id": "251fbd2f",
+          "name": "High"
+        },
+        {
+          "id": "d7315eaf",
+          "name": "Medium"
+        },
+        {
+          "id": "96b38fec",
+          "name": "Low"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+      "name": "Phase",
+      "options": [
+        {
+          "id": "17aa3b95",
+          "name": "0"
+        },
+        {
+          "id": "9bf5f6aa",
+          "name": "1"
+        },
+        {
+          "id": "f27967b6",
+          "name": "2"
+        },
+        {
+          "id": "9cd106ae",
+          "name": "3"
+        },
+        {
+          "id": "5c4e0aab",
+          "name": "4"
+        },
+        {
+          "id": "10d694af",
+          "name": "5"
+        },
+        {
+          "id": "77fdf4e7",
+          "name": "6"
+        },
+        {
+          "id": "5a0d8d1a",
+          "name": "Futuro"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+      "name": "Area",
+      "options": [
+        {
+          "id": "26be4479",
+          "name": "Mobile/PWA"
+        },
+        {
+          "id": "c1ebfd9e",
+          "name": "Network"
+        },
+        {
+          "id": "85529b56",
+          "name": "Server"
+        },
+        {
+          "id": "5e9fbb00",
+          "name": "Protocol"
+        },
+        {
+          "id": "cdd11b6b",
+          "name": "Unity/Core"
+        },
+        {
+          "id": "2116b5c4",
+          "name": "Gameplay"
+        },
+        {
+          "id": "0d73445e",
+          "name": "Camera/Tracking"
+        },
+        {
+          "id": "c38cfd32",
+          "name": "UI/Art"
+        },
+        {
+          "id": "1cba9ea6",
+          "name": "CI/QA"
+        },
+        {
+          "id": "ff3a3bc0",
+          "name": "Documentation"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Kc",
+      "name": "Risk",
+      "options": [
+        {
+          "id": "567718ff",
+          "name": "Critical"
+        },
+        {
+          "id": "5d106018",
+          "name": "High"
+        },
+        {
+          "id": "11849f25",
+          "name": "Medium"
+        },
+        {
+          "id": "1f2288ac",
+          "name": "Low"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+      "name": "Target Release",
+      "options": [
+        {
+          "id": "216e6e9b",
+          "name": "v1.0 — MVP"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkh1Lw",
+      "name": "Story Points",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTIF_lAHOBFweE84Bl2mTzhkh1L0",
+      "name": "Iteration",
+      "type": "ProjectV2IterationField"
+    }
+  ],
+  "views": [
+    {
+      "name": "Product Backlog",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jIY",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue"
+    },
+    {
+      "name": "Current Sprint",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jao",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue iteration:@current"
+    },
+    {
+      "name": "Sprint Board",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jaw",
+      "layout": "BOARD_LAYOUT",
+      "filter": "is:issue iteration:@current"
+    },
+    {
+      "name": "My Work",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7ja0",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue assignee:@me"
+    },
+    {
+      "name": "PO Review",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7ja8",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue status:\"PO Review\""
+    },
+    {
+      "name": "Blocked",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jbA",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue label:blocked"
+    },
+    {
+      "name": "Bugs",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jbI",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue label:\"type:bug\""
+    },
+    {
+      "name": "By Area",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jbQ",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue"
+    },
+    {
+      "name": "Roadmap",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jbU",
+      "layout": "ROADMAP_LAYOUT",
+      "filter": "is:issue label:\"type:epic\""
+    },
+    {
+      "name": "Releases",
+      "id": "PVTV_lAHOBFweE84Bl2mTzgL7jbY",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue -phase:Futuro"
+    }
+  ],
+  "repository_visibility": "public"
+}

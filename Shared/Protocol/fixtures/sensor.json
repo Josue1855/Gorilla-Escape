@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "type": "sensor",
+  "sessionId": "AB12CD",
+  "playerId": 2,
+  "sequence": 12834,
+  "timestamp": 1789988221,
+  "payload": {
+    "acceleration": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "gyro": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "orientation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "w": 1.0
+    }
+  }
+}

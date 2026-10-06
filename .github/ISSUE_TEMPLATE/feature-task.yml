@@ -1,0 +1,89 @@
+name: Feature / Task
+description: Definir trabajo antes de Sprint Planning.
+title: '[Task] '
+labels: []
+body:
+- type: dropdown
+  id: work-type
+  attributes:
+    label: Issue kind
+    options:
+    - Feature
+    - Task
+  validations:
+    required: true
+- type: textarea
+  id: objective
+  attributes:
+    label: Objective
+    description: Objetivo observable del cambio.
+  validations:
+    required: true
+- type: textarea
+  id: context
+  attributes:
+    label: Context
+    description: Fuente/sección v4, fase y alcance P0/P1/P2. Distinguir decisión aceptada
+      de propuesta.
+  validations:
+    required: true
+- type: textarea
+  id: scope
+  attributes:
+    label: Scope
+    description: Trabajo concreto y revisable.
+  validations:
+    required: true
+- type: textarea
+  id: out-of-scope
+  attributes:
+    label: Out of Scope
+    description: Lo que esta tarea excluye.
+  validations:
+    required: true
+- type: textarea
+  id: acceptance
+  attributes:
+    label: Acceptance Criteria
+    description: Criterios verificables; incluir métricas de la fuente cuando apliquen.
+  validations:
+    required: true
+- type: textarea
+  id: dependencies
+  attributes:
+    label: Dependencies
+    description: Issues bloqueantes y contrato/diseño requerido; indicar Ninguna si
+      aplica.
+  validations:
+    required: true
+- type: textarea
+  id: technical-notes
+  attributes:
+    label: Technical Notes
+    description: Runtimes, hardware, configuración y riesgos conocidos.
+  validations:
+    required: true
+- type: textarea
+  id: tests
+  attributes:
+    label: Tests
+    description: Pruebas unitarias/integración/PlayMode y dispositivo real aplicables.
+  validations:
+    required: true
+- type: textarea
+  id: evidence
+  attributes:
+    label: Evidence Required
+    description: Logs, reporte, hardware/versiones y capturas del producto sin grabar
+      cámara del juego.
+  validations:
+    required: true
+- type: textarea
+  id: dod
+  attributes:
+    label: Definition of Done
+    description: Implementado, compila, aceptación, pruebas, integración, PR revisado,
+      recuperación/logs/tuning/documentación y hardware cuando aplique. No marcar
+      Done sólo por compilar.
+  validations:
+    required: true

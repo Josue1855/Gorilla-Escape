@@ -1,0 +1,7 @@
+{
+  "name": "GorillaEscape.Runtime",
+  "rootNamespace": "GorillaEscape",
+  "references": [
+    "GorillaEscape.Contracts"
+  ]
+}

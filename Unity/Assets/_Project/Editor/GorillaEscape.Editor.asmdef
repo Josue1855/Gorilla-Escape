@@ -1,0 +1,9 @@
+{
+  "name": "GorillaEscape.Editor",
+  "references": [
+    "GorillaEscape.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}
