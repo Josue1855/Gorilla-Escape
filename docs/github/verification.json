@@ -1,4 +1,158 @@
 {
-  "status": "PENDING",
-  "reason": "Auditoría de publicación pendiente; no sustituye las pruebas de la base."
+  "status": "PASS",
+  "issues": 88,
+  "parent_links": 80,
+  "blocking_links": 86,
+  "counts_by_phase": {
+    "0": 27,
+    "1": 6,
+    "2": 10,
+    "3": 17,
+    "4": 8,
+    "5": 5,
+    "6": 8,
+    "Futuro": 7
+  },
+  "counts_by_type": {
+    "Epic": 8,
+    "Feature": 21,
+    "Documentation": 5,
+    "Spike": 6,
+    "Task": 48
+  },
+  "views": [
+    {
+      "name": "Product Backlog",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "Current Sprint",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue iteration:@current",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "Sprint Board",
+      "layout": "BOARD_LAYOUT",
+      "filter": "is:issue iteration:@current",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": [
+          {
+            "name": "Status"
+          }
+        ]
+      }
+    },
+    {
+      "name": "My Work",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue assignee:@me",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "PO Review",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue status:\"PO Review\"",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "Blocked",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue label:blocked",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "Bugs",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue label:\"type:bug\"",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "By Area",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue",
+      "groupByFields": {
+        "nodes": [
+          {
+            "name": "Area"
+          }
+        ]
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "Roadmap",
+      "layout": "ROADMAP_LAYOUT",
+      "filter": "is:issue label:\"type:epic\"",
+      "groupByFields": {
+        "nodes": []
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    },
+    {
+      "name": "Releases",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:issue -phase:Futuro",
+      "groupByFields": {
+        "nodes": [
+          {
+            "name": "Milestone"
+          }
+        ]
+      },
+      "verticalGroupByFields": {
+        "nodes": []
+      }
+    }
+  ],
+  "all_backlog": true,
+  "assigned": 0,
+  "iterations_assigned": 0,
+  "spec_sha256": "63e0378f0785aa4e48e0a79e7ab28e7dcd342eb3e42ec50bcb61712f3f6b8a06",
+  "automation_configuration": "6 native workflows verified in UI; no synthetic close/merge test",
+  "repository_visibility": "public",
+  "project_visibility": "private",
+  "branch_protection": {
+    "main": "PASS",
+    "develop": "PASS"
+  }
 }

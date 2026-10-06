@@ -3,6 +3,10 @@
     "success": true,
     "required_approvals": 1,
     "required_check": "management-validation",
+    "required_checks": [
+      "management-validation",
+      "java-react-foundation"
+    ],
     "strict_checks": true,
     "enforce_admins": true,
     "required_conversation_resolution": true,
@@ -14,6 +18,10 @@
     "success": true,
     "required_approvals": 1,
     "required_check": "management-validation",
+    "required_checks": [
+      "management-validation",
+      "java-react-foundation"
+    ],
     "strict_checks": true,
     "enforce_admins": true,
     "required_conversation_resolution": true,
