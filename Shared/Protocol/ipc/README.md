@@ -1,0 +1,17 @@
+# IPC probe v1 — Incremento 2A
+
+Contrato interno aprobado por DEC-005; no es Gorilla Protocol móvil ni crea sesión de juego.
+
+Transporte TCP IPv4 exclusivo 127.0.0.1, Java elige puerto 0, Unity cliente. Frame: uint32 big-endian (4 bytes) de longitud del JSON UTF-8 estricto; rango 1..4096 bytes. Lecturas parciales obligatorias; EOF intermedio invalida el frame. Un escritor y un PING pendiente por conexión.
+
+Campos PING: ipcVersion entero 1, type PING, instanceId UUID canónico por lanzamiento, connectionId UUID canónico por conexión, sequence entero positivo que comienza en 1, payload. Primer payload contiene launchToken base64url sin padding (32 bytes aleatorios/43 caracteres); posteriores payload vacíos. PONG type PONG refleja identidades y sequence, payload vacío. Fixtures ping-first.json/pong.json son comunes a Java y C#; el token de fixture es público de prueba y nunca se usa por Unity en producción. El token real sólo existe en entorno del hijo/memoria y primer frame; no en argumentos, logs o evidencia.
+
+Bootstrap: stdout emite una línea `GORILLA_IPC_READY ` + objeto ipcVersion/instanceId/pid/ipcPort/httpPort. Ambos listeners loopback, puerto real conocido sólo después de bind. Spring inicia normalmente y el modo administrado opt-in añade IPC al evento ApplicationReady. Configuración de logs específica ipc-logback.xml enruta Spring a stderr; los pipes se drenan desde inicio y stdout de readiness está limitado a 4096 caracteres. READY no basta: RUNNING requiere PONG correcto. El proceso se inicia con gorilla.ipc.managed=true; arranque HTTP normal sin esa opción conserva comportamiento previo.
+
+Startup 15 s hasta PONG inicial, conexión <=2 s y dentro de startup, read/write <=2 s; cancellation cierra socket. Unity nunca espera I/O en el hilo de frames. Normal shutdown: supervisor cierra socket y stdin, Java detecta EOF/cierra contexto Spring y listener; Unity observa exit 0 <=10 s. Fallback sólo al hijo propio tras deadline, observado <=2 s; no cuenta como cierre limpio. No reconnect/restart/watchdog avanzado en 2A. Fallos muestran un error recuperable y no continúan al juego.
+
+Desarrollo: configurar rutas absolutas GORILLA_IPC_JAVA y GORILLA_IPC_JAR al ejecutar Editor/Player. El JDK debe ser Java 21 completo y accesible al proceso (incluidos archivos de seguridad, no enlaces rotos en un sandbox). No buscar en PATH ni descargar al ejecutar. GORILLA_IPC_SMOKE_EXIT=1 ejecuta probe y solicita salida normal del Player después del cleanup. En tests PlayMode usar GORILLA_TEST_JAVA/GORILLA_TEST_JAR; si faltan, el test real se marca ignorado/NOT RUN, nunca PASS real. El runner no se activa por defecto ni modifica la escena foundation.
+
+Smoke: 10 warmup +100 PING secuenciales con cadencia nominal suave 20 ms entre respuestas; no es benchmarking 50 Hz. Publicar startup, mínimo/P50/P95/máximo RTT (nearest-rank), N/errores/exit y versiones/hashes. RTT en worker incluye codec, TCP ida/vuelta y Java; no incluye consumo de gameplay en frame. No extrapolar a teléfono→gameplay.
+
+Java valida campos/tipos/token/correlación y claves duplicadas. Unity valida tamaño/UTF-8, identidad/version/tipo/sequence/READY; revisión estricta de campos desconocidos/duplicados y fuzz/flood extensos del parser Unity quedan para hardening posterior. Los frames aceptados por Unity provienen del hijo identificado y no contienen acciones de juego. El contrato completo y requisitos diferidos permanecen en docs/PHASE0_UNITY_JAVA_DECISION.md.

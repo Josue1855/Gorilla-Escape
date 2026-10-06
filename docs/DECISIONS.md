@@ -76,3 +76,17 @@ DEC-001 registra la organización original; el stack de ese momento fue sustitui
 **Impacto técnico/pruebas:** conservar Unity 6000.3.23f1/Test Framework 1.6.0 y lockfile de cinco paquetes; ningún cambio funcional nuevo. PC/plataforma oficial **BLOCKED / NOT RUN**; FPS real, frame time, latencia, memoria/leaks, sensores, webcam y Player Lock **NOT RUN**.
 **Impacto en alcance/calendario:** cierre del trabajo actual de foundation de desarrollo, commit/PR a develop y revisión normal; sin cierre de Fase 0, sin Incremento 2/Fase 1 ni cambio de calendario.
 **Responsable / aprobación Product Owner:** instrucción directa «Cierra el trabajo actual de Unity Foundation de desarrollo» en este chat, 2026-10-06. Autoriza commit y PR, no merge forzado ni siguiente incremento.
+
+### DEC-005 — Ownership, IPC y lifecycle Unity ↔ Java
+
+**Fecha:** 2026-10-06. **Estado:** Accepted.
+**Decisión anterior:** DEC-002 separa runtimes sin definir IPC/lifecycle; v4 §5 usa «confirmado por el servidor» de forma ambigua. DEC-003/004 pertenecen a la foundation del PR #90, no integrado en develop en la consulta de esta tarea; se reserva DEC-005 para evitar colisión de identificadores.
+**Decisión nueva:** Unity conserva estado jugable/sesión, física, scoring, torneo y resultados oficiales; Java conserva hosting/transporte/conexiones y adaptación de input. TCP loopback persistente, framing length-prefix/JSON mínimo PING/PONG; Unity supervisa un hijo Java con READY por stdout, cierre por EOF stdin, lock de instancia y recovery acotado.
+**Problema / evidencia:** estado real de develop e950bd8, health HTTP insuficiente para readiness IPC, DTO sensor sin contrato de lifecycle y ambigüedad de autoridad. [Documento completo](PHASE0_UNITY_JAVA_DECISION.md) compara opciones, propone contrato, límites, pruebas, métricas y manejo de huérfanos.
+**Alternativas consideradas:** WebSocket local, named pipes/UDS, stdin/stdout completo; ninguna medida. No se justifica mover autoridad a Java.
+**Impacto técnico:** nuevo supervisor y listener separado; dependencias/versiones actuales conservadas. Enmienda v4 §5 aprobada y aplicada documentalmente. Runtime JRE y compatibilidad Unity/Windows requieren validación.
+**Impacto en alcance:** diseño de Incremento 2 de Fase 0 aprobado. Implementación autorizada exclusivamente para 2A después de integración normal de #90 y verificación de develop; todavía no iniciada. Recovery avanzado, watchdog, fault injection extensa y performance/hardening diferidos, no eliminados. Sin PWA móvil, QR, sensores, WebSocket móvil, cámara, gameplay ni Fase 1.
+**Impacto en calendario:** sin estimaciones o fechas nuevas; gate de merge #90 obligatorio antes de código.
+**Impacto en pruebas:** unit lifecycle/codec, integración Java con cliente real simulado y Unity con JVM real, fault injection y métricas startup/RTT/reconnect/shutdown; todavía NOT RUN.
+**Responsable:** PO para autoridad, política de recuperación, plataforma y presupuesto; Arturo/Hiram para revisión productor/consumidor. No se asignan usuarios GitHub ficticios.
+**Aprobación Product Owner:** instrucción explícita «Como Product Owner, apruebo DEC-005» de 2026-10-06. Acepta ownership, TCP IPv4 loopback, framing UTF-8/uint32 big-endian/4096 bytes, identidades y token efímero, puerto 0 Java, supervisión Unity, READY + PONG, stdin EOF, deadlines/buffers/cancellation y ninguna dependencia adicional. Autoriza sólo 2A después del merge normal de #90; exige reporte previo de SHA/rama/archivos/tests/riesgos/aceptación. No autoriza modificar #90 ni continuar a 2B.

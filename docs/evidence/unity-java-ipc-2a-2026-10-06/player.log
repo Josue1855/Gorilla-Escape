@@ -1,0 +1,11 @@
+Creating GLContext @level 12 (OpenGL Core 4.5)
+kGfxThreadingModeClientWorkerNativeJobs is not supported on OpenGL Core. Reverting to kGfxThreadingModeClientWorkerJobs instead.
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+OPENGL LOG: Creating OpenGL 4.6 graphics device ; Context level  <OpenGL 4.5> ; Context handle 182184640
+Creating GLContext @level 12 (OpenGL Core 4.5)
+Gorilla Escape foundation ready; gameplay and hardware adapters pending.
+{"component":"ipc-unity","event":"STARTED","instanceId":"ba125ad3-6f4e-467d-8a5f-449537b343ee","pid":249172}
+{"component":"ipc-unity","event":"CONNECTED","instanceId":"ba125ad3-6f4e-467d-8a5f-449537b343ee","pid":249172}
+{"component":"ipc-unity","event":"SHUTDOWN_CLEAN","instanceId":"ba125ad3-6f4e-467d-8a5f-449537b343ee","pid":249172}
+IPC_2A_SMOKE {"startupMs":2353.1973000000003,"minimumMs":0.5863,"p50Ms":0.7951,"p95Ms":1.4409,"maximumMs":1.889,"samples":100,"errors":0,"pid":249172,"exitCode":0,"cleanExit":true}
+Gorilla Escape foundation shutdown.

@@ -1,0 +1,4 @@
+{"component":"ipc-unity","event":"STARTED","instanceId":"75b2b3fc-b112-46f8-ae38-a9a595e13666","pid":217}
+{"component":"ipc-unity","event":"CONNECTED","instanceId":"75b2b3fc-b112-46f8-ae38-a9a595e13666","pid":217}
+{"component":"ipc-unity","event":"SHUTDOWN_CLEAN","instanceId":"75b2b3fc-b112-46f8-ae38-a9a595e13666","pid":217}
+IPC_2A_PLAYMODE startupMs=2278.170 min=0.404 p50=0.567 p95=0.718 max=1.988 samples=100 errors=0 pid=217 cleanExit=True
