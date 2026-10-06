@@ -1,6 +1,6 @@
 # Progreso de desarrollo
 
-Actualizado: 2026-10-05.
+Actualizado: 2026-10-06.
 
 ## Estado actual
 

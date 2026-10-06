@@ -1,6 +1,6 @@
 # Gorilla Escape — Configuración GitHub
 
-**Fecha:** 2026-10-05. Configuración de gestión; sin código de producto ni Fase 0 iniciada.
+**Fecha:** 2026-10-06. Configuración del repositorio público y Project privado; base técnica de Fase 0 publicada, Spike pendiente.
 
 ## Destino y comprobaciones previas
 
@@ -8,8 +8,8 @@
 - [Project Gorilla Escape — Product Development](https://github.com/users/Josue1855/projects/1), personal y privado; enlazado al repositorio.
 - Cuenta GitHub verificada: Josue1855, permisos admin/maintain/push/triage/pull en el repo.
 - GitHub CLI oficial ejecutada temporalmente fuera del repo; autenticación en keyring. Scope project añadido con autorización explícita del usuario. No tokens en archivos versionados.
-- Inspección previa: repo destino no existía; pantalla Projects indicaba primer Project. Se reutiliza Project número 1, sin crear otro al repetir configuración.
-- Primer commit documental: 4baddbd. main y develop publicados. Trabajo de setup en docs/github-project-setup.
+- Project número 1 conservado y enlazado al repositorio actual; se reutilizan campos, vistas e iteración.
+- main y develop comparten la base inicial. Los nuevos PR de tareas apuntan a develop.
 
 La organización no se creó: no hay nombre/equipo confirmado y una cuenta personal permite esta preparación. No invitar personas ni conceder acceso usando nombres incompletos.
 
@@ -81,8 +81,7 @@ Estos scripts están acotados a Josue1855/Gorilla-Escape y Project 1; revisar co
 ## Pendientes de gobierno
 
 - Usuarios GitHub de integrantes, invitaciones y permisos acordados.
-- Revisión técnica de cambios de setup antes de integrar la rama documental.
-- Protecciones main/develop activas tras autorizar el usuario el repositorio público: un PR, una aprobación de otro revisor, check management-validation, rama actualizada y conversaciones resueltas; aplican a administradores. Sin force push ni deletion. Resultado en [protection_result.json](protection_result.json).
+- Protecciones main/develop activas tras autorizar el usuario el repositorio público: un PR, una aprobación de otro revisor, checks management-validation y java-react-foundation, rama actualizada y conversaciones resueltas; aplican a administradores. Sin force push ni deletion. Resultado en [protection_result.json](protection_result.json).
 - Fechas/hitos, estimaciones y selección Sprint por PO, sin rellenar semanas automáticamente.
 - Resolver discrepancias 42/50, confirmación de resultado y slow motion P1/§26 mediante T001.
 - Revisar naming y calendario v4: no se reescribieron fechas antiguas.
@@ -102,9 +101,9 @@ Objetivo GITHUB PROJECT MANAGEMENT READY condicionado a los pendientes reales li
 9. Cuarenta y ocho Tasks, seis Spikes y cinco Documentation. Cero Bugs inventados.
 10. Ochenta vínculos parent/sub-issue y 86 dependencias blocked-by verificadas por API.
 11. Seis automatizaciones nativas activas, con límites de cierre/aceptación documentados.
-12. Tres Issue Forms, config, PR template, workflow de validación y herramientas de preparación/auditoría; integración por PR pendiente de revisión.
+12. Tres Issue Forms, config, PR template, workflow de validación y herramientas de preparación/auditoría; incluidos en la base publicada.
 13. Permisos admin y project disponibles. Protecciones activas en main/develop; limitación previa resuelta al hacerlo público.
-14. Pendientes: revisión/integración del PR, usuarios/permisos del equipo, prioridades/estimaciones/Sprint y aclaraciones de producto. No se inició Fase 0.
+14. Pendientes: usuarios/permisos del equipo, prioridades/estimaciones/Sprint y aclaraciones de producto. Fase 0 en progreso, sin gameplay.
 15. Issues creados por fase: 0=27, 1=6, 2=10, 3=17, 4=8, 5=5, 6=8, Futuro=7; total 88.
 
 Auditoría: [verification.json](verification.json). La importación se reanudó tras conflictos temporales con auto-add; terminó sin duplicados y preservando metadatos existentes. Configuración API/archivos no equivale a ejecución de sensores/cámara ni pruebas de producto.

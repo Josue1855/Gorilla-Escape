@@ -18,3 +18,10 @@
 3. En la tarea correspondiente del Spike, instrumentar y medir sensores, webcam, Player Lock, calibración y latencia P95; registrar hardware y resultados reales.
 
 No declarar métricas ni aceptación de hardware hasta ejecutar estos procedimientos.
+
+## PUB-001 — Verificación de la base publicada
+
+**Fecha:** 2026-10-06.
+**Build y tests locales:** React build y Maven verify con Java 21 PASS; cuatro tests web y cuatro Java PASS. Validación de foundation PASS (34 GUIDs únicos); manifiesto/documentación PASS (88 registros, 51 enlaces locales); diff sin errores de whitespace.
+**Publicación:** main y develop comparten la base inicial. Estado de CI disponible en GitHub Actions; auditoría de backlog, relaciones y protecciones en docs/github/verification.json.
+**Limitaciones:** no se ejecutaron nuevas pruebas físicas. Unity sigue pendiente de licencia, importación, tests y build; ningún resultado local acredita el Spike completo.

@@ -77,7 +77,7 @@ Antes de tener usuarios/releases, los fixes parten de develop. Si más adelante 
 
 ## Arranque actual del equipo
 
-Actualización de setup GitHub: base documental guardada en 4baddbd; main/develop publicados y remoto origin configurado. Rama docs/github-project-setup contiene gestión, formularios y validación para revisión. El usuario autorizó hacerlo público; main/develop ya están protegidas. Ver [PROJECT_SETUP](github/PROJECT_SETUP.md).
+Setup GitHub: main/develop publicados con la base técnica, remoto origin configurado, formularios y validación automática. Repositorio público y ramas protegidas. Ver [PROJECT_SETUP](github/PROJECT_SETUP.md).
 
 Fase 0 ya fue solicitada: la base compartida es develop y está documentada en [TEAM_START](TEAM_START.md). Crear ramas pequeñas desde develop y enviar sus PR a develop. Las tareas siguientes mantienen las revisiones y protecciones configuradas. Continuar con tareas pequeñas del Spike; no acumular Unity, red y cámara sin integración intermedia. Los bloques pueden coordinarse dentro de la misma fase, respetando dependencias y el orden de fases de v4.
 
