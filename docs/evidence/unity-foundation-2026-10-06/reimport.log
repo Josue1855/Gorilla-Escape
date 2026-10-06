@@ -1,0 +1,27 @@
+# Reviewed excerpt; full raw log retained locally; SHA-256 in runs.json.
+Unity Editor version:    6000.3.23f1 (09d2ecc7fb28)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Desktop Linux Automatic Toolchain installation is disabled by kDisableAutomaticInstallation
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Done resolving packages in 0.76 seconds
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 5 packages:
+  Built-in packages:
+    com.unity.test-framework@1.6.0 (location: <repo>/Unity/Logs/FoundationValidation/2026-10-06/Reimport/Unity/Library/PackageCache/com.unity.test-framework@0bd5c5194236)
+    com.unity.modules.jsonserialize@1.0.0 (location: <repo>/Unity/Logs/FoundationValidation/2026-10-06/Reimport/Unity/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.ext.nunit@2.0.5 (location: <repo>/Unity/Logs/FoundationValidation/2026-10-06/Reimport/Unity/Library/PackageCache/com.unity.ext.nunit@ec2d0043d6fc)
+    com.unity.modules.imgui@1.0.0 (location: <repo>/Unity/Logs/FoundationValidation/2026-10-06/Reimport/Unity/Library/PackageCache/com.unity.modules.imgui)
+  Local packages:
+    com.gorillaescape.contracts@file:<repo>/Unity/Logs/FoundationValidation/2026-10-06/Reimport/Shared/CSharp (location: <repo>/Unity/Logs/FoundationValidation/2026-10-06/Reimport/Shared/CSharp)
+Desktop Linux Automatic Toolchain installation is disabled by kDisableAutomaticInstallation
+Batchmode quit successfully invoked - shutting down!
+The command could not be loaded, possibly because:
+      No .NET SDKs were found.
+[Physics::Module] Cleanup current backend.
+Input System module state changed to: ShutdownInProgress.
+Input System module state changed to: Shutdown.
+debugger-agent: Unable to listen on 31
+Exiting batchmode successfully now!

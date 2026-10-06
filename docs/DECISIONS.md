@@ -51,3 +51,28 @@ DEC-001 registra la organización original; el stack de ese momento fue sustitui
 **Conservado:** Unity/C#, PC autoritativa, modular monolith, WebSocket/JSON, MediaPipe/OpenCV, sin cuentas/base de datos/cloud obligatorios. Java no puede compartir ensamblados C#; interoperabilidad mediante JSON/fixtures.
 **Impacto:** arranque y empaquetado de JVM, compatibilidad Unity ↔ Java y HTTPS/sensores deben validarse durante Spike. No se define aún IPC, propietario del resultado ni cámara nativa. No añade microservicios, JPA, PostgreSQL, Lombok ni Redis.
 **Pruebas:** build Java/React y fixtures; tests Unity preparados, pendientes de licencia. No cambia el calendario ni marca Fase 0 completa.
+
+### DEC-003 — Unity Test Framework core de la foundation
+
+**Fecha:** 2026-10-06. **Estado:** Accepted.
+**Decisión anterior:** TEAM_START/MONOREPO_PLAN/manifest declaraban Test Framework 1.4.2.
+**Decisión nueva:** conservar Unity **6000.3.23f1** y declarar Test Framework **1.6.0**, versión core que distribuye y exige ese editor. NUnit permanece transitivo; la resolución core observada es 2.0.5. Lockfile generado por Unity/UPM, sin edición manual.
+**Problema / evidencia:** UNITY-001A-AUDIT verificó minimumVersion 1.6.0/mustBeBundled y resolución efectiva 1.6.0; no provino de los paquetes Linux. UNITY-001 valida compilación/tests/build y reimportación del candidato coherente.
+**Alternativas consideradas:** conservar una declaración 1.4.2 incongruente; cambiar de editor; no adoptadas. No se actualiza por novedad.
+**Impacto técnico:** manifest, lockfile y documentación coherentes con el editor fijado. SDK/toolchain Linux no aceptados como requisito permanente; el build de desarrollo seleccionado usa Mono y se valida sin ellos mediante UPM y opciones locales de desactivación de instalación/migración del editor. No establece plataforma/backend de presentación.
+**Impacto en alcance:** exclusivamente Incremento 1 — Unity Foundation. No modifica gameplay, IPC, Java, WebSocket, sensores ni cámara. Fase 0 sigue abierta.
+**Impacto en calendario:** sin cambio de fechas ni estimación nueva.
+**Impacto en pruebas:** EditMode, PlayMode, Linux development build/Player y reimportación documentados en UNITY-001. PC oficial pendiente.
+**Responsable:** Product Owner para versión; responsable técnico para evidencia/configuración candidata.
+**Aprobación Product Owner:** instrucción directa del usuario «Continúa exclusivamente con el Incremento 1 — Unity Foundation», que mantiene 6000.3.23f1 y aprueba 1.6.0, 2026-10-06. No se infiere aprobación de toolchains permanentes ni de plataforma final.
+
+### DEC-004 — Aceptación de foundation en desarrollo y separación del entorno
+
+**Fecha:** 2026-10-06. **Estado:** Accepted.
+**Decisión anterior:** el cierre operativo trataba «log completamente limpio» como criterio adicional de aceptación de foundation.
+**Decisión nueva:** Unity Foundation de desarrollo **PASS** con import/compilación/paquetes/escena/settings, EditMode 2/2, PlayMode 1/1, build Linux/Mono, Player/cierre y reimportación reproducible aprobados. Los diagnósticos conocidos se clasifican **ENVIRONMENT / REQUIRES FOLLOW-UP**, sin atribuirlos al código sin evidencia ni bloquear integración por sí solos. Seguimiento separado: [#89](https://github.com/Josue1855/Gorilla-Escape/issues/89).
+**Problema / evidencia:** UNITY-001 y 76 hashes fuente coincidentes; tests/build/ejecución reales correctos con diagnósticos del launcher/editor y registro nativo de memoria pendientes de investigar.
+**Alternativas consideradas:** exigir un log vacío; rechazada explícitamente por el PO. No ocultar mensajes ni afirmar cero leaks.
+**Impacto técnico/pruebas:** conservar Unity 6000.3.23f1/Test Framework 1.6.0 y lockfile de cinco paquetes; ningún cambio funcional nuevo. PC/plataforma oficial **BLOCKED / NOT RUN**; FPS real, frame time, latencia, memoria/leaks, sensores, webcam y Player Lock **NOT RUN**.
+**Impacto en alcance/calendario:** cierre del trabajo actual de foundation de desarrollo, commit/PR a develop y revisión normal; sin cierre de Fase 0, sin Incremento 2/Fase 1 ni cambio de calendario.
+**Responsable / aprobación Product Owner:** instrucción directa «Cierra el trabajo actual de Unity Foundation de desarrollo» en este chat, 2026-10-06. Autoriza commit y PR, no merge forzado ni siguiente incremento.

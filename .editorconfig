@@ -8,3 +8,5 @@ indent_style = space
 indent_size = 4
 [*.{json,yml,yaml,js,jsx,css,html}]
 indent_size = 2
+[*.{unity,prefab,asset,meta}]
+trim_trailing_whitespace = false

@@ -16,7 +16,11 @@ Fase 0 en progreso; Spike no completado. Base compartida en main y develop: Unit
 
 ## Validación
 
-Java y React tienen build y pruebas automatizadas. Unity no se ha compilado ni probado: el editor instalado requiere una licencia válida. Sensores, cámara, Player Lock, calibración y latencia física permanecen sin validar. Resultados reproducibles en [TEST_REPORT](TEST_REPORT.md).
+Como checks de regresión del cierre, Java 21/Maven verify y React test/build PASS (4/4 tests por componente), sin cambios de sus fuentes. UNITY-001 valida Unity Foundation en Linux de desarrollo: import limpio, resolución de cinco paquetes, escena/settings, EditMode 2/2, PlayMode 1/1, build Mono, Player con gráficos, cierre normal y clean re-import. Evidencia y advertencias en [TEST_REPORT](TEST_REPORT.md) y [UNITY_FOUNDATION_VALIDATION](UNITY_FOUNDATION_VALIDATION.md).
+
+El batch licenciado funciona dentro del entorno Flatpak del Hub; los intentos directos anteriores con salida 198 siguen registrados como BLOCKED históricos. DEC-003 acepta el core Test Framework 1.6.0 conservando Unity 6000.3.23f1. SDK/toolchain Linux retirados mediante UPM; validación local usa las opciones de este editor que evitan su instalación/migración automática. No se incorporan como requisito permanente del equipo.
+
+Escena, ApplicationSettings, lockfile, .meta y settings compartidos revisados forman parte del diff candidato. Defaults de física/calidad/tiempo no son tuning final. La PC de presentación permanece sin definir y NOT RUN. Unity Foundation / Development **PASS**, cierre autorizado para commit/PR a develop y pendiente de integración por revisión normal. Presentation PC **BLOCKED / NOT RUN**, rendimiento físico **NOT RUN**. Fase 0 **IN PROGRESS**, Incremento 2/Fase 1 **NOT STARTED**. Histórico 1A y auditoría conservados en [PHASE0_UNITY_FOUNDATION](PHASE0_UNITY_FOUNDATION.md).
 
 ## Requisitos y decisiones
 
@@ -24,7 +28,7 @@ Java y React tienen build y pruebas automatizadas. Unity no se ha compilado ni p
 
 ## Pendientes de Fase 0
 
-- Licencia Unity, importación, generación de escena/settings/lockfile, EditMode/PlayMode y build PC.
+- Definir PC de presentación y repetir aceptación de foundation en ese hardware; desarrollo Linux PASS.
 - Resolver HTTPS local confiable, permisos y experiencia de incorporación de teléfonos.
 - Validar WebSocket, IPC Unity/Java y adaptador MediaPipe/OpenCV.
 - Medir en hardware real antes de aceptar métricas.
@@ -37,4 +41,4 @@ Base publicada con historial inicial limpio y ramas main/develop. El backlog y l
 
 ## Próximo paso
 
-Validar Unity con licencia y planificar únicamente el siguiente incremento del Spike de Fase 0.
+Cierre de desarrollo autorizado: diff revisado, checks finales y commit/PR a develop para revisión normal; no forzar merge. Diagnósticos separados como **ENVIRONMENT / REQUIRES FOLLOW-UP**, [deuda #89](https://github.com/Josue1855/Gorilla-Escape/issues/89); no bloquean la integración sin evidencia de fallos del proyecto. Próximo paso recomendado, no ejecutado: definir PC/plataforma oficial y cerrar la aceptación de presentación del Incremento 1. Decisiones arquitectónicas antes de Incremento 2 sólo bajo nueva autorización del PO. Métricas físicas y Spike completo pendientes.

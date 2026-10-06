@@ -6,10 +6,11 @@
 *.json text eol=lf
 *.yml text eol=lf
 *.md text eol=lf
-*.unity text eol=lf
-*.prefab text eol=lf
-*.asset text eol=lf
-*.meta text eol=lf
+# Preserve Unity's serialized blank values without whitespace-check noise.
+*.unity text eol=lf whitespace=-blank-at-eol
+*.prefab text eol=lf whitespace=-blank-at-eol
+*.asset text eol=lf whitespace=-blank-at-eol
+*.meta text eol=lf whitespace=-blank-at-eol
 *.sh text eol=lf
 mvnw text eol=lf
 mvnw.cmd text eol=crlf

@@ -21,6 +21,18 @@ __pycache__/
 /Unity/Builds/
 /Unity/*.csproj
 /Unity/*.sln
+# Regenerated defaults for unused systems, or local editor/UI state.
+/Unity/ProjectSettings/PackageManagerSettings.asset
+/Unity/ProjectSettings/Packages/com.unity.ai.assistant/
+/Unity/ProjectSettings/SceneTemplateSettings.json
+/Unity/ProjectSettings/ClusterInputManager.asset
+/Unity/ProjectSettings/MemorySettings.asset
+/Unity/ProjectSettings/MultiplayerManager.asset
+/Unity/ProjectSettings/NavMeshAreas.asset
+/Unity/ProjectSettings/Physics2DSettings.asset
+/Unity/ProjectSettings/PresetManager.asset
+/Unity/ProjectSettings/VFXManager.asset
+/Unity/ProjectSettings/VersionControlSettings.asset
 # Java and frontend outputs
 **/target/
 /PWA/node_modules/
