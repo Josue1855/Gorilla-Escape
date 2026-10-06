@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:58Z" duration="4.6496329">
+  <test-suite type="TestSuite" id="1008" name="Gorilla Escape" fullname="Gorilla Escape" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:58Z" duration="4.649633" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1006" name="GorillaEscape.PlayModeTests.dll" fullname="$SNAPSHOT/Unity/Library/ScriptAssemblies/GorillaEscape.PlayModeTests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:58Z" duration="4.643039" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestFixture" id="1001" name="BootstrapTests" fullname="BootstrapTests" classname="BootstrapTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:53Z" duration="0.022007" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1002" name="BootstrapAppliesAndRestoresConfiguredFrameRate" fullname="BootstrapTests.BootstrapAppliesAndRestoresConfiguredFrameRate" methodname="BootstrapAppliesAndRestoresConfiguredFrameRate" classname="BootstrapTests" runstate="Runnable" seed="2052567637" result="Passed" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:53Z" duration="0.013992" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Gorilla Escape foundation ready; gameplay and hardware adapters pending.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1003" name="JavaProbeTests" fullname="JavaProbeTests" classname="JavaProbeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:58Z" duration="4.619574" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1005" name="MissingExecutableIsRecoverable" fullname="JavaProbeTests.MissingExecutableIsRecoverable" methodname="MissingExecutableIsRecoverable" classname="JavaProbeTests" runstate="Runnable" seed="2057329393" result="Passed" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:53Z" duration="0.027958" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1004" name="StartsRealJavaAndClosesOwnedChild" fullname="JavaProbeTests.StartsRealJavaAndClosesOwnedChild" methodname="StartsRealJavaAndClosesOwnedChild" classname="JavaProbeTests" runstate="Runnable" seed="184451813" result="Passed" start-time="2026-10-06 22:09:53Z" end-time="2026-10-06 22:09:58Z" duration="4.590911" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[{"component":"ipc-unity","event":"SHUTDOWN_CLEAN","instanceId":"75b2b3fc-b112-46f8-ae38-a9a595e13666","pid":217}
+IPC_2A_PLAYMODE startupMs=2278.170 min=0.404 p50=0.567 p95=0.718 max=1.988 samples=100 errors=0 pid=217 cleanExit=True
+Saving results to: $REPO/Unity/Logs/IpcValidation/playmode.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

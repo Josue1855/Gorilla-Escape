@@ -1,0 +1,8 @@
+<configuration>
+  <!-- Only the explicitly managed probe selects this config. stdout belongs to READY. -->
+  <appender name="IPC_STDERR" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.err</target>
+    <encoder><pattern>%date{ISO8601} %-5level %logger{36} - %msg%n</pattern></encoder>
+  </appender>
+  <root level="INFO"><appender-ref ref="IPC_STDERR"/></root>
+</configuration>

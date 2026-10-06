@@ -11,6 +11,7 @@
 **Feature Freeze:** 6 de noviembre de 2026  
 **Última revisión editorial:** 22 de septiembre de 2026  
 **Enmienda técnica:** 5 de octubre de 2026 — DEC-002: servidor Java y PWA React, por instrucción explícita del Product Owner. No modifica fases ni reglas de gameplay.
+**Aclaración de autoridad:** 6 de octubre de 2026 — DEC-005 aprobada por el Product Owner: Unity confirma los resultados oficiales; Java sólo transporta. Implementación IPC 2A condicionada a integración normal de Unity Foundation, sin iniciar Fase 1.
 
 > Esta v4 sustituye a la v3 como fuente principal de consulta. Conserva su contenido técnico y de negocio, corrige ambigüedades e incorpora el concepto y el marco narrativo del MVP. Una decisión sólo se considera vigente cuando queda registrada en este documento o en el historial de decisiones del proyecto.
 
@@ -580,7 +581,7 @@ ERROR_RECOVERABLE
 - Un jugador desconectado puede reconectarse.
 - La partida conserva su PlayerId durante una reconexión.
 - Si un teléfono se desconecta durante una acción, esa acción se cancela si aún no fue validada.
-- Si el resultado ya fue confirmado por el servidor, permanece válido.
+- Si Unity, como autoridad de juego de la PC, ya confirmó el resultado oficial, permanece válido. Java únicamente transporta el resultado y no calcula ni confirma scoring, ganador o estado competitivo por sí mismo.
 - El host puede pausar.
 - Un jugador puede recalibrarse entre intentos, nunca durante una acción activa.
 

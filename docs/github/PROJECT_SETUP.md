@@ -81,7 +81,7 @@ Estos scripts están acotados a Josue1855/Gorilla-Escape y Project 1; revisar co
 ## Pendientes de gobierno
 
 - Usuarios GitHub de integrantes, invitaciones y permisos acordados.
-- Protecciones main/develop activas tras autorizar el usuario el repositorio público: un PR, una aprobación de otro revisor, checks management-validation y java-react-foundation, rama actualizada y conversaciones resueltas; aplican a administradores. Sin force push ni deletion. Resultado en [protection_result.json](protection_result.json).
+- Protecciones main/develop activas: PR, checks management-validation y java-react-foundation, rama actualizada y conversaciones resueltas; aplican a administradores. develop requiere cero aprobaciones desde la autorización del PO de 2026-10-06; main conserva su aprobación anterior. Sin force push ni deletion. Resultado en [protection_result.json](protection_result.json).
 - Fechas/hitos, estimaciones y selección Sprint por PO, sin rellenar semanas automáticamente.
 - Resolver discrepancias 42/50, confirmación de resultado y slow motion P1/§26 mediante T001.
 - Revisar naming y calendario v4: no se reescribieron fechas antiguas.

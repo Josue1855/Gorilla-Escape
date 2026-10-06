@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.0532028">
+  <test-suite type="TestSuite" id="1000" name="Gorilla Escape" fullname="Gorilla Escape" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.053203" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1012" name="GorillaEscape.EditModeTests.dll" fullname="$SNAPSHOT/Unity/Library/ScriptAssemblies/GorillaEscape.EditModeTests.dll" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.046505" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1001" name="FoundationSceneTests" fullname="FoundationSceneTests" classname="FoundationSceneTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.036584" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1002" name="SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild" fullname="FoundationSceneTests.SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild" methodname="SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild" classname="FoundationSceneTests" runstate="Runnable" seed="105372639" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.023460" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1003" name="IpcFrameCodecTests" fullname="IpcFrameCodecTests" classname="IpcFrameCodecTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.007183" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1004" name="CommonFixtureRoundTripsWithBigEndianLength" fullname="IpcFrameCodecTests.CommonFixtureRoundTripsWithBigEndianLength" methodname="CommonFixtureRoundTripsWithBigEndianLength" classname="IpcFrameCodecTests" runstate="Runnable" seed="954302124" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.002385" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1009" name="ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8" fullname="IpcFrameCodecTests.ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8" methodname="ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8" classname="IpcFrameCodecTests" runstate="Runnable" seed="867122539" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.002845" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1008" name="RejectsFrameSizeBeforeBodyAllocation" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.000924" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1005" name="RejectsFrameSizeBeforeBodyAllocation(0)" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(0)" methodname="RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" seed="1265864328" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.000335" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1006" name="RejectsFrameSizeBeforeBodyAllocation(4097)" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(4097)" methodname="RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" seed="22347190" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.000083" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1007" name="RejectsFrameSizeBeforeBodyAllocation(-1)" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(-1)" methodname="RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" seed="314771488" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.000053" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1010" name="ProtocolContractTests" fullname="ProtocolContractTests" classname="ProtocolContractTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.001719" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1011" name="UnityReadsTheSameWireFixtureAsJavaAndReact" fullname="ProtocolContractTests.UnityReadsTheSameWireFixtureAsJavaAndReact" methodname="UnityReadsTheSameWireFixtureAsJavaAndReact" classname="ProtocolContractTests" runstate="Runnable" seed="937587419" result="Passed" start-time="2026-10-06 22:05:56Z" end-time="2026-10-06 22:05:56Z" duration="0.001333" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: $REPO/Unity/Logs/IpcValidation/editmode.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

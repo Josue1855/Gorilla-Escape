@@ -96,3 +96,23 @@ No declarar métricas ni aceptación de hardware hasta ejecutar estos procedimie
 **Checks finales:** python3 tools/validate_foundation.py PASS (38 GUIDs únicos); python3 tools/github/validate_management.py PASS (88 registros/enlaces válidos); git diff --cached --check PASS sobre todos los archivos del commit; sin secretos detectados. No se repite Unity porque el contenido funcional coincide exactamente con el ejecutado; las métricas físicas permanecen NOT RUN.
 **Checks de regresión del flujo del repo:** npm --prefix PWA test PASS (4/4), npm --prefix PWA run build PASS con Node 24.19.0; JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 Server/mvnw -B -f Server/pom.xml verify PASS (4/4 tests, BUILD SUCCESS), OpenJDK 21.0.12.1, Maven 3.9.11. Primera invocación con JDK por defecto 25 también pasó 4/4, pero no sustituye la verificación explícita con JDK 21. Sin cambios Java/React. Warning de instrumentación dinámica Mockito/JVM existente; no modifica su clasificación ni configura nuevos flags.
 **Publicación:** un commit coherente feat(unity): validate phase 0 foundation en la rama solicitada; PR a develop para revisión normal/checks. La revisión/integración queda pendiente de GitHub, sin merge automático ni cambio de protecciones. Deuda de entorno #89 abierta. Development PASS; Presentation PC BLOCKED / NOT RUN; rendimiento físico NOT RUN; Fase 0 IN PROGRESS; Incremento 2/Fase 1 NOT STARTED.
+
+
+## IPC-002A — Unity ↔ Java mínimo real
+
+2026-10-06. Base develop `2a635b607a286bb70d1457aa0cf34f7e85f17abe`, merge normal #90; commit validado ancestro y 76/76 hashes foundation idénticos. Protección efectiva clásica: approvals 1→0, única diferencia autorizada; PR y ambos checks/prohibiciones conservados, sin rulesets efectivos. Checks del merge develop PASS.
+
+Implementación 2A opt-in: Unity inicia JAR Spring/Java21, configura loopback y puerto0, valida READY y primer PONG, intercambia frames uint32 big-endian UTF-8 <=4096, token efímero/identidades/sequence; workers con deadlines/cancellation y buffers acotados, shutdown por stdin EOF y exit observado. No crea estado competitivo Java ni modifica PWA móvil/gameplay.
+
+**Build/tests:** Java21 Maven verify 8/8 PASS (incluye hijo JVM real, frames fragmentados, stdin EOF/exit0), React regresión 4/4 y build PASS sin cambios de fuentes, EditMode 7/7 y PlayMode 3/3 PASS con JVM real. Linux Mono development Player build PASS, 0 errores/0 advertencias. Player con gráficos/OpenGL y foundation shutdown, salida Unity0/Java0, listeners efectivos sólo127.0.0.1 y ningún Java propio residual al terminar. Error de ejecutable ausente cubierto como recuperable en PlayMode.
+
+| Smoke (100 válidos después de 10 warmup) | Startup ms | RTT mínimo ms | P50 ms | P95 ms | Máximo ms | Errores |
+|---|---:|---:|---:|---:|---:|---:|
+| PlayMode final | 2278.170 | 0.404 | 0.567 | 0.718 | 1.988 | 0 |
+| Player Linux final | 2353.197 | 0.586 | 0.795 | 1.441 | 1.889 | 0 |
+
+Medición monotónica Unity worker, incluye codec/TCP ida y vuelta/Java; cadencia suave nominal20ms entre respuestas, no certificación50Hz. No incluye gameplay/frame, teléfono/LAN/sensores. No extrapolar a P95 end-to-end de v4 ni afirmar memoria/leaks/FPS físicos aprobados.
+
+Evidencia sanitizada [validation.json](evidence/unity-java-ipc-2a-2026-10-06/validation.json), XML EditMode/PlayMode, extractos build/Player/PlayMode/Maven, listeners reales/exit y hashes JAR/Player en [player-result.json](evidence/unity-java-ipc-2a-2026-10-06/player-result.json), inventario de fuentes y cambio de protección antes/después. Raw logs, JDK copiado, snapshot, binaries y helpers locales ignorados. Primer intento fallido por symlinks JDK dentro de Flatpak y correcciones de medición/warning documentados en validation.json; pruebas afectadas repetidas sobre candidato final.
+
+**Gate 2A desarrollo:** requisitos funcionales PASS; revisión/integración del PR de 2A pendiente. PC oficial y Windows/backend final NOT RUN. Resiliencia avanzada, reconnect/restart/watchdog, Job Objects, flood/fault injection extensa y benchmark exhaustivo diferidos a autorización posterior, no eliminados de DEC-005. Parser Unity tiene validación básica; validación estricta completa/fuzzing pendientes de hardening. Diagnósticos editor conocidos siguen ENVIRONMENT / REQUIRES FOLLOW-UP #89. Sin 2B ni Fase1.

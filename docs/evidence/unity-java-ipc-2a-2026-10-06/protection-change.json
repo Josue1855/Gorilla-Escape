@@ -1,0 +1,126 @@
+{
+  "source": "classic branch protection",
+  "effective_rulesets": [],
+  "authorized_by": "Product Owner instruction in this chat",
+  "before": {
+    "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection",
+    "required_status_checks": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_status_checks",
+      "strict": true,
+      "contexts": [
+        "management-validation",
+        "java-react-foundation"
+      ],
+      "contexts_url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_status_checks/contexts",
+      "checks": [
+        {
+          "context": "management-validation",
+          "app_id": 15368
+        },
+        {
+          "context": "java-react-foundation",
+          "app_id": null
+        }
+      ]
+    },
+    "required_pull_request_reviews": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_pull_request_reviews",
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 1
+    },
+    "required_signatures": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_signatures",
+      "enabled": false
+    },
+    "enforce_admins": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/enforce_admins",
+      "enabled": true
+    },
+    "required_linear_history": {
+      "enabled": false
+    },
+    "allow_force_pushes": {
+      "enabled": false
+    },
+    "allow_deletions": {
+      "enabled": false
+    },
+    "block_creations": {
+      "enabled": false
+    },
+    "required_conversation_resolution": {
+      "enabled": true
+    },
+    "lock_branch": {
+      "enabled": false
+    },
+    "allow_fork_syncing": {
+      "enabled": false
+    }
+  },
+  "after": {
+    "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection",
+    "required_status_checks": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_status_checks",
+      "strict": true,
+      "contexts": [
+        "management-validation",
+        "java-react-foundation"
+      ],
+      "contexts_url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_status_checks/contexts",
+      "checks": [
+        {
+          "context": "management-validation",
+          "app_id": 15368
+        },
+        {
+          "context": "java-react-foundation",
+          "app_id": null
+        }
+      ]
+    },
+    "required_pull_request_reviews": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_pull_request_reviews",
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0
+    },
+    "required_signatures": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/required_signatures",
+      "enabled": false
+    },
+    "enforce_admins": {
+      "url": "https://api.github.com/repos/Josue1855/Gorilla-Escape/branches/develop/protection/enforce_admins",
+      "enabled": true
+    },
+    "required_linear_history": {
+      "enabled": false
+    },
+    "allow_force_pushes": {
+      "enabled": false
+    },
+    "allow_deletions": {
+      "enabled": false
+    },
+    "block_creations": {
+      "enabled": false
+    },
+    "required_conversation_resolution": {
+      "enabled": true
+    },
+    "lock_branch": {
+      "enabled": false
+    },
+    "allow_fork_syncing": {
+      "enabled": false
+    }
+  },
+  "only_changed": "required_pull_request_reviews.required_approving_review_count:1->0",
+  "pr": 90,
+  "validatedHead": "38e1e31ce0e36952b759061eee40136f7a0ef3f6",
+  "mergeCommit": "2a635b607a286bb70d1457aa0cf34f7e85f17abe",
+  "mergeMethod": "merge commit, no bypass"
+}
