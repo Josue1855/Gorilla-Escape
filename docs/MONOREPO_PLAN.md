@@ -56,7 +56,7 @@ Este árbol describe archivos existentes. Bootstrap.unity, ApplicationSettings.a
 | Área | Base actual | Origen verificable |
 |---|---|---|
 | Unity | 6000.3.23f1 LTS, C# | Unity/ProjectSettings/ProjectVersion.txt |
-| Test Runner Unity | 1.4.2 | Unity/Packages/manifest.json |
+| Test Runner Unity | 1.6.0 core (DEC-003) | Unity/Packages/manifest.json |
 | Java | JDK/target 21, Spring Boot 4.1.1, Web MVC + WebSocket | Server/pom.xml |
 | Maven | 3.9.11, wrapper 3.3.2, SHA-256 de distribución | Server/.mvn/wrapper/maven-wrapper.properties |
 | React | React/React DOM 19.3.0 | PWA/package.json y lockfile |

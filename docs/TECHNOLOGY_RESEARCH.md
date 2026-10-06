@@ -9,7 +9,7 @@
 
 ## Decisión vigente y lectura del antecedente
 
-La base publicada usa Unity 6000.3.23f1, Java 21/Spring Boot 4.1.1/Maven 3.9.11 y React 19.3.0/Vite 8.3.2 con Node 24. DEC-002 recoge autorización del Product Owner; [TEAM_START](TEAM_START.md) registra versiones y comandos y [MONOREPO_PLAN](MONOREPO_PLAN.md) las fronteras actuales. Java/React tienen build/tests de base aprobados en FND-001; Unity permanece pendiente de licencia/import/build.
+La base publicada usa Unity 6000.3.23f1, Java 21/Spring Boot 4.1.1/Maven 3.9.11 y React 19.3.0/Vite 8.3.2 con Node 24. DEC-002 recoge autorización del Product Owner; [TEAM_START](TEAM_START.md) registra versiones y comandos y [MONOREPO_PLAN](MONOREPO_PLAN.md) las fronteras actuales. Java/React tienen build/tests de base aprobados en FND-001; Unity Foundation tiene validación Linux de desarrollo en UNITY-001; PC de presentación pendiente.
 
 El resto de este archivo conserva la investigación anterior a DEC-002: ASP.NET/Kestrel, net10.0, System.Text.Json y frontend sin framework NO son recomendaciones vigentes para el servidor/control actuales. Las consideraciones de .NET dentro de Unity y de wrappers de cámara siguen siendo antecedentes a evaluar, no un motivo para añadir un servidor .NET. HTTPS, red local, hardware, modelos y licencias requieren pruebas de Spike. El bloque P0-R08/P0-R10 antiguo debe leerse con JVM y React/Java/Unity según DEC-002.
 

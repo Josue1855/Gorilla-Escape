@@ -1,0 +1,14 @@
+{
+  "GorillaEscape.x86_64": {
+    "bytes": 4456,
+    "sha256": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f"
+  },
+  "UnityPlayer.so": {
+    "bytes": 86230976,
+    "sha256": "205f012f75341a837f381bf81e32b55815594f9a75d7c1dcf097b71f1a80d4fb"
+  },
+  "GorillaEscape_Data/Managed/GorillaEscape.Runtime.dll": {
+    "bytes": 5632,
+    "sha256": "a96b5008c77b43572b3feba122b2e370fb60e64f12a3ea8afb4ebe7ebfdb36f1"
+  }
+}

@@ -1,12 +1,12 @@
 # Base de trabajo del equipo
 
-Fecha: 2026-10-05. Alcance: arranque de Fase 0; no completa Spike 0 ni implementa juego. Arquitectura aprobada en DEC-002 y v4 enmendada.
+Fecha: 2026-10-06. Alcance: arranque de Fase 0; no completa Spike 0 ni implementa juego. Arquitectura aprobada en DEC-002 y v4 enmendada.
 
 ## Stack fijado
 
 | Componente | Versión / herramienta | Estado |
 |---|---|---|
-| Juego PC | Unity 6000.3.23f1 LTS, C# | Fuentes, metadatos y tests; import/build pendientes de licencia |
+| Juego PC | Unity 6000.3.23f1 LTS, C# | Foundation validada en Linux de desarrollo; presentación pendiente |
 | Servidor local | Java 21, Spring Boot 4.1.1 Web MVC + WebSocket | Build y cuatro tests PASS |
 | Build Java | Maven 3.9.11, wrapper 3.3.2 | Wrapper Windows/Linux/macOS, hash de descarga fijado |
 | Control | React 19.3.0, React DOM 19.3.0 | Pantalla inicial y health check; sin gameplay |
@@ -44,12 +44,14 @@ El servidor escucha 127.0.0.1 por defecto. GORILLA_SERVER_PORT cambia puerto; GO
 ## Unity
 
 1. Unity Hub: añadir Unity/ al proyecto y usar exactamente 6000.3.23f1 con licencia válida. No actualizar automáticamente.
-2. Resolver el paquete local Shared/CSharp y test-framework 1.4.2. Packages/manifest.json está fijado; packages-lock.json debe generarse/revisarse en la primera importación válida.
+2. Resolver el paquete local Shared/CSharp y Test Framework core 1.6.0 (DEC-003). Manifest y lockfile revisados; NUnit 2.0.5 e IMGUI 1.0.0 son transitivos. No agregar NUnit ni toolchains Linux al manifest compartido.
 3. Ejecutar Gorilla Escape → Create Foundation Scene. Crea la escena Bootstrap y ApplicationSettings; conserva una escena existente y pide guardar cambios antes de reemplazar la escena abierta. Revisar/versionar escena, settings y .meta generados.
-4. Test Runner: EditMode y PlayMode. Bootstrap aplica tuning configurable y restaura frame rate al destruirse; no crea una sesión real.
-5. Construir un Player de PC y registrar versión/OS/logs. En esta máquina el editor rechazó ejecución por licencia inactiva: no hay evidencia de compilación/import ni Player.
+4. Test Runner: EditMode y PlayMode. Bootstrap configura targetFrameRate y lo restaura al destruirse. EditMode verifica el fixture y la escena guardada; PlayMode verifica aplicación/restauración. 60 configurados no equivalen a 60 FPS medidos.
+5. Para desarrollo Linux/Mono, usar FoundationSetup.BuildDevelopmentLinux y registrar versión/OS/logs. Import, EditMode 2/2, PlayMode 1/1, build, Player con gráficos, cierre y reimportación limpia PASS con el procedimiento de [UNITY_FOUNDATION_VALIDATION](UNITY_FOUNDATION_VALIDATION.md). PC oficial y backend de presentación pendientes.
 
-Metadatos .meta de las fuentes están versionados. No incluir Library/Temp/Logs, credenciales ni assets comerciales. Render pipeline/plugin cámara deben validarse antes de adoptarse; no se instaló URP por defecto.
+En este host Flatpak, ejecutar batch dentro del entorno del Hub; el arranque directo anterior falló con 198. Las opciones locales que evitan la migración automática de toolchains se detallan en la guía; no son dependencias de todos los equipos. Cerrar editores del checkout antes de validar para evitar escrituras concurrentes.
+
+Metadatos .meta de las fuentes y assets de foundation están incluidos en el cambio candidato. No incluir Library/Temp/Logs, credenciales ni assets comerciales. Render pipeline/plugin cámara deben validarse antes de adoptarse; no se instaló URP por defecto.
 
 ## Fronteras y responsables
 

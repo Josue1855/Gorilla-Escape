@@ -8,7 +8,7 @@ Party game físico local para 1–4 personas. La PC arbitra cinco pruebas; los t
 
 | Ruta | Tecnología | Estado |
 |---|---|---|
-| Unity/ | Unity 6000.3.23f1 + C# | Fuentes y pruebas preparadas; validación de editor pendiente de licencia |
+| Unity/ | Unity 6000.3.23f1 + C# | Foundation Linux de desarrollo validada; PC de presentación pendiente |
 | Server/ | Java 21 + Spring Boot 4.1.1 + Maven wrapper | Host local, health, DTOs y frontend empaquetado; build/tests PASS |
 | PWA/ | React 19.3.0 + Vite 8.3.2, Node 24 para desarrollo | Shell, health y caché de interfaz; build/tests PASS |
 | Shared/ | Fixtures JSON y DTOs C# independientes del motor | Contrato v1 compartido entre consumidores |

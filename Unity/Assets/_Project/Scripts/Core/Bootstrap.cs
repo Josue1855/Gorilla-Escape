@@ -26,5 +26,10 @@ namespace GorillaEscape.Core
         {
             if (applied) Application.targetFrameRate = previousFrameRate;
         }
+
+        private void OnApplicationQuit()
+        {
+            Debug.Log("Gorilla Escape foundation shutdown.", this);
+        }
     }
 }

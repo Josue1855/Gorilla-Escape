@@ -1,0 +1,10 @@
+# Reviewed preparation excerpt; full raw log remains local.
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Unused console setting uses deterministic non-secret placeholder; no console target selected.
+Exiting batchmode successfully now!
