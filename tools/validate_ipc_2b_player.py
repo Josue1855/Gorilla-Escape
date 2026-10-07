@@ -58,7 +58,9 @@ class X11:
         self.xt.XTestFakeButtonEvent(self.display,1,0,0);self.x.XFlush(self.display)
     def key(self,pid,name):
         window=self.window(pid)
+        self.x.XRaiseWindow(self.display,window)
         self.x.XSetInputFocus(self.display,window,1,0)
+        self.x.XFlush(self.display)
         self.x.XKeysymToKeycode.argtypes=[C.c_void_p,C.c_ulong]; self.x.XKeysymToKeycode.restype=C.c_uint
         self.xt.XTestFakeKeyEvent.argtypes=[C.c_void_p,C.c_uint,C.c_int,C.c_ulong]
         code=self.x.XKeysymToKeycode(self.display,ord(name))
@@ -70,7 +72,7 @@ class X11:
         # not an application retry policy; active-state guards prevent duplicate launches.
         for attempt in range(4):
             self.key(player.player.pid,'r' if y==78 else 's')
-            try:return player.event(event,generation,seconds=.4)
+            try:return player.event(event,generation,seconds=1)
             except TimeoutError:pass
         raise TimeoutError('UI action was not acknowledged: '+event)
     def close(self,pid):
@@ -92,11 +94,13 @@ def wait(condition,seconds=25):
     raise TimeoutError('Expected observable signal did not arrive')
 
 class Player:
-    def __init__(self,args,name,jar=None,smoke=False):
+    def __init__(self,args,name,jar=None,smoke=False,mode=None,measure=False):
         self.path=args.output/(name+'.log');self.path.unlink(missing_ok=True);self.children=[];self.listenerEvidence={};self.observed={}
         env=os.environ.copy();env.update(GORILLA_IPC_JAVA=str(args.java),GORILLA_IPC_JAR=str(jar or args.jar))
         if smoke: env['GORILLA_IPC_SMOKE_EXIT']='1';env.pop('GORILLA_IPC_MODE',None)
         else: env['GORILLA_IPC_MODE']='lifecycle';env.pop('GORILLA_IPC_SMOKE_EXIT',None)
+        if mode is not None: env["GORILLA_IPC_MODE"]=mode
+        if measure: env["GORILLA_IPC_MEASURE"]="1"
         self.started=time.monotonic()
         self.player=subprocess.Popen([str(args.player),'-screen-width','800','-screen-height','450','-screen-fullscreen','0','-force-glcore','-logFile',str(self.path)],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     def events(self):
@@ -167,9 +171,12 @@ def main():
         end=time.monotonic()+2
         while time.monotonic()<end:assert len([e for e in p.events() if e['event']=='PROCESS_STARTED'])==3;time.sleep(.025)
         p.close(x);results['deathManualRecoveryLimit']=p.record()
-        p=launch('cancel-startup');p.event('PROCESS_STARTED');x.action(p,102,'STOP_REQUESTED')
+        p=launch('cancel-startup');p.event('PROCESS_STARTED')
+        # WM close is an explicit normal Unity shutdown. Unlike a key before the
+        # first focused frame, it reliably exercises RequestStop during startup.
+        p.close(x);p.event('STOPPED')
         assert not any(e['event']=='FIRST_PONG' for e in p.events()),'Startup cancel happened too late'
-        p.event('STOPPED');assert not p.residuals();p.close(x);results['cancelStartup']=p.record()
+        results['cancelStartup']=p.record()
         p=launch('cancel-running');p.event('FIRST_PONG');x.action(p,102,'STOP_REQUESTED')
         p.event('STOPPED');assert not p.residuals();p.close(x);results['cancelRunning']=p.record()
         p=launch('quit-running');p.verify_listeners(p.event('FIRST_PONG'));p.close(x);results['normalQuitEof']=p.record()

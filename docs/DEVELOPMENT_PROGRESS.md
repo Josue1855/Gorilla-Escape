@@ -6,7 +6,7 @@ Actualizado: 2026-10-06.
 
 Fase 0 en progreso; Spike no completado. Base compartida en main y develop: Unity 6000.3.23f1, servidor Java 21/Spring Boot 4.1.1, PWA React 19.3.0/Vite 8.3.2/Node 24, contratos JSON y paquete C# compartido. Crear ramas pequeñas desde develop. No se inicia Fase 1.
 
-Estados vigentes: **2A PASS / MERGED; 2B PASS en Linux de desarrollo, pendiente de revisión/integración; Incremento 2 IN PROGRESS; 2C NOT STARTED; Fase 0 IN PROGRESS; Fase 1 NOT STARTED.**
+Estados vigentes: **2A PASS / MERGED; 2B PASS / MERGED en Linux de desarrollo; Incremento 2 IN PROGRESS; 2C PASS pendiente de integración; Fase 0 IN PROGRESS; Fase 1 NOT STARTED.**
 
 ## Incremento 2A — IPC mínimo
 
@@ -26,7 +26,7 @@ Resultados 2A conservados: Java8/8, EditMode7/7, PlayMode3/3 y React4/4 PASS; Pl
 
 ## Incremento 2B — lifecycle y fallos básicos
 
-Diseño [Accepted por el PO](PHASE0_IPC_2B_DESIGN.md), con precisiones explícitas de heartbeat, cleanup/generaciones, singleton y timeouts. Implementación exclusivamente 2B en `codex/phase0-ipc-2b-lifecycle`, desde develop `9fbb566e5f24af8f4e92fa3c139968161e832d46`. Estados explícitos, cero retries/restarts automáticos, recuperación manual hasta tres lanzamientos, FileLock Java por usuario/producto, EOF temprano y cleanup observado. Contrato/codecs/timeouts 2A conservados. Validación final **PASS Linux de desarrollo**: Java 13/13, EditMode 15/15, PlayMode 10/10, React 4/4, build Player 0 errores/0 warnings y 11 grupos Player reales/fixtures identificados, residual propio 0. Evidencia y límites en TEST_REPORT. 2A PASS/MERGED; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED. 2B PASS, pendiente de revisión/integración por PR; no merge automático.
+Diseño [Accepted por el PO](PHASE0_IPC_2B_DESIGN.md), con precisiones explícitas de heartbeat, cleanup/generaciones, singleton y timeouts. Implementación exclusivamente 2B en `codex/phase0-ipc-2b-lifecycle`, desde develop `9fbb566e5f24af8f4e92fa3c139968161e832d46`. Estados explícitos, cero retries/restarts automáticos, recuperación manual hasta tres lanzamientos, FileLock Java por usuario/producto, EOF temprano y cleanup observado. Contrato/codecs/timeouts 2A conservados. Validación final **PASS Linux de desarrollo**: Java 13/13, EditMode 15/15, PlayMode 10/10, React 4/4, build Player 0 errores/0 warnings y 11 grupos Player reales/fixtures identificados, residual propio 0. Evidencia y límites en TEST_REPORT. 2A PASS/MERGED; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED. 2B **PASS / MERGED** mediante [PR #92](https://github.com/Josue1855/Gorilla-Escape/pull/92), merge normal autorizado por el PO; develop `7e3aa60aa53c65e7051f32477a77985fbe628907` contiene `88f1e309fc7adeffe6aa6499e195f53185ab36f9`. Árbol completo idéntico al candidato y 105/105 hashes validados. Protecciones verificadas intactas. 2A PASS/MERGED; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED. No se inicia trabajo posterior.
 
 ## Histórico de preparación del Incremento 2 — Unity ↔ Java
 
@@ -73,4 +73,10 @@ Base publicada con historial inicial limpio y ramas main/develop. El backlog y l
 
 ## Próximo paso
 
-2A ya está integrado. Próximo incremento recomendado, no autorizado ni iniciado: 2B para lifecycle/fallos básicos (timeouts, disconnect y cleanup), con alcance acordado antes de código. Decidir PC/plataforma oficial y aceptación física pendiente. Continuar a hardening/2B sólo con autorización posterior del PO; no sensores, cámara, móvil, gameplay ni Fase1. Seguimiento de espera #90 concluido al verificar merge.
+Incremento 2C aprobado para implementación exclusiva según diseño Accepted. Validar gate completo, publicar candidato probado mediante PR normal a develop y detenerse sin merge automático. Windows/PC oficial, otras partes de Fase 0 y Fase 1 siguen fuera de esta tarea.
+
+Checks posteriores del merge 2B en `7e3aa60aa53c65e7051f32477a77985fbe628907`: **management-validation PASS / java-react-foundation PASS**. Protecciones comparadas antes/después, idénticas. Cierre de integración; 2C no iniciado.
+
+## Incremento 2C — hardening y validación sostenida
+
+Diseño [Accepted con precisiones del PO](PHASE0_IPC_2C_DESIGN.md). Fetch confirmó base develop `7e3aa60aa53c65e7051f32477a77985fbe628907`; rama `codex/phase0-ipc-2c-hardening` creada desde ese SHA, conservando documentación de merge 2B. Parser limitado al probe sin dependencia nueva, corpus compartido, framing/contrato estricto, deadline absoluto y writer acotado. Validación final **PASS Linux de desarrollo**, pendiente de integración: Java22/22, EditMode19/19, PlayMode12/12, React4/4, build0errors/0warnings, corpus71 casos cruzados, cinco grupos de presión, tres Players independientes N1000 a50Hz y heartbeat real601.24s; errores/timeouts nominales0, STOPPED/exit0/cleanup y residual propio0. Regresión Player2A/2B11 grupos PASS. Gate, métricas individuales y límites en [TEST_REPORT](TEST_REPORT.md) y [procedimiento](PHASE0_IPC_2C_VALIDATION.md). No merge automático; Incremento2 permanece IN PROGRESS hasta integración2C. Incremento 2/Fase 0 IN PROGRESS; Fase 1 NOT STARTED.

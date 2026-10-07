@@ -18,6 +18,7 @@ namespace GorillaEscape.Contracts
         }
         public static void Write(Stream stream, string json)
         {
+            if (json == null || json.Length > MaximumBytes || Utf8.GetByteCount(json) > MaximumBytes) throw new InvalidDataException("IPC_FRAME_SIZE");
             byte[] body = Utf8.GetBytes(json);
             if (body.Length == 0 || body.Length > MaximumBytes) throw new InvalidDataException("IPC_FRAME_SIZE");
             int size = body.Length;

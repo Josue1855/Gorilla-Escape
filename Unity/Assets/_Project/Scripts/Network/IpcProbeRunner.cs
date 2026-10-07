@@ -41,7 +41,8 @@ namespace GorillaEscape.Network
             try
             {
                 string java = Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"), jar = Environment.GetEnvironmentVariable("GORILLA_IPC_JAR");
-                var result = await (sustained ? supervisor.RunLifecycleAsync(java, jar, cancellation.Token) : supervisor.RunAsync(java, jar, cancellation.Token));
+                var result = await (sustained ? supervisor.RunLifecycleAsync(java, jar, cancellation.Token) : Environment.GetEnvironmentVariable("GORILLA_IPC_MODE") == "benchmark" ? supervisor.RunBenchmarkAsync(java, jar, cancellation.Token) : supervisor.RunAsync(java, jar, cancellation.Token));
+                if (Environment.GetEnvironmentVariable("GORILLA_IPC_MODE") == "benchmark" || Environment.GetEnvironmentVariable("GORILLA_IPC_MEASURE") == "1") Debug.Log("IPC_2C_RESULT " + JsonUtility.ToJson(result));
                 if (!sustained) Debug.Log("IPC_2A_SMOKE " + JsonUtility.ToJson(new Smoke(result)));
                 message = "Backend detenido. Recursos cerrados.";
             }
@@ -83,7 +84,7 @@ namespace GorillaEscape.Network
                 case "ALREADY_RUNNING": return "Ya existe un backend administrado. Cierra la otra ejecución antes de reintentar.";
                 case "LOCK_UNAVAILABLE": return "No se pudo reservar la ejecución. Revisa los permisos de la carpeta de datos.";
                 case "READY_TIMEOUT": case "READY_MISSING": return "El backend no quedó listo a tiempo o terminó antes de estar listo.";
-                case "READY_INVALID": case "HANDSHAKE_FAILED": return "El backend no respondió con la identificación esperada.";
+                case "PROTOCOL_INVALID": case "READY_INVALID": case "HANDSHAKE_FAILED": return "El backend no respondió con la identificación esperada.";
                 case "CONNECT_FAILED": case "CONNECT_TIMEOUT": return "No se pudo conectar con el backend local.";
                 case "JAVA_EXITED": return "El backend local se cerró inesperadamente.";
                 case "CONNECTION_LOST": return "Se perdió la conexión con el backend local.";

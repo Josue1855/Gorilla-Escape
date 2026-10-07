@@ -231,3 +231,13 @@ Gate previo cumplido, implementación mínima de desarrollo Linux validada; resu
 ## Precisión aprobada — Incremento 2B
 
 El PO aprobó [el diseño 2B](PHASE0_IPC_2B_DESIGN.md) y sus precisiones: estados STOPPED/STARTING/CONNECTING/RUNNING/STOPPING/FAILED; liveness PING/PONG 1 Hz sólo RUNNING y un pendiente; cero restart/reconnect automático; recuperación manual con tres lanzamientos por ejecución y cleanup completo antes del siguiente; generaciones aisladas; FileChannel.tryLock antes de Spring/READY con liberación finally; EOF temprano y shutdown propio 10+2 s/readers 2 s aparte. Presupuestos y autoridad DEC-005 se conservan. La resiliencia avanzada de esta decisión sigue diferida. Estado y evidencia en TEST_REPORT; abrir PR sin merge automático, no iniciar 2C/Fase 1.
+
+## Integración normal del Incremento 2B
+
+2B PASS / MERGED por PR #92 autorizado por el PO; develop `7e3aa60aa53c65e7051f32477a77985fbe628907` contiene `88f1e309fc7adeffe6aa6499e195f53185ab36f9`, con árbol idéntico al candidato y 105/105 hashes funcionales validados. Evidencia 2B conservada en TEST_REPORT. Protecciones intactas: PR/checks obligatorios, force push deshabilitado. 2A PASS/MERGED; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED. Sin rama ni implementación 2C.
+
+Checks posteriores del merge 2B en `7e3aa60aa53c65e7051f32477a77985fbe628907`: **management-validation PASS / java-react-foundation PASS**. Protecciones comparadas antes/después, idénticas. Cierre de integración; 2C no iniciado.
+
+## Precisión aprobada — Incremento 2C
+
+El PO aprueba [PHASE0_IPC_2C_DESIGN](PHASE0_IPC_2C_DESIGN.md) como Accepted para hardening local y validación sostenida: parser C# exclusivamente probe v1, sin dependencia nueva; escritor Java único y deadline cancelable ligado al socket, sin pool común/cola de PONG/thread por mensaje; framing/JSON/corpus y presión finita; tres Players independientes con 100 warmup +1000 muestras a 50 Hz y una corrida de al menos600 s con heartbeat1 Hz. Publicar resultados individuales íntegros; RSS/heap sólo observación y umbral de investigación, sin afirmar ausencia global de fugas. Presupuestos DEC-005 y lifecycle/ownership/recovery manual de2B se mantienen. Gate completo antes de commit/push/PR; no merge automático. Incremento2 sigue IN PROGRESS hasta integración de2C; Fase0 IN PROGRESS/Fase1 NOT STARTED. [Procedimiento](PHASE0_IPC_2C_VALIDATION.md).

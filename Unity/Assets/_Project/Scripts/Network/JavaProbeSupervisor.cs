@@ -16,7 +16,8 @@ namespace GorillaEscape.Network
     public sealed class ProbeSummary
     {
         public double startupMs, minimumMs, p50Ms, p95Ms, maximumMs, shutdownMs, readersMs;
-        public int samples, errors, pid, exitCode;
+        public int samples, errors, pid, exitCode, sent, received, valid, timeouts, lateTicks;
+        public double durationSeconds, effectiveHz;
         public bool cleanExit, forced, cleanupComplete;
         public string instanceId, errorCode, cleanupError;
     }
@@ -35,7 +36,10 @@ namespace GorillaEscape.Network
             public Task[] readers = new Task[0];
             public EventHandler exitHandler;
             public string stage = "START";
-            public bool observedExit;
+            public bool observedExit, benchmark;
+            public readonly List<double> timings = new List<double>(1024);
+            public Stopwatch sessionClock;
+            public double firstSampleStart, lastSampleStart;
         }
         private sealed class Failure : IOException
         {
@@ -61,14 +65,15 @@ namespace GorillaEscape.Network
             return Begin(java, jar, token, sampleCount);
         }
         public Task<ProbeSummary> RunLifecycleAsync(string java, string jar, CancellationToken token) => Begin(java, jar, token, 0);
-        private Task<ProbeSummary> Begin(string java, string jar, CancellationToken token, int samples)
+        public Task<ProbeSummary> RunBenchmarkAsync(string java, string jar, CancellationToken token) => Begin(java, jar, token, 1000, true);
+        private Task<ProbeSummary> Begin(string java, string jar, CancellationToken token, int samples, bool benchmark = false)
         {
             Attempt attempt;
             lock (gate)
             {
                 if (disposed) throw new ObjectDisposedException(nameof(JavaProbeSupervisor));
                 if (budget.Launches >= 3) throw new InvalidOperationException("LAUNCH_LIMIT");
-                attempt = new Attempt { generation = lifecycle.Begin() };
+                attempt = new Attempt { generation = lifecycle.Begin(), benchmark = benchmark };
                 attempt.cancellation = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime.Token);
                 current = attempt; LastSummary = attempt.result;
                 Log(attempt, "START_REQUESTED");
@@ -89,6 +94,7 @@ namespace GorillaEscape.Network
             }
             finally
             {
+                Summarize(a);
                 Move(a, IpcState.STOPPING, "STOP_REQUESTED");
                 try { await Cleanup(a); }
                 catch (Exception error) { a.result.cleanupError = error is Failure failure ? failure.code : "CLEANUP_FAILED"; }
@@ -141,7 +147,7 @@ namespace GorillaEscape.Network
                 using (startup.Token.Register(() => CloseSocket(a)))
                 {
                     string json = await Deadline(readiness, Remaining(clock), startup.Token);
-                    var ready = JsonUtility.FromJson<IpcReady>(json);
+                    var ready = IpcProbeContract.Ready(json, a.result.instanceId, a.result.pid);
                     if (ready == null || ready.ipcVersion != 1 || ready.instanceId != a.result.instanceId || ready.pid != a.result.pid
                         || ready.ipcPort < 1 || ready.ipcPort > 65535 || ready.httpPort < 1 || ready.httpPort > 65535) throw new Failure("READY_INVALID");
                     var stdout = Task.Run(() => Drain(a.child.StandardOutput));
@@ -159,22 +165,27 @@ namespace GorillaEscape.Network
                         Remaining(clock); a.result.startupMs = clock.Elapsed.TotalMilliseconds;
                         startup.CancelAfter(Timeout.Infinite);
                         Move(a, IpcState.RUNNING, "FIRST_PONG"); a.stage = "RUNNING";
-                        var timings = new List<double>(samples);
-                        int total = samples == 0 ? int.MaxValue : samples + 9;
+                        a.sessionClock = Stopwatch.StartNew();
+                        int warmup = a.benchmark ? 100 : 10;
+                        int total = samples == 0 ? int.MaxValue : samples + warmup - 1;
+                        double nextStart = a.sessionClock.Elapsed.TotalMilliseconds + 20;
                         for (int i = 0; i < total; i++)
                         {
-                            // One request/reader, no accumulation. Sustained mode only uses 1 Hz liveness.
-                            await Task.Delay(samples == 0 ? 1000 : 20, token);
+                            if (a.benchmark) {
+                                double wait = nextStart - a.sessionClock.Elapsed.TotalMilliseconds;
+                                if (wait > 0) await Task.Delay((int)Math.Ceiling(wait), token);
+
+                            } else await Task.Delay(samples == 0 ? 1000 : 20, token);
                             token.ThrowIfCancellationRequested();
                             if (sequence == int.MaxValue) throw new Failure("SEQUENCE_EXHAUSTED");
+                            double started = a.sessionClock.Elapsed.TotalMilliseconds;
+                            if (a.benchmark && started - nextStart > 1) a.result.lateTicks++;
                             double duration = Exchange(stream, null, connection, sequence++, a, 2000, token);
-                            if (samples != 0 && i >= 9) timings.Add(duration);
-                        }
-                        if (samples != 0)
-                        {
-                            timings.Sort(); a.result.samples = timings.Count;
-                            a.result.minimumMs = timings[0]; a.result.p50Ms = timings[(int)Math.Ceiling(timings.Count * .50) - 1];
-                            a.result.p95Ms = timings[(int)Math.Ceiling(timings.Count * .95) - 1]; a.result.maximumMs = timings[timings.Count - 1];
+                            nextStart = Math.Max(nextStart + 20, a.sessionClock.Elapsed.TotalMilliseconds);
+                            if ((samples == 0 || i >= warmup - 1) && a.timings.Count < 1024) {
+                                if (a.timings.Count == 0) a.firstSampleStart = started;
+                                a.lastSampleStart = started; a.timings.Add(duration);
+                            }
                         }
                     }
                 }
@@ -185,18 +196,32 @@ namespace GorillaEscape.Network
             using (var deadline = CancellationTokenSource.CreateLinkedTokenSource(token))
             {
                 deadline.CancelAfter(milliseconds);
-                using (deadline.Token.Register(() => CloseSocket(a)))
+                try { using (deadline.Token.Register(() => CloseSocket(a)))
                 {
                     var clock = Stopwatch.StartNew();
                     string payload = secret == null ? "{}" : "{\"launchToken\":\"" + secret + "\"}";
+                    a.result.sent++;
                     IpcFrameCodec.Write(stream, "{\"ipcVersion\":1,\"type\":\"PING\",\"instanceId\":\"" + a.result.instanceId
                         + "\",\"connectionId\":\"" + connection + "\",\"sequence\":" + sequence + ",\"payload\":" + payload + "}");
-                    var pong = JsonUtility.FromJson<IpcPong>(IpcFrameCodec.Read(stream));
+                    string body = IpcFrameCodec.Read(stream); a.result.received++;
+                    IpcPong pong;
+                    try { pong = IpcProbeContract.Pong(body, a.result.instanceId, connection, sequence); }
+                    catch (InvalidDataException) { throw new Failure("PROTOCOL_INVALID"); }
                     if (pong == null || pong.ipcVersion != 1 || pong.type != "PONG" || pong.instanceId != a.result.instanceId
                         || pong.connectionId != connection || pong.sequence != sequence) throw new Failure("HANDSHAKE_FAILED");
-                    deadline.Token.ThrowIfCancellationRequested(); return clock.Elapsed.TotalMilliseconds;
-                }
+                    deadline.Token.ThrowIfCancellationRequested(); a.result.valid++; return clock.Elapsed.TotalMilliseconds;
+                } } catch { if (deadline.IsCancellationRequested && !token.IsCancellationRequested) a.result.timeouts++; throw; }
             }
+        }
+        private static void Summarize(Attempt a)
+        {
+            a.result.durationSeconds = a.sessionClock == null ? 0 : a.sessionClock.Elapsed.TotalSeconds;
+            if (a.timings.Count == 0) return;
+            a.result.samples = a.timings.Count;
+            if (a.timings.Count > 1) a.result.effectiveHz = (a.timings.Count - 1) * 1000.0 / (a.lastSampleStart - a.firstSampleStart);
+            a.timings.Sort(); a.result.minimumMs = a.timings[0]; a.result.maximumMs = a.timings[a.timings.Count - 1];
+            a.result.p50Ms = a.timings[(int)Math.Ceiling(a.timings.Count * .50) - 1];
+            a.result.p95Ms = a.timings[(int)Math.Ceiling(a.timings.Count * .95) - 1];
         }
         private static string Classify(Attempt a, Exception error)
         {
