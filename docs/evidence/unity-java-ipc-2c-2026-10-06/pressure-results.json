@@ -1,0 +1,86 @@
+{
+  "groups": [
+    {
+      "case": "thousandConcatenatedWithSlowConsumerAndMaximumFrames",
+      "initialRSS": 236519424,
+      "finalRSS": 229441536,
+      "peakObservedRSS": 238792704,
+      "resources": {
+        "component": "ipc-java",
+        "event": "RESOURCE_SUMMARY",
+        "validFrames": 1101,
+        "closedConnections": 4,
+        "maximumPendingDeadlines": 1,
+        "pendingDeadlines": 0,
+        "deadlineTerminated": true
+      },
+      "diagnostics": 7
+    },
+    {
+      "case": "allInvalidFramesCloseOnlyTheirConnection",
+      "initialRSS": 239620096,
+      "finalRSS": 238383104,
+      "peakObservedRSS": 244531200,
+      "resources": {
+        "component": "ipc-java",
+        "event": "RESOURCE_SUMMARY",
+        "validFrames": 68,
+        "closedConnections": 131,
+        "maximumPendingDeadlines": 1,
+        "pendingDeadlines": 0,
+        "deadlineTerminated": true
+      },
+      "diagnostics": 134
+    },
+    {
+      "case": "stalledAndTricklingFramesUseAbsoluteDeadline",
+      "initialRSS": 227368960,
+      "finalRSS": 223170560,
+      "peakObservedRSS": 227954688,
+      "resources": {
+        "component": "ipc-java",
+        "event": "RESOURCE_SUMMARY",
+        "validFrames": 2,
+        "closedConnections": 5,
+        "maximumPendingDeadlines": 1,
+        "pendingDeadlines": 0,
+        "deadlineTerminated": true
+      },
+      "diagnostics": 8
+    },
+    {
+      "case": "repeatedOversizedAndInvalidFrames",
+      "initialRSS": 218619904,
+      "finalRSS": 220180480,
+      "peakObservedRSS": 220180480,
+      "resources": {
+        "component": "ipc-java",
+        "event": "RESOURCE_SUMMARY",
+        "validFrames": 1,
+        "closedConnections": 202,
+        "maximumPendingDeadlines": 1,
+        "pendingDeadlines": 0,
+        "deadlineTerminated": true
+      },
+      "diagnostics": 205
+    },
+    {
+      "case": "nonReadingProducerHasFinitePressureAndCleanup",
+      "initialRSS": 230277120,
+      "finalRSS": 237973504,
+      "peakObservedRSS": 237981696,
+      "resources": {
+        "component": "ipc-java",
+        "event": "RESOURCE_SUMMARY",
+        "validFrames": 6212,
+        "closedConnections": 3,
+        "maximumPendingDeadlines": 1,
+        "pendingDeadlines": 0,
+        "deadlineTerminated": true
+      },
+      "diagnostics": 6
+    }
+  ],
+  "deterministicResources": "max pending deadline 1 / final 0 / terminated",
+  "RSS": "observation only, not global leak certification"
+}

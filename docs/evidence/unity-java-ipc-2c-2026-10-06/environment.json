@@ -1,0 +1,11 @@
+{
+  "os": "Linux-7.1.5-76070105-generic-x86_64-with-glibc2.39",
+  "cpu": "13th Gen Intel(R) Core(TM) i7-1355U",
+  "RAM": "MemTotal:       32538840 kB",
+  "unity": "6000.3.23f1 Linux development Mono Player",
+  "java": "openjdk version \"21.0.12.1\" 2026-08-18\nOpenJDK Runtime Environment (build 21.0.12.1+1-1-24.04.4-Ubuntu)\nOpenJDK 64-Bit Server VM (build 21.0.12.1+1-1-24.04.4-Ubuntu, mixed mode, sharing)",
+  "Jackson": "3.1.5 existing resolved dependency",
+  "node": "v24.19.0",
+  "baseline": "desktop development; new JVM per run, warm filesystem; no cache eviction; brief local validation load may coexist; no Unity Editor during three benchmark runs",
+  "limits": "Linux only; Windows/official PC NOT RUN; not phone/gameplay or global leak claim"
+}

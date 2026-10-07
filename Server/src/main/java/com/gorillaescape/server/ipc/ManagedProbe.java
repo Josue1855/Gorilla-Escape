@@ -21,9 +21,14 @@ public final class ManagedProbe implements DisposableBean {
     private ServerSocket listener;
     private volatile Socket client;
     private Thread worker;
-    private volatile java.util.concurrent.CompletableFuture<Void> pendingWrite;
+    private final java.util.concurrent.ScheduledThreadPoolExecutor deadlines = new java.util.concurrent.ScheduledThreadPoolExecutor(1, r -> {
+        Thread t = new Thread(r, "gorilla-ipc-deadline"); t.setDaemon(true); return t;
+    });
+    private long validFrames, closedConnections;
+    private int maximumPendingDeadlines;
     private String instance;
     private String token;
+    public ManagedProbe() { deadlines.setRemoveOnCancelPolicy(true); }
     @EventListener
     public void ready(ApplicationReadyEvent event) throws IOException {
         instance = System.getenv("GORILLA_IPC_INSTANCE");
@@ -55,32 +60,62 @@ public final class ManagedProbe implements DisposableBean {
                 String connection = null;
                 int sequence = 1;
                 while (running.get()) {
-                    var ping = ProbeCodec.ping(ProbeCodec.read(socket.getInputStream()), instance, connection,
+                    var ping = ProbeCodec.ping(readFrame(socket), instance, connection,
                             sequence, connection == null ? token : null);
                     connection = ping.connectionId();
-                    // Tiny bounded response. Independent timeout closes a stalled write.
-                    final var output = socket.getOutputStream();
-                    var write = java.util.concurrent.CompletableFuture.runAsync(() -> {
-                        try { ProbeCodec.write(output, ProbeCodec.pong(ping)); }
-                        catch (IOException e) { throw new java.util.concurrent.CompletionException(e); }
-                    });
-                    pendingWrite = write;
-                    try { write.get(2, java.util.concurrent.TimeUnit.SECONDS); }
-                    catch (Exception e) { socket.close(); throw new IOException("IPC_WRITE", e); }
-                    pendingWrite = null;
+                    writeFrame(socket, ProbeCodec.pong(ping));
+                    validFrames++;
                     if (sequence == Integer.MAX_VALUE) break;
                     sequence++;
                 }
             } catch (EOFException ignored) { log("CLIENT_EOF"); }
-            catch (IOException e) { if (running.get()) log("CONNECTION_CLOSED"); }
-            finally { client = null; }
+            catch (IOException e) { if (running.get()) log("CONNECTION_CLOSED", reason(e)); }
+            finally { client = null; closedConnections++; }
         }
+    }
+    // Package scope solely for deterministic real-socket deadline tests.
+    void writeFrame(Socket socket, String body) throws IOException {
+        var expired = new AtomicBoolean();
+        var deadline = deadlines.schedule(() -> {
+            expired.set(true);
+            try { socket.close(); } catch (IOException ignored) { }
+        }, 2, java.util.concurrent.TimeUnit.SECONDS);
+        maximumPendingDeadlines = Math.max(maximumPendingDeadlines, deadlines.getQueue().size());
+        try {
+            ProbeCodec.write(socket.getOutputStream(), body);
+            if (expired.get()) throw new IOException("IPC_WRITE_TIMEOUT");
+        } catch (IOException error) {
+            if (expired.get()) throw new IOException("IPC_WRITE_TIMEOUT");
+            throw error;
+        } finally { deadline.cancel(false); }
+    }
+    int pendingDeadlines() { return deadlines.getQueue().size(); }
+    private static String readFrame(Socket socket) throws IOException {
+        long end = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(2);
+        var input = new FilterInputStream(socket.getInputStream()) {
+            private void remaining() throws IOException {
+                long left = end - System.nanoTime();
+                if (left <= 0) throw new SocketTimeoutException("IPC_READ_TIMEOUT");
+                socket.setSoTimeout((int)Math.max(1, java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(left)));
+            }
+            @Override public int read() throws IOException { remaining(); return in.read(); }
+            @Override public int read(byte[] b, int off, int len) throws IOException { remaining(); return in.read(b, off, len); }
+        };
+        return ProbeCodec.read(input);
+    }
+    private static String reason(IOException error) {
+        if (error instanceof SocketTimeoutException) return "READ_TIMEOUT";
+        String code = error.getMessage();
+        // Never log parser exception text or input. Only a fixed vocabulary is public.
+        return code != null && java.util.Set.of("IPC_FRAME_SIZE", "IPC_UTF8", "IPC_FIELDS", "IPC_CONTRACT", "IPC_IDENTITY", "IPC_TOKEN", "IPC_JSON_INVALID", "IPC_WRITE_TIMEOUT").contains(code)
+                ? code.substring(4) : "JSON_OR_IO_INVALID";
     }
     private static Thread daemon(String name, Runnable action) {
         Thread thread = new Thread(action, name); thread.setDaemon(true); thread.start(); return thread;
     }
-    private void log(String code) {
-        System.err.println("{\"component\":\"ipc-java\",\"event\":\"" + code + "\",\"instanceId\":\"" + instance + "\"}");
+    private void log(String code) { log(code, "NONE"); }
+    private void log(String code, String reason) {
+        System.err.println("{\"component\":\"ipc-java\",\"event\":\"" + code + "\",\"reason\":\"" + reason + "\",\"instanceId\":\"" + instance + "\"}");
     }
     @Override public void destroy() throws IOException {
         running.set(false);
@@ -90,14 +125,17 @@ public final class ManagedProbe implements DisposableBean {
         Socket socket = client;
         try { if (socket != null) socket.close(); }
         catch (IOException error) { if (failure == null) failure = error; else failure.addSuppressed(error); }
+        deadlines.shutdownNow();
         if (worker != null && worker != Thread.currentThread()) {
             try { worker.join(2000); }
             catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); }
-            if (worker.isAlive()) throw new IOException("IPC_WORKER_RESIDUAL");
+            if (worker.isAlive()) failure = new IOException("IPC_WORKER_RESIDUAL");
         }
-        var write = pendingWrite;
-        if (write != null && !write.isDone()) throw new IOException("IPC_WRITER_RESIDUAL");
-        pendingWrite = null;
+        try { if (!deadlines.awaitTermination(2, java.util.concurrent.TimeUnit.SECONDS)) throw new IOException("IPC_DEADLINE_RESIDUAL"); }
+        catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IOException("IPC_DEADLINE_INTERRUPTED"); }
+        System.err.println("{\"component\":\"ipc-java\",\"event\":\"RESOURCE_SUMMARY\",\"validFrames\":" + validFrames
+                + ",\"closedConnections\":" + closedConnections + ",\"maximumPendingDeadlines\":" + maximumPendingDeadlines
+                + ",\"pendingDeadlines\":" + deadlines.getQueue().size() + ",\"deadlineTerminated\":" + deadlines.isTerminated() + "}");
         token = null;
         log("SHUTDOWN");
         if (failure != null) throw failure;

@@ -1,4 +1,4 @@
-# IPC probe v1 — Incremento 2A
+# IPC probe v1 — Incrementos 2A/2B/2C
 
 Contrato interno aprobado por DEC-005; no es Gorilla Protocol móvil ni crea sesión de juego.
 
@@ -14,7 +14,7 @@ Desarrollo: configurar rutas absolutas GORILLA_IPC_JAVA y GORILLA_IPC_JAR al eje
 
 Smoke: 10 warmup +100 PING secuenciales con cadencia nominal suave 20 ms entre respuestas; no es benchmarking 50 Hz. Publicar startup, mínimo/P50/P95/máximo RTT (nearest-rank), N/errores/exit y versiones/hashes. RTT en worker incluye codec, TCP ida/vuelta y Java; no incluye consumo de gameplay en frame. No extrapolar a teléfono→gameplay.
 
-Java valida campos/tipos/token/correlación y claves duplicadas. Unity valida tamaño/UTF-8, identidad/version/tipo/sequence/READY; revisión estricta de campos desconocidos/duplicados y fuzz/flood extensos del parser Unity quedan para hardening posterior. Los frames aceptados por Unity provienen del hijo identificado y no contienen acciones de juego. El contrato completo y requisitos diferidos permanecen en docs/PHASE0_UNITY_JAVA_DECISION.md.
+2C valida campos exactos/obligatorios, tipos sin coerción, documento único, duplicados (incluidos nombres escapados), unknown fields y payload explícito en ambos runtimes. Java reutiliza Jackson existente con profundidad 4; C# usa IpcProbeContract específico del probe, sin DOM/parser general/dependencia nueva: sólo raíz+payload, ningún anidamiento arbitrario. READY usa sus cinco campos exactos y el límite bootstrap existente; no framing TCP. Los frames aceptados por Unity provienen del hijo identificado y no contienen acciones de juego. El contrato completo y requisitos diferidos permanecen en docs/PHASE0_UNITY_JAVA_DECISION.md.
 
 ## Incremento 2B — lifecycle administrado
 
@@ -43,3 +43,31 @@ logs o archivo lock. El modo HTTP no administrado conserva su arranque anterior.
 Validación Windows, resiliencia avanzada y performance extensiva quedan diferidas.
 EOF/padre muerto no garantiza eliminar una JVM completamente congelada.
 EOF/cancel y errores reales se prueban sin sustituir integración por mocks.
+
+## Incremento 2C — hardening y medición
+
+Corpus compartido cases/corpus.json: 71 casos válidos/rechazados; prefijo uint32
+incluidos extremos, EOF, UTF-8, contrato/escapes/correlación/token. Longitud comprobada
+antes de cuerpo; output UTF-8 acotado. Un frame inválido cierra esa conexión Java,
+sin respuesta detallada ni caída del backend; diagnóstico fijo sin contenido/token.
+El token es por lanzamiento y sólo va en primer PING de cada conexión, no en PONG
+ni PING posteriores; no rediseñar autenticación como token de un solo uso global.
+
+Java usa deadline absoluto de frame de 2 s (incluye espera de prefijo), no timeout
+renovable por fragmento. Escritura síncrona en worker único, un deadline cancelado
+por operación; callback captura ese socket. Sin common pool ni cola de respuestas.
+Temporizador de un thread, remove-on-cancel y cleanup observado. Liveness 1 Hz y
+recuperación manual limitada de 2B se conservan; sequence exhausto falla explícitamente,
+sin reconnect automático.
+
+GORILLA_IPC_MODE=benchmark es un probe de desarrollo finito: 100 warmup incluyendo
+handshake +1000 medidos, pacing monotónico objetivo 50 Hz sin acumular pending.
+Smoke 2A permanece 10+100 con su cadencia histórica. El modo lifecycle sigue 1 Hz;
+GORILLA_IPC_MEASURE=1 emite un resumen acotado al cerrar. Retención RTT máxima1024,
+contadores independientes; no detener el lifecycle largo al completar el buffer.
+
+Publicar tres corridas separadas y ≥600 s reales; nearest-rank, timeouts/errores aparte,
+startup/shutdown/duración/cadencia/ticks. Presupuestos DEC-005 5/10/50 ms P50/P95/max
+para baseline local, nunca latencia teléfono→gameplay. Procedimiento y evidencia:
+[validación 2C](../../../docs/PHASE0_IPC_2C_VALIDATION.md). RSS sólo observación;
+no afirmar ausencia global de fugas. Sin nuevas dependencias, móvil ni gameplay.

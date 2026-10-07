@@ -120,7 +120,7 @@ Evidencia sanitizada [validation.json](evidence/unity-java-ipc-2a-2026-10-06/val
 
 ## IPC-002B — lifecycle y fallos básicos, 2026-10-06
 
-**Resultado:** Incremento 2B **PASS en Linux de desarrollo**, candidato para PR, no integrado. Diseño [Accepted con precisiones del PO](PHASE0_IPC_2B_DESIGN.md). Base `9fbb566e5f24af8f4e92fa3c139968161e832d46`, rama `codex/phase0-ipc-2b-lifecycle`. [Procedimiento reproducible](PHASE0_IPC_2B_VALIDATION.md), [checks](evidence/unity-java-ipc-2b-2026-10-06/checks.json), [inventario SHA256 de 105 fuentes/contratos](evidence/unity-java-ipc-2b-2026-10-06/source-sha256.json), [hashes de build/JAR](evidence/unity-java-ipc-2b-2026-10-06/build-artifacts.json). El SHA de commit se informa en el PR/reporte de cierre; no inventar un hash autorreferencial en su propio archivo.
+**Resultado:** Incremento 2B **PASS / MERGED en Linux de desarrollo** mediante [PR #92](https://github.com/Josue1855/Gorilla-Escape/pull/92), merge normal autorizado por el PO; develop `7e3aa60aa53c65e7051f32477a77985fbe628907` contiene el candidato `88f1e309fc7adeffe6aa6499e195f53185ab36f9`. Árbol integrado idéntico y 105/105 hashes del inventario coincidentes. Las protecciones de develop permanecen intactas. Diseño [Accepted con precisiones del PO](PHASE0_IPC_2B_DESIGN.md). Base `9fbb566e5f24af8f4e92fa3c139968161e832d46`, rama `codex/phase0-ipc-2b-lifecycle`. [Procedimiento reproducible](PHASE0_IPC_2B_VALIDATION.md), [checks](evidence/unity-java-ipc-2b-2026-10-06/checks.json), [inventario SHA256 de 105 fuentes/contratos](evidence/unity-java-ipc-2b-2026-10-06/source-sha256.json), [hashes de build/JAR](evidence/unity-java-ipc-2b-2026-10-06/build-artifacts.json). El SHA de commit se informa en el PR/reporte de cierre; no inventar un hash autorreferencial en su propio archivo.
 
 **Implementación:** seis estados aprobados y fallos activos siempre STOPPING→FAILED; PING/PONG de liveness 1 Hz sólo RUNNING, un pendiente/un lector, deadline PONG 2 s; cero restart/reconnect automático; hasta tres lanzamientos por ejecución Unity y reintento explícito después de cleanup completo. Generaciones aisladas y prueba real de callback exit tardío. Java adquiere FileLock antes de Spring/READY, libera finalmente y no borra el archivo; EOF se observa durante bootstrap. Cierre/cancellation sólo del hijo propio, streams/readers/CTS/handlers liberados; diagnóstico de desarrollo Player/Editor con Retry/Stop y atajos R/S. Sin cambio a codec/DTO/framing/token/autoridad ni dependencias.
 
@@ -160,4 +160,59 @@ Evidencia sanitizada [validation.json](evidence/unity-java-ipc-2a-2026-10-06/val
 
 **Correcciones durante desarrollo:** primer PlayMode con JDK host por /run/host falló por symlinks de configuración /etc no visibles en Flatpak; sustituido por copia local de desarrollo del mismo JDK21 con enlaces resueltos. Se corrigió salida del diagnóstico y ejecución en segundo plano; la automatización descartó logs anteriores antes de cada lanzamiento y sustituyó clicks inestables Xwayland por los atajos visibles de la misma acción manual. Esas ejecuciones no acreditan PASS; resultados anteriores corresponden al candidato final, con inventario comprobado sin cambios de fuentes.
 
-**Sanitización / límites:** sólo resúmenes JSON, XML sin outputs/properties y hashes revisados en Git; raw logs, JDK, helpers compilados y builds permanecen locales ignorados. No tokens/env dumps/payloads en evidencia. El build mantiene 0 warnings, pero existen diagnósticos del entorno Unity ya conocidos (licensing/debugger/build-server y registro nativo MemoryLeaks); no afirmar cero leaks globales. Windows, distribución JRE y PC oficial NOT RUN. Lock cooperativo y FS local; JVM congelada después de morir el padre requiere futura contención nativa, fuera de 2B. Watchdog, reconnect/restart automático, parser exhaustivo/fuzz/flood, performance extensiva, móvil/PWA/QR/sensores/cámara/gameplay/Input Fusion y Fase 1 no implementados. **2A PASS/MERGED; 2B PASS, pendiente de revisión/integración; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED.**
+**Sanitización / límites:** sólo resúmenes JSON, XML sin outputs/properties y hashes revisados en Git; raw logs, JDK, helpers compilados y builds permanecen locales ignorados. No tokens/env dumps/payloads en evidencia. El build mantiene 0 warnings, pero existen diagnósticos del entorno Unity ya conocidos (licensing/debugger/build-server y registro nativo MemoryLeaks); no afirmar cero leaks globales. Windows, distribución JRE y PC oficial NOT RUN. Lock cooperativo y FS local; JVM congelada después de morir el padre requiere futura contención nativa, fuera de 2B. Watchdog, reconnect/restart automático, parser exhaustivo/fuzz/flood, performance extensiva, móvil/PWA/QR/sensores/cámara/gameplay/Input Fusion y Fase 1 no implementados. **2A PASS/MERGED; 2B PASS/MERGED; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED.**
+
+Checks posteriores del merge 2B en `7e3aa60aa53c65e7051f32477a77985fbe628907`: **management-validation PASS / java-react-foundation PASS**. Protecciones comparadas antes/después, idénticas. Cierre de integración; 2C no iniciado.
+
+## IPC-002C — hardening y validación sostenida, 2026-10-06
+
+**Resultado: PASS Linux de desarrollo, pendiente de integración.** Diseño [Accepted](PHASE0_IPC_2C_DESIGN.md) y [procedimiento reproducible](PHASE0_IPC_2C_VALIDATION.md). Fetch confirmó develop `7e3aa60aa53c65e7051f32477a77985fbe628907`; rama `codex/phase0-ipc-2c-hardening` desde ese SHA. Sin nuevas dependencias, rediseño del lifecycle ni cambios de fases futuras. Documentación local del merge 2B conservada.
+
+| Gate / suite | Resultado y evidencia |
+|---|---|
+| Corpus Java/C# | **71/71 casos en ambos PASS**: tamaños uint32, truncación, UTF-8, documento único, fields/types/duplicates/escapes/identidades/sequence/token; [corpus común](../Shared/Protocol/ipc/cases/corpus.json) |
+| Java verify | **22/22 PASS**, 0 failures/errors/skips; suites existentes 2A/2B conservadas; [resumen sin properties/outputs](evidence/unity-java-ipc-2c-2026-10-06/java-results.json) |
+| EditMode | **19/19 PASS**, 0 skips; corpus/READY/concatenación/UTF-8 output/tamaño previo + regresión; [XML](evidence/unity-java-ipc-2c-2026-10-06/editmode.xml) |
+| PlayMode | **12/12 PASS**, 0 skips; seis tests backend real, cuatro helpers JVM identificados, ruta inválida/Bootstrap; [XML](evidence/unity-java-ipc-2c-2026-10-06/playmode.xml) |
+| React regresión | **4/4 PASS**, build PASS; sin cambios a PWA |
+| Player Linux development Mono | Build **0 errores / 0 warnings**; binarios/hashes en [artifacts](evidence/unity-java-ipc-2c-2026-10-06/build-artifacts.json) |
+| Input inválido aislado | Rechazos mediante socket/JVM Spring real, PING válido posterior en misma JVM, proceso vivo; sin payload/token en diagnósticos |
+| Deadlines absolutos | Prefijo y cuerpo con goteo500ms terminan ≈2s total; write bloqueado en sockets reales con buffers reducidos sólo test termina por deadline2s, nueva conexión responde durante >2s |
+| Presión determinista | **5 grupos reales PASS**: corpus rechazos, oversized100+invalid100, valid1000 consumidor lento+máximos100, parciales/goteo, productor sin lector≤1MiB; [recursos y RSS observada](evidence/unity-java-ipc-2c-2026-10-06/pressure-results.json) |
+| Tareas / colas | Writer único, sin common pool, sin cola PONG/thread por PONG; máximo deadline pendiente1, final0, executor terminado; no body read para prefijo oversized; buffers fuente/cuerpo/output acotados y RTT list≤1024 |
+| Player medición | **3 corridas independientes N=1000 PASS**, con 100 warmup cada una; métricas completas abajo y [JSON individual/estabilidad](evidence/unity-java-ipc-2c-2026-10-06/measurement-results.json), [CSV](evidence/unity-java-ipc-2c-2026-10-06/benchmark-runs.csv) |
+| Estabilidad real | **601.24s RUNNING PASS**, heartbeat real1Hz; 601 enviados/recibidos/válidos (handshake1+heartbeats600), errores/timeouts/disconnects0; estado final STOPPED, Unity exit0/Java exit0, cleanupComplete, residual propio0 |
+| Regresión Player 2A/2B | **11 grupos PASS**, no 11 tests NUnit; [resultados](evidence/unity-java-ipc-2c-2026-10-06/regression-player-results.json). Manual3 launches/cuarto bloqueado, singleton, cancel startup/RUNNING, EOF normal/abrupto, READY/refused fixtures, liveness/fallback propios; generaciones tardías también PASS PlayMode |
+| Validadores | management/foundation PASS; diff --check PASS |
+
+### Tres corridas independientes
+
+Entorno [registrado](evidence/unity-java-ipc-2c-2026-10-06/environment.json): Unity6000.3.23f1/Mono, Java21, Jackson3.1.5 ya existente. JVM nueva por Player; filesystem warm sin desalojar caches, escritorio de desarrollo con posible carga breve de validación. Sin Editor Unity durante las tres corridas. N=1000 excluye warmup100; totales enviados/recibidos/válidos=1100. Duration incluye warmup restante+medición después de primer PONG; cadencia efectiva sobre intervalos de las1000 muestras. Ticks tardíos: >1ms respecto del turno previsto, incluido warmup restante; se publican, no se eliminan.
+
+| Corrida | Startup ms | N | Sent / Received / Valid | Errors / Timeouts | RTT min ms | P50 ms | P95 ms | Max ms |
+|---|---:|---:|---|---|---:|---:|---:|---:|
+| 1 | 2134.0482 | 1000 | 1100 / 1100 / 1100 | 0 / 0 | 0.2580 | 1.0075 | 1.5617 | 3.5342 |
+| 2 | 1912.9807 | 1000 | 1100 / 1100 / 1100 | 0 / 0 | 0.2698 | 0.9777 | 1.5687 | 3.1940 |
+| 3 | 1899.5049 | 1000 | 1100 / 1100 / 1100 | 0 / 0 | 0.3096 | 0.9767 | 1.6134 | 3.1152 |
+
+| Corrida | Duration s | Effective Hz | Late ticks | Shutdown ms | Exit Unity / Java | Own residual |
+|---|---:|---:|---:|---:|---|---:|
+| 1 | 21.9865932 | 50.0010696 | 212 | 50.0231 | 0 / 0 | 0 |
+| 2 | 21.9844135 | 50.0001662 | 191 | 62.1348 | 0 / 0 | 0 |
+| 3 | 21.9859263 | 49.9992382 | 224 | 76.2648 | 0 / 0 | 0 |
+
+Todas cumplen P50≤5ms, P95≤10ms, máximo≤50ms y errores/timeouts nominales0. Nearest-rank por corrida, sin mezclar3000 muestras ni excluir picos. Tres launches no permiten declarar P95 estadísticamente significativo de startup. RTT worker incluye serialización/framing/validación/TCP/Java, no consumo de juego ni latencia one-way: **no extrapolar a teléfono→Java→Unity→gameplay**.
+
+### Estabilidad, memoria y regresión
+
+Estabilidad: startup1921.2768ms, operación601.2428525s, frecuencia efectiva0.9986053Hz, N heartbeat600, min0.3316/P501.0978/P951.7587/max3.3326ms, shutdown54.0375ms. Handshake aparte, STOPPED/exit0/cleanup completo/residual0. Todos los listeners propios observados: sólo IPv4 127.0.0.1. Errores inyectados de regresión son expectativas separadas del recorrido nominal; fallback propio exit137 no se presenta como cierre limpio y el exit code Java tras crash del padre no es observable, aunque su desaparición sí.
+
+RSS muestreada cada5s: Unity244961280→266268672bytes, pico266268672; Java215642112→207876096bytes, pico215642112. Managed heap **NOT MEASURED**. Muestra inicial tras primer PONG, no heap estabilizado tras GC/JIT; serie completa conservada. No excede alerta max(64MiB,25%), pero eso no acredita ausencia global de fugas ni memory safety. Diagnósticos nativos/licensing/debugger/build-server del entorno Unity previamente registrados y deuda[#89](https://github.com/Josue1855/Gorilla-Escape/issues/89) se conservan. Los límites deterministas de producto sí se verifican como gate.
+
+Smoke2A regresión N100: startup1395.0498ms, mínimo1.0118/P501.5640/P951.9586/máximo2.0892ms, errors0 y cleanExit. No reemplaza ni reescribe mediciones históricas de2A/2B.
+
+Iteraciones descartadas: se corrigieron expectativas del harness (spy confundía lectura del prefijo con cuerpo, catch C# de InvalidDataException, token vigente en conexión nueva frente a reutilización post-handshake y supuesto de llenar TCP con≤1MiB). La prueba separada con buffers pequeños demuestra write deadline real sin alterar tuning productivo. Dos corridas iniciales Player de regresión no acreditaron PASS porque Xwayland no confirmó teclado/foco; se elevó/enfocó ventana, esperó evento y canceló startup mediante cierre normal que activa RequestStop. Candidato runtime no cambió tras medir; corrida final11 grupos y PlayMode12/12 acreditan regresión, no los intentos descartados.
+
+**Identidad / sanitización:** [147 hashes de fuentes funcionales/tests/harness](evidence/unity-java-ipc-2c-2026-10-06/source-sha256.json); fuentes runtime y hashes JAR/Player/assemblies comprobados sin cambios después de las mediciones y al terminar todas las pruebas. Hash JAR `b43a17087e34cda7404952253dd4ae61615a4ae2f3b32489e8c5a3803d022961`. Sólo resúmenes JSON/CSV/XML sin properties/outputs secretos; raw logs/runtime/helpers/builds ignorados. Codec C# específico de probe, sin parser genérico ni dependencia nueva. No reconnect/restart automático, watchdog avanzado/nativo, Job Objects, arbitrary tree kill, TLS, malware defense, móvil/PWA/QR/sensores/cámara/gameplay/scoring/Input Fusion ni Fase1. Windows/PC oficial **NOT RUN**.
+
+**Estados:** 2A PASS / MERGED; 2B PASS / MERGED; **2C PASS pendiente de integración**; Incremento2 IN PROGRESS hasta merge2C; Fase0 IN PROGRESS; Fase1 NOT STARTED. Publicación mediante PR normal, sin merge automático ni trabajo posterior.
