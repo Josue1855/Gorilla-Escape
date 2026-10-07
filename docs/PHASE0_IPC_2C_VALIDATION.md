@@ -132,7 +132,8 @@ SHA256 de fuentes funcionales/test/harness para comparar candidato, sin hash de 
 autorreferencial. Revisar tokens/secretos y git diff --check antes de commit/push/PR.
 
 Gate completo en TEST_REPORT; ningún skip se cuenta como integración PASS. Tras gate,
-2C PASS pendiente de integración; Incremento2/Fase0 IN PROGRESS y Fase1 NOT STARTED.
+Estado tras integración autorizada de PR #93: 2A/2B/2C e Incremento 2 PASS / MERGED;
+Fase 0 IN PROGRESS y Fase 1 NOT STARTED. Evidencia y SHA de merge en TEST_REPORT.
 No merge automático, reconnection/restart automático, watchdog nativo, Job Objects,
 process-tree kill, TLS, móvil, QR, sensores, cámara, gameplay ni trabajo posterior.
 EOF no certifica una JVM congelada después de morir Unity; contención nativa diferida.

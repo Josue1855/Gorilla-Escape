@@ -1,6 +1,6 @@
 # Incremento 2 — decisión Unity ↔ Java
 
-**Fecha:** 2026-10-06. **Estado:** Accepted por instrucción explícita del Product Owner; 2A PASS / MERGED en develop y diseño 2B Accepted, exclusivamente lifecycle y fallos básicos. Las secciones iniciales conservan el contexto histórico anterior a #90. Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
+**Fecha:** 2026-10-06. **Estado:** Accepted por instrucción explícita del Product Owner; 2A/2B/2C e Incremento 2 PASS / MERGED en develop, exclusivamente IPC local de desarrollo. Las secciones iniciales conservan el contexto histórico anterior a #90. Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
 
 ## Base y fuentes de verdad
 
@@ -241,3 +241,9 @@ Checks posteriores del merge 2B en `7e3aa60aa53c65e7051f32477a77985fbe628907`: *
 ## Precisión aprobada — Incremento 2C
 
 El PO aprueba [PHASE0_IPC_2C_DESIGN](PHASE0_IPC_2C_DESIGN.md) como Accepted para hardening local y validación sostenida: parser C# exclusivamente probe v1, sin dependencia nueva; escritor Java único y deadline cancelable ligado al socket, sin pool común/cola de PONG/thread por mensaje; framing/JSON/corpus y presión finita; tres Players independientes con 100 warmup +1000 muestras a 50 Hz y una corrida de al menos600 s con heartbeat1 Hz. Publicar resultados individuales íntegros; RSS/heap sólo observación y umbral de investigación, sin afirmar ausencia global de fugas. Presupuestos DEC-005 y lifecycle/ownership/recovery manual de2B se mantienen. Gate completo antes de commit/push/PR; no merge automático. Incremento2 sigue IN PROGRESS hasta integración de2C; Fase0 IN PROGRESS/Fase1 NOT STARTED. [Procedimiento](PHASE0_IPC_2C_VALIDATION.md).
+
+## Integración normal del Incremento 2C
+
+[PR #93](https://github.com/Josue1855/Gorilla-Escape/pull/93) integrado mediante merge normal autorizado por el PO el 2026-10-07 01:03:09 UTC (2026-10-06 local). develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760` contiene el candidato validado `e957775b0a848a001d37e1a4770eb14103888d0c`; árbol completo idéntico y 147/147 hashes funcionales/test/harness coincidentes. Checks posteriores **Management validation PASS / Foundation validation PASS**. Protección efectiva comparada antes/después, sin cambios: PR obligatorio, checks estrictos `management-validation` y `java-react-foundation`, force push y eliminación deshabilitados, reglas aplicables a administradores y conversaciones resueltas obligatorias. Sin bypass ni cambios al candidato.
+
+**Estado vigente:** 2A PASS / MERGED; 2B PASS / MERGED; 2C PASS / MERGED; **Incremento 2 — Unity ↔ Java IPC PASS / MERGED**; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. Evidencia exacta de 2C conservada: Java22/22, EditMode19/19, PlayMode12/12, React4/4, build0errores/0warnings, corpus71casos, regresión Player11grupos, residual Java propio0, tres corridas independientes N1000 y estabilidad601.24s PASS; errores/timeouts/desconexiones nominales0. No combinar ni reinterpretar corridas ni extrapolar a teléfono → gameplay. Trabajo detenido tras integración.

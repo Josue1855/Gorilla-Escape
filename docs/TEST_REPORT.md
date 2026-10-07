@@ -166,7 +166,7 @@ Checks posteriores del merge 2B en `7e3aa60aa53c65e7051f32477a77985fbe628907`: *
 
 ## IPC-002C — hardening y validación sostenida, 2026-10-06
 
-**Resultado: PASS Linux de desarrollo, pendiente de integración.** Diseño [Accepted](PHASE0_IPC_2C_DESIGN.md) y [procedimiento reproducible](PHASE0_IPC_2C_VALIDATION.md). Fetch confirmó develop `7e3aa60aa53c65e7051f32477a77985fbe628907`; rama `codex/phase0-ipc-2c-hardening` desde ese SHA. Sin nuevas dependencias, rediseño del lifecycle ni cambios de fases futuras. Documentación local del merge 2B conservada.
+**Resultado: PASS / MERGED Linux de desarrollo mediante PR #93.** Diseño [Accepted](PHASE0_IPC_2C_DESIGN.md) y [procedimiento reproducible](PHASE0_IPC_2C_VALIDATION.md). Fetch confirmó develop `7e3aa60aa53c65e7051f32477a77985fbe628907`; rama `codex/phase0-ipc-2c-hardening` desde ese SHA. Sin nuevas dependencias, rediseño del lifecycle ni cambios de fases futuras. Documentación local del merge 2B conservada.
 
 | Gate / suite | Resultado y evidencia |
 |---|---|
@@ -215,4 +215,73 @@ Iteraciones descartadas: se corrigieron expectativas del harness (spy confundía
 
 **Identidad / sanitización:** [147 hashes de fuentes funcionales/tests/harness](evidence/unity-java-ipc-2c-2026-10-06/source-sha256.json); fuentes runtime y hashes JAR/Player/assemblies comprobados sin cambios después de las mediciones y al terminar todas las pruebas. Hash JAR `b43a17087e34cda7404952253dd4ae61615a4ae2f3b32489e8c5a3803d022961`. Sólo resúmenes JSON/CSV/XML sin properties/outputs secretos; raw logs/runtime/helpers/builds ignorados. Codec C# específico de probe, sin parser genérico ni dependencia nueva. No reconnect/restart automático, watchdog avanzado/nativo, Job Objects, arbitrary tree kill, TLS, malware defense, móvil/PWA/QR/sensores/cámara/gameplay/scoring/Input Fusion ni Fase1. Windows/PC oficial **NOT RUN**.
 
-**Estados:** 2A PASS / MERGED; 2B PASS / MERGED; **2C PASS pendiente de integración**; Incremento2 IN PROGRESS hasta merge2C; Fase0 IN PROGRESS; Fase1 NOT STARTED. Publicación mediante PR normal, sin merge automático ni trabajo posterior.
+**Estados:** 2A PASS / MERGED; 2B PASS / MERGED; **2C PASS / MERGED; Incremento 2 — Unity ↔ Java IPC PASS / MERGED**; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. Integración mediante merge normal autorizado del PR #93; sin trabajo posterior.
+
+## Integración normal del Incremento 2C
+
+[PR #93](https://github.com/Josue1855/Gorilla-Escape/pull/93) integrado mediante merge normal autorizado por el PO el 2026-10-07 01:03:09 UTC (2026-10-06 local). develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760` contiene el candidato validado `e957775b0a848a001d37e1a4770eb14103888d0c`; árbol completo idéntico y 147/147 hashes funcionales/test/harness coincidentes. Checks posteriores **Management validation PASS / Foundation validation PASS**. Protección efectiva comparada antes/después, sin cambios: PR obligatorio, checks estrictos `management-validation` y `java-react-foundation`, force push y eliminación deshabilitados, reglas aplicables a administradores y conversaciones resueltas obligatorias. Sin bypass ni cambios al candidato.
+
+**Estado vigente:** 2A PASS / MERGED; 2B PASS / MERGED; 2C PASS / MERGED; **Incremento 2 — Unity ↔ Java IPC PASS / MERGED**; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. Evidencia exacta de 2C conservada: Java22/22, EditMode19/19, PlayMode12/12, React4/4, build0errores/0warnings, corpus71casos, regresión Player11grupos, residual Java propio0, tres corridas independientes N1000 y estabilidad601.24s PASS; errores/timeouts/desconexiones nominales0. No combinar ni reinterpretar corridas ni extrapolar a teléfono → gameplay. Trabajo detenido tras integración.
+
+## LAN-003A — HTTPS LAN, candidato automatizado 2026-10-06
+
+**Resultado: implementación 3A IN PROGRESS; gate físico NOT RUN.** Diseño general
+[Accepted](PHASE0_PHONE_LAN_ONBOARDING_DESIGN.md), autorización únicamente 3A. Base
+`ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`, rama
+`feature/mobile-phase0-lan-https-3a`. [Guía física/setup](PHASE0_PHONE_3A_VALIDATION.md).
+Sin QR, sessionId/deviceId, heartbeat de presencia, estado CONNECTED, WS ni sensores.
+
+Configuración externa opt-in de IPv4/interfaz confirmadas, default8443, TLS directo
+Spring/PKCS12 con SAN validado. Rechaza IP/interfaz/configuración/password/certificado
+inválidos, wildcard/IPv6/VPN/virtual; leaf/password fuera de cualquier repositorio Git.
+Sin archivo móvil, perfil previo intacto. Unity hereda GORILLA_MOBILE_CONFIG al Java
+propio; no cambia fuentes Unity ni READY/token/framing/codecs/contratos/lifecycle IPC.
+Health diagnóstico añade identidad pública de lanzamiento, contador de peticiones y
+secure; APIs no-store. React mide petición puntual, muestra HTTPS/secure context y
+estado del worker, permite comprobar nuevamente; no crea sesión ni conexión continua.
+Sin dependencias/framework adicionales y sin modificación de firewall/router/trust.
+
+| Verificación | Resultado del candidato |
+|---|---|
+| Java regresión + TLS/LAN reales | **26/26 PASS**, sin fallos/errors/skips, JDK21 |
+| TLS confiable / CA desconocida / hostname SAN | PASS con cliente real y hostname verification; sin trust-all |
+| Perfil portátil CI TLS loopback | 3 PASS / 1 skip explícito del preflight LAN; el mismo caso sí pasó con configuración LAN |
+| React / build Vite / empaquetado JAR | **5/5 PASS**, builds PASS |
+| Assets/root/manifest/sw/API404/archivos privados no servidos | PASS desde Java HTTPS real |
+| Player con Java propio y HTTPS LAN | PASS, FIRST_PONG real, shell/health, listeners LAN HTTPS y127.0.0.1 IPC |
+| Cierre Player móvil | Unity exit0, Java exit0, cleanup completo, residual propio0 |
+| Regresión Player2A/2B con JAR final | **11 grupos PASS**, singleton/manual recovery/EOF/cancellation/deadlines/cleanup, residual0 |
+| UI en Chrome PC390px | PASS desde PWA empaquetada, HTTP loopback sólo para inspección UI |
+| Foundation / gestión / diff | PASS; no fuentes Unity/Shared modificadas |
+| Android/Chrome físico; iPhone/Safari físico | **NOT RUN** |
+| CA demo instalada, TLS sin warnings físico, SW físico | **NOT RUN** |
+| Primera carga sin cache con WAN desconectada; refresh/reapertura física | **NOT RUN** |
+| Segundo dispositivo LAN intenta IPC | **NOT RUN**; rechazo desde propia IPv4 LAN de PC sí comprobado |
+
+Evidencia sanitizada: [Java](evidence/phone-lan-https-3a-2026-10-06/java-lan-results.json),
+[TLS portable](evidence/phone-lan-https-3a-2026-10-06/tls-portable-results.json),
+[Player móvil](evidence/phone-lan-https-3a-2026-10-06/mobile-player-results.json),
+[regresión](evidence/phone-lan-https-3a-2026-10-06/player-regression-results.json),
+[React](evidence/phone-lan-https-3a-2026-10-06/react-results.json),
+[pendientes físicos](evidence/phone-lan-https-3a-2026-10-06/physical-results.json),
+[hashes fuentes](evidence/phone-lan-https-3a-2026-10-06/source-sha256.json) y
+[artefactos](evidence/phone-lan-https-3a-2026-10-06/build-artifacts.json).
+PKI de tests generada temporalmente fuera del repo y eliminada; nunca usada en teléfonos.
+mkcert de demo todavía no instalado/preparado: origen/versión se registrarán al setup.
+
+Corridas descartadas no acreditan gate: test nuevo utilizaba token en lugar de launchToken;
+perfil portable de test repetía server.port y no arrancaba; ambos corregidos en tests.
+Un lanzamiento concurrente de dos harness Player activó el singleton esperado: se repitió
+secuencialmente con JAR final, once grupos PASS. Se conserva únicamente el resultado final
+sanitizado; raw logs/builds/captura PC ignorados. Regresión no altera métricas históricas
+2A/2B/2C ni las tres corridas independientes de2C. No se repite benchmark600s porque IPC
+no cambió. EditMode/PlayMode y build Unity previos conservados, no declarados como nuevas
+corridas. Diagnósticos nativos del entorno Unity #89 permanecen; no afirmar ausencia global
+de fugas. Java mantiene avisos existentes de deprecación/Mockito/JVM; no declarar0warnings.
+
+**Estados:** Incremento1 PASS/MERGED; Incremento2 PASS/MERGED; **3A IN PROGRESS,
+gate físico NOT RUN**; 3B NOT STARTED; Incremento3 IN PROGRESS; Fase0 IN PROGRESS;
+Fase1 NOT STARTED. Publicar borrador de PR para revisión, no integración automática.
+Pendiente responsable con Android/iPhone: confirmar LAN, preparar CA pública, comprobar
+Chrome/Safari y retirar WAN manteniendo Wi-Fi. No se inventan modelos/router ni métricas
+URL→shell/confirmación físicas. No declarar3A PASS Linux+Android ni multiplataforma PASS.

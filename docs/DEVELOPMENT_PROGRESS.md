@@ -6,7 +6,7 @@ Actualizado: 2026-10-06.
 
 Fase 0 en progreso; Spike no completado. Base compartida en main y develop: Unity 6000.3.23f1, servidor Java 21/Spring Boot 4.1.1, PWA React 19.3.0/Vite 8.3.2/Node 24, contratos JSON y paquete C# compartido. Crear ramas pequeñas desde develop. No se inicia Fase 1.
 
-Estados vigentes: **2A PASS / MERGED; 2B PASS / MERGED en Linux de desarrollo; Incremento 2 IN PROGRESS; 2C PASS pendiente de integración; Fase 0 IN PROGRESS; Fase 1 NOT STARTED.**
+Estados vigentes: **2A/2B/2C e Incremento 2 PASS / MERGED en Linux de desarrollo; 3A IN PROGRESS (gate físico NOT RUN); 3B NOT STARTED; Incremento 3 IN PROGRESS; Fase 0 IN PROGRESS; Fase 1 NOT STARTED.**
 
 ## Incremento 2A — IPC mínimo
 
@@ -73,10 +73,39 @@ Base publicada con historial inicial limpio y ramas main/develop. El backlog y l
 
 ## Próximo paso
 
-Incremento 2C aprobado para implementación exclusiva según diseño Accepted. Validar gate completo, publicar candidato probado mediante PR normal a develop y detenerse sin merge automático. Windows/PC oficial, otras partes de Fase 0 y Fase 1 siguen fuera de esta tarea.
+Propuesta para aprobación del PO: teléfono real → LAN → onboarding/QR/HTTPS → Java, reutilizando la base React/Java existente. Definir acceso LAN, certificado HTTPS confiable en el teléfono, URL/QR de onboarding y prueba real de llegada a Java. Sin rama ni implementación; sensores, cámara, gameplay y Fase 1 permanecen fuera. Windows/PC oficial siguen pendientes.
 
 Checks posteriores del merge 2B en `7e3aa60aa53c65e7051f32477a77985fbe628907`: **management-validation PASS / java-react-foundation PASS**. Protecciones comparadas antes/después, idénticas. Cierre de integración; 2C no iniciado.
 
 ## Incremento 2C — hardening y validación sostenida
 
-Diseño [Accepted con precisiones del PO](PHASE0_IPC_2C_DESIGN.md). Fetch confirmó base develop `7e3aa60aa53c65e7051f32477a77985fbe628907`; rama `codex/phase0-ipc-2c-hardening` creada desde ese SHA, conservando documentación de merge 2B. Parser limitado al probe sin dependencia nueva, corpus compartido, framing/contrato estricto, deadline absoluto y writer acotado. Validación final **PASS Linux de desarrollo**, pendiente de integración: Java22/22, EditMode19/19, PlayMode12/12, React4/4, build0errors/0warnings, corpus71 casos cruzados, cinco grupos de presión, tres Players independientes N1000 a50Hz y heartbeat real601.24s; errores/timeouts nominales0, STOPPED/exit0/cleanup y residual propio0. Regresión Player2A/2B11 grupos PASS. Gate, métricas individuales y límites en [TEST_REPORT](TEST_REPORT.md) y [procedimiento](PHASE0_IPC_2C_VALIDATION.md). No merge automático; Incremento2 permanece IN PROGRESS hasta integración2C. Incremento 2/Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
+Diseño [Accepted con precisiones del PO](PHASE0_IPC_2C_DESIGN.md). Fetch confirmó base develop `7e3aa60aa53c65e7051f32477a77985fbe628907`; rama `codex/phase0-ipc-2c-hardening` creada desde ese SHA, conservando documentación de merge 2B. Parser limitado al probe sin dependencia nueva, corpus compartido, framing/contrato estricto, deadline absoluto y writer acotado. Validación final **PASS / MERGED Linux de desarrollo**: Java22/22, EditMode19/19, PlayMode12/12, React4/4, build0errors/0warnings, corpus71 casos cruzados, cinco grupos de presión, tres Players independientes N1000 a50Hz y heartbeat real601.24s; errores/timeouts nominales0, STOPPED/exit0/cleanup y residual propio0. Regresión Player2A/2B11 grupos PASS. Gate, métricas individuales y límites en [TEST_REPORT](TEST_REPORT.md) y [procedimiento](PHASE0_IPC_2C_VALIDATION.md). Integrado mediante merge normal #93; Incremento 2 PASS / MERGED; Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
+
+## Integración normal del Incremento 2C
+
+[PR #93](https://github.com/Josue1855/Gorilla-Escape/pull/93) integrado mediante merge normal autorizado por el PO el 2026-10-07 01:03:09 UTC (2026-10-06 local). develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760` contiene el candidato validado `e957775b0a848a001d37e1a4770eb14103888d0c`; árbol completo idéntico y 147/147 hashes funcionales/test/harness coincidentes. Checks posteriores **Management validation PASS / Foundation validation PASS**. Protección efectiva comparada antes/después, sin cambios: PR obligatorio, checks estrictos `management-validation` y `java-react-foundation`, force push y eliminación deshabilitados, reglas aplicables a administradores y conversaciones resueltas obligatorias. Sin bypass ni cambios al candidato.
+
+**Estado vigente:** 2A PASS / MERGED; 2B PASS / MERGED; 2C PASS / MERGED; **Incremento 2 — Unity ↔ Java IPC PASS / MERGED**; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. Evidencia exacta de 2C conservada: Java22/22, EditMode19/19, PlayMode12/12, React4/4, build0errores/0warnings, corpus71casos, regresión Player11grupos, residual Java propio0, tres corridas independientes N1000 y estabilidad601.24s PASS; errores/timeouts/desconexiones nominales0. No combinar ni reinterpretar corridas ni extrapolar a teléfono → gameplay. Trabajo detenido tras integración.
+
+## Diseño del Incremento 3 — LAN, HTTPS y onboarding
+
+Preparación original del [diseño posteriormente Accepted](PHASE0_PHONE_LAN_ONBOARDING_DESIGN.md), preparado únicamente sobre develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760` confirmado mediante fetch. Propone gates 3A LAN/HTTPS y 3B QR/sesión técnica, CA local previamente confiada en teléfonos físicos, assets React desde Java y pantalla QR React en PC. Sin rama, código, dependencias instaladas, certificados generados ni firewall modificado. Pruebas físicas y métricas de Incremento 3 NOT RUN; diseño pendiente de aprobación del PO. Estados de implementación conservados: Unity Foundation/Incremento 2 PASS / MERGED; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. No se inicia Incremento 4.
+
+## Incremento 3A — implementación LAN/HTTPS autorizada
+
+Diseño general [Accepted](PHASE0_PHONE_LAN_ONBOARDING_DESIGN.md) por el PO; sólo3A
+implementado sobre base confirmada `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`, rama
+`feature/mobile-phase0-lan-https-3a`. Configuración externa opt-in IPv4/interfaz/TLS,
+health puntual y React servido desde JAR; Unity sigue supervisor y el IPC es loopback.
+Sin nuevas dependencias ni código Unity/Shared; sin QR/onboarding/session/WS/sensores.
+
+Automatización: Java26/26, React5/5/builds, TLS confiable/CA desconocida/SAN incorrecto,
+Player propio HTTPS/IPC/EOF exit0 y regresión11grupos PASS, residualJava0. Guía y evidencia
+en [TEST_REPORT LAN-003A](TEST_REPORT.md) y [validación física](PHASE0_PHONE_3A_VALIDATION.md).
+
+**Estado vigente:** Incremento1 PASS/MERGED; Incremento2 PASS/MERGED; **3A IN PROGRESS**
+por gate físico **NOT RUN** (Android/Chrome, iPhone/Safari, primera carga sinWAN, segundo
+cliente LAN). Incremento3 IN PROGRESS; 3B NOT STARTED; Fase0 IN PROGRESS; Fase1 NOT STARTED.
+Borrador de PR, sin merge automático. Se requiere participación del operador para setup
+CA pública/red y pruebas físicas; modelos/versiones/router aún sin confirmar. Ningún
+firewall/trust/router cambiado ni CA privada de demo generada. No iniciar3B automáticamente.
