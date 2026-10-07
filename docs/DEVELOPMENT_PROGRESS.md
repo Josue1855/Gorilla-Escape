@@ -113,3 +113,7 @@ firewall/trust/router cambiado ni CA privada de demo generada. No iniciar3B auto
 ## Rediseño Incremento 3 — requisito dual-cliente
 
 [DEC-006](DECISIONS.md) acepta PWA universal y Flutter Android opcional/preferido, con sesión/IDs/protocolo WSS/backend comunes y autoridad Unity. [Rediseño técnico Proposed](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) reemplaza CA móvil por propuesta de certificado público/FQDN y resolución LAN preparada sin ajustes del jugador. No código Flutter/Java/React/Unity modificado. #94 sigue DRAFT;3A IN PROGRESS, nuevo gate NOT RUN;3B/4A/4B/4C NOT STARTED. Incremento2 PASS/MERGED; Fase0 IN PROGRESS/Fase1 NOT STARTED. Pendiente aprobar dominio/red/HTTPS/onboarding; no continuar automáticamente.
+
+## Evaluación operativa3A — sin cambios runtime
+
+Arquitecturaobjetivo aprobada conceptualmente por PO. [Viabilidad Proposed](PHASE0_PHONE_3A_FEASIBILITY.md): routerdedicadoDHCP/DNS, dominio/certificado públicoDNS-01 previo y DNATlocal443→JavaHTTPS8443 para conservarchild/EOF sinprivilegiosJava. Dominio/router/teléfonos de referencia aún no acreditados; nuevos gates físicosNOT RUN. #94OPEN/DRAFT verificado;3AIN PROGRESS;3B/4A/4B/4C NOT STARTED;Fase0IN PROGRESS/Fase1NOT STARTED. Sólo lectura/documentación; ninguna compra/emisiónTLS/red/runtime modificada. Evidencia previa conservada, no descartada ni reinterpretada como nuevoPASS.

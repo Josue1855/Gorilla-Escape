@@ -1,6 +1,6 @@
 # Rediseño Incremento 3 — HTTPS y onboarding común PWA / Flutter Android
 
-**Estado de arquitectura técnica: Proposed, pendiente de aprobación.**
+**Estado de arquitectura objetivo: aprobada conceptualmente por PO.** Estrategia operativa Proposed; [evaluación de viabilidad3A](PHASE0_PHONE_3A_FEASIBILITY.md) pendiente de aprobación antes de adaptar#94.
 **Requisito de producto de dos clientes: Accepted**, por instrucción explícita del PO.
 Base integrada: develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`.
 [PR #94](https://github.com/Josue1855/Gorilla-Escape/pull/94) permanece DRAFT: su solución
