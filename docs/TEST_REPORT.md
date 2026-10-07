@@ -317,3 +317,11 @@ Head previo confirmado `50e48418ff286dcd3096c92800fd47f602ad27f2`, #94 OPEN/DRAF
 | Gate3A | IN PROGRESS |
 
 [Procedimiento vigente](PHASE0_PHONE_3A_VALIDATION.md) y [Linux443](PHASE0_PHONE_3A_LINUX_443.md). No compras/emisión pública/router/firewall/trust modificados. Hashes fuente/artefactos guardados; Player Unity previo reutilizado sin cambio Unity/Shared/IPC. Validación foundation/gestión y diff PASS. 3B/4A/4B/4C NOT STARTED; Fase0 IN PROGRESS; Fase1 NOT STARTED. #94 DRAFT, sin merge.
+
+### 3A — Android Emulator / Chrome, QA local
+
+[Procedimiento reproducible](PHASE0_PHONE_3A_ANDROID_EMULATOR.md) y [resultados nuevos](evidence/android-emulator-3a-2026-10-06/results.json): **10 PASS / 2 BLOCKED / 1 SKIP**, API36/Chrome133.0.6943.137, KVM/headless en Pop!_OS24.04/COSMIC. Android boot, Chrome, React real, health200/no-store, interacción, recarga, restart navegador, error de conexión al cerrar Java real, rechazo de certificado no confiable, logcat y cleanup PASS. Java HTTP/TLS, Emulator y ADB exit0; residuales propios/helpers0. SDK ausente: [BLOCKED/exit2](evidence/android-emulator-3a-2026-10-06/missing-sdk-results.json), sin iniciar procesos.
+
+Java iniciado por el harness de QA, no Unity; HTTP localhost por ADB sólo prueba componentes, no fallback del producto ni HTTPS público. Certificado efímero rechazado por Chrome sin bypass/CA instalada; confianza pública positiva y LAN/DNS443/Android/iPhone físicos siguen BLOCKED. QR/sesión/sensores/WSS/Flutter SKIP fuera de alcance. No sustituye pruebas históricas Unity/Java/React ni las declara reejecutadas.
+
+[Intentos y hash exacto del harness](evidence/android-emulator-3a-2026-10-06/manifest.json): tres fallos de automatización conservados (dispositivo aún no disponible, first-run Chrome y espera tras restart), corregidos exclusivamente en QA; corrida final PASS. Evidencia seleccionada sanitizada; logs/perfiles/PKI ignorados y temporales. Sin instalaciones, cambios de runtime, red, DNS, firewall o confianza del sistema. **3A IN PROGRESS; #94 DRAFT**; estados posteriores sin cambio.

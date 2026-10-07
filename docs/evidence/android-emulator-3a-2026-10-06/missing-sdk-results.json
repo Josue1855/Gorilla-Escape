@@ -1,0 +1,27 @@
+{
+  "scope": "Android emulator component/browser tests; not physical LAN or public trust",
+  "gate3A": "IN PROGRESS",
+  "cases": [
+    {
+      "name": "environment",
+      "status": "BLOCKED",
+      "detail": "Installed SDK/image/Java/JAR missing; no automatic installation"
+    },
+    {
+      "name": "cleanup",
+      "status": "PASS",
+      "detail": "Owned process handles closed; no shared ADB server/device/profile killed"
+    },
+    {
+      "name": "android_logcat",
+      "status": "SKIP",
+      "detail": "Bounded Chrome PID log capture in disposable AVD; raw logs ignored"
+    }
+  ],
+  "cleanup": {
+    "processes": [],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  }
+}

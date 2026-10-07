@@ -127,3 +127,19 @@ Supersede los estados Proposed de los registros históricos anteriores: arquitec
 Software validado **no cierra3A**. Dominio/accesoDNS/router/certificado público y autorización operativa pendientes; Android/iPhone físicos aún sin modelos/versiones confirmados. HTTPS443/DNS router/primera carga sinWAN/segundo dispositivoIPC NOT RUN. Certificado efímero y ruta directa de test no sustituyen confianza pública/resolución física.
 
 **Estados:** #94 DRAFT;3A IN PROGRESS;3B/4A/4B/4C NOT STARTED; Incremento2 PASS/MERGED; Fase0 IN PROGRESS; Fase1 NOT STARTED. Publicar sólo esta adaptación y detenerse; no preparar infraestructura automáticamente.
+
+## Preflight operativo 3A — sólo lectura y documentación
+
+[Preflight](PHASE0_PHONE_3A_PREFLIGHT.md) sobre #94 OPEN/DRAFT head `034ab44aa5b27c1812fc1b5f9f3cc8f7593debf1`, checks SUCCESS. Pop!_OS24.04, Wi-Fi IPv4 `10.1.125.17/22`, gateway `10.1.124.1`, NetworkManager/resolved activos, UFW habilitado. DNS anunciado fuera de subred no acredita resolución offline. Sin listeners443/8443 ni proceso Java en snapshot; no se inició ningún servicio. Lectura de reglas nft/UFW impedida sin privilegios autorizados, pendiente resumen administrativo sanitizado. Router/dominio/teléfonos sin confirmar; reutilizar router actual si demuestra funciones antes de recomendar compra.
+
+Sólo reporte/plan/matriz física/rollback y bloqueos; sin pruebas de aplicación nuevas, compras, certificados emitidos, cambios de red/firewall/servicios ni runtime. Evidencia previa intacta. #94 DRAFT;3A IN PROGRESS;3B/4A/4B/4C NOT STARTED; Fase0 IN PROGRESS; Fase1 NOT STARTED. No ejecutar automáticamente el procedimiento.
+
+## 3A — QA Android automatizable disponible
+
+[Android Emulator local](PHASE0_PHONE_3A_ANDROID_EMULATOR.md): herramienta reproducible por un comando, SDK/KVM existentes, sin instalación ni cambios Unity/Java/React. Chrome Android real emulado + Java real: 10 PASS, 2 BLOCKED físicos/públicos, 1 SKIP fuera de alcance; cleanup exit0/residuales propios0. Evidencia y fallos previos del harness separados de resultados históricos en [TEST_REPORT](TEST_REPORT.md).
+
+Sólo QA local: no sustituye teléfonos/router/DNS/certificado público; siete datos pendientes. #94 permanece DRAFT con head intacto; 3A IN PROGRESS; 3B/4A/4B/4C NOT STARTED; Fase0 IN PROGRESS; Fase1 NOT STARTED.
+
+## 3A — Evidencia de apoyo y preparación física
+
+Se incorpora al candidato #94 la guía/harness/evidencia sanitizada Android, conservando 10 PASS / 2 BLOCKED / 1 SKIP. [Plan físico y matriz de router existente](PHASE0_PHONE_3A_PHYSICAL_PLAN.md): siete datos siguen sin confirmar suficientemente; PC/ruta Wi-Fi comprobadas sólo lectura, no se inventan router/firmware/dominio/permisos. Pruebas Android/Chrome e iPhone/Safari con primera visita sin WAN preparadas, NOT RUN. Sin runtime o infraestructura modificados; #94 DRAFT y 3A IN PROGRESS, estados posteriores intactos.
