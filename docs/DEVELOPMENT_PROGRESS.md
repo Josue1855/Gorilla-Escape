@@ -117,3 +117,13 @@ firewall/trust/router cambiado ni CA privada de demo generada. No iniciar3B auto
 ## Evaluación operativa3A — sin cambios runtime
 
 Arquitecturaobjetivo aprobada conceptualmente por PO. [Viabilidad Proposed](PHASE0_PHONE_3A_FEASIBILITY.md): routerdedicadoDHCP/DNS, dominio/certificado públicoDNS-01 previo y DNATlocal443→JavaHTTPS8443 para conservarchild/EOF sinprivilegiosJava. Dominio/router/teléfonos de referencia aún no acreditados; nuevos gates físicosNOT RUN. #94OPEN/DRAFT verificado;3AIN PROGRESS;3B/4A/4B/4C NOT STARTED;Fase0IN PROGRESS/Fase1NOT STARTED. Sólo lectura/documentación; ninguna compra/emisiónTLS/red/runtime modificada. Evidencia previa conservada, no descartada ni reinterpretada como nuevoPASS.
+
+## 3A — Software FQDN / HTTPS443 aprobado y adaptado
+
+Supersede los estados Proposed de los registros históricos anteriores: arquitectura técnica Accepted, autorización exclusivamente de adaptación software en #94, head previo confirmado `50e48418ff286dcd3096c92800fd47f602ad27f2`. SAN DNS exacto/cadena vigente PKIX, IPv4 de escucha independiente, origen público canónico443 y Java8443 default; archivos externos privados y validación sin secretos. Hosting/diagnóstico React, supervisor Unity/READY/IPC/EOF/singleton/límites de recuperación reutilizados, sin cambios Unity/Shared/PWA ni nuevas dependencias.
+
+[Reporte](TEST_REPORT.md): Java30/30, React5/5, JAR/PWA empaquetada, Player HTTPS real/cleanup y regresión11 grupos PASS; Java propio residual0. TLS portable6PASS/2SKIP cubiertos por LAN explícita. Evidencia anterior conservada; intentos fallidos/incompletos nuevos documentados. [Procedimiento443](PHASE0_PHONE_3A_LINUX_443.md) preparado pero no ejecutado. No compras, certificado público emitido ni modificación router/firewall/DNS/trust.
+
+Software validado **no cierra3A**. Dominio/accesoDNS/router/certificado público y autorización operativa pendientes; Android/iPhone físicos aún sin modelos/versiones confirmados. HTTPS443/DNS router/primera carga sinWAN/segundo dispositivoIPC NOT RUN. Certificado efímero y ruta directa de test no sustituyen confianza pública/resolución física.
+
+**Estados:** #94 DRAFT;3A IN PROGRESS;3B/4A/4B/4C NOT STARTED; Incremento2 PASS/MERGED; Fase0 IN PROGRESS; Fase1 NOT STARTED. Publicar sólo esta adaptación y detenerse; no preparar infraestructura automáticamente.

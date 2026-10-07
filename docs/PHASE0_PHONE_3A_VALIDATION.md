@@ -1,142 +1,64 @@
-# Validación 3A — HTTPS LAN sin onboarding
+# Validación 3A — FQDN / HTTPS confiable / LAN
 
-> **Histórico: no ejecutar setup CA en teléfonos como aceptación del producto.** El PO exige onboarding sin instalar certificados/perfiles ni cambiar DNS/browser. Consultar [rediseño vigente](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md); #94 sigue DRAFT. Tests TLS efímeros previos no demuestran el nuevo gate de confianza pública.
+**Diseño técnico Accepted; adaptación de software autorizada.** PR #94 continúa DRAFT, 3A IN PROGRESS. La experiencia de producto jamás instala CA/certificados/perfiles ni cambia DNS/browser en teléfonos. El procedimiento CA/SAN IP anterior queda histórico en Git (`50e48418ff286dcd3096c92800fd47f602ad27f2`); su evidencia no se elimina ni se presenta como prueba del nuevo gate.
 
-Diseño [Accepted](PHASE0_PHONE_LAN_ONBOARDING_DESIGN.md). Sólo 3A autorizado. Base
-`ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`, rama
-`feature/mobile-phase0-lan-https-3a`. 3B/QR/sesión/sensores NOT STARTED.
+Arquitectura: teléfono → Wi-Fi → FQDN controlado → DNS local router → HTTPS443 → redirección restringida → Java8443 → React empaquetado. IPC sigue exclusivamente127.0.0.1. Consultar [viabilidad](PHASE0_PHONE_3A_FEASIBILITY.md), [rediseño](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) y [procedimiento Linux preparado](PHASE0_PHONE_3A_LINUX_443.md).
 
-## Preparación de red y TLS
+## Configuración externa
 
-Operador identifica PC/router y confirma interfaz e IPv4 privada asignada. No seleccionar
-silenciosamente una interfaz ni cambiar router/firewall. Comprobar misma LAN real: una
-red de invitados/escuela puede aislar clientes aunque comparta SSID. Java rechaza loopback,
-link-local, direcciones públicas, wildcard e IPv6; interfaz caída, túnel, virtual o IP no
-asignada. Linux requiere un dispositivo físico en `/sys/class/net/<interfaz>/device`;
-no se admiten bridges/VPN como interfaz móvil. Windows no validado.
-
-1. Preparar mkcert desde [su distribución oficial](https://github.com/FiloSottile/mkcert).
-   Registrar versión (`mkcert -version`), origen/hash binario y responsable. No instalación
-   automática desde el juego ni dependencia runtime. CA/leaf/password/PKCS12 viven en
-   directorio privado **fuera del repositorio**. No distribuir rootCA-key.pem.
-2. En ese directorio privado, establecer CAROOT para CA exclusiva de demo. Generar leaf
-   con SAN **IP exacta confirmada** usando mkcert. Convertir leaf/key y cadena pública a
-   PKCS12 mediante OpenSSL; introducir password por entrada interactiva o archivo privado,
-   jamás argumento. PC Linux: directorio700, archivos privados600; revisar ACL en otros SO.
-3. Transferir sólo rootCA.pem público a teléfonos mediante medio controlado. Verificar
-   fingerprint con operador. Android: instalar CA de usuario y comprobar Chrome realmente.
-   iPhone: instalar perfil y habilitar confianza completa SSL/TLS; perfil solo no basta.
-   No visitar URL con excepción TLS ni desactivar validación.
-4. Configurar archivo de operador absoluto fuera del repo, con campos siguientes (ejemplo,
-   reemplazar dirección/interfaz/rutas; no copiar una IP sin confirmar):
+Archivo absoluto **fuera de todo repositorio Git**; keystore/password también externos. En POSIX no se aceptan permisos de grupo/otros en ninguno de esos tres archivos: usar600 y directorio privado700. Revisar ACL en SO sin POSIX (Windows no validado). Ejemplo documental, no dominio disponible ni certificado emitido:
 
 ```properties
 address=192.168.1.10
 interface=wlan0
 operatorConfirmed=true
+hostname=play.example.org
+publicOrigin=https://play.example.org
 port=8443
-keyStore=/ruta/privada/fuera-del-repo/server.p12
-passwordFile=/ruta/privada/fuera-del-repo/password
+keyStore=/ruta/privada/server.p12
+passwordFile=/ruta/privada/password
 ```
 
-Sólo esos campos se permiten; puerto opcional default8443 (1024–65535). PasswordFile es
-una línea UTF-8 (se permite newline final); no se registra su contenido. Spring recibe
-configuración en memoria; no se pasan passwords al proceso por argumentos.
+`address` es IPv4 RFC1918 asignada a interfaz física explícita; `hostname` es FQDN ASCII minúsculo, labels válidos, sin wildcard/IP/single-label/URL. Para IDN preparar A-label ASCII; no conversión silenciosa. `publicOrigin` debe ser exactamente `https://<hostname>`, sin credenciales, puerto explícito, path, query o fragmento; representa443. `port` es escucha interna, default8443; puerto alto configurable permite pruebas efímeras/diagnóstico, nunca cambia el origen público. No confundir READY `httpPort` con443.
 
-5. Lanzar **Unity**, no otro Java, con `GORILLA_MOBILE_CONFIG` apuntando al archivo y las
-   rutas Java/JAR existentes (`GORILLA_IPC_JAVA`, `GORILLA_IPC_JAR`). Usar modo lifecycle
-   existente `GORILLA_IPC_MODE=lifecycle` para mantener el hijo activo. Ejemplo conceptual:
+PKCS12: una única clave privada leaf con SAN DNS exacto (case-insensitive, sin wildcard), vigencia actual, uso TLS server adecuado y cadena ordenada completa. Todos los certificados incluidos deben estar vigentes; se validan firmas, CA/key usage/path length y PKIX sin consultas online de revocación durante startup. Root puede omitirse si el último issuer se resuelve en trust store del JRE; root incluido debe ser autofirmado válido. Material de test con root efímero es admitido para automatización: **la validación de cadena por sí sola no demuestra confianza pública en teléfonos**, que exige certificado público real y gate físico. No introduce trust-all, excepciones de hostname ni CA al cliente de producto. Mantener JRE/trust store actualizado durante preparación previa.
+
+PasswordFile una línea (newline final permitido), ≤1024bytes; config≤4096bytes, keystore≤1MiB, cadena≤8certificados. Password se entrega a Spring en memoria, nunca argumentos/logs. Fallo produce `MOBILE_HTTPS_CONFIG_INVALID` sin contenido privado; no READY ni fallback HTTP en perfil móvil. Puerto ocupado falla startup sin elegir HTTP. Perfil IPC previo sin variable móvil conserva loopback histórico.
+
+Lanzar **Unity**, sin root:
 
 ```text
-GORILLA_MOBILE_CONFIG=<archivo absoluto externo>
+GORILLA_MOBILE_CONFIG=<archivo absoluto privado>
 GORILLA_IPC_JAVA=<java21 absoluto>
-GORILLA_IPC_JAR=<JAR absoluto construido con esta PWA>
+GORILLA_IPC_JAR=<JAR construido con PWA actual>
 GORILLA_IPC_MODE=lifecycle
 ```
 
-Estas variables se heredan al child. No cambia código ni contrato Unity: en Java el archivo
-móvil opt-in prevalece sobre argumentos HTTP loopback existentes del supervisor. Sin esa
-variable, los perfiles previos conservan sus defaults. READY sigue idéntico; httpPort
-representa ahora el puerto HTTPS en modo móvil. IPC continúa 127.0.0.1:0, token separado.
-Certificado inválido, SAN incorrecto, IP/interfaz inválida o puerto ocupado no producen
-READY móvil ni fallback HTTP. Reconfiguración/reinicio es manual, límite3 de2B conservado.
+Variables heredadas al hijo; no cambios de contratos/supervisor Unity, singleton, EOF, cleanup ni límites de recuperación. Configuración neutral respecto de ACME/DNS; sin emisión/renovación automática dentro del juego. No QR, `/join`, sessionId, Flutter ni WS.
 
-6. Abrir manualmente `https://<IPv4>:8443/` en teléfono. No Vite, QR, `/join`, sessionId,
-   deviceId, presencia, WebSocket ni permisos de sensores/cámara. La pantalla muestra
-   contexto seguro/HTTPS y botón **Comprobar Java ahora**. La respuesta de health indica
-   instancia diagnóstica de lanzamiento y contador real; comparar instancia con PC.
-   La UI indica resultado puntual, nunca estado Connected ni conexión continua.
+## Pruebas automatizadas reproducibles
 
-## Firewall y exposición
+1. `npm --prefix PWA test` y `npm --prefix PWA run build`.
+2. JDK21: `Server/mvnw -B -f Server/pom.xml verify`. TLS real portable loopback con PKI efímera externa; preflight LAN se omite explícitamente sin dirección/interfaz física.
+3. Repetir verify con `-Dgorilla.test.lanAddress=<IPv4 de test confirmada> -Dgorilla.test.lanInterface=<interfaz física>`: configuración móvil real, SAN DNS distinto de IP, origen443 separado del puerto alto, SAN incorrecto/IP-only, password/permisos/origen inválidos, cadena/vigencia/hostname verification, CA desconocida, puerto ocupado, assets/health, IPC real y EOF exit0.
+4. Cliente de test conecta a IPv4 explícita con SNI DNS y verificación HTTPS del hostname; **no cambia DNS del SO**. No demuestra resolución de router ni443. Certificados temporales se destruyen; sin claves/secretos en evidencia.
+5. Player Linux real existente + JAR actualizado: `tools/validate_phone_3a_player.py --player <Player> --java <Java21> --jar <JAR> --address <IPv4> --interface <interfaz> --output <directorio ignorado>`. TLS/SNI DNS real, PPid Unity confirmado, listeners IPv4LAN/loopbackIPC, PING/PONG, health/assets, EOF, exit0 y propios residuales0. No teléfonos simulados como gate.
+6. Regresión `tools/validate_ipc_2b_player.py` con fixtures existentes, secuencialmente respecto de cualquier otro Player: once grupos2A/2B. Sin cambios Unity/Shared/codec no corresponde repetir benchmark600s ni reinterpretar métricas2C.
+7. `python3 tools/validate_foundation.py`, `python3 tools/github/validate_management.py`, diff/secretos y `git diff --check`.
 
-Primero intentar sin modificar firewall. Si es necesario y el SO usa UFW, el operador
-revisa/autoriza la regla concreta; ejemplo a sustituir por interfaz/IP/subred comprobadas:
+PWA conserva recursos empaquetados locales; diagnosticar imports/HTML/manifest/SW sin CDN obligatorio. APIs no-store, sin estado Connected inventado. Unity fuente/build existente se reutiliza sin cambios, con hash del artefacto registrado; no presentar ese hash como build Unity nuevo.
 
-```text
-sudo ufw allow in on wlan0 from 192.168.1.0/24 to 192.168.1.10 port 8443 proto tcp comment 'Gorilla-3A-demo'
-sudo ufw delete allow in on wlan0 from 192.168.1.0/24 to 192.168.1.10 port 8443 proto tcp
-```
+## Infraestructura y gate físico pendientes
 
-Primera línea instala y segunda revierte; no ejecutar ambas como receta automática.
-No deshabilitar firewall ni añadir UPnP/port forwarding. Si UFW no es firewall activo,
-identificar la regla equivalente antes de cambiarla, no activar otro firewall encima.
-Registrar listeners del PID propio: exactamente IPv4 LAN:puerto HTTPS y127.0.0.1:IPC,
-sin wildcard/IPv6/HTTP paralelo. Desde segundo dispositivo LAN intentar IPC con un
-cliente TCP real y registrar fallo. Un fallo de fetch/browser no prueba inaccesibilidad TCP.
+No compras, certificados públicos emitidos, router alterado ni firewall aplicado en esta tarea. Dominio/accesoDNS, router compatible, preparación pública TLS y autorización operativa443 están pendientes. Procedimiento preparado no significa infraestructura probada.
 
-## Automatización reproducible
+Por Android/Chrome **e** iPhone/Safari físicos: registrar modelos, versiones, router/firmware, LAN/FQDN, IP/reserva/DNS, certificado público SAN/issuer/notBefore/notAfter/fingerprint público, PC/JRE y artefactos. Nunca claves/passwords/tokens/dump de entorno ni datos personales.
 
-- `npm --prefix PWA test` y `npm --prefix PWA run build` antes de Maven: el JAR incorpora
-  dist real. No usar dist antiguo.
-- `JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 Server/mvnw -B -f Server/pom.xml verify`:
-  regresión IPC y pruebas TLS reales portables en loopback; test preflight SAN/password
-  LAN explícito se declara omitido si no se proveen las propiedades de dirección/interfaz.
-- Para añadir prueba automática de binding LAN real desde PC:
-  `... verify -Dgorilla.test.lanAddress=<IP confirmada de test> -Dgorilla.test.lanInterface=<interfaz>`.
-  Material TLS efímero creado por OpenSSL dentro del directorio temporal de JUnit, no
-  certificado de demo ni fixture privada versionada. Cliente confía exclusivamente CA
-  efímera; cliente default rechaza CA; SAN diferente rechazado con hostname verification
-  activado. No trust-all. Pruebas incluyen assets, APIs404, puerto ocupado, no fallback,
-  IPC LAN inaccesible desde PC, PING/PONG real y EOF exit0/child no residual.
-- `python3 tools/validate_foundation.py` y `python3 tools/github/validate_management.py`.
-- Player existente no cambió; usar JAR nuevo y `tools/validate_ipc_2b_player.py` con
-  helpers de2B: once grupos incluyendo singleton, EOF, cleanup y límite de reintentos.
-  No benchmark600s nuevo: codecs/lifecycle no cambiaron.
+- Cero instalación CA/perfiles y cero DNS/manual/browser; URL `https://<FQDN>/`, sin puerto ni advertencias; contexto seguro.
+- Primera carga sin cache y sin WAN, Wi-Fi activo: shell/assets/SW/health real. Prueba stock con datos móviles activos separada de instrumentación de ruta; no atribuir a LAN respuestas públicas/cacheadas.
+- Diez health por plataforma, instancia diagnóstica coincide Java y contador crece; registrar fallos y duración de cada petición. Refresh/reapertura5veces; parar Java debe fallar≤5s y jamás devolver health cacheado.
+- DNS privado/VPN/DoH/selección Wi-Fi-datos/rebinding/aislamiento y cambio de IP: resultados reales, sin prometer compatibilidad universal ni pedir configuración del jugador.
+- PC443 por OUTPUT y teléfono443 por PREROUTING; IPC inaccesible por TCP desde segundo dispositivo, sin wildcard/IPv6/HTTP adicional.
+- Unity cierre → EOF → Java exit0, Unity exit0, cleanup y propios residuales0; rollback/red sin cambios ajenos.
 
-Automatización de PC no sustituye ninguna prueba física. Aun con CA instalada, Chrome
-puede no confiar por SAN, policy o almacén: investigar y registrar, nunca marcar PASS.
-
-## Checklist físico y evidencia
-
-Completar **por Android/Chrome y iPhone/Safari** disponibles, marcar ausente NOT RUN:
-modelo, OS/browser/version, PC/router/red, IPv4/interfaz/puerto, fingerprint público CA,
-SAN/vigencia/reloj; setup inicial separado de tiempos normales. No guardar keys/passwords,
-launch tokens, dump de entorno ni datos personales. No declarar hardware oficial si no elegido.
-
-1. Abrir URL manual, cero advertencias, HTTPS sí, `isSecureContext` sí.
-2. Shell/manifest/iconos/assets/sw locales, sin CDN ni recursos externos necesarios.
-3. Botón health: instancia coincide PC, requestNumber aumenta, secure=true; Java recibe
-   petición HTTPS real. Registrar mínimo10 intentos por plataforma, todos los fallos.
-4. Desconectar WAN del router conservando LAN. Borrar datos del origen para primera carga
-   **sin cache**. Repetir shell y health; worker active/control observado en inspector o
-   diagnóstico físico. No sustituir con modo offline devtools ni datos móviles activos.
-5. Refresh y cerrar/reabrir5veces; assets cacheados disponibles y APIs nunca de cache.
-6. Detener Java desde Unity; volver a comprobar falla ≤5s. Reabrir shell cacheado sin
-   anunciar falso éxito. Primer acceso sin cache con Java apagado puede ser sólo error
-   navegador; no prometer que React pueda mostrar mensajes antes de cargar.
-7. IP incorrecta/red ajena/SAN equivocado/CA no confiable: registrar comportamiento real;
-   el operador guía cuando no puede cargar UI. Cambiar IP obliga certificado/URL/reinicio
-   manual; no fallback ni excepción TLS.
-8. IPC inaccesible desde segundo dispositivo LAN; puerto HTTPS correcto visible. Normal
-   cierre Unity/Java exit0, cleanup y cero Java propio residual. No matar procesos ajenos.
-
-Métricas por intento: inicio apertura URL→shell visible con cronómetro externo, shell→
-respuesta Java válida (duración de petición mostrada), éxito/fallo/causa, primera carga,
-refresh/reapertura separados. No mezclar setup CA ni relojes PC/teléfono; no latencia sensores
-ni extrapolación a gameplay. Internet perdido con LAN activa es diferente de PC apagada.
-
-**Gate:** PASS sólo para plataformas físicas realmente validadas, con TLS confiable,
-primera carga sinWAN, API real, SW/refresh/reapertura y exposición/cleanup correctos.
-Android PASS no implica iPhone PASS; absent/pendiente NOT RUN. Incremento3 IN PROGRESS,
-3B NOT STARTED, Fase0 IN PROGRESS y Fase1 NOT STARTED. PR puede quedar draft mientras
-falta gate físico, nunca se declara3A PASS por sólo automatización.
+**Gate:** software automatizado puede PASS, infraestructura preparada puede quedar NOT RUN y físico NOT RUN. 3A sigue IN PROGRESS hasta ambos teléfonos reales y certificado público cumplan todo. 3B/4A/4B/4C NOT STARTED; Fase0 IN PROGRESS; Fase1 NOT STARTED.

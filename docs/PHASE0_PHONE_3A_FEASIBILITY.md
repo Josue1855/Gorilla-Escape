@@ -1,13 +1,14 @@
+> Aprobación posterior del PO: arquitectura técnica Accepted, exclusivamente adaptación de software3A y procedimiento operativo. No autoriza compras, certificados públicos, router/firewall ni ejecución de infraestructura. Gates físicos permanecen pendientes.
+
 # Viabilidad técnica y operativa 3A — HTTPS LAN sin configurar teléfonos
 
-**Estado: Proposed; evaluación, no implementación.** Arquitectura objetivo aprobada
-conceptualmente por PO: PWA universal, Flutter Android opcional/preferido, Java único
+**Estado: Accepted para adaptación de software3A.** Arquitectura aprobada por PO: PWA universal, Flutter Android opcional/preferido, Java único
 backend, Unity autoridad, sesión/contratos/WSS comunes y enlace/QR único. La solución
-operativa que sigue requiere aprobación. Base integrada develop
-`ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`. Candidato #94 revisado:
-`85c88ff364ca4f1382e02c63266e5269b03b4fe2`, OPEN/DRAFT.
+operativa que sigue está aprobada como diseño; ejecutar infraestructura requiere autorización separada. Base integrada develop
+`ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`. Candidato inicial evaluado #94:
+`85c88ff364ca4f1382e02c63266e5269b03b4fe2`; head previo a adaptación verificado `50e48418ff286dcd3096c92800fd47f602ad27f2`, OPEN/DRAFT.
 [Rediseño](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md), [DEC-006](DECISIONS.md),
-[evidencia anterior](TEST_REPORT.md). Ningún cambio runtime/red, compra ni emisión TLS.
+[evidencia anterior](TEST_REPORT.md). La evaluación original no modificó runtime/red ni realizó compras/emisión TLS; adaptación software posterior en [validación vigente](PHASE0_PHONE_3A_VALIDATION.md).
 
 ## 1. Recomendación y condiciones de viabilidad
 
@@ -253,7 +254,7 @@ No hay hardware/dominio suficiente confirmado para cerrarPASS físico en esta ev
 
 ## 12. Decisiones PO y cierre
 
-Aprobar antes de adaptar #94:
+Arquitectura/adaptación software aprobadas. Pendientes de ejecución operativa:
 
 - Dominio existente/delegado o presupuesto compra; proveedorDNS y responsable de emisión/
   renovación; margenpropuesto de 14 días y preparación online permitida.
@@ -268,4 +269,4 @@ Aprobar antes de adaptar #94:
 **Estados conservados:** #94 DRAFT;3A IN PROGRESS; 3B/4A/4B/4C NOT STARTED;
 Incremento 2 PASS/MERGED;Fase 0 IN PROGRESS;Fase 1 NOT STARTED.
 Evaluación documental concluida, arquitectura objetivo aprobada conceptualmente y propuesta
-operativa pendiente. Sin runtime, compras, certificados emitidos ni red alterada. Detenerse.
+operativa Accepted como diseño. Adaptación software autorizada posteriormente; compras, certificados emitidos y cambios de red siguen sin autorizar. Ver validación vigente.

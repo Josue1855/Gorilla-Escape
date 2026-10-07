@@ -296,3 +296,24 @@ nueva UX/trust público**. Nuevo gate3A NOT RUN, estrategia CA móvil superada; 
 Esta tarea sólo actualiza documentos: validación de gestión/enlaces y diff PASS; builds y
 pruebas nuevas de aplicación no aplican, Flutter no implementado. Sin nuevos resultados
 físicos ni modificación/reinterpretación de métricas previas.
+
+### 3A — Adaptación FQDN y origen443 (software; gate físico pendiente)
+
+Head previo confirmado `50e48418ff286dcd3096c92800fd47f602ad27f2`, #94 OPEN/DRAFT. Arquitectura técnica Accepted; sólo software autorizado. [Evidencia nueva sanitizada](evidence/phone-lan-fqdn-3a-2026-10-06/java-results.json) separada del candidato CA/SAN IP histórico, que conserva sus resultados exactos.
+
+- Java JDK21 `verify` explícito LAN: **30/30 PASS**, sin skips; ocho casos TLS/configuración y22 regresiones existentes. SAN DNS correcto/incorrecto/IP-only, IP de escucha distinta del hostname, origen HTTPS443 estricto, cadena completa/incompleta/orden inválido, PKIX, root omitido con issuer conocido/desconocido, leaf expirado, password/permisos/origen inválidos, CA desconocida, hostname verification, puerto ocupado/no fallback, health/assets/IPC/EOF. Root de test no acredita confianza pública.
+- TLS portable: **6 PASS / 2 SKIP de 8**; los dos preflight LAN se ejecutaron PASS en la corrida explícita anterior. Build Maven/JAR PASS; aviso previo de API deprecada en ProbeCodec sin modificación. No afirmar cero warnings globales ni nueva build Unity.
+- React **5/5 PASS**, build PASS; siete archivos dist idénticos byte a byte dentro del JAR. Recursos locales inspeccionados sin CDN obligatorio. React no cambió.
+- [Player real Unity→Java HTTPS DNS](evidence/phone-lan-fqdn-3a-2026-10-06/mobile-player-results.json): **PASS**, LAN8443 + IPC127.0.0.1, SNI/validación DNS real por conexión de test a IP explícita; Java hijo con UID normal y capacidades efectivas0, READY/PING/PONG, health/shell locales, Unity exit0, Java exit0, cleanup y propios residuales0. DNS del SO intacto;443/DNS router/teléfonos no probados.
+- [Regresión Player2A/2B](evidence/phone-lan-fqdn-3a-2026-10-06/player-regression-results.json): **11 grupos PASS**, N100 nominal, muerte/recuperación manual/límite3, cancel, singleton, timeoutREADY/conexión, liveness/fallback/EOF; propios residuales0. Fixtures etiquetadas, crash de padre no permite observar exitCode Java. No extrapolar métricas IPC a móvil/gameplay; no repetir ni combinar métricas2C.
+- [Intentos anteriores](evidence/phone-lan-fqdn-3a-2026-10-06/attempts.json): primer cliente Java no resolvía hostname ficticio, ajustado con ruta test directa y SNI; primer intento Player no reconoció acción UI en Xwayland, repetición secuencial del mismo harness PASS. Ninguno se oculta ni se considera PASS.
+
+| Dimensión | Estado |
+|---|---|
+| Software / pruebas aplicables de PC | PASS |
+| Procedimiento Linux443 | PREPARADO, no aplicado |
+| Dominio/certificado público/router/DNS/redirección443 | Pendiente / NOT RUN |
+| Android e iPhone físicos, sin CA ni DNS manual, primera carga sinWAN | NOT RUN |
+| Gate3A | IN PROGRESS |
+
+[Procedimiento vigente](PHASE0_PHONE_3A_VALIDATION.md) y [Linux443](PHASE0_PHONE_3A_LINUX_443.md). No compras/emisión pública/router/firewall/trust modificados. Hashes fuente/artefactos guardados; Player Unity previo reutilizado sin cambio Unity/Shared/IPC. Validación foundation/gestión y diff PASS. 3B/4A/4B/4C NOT STARTED; Fase0 IN PROGRESS; Fase1 NOT STARTED. #94 DRAFT, sin merge.

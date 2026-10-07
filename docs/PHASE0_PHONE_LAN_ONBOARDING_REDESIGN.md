@@ -1,13 +1,7 @@
 # Rediseño Incremento 3 — HTTPS y onboarding común PWA / Flutter Android
 
-**Estado de arquitectura objetivo: aprobada conceptualmente por PO.** Estrategia operativa Proposed; [evaluación de viabilidad3A](PHASE0_PHONE_3A_FEASIBILITY.md) pendiente de aprobación antes de adaptar#94.
-**Requisito de producto de dos clientes: Accepted**, por instrucción explícita del PO.
-Base integrada: develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`.
-[PR #94](https://github.com/Josue1855/Gorilla-Escape/pull/94) permanece DRAFT: su solución
-CA local/SAN IPv4 requiere configuración del teléfono y **no cumple el nuevo gate3A**.
-Ningún código se modifica por este rediseño; no se implementa Flutter ni otro incremento.
-La precisión presente sustituye la estrategia TLS de [diseño anterior](PHASE0_PHONE_LAN_ONBOARDING_DESIGN.md)
-y su [procedimiento CA](PHASE0_PHONE_3A_VALIDATION.md); ambos se conservan como historial.
+**Estado: Accepted para adaptación de software3A**, por aprobación explícita del PO de [viabilidad](PHASE0_PHONE_3A_FEASIBILITY.md). Compras, emisión pública, cambios de router/firewall e infraestructura no autorizados. [PR #94](https://github.com/Josue1855/Gorilla-Escape/pull/94) sigue DRAFT y3A IN PROGRESS hasta gate físico Android/iPhone. PWA universal/FlutterAndroid opcional Accepted; no implementación Flutter/QR/sesión/WSS ahora.
+Base integrada: develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`; candidato previo conservado `50e48418ff286dcd3096c92800fd47f602ad27f2`. Nuevo [procedimiento](PHASE0_PHONE_3A_VALIDATION.md) sustituye el setup CA histórico, sin eliminar su evidencia.
 
 ## 1. Producto y experiencia
 
