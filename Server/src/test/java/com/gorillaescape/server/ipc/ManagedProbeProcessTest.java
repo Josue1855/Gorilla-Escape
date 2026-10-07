@@ -14,6 +14,7 @@ class ManagedProbeProcessTest {
                 "-Djava.net.preferIPv4Stack=true","-cp",System.getProperty("java.class.path"),"com.gorillaescape.server.GorillaEscapeApplication",
                 "--gorilla.ipc.managed=true","--server.address=127.0.0.1","--server.port=0",
                 "--logging.config=classpath:ipc-logback.xml");
+        launch.environment().put("GORILLA_IPC_LOCK_DIR",java.nio.file.Files.createTempDirectory("gorilla-managed-test").toString());
         launch.environment().put("GORILLA_IPC_INSTANCE",ProbeCodecTest.INSTANCE);
         launch.environment().put("GORILLA_IPC_TOKEN",ProbeCodecTest.TOKEN);
         Process child=launch.start();

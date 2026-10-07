@@ -115,4 +115,49 @@ Medición monotónica Unity worker, incluye codec/TCP ida y vuelta/Java; cadenci
 
 Evidencia sanitizada [validation.json](evidence/unity-java-ipc-2a-2026-10-06/validation.json), XML EditMode/PlayMode, extractos build/Player/PlayMode/Maven, listeners reales/exit y hashes JAR/Player en [player-result.json](evidence/unity-java-ipc-2a-2026-10-06/player-result.json), inventario de fuentes y cambio de protección antes/después. Raw logs, JDK copiado, snapshot, binaries y helpers locales ignorados. Primer intento fallido por symlinks JDK dentro de Flatpak y correcciones de medición/warning documentados en validation.json; pruebas afectadas repetidas sobre candidato final.
 
-**Gate 2A desarrollo:** requisitos funcionales PASS; revisión/integración del PR de 2A pendiente. PC oficial y Windows/backend final NOT RUN. Resiliencia avanzada, reconnect/restart/watchdog, Job Objects, flood/fault injection extensa y benchmark exhaustivo diferidos a autorización posterior, no eliminados de DEC-005. Parser Unity tiene validación básica; validación estricta completa/fuzzing pendientes de hardening. Diagnósticos editor conocidos siguen ENVIRONMENT / REQUIRES FOLLOW-UP #89. Sin 2B ni Fase1.
+**Gate 2A desarrollo:** **PASS / MERGED**. El PO aprobó integración; [PR #91](https://github.com/Josue1855/Gorilla-Escape/pull/91) se integró mediante merge normal en develop `9fbb566e5f24af8f4e92fa3c139968161e832d46`, que contiene el commit validado `a17dfb2968f79e35d479a6912e40d3b5d55538bd` sin cambios de contenido. No se repiten ni alteran los resultados medidos por este cierre documental. PC oficial y Windows/backend final NOT RUN. Resiliencia avanzada, reconnect/restart/watchdog, Job Objects, flood/fault injection extensa y benchmark exhaustivo diferidos a autorización posterior, no eliminados de DEC-005. Parser Unity tiene validación básica; validación estricta completa/fuzzing pendientes de hardening. Diagnósticos editor conocidos siguen ENVIRONMENT / REQUIRES FOLLOW-UP #89. Sin 2B ni Fase1.
+
+
+## IPC-002B — lifecycle y fallos básicos, 2026-10-06
+
+**Resultado:** Incremento 2B **PASS en Linux de desarrollo**, candidato para PR, no integrado. Diseño [Accepted con precisiones del PO](PHASE0_IPC_2B_DESIGN.md). Base `9fbb566e5f24af8f4e92fa3c139968161e832d46`, rama `codex/phase0-ipc-2b-lifecycle`. [Procedimiento reproducible](PHASE0_IPC_2B_VALIDATION.md), [checks](evidence/unity-java-ipc-2b-2026-10-06/checks.json), [inventario SHA256 de 105 fuentes/contratos](evidence/unity-java-ipc-2b-2026-10-06/source-sha256.json), [hashes de build/JAR](evidence/unity-java-ipc-2b-2026-10-06/build-artifacts.json). El SHA de commit se informa en el PR/reporte de cierre; no inventar un hash autorreferencial en su propio archivo.
+
+**Implementación:** seis estados aprobados y fallos activos siempre STOPPING→FAILED; PING/PONG de liveness 1 Hz sólo RUNNING, un pendiente/un lector, deadline PONG 2 s; cero restart/reconnect automático; hasta tres lanzamientos por ejecución Unity y reintento explícito después de cleanup completo. Generaciones aisladas y prueba real de callback exit tardío. Java adquiere FileLock antes de Spring/READY, libera finalmente y no borra el archivo; EOF se observa durante bootstrap. Cierre/cancellation sólo del hijo propio, streams/readers/CTS/handlers liberados; diagnóstico de desarrollo Player/Editor con Retry/Stop y atajos R/S. Sin cambio a codec/DTO/framing/token/autoridad ni dependencias.
+
+### Build y conteos exactos
+
+| Suite | Resultado | Alcance |
+|---|---|---|
+| Java 21 Maven verify | **13/13 PASS**, 0 fallos/errors/skips | 6 unit/contrato/codec/guard; 3 integración Spring HTTP; 4 tests con procesos JVM reales (readiness/framing/EOF, singleton, EOF temprano, kill/release/rearranque explícito). [Resumen sin properties/outputs crudos](evidence/unity-java-ipc-2b-2026-10-06/java-results.json) |
+| Unity EditMode | **15/15 PASS**, 0 skips | Incluye 8 nuevos casos lifecycle/generación/budget y regresión codec/contrato/foundation. [XML normalizado](evidence/unity-java-ipc-2b-2026-10-06/editmode.xml) |
+| Unity PlayMode | **10/10 PASS**, 0 skips | 6 tests con servidor Java real; 2 fixtures JVM para READY ausente/connect rechazado; 1 ruta inválida; 1 Bootstrap. [XML normalizado](evidence/unity-java-ipc-2b-2026-10-06/playmode.xml) |
+| React regresión | **4/4 PASS**, build PASS | Fuentes PWA sin cambios |
+| Player Linux development Mono | **PASS**, build 0 errores / 0 warnings | Unity 6000.3.23f1; 11 grupos de escenarios ejecutados, no 11 tests NUnit. [Eventos/resultados](evidence/unity-java-ipc-2b-2026-10-06/player-results.json) |
+| Validaciones del repo | **PASS** | Foundation/links/management y diff sin whitespace |
+
+### Matriz de fallos y recuperación
+
+| Caso | Evidencia real aplicable | Resultado |
+|---|---|---|
+| Java muere en RUNNING | PlayMode + Player terminan exclusivamente su handle/child verificado | JAVA_EXITED, STOPPING→FAILED, cleanup completo, residual 0; sin autorestart |
+| READY nunca llega | PlayMode/Player lanzan JVM helper que conserva pipes sin READY | READY_TIMEOUT; 15.02 s desde process-start observado hasta fallo/cleanup en Player. Helper identificado; no certificar interoperabilidad del servidor con él |
+| TCP connect falla | PlayMode/Player con helper READY/endpoint cerrado real | CONNECT_FAILED; cleanup/residual 0, sin adoptar un proceso ajeno |
+| TCP se pierde con Java vivo | PlayMode cierra el socket propio conectado al servidor real | CONNECTION_LOST; EOF cierra Java real con exit 0; Retry manual vuelve a READY/PONG |
+| Java no responde al siguiente PING | Player SIGSTOP sobre child propio, luego SIGCONT tras STOPPING | CONNECTION_LOST; detección 3.04 s desde detención, incluye hasta 1 s de cadencia más deadline PONG 2 s; sin reconnect; cleanup/exit 0 |
+| Unity cierra con Java activo | Player WM_DELETE_WINDOW durante RUNNING | Cleanup completo, Unity exit 0 / Java exit 0, residual 0; EOF→exit 65.37 ms |
+| stdin EOF temprano | Java real + PlayMode/Player cancel STARTING | Cierre seguro después de refresh; nunca RUNNING en caso cancel temprano; Player Java exit 0, cleanup 1.88 s, residual 0 |
+| Cancel RUNNING / Stop repetido | PlayMode + control S/Stop en Player | STOPPING→STOPPED, Java exit 0; Player cierre 64.22 ms, residual 0 |
+| Singleton ocupado | Dos JVM reales; dos supervisores PlayMode; dos Players | Segundo exit 73, sin READY/Spring; dueño sigue vivo; ambos hijos terminan al cerrar sus owners, residual 0 |
+| Lock stale/release | Unit Java + kill/release con otra JVM real | Archivo existente sin lock no bloquea; no borrar archivo ni matar por PID/puerto/lock |
+| Flatpak ↔ host | Editor posee lock; JVM del host misma ruta | Exit 73 en 214.13 ms, sin READY ni proceso residual; [evidencia](evidence/unity-java-ipc-2b-2026-10-06/flatpak-lock.json) |
+| Java propio no atiende EOF | Player detiene sólo su child con SIGSTOP | Espera EOF 10.04 s, kill propio observado, exit 137, forced=true, readers 1.17 ms; residual 0. No contar como graceful |
+| Padre termina abruptamente | Harness mata su Player después de READY/PONG | Pipe EOF libera Java y deja residual 0. Unity exit -9 intencional; exitCode Java no observable desde padre muerto, no se inventa 0 |
+| Recovery manual y límite | PlayMode/Player: tres lanzamientos con nuevas identidades/PONG | Dos retries explícitos tras cleanup; cuarto bloqueado; máximo un child válido, residual 0 al cerrar cada intento |
+| Evento tardío | Unit reducer + callback real capturado del intento anterior, invocado durante nuevo RUNNING en PlayMode | Estado/child nuevos permanecen intactos |
+| Cleanup y estados | Todos los casos anteriores + unit transición inválida/incompleta | Socket/streams/readers/exit observados, cleanupComplete; no FAILED directo desde estado activo; retry bloqueado si cleanup incompleto |
+
+**Regresión 2A:** Unity→Java→READY→TCP IPv4 loopback→100 PING/PONG→EOF→clean exit **PASS**. Listeners efectivos de los hijos inspeccionados por inodos son únicamente TCP IPv4 **127.0.0.1** (HTTP e IPC). Smoke Player final N=100: startup **2.182 s**, RTT mínimo **0.910 ms**, P50 **1.600 ms**, P95 **1.994 ms**, máximo **3.504 ms**, errores **0**. Cierre Unity/Java normal exit 0, residual 0. Comparación de desarrollo con build 2A anterior en el mismo entorno: startup 1.873 s, mínimo 0.672 ms, P50 1.572 ms, P95 1.935 ms, máximo 2.343 ms, errores 0 ([registro](evidence/unity-java-ipc-2b-2026-10-06/baseline-2a-same-environment.json)). Variación observada no demuestra regresión material; no benchmarking exhaustivo ni gate rígido. Se conservan las métricas históricas 2A de IPC-002A. Nada se extrapola a teléfono→gameplay.
+
+**Correcciones durante desarrollo:** primer PlayMode con JDK host por /run/host falló por symlinks de configuración /etc no visibles en Flatpak; sustituido por copia local de desarrollo del mismo JDK21 con enlaces resueltos. Se corrigió salida del diagnóstico y ejecución en segundo plano; la automatización descartó logs anteriores antes de cada lanzamiento y sustituyó clicks inestables Xwayland por los atajos visibles de la misma acción manual. Esas ejecuciones no acreditan PASS; resultados anteriores corresponden al candidato final, con inventario comprobado sin cambios de fuentes.
+
+**Sanitización / límites:** sólo resúmenes JSON, XML sin outputs/properties y hashes revisados en Git; raw logs, JDK, helpers compilados y builds permanecen locales ignorados. No tokens/env dumps/payloads en evidencia. El build mantiene 0 warnings, pero existen diagnósticos del entorno Unity ya conocidos (licensing/debugger/build-server y registro nativo MemoryLeaks); no afirmar cero leaks globales. Windows, distribución JRE y PC oficial NOT RUN. Lock cooperativo y FS local; JVM congelada después de morir el padre requiere futura contención nativa, fuera de 2B. Watchdog, reconnect/restart automático, parser exhaustivo/fuzz/flood, performance extensiva, móvil/PWA/QR/sensores/cámara/gameplay/Input Fusion y Fase 1 no implementados. **2A PASS/MERGED; 2B PASS, pendiente de revisión/integración; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED.**

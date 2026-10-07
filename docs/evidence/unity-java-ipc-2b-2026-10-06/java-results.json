@@ -1,0 +1,69 @@
+[
+  {
+    "suite": "com.gorillaescape.server.ProtocolContractTest",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "readsAndRoundTripsTheSharedSensorFixture"
+    ]
+  },
+  {
+    "suite": "com.gorillaescape.server.ServerIntegrationTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "servesPackagedReactShell",
+      "unknownApiDoesNotReturnTheApplicationShell",
+      "healthExposesProtocolWithoutPlayerData"
+    ]
+  },
+  {
+    "suite": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "killedOwnerReleasesKernelLockForNextRealJvm",
+      "immediateParentEofDuringBootstrapExitsCleanly",
+      "competingJvmFailsBeforeSpringAndOwnerStillResponds"
+    ]
+  },
+  {
+    "suite": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "realChildReadinessFramesAndStdinEof"
+    ]
+  },
+  {
+    "suite": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "staleFileCanBeLockedAndReusedWithoutDeletion",
+      "relativePathIsRejected"
+    ]
+  },
+  {
+    "suite": "com.gorillaescape.server.ipc.ProbeCodecTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "sharedContractAndBigEndianFrame",
+      "rejectsLengthsTruncationAndUtf8",
+      "rejectsTokenIdentitySequenceAndDuplicateFields"
+    ]
+  }
+]

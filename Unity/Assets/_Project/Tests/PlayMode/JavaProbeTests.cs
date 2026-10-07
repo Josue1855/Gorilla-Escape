@@ -13,7 +13,7 @@ public class JavaProbeTests
         string java = Environment.GetEnvironmentVariable("GORILLA_TEST_JAVA");
         string jar = Environment.GetEnvironmentVariable("GORILLA_TEST_JAR");
         if (string.IsNullOrEmpty(java) || string.IsNullOrEmpty(jar)) Assert.Ignore("Real Java/JAR development paths not configured; integration NOT RUN.");
-        using (var supervisor = new JavaProbeSupervisor())
+        using (var supervisor = new JavaProbeSupervisor(new IpcLaunchBudget()))
         {
             var task = supervisor.RunAsync(java,jar,CancellationToken.None);
             while (!task.IsCompleted) yield return null;
@@ -27,7 +27,7 @@ public class JavaProbeTests
     }
     [UnityTest] public IEnumerator MissingExecutableIsRecoverable()
     {
-        using (var supervisor = new JavaProbeSupervisor())
+        using (var supervisor = new JavaProbeSupervisor(new IpcLaunchBudget()))
         {
             var task = supervisor.RunAsync("/missing-java", "/missing-jar", CancellationToken.None);
             while (!task.IsCompleted) yield return null;
