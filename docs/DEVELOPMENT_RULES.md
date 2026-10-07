@@ -57,7 +57,7 @@ No introducir:
 - cuentas;
 - base de datos remota;
 - multijugador online;
-- app móvil nativa salvo activación documentada del Plan B;
+- app móvil nativa fuera de la autorización de DEC-006 (Flutter Android opcional diseñado para4C; no implementación ahora);
 - frameworks adicionales sin justificación;
 - servicios externos innecesarios;
 - matchmaking;

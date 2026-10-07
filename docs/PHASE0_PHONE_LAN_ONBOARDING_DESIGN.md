@@ -1,5 +1,7 @@
 # Incremento 3 — Teléfono real → LAN → HTTPS → QR → Java
 
+> **Estrategia TLS/onboarding superada por requisito posterior del PO.** La CA local instalada en teléfonos no cumple la UX definitiva. Producto acepta PWA + Flutter Android opcional; [rediseño vigente Proposed](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) pendiente de aprobación técnica. #94 permanece DRAFT. El contenido siguiente conserva la aprobación histórica, no autoriza continuar con setup CA ni3B.
+
 **Estado: Accepted.** Fecha: 2026-10-06. Arquitectura general aprobada por el Product Owner; implementación autorizada exclusivamente para 3A. 3B NOT STARTED, requiere autorización separada. Base obligatoria confirmada mediante fetch: HEAD y origin/develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`. Unity Foundation e Incremento 2 PASS / MERGED; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. Preparación documental original sin implementación; aprobación posterior autoriza sólo 3A. Ninguna prueba física se presume PASS.
 
 ## 1. Fuentes y estado real

@@ -109,3 +109,7 @@ cliente LAN). Incremento3 IN PROGRESS; 3B NOT STARTED; Fase0 IN PROGRESS; Fase1 
 Borrador de PR, sin merge automático. Se requiere participación del operador para setup
 CA pública/red y pruebas físicas; modelos/versiones/router aún sin confirmar. Ningún
 firewall/trust/router cambiado ni CA privada de demo generada. No iniciar3B automáticamente.
+
+## Rediseño Incremento 3 — requisito dual-cliente
+
+[DEC-006](DECISIONS.md) acepta PWA universal y Flutter Android opcional/preferido, con sesión/IDs/protocolo WSS/backend comunes y autoridad Unity. [Rediseño técnico Proposed](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) reemplaza CA móvil por propuesta de certificado público/FQDN y resolución LAN preparada sin ajustes del jugador. No código Flutter/Java/React/Unity modificado. #94 sigue DRAFT;3A IN PROGRESS, nuevo gate NOT RUN;3B/4A/4B/4C NOT STARTED. Incremento2 PASS/MERGED; Fase0 IN PROGRESS/Fase1 NOT STARTED. Pendiente aprobar dominio/red/HTTPS/onboarding; no continuar automáticamente.

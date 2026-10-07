@@ -285,3 +285,14 @@ Fase1 NOT STARTED. Publicar borrador de PR para revisión, no integración autom
 Pendiente responsable con Android/iPhone: confirmar LAN, preparar CA pública, comprobar
 Chrome/Safari y retirar WAN manteniendo Wi-Fi. No se inventan modelos/router ni métricas
 URL→shell/confirmación físicas. No declarar3A PASS Linux+Android ni multiplataforma PASS.
+
+### Requisito posterior DEC-006 — reinterpretación del gate, no de las mediciones
+
+El PO exige PWA universal y Flutter Android opcional con HTTPS sin configurar certificados,
+CA/perfiles, DNS o navegador del jugador. La automatización LAN-003A anterior se conserva
+exacta como evidencia técnica de CA de test/IPC/hosting; **no demuestra cumplimiento de la
+nueva UX/trust público**. Nuevo gate3A NOT RUN, estrategia CA móvil superada; #94 DRAFT.
+[Rediseño Proposed](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) pendiente de aprobación.
+Esta tarea sólo actualiza documentos: validación de gestión/enlaces y diff PASS; builds y
+pruebas nuevas de aplicación no aplican, Flutter no implementado. Sin nuevos resultados
+físicos ni modificación/reinterpretación de métricas previas.

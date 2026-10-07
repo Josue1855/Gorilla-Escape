@@ -3837,3 +3837,14 @@ Este checklist debe completarse antes del storyboard y repetirse después de cua
 - [ ] El equipo no necesita añadir verbalmente información ausente para justificar el orden o las reglas.
 - [ ] Los problemas abiertos están registrados con responsable, evidencia requerida y fecha límite.
 - [ ] Premisa, sinopsis, cadena causal, beat sheet, matriz de información y auditoría coinciden entre sí.
+
+
+# Enmienda de producto — dos clientes móviles oficiales (DEC-006, 2026-10-06)
+
+Por instrucción explícita del Product Owner, el producto admite PWA/web como fallback universal sin instalación obligatoria y Flutter Android como cliente nativo opcional, preferido cuando instalado. Instalar Flutter nunca es requisito para participar. Esta enmienda prevalece sobre «app nativa sólo Plan B»/«no construir app nativa por adelantado» en cuanto al roadmap aprobado: Flutter se diseña para4C, no se implementa ahora. No amplía a app iOS.
+
+Ambos comparten sesión, IDs, contratos/Gorilla Protocol móvil, semántica/reglas de conexión y backend Java; preferencia WSS/WebSocket para ambos, sin UDP nativo propio. Java administra transporte/sesión técnica; Unity conserva autoridad exclusiva de gameplay/resultados. No duplicar scoring/torneo ni lógica de negocio Dart/JS.
+
+Un enlace HTTPS y un QR deben funcionar en navegador; App Links/deep linking Android es una mejora futura opcional, nunca reemplaza el fallback web. El jugador no instala CA/certificados/perfiles TLS, cambia DNS/configura navegador ni necesita instalar Flutter. Preparación de red/host corresponde al operador; no Internet requerido durante gameplay. La estrategia técnica HTTPS/DNS/certificado del [rediseño](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) permanece Proposed. No declarar offline/trust público validados.
+
+Roadmap diseñado:3A LAN+HTTPS sin configuración TLS del teléfono;3B QR+sesión técnica;4A WS/protocolo común;4B sensores PWA reales;4C Flutter Android común; comparación/hardening posterior. No se autoriza implementación de estos bloques por esta enmienda; #94 permanece DRAFT hasta aprobar nueva estrategia. Fase1 NOT STARTED.

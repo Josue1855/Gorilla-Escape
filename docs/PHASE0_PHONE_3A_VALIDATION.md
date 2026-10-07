@@ -1,5 +1,7 @@
 # Validación 3A — HTTPS LAN sin onboarding
 
+> **Histórico: no ejecutar setup CA en teléfonos como aceptación del producto.** El PO exige onboarding sin instalar certificados/perfiles ni cambiar DNS/browser. Consultar [rediseño vigente](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md); #94 sigue DRAFT. Tests TLS efímeros previos no demuestran el nuevo gate de confianza pública.
+
 Diseño [Accepted](PHASE0_PHONE_LAN_ONBOARDING_DESIGN.md). Sólo 3A autorizado. Base
 `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`, rama
 `feature/mobile-phase0-lan-https-3a`. 3B/QR/sesión/sensores NOT STARTED.
