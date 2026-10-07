@@ -1,0 +1,16 @@
+{
+  "sourceBase": "9fbb566e5f24af8f4e92fa3c139968161e832d46",
+  "metrics": {
+    "startupMs": 1873.3126000000002,
+    "minimumMs": 0.6716000000000001,
+    "p50Ms": 1.5721,
+    "p95Ms": 1.9352,
+    "maximumMs": 2.3434,
+    "samples": 100,
+    "errors": 0,
+    "pid": 44207,
+    "exitCode": 0,
+    "cleanExit": true
+  },
+  "purpose": "Smoke comparison only, not benchmark or gameplay end-to-end latency."
+}

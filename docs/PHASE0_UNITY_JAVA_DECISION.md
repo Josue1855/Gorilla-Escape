@@ -1,6 +1,6 @@
 # Incremento 2 — decisión Unity ↔ Java
 
-**Fecha:** 2026-10-06. **Estado:** Accepted por instrucción explícita del Product Owner; implementación 2A condicionada a integración normal de #90, IPC no implementado. Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
+**Fecha:** 2026-10-06. **Estado:** Accepted por instrucción explícita del Product Owner; 2A PASS / MERGED en develop y diseño 2B Accepted, exclusivamente lifecycle y fallos básicos. Las secciones iniciales conservan el contexto histórico anterior a #90. Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
 
 ## Base y fuentes de verdad
 
@@ -226,4 +226,8 @@ La aprobación del PO no exige implementar todo el diseño anterior de una vez. 
 
 ## Resultado del Incremento 2A
 
-Gate previo cumplido, implementación mínima de desarrollo Linux validada; resultados y límites en [TEST_REPORT](TEST_REPORT.md), IPC-002A. Java8/8, EditMode7/7, PlayMode3/3 y Player real PASS; cierre normal exit0 sin hijo residual. Sólo rutas de desarrollo, sin empaquetado JRE final. El diseño de resiliencia anterior sigue diferido, incluidos watchdog/lock global entre instancias y parser Unity strict/fuzzing completo. Commit/PR de 2A requiere revisión/integración normal; no se inicia 2B ni Fase1. Los estados BLOCKED anteriores son históricos y quedan superados por el gate de integración verificado.
+Gate previo cumplido, implementación mínima de desarrollo Linux validada; resultados y límites en [TEST_REPORT](TEST_REPORT.md), IPC-002A. Java8/8, EditMode7/7, PlayMode3/3 y Player real PASS; cierre normal exit0 sin hijo residual. Sólo rutas de desarrollo, sin empaquetado JRE final. El diseño de resiliencia anterior sigue diferido, incluidos watchdog/lock global entre instancias y parser Unity strict/fuzzing completo. 2A **PASS / MERGED** por PR #91, merge normal autorizado por PO; develop `9fbb566e5f24af8f4e92fa3c139968161e832d46` contiene el commit validado. Incremento2/Fase0 IN PROGRESS; 2B/Fase1 NOT STARTED. No se inicia trabajo adicional. Los estados BLOCKED anteriores son históricos y quedan superados por el gate de integración verificado.
+
+## Precisión aprobada — Incremento 2B
+
+El PO aprobó [el diseño 2B](PHASE0_IPC_2B_DESIGN.md) y sus precisiones: estados STOPPED/STARTING/CONNECTING/RUNNING/STOPPING/FAILED; liveness PING/PONG 1 Hz sólo RUNNING y un pendiente; cero restart/reconnect automático; recuperación manual con tres lanzamientos por ejecución y cleanup completo antes del siguiente; generaciones aisladas; FileChannel.tryLock antes de Spring/READY con liberación finally; EOF temprano y shutdown propio 10+2 s/readers 2 s aparte. Presupuestos y autoridad DEC-005 se conservan. La resiliencia avanzada de esta decisión sigue diferida. Estado y evidencia en TEST_REPORT; abrir PR sin merge automático, no iniciar 2C/Fase 1.

@@ -6,11 +6,27 @@ Actualizado: 2026-10-06.
 
 Fase 0 en progreso; Spike no completado. Base compartida en main y develop: Unity 6000.3.23f1, servidor Java 21/Spring Boot 4.1.1, PWA React 19.3.0/Vite 8.3.2/Node 24, contratos JSON y paquete C# compartido. Crear ramas pequeñas desde develop. No se inicia Fase 1.
 
+Estados vigentes: **2A PASS / MERGED; 2B PASS en Linux de desarrollo, pendiente de revisión/integración; Incremento 2 IN PROGRESS; 2C NOT STARTED; Fase 0 IN PROGRESS; Fase 1 NOT STARTED.**
+
 ## Incremento 2A — IPC mínimo
 
-Implementado y validado en Linux de desarrollo: Unity inicia Java21/Spring, READY + TCP loopback PING/PONG, framing/token/identidades, deadlines/cancellation, stdin EOF y cierre observado sin Java propio residual. Build Player 0 errores/0 advertencias; Java8/8, EditMode7/7, PlayMode3/3, React regresión4/4 PASS. Smoke y límites en [TEST_REPORT](TEST_REPORT.md). Gate funcional 2A desarrollo PASS; commit/PR de 2A pendiente de revisión/integración. No declarar Done de hardware final. Fase0 IN PROGRESS; 2B/Fase1 NOT STARTED.
+Implementado y validado en Linux de desarrollo: Unity inicia Java21/Spring, READY + TCP loopback PING/PONG, framing/token/identidades, deadlines/cancellation, stdin EOF y cierre observado sin Java propio residual. Build Player 0 errores/0 advertencias; Java8/8, EditMode7/7, PlayMode3/3, React regresión4/4 PASS. Smoke y límites en [TEST_REPORT](TEST_REPORT.md). Incremento 2A **PASS / MERGED** mediante [PR #91](https://github.com/Josue1855/Gorilla-Escape/pull/91), autorizado por el PO e integrado normalmente el 2026-10-06. develop `9fbb566e5f24af8f4e92fa3c139968161e832d46` contiene `a17dfb2968f79e35d479a6912e40d3b5d55538bd`; contenido funcional idéntico al validado. No declarar Done de hardware final. Fase0 IN PROGRESS; 2B/Fase1 NOT STARTED.
 
 #90 integrado normalmente en `2a635b607a286bb70d1457aa0cf34f7e85f17abe`; foundation validada contenida y hashes confirmados. Único cambio de protección autorizado: approvals develop1→0; PR/checks/force-push prohibido conservados.
+
+## Estado después del merge 2A
+
+- Incremento 2A: **PASS / MERGED**.
+- Incremento 2: **IN PROGRESS**.
+- Incremento 2B: **NOT STARTED**.
+- Fase 0: **IN PROGRESS**.
+- Fase 1: **NOT STARTED**.
+
+Resultados 2A conservados: Java8/8, EditMode7/7, PlayMode3/3 y React4/4 PASS; Player Linux build0errores/0warnings; READY/PING/PONG real PASS; listeners sólo127.0.0.1; Unity exit0, Java exit0, procesos Java propios residuales0. Player smoke N100: startup2.35s, RTT mínimo0.59ms, P500.80ms, P951.44ms, máximo1.89ms, errores0. Estas métricas IPC no se extrapolan a teléfono→gameplay. Checks posteriores al merge **PASS**: management-validation y java-react-foundation; 100/100 hashes del inventario 2A coinciden con develop. Protecciones develop verificadas: PR y ambos checks obligatorios, force push deshabilitado; ningún bypass.
+
+## Incremento 2B — lifecycle y fallos básicos
+
+Diseño [Accepted por el PO](PHASE0_IPC_2B_DESIGN.md), con precisiones explícitas de heartbeat, cleanup/generaciones, singleton y timeouts. Implementación exclusivamente 2B en `codex/phase0-ipc-2b-lifecycle`, desde develop `9fbb566e5f24af8f4e92fa3c139968161e832d46`. Estados explícitos, cero retries/restarts automáticos, recuperación manual hasta tres lanzamientos, FileLock Java por usuario/producto, EOF temprano y cleanup observado. Contrato/codecs/timeouts 2A conservados. Validación final **PASS Linux de desarrollo**: Java 13/13, EditMode 15/15, PlayMode 10/10, React 4/4, build Player 0 errores/0 warnings y 11 grupos Player reales/fixtures identificados, residual propio 0. Evidencia y límites en TEST_REPORT. 2A PASS/MERGED; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED. 2B PASS, pendiente de revisión/integración por PR; no merge automático.
 
 ## Histórico de preparación del Incremento 2 — Unity ↔ Java
 
@@ -57,4 +73,4 @@ Base publicada con historial inicial limpio y ramas main/develop. El backlog y l
 
 ## Próximo paso
 
-Revisar e integrar normalmente el cambio 2A con sus checks y evidencia; no merge automático. Decidir PC/plataforma oficial y aceptación física pendiente. Continuar a hardening/2B sólo con autorización posterior del PO; no sensores, cámara, móvil, gameplay ni Fase1. Seguimiento de espera #90 concluido al verificar merge.
+2A ya está integrado. Próximo incremento recomendado, no autorizado ni iniciado: 2B para lifecycle/fallos básicos (timeouts, disconnect y cleanup), con alcance acordado antes de código. Decidir PC/plataforma oficial y aceptación física pendiente. Continuar a hardening/2B sólo con autorización posterior del PO; no sensores, cámara, móvil, gameplay ni Fase1. Seguimiento de espera #90 concluido al verificar merge.

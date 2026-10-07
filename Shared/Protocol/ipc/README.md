@@ -15,3 +15,31 @@ Desarrollo: configurar rutas absolutas GORILLA_IPC_JAVA y GORILLA_IPC_JAR al eje
 Smoke: 10 warmup +100 PING secuenciales con cadencia nominal suave 20 ms entre respuestas; no es benchmarking 50 Hz. Publicar startup, mínimo/P50/P95/máximo RTT (nearest-rank), N/errores/exit y versiones/hashes. RTT en worker incluye codec, TCP ida/vuelta y Java; no incluye consumo de gameplay en frame. No extrapolar a teléfono→gameplay.
 
 Java valida campos/tipos/token/correlación y claves duplicadas. Unity valida tamaño/UTF-8, identidad/version/tipo/sequence/READY; revisión estricta de campos desconocidos/duplicados y fuzz/flood extensos del parser Unity quedan para hardening posterior. Los frames aceptados por Unity provienen del hijo identificado y no contienen acciones de juego. El contrato completo y requisitos diferidos permanecen en docs/PHASE0_UNITY_JAVA_DECISION.md.
+
+## Incremento 2B — lifecycle administrado
+
+Sin cambios al envelope, framing o DTO. Unity usa STOPPED, STARTING, CONNECTING,
+RUNNING, STOPPING y FAILED. RUNNING requiere READY y primer PONG válido. En modo
+sostenido, PING/PONG a 1 Hz como liveness: un request pendiente, un lector, deadline
+PONG de 2 s. Cualquier fallo activo pasa por STOPPING/cleanup antes de FAILED.
+Cero reconnect/restart automático; recuperación mediante acción explícita Unity,
+hasta tres lanzamientos por ejecución, sólo con cleanup completo del intento previo.
+Cada intento tiene nueva generación/instanceId/token/connectionId; no reutilizar READY.
+
+El bootstrap Java administrado recibe GORILLA_IPC_LOCK_DIR: ruta absoluta estable
+por usuario/producto, por defecto `$HOME/.gorilla-escape/managed` resuelta por Unity
+(no dentro del repo/JAR). FileChannel.tryLock antes de Spring/listeners/READY;
+exit 73 = ALREADY_RUNNING, exit 74 = LOCK_UNAVAILABLE. stderr contiene error
+estructurado; stdout no publica READY para el rechazado. No borrar el archivo lock,
+no matar al propietario ni adoptar otra JVM. El guard libera el lock en finally.
+EOF de stdin se observa desde bootstrap y cierra Spring cuando refresh terminó;
+READY y EOF se serializan para evitar publicar readiness después de EOF observado.
+
+Presupuestos conservados: startup completo 15 s hasta primer PONG, connect hasta
+2 s dentro de startup; read/write y PONG hasta 2 s; EOF→exit 10 s, fallback sobre
+el hijo propio y observación 2 s; readers hasta 2 s adicionales registrados aparte.
+No watchdog/Job Objects. Tokens sólo en entorno/memoria y primer PING; nunca CLI,
+logs o archivo lock. El modo HTTP no administrado conserva su arranque anterior.
+Validación Windows, resiliencia avanzada y performance extensiva quedan diferidas.
+EOF/padre muerto no garantiza eliminar una JVM completamente congelada.
+EOF/cancel y errores reales se prueban sin sustituir integración por mocks.

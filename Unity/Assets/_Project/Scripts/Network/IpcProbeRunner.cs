@@ -5,25 +5,34 @@ using UnityEngine;
 
 namespace GorillaEscape.Network
 {
-    /// <summary>Opt-in development probe, configured by launch environment, no scene edits.</summary>
+    /// <summary>Opt-in development diagnostics; no scenes or game session authority.</summary>
     public sealed class IpcProbeRunner : MonoBehaviour
     {
         private JavaProbeSupervisor supervisor;
         private CancellationTokenSource cancellation;
         private Task run;
-        private bool finished;
+        private bool quitting, allowQuit;
+        private string message = "Iniciando backend local…";
+        private bool sustained, previousBackground;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Launch()
         {
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"))
                 && string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"))) return;
-            var host = new GameObject("IPC 2A development probe");
+            var host = new GameObject("IPC development diagnostics");
             DontDestroyOnLoad(host); host.AddComponent<IpcProbeRunner>();
         }
         private void Start()
         {
-            supervisor = new JavaProbeSupervisor(); cancellation = new CancellationTokenSource();
+            previousBackground = Application.runInBackground; Application.runInBackground = true;
+            supervisor = new JavaProbeSupervisor();
+            sustained = Environment.GetEnvironmentVariable("GORILLA_IPC_MODE") == "lifecycle";
             Application.wantsToQuit += WantsToQuit;
+            StartAttempt();
+        }
+        private void StartAttempt()
+        {
+            cancellation?.Dispose(); cancellation = new CancellationTokenSource();
             run = Execute();
         }
         private async Task Execute()
@@ -31,24 +40,86 @@ namespace GorillaEscape.Network
             int exit = 0;
             try
             {
-                var result = await supervisor.RunAsync(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"),
-                    Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"), cancellation.Token);
-                Debug.Log("IPC_2A_SMOKE " + JsonUtility.ToJson(new Smoke(result)));
+                string java = Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"), jar = Environment.GetEnvironmentVariable("GORILLA_IPC_JAR");
+                var result = await (sustained ? supervisor.RunLifecycleAsync(java, jar, cancellation.Token) : supervisor.RunAsync(java, jar, cancellation.Token));
+                if (!sustained) Debug.Log("IPC_2A_SMOKE " + JsonUtility.ToJson(new Smoke(result)));
+                message = "Backend detenido. Recursos cerrados.";
             }
-            catch (Exception) { exit = 1; Debug.LogError("IPC 2A no pudo completarse. Comprueba rutas Java/JAR y disponibilidad local; puedes cerrar y volver a intentarlo."); }
-            finally
+            catch (Exception)
             {
-                finished = true; Application.wantsToQuit -= WantsToQuit; supervisor.Dispose(); cancellation.Dispose();
+                exit = 1; message = Message(supervisor.LastSummary?.errorCode ?? supervisor.LastSummary?.cleanupError);
+                Debug.Log("IPC_DIAGNOSTIC " + message);
             }
-            if (Environment.GetEnvironmentVariable("GORILLA_IPC_SMOKE_EXIT") == "1") Application.Quit(exit);
+            if (!sustained && !quitting && Environment.GetEnvironmentVariable("GORILLA_IPC_SMOKE_EXIT") == "1" && supervisor.CleanupComplete)
+            {
+                allowQuit = true; Release(); Application.Quit(exit);
+            }
+        }
+        private void OnGUI()
+        {
+            if (!sustained || supervisor == null) return;
+            bool canRetry = !quitting && supervisor.State == IpcState.FAILED && supervisor.CleanupComplete && supervisor.Launches < 3;
+            bool canStop = !quitting && (supervisor.State == IpcState.STARTING || supervisor.State == IpcState.CONNECTING || supervisor.State == IpcState.RUNNING);
+            if (Event.current.type == EventType.KeyDown)
+            {
+                if (Event.current.keyCode == KeyCode.R && canRetry) { StartAttempt(); Event.current.Use(); }
+                if (Event.current.keyCode == KeyCode.S && canStop) { supervisor.RequestStop(); Event.current.Use(); }
+            }
+            var area = new Rect(20,20,640,180);
+            GUI.DrawTexture(area, Texture2D.blackTexture, ScaleMode.StretchToFill, false);
+            GUILayout.BeginArea(area, GUI.skin.box);
+            GUILayout.Label("Backend local: " + supervisor.State + " | Lanzamientos: " + supervisor.Launches + "/3");
+            GUILayout.Label(supervisor.State == IpcState.RUNNING ? "Backend conectado; supervisión activa." : message);
+            GUI.enabled = canRetry;
+            if (GUILayout.Button("Reintentar backend local (R)")) StartAttempt();
+            GUI.enabled = canStop;
+            if (GUILayout.Button("Detener (S)")) supervisor.RequestStop();
+            GUI.enabled = true; GUILayout.EndArea();
+        }
+        private static string Message(string code)
+        {
+            switch (code)
+            {
+                case "ALREADY_RUNNING": return "Ya existe un backend administrado. Cierra la otra ejecución antes de reintentar.";
+                case "LOCK_UNAVAILABLE": return "No se pudo reservar la ejecución. Revisa los permisos de la carpeta de datos.";
+                case "READY_TIMEOUT": case "READY_MISSING": return "El backend no quedó listo a tiempo o terminó antes de estar listo.";
+                case "READY_INVALID": case "HANDSHAKE_FAILED": return "El backend no respondió con la identificación esperada.";
+                case "CONNECT_FAILED": case "CONNECT_TIMEOUT": return "No se pudo conectar con el backend local.";
+                case "JAVA_EXITED": return "El backend local se cerró inesperadamente.";
+                case "CONNECTION_LOST": return "Se perdió la conexión con el backend local.";
+                case "SHUTDOWN_FORCED": return "El backend no se cerró a tiempo; se terminó únicamente su ejecución propia.";
+                case "CHILD_RESIDUAL": case "CLEANUP_FAILED": return "No se completó el cierre. Reintento bloqueado.";
+                default: return "No se pudo iniciar el backend. Comprueba las rutas Java/JAR y el diagnóstico.";
+            }
         }
         private bool WantsToQuit()
         {
-            if (finished) return true;
-            cancellation.Cancel(); _ = FinishQuit(); return false;
+            if (allowQuit) return true;
+            if (supervisor.CleanupComplete && (run == null || run.IsCompleted))
+            {
+                allowQuit = true; Release(); return true;
+            }
+            if (!quitting) { quitting = true; supervisor.RequestStop(); }
+            return false;
         }
-        private async Task FinishQuit() { await run; Application.Quit(); }
-        private void OnDestroy() { if (!finished) cancellation?.Cancel(); }
+        private void Update()
+        {
+            // Completed tasks only: no wait on Unity's frame thread or nested quit callback.
+            if (!quitting || allowQuit || run == null || !run.IsCompleted) return;
+            if (!supervisor.CleanupComplete) { message = "Cierre incompleto; consulta el diagnóstico."; quitting = false; return; }
+            allowQuit = true; Release(); Application.Quit();
+        }
+        private async void OnDestroy()
+        {
+            supervisor?.RequestStop();
+            if (run != null) await run;
+            Release(); Application.runInBackground = previousBackground;
+        }
+        private void Release()
+        {
+            Application.wantsToQuit -= WantsToQuit;
+            supervisor?.Dispose(); cancellation?.Dispose();
+        }
         [Serializable] private sealed class Smoke
         {
             public double startupMs, minimumMs, p50Ms, p95Ms, maximumMs;
