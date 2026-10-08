@@ -1,0 +1,33 @@
+import {SensorCapture} from './capture.js';
+import {Link,probe} from './wt.js';
+const VERSION='3a-st-2026-10-07-r1',by=id=>document.getElementById(id);
+const report={version:VERSION,created:new Date().toISOString(),contextSecure:isSecureContext,userAgent:navigator.userAgent,webtransport:typeof WebTransport==='function',physicalResult:'NOT RUN until identified and performed',sensorSamples:[],transport:[],lifecycle:[],sampleAcks:[],pressureDropped:0,errors:[]};
+by('version').textContent=`Build ${VERSION}; contexto seguro: ${isSecureContext}; WebTransport: ${report.webtransport}`;
+let config,link,count=0;const inflight=new Set();
+const capture=new SensorCapture({notify:s=>{report.latestSensor=s;by('sensor').textContent=JSON.stringify(s,null,2);}});
+function mark(event){report.lifecycle.push({event,clientMs:performance.now(),visibility:document.visibilityState});if(report.lifecycle.length>500)report.lifecycle.shift();}
+async function action(fn){try{await fn();}catch(e){const error={name:e.name,message:e.name==='SyntaxError'?'invalid configuration JSON':e.message};report.errors.push(error);by('transport').textContent=JSON.stringify(error);}}
+by('start').onclick=()=>{mark('start requested');void action(()=>capture.start());};
+by('stop').onclick=()=>{capture.stop();report.latestSensor=capture.snapshot();by('sensor').textContent=JSON.stringify(report.latestSensor,null,2);mark('stop');};
+for(const [event,type] of [['devicemotion','M'],['deviceorientation','O']])window.addEventListener(event,()=>queueMicrotask(()=>{
+  if(capture.state!=='RUNNING')return;const latest=capture.channels[type==='M'?'motion':'orientation'].latest;if(!latest)return;
+  const observation={label:by('label').value,type,clientMs:performance.now(),sample:latest};if(report.sensorSamples.length<5000)report.sensorSamples.push(observation);else report.sampleLimitReached=true;
+  if(!by('bridge').checked||!link)return;const connection=link;if(inflight.has(connection)){report.pressureDropped++;return;}inflight.add(connection);
+  const vector=type==='M'?[...Object.values(latest.acceleration),...Object.values(latest.rotationRate),...Object.values(latest.accelerationIncludingGravity)]:Object.values(latest.angles);const values=vector.map(v=>typeof v==='number'&&Number.isFinite(v)?v.toFixed(5):'_').join(',');
+  const seq=++count,stamp=latest.callbackMonotonicMs,body=`S:${seq}:${stamp.toFixed(3)}:${type}:${values}`;const sent=performance.now();
+  void connection.exchange(body).then(ack=>{if(report.sampleAcks.length<1000)report.sampleAcks.push({sequence:seq,type,clientTimestampMs:stamp,sendAgeMs:sent-stamp,payloadBytes:new TextEncoder().encode(body).length,ack,roundTripMs:performance.now()-sent});}).catch(e=>{report.errors.push({name:e.name,message:e.message});void connection.close();if(link===connection)link=null;}).finally(()=>{inflight.delete(connection);});
+}));
+document.addEventListener('visibilitychange',()=>mark('visibility'));window.addEventListener('pagehide',()=>{mark('pagehide');capture.stop();void link?.close();});
+async function useConfig(raw){const c=JSON.parse(raw);if(!/^https:\/\/\d+\.\d+\.\d+\.\d+:\d+\/probe$/.test(c.url)||typeof c.hash!=='string'||c.hash.length!==44||!/^\w{64}$/.test(c.token)||!/[a-f0-9]{16}/.test(c.sessionId))throw Error('invalid lab configuration');config=c;by('config').value='';mark('configuration entered');by('transport').textContent='Configuración cargada en memoria. No incluida en informe.';}
+by('configure').onclick=()=>action(()=>useConfig(by('config').value));
+if(location.hash.startsWith('#cfg=')){const raw=atob(location.hash.slice(5));history.replaceState(null,'',location.pathname);void action(()=>useConfig(raw));}
+by('connect').onclick=()=>action(async()=>{if(!config)throw Error('configuration required');by('bridge').checked=false;await link?.close();link=await new Link(config).open();mark('connected');by('transport').textContent='Conectado al Java LAN. ACK habilitado al marcar envío diagnóstico.';});
+by('disconnect').onclick=()=>action(async()=>{by('bridge').checked=false;await link?.close();link=null;mark('disconnected');});
+by('suite').onclick=()=>action(async()=>{
+  if(!config)throw Error('configuration required');if(!report.webtransport)throw Error('WebTransport API absent');by('bridge').checked=false;await link?.close();link=null;const cases=[['positive',config],['wrong-pin',{...config,badPin:true}],['different-certificate',{...config,hash:config.otherHash}],['invalid-credential',{...config,token:'0'.repeat(64)}],['invalid-session',{...config,sessionId:'0'.repeat(16)}],['oversize',config],['expired',{...config,url:config.expiredUrl,hash:config.expiredHash}],['manual-recovery',config]];
+  const stages={'wrong-pin':'CONNECTING','different-certificate':'CONNECTING','invalid-credential':'AUTHENTICATING','invalid-session':'AUTHENTICATING',oversize:'OVERSIZE',expired:'CONNECTING'};let baseline=false;
+  for(const [name,c] of cases){if(name==='expired'&&!config.expiredUrl){report.transport.push({case:name,gate:'NOT RUN',reason:'single local WT endpoint; expired endpoint not started or opened'});continue;}by('transport').textContent=`Ejecutando ${name}…`;const r=await probe(c,name==='oversize'?'oversize':'positive');const expected=stages[name];const pass=expected?r.status==='REJECTED'&&r.stage===expected&&!r.deadline:r.status==='PASS'&&r.malformedControlled&&r.reliable.received===100&&r.datagrams.received===100;if(name==='positive')baseline=pass;report.transport.push({case:name,...r,gate:expected&&!baseline?'BLOCKED':pass?'PASS':'FAIL'});}
+  report.replay='SKIP — protocol does not implement replay rejection';by('transport').textContent=JSON.stringify(report.transport,null,2);mark('suite completed');
+});
+by('prepare').onclick=()=>action(async()=>{if(!('serviceWorker'in navigator))throw Error('Service Worker unavailable');const registration=await navigator.serviceWorker.register('./sw.js');await navigator.serviceWorker.ready;const cache=await caches.open(VERSION);const paths=['./','./index.html','./lab.js','./capture.js','./wt.js','./sw.js'];const all=await Promise.all(paths.map(x=>cache.match(new URL(x,location.href))));if(!all.every(Boolean))throw Error('offline bundle incomplete');report.offlineBundlePrepared=true;by('offline').textContent='Bundle completo en caché. Reapertura sin WAN todavía NO comprobada.';});
+by('download').onclick=()=>{report.deviceReported=by('device').value;report.latestSensor=capture.snapshot();const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='gorilla-physical-3a-report.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};

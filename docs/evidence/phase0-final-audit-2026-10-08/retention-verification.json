@@ -1,0 +1,24 @@
+{
+  "cameraSourceFiles": 187,
+  "changed": [],
+  "jar": "8cc8f015a749e76548c9251ca6d4431d1bb9a44961b5d7d9c6ff2ed932ec4a22",
+  "historicalFiles": 145,
+  "mobileSourceFiles": 126,
+  "mobileChanged": [
+    "Unity/Assets/_Project/Scripts/Input/PlayerInput.cs",
+    "Unity/Assets/_Project/Scripts/Network/IpcProbeRunner.cs",
+    "Unity/Assets/_Project/Tests/PlayMode/GorillaEscape.PlayModeTests.asmdef"
+  ],
+  "unchangedCameraCandidateSourceFiles": 187,
+  "benchmarkJarMatches": true,
+  "classification": "RETAINED PREVIOUS EVIDENCE",
+  "retained2C": "../mobile-input-runtime-2026-10-07/ipc-2c-regression-final.json",
+  "priorReview": "../camera-fusion-2026-10-08/regression-retention.json",
+  "materialChanges": "CameraInput scaffold replacement preserves PhoneInput definition; IPC runner readonly getter only; test asmdef Contracts reference. No wire/codec/writer/deadline/managed lifecycle/store semantics change.",
+  "auditDocumentationOnlyDelta": [
+    "Shared/Protocol/README.md",
+    "Unity/Assets/_Project/Scripts/CameraTracking/README.md",
+    "Unity/Assets/_Project/Scripts/Network/README.md"
+  ],
+  "runtimeSourcesUnchanged": true
+}

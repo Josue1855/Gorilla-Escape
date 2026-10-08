@@ -1,0 +1,5 @@
+{
+  "gate": "FAIL",
+  "cause": "PlayMode test assembly missing direct Contracts reference; compilation CS0012",
+  "repair": "Add test-only reference, no runtime/mobile change"
+}

@@ -1,0 +1,461 @@
+{
+  "date": "2026-10-07",
+  "scope": "Android emulator; secure loopback fixture via ADB reverse; QUIC UDP via emulator host alias 10.0.2.2",
+  "cases": [
+    {
+      "name": "react_load",
+      "status": "PASS",
+      "detail": "Java-hosted React via adb reverse; HTTP component, not LAN HTTPS"
+    },
+    {
+      "name": "health_and_interaction",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "react_reload",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "chrome_restart",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "java_connection_failure",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "wt_correct-certificate",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_wrong-fingerprint",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_unauthorized-session",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_oversize",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_manual-recovery",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_expired-certificate",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_after_reload",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "virtual_motion_events",
+      "status": "PASS",
+      "detail": "Emulated Android events observed; not physical motion or sensor accuracy"
+    },
+    {
+      "name": "sensor_page",
+      "status": "PASS",
+      "detail": "Existing UI and capture only; samples are virtual/possibly absent, not hardware validation"
+    },
+    {
+      "name": "sensor_stop",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "cleanup",
+      "status": "PASS",
+      "detail": ""
+    }
+  ],
+  "dependencyCommit": "b63ebb06b0ab33af73c9bf1f96bedd9e7cb73243",
+  "physicalAndroid": "NOT RUN",
+  "iphone": "NOT RUN",
+  "physicalLan": "NOT RUN",
+  "offlinePwa": "NOT RUN",
+  "gate3A": "IN PROGRESS",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "health": {
+    "status": 200,
+    "cache": "no-store",
+    "service": "gorilla-escape-local"
+  },
+  "validStartupMs": 914.7940140001083,
+  "expiredStartupMs": 825.1552560000164,
+  "features": {
+    "secureContext": true,
+    "webtransport": true
+  },
+  "wtResults": [
+    {
+      "name": "correct-certificate",
+      "expected": "PASS",
+      "status": "PASS",
+      "connectMs": 404.90000000000873,
+      "reliable": {
+        "n": 20,
+        "minMs": 2.5,
+        "p50Ms": 11.80000000000291,
+        "p95Ms": 30,
+        "maxMs": 31.5
+      },
+      "datagrams": {
+        "n": 20,
+        "minMs": 1.5,
+        "p50Ms": 3,
+        "p95Ms": 10.30000000000291,
+        "maxMs": 11.19999999999709
+      },
+      "invalidRejected": true,
+      "disconnect": "PASS",
+      "sent": 20,
+      "received": 20,
+      "loss": 0,
+      "errors": 0
+    },
+    {
+      "name": "wrong-fingerprint",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "CONNECTING",
+      "elapsedMs": 50.5,
+      "errorName": "WebTransportError",
+      "errorMessage": "Opening handshake failed.",
+      "deadline": false
+    },
+    {
+      "name": "unauthorized-session",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "AUTHENTICATING",
+      "elapsedMs": 63.19999999999709,
+      "errorName": "WebTransportError",
+      "errorMessage": "The session is closed.",
+      "deadline": false
+    },
+    {
+      "name": "oversize",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "OVERSIZE",
+      "elapsedMs": 108.10000000000582,
+      "errorName": "WebTransportError",
+      "errorMessage": "The session is closed.",
+      "deadline": false
+    },
+    {
+      "name": "manual-recovery",
+      "expected": "PASS",
+      "status": "PASS",
+      "connectMs": 50.29999999998836,
+      "reliable": {
+        "n": 20,
+        "minMs": 5.399999999994179,
+        "p50Ms": 11.30000000000291,
+        "p95Ms": 37.80000000000291,
+        "maxMs": 65
+      },
+      "datagrams": {
+        "n": 20,
+        "minMs": 3.5,
+        "p50Ms": 13.19999999999709,
+        "p95Ms": 30.59999999999127,
+        "maxMs": 37.29999999998836
+      },
+      "invalidRejected": true,
+      "disconnect": "PASS",
+      "sent": 20,
+      "received": 20,
+      "loss": 0,
+      "errors": 0
+    },
+    {
+      "name": "expired-certificate",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "CONNECTING",
+      "elapsedMs": 306.40000000000873,
+      "errorName": "WebTransportError",
+      "errorMessage": "Opening handshake failed.",
+      "deadline": false
+    }
+  ],
+  "wtAfterReload": {
+    "status": "PASS",
+    "connectMs": 53.79999999998836,
+    "reliable": {
+      "n": 20,
+      "minMs": 1.3999999999941792,
+      "p50Ms": 2.5,
+      "p95Ms": 8.69999999999709,
+      "maxMs": 14.89999999999418
+    },
+    "datagrams": {
+      "n": 20,
+      "minMs": 1.8000000000029104,
+      "p50Ms": 7,
+      "p95Ms": 13.30000000000291,
+      "maxMs": 13.5
+    },
+    "invalidRejected": true,
+    "disconnect": "PASS",
+    "sent": 20,
+    "received": 20,
+    "loss": 0,
+    "errors": 0
+  },
+  "sensorObservation": {
+    "state": "RUNNING",
+    "secureContext": true,
+    "units": {
+      "acceleration": "m/s\u00b2",
+      "rotationRate": "degrees/s",
+      "orientation": "degrees"
+    },
+    "screenAngleDegrees": 0,
+    "channels": {
+      "motion": {
+        "permission": "not-required-by-api",
+        "events": 23,
+        "invalid": 0,
+        "missing": 0,
+        "intervals": 22,
+        "elapsedMs": 351.1999999999971,
+        "lastAt": 1256,
+        "previous": 1256,
+        "latest": {
+          "sequence": 27,
+          "callbackMonotonicMs": 1256,
+          "eventTimestampMs": 1256,
+          "eventTimestampMeaning": "DOM event; hardware capture time unverified",
+          "screenAngleDegrees": 0,
+          "acceleration": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "accelerationIncludingGravity": {
+            "x": 0,
+            "y": 9.8,
+            "z": 0.8
+          },
+          "rotationRate": {
+            "alpha": 0,
+            "beta": 0,
+            "gamma": 0
+          },
+          "intervalMs": 16
+        },
+        "effectiveEventHz": 62.64236902050166,
+        "interrupted": false,
+        "observedFields": [
+          "acceleration.x",
+          "acceleration.y",
+          "acceleration.z",
+          "accelerationIncludingGravity.x",
+          "accelerationIncludingGravity.y",
+          "accelerationIncludingGravity.z",
+          "rotationRate.alpha",
+          "rotationRate.beta",
+          "rotationRate.gamma"
+        ]
+      },
+      "orientation": {
+        "permission": "not-required-by-api",
+        "events": 4,
+        "invalid": 0,
+        "missing": 0,
+        "intervals": 3,
+        "elapsedMs": 317.1999999999971,
+        "lastAt": 1170.1000000000058,
+        "previous": 1170.1000000000058,
+        "latest": {
+          "sequence": 21,
+          "callbackMonotonicMs": 1170.1000000000058,
+          "eventTimestampMs": 1170.1000000000058,
+          "eventTimestampMeaning": "DOM event; hardware capture time unverified",
+          "screenAngleDegrees": 0,
+          "angles": {
+            "alpha": 359.70000000000005,
+            "beta": 85.30000000000001,
+            "gamma": -0.2
+          },
+          "absolute": false
+        },
+        "effectiveEventHz": 9.45775535939479,
+        "interrupted": false,
+        "observedFields": [
+          "alpha",
+          "beta",
+          "gamma"
+        ]
+      }
+    }
+  },
+  "sensorStopped": {
+    "state": "STOPPED",
+    "secureContext": true,
+    "units": {
+      "acceleration": "m/s\u00b2",
+      "rotationRate": "degrees/s",
+      "orientation": "degrees"
+    },
+    "screenAngleDegrees": 0,
+    "channels": {
+      "motion": {
+        "permission": "not-required-by-api",
+        "events": 35,
+        "invalid": 0,
+        "missing": 0,
+        "intervals": 34,
+        "elapsedMs": 568.1999999999971,
+        "lastAt": 1473,
+        "previous": null,
+        "latest": {
+          "sequence": 40,
+          "callbackMonotonicMs": 1473,
+          "eventTimestampMs": 1473,
+          "eventTimestampMeaning": "DOM event; hardware capture time unverified",
+          "screenAngleDegrees": 0,
+          "acceleration": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "accelerationIncludingGravity": {
+            "x": 0,
+            "y": 9.8,
+            "z": 0.8
+          },
+          "rotationRate": {
+            "alpha": 0,
+            "beta": 0,
+            "gamma": 0
+          },
+          "intervalMs": 16
+        },
+        "effectiveEventHz": 59.83808518127451,
+        "interrupted": false,
+        "observedFields": [
+          "acceleration.x",
+          "acceleration.y",
+          "acceleration.z",
+          "accelerationIncludingGravity.x",
+          "accelerationIncludingGravity.y",
+          "accelerationIncludingGravity.z",
+          "rotationRate.alpha",
+          "rotationRate.beta",
+          "rotationRate.gamma"
+        ]
+      },
+      "orientation": {
+        "permission": "not-required-by-api",
+        "events": 5,
+        "invalid": 0,
+        "missing": 0,
+        "intervals": 4,
+        "elapsedMs": 618.0999999999913,
+        "lastAt": 1471,
+        "previous": null,
+        "latest": {
+          "sequence": 39,
+          "callbackMonotonicMs": 1471,
+          "eventTimestampMs": 1471,
+          "eventTimestampMeaning": "DOM event; hardware capture time unverified",
+          "screenAngleDegrees": 0,
+          "angles": {
+            "alpha": 359.90000000000003,
+            "beta": 85.30000000000001,
+            "gamma": -0.2
+          },
+          "absolute": false
+        },
+        "effectiveEventHz": 6.471444750040538,
+        "interrupted": false,
+        "observedFields": [
+          "alpha",
+          "beta",
+          "gamma"
+        ]
+      }
+    }
+  },
+  "wtCleanup": [
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 67.32493600020462,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=11 datagrams=60"
+    },
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 63.69304899999406,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=0 datagrams=0"
+    }
+  ],
+  "fixtureStopped": true,
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "java-http",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "diagnostic": {
+    "boundedChromeLogCaptured": true,
+    "rawLogsPublished": false
+  },
+  "counts": {
+    "PASS": 16,
+    "FAIL": 0,
+    "SKIP": 0,
+    "BLOCKED": 0
+  },
+  "pass": true,
+  "javaHostJarSha256": "867c625a6a48279852b0cdc60b43a5bb89fe703037802a7d1413bbf9844bbcc7",
+  "sourceHashes": {
+    "tools/spikes/webtransport/android.py": "d2bdd88af89ebceb18e5524ac1df3290b123c3a895b94422eb89ea380bcdf950",
+    "tools/spikes/webtransport/client.js": "b86e082aaa962e1aa5661a3aed2b241783f208935c1bca3330563a31c84d686c",
+    "tools/spikes/webtransport/run.py": "cc40a5efc8acde6930759c6c18718f836a4d7fa69df108b0e3d5062aac9559a9",
+    "tools/validate_android_3a.py": "0025393bb3ed6a425b3c933833350fe4c7fbb9b1f49903783c867ea175f117ef",
+    "PWA/spikes/sensors/capture.js": "4cab6a873b6926a868828d5f9417b1aa0fa8a9cc7d0b4bf713504d80848642ad"
+  }
+}

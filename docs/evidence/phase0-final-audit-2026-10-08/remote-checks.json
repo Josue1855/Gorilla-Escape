@@ -1,0 +1,19 @@
+{
+  "scope": "Remote PR head only; not local uncommitted candidate",
+  "checks": [
+    {
+      "name": "java-react-foundation",
+      "head": "0d940f77f533bb6780bc3f07169dce414ea21e54",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/37564253565/job/112608254508"
+    },
+    {
+      "name": "management-validation",
+      "head": "0d940f77f533bb6780bc3f07169dce414ea21e54",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/37564253526/job/112608254218"
+    }
+  ]
+}

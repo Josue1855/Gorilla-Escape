@@ -1,5 +1,7 @@
 # Base de trabajo del equipo
 
+> **Estado de capacidades:** esta guía conserva procedimientos y antecedentes de arranque. Para implementación validada, transporte DEC-010, cierre Software/Lab y deuda física, consultar [auditoría final](PHASE0_FINAL_AUDIT.md). Referencias antiguas a red/cámara pendientes no describen el candidato local vigente.
+
 Fecha: 2026-10-06. Alcance: arranque de Fase 0; no completa Spike 0 ni implementa juego. Arquitectura aprobada en DEC-002 y v4 enmendada.
 
 ## Stack fijado

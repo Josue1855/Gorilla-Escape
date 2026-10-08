@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-07",
+  "scope": "isolated PWA sensor capture unit tests; simulated browser events/permissions/clock",
+  "node": "v24.19.0",
+  "command": "node --test --test-reporter=tap PWA/spikes/sensors/capture.test.js",
+  "exitCode": 0,
+  "passed": 8,
+  "failed": 0,
+  "physicalAndroid": "NOT RUN",
+  "physicalIphone": "NOT RUN",
+  "browserReal": "NOT RUN",
+  "hardwareFrequency": "NOT MEASURED",
+  "sourceSha256": {
+    "PWA/spikes/sensors/README.md": "0f1ff012fa15eefc7bdc929b054d747ea431d23e2e087d7f0651768cb95a1276",
+    "PWA/spikes/sensors/capture.js": "d750d430e4cf6fba62ca44f90870144b89c1139de896359fe1b345de3a2bf723",
+    "PWA/spikes/sensors/capture.test.js": "8e23699c520c1d3ef24c23d4846fbece5c405087a43c8992f2b5b6a11b7690be",
+    "PWA/spikes/sensors/index.html": "539fccf2f2f293a0fffb9f466512cb12eaf0456270243af1928946a35f573070"
+  }
+}

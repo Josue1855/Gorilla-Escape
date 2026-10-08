@@ -1,5 +1,22 @@
 # Reporte de pruebas
 
+> **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
+
+## Estado vigente — FINAL PHASE0 AUDIT, 2026-10-08
+
+**PHASE 0 FINAL AUDIT: PASS — SOFTWARE/LAB.** Fase0 — Base/Spike: **COMPLETED — SOFTWARE/LAB**. Fase1 — Gorilla Smash Vertical Slice: **READY TO START**, no iniciada. Physical validation debt remains open and is required before final MVP acceptance. 3A product/physical onboarding: **DEFERRED / IN PROGRESS**. #94 **OPEN/DRAFT**; candidato local sin commit distinto del PR remoto. Sin nuevo código de producto, commit/push/merge ni fase posterior. [Audit y DoD](PHASE0_FINAL_AUDIT.md), [evidencia](evidence/phase0-final-audit-2026-10-08/gate-summary.json). Los estados previos siguientes son snapshots históricos.
+
+> **Lectura de estado (auditoría 2026-10-08):** las fechas, estados y próximos pasos de este documento son snapshots históricos del incremento descrito. El estado consolidado vigente se registra en [PHASE0_FINAL_AUDIT.md](PHASE0_FINAL_AUDIT.md). Las decisiones de transporte anteriores están **superseded / replaced by DEC-010 Mobile Transport**; se conservan resultados y limitaciones originales.
+
+## Criterio vigente de cierre Software/Lab — aprobado por PO, 2026-10-07
+
+Fase 0 puede cerrar como **COMPLETED — SOFTWARE/LAB** únicamente cuando arquitectura base implementada, integrada y todos los gates automatizados/laboratorio requeridos estén PASS. Esta autorización no equivale a declarar el cierre ahora. iPhone 15/Safari y Android físicos, cadencia móvil real, movimiento humano con teléfono/cámara y latencia física quedan **NOT RUN / DEFERRED**, obligatorios antes de aceptación final del MVP. Windows: DEFERRED. Los intentos fallidos de acceso iPhone y toda evidencia anterior se conservan; no se convierten en PASS. No se vuelve a solicitar teléfono para avanzar.
+
+Orden obligatorio: A comparador WebRTC aislado → B DEC-010 y un transporte → C sesión/admission/QR POC → D protocolo común → E input móvil lab/Java/IPC/Unity → F webcam PC/pose/Unity → G asociación y temporal → H infraestructura Fusion/fixtures → I 1–4 clientes → J resiliencia/regresión → K auditoría → L cierre. No gameplay final, reconocimiento facial, cámara móvil, backend cloud ni Fase 1 antes del cierre. PR #94 permanece DRAFT. Sin push/merge autorizado para este trabajo. Secure-context/onboarding sin configuración del jugador sigue como riesgo independiente; resultados lab no demuestran compatibilidad física.
+
+**Estado actual:** cierre IN PROGRESS; A PASS (comparator lab); B DEC-010 selecciona RTC; C PARTIAL (modelo y unit tests); D–L NOT RUN en esta secuencia. Foundation/IPC y resultados de laboratorio históricos conservados. Fase 1 NOT STARTED; sólo será READY TO START después de auditoría PASS e integración requerida.
+
+
 ## BASE-001 — Base compartida
 
 **Fecha:** 2026-10-05.
@@ -325,3 +342,114 @@ Head previo confirmado `50e48418ff286dcd3096c92800fd47f602ad27f2`, #94 OPEN/DRAF
 Java iniciado por el harness de QA, no Unity; HTTP localhost por ADB sólo prueba componentes, no fallback del producto ni HTTPS público. Certificado efímero rechazado por Chrome sin bypass/CA instalada; confianza pública positiva y LAN/DNS443/Android/iPhone físicos siguen BLOCKED. QR/sesión/sensores/WSS/Flutter SKIP fuera de alcance. No sustituye pruebas históricas Unity/Java/React ni las declara reejecutadas.
 
 [Intentos y hash exacto del harness](evidence/android-emulator-3a-2026-10-06/manifest.json): tres fallos de automatización conservados (dispositivo aún no disponible, first-run Chrome y espera tras restart), corregidos exclusivamente en QA; corrida final PASS. Evidencia seleccionada sanitizada; logs/perfiles/PKI ignorados y temporales. Sin instalaciones, cambios de runtime, red, DNS, firewall o confianza del sistema. **3A IN PROGRESS; #94 DRAFT**; estados posteriores sin cambio.
+
+
+## Investigación móvil segura, 2026-10-06 — sin ejecución nueva
+
+Actualización documental exclusivamente. WT/RTC, pin Safari, sensores reales, hotspot, webcam e Input Fusion: NOT RUN para la arquitectura propuesta. No nuevos resultados de producto ni nuevas métricas; no se repiten suites completas sin cambios runtime. Emulador Android histórico **10 PASS / 2 BLOCKED / 1 SKIP** conservado, sin reinterpretación como físico. IPC, HTTPS LAN, Unity y lifecycle previos conservan sus resultados/alcance. Ver [plan y criterios propuestos](PHASE0_SECURE_MOTION_SPIKE_PLAN.md).
+
+Verificación GitHub de sólo lectura en esta tarea: #94 **OPEN/DRAFT**, head `0d940f77f533bb6780bc3f07169dce414ea21e54`; `management-validation` y `java-react-foundation` SUCCESS sobre ese head remoto. Documentos de investigación locales no publicados ni cubiertos por esos checks remotos. Validación documental local: management PASS (88 registros, 242 enlaces) y git diff --check PASS. Sin merge, commit ni push.
+
+
+## SENSORS-SPIKE-001 — captura PWA aislada, 2026-10-07
+
+**Alcance:** adquisición/diagnóstico y lifecycle del capturador; sin sensores enviados a Java/Unity ni gameplay. Node existente v24.19.0; ninguna dependencia instalada. Código, página y procedimiento en [guía](../PWA/spikes/sensors/README.md).
+
+**Ejecutado:** `node --test PWA/spikes/sensors/capture.test.js` — 8/8 PASS, 0 FAIL/skip; `npm --prefix PWA test` — 5/5 PASS, 0 FAIL/skip. Primera corrida 8/8; tras validar rangos Euler/interval y ampliar casos de permiso rechazado, candidato local final volvió a pasar 8/8. Tests con EventTarget/permisos/reloj simulados: granted/denied/throws/rejects, contexto inseguro/API ausente, campos nulos/NaN/Infinity/tipo inválido, cambios orientación, cadencia/interrupción, hidden/visible, pagehide/stop/restart y resultado de permiso tardío cancelado. No latency/Hz físicos publicados ni build Player nuevo.
+
+**Límites:** browser real de la página experimental, Android/iPhone físicos, frecuencia hardware, precisión, calibración/normalización, intención/FPR/FNR, webcam, RTC/WT y nueva confianza HTTPS NOT RUN. 50 Hz en fixture sólo verifica aritmética con timestamps sintéticos, no sensor real. No iniciar servidor, hosting ni emitir certificados. Memoria estructural: latest por fuente/contadores, sin cola/historial; no declaración de ausencia global de fugas.
+
+**Conservación:** emulador histórico 10 PASS / 2 BLOCKED / 1 SKIP y todas las evidencias foundation/2A/2B/2C/HTTPS intactas. No repetir Java/Unity/Player porque sus fuentes no cambian. Capturador aislado no modifica su aceptación. Estados: #94 OPEN/DRAFT, 3A/Fase 0 IN PROGRESS, Fase 1 NOT STARTED. Los checks GitHub previos no cubren cambios locales sin commit del Spike.
+
+**Corrida final exacta:** tras completar diagnóstico de accelerationIncludingGravity y aislamiento de permisos tardíos respecto de un nuevo Start, tests 8/8 PASS nuevamente. [Resultado sanitizado y hashes de los cuatro archivos del Spike](evidence/pwa-sensors-spike-2026-10-07/results.json). Regresión PWA 5/5 conserva su ejecución previa; fuentes productivas no cambiaron. Management PASS (88 registros, 261 enlaces locales), git diff --check PASS. Esta evidencia nueva no altera artifacts históricos.
+
+
+## Evidencia adicional aislada 3A-T — 2026-10-07
+
+Build del prototipo Maven Java 21 PASS (aviso API deprecated; no 0 warnings). Chrome desktop real: seis escenarios PASS en loopback y seis en dirección LAN del mismo host; invalid-input también comprobado dentro de sesiones positivas. Pin correcto, incorrecto y vencido diferenciados por etapa; AUTH y oversize diferenciados, ningún negativo por deadline. 20 reliable y 20 datagramas por sesión positiva; métricas por ruta y recovery en [informe](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md#15-spike-ejecutable-3a-t--2026-10-07), JSON y hashes en [evidencia](evidence/webtransport-spike-2026-10-07/). EOF/exit 0, UDP rebinding y cero procesos propios residuales PASS. Primeros fallos de perfil de certificado documentados; no contarlos como éxito de seguridad.
+
+LAN física, Android, iPhone, Windows y offline PWA NOT RUN. Upstream unit tests NOT RUN; pruebas costosas de componentes sin cambios no repetidas. No afirmar memoria sin fugas ni latencia móvil; evidencia 2A/2B/2C y emulador 10 PASS/2 BLOCKED/1 SKIP conservada sin reinterpretación. Spike local fuera del candidato remoto #94, aceptación 3A no cambia.
+
+
+## Android WebTransport + componentes existentes — 2026-10-07
+
+[Informe y métricas por sesión](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md#16-android-emulator--validación-integrada-de-componentes-2026-10-07); [evidencia](evidence/webtransport-android-2026-10-07/). API36/Chrome133 existentes, emulador desechable: final **16/16 PASS**, React/Health/reload/restart/EOF/error, seis WT con TLS hash real/negativos, reconexión tras reload, eventos virtuales sensores y Stop, cleanup. Cero procesos propios residuales, exit 0 y UDP liberado. Reliable RTT máximo observado 65 ms, conservado; no gate de performance WT ni extrapolación móvil.
+
+Initial 15 PASS de aserciones limitadas; strict-before-fix 13 PASS/1 FAIL por UI sensor stale, conservados separadamente. Corrección mínima del receptor Window de timers en el Spike de sensores existente, regresión unit **9/9 PASS** y Android final RUNNING/eventos/STOPPED PASS. Histórico sensor unit 8/8 y Android 10 PASS/2 BLOCKED/1 SKIP intactos. Sensores no conectados al transporte ni Unity. Físicos/HTTPS público/offline LAN NOT RUN. Capturas/JSON sanitizados; no instalaciones, CA, trust bypass o red modificada.
+
+### Incremento aislado A/B y base C — 2026-10-07
+
+Comparador RTC Chromium ↔ Java21 real: **PASS**, `webrtc-java 0.19.0`/JNI Linux fijados sólo en Spike. Corrida final `run04-reviewed.json`: 2400/2400 mensajes medidos, 0 pérdidas/timeouts/errores nominales; 1 peer, reconexión nueva y 4 peers activos. Padding32/1024, reliable ordered/unordered maxRetransmits0. Candidatos host UDP, sin iceServers/STUN/TURN. Negativos7 PASS: SDP inválido, oferta con ID duplicado aislada, payload inválido, quinto peer rechazado, desconexión aislada, credential incorrecta, oversized. Revisión detectó que rechazar una oferta con ID repetido podía cerrar el peer existente: corrección limitada al peer asignado por ese request y prueba de regresión real añadida; corridas anteriores conservadas.
+
+Java startup observado264.52ms (un lanzamiento, no P95). RTT por escenario, sin combinar muestras: single N400, mayor P95 de sus subgrupos0.60ms/max1.50ms; recovery N400, mayor P950.90ms/max1.70ms; four N1600, mayor P951.00ms/max2.00ms. Subgrupos/tamaños/canales y métricas completas permanecen separados en JSON; esos máximos de percentiles no son un percentil combinado. No se comparan como benchmark equivalente con WT ni se extrapolan a teléfono/gameplay. Java exit0, peers residuales0, comandos pendientes0, navegador cerrado.
+
+DEC-010 selecciona **WebRTC DataChannel** como dirección Software/Lab; no transporte productivo integrado aún. WT histórico permanece aislado. Sesión técnica Java: siete unit tests PASS para token one-use, cuatro players, expiración, liveness, desconexión/identity y reconnect con epoch. Regresión Java37 total:35 PASS/2 SKIP de variantes LAN,0 fallos/errores; no se cambian resultados históricos. Foundation wiring PASS; diff check PASS. No QR/endpoint de admisión implementado todavía; C PARTIAL, pipeline móvil/Unity, webcam/Fusion, multicliente productivo y auditoría final pendientes.
+
+Evidencia: `docs/evidence/webrtc-comparator-2026-10-07/`; comando `tools/spikes/webrtc/run.mjs`; restricciones/dependencias `tools/spikes/webrtc/README.md`. #94 verificado OPEN/DRAFT, head0d940f77; sin commit/push/merge. Fase0 IN PROGRESS y Fase1 NOT STARTED. Físicos DEFERRED por decisión PO; ya no bloquean gates Software/Lab.
+
+**Actualización del mismo incremento:** POC QR implementado con ZXing core3.5.3/Apache-2.0 (única nueva dependencia del servidor para QR), QR384×384 codificado y decodificado realmente en test; URL HTTPS con admission efímero en fragment, sin token IPC/clave/credencial permanente. Dominios `.invalid` son fixtures, no hosting desplegado ni concesión de infraestructura. Rechaza HTTP, userinfo, query/fragment previos; token consumido sólo una vez. Dos tests QR PASS. Credential de resume rota al reconectar y epoch anterior queda inválido; siete tests sesión PASS. Regresión final con interfaz LAN explícita: **Java39/39 PASS,0 SKIP,0 errores/fallos** (`technical-session-qr-java-final.json`). La corrida previa35PASS/2SKIP sigue conservada separadamente. C permanece PARTIAL: faltan endpoints/integración de admission/liveness con el transporte real/PWA; QR POC componente PASS. No pipeline móvil→Unity, webcam, asociación/Fusion ni auditoría final aún. No se declara Fase0 COMPLETED ni Fase1 READY.
+
+## Sesión / QR / Gorilla Protocol / WebRTC / PhoneInput — Software/Lab, 2026-10-07
+
+**PASS en Chrome real sintético/replay**. [Informe](PHASE0_MOBILE_INPUT_RUNTIME_VALIDATION.md) y [evidencia dedicada](evidence/mobile-input-runtime-2026-10-07/).
+
+| Prueba ejecutada | Resultado |
+|---|---|
+| Java, con interfaz LAN explícita | 48/48 PASS; 0 SKIP |
+| Node: React, capturador y adaptador | 18/18 PASS |
+| Unity EditMode / PlayMode real | 23/23 y 12/12 PASS |
+| Build Linux | 0 errores / 0 warnings |
+| Corpus móvil compartido | 17 casos PASS, más escenarios de secuencia/rate/aislamiento |
+| Regresión Player 2A/2B | 11 grupos PASS |
+| Regresión Player 2C | Tres N=1000 independientes y 601.2234171 s PASS |
+
+El corpus IPC anterior de 71 casos conserva sus regresiones por las suites aplicables. 2C terminó STOPPED, exit 0, sin force y con cero procesos propios residuales. Errores/timeouts: 0.
+
+Runtime end-to-end04: cuatro peers host/host UDP, sin STUN/TURN; QR PNG → decoder → JOIN real; PlayerIds 1–4; captura DOM sintética, replay y TOUCH; 18 casos negativos/lifecycle; recuperación manual; 643 observaciones Unity sin cruces de identidad. Carga nominal de 30/50/60 Hz, 60 muestras de movimiento por cliente/grupo y recibos adicionales de heartbeat contabilizados. Los 12 grupos RTT permanecen separados: P95 por grupo entre 2.7 y 5.3 ms, máximo individual 9.4 ms, cero errores/recibos faltantes nominales.
+
+Ráfaga de 500 muestras: 498 coalesced. Presión de 400 mensajes: 209 ACK / 191 rechazos; cliente recuperado y otros activos. No extrapolar pérdida física ni benchmarks. Contadores Java: forwarded 643, coalesced 318, pending 0, rejected 202; incluyen control/presión.
+
+Tramos UTC en la misma PC, incluyendo replay/presión: Java → Unity P50/P95 = 11/23 ms; generación del cliente → Unity = 13/25 ms, resolución de 1 ms. No son human latency, motion-to-photon ni latencia física.
+
+Android nuevo **BLOCKED** (canales RTC no OPEN); Player/Java/Emulator/ADB exit 0 y cero residuales. Background/foreground móvil NOT RUN; iPhone/Android físicos/Windows DEFERRED. Histórico Android 16/16 y resultados WT/comparador intactos. Se conservan fallos iniciales Java/PlayMode/singleton y la primera estabilidad 2C con cierre forzado; la repetición fija pasó, sin confirmar causa definitiva. No se repite el comparador cerrado.
+
+DEC-010 IMPLEMENTED FOR PHASE 0 LAB. Fase 0 / 3A IN PROGRESS, Fase 1 NOT STARTED. Camera/Input Fusion NOT STARTED. PR #94 DRAFT; sin commit/push/merge.
+
+
+## Webcam PC / asociación / alineación / Fusion — Software/Lab, 2026-10-08 UTC
+
+**PASS — SOFTWARE/LAB**: CameraInput, Player Lock, Temporal Alignment e Input Fusion infrastructure.
+Se conserva runtime móvil PASS y se añade adaptador cámara local supervisado/fixtures; no gameplay.
+[Informe completo y evidencia](PHASE0_CAMERA_FUSION_VALIDATION.md), DEC-012.
+
+- Java48/48, PWA18/18, EditMode64/64, PlayMode16/16 finales PASS; Linux build0 errores/0 warnings, PWA build PASS.
+- Corpus12 camera cases,21 escenarios fusion y8 trazas conceptuales; Player4Chrome RTC reales + camera replay PASS,
+  turnos1–4, aislamiento, lost/recovery, phone disconnect/manual resume y freshness.
+- unavailable/vision failure no detienen cuatro inputs móviles; worker exit2 esperado, parents exit0, propios residuales0.
+- Regresión Player2A/2B11 grupos PASS; runtime mobile real PASS con18 negativos/lifecycle. Bench2C anteriores
+  independientes/601.2234171s conservados sin nueva ejecución; JAR y fuentes de transporte/PhoneInput intactos,
+  regressions reales codec/proceso Java/PlayMode repetidas. Getter de lectura nuevo únicamente en IpcProbeRunner.
+- Replay:342 frames,336 recibidos,29.868FPS;50 evaluaciones Eligible; delta P50/P953/13ms,max14ms.
+  Process→Unity P50/P9510/43ms,max202ms. Datos completos sin exclusiones en e2e-replay03.json.
+- Webcam física:640×480,102 frames,100 recibidos,17.611FPS; processing P50/P9539.341/65.884ms,
+  read P50/P957.655/36.538ms; process→Unity P50/P9510/157ms,max402ms. Confianza .00136–.00687,
+  cero frames fiables bajo configuración lab; captura→detector→store y release PASS técnico parcial,
+  persona/salida/retorno fiable NOT RUN.30FPS no acreditados, hardware dropped frames desconocidos.
+
+Normales: Unity/Java/vision exit0, STOPPED, camera/detector released, sin forced y propios residuales0.
+Intentos fallidos de compilación/tests/harness y early Python exit134 preservados con reparaciones y
+repeticiones separadas; no alteran históricos. No global leak claim ni accuracy/latencia física deportiva.
+
+iPhone/Android físicos, Windows, movimiento humano, fusión física, tuning final y packaging siguen DEFERRED;
+Android Emulator RTC nuevo BLOCKED. Secure-context/onboarding aún deuda; no reabrir comparador/WT ni usar
+cámara móvil. A–J del cierre Software/Lab disponen de gates; **siguiente único bloque: FINAL PHASE0 AUDIT**,
+no ejecutado aquí. Fase0/3A IN PROGRESS, Fase1 NOT STARTED; PR94 OPEN/DRAFT head0d940f77, nueva implementación
+sólo local sin commit/push/merge. Auditoría decidirá cierre/integración; no se declara COMPLETED ni READY Fase1.
+
+
+**Candidato final del mismo incremento:** EditMode64/64 y build03 Linux0/0; e2e-replay04 PASS después de
+conservar RawPhone/RawCamera/ages/quality aun con input no elegible. No cambia algoritmo temporal, detector,
+lifecycle ni protocolo. Replay04: 329 frames/326 recibidos, 29.870FPS; 48 Eligible,
+delta P50/P95 9/15ms,max15ms; process→Unity P50/P95 10/42ms,max210ms.
+Corridas anteriores y webcam física se mantienen separadas, no se sustituyen/combinan. Propios residuales0,
+Unity/Java/vision exit0, sin forced. Sólo FINAL PHASE0 AUDIT pendiente; no ejecutado.

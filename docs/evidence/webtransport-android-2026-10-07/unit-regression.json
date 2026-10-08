@@ -1,0 +1,11 @@
+{
+  "command": "node --test PWA/spikes/sensors/capture.test.js",
+  "tests": 9,
+  "pass": 9,
+  "fail": 0,
+  "durationMs": 56.884026,
+  "sourceHashes": {
+    "PWA/spikes/sensors/capture.js": "4cab6a873b6926a868828d5f9417b1aa0fa8a9cc7d0b4bf713504d80848642ad",
+    "PWA/spikes/sensors/capture.test.js": "017405cf63d94c98bab32bc26a3b6852618c554a96f7d1b966c4d658d1abc04f"
+  }
+}

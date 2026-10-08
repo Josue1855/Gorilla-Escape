@@ -1,0 +1,39 @@
+{
+  "result": "PASS — SOFTWARE/LAB",
+  "mobile": [
+    "PWA/src/input/mobileClient.js",
+    "Server/src/main/java/com/gorillaescape/server/mobile/MobileRuntime.java",
+    "Server/src/main/java/com/gorillaescape/server/protocol/GorillaProtocol.java",
+    "Server/src/main/java/com/gorillaescape/server/ipc/ManagedProbe.java",
+    "Unity/Assets/_Project/Scripts/Network/JavaProbeSupervisor.cs",
+    "Unity/Assets/_Project/Scripts/Input/PhoneInputStore.cs"
+  ],
+  "camera": [
+    "tools/spikes/camera/worker.py",
+    "Shared/CSharp/Runtime/CameraInputWire.cs",
+    "Unity/Assets/_Project/Scripts/CameraTracking/VisionSupervisor.cs",
+    "Unity/Assets/_Project/Scripts/CameraTracking/CameraInputStore.cs"
+  ],
+  "fusion": [
+    "Unity/Assets/_Project/Scripts/Input/Fusion/PlayerLock.cs",
+    "Unity/Assets/_Project/Scripts/Input/Fusion/InputFusion.cs"
+  ],
+  "authority": "Unity gameplay/physics/animation/scoring/results/final input interpretation; Java transport/technical session/admission/validation/routing/lifecycle",
+  "ipc": "127.0.0.1 uint32BE UTF8 JSON max4096, one writer, cancellable connection-bound deadlines, EOF cleanup",
+  "mobileBounds": "4 peers, local signaling, no configured public STUN/TURN, no media tracks,2048 byte Gorilla envelope,latest-only inputs",
+  "cameraBounds": "local PC only, private pipes, max2 subjects/8 landmarks,16 frames/32 motion samples per player;1 camera-active player per turn",
+  "excludedImplementedFeatures": [
+    "Gorilla Smash gameplay",
+    "hammer physics",
+    "scoring",
+    "final Power",
+    "final sports gesture detector",
+    "animations",
+    "final feedback",
+    "Gorilla Points",
+    "tournament",
+    "other minigames"
+  ],
+  "scaffoldNote": "PlayerMotion.Power and PlayerInput.Smash/Throw remain type declarations only, no producer/consumer gameplay implementation; code search confirmed",
+  "platformLimits": "Linux lab optional Python adapter, no definitive distributed Python packaging; receipt/read-complete proxy timestamps, no physical clock sync"
+}

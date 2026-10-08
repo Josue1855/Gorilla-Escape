@@ -1,0 +1,8 @@
+{
+  "functionalSourceMatchesAudit": true,
+  "runtimeJarSha256": "8cc8f015a749e76548c9251ca6d4431d1bb9a44961b5d7d9c6ff2ed932ec4a22",
+  "auditReference": "../phase0-final-audit-2026-10-08/test-summary.json",
+  "historicalAuditUntouched": true,
+  "newProductCode": false,
+  "testsRetained": "Java48/PWA18/Edit64/Play16/Linux0errors0warnings; Player11groups/RTC4clients/cameraReplay; no material runtime changes since final audit"
+}

@@ -5,6 +5,8 @@
   <name>Gorilla Escape Local Server</name>
   <properties><java.version>21</java.version></properties>
   <dependencies>
+    <dependency><groupId>dev.onvoid.webrtc</groupId><artifactId>webrtc-java</artifactId><version>0.19.0</version></dependency>
+    <dependency><groupId>com.google.zxing</groupId><artifactId>core</artifactId><version>3.5.3</version></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-webmvc</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-websocket</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-test</artifactId><scope>test</scope></dependency>
@@ -15,6 +17,8 @@
       <resource><directory>../PWA/dist</directory><targetPath>static</targetPath></resource>
       <resource><directory>../Shared/Protocol/fixtures</directory><targetPath>protocol-fixtures</targetPath></resource>
       <resource><directory>../Shared/Protocol/ipc</directory><targetPath>ipc-fixtures</targetPath></resource>
+      <resource><directory>../PWA/src/input</directory><targetPath>static/mobile-lab</targetPath></resource>
+      <resource><directory>../PWA/spikes/sensors</directory><targetPath>static/mobile-lab/sensors</targetPath><includes><include>capture.js</include></includes></resource>
     </resources>
     <plugins><plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin></plugins>
   </build>

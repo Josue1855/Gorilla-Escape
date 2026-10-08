@@ -1,3 +1,4 @@
+using GorillaEscape.Contracts;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace GorillaEscape.Network
     public sealed class IpcProbeRunner : MonoBehaviour
     {
         private JavaProbeSupervisor supervisor;
+        public GorillaEscape.Input.PhoneInputStore PhoneInputs => supervisor?.PhoneInputs;
         private CancellationTokenSource cancellation;
         private Task run;
         private bool quitting, allowQuit;
@@ -26,9 +28,21 @@ namespace GorillaEscape.Network
         {
             previousBackground = Application.runInBackground; Application.runInBackground = true;
             supervisor = new JavaProbeSupervisor();
+            if(Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1"){
+                supervisor.HttpReady+=port=>Debug.Log("PHONE_LAB_HTTP_READY "+port);
+                supervisor.PhoneInputReceived+=sample=>{
+                    if(supervisor.PhoneInputs.TryPhoneInput(sample.playerId,out var phone))
+                        Debug.Log("PHONE_INPUT_OBSERVED "+JsonUtility.ToJson(new PhoneObservation(phone.ProtocolSample)));
+                };
+            }
             sustained = Environment.GetEnvironmentVariable("GORILLA_IPC_MODE") == "lifecycle";
             Application.wantsToQuit += WantsToQuit;
             StartAttempt();
+        }
+        [Serializable] private sealed class PhoneObservation {
+            public int playerId;public long sequence,epoch,clientTimestamp,serverReceiveTimestamp,unityReceiveTimestamp;
+            public string source,connectionState;public bool accelerationXPresent;public float accelerationX;
+            public PhoneObservation(PhoneInputWire s){playerId=s.playerId;sequence=s.sequence;epoch=s.connectionEpoch;clientTimestamp=s.clientTimestamp;serverReceiveTimestamp=s.serverReceiveTimestamp;unityReceiveTimestamp=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();source=s.quality.source;connectionState=s.connectionState;accelerationXPresent=s.acceleration!=null&&s.acceleration.hasX;accelerationX=s.acceleration==null?0:s.acceleration.x;}
         }
         private void StartAttempt()
         {

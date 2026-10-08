@@ -1,4 +1,8 @@
 # Gorilla Escape: Gorilimpiadas
+
+> **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
+
+> **Precedencia de estado:** las enmiendas vigentes al final de este documento prevalecen sobre los snapshots de implementación y transporte del texto original. WebSocket obligatorio y WT/RTC pendiente están superseded / replaced by DEC-010 Mobile Transport. El cierre Software/Lab se decide en [auditoría final](PHASE0_FINAL_AUDIT.md), separado del MVP físico.
 ## Especificación maestra v4 — producto, experiencia, implementación y viabilidad
 
 **Estado:** línea base de preproducción para validación del equipo  
@@ -3324,6 +3328,8 @@ Sin crash
 
 # 50. Orden de implementación recomendado
 
+La secuencia histórica se conserva; cobertura vigente del Spike y siguiente fase en [auditoría final](PHASE0_FINAL_AUDIT.md). Fase 1 no se inicia automáticamente.
+
 ## Fase 0
 
 ```text
@@ -3620,6 +3626,8 @@ Será que:
 
 ## Matriz mínima de aceptación
 
+Esta matriz es de aceptación del producto físico/MVP, no los gates de cierre Software/Lab. La [Definition of Done del audit](PHASE0_FINAL_AUDIT.md#definition-of-done-softwarelab) vincula cada gate técnico a su evidencia; las deudas físicas siguen obligatorias.
+
 | Objetivo | Requisito relacionado | Evidencia de aceptación | Responsable principal |
 |---|---|---|---|
 | Incorporación sencilla | QR, PWA, sesión y permisos | una persona nueva conecta en menos de 60 s en hardware objetivo | Hiram |
@@ -3850,3 +3858,68 @@ Un enlace HTTPS y un QR deben funcionar en navegador; App Links/deep linking And
 Roadmap diseñado:3A LAN+HTTPS sin configuración TLS del teléfono;3B QR+sesión técnica;4A WS/protocolo común;4B sensores PWA reales;4C Flutter Android común; comparación/hardening posterior. No se autoriza implementación de estos bloques por esta enmienda; #94 permanece DRAFT hasta aprobar nueva estrategia. Fase1 NOT STARTED.
 
 **Precisión de ejecución3A:** autorizada adaptación de #94 para FQDN/SAN DNS, cadena TLS, origen público443 y Java8443 sin privilegios. No autoriza compras, emisión pública ni modificaciones router/firewall. IPC/supervisor intactos; procedimientos preparados no equivalen a infraestructura aplicada. 3A IN PROGRESS hasta certificado público real, cero configuración del jugador y gate físico Android/iPhone. #94 DRAFT; 3B/4A/4B/4C y Fase1 NOT STARTED.
+
+
+# Enmienda de producto — movimiento completo y webcam PC (DEC-007)
+
+Por instrucción explícita del PO, PWA y Flutter Android opcional deben compartir acelerómetro, giroscopio, orientación, touch/gestos, calibración, personalización y feedback según capacidades declaradas. Touch no sustituye completamente movimiento requerido. No instalación obligatoria, dominio propio, router específico, certificados móviles ni DNS manual. Juego sin dependencia WAN durante partida.
+
+Input Fusion combina **webcam integrada/externa PC + sensores móviles + touch**. Cámara del teléfono excluida de postura, vídeo y gameplay; QR del sistema o scanner Flutter futuro es sólo onboarding. Procesamiento visual local/offline; integración MediaPipe/OpenCV y modelos por evaluar, no implementados.
+
+Unity única autoridad de gameplay/física/animaciones/scoring/resultados, sincronización temporal, calibración aplicada, fusión e interpretación de gestos. Java único backend/transporte/sesión técnica e hijo supervisado; IPC sólo 127.0.0.1. Perfiles separados por usuario, dispositivo, minijuego y límites competitivos Unity. Boliche distingue dirección/velocidad/spin/eje/hook; giro de muñeca no equivale automáticamente a curva proporcional.
+
+Esta enmienda prevalece sobre requisitos anteriores de dominio/DNS y WebSocket obligatorio para transporte móvil. **No selecciona WT ni RTC:** [decisión Accepted sólo como base de Spike](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md). Primera preparación online, hosting y gate offline revisado pendientes del PO; ningún PASS físico nuevo. [Plan de Spike](PHASE0_SECURE_MOTION_SPIKE_PLAN.md) y [contrato conceptual](PHASE0_INPUT_FUSION_CONCEPT.md) son propuestas, no implementación autorizada. #94 DRAFT; 3A IN PROGRESS; posteriores y Fase 1 NOT STARTED.
+
+
+# Enmienda de producto — calibración inmersiva y justicia competitiva (DEC-008)
+
+Por instrucción explícita del PO, la calibración individual se integrará mediante desafíos jugables breves, animaciones/efectos y feedback inmediato, no tutorial técnico ni asistente largo. Rango cómodo individual, mano, orientación, estabilidad y capacidades sirven para normalizar intención; fuerza absoluta, talla o alcance no determinan automáticamente potencia virtual. No exigir esfuerzo máximo ni movimientos peligrosos; el teléfono permanece sujeto.
+
+Unity conserva límites de potencia, física y reglas competitivas; precisión, timing, técnica y coordinación siguen distinguiendo habilidad. Oportunidades comparables de alcanzar techo virtual no significan resultados idénticos ni equilibrio demostrado. Personalización distingue usuario/dispositivo/minijuego/reglas competitivas; asistencias que afectan resultados son explícitas/versionadas. Parámetros competitivos congelados por ronda; desviaciones o variación aparente de rendimiento sólo motivan propuesta/recalibración controlada entre rondas, sin diagnóstico ni cambios silenciosos.
+
+Input Fusion usa exclusivamente webcam PC, sensores móviles y touch según disponibilidad; degradación explícita, sin pose inventada ni cámara móvil. Sin vídeo ni biometría identificable por defecto. Pruebas físicas diversas con consentimiento/privacidad/seguridad, especialmente menores, necesarias para aceptar equidad; simulación sola no basta. [Contrato y criterios conceptuales](PHASE0_INPUT_FUSION_CONCEPT.md#8-calibración-inmersiva-y-justicia-competitiva--dec-008) y DEC-008 registran requisito Accepted con métodos/targets Proposed. Ejemplos boxeo/boliche/tenis/golf/penales no agregan minijuegos al alcance congelado.
+
+Sólo documentación y dependencias futuras en Fase 0 actual; no reiniciar incrementos ni implementar desafíos, webcam, gameplay o calibración definitiva. #94 OPEN/DRAFT, 3A/Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
+
+
+# Enmienda de producto — intención y acciones únicas (DEC-009)
+
+Unity reconocerá patrones temporales de preparación, inicio, dirección/trayectoria, aceleración/orientación/giro, ejecución, finalización y recuperación; no disparará acciones por un único umbral de aceleración. Modelo conceptual IDLE → PREPARING → ACTION_CANDIDATE → CONFIRMED → RECOVERY → IDLE, con cancelación/rechazo y suspensión por calidad/identidad. Una sola acción oficial por gesto; no ejecución durante preparación ni redisparo por muestra intensa, replay o dato tardío.
+
+Intención e intensidad separadas: lanzamiento suave/lento coherente puede ser válido; movimiento accidental rápido no lo es por su pico. Umbrales personalizados a ruido/movimiento habitual/rango cómodo/mano y capacidades, limitados competitivamente por Unity y fijos por ronda según DEC-008. Sin fuerza máxima ni thresholds universales no medidos.
+
+Fusión temporal/espacial con webcam exclusivamente PC cuando datos y asociación persona/control sean fiables. Si visión no es fiable, evaluar modalidad sensor-only con criterios específicos; si no hay evidencia suficiente, pausar/rechazar o alternativa explícita, nunca pose/confianza inventadas. Multijugador 1–4 con identidad técnica y track temporal validados; no asignación cruzada por proximidad. Confirmar golpe no confirma impacto/scoring; confirmar lanzamiento antecede a física/spin/hook Unity.
+
+[Contrato, estados y pruebas](PHASE0_INPUT_FUSION_CONCEPT.md#9-reconocimiento-de-intención-y-prevención-de-activaciones-falsas--dec-009): sesiones etiquetadas, falsos positivos/negativos, lentos/rápidos, duplicados/prematuros, atribución cruzada y latencia física, por dispositivo/fuentes/modalidad. Valores definitivos requieren evidencia física y aprobación; ninguna precisión demostrada ahora. Sólo diseño dentro de Fase 0 existente, sin detector/minijuegos/cámara implementados, transporte independiente pendiente, #94 OPEN/DRAFT, Fase 0 IN PROGRESS y Fase 1 NOT STARTED.
+
+## Precisión de cierre Fase 0 aprobada por Product Owner — 2026-10-07
+
+El cierre **COMPLETED — SOFTWARE/LAB** requiere todos los gates de base, transporte único, session/admission/QR, protocolo, pipeline PWA/Java/IPC/Unity, webcam PC, Player Lock, temporal alignment, Input Fusion infrastructure, fixtures, 1–4 clientes, resiliencia/regresión, cleanup e integración PASS. No se implementa el detector/minijuego final de Smash en Fase0. iPhone/Android físicos, cadencia/tuning móviles, movimiento humano fusionado y latencia física son **NOT RUN / DEFERRED**, obligatorios antes de aceptar el MVP y no bloquean el cierre Software/Lab. Linux es el entorno de laboratorio actual; Windows DEFERRED. Fase1 sólo READY TO START después de auditoría final PASS; el estado actual sigue IN PROGRESS/NOT STARTED. Las restricciones históricas sobre implementar Spikes de RTC/cámara/Fusion quedan reemplazadas exclusivamente por el alcance técnico A–L autorizado; no autorizan gameplay final ni servicios cloud ni cambios de infraestructura.
+
+## Enmienda vigente — runtime móvil Software/Lab, 2026-10-07
+
+Por instrucción del PO, DEC-010 Mobile Transport queda ACCEPTED / IMPLEMENTED FOR PHASE 0 LAB: **WebRTC DataChannel**, único transporte móvil seleccionado; comparador CLOSED. Sustituye, para este alcance, WebSocket obligatorio o selección WT/RTC pendiente de enmiendas anteriores. WT permanece como evidencia experimental histórica aislada. Sin signaling cloud, STUN/TURN público ni vídeo móvil.
+
+Session/admission/QR técnico, Gorilla Protocol v1 común, adaptador PWA/Java y extensión opt-in del mismo IPC loopback hacia PhoneInput Unity están implementados y validados en laboratorio con 1–4 clientes Chrome sintéticos/replay. Java sólo administra identidad/sesión técnica/transporte/validación/routing; Unity sigue siendo la única autoridad competitiva. Sin gestos deportivos, scoring, Fusion o cámara nuevos. [Contrato real](../Shared/Protocol/mobile/README.md) y [gate, evidencia y deuda](PHASE0_MOBILE_INPUT_RUNTIME_VALIDATION.md).
+
+El resultado no valida onboarding HTTPS de un teléfono nuevo ni red física. Emulador RTC nuevo BLOCKED; iPhone/Android físicos/Windows DEFERRED. Camera/Input Fusion NOT STARTED; 3A/Fase 0 IN PROGRESS; Fase 1 NOT STARTED. PR #94 permanece OPEN/DRAFT; sin push/merge ni siguiente incremento automático.
+
+
+## Enmienda vigente — infraestructura cámara/fusión Software/Lab, 2026-10-08 UTC
+
+El incremento autorizado implementa CameraInput raw de PC, asociación temporal/Player Lock por turno,
+alineación acotada y FusionFrame con fuentes/calidad/ausencias explícitas, usando el runtime móvil validado.
+No es recognizer de deporte, calibración inmersiva final, scoring ni Fase1. DEC-012 limita el adaptador
+MediaPipe/OpenCV supervisado a Linux laboratorio; empaquetado distribuido/Windows pendiente. Timestamps
+PC receipt/read-complete son proxies, no sincronización física demostrada. [Gate y deuda](PHASE0_CAMERA_FUSION_VALIDATION.md).
+
+Camera/Fusion NOT STARTED de secciones anteriores describe su momento histórico. Resultado vigente se
+registra en DEVELOPMENT_PROGRESS/TEST_REPORT del incremento. Fase0/3A IN PROGRESS y Fase1 NOT STARTED;
+#94 OPEN/DRAFT. El siguiente bloque será únicamente FINAL PHASE0 AUDIT, no iniciado en esta entrega.
+
+## Enmienda vigente — cierre FINAL PHASE0 AUDIT, 2026-10-08
+
+Por el gate final autorizado por el PO, **PHASE 0 FINAL AUDIT: PASS — SOFTWARE/LAB**.
+Fase0 — Base/Spike: **COMPLETED — SOFTWARE/LAB**; Fase1 — Gorilla Smash Vertical Slice: **READY TO START**, no iniciada. La [auditoría](PHASE0_FINAL_AUDIT.md) acredita cada gate técnico y las regresiones del candidato local.
+Foundation/2A/2B/2C PASS/MERGED; móvil/cámara/lock/alineación/Fusion infra PASS Software/Lab local, todavía sin integración Git de cambios recientes. #94 OPEN/DRAFT; local candidate != remote PR head. Sin commit/push/merge ni gameplay.
+3A product/physical onboarding **DEFERRED / IN PROGRESS**; deuda física/plataforma sigue abierta y obligatoria antes de aceptación final del MVP. No declarar cámara/fusión físicamente validadas, no inferir timing humano de replay ni convertir emulador RTC BLOCKED en PASS. Esta enmienda prevalece sobre estados de avance anteriores; no elimina requisitos de producto ni cambia thresholds.

@@ -1,0 +1,37 @@
+{
+  "scope": "temporary CA laboratory on existing Wi-Fi; physical outcomes require phone evidence",
+  "physical": "NOT RUN",
+  "networkChanges": false,
+  "systemTrustChanges": false,
+  "cleanup": [
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 64.37891200039303,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=0 datagrams=0"
+    },
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 64.66080700010934,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=0 datagrams=0"
+    }
+  ],
+  "hostOwnTlsCheck": "PASS",
+  "caFingerprintSHA256": "3e21c782bca2411d9cd25b0a84c635fc276fab981ff8b10ea922cc147f31b3cb",
+  "httpsCleanup": {
+    "exitCode": 0,
+    "forced": false,
+    "residual": false
+  },
+  "privateFilesRemoved": true,
+  "tcpPortsAfterCleanup": {
+    "8000": "FREE",
+    "8443": "IN USE"
+  },
+  "iphoneProfileRemoval": "REQUIRES OWNER CONFIRMATION if installed"
+}

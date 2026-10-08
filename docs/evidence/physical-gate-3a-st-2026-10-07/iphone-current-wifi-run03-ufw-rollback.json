@@ -1,0 +1,33 @@
+{
+  "tag": "gorilla-phase0-iphone-temp-57822",
+  "temporaryRules": [
+    {
+      "protocol": "tcp",
+      "port": 18443,
+      "source": "confirmed iPhone /32",
+      "destination": "current laptop",
+      "interface": "current Wi-Fi"
+    },
+    {
+      "protocol": "tcp",
+      "port": 18000,
+      "source": "confirmed iPhone /32",
+      "destination": "current laptop",
+      "interface": "current Wi-Fi"
+    },
+    {
+      "protocol": "udp",
+      "port": 36135,
+      "source": "confirmed iPhone /32",
+      "destination": "current laptop",
+      "interface": "current Wi-Fi"
+    }
+  ],
+  "rollback": "PASS",
+  "activeBefore": true,
+  "ownerRuntime": "unprivileged Java lab",
+  "activeAfter": true,
+  "temporaryRulesRemaining": 0,
+  "originalNumberedRulesIdentical": true,
+  "originalVerboseStateIdentical": true
+}

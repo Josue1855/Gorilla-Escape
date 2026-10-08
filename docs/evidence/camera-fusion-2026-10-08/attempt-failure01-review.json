@@ -1,0 +1,9 @@
+{
+  "isolationGate": "PASS",
+  "workerExitReview": "FAIL",
+  "actualExit": 134,
+  "cause": "Buffered stdin daemon held Python interpreter lock on abnormal early exit",
+  "repair": "os.read private stdin descriptor avoids buffered reader finalization lock; expected failure exit must equal 2",
+  "original": "e2e-vision-failure01.json",
+  "preserved": true
+}

@@ -1,0 +1,8 @@
+{
+  "scope": "documentation assembly",
+  "result": "FAIL",
+  "foundation": "PASS",
+  "management": "Required manifest.json link target not yet created",
+  "diffCheck": "PASS",
+  "resolution": "Create required manifest and validations files, then repeat final validators. No runtime/code defect."
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "Phase0 runtime Chrome/PWA adapter ↔ RTC ↔ Java; Unity NOT RUN in this harness",
+  "physical": "DEFERRED",
+  "runs": [],
+  "negatives": [],
+  "gate": "FAIL",
+  "cleanup": {
+    "java": {
+      "code": 74,
+      "signal": null
+    },
+    "stderrBytes": 52
+  },
+  "error": "deadline"
+}
