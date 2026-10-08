@@ -1,0 +1,452 @@
+[
+  {
+    "number": 1,
+    "titleAfter": "[E0] Base técnica y viabilidad",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "type:epic",
+      "area:unity-core"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/1",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 9,
+    "titleAfter": "[F00] Decisiones de viabilidad y hardware",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "type:feature",
+      "area:documentation"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/9",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 10,
+    "titleAfter": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "documentation",
+      "needs-decision",
+      "type:documentation",
+      "area:documentation"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/10",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 11,
+    "titleAfter": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "documentation",
+      "needs-device-test",
+      "type:documentation",
+      "area:ci-qa",
+      "blocked"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/11",
+    "modifiedOnly": [
+      "body",
+      "labels",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 12,
+    "titleAfter": "[T003] Validar versiones Unity/Java y ruta de integración nativa",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "blocked",
+      "needs-decision",
+      "type:spike",
+      "area:unity-core"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/12",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 13,
+    "titleAfter": "[F01] Monorepo y base ejecutable",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "type:feature",
+      "area:unity-core"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/13",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 14,
+    "titleAfter": "[T004] Crear base Unity con Bootstrap y separación inicial",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:unity-core"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/14",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 15,
+    "titleAfter": "[T005] Preparar host Java/Spring Boot local y ciclo de vida",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:server"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/15",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 16,
+    "titleAfter": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:protocol"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/16",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 17,
+    "titleAfter": "[T007] Configurar CI por componentes y build reproducible inicial",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:ci-qa"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/17",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 18,
+    "titleAfter": "[F02] Control móvil seguro y offline",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "type:feature",
+      "area:mobile-pwa"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/18",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 19,
+    "titleAfter": "[T008] Resolver contexto seguro PWA, señalización LAN e incorporación por QR",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "needs-device-test",
+      "needs-decision",
+      "security",
+      "type:spike",
+      "area:network"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/19",
+    "modifiedOnly": [
+      "body",
+      "title",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 20,
+    "titleAfter": "[T009] Crear shell PWA y flujo de permisos",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:mobile-pwa",
+      "needs-device-test"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/20",
+    "modifiedOnly": [
+      "body",
+      "labels",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 21,
+    "titleAfter": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "needs-device-test",
+      "performance",
+      "type:task",
+      "area:mobile-pwa"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/21",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 22,
+    "titleAfter": "[T011] Validar PWA/red sin WAN y recuperación de visibilidad",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "needs-device-test",
+      "type:spike",
+      "area:mobile-pwa"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/22",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 23,
+    "titleAfter": "[F03] Red local y adaptador Unity",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "type:feature",
+      "area:network"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/23",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 24,
+    "titleAfter": "[T012] Implementar WebRTC DataChannel y validación Gorilla Protocol v1",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:network"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/24",
+    "modifiedOnly": [
+      "body",
+      "title",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 25,
+    "titleAfter": "[T013] Implementar admisión y asociación de controles al lobby",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:server"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/25",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 26,
+    "titleAfter": "[T014] Conectar adaptador Unity a PhoneInput",
+    "stateAfter": "open",
+    "statusAfter": "PO Review",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:unity-core"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/26",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 27,
+    "titleAfter": "[T015] Implementar heartbeat, reconexión y cancelación segura",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "blocked",
+      "type:task",
+      "area:network"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/27",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 28,
+    "titleAfter": "[F04] Cámara local y viabilidad de tracking",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "type:feature",
+      "area:camera-tracking"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/28",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 29,
+    "titleAfter": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "needs-device-test",
+      "performance",
+      "type:task",
+      "area:camera-tracking"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/29",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 30,
+    "titleAfter": "[T017] Validar ROI, Player Lock y recuperación de tracking",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "needs-device-test",
+      "type:task",
+      "area:camera-tracking"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/30",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 31,
+    "titleAfter": "[F05] Evidencia de viabilidad técnica end-to-end",
+    "stateAfter": "open",
+    "statusAfter": "In Progress",
+    "labelsAfter": [
+      "type:feature",
+      "area:ci-qa"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/31",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 32,
+    "titleAfter": "[T018] Instrumentar latencia, Hz, FPS y errores locales",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "performance",
+      "type:task",
+      "area:ci-qa",
+      "needs-device-test"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/32",
+    "modifiedOnly": [
+      "body",
+      "labels",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 33,
+    "titleAfter": "[T019] Ejecutar validación base con cuatro teléfonos y fallos",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "needs-device-test",
+      "performance",
+      "type:task",
+      "area:ci-qa"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/33",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  },
+  {
+    "number": 34,
+    "titleAfter": "[T020] Validar build mínima en PC limpia y dictamen de viabilidad",
+    "stateAfter": "open",
+    "statusAfter": "Validation",
+    "labelsAfter": [
+      "blocked",
+      "needs-device-test",
+      "needs-decision",
+      "type:spike",
+      "area:ci-qa"
+    ],
+    "issueUrl": "https://github.com/Josue1855/Gorilla-Escape/issues/34",
+    "modifiedOnly": [
+      "body",
+      "Project Status"
+    ]
+  }
+]

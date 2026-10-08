@@ -453,3 +453,7 @@ lifecycle ni protocolo. Replay04: 329 frames/326 recibidos, 29.870FPS; 48 Eligib
 delta P50/P95 9/15ms,max15ms; process→Unity P50/P95 10/42ms,max210ms.
 Corridas anteriores y webcam física se mantienen separadas, no se sustituyen/combinan. Propios residuales0,
 Unity/Java/vision exit0, sin forced. Sólo FINAL PHASE0 AUDIT pendiente; no ejecutado.
+
+## Reconciliación operativa Project — 2026-10-08
+
+SoftwareLab technical checkpoint PASS retenido; Project Phase0 stillOPEN. Se publican los cambios auditados en PR94; no nuevo código de producto. 27Issues reales reconciliados con AC/Dependencies/DoD:0cierres,9InProgress/8POReview/10Validation; metadata/dependencias preservadas. T0012/3,slowmotion pendiente; T016/T017/T019 físicos y T020PC limpia pendientes. #35blockedby#34;Fase1NOTSTARTED. [Matriz/evidencia](PHASE0_PROJECT_RECONCILIATION.md). Checks del head publicado inicialPASS; final e integración se verifican separadamente.

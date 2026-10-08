@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoDlQ",
+    "number": 1,
+    "title": "[E0] Base técnica y viabilidad",
+    "body": "<!-- gorilla-backlog:E0 -->\n\n## Objective\nBase técnica y viabilidad\n\n## Context\nv4 §50; v4 §2; v4 §49. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar features y su aceptación; no es una tarea de programación ni se estima sumando otra vez sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Aceptar únicamente con evidencia de todas las features incluidas.\n- [ ] Respetar la fase y la Definition of Done v4.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Epic. Área: Unity/Core. Parent: ninguno. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Audit Software/Lab PASS; no aceptación de Epic.\n\n**Cumple:** NO. **Acción:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** Features #9/#13/#18/#23/#28/#31 tienen hijos abiertos. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "type:epic"
+        },
+        {
+          "name": "area:unity-core"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": null,
+    "subIssues": {
+      "nodes": [
+        {
+          "number": 9,
+          "state": "OPEN"
+        },
+        {
+          "number": 13,
+          "state": "OPEN"
+        },
+        {
+          "number": 18,
+          "state": "OPEN"
+        },
+        {
+          "number": 23,
+          "state": "OPEN"
+        },
+        {
+          "number": 28,
+          "state": "OPEN"
+        },
+        {
+          "number": 31,
+          "state": "OPEN"
+        }
+      ]
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoO9Q",
+    "number": 9,
+    "title": "[F00] Decisiones de viabilidad y hardware",
+    "body": "<!-- gorilla-backlog:F00 -->\n\n## Objective\nDecisiones de viabilidad y hardware\n\n## Context\nv4 §3; v4 §41; v4 §42; v4 §43; v4 §50; v4 §57. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Hardware y límites de fase documentados.\n- [ ] Decisiones sin alterar stack ni aceptación silenciosamente.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Feature. Área: Documentation. Parent: #1. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Decisiones y hardware lab documentados.\n\n**Cumple:** NO. **Acción:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** T001 parcial; hardware oficial y dependencias pendientes. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "type:feature"
+        },
+        {
+          "name": "area:documentation"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 1
+    },
+    "subIssues": {
+      "nodes": [
+        {
+          "number": 10,
+          "state": "OPEN"
+        },
+        {
+          "number": 11,
+          "state": "OPEN"
+        },
+        {
+          "number": 12,
+          "state": "OPEN"
+        }
+      ]
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoQYA",
+    "number": 10,
+    "title": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+    "body": "<!-- gorilla-backlog:T001 -->\n\n## Objective\nAclarar frontera Spike / Vertical Slice y autoridad de resultados\n\n## Context\nv4 §3.3; v4 §5; v4 §42; v4 §50; v4 §57. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [x] Josue registra resolución de frontera 42/50.\n- [x] Precisar qué componente confirma resultado oficial; no duplicar autoridad.\n- [ ] Resolver slow motion P1 frente a sección 26 antes de incluirlo en MVP.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Documentation. Área: Documentation. Parent: #9. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Frontera y autoridad PO: DEC005/010 y audit; sólo slow motion pendiente.\n\n**Cumple:** PARCIAL 2/3. **Acción:** PO REVIEW. **Project Status:** PO Review.\n\n**Pendiente:** Slow motion P1 versus §26 no resuelto explícitamente. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n\nDecisión PO de frontera: Fase0 base técnica/arquitectura/SoftwareLab; Fase1 Gorilla Smash Vertical Slice jugable. El audit no elimina gates físicos Project/MVP. Autoridad: Unity gameplay/física/scoring/resultados/interpretación input; Java transport/session/admission/validation/routing/lifecycle. **Slow motion P1 vs §26 sigue sin decisión PO suficiente; no incluirlo en MVP. Único AC pendiente.**\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "documentation"
+        },
+        {
+          "name": "needs-decision"
+        },
+        {
+          "name": "type:documentation"
+        },
+        {
+          "name": "area:documentation"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 9
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoRxg",
+    "number": 11,
+    "title": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+    "body": "<!-- gorilla-backlog:T002 -->\n\n## Objective\nInventariar PC, webcam, teléfonos, red y navegadores oficiales\n\n## Context\nv4 §41; v4 §57. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Inventario con OS, CPU/GPU/RAM, cámara y modelos/OS/navegadores móviles.\n- [ ] Definir hardware oficial y registrar restricciones reales.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Documentation. Área: CI/QA. Parent: #9. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Inventarios Linux/webcam/iPhone15 declarados; emulador no Android físico.\n\n**Cumple:** PARCIAL. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** No definición completa de PC/Android/iPhone/red/navegadores oficiales. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "documentation"
+        },
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "type:documentation"
+        },
+        {
+          "name": "area:ci-qa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 9
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoTGw",
+    "number": 12,
+    "title": "[T003] Validar versiones Unity/Java y ruta de integración nativa",
+    "body": "<!-- gorilla-backlog:T003 -->\n\n## Objective\nValidar versiones Unity/Java y ruta de integración nativa\n\n## Context\nv4 §3; v4 §42; v4 §57. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Comparar candidatos de investigación contra build mínimo.\n- [ ] Fijar versiones sólo con evidencia; compatibilidad de plugin/modelos documentada.\n\n## Dependencies\n- Blocked by #11\n\n## Technical Notes\nTipo: Spike. Área: Unity/Core. Parent: #9. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Unity6000.3.23f1,Java21,RTC JNI y modelo documentados; build Linux PASS.\n\n**Cumple:** AC LAB; DEP PENDIENTE. **Acción:** BLOCKED. **Project Status:** PO Review.\n\n**Pendiente:** Blocked by #11; compatibilidad/packaging oficial pendiente. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-decision"
+        },
+        {
+          "name": "type:spike"
+        },
+        {
+          "name": "area:unity-core"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 9
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 11,
+          "state": "OPEN",
+          "title": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoUbg",
+    "number": 13,
+    "title": "[F01] Monorepo y base ejecutable",
+    "body": "<!-- gorilla-backlog:F01 -->\n\n## Objective\nMonorepo y base ejecutable\n\n## Context\nv4 §3; v4 §4; v4 §39; v4 §50. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Proyectos Unity/Server/PWA propios en un repo.\n- [ ] Build y contratos compatibles comprobados.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Feature. Área: Unity/Core. Parent: #1. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Monorepo/base y contratos lab PASS.\n\n**Cumple:** NO. **Acción:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** Todos sus hijos siguen abiertos por dependencias/DoD. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "type:feature"
+        },
+        {
+          "name": "area:unity-core"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 1
+    },
+    "subIssues": {
+      "nodes": [
+        {
+          "number": 14,
+          "state": "OPEN"
+        },
+        {
+          "number": 15,
+          "state": "OPEN"
+        },
+        {
+          "number": 16,
+          "state": "OPEN"
+        },
+        {
+          "number": 17,
+          "state": "OPEN"
+        }
+      ]
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoV6g",
+    "number": 14,
+    "title": "[T004] Crear base Unity con Bootstrap y separación inicial",
+    "body": "<!-- gorilla-backlog:T004 -->\n\n## Objective\nCrear base Unity con Bootstrap y separación inicial\n\n## Context\nv4 §3; v4 §4; v4 §50. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Proyecto PC compila en versión fijada.\n- [ ] Bootstrap inicia/cierra base técnica; sin gameplay adelantado.\n- [ ] Assets/meta y configuración adecuados al repo.\n\n## Dependencies\n- Blocked by #12\n\n## Technical Notes\nTipo: Task. Área: Unity/Core. Parent: #13. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. PR90 MERGED; Bootstrap/meta/Edit/Play/LinuxPASS.\n\n**Cumple:** AC SÍ; DEP PENDIENTE. **Acción:** PO REVIEW. **Project Status:** PO Review.\n\n**Pendiente:** Blocked by #12, no borrar dependencia retroactivamente. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:unity-core"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 13
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 12,
+          "state": "OPEN",
+          "title": "[T003] Validar versiones Unity/Java y ruta de integración nativa"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoXUg",
+    "number": 15,
+    "title": "[T005] Preparar host Java/Spring Boot local y ciclo de vida",
+    "body": "<!-- gorilla-backlog:T005 -->\n\n## Objective\nPreparar host Java/Spring Boot local y ciclo de vida\n\n## Context\nv4 §3; v4 §14; v4 §25; v4 §40; v4 §50. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Host sirve recursos locales; puertos y límites configurables.\n- [ ] Arranque/cierre, puerto ocupado y fallo recuperable tratados.\n- [ ] Puente con Unity documentado según decisión de autoridad.\n\n## Dependencies\n- Blocked by #10\n- Blocked by #12\n\n## Technical Notes\nTipo: Task. Área: Server. Parent: #13. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. IPC2ABC MERGED; HTTP/TLS/resources;11 escenarios PlayerPASS.\n\n**Cumple:** AC SÍ; DEP PENDIENTE. **Acción:** PO REVIEW. **Project Status:** PO Review.\n\n**Pendiente:** Blocked by #10/#12; PR94 aún requiere integración. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:server"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 13
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 12,
+          "state": "OPEN",
+          "title": "[T003] Validar versiones Unity/Java y ruta de integración nativa"
+        },
+        {
+          "number": 10,
+          "state": "OPEN",
+          "title": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoYng",
+    "number": 16,
+    "title": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1",
+    "body": "<!-- gorilla-backlog:T006 -->\n\n## Objective\nConfigurar contratos React/Java/Unity y fixtures JSON v1\n\n## Context\nv4 §8; v4 §9; v4 §10. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Envelope y tipos de mensajes de v1 representados sin UnityEngine en DTO de red.\n- [ ] Unidades, timestamp, sequence y null/rangos definidos.\n- [ ] Fixtures consumidas por React/Java/Unity y mensajes inválidos rechazados.\n\n## Dependencies\n- Blocked by #10\n- Blocked by #12\n\n## Technical Notes\nTipo: Task. Área: Protocol. Parent: #13. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Corpus móvil17 e IPC71; JS/Java/C#;null/unidades/secuencia.\n\n**Cumple:** AC LAB; DEP PENDIENTE. **Acción:** PO REVIEW. **Project Status:** PO Review.\n\n**Pendiente:** Blocked by #10/#12; contratos actuales pendientes integración. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:protocol"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 13
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 12,
+          "state": "OPEN",
+          "title": "[T003] Validar versiones Unity/Java y ruta de integración nativa"
+        },
+        {
+          "number": 10,
+          "state": "OPEN",
+          "title": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoZ5g",
+    "number": 17,
+    "title": "[T007] Configurar CI por componentes y build reproducible inicial",
+    "body": "<!-- gorilla-backlog:T007 -->\n\n## Objective\nConfigurar CI por componentes y build reproducible inicial\n\n## Context\nv4 §38; v4 §39; v4 §49. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Jobs reales restore/tests/build según proyectos existentes.\n- [ ] Cambios de contratos validan todos los consumidores.\n- [ ] Licencia Unity y artifacts comprobados; no fingir QA física.\n\n## Dependencies\n- Blocked by #14\n- Blocked by #15\n- Blocked by #16\n\n## Technical Notes\nTipo: Task. Área: CI/QA. Parent: #13. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. CI real Java/PWA/management;Unity local licenciado64/16,build0/0; no CI Unity fingido.\n\n**Cumple:** AC LAB; DEP PENDIENTE. **Acción:** PO REVIEW. **Project Status:** PO Review.\n\n**Pendiente:** Blocked by #14/#15/#16; revisión/integración candidato. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:ci-qa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 13
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 16,
+          "state": "OPEN",
+          "title": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1"
+        },
+        {
+          "number": 15,
+          "state": "OPEN",
+          "title": "[T005] Preparar host Java/Spring Boot local y ciclo de vida"
+        },
+        {
+          "number": 14,
+          "state": "OPEN",
+          "title": "[T004] Crear base Unity con Bootstrap y separación inicial"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQob0g",
+    "number": 18,
+    "title": "[F02] Control móvil seguro y offline",
+    "body": "<!-- gorilla-backlog:F02 -->\n\n## Objective\nControl móvil seguro y offline\n\n## Context\nv4 §7; v4 §8; v4 §24; v4 §33; v4 §42; v4 §47. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] PWA conecta por QR y entrega input en navegadores oficiales.\n- [ ] Partida no requiere Internet.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Feature. Área: Mobile/PWA. Parent: #1. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. PWA y RTC lab; HTTPS histórico sin aceptación pública móvil.\n\n**Cumple:** NO. **Acción:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** Navegadores oficiales/secure-context/offline sin aceptación física; hijos abiertos. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "type:feature"
+        },
+        {
+          "name": "area:mobile-pwa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 1
+    },
+    "subIssues": {
+      "nodes": [
+        {
+          "number": 19,
+          "state": "OPEN"
+        },
+        {
+          "number": 20,
+          "state": "OPEN"
+        },
+        {
+          "number": 21,
+          "state": "OPEN"
+        },
+        {
+          "number": 22,
+          "state": "OPEN"
+        }
+      ]
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQodrQ",
+    "number": 19,
+    "title": "[T008] Resolver contexto seguro PWA, señalización LAN e incorporación por QR",
+    "body": "<!-- gorilla-backlog:T008 -->\n\n## Objective\nResolver contexto seguro PWA, señalización LAN e incorporación por QR\n\n## Context\nv4 §3; v4 §7; v4 §24; v4 §42; v4 §47. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Validar contexto seguro HTTPS de la PWA y confianza del certificado en Android/iPhone oficiales; DTLS/WebRTC no sustituye esa confianza de navegación.\n- [ ] QR incorpora al origen PWA seguro correcto y localiza/autentica la sesión Java LAN; señalización y WebRTC DataChannel locales con Gorilla Protocol, sin cloud ni STUN/TURN público obligatorio.\n- [ ] Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.\n- [ ] Registrar fallo/alternativas antes de activar Plan B.\n\n## Dependencies\n- Blocked by #11\n- Blocked by #15\n\n## Technical Notes\nTipo: Spike. Área: Network. Parent: #18. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n### Superseded by DEC-010\n\nTítulo anterior: [T008] Resolver HTTPS/WSS local e incorporación por QR. Diseño WebSocket/WSS y WebTransport histórico sustituido por **WebRTC DataChannel**, Gorilla Protocol v1 y señalización local. Sin cloud gameplay/signaling ni STUN/TURN público obligatorio. WT se conserva como Spike, no transporte productivo paralelo.\n\nAcceptance Criteria anteriores conservados como historia:\n```text\n- [ ] Validar contexto seguro y confianza del certificado en Android/iPhone oficiales.\n- [ ] QR lleva al origen local correcto.\n- [ ] Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.\n- [ ] Registrar fallo/alternativas antes de activar Plan B.\n```\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. QR técnico y HTTPS laboratorio históricos, no flujo físico final.\n\n**Cumple:** PARCIAL. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** Secure-context Android/iPhone oficiales y onboarding nuevo <60s pendientes;#11/#15. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "needs-decision"
+        },
+        {
+          "name": "security"
+        },
+        {
+          "name": "type:spike"
+        },
+        {
+          "name": "area:network"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 18
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 15,
+          "state": "OPEN",
+          "title": "[T005] Preparar host Java/Spring Boot local y ciclo de vida"
+        },
+        {
+          "number": 11,
+          "state": "OPEN",
+          "title": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQofJQ",
+    "number": 20,
+    "title": "[T009] Crear shell PWA y flujo de permisos",
+    "body": "<!-- gorilla-backlog:T009 -->\n\n## Objective\nCrear shell PWA y flujo de permisos\n\n## Context\nv4 §24; v4 §25; v4 §32; v4 §42. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Pantallas CONNECT y permiso accionado por usuario.\n- [ ] Negar permiso/no sensor devuelve explicación y recuperación.\n- [ ] Advertencia de no soltar teléfono visible.\n\n## Dependencies\n- Blocked by #19\n\n## Technical Notes\nTipo: Task. Área: Mobile/PWA. Parent: #18. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Capturador botón/denegación/no sensor/warning lab; shell React.\n\n**Cumple:** PARCIAL. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** Blocked by #19; UX CONNECT producto y permisos físicos pendientes. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:mobile-pwa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 18
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 19,
+          "state": "OPEN",
+          "title": "[T008] Resolver contexto seguro PWA, señalización LAN e incorporación por QR"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoitA",
+    "number": 21,
+    "title": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva",
+    "body": "<!-- gorilla-backlog:T010 -->\n\n## Objective\nCapturar aceleración, giro y orientación con frecuencia efectiva\n\n## Context\nv4 §8.4; v4 §8.5; v4 §10; v4 §14; v4 §36; v4 §37. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Muestras válidas y únicas; unidades y ejes trazables.\n- [ ] Medir objetivo 50 Hz y degradaciones 60/50/30/20 según capacidad.\n- [ ] No simular Hz repitiendo muestras ni admitir potencia infinita.\n\n## Dependencies\n- Blocked by #16\n- Blocked by #20\n\n## Technical Notes\nTipo: Task. Área: Mobile/PWA. Parent: #18. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Unidades/capacidades/null y muestras sintéticas/replay; emulador histórico.\n\n**Cumple:** PARCIAL. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** Hz reales50/60/30/20 no medidos;#20/#16. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "performance"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:mobile-pwa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 18
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 20,
+          "state": "OPEN",
+          "title": "[T009] Crear shell PWA y flujo de permisos"
+        },
+        {
+          "number": 16,
+          "state": "OPEN",
+          "title": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQokDw",
+    "number": 22,
+    "title": "[T011] Validar PWA/red sin WAN y recuperación de visibilidad",
+    "body": "<!-- gorilla-backlog:T011 -->\n\n## Objective\nValidar PWA/red sin WAN y recuperación de visibilidad\n\n## Context\nv4 §3; v4 §24; v4 §25; v4 §33; v4 §42. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Conectar sin cache previo y con WAN desconectada.\n- [ ] Recursos/modelos disponibles localmente.\n- [ ] Suspensión/retorno del teléfono produce pausa o recuperación segura.\n\n## Dependencies\n- Blocked by #20\n- Blocked by #21\n\n## Technical Notes\nTipo: Spike. Área: Mobile/PWA. Parent: #18. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Assets locales/caché escritorio; lifecycle lab no prueba sin WAN física.\n\n**Cumple:** NO. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** Primera carga sin caché/WAN y suspensión teléfono físico NOT RUN;#20/#21. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "type:spike"
+        },
+        {
+          "name": "area:mobile-pwa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 18
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 21,
+          "state": "OPEN",
+          "title": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva"
+        },
+        {
+          "number": 20,
+          "state": "OPEN",
+          "title": "[T009] Crear shell PWA y flujo de permisos"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQol9Q",
+    "number": 23,
+    "title": "[F03] Red local y adaptador Unity",
+    "body": "<!-- gorilla-backlog:F03 -->\n\n## Objective\nRed local y adaptador Unity\n\n## Context\nv4 §5; v4 §6; v4 §7; v4 §8; v4 §9; v4 §25. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] 1–4 controles asociados correctamente.\n- [ ] Datos de red convertidos a PhoneInput; reconexión segura.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Feature. Área: Network. Parent: #1. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. RTC→Java→IPC→PhoneInput4Chrome PASS.\n\n**Cumple:** NO. **Acción:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** Hijos requeridos no aceptados; oficial 1–4 controles pendiente. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "type:feature"
+        },
+        {
+          "name": "area:network"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 1
+    },
+    "subIssues": {
+      "nodes": [
+        {
+          "number": 24,
+          "state": "OPEN"
+        },
+        {
+          "number": 25,
+          "state": "OPEN"
+        },
+        {
+          "number": 26,
+          "state": "OPEN"
+        },
+        {
+          "number": 27,
+          "state": "OPEN"
+        }
+      ]
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQonVA",
+    "number": 24,
+    "title": "[T012] Implementar WebRTC DataChannel y validación Gorilla Protocol v1",
+    "body": "<!-- gorilla-backlog:T012 -->\n\n## Objective\nImplementar WebRTC DataChannel y validación Gorilla Protocol v1\n\n## Context\nv4 §8; v4 §14; v4 §40. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Envelope/version/session/player/sequence validados.\n- [ ] Heartbeat, límites de tasa/tamaño y reassembly/framing de mensajes RTC completos (SCTP, en sustitución de fragmentación WebSocket) probados, incluidos oversized/incompletos; señalización local sin cloud ni STUN/TURN público obligatorio.\n- [ ] Buffers/colas acotados: control fiable/ordenado para eventos discretos y motion latest-only/unordered; errores/backpressure explícitos sin pérdida silenciosa de eventos discretos.\n\n## Dependencies\n- Blocked by #15\n- Blocked by #16\n\n## Technical Notes\nTipo: Task. Área: Network. Parent: #23. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n### Superseded by DEC-010\n\nTítulo anterior: [T012] Implementar WebSocket v1 y validación de entrada. Diseño WebSocket/WSS y WebTransport histórico sustituido por **WebRTC DataChannel**, Gorilla Protocol v1 y señalización local. Sin cloud gameplay/signaling ni STUN/TURN público obligatorio. WT se conserva como Spike, no transporte productivo paralelo.\n\nAcceptance Criteria anteriores conservados como historia:\n```text\n- [ ] Envelope/version/session/player/sequence validados.\n- [ ] Heartbeat, mensajes fragmentados y límites de tasa/tamaño probados.\n- [ ] Colas acotadas sin perder indiscriminadamente eventos discretos.\n```\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. GorillaProtocol17,identity/version/rate/size,control reliable/motion latest-only.\n\n**Cumple:** PARCIAL. **Acción:** PO REVIEW. **Project Status:** PO Review.\n\n**Pendiente:** Blocked by #15/#16; reassembly SCTP no medido explícitamente; integración pendiente. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:network"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 23
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 16,
+          "state": "OPEN",
+          "title": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1"
+        },
+        {
+          "number": 15,
+          "state": "OPEN",
+          "title": "[T005] Preparar host Java/Spring Boot local y ciclo de vida"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoonw",
+    "number": 25,
+    "title": "[T013] Implementar admisión y asociación de controles al lobby",
+    "body": "<!-- gorilla-backlog:T013 -->\n\n## Objective\nImplementar admisión y asociación de controles al lobby\n\n## Context\nv4 §5; v4 §6; v4 §7; v4 §8. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Sesión admite 1–4 jugadores; rechazo de quinto control.\n- [ ] PlayerId preservado; entrada nueva impedida después de inicio.\n- [ ] Identidad y READY coherentes con autoridad definida.\n\n## Dependencies\n- Blocked by #10\n- Blocked by #24\n\n## Technical Notes\nTipo: Task. Área: Server. Parent: #23. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. TechnicalSession1–4/rechazo5/resume/epochPASS; sólo sesión técnica.\n\n**Cumple:** PARCIAL. **Acción:** BLOCKED. **Project Status:** In Progress.\n\n**Pendiente:** Blocked by #10/#24; no cierre admisión al inicio oficial ni READY lobby gameplay. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:server"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 23
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 24,
+          "state": "OPEN",
+          "title": "[T012] Implementar WebRTC DataChannel y validación Gorilla Protocol v1"
+        },
+        {
+          "number": 10,
+          "state": "OPEN",
+          "title": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoqfQ",
+    "number": 26,
+    "title": "[T014] Conectar adaptador Unity a PhoneInput",
+    "body": "<!-- gorilla-backlog:T014 -->\n\n## Objective\nConectar adaptador Unity a PhoneInput\n\n## Context\nv4 §3.4; v4 §9; v4 §42. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Input del teléfono llega a Unity con conversión de tipos documentada.\n- [ ] Red desacoplada de gameplay y ciclo de vida cancelable.\n- [ ] Prueba integrada JS→host→Unity con trazas.\n\n## Dependencies\n- Blocked by #14\n- Blocked by #21\n- Blocked by #24\n\n## Technical Notes\nTipo: Task. Área: Unity/Core. Parent: #23. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. JS→RTC→Java→IPC→Unity traces PASS; DTO/PhoneInput desacoplados.\n\n**Cumple:** AC LAB; DEP PENDIENTE. **Acción:** PO REVIEW. **Project Status:** PO Review.\n\n**Pendiente:** Blocked by #14/#21/#24; teléfono físico no acreditado. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:unity-core"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 23
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 24,
+          "state": "OPEN",
+          "title": "[T012] Implementar WebRTC DataChannel y validación Gorilla Protocol v1"
+        },
+        {
+          "number": 21,
+          "state": "OPEN",
+          "title": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva"
+        },
+        {
+          "number": 14,
+          "state": "OPEN",
+          "title": "[T004] Crear base Unity con Bootstrap y separación inicial"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQorvg",
+    "number": 27,
+    "title": "[T015] Implementar heartbeat, reconexión y cancelación segura",
+    "body": "<!-- gorilla-backlog:T015 -->\n\n## Objective\nImplementar heartbeat, reconexión y cancelación segura\n\n## Context\nv4 §5; v4 §8.6; v4 §8.7; v4 §25. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Desconexión detectada y comunicada; PlayerId conservado.\n- [ ] Acción sin validar se cancela y resultado confirmado se conserva.\n- [ ] Duplicados/atrasados no reproducen acciones oficiales.\n\n## Dependencies\n- Blocked by #25\n- Blocked by #26\n\n## Technical Notes\nTipo: Task. Área: Network. Parent: #23. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Heartbeat/desconexión/resume/seq/epoch labPASS; sin acciones gameplay.\n\n**Cumple:** PARCIAL. **Acción:** BLOCKED. **Project Status:** In Progress.\n\n**Pendiente:** Blocked by #25/#26; cancelación de acción y resultado oficial no implementados. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:network"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 23
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 26,
+          "state": "OPEN",
+          "title": "[T014] Conectar adaptador Unity a PhoneInput"
+        },
+        {
+          "number": 25,
+          "state": "OPEN",
+          "title": "[T013] Implementar admisión y asociación de controles al lobby"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQotDQ",
+    "number": 28,
+    "title": "[F04] Cámara local y viabilidad de tracking",
+    "body": "<!-- gorilla-backlog:F04 -->\n\n## Objective\nCámara local y viabilidad de tracking\n\n## Context\nv4 §3; v4 §9; v4 §12; v4 §33; v4 §42; v4 §43. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Captura e inferencia locales en build PC.\n- [ ] ROI y Player Lock sin reasignación automática.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Feature. Área: Camera/Tracking. Parent: #1. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. MediaPipe→CameraInput técnico; lock fixture/replayPASS.\n\n**Cumple:** NO. **Acción:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** T016/T017 físicos/model packaging pendientes. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "type:feature"
+        },
+        {
+          "name": "area:camera-tracking"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 1
+    },
+    "subIssues": {
+      "nodes": [
+        {
+          "number": 29,
+          "state": "OPEN"
+        },
+        {
+          "number": 30,
+          "state": "OPEN"
+        }
+      ]
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQouYg",
+    "number": 29,
+    "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput",
+    "body": "<!-- gorilla-backlog:T016 -->\n\n## Objective\nIntegrar webcam, MediaPipe/OpenCV y CameraInput\n\n## Context\nv4 §3; v4 §9; v4 §14; v4 §33; v4 §36; v4 §42. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Medir captura >=30 FPS e inferencia separada en PC oficial.\n- [ ] Build incluye modelos/nativos/recursos offline.\n- [ ] No guardar imágenes/video ni reconocer caras.\n\n## Dependencies\n- Blocked by #12\n- Blocked by #14\n\n## Technical Notes\nTipo: Task. Área: Camera/Tracking. Parent: #28. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. 640×480 technicalPASS;privacidadPASS;30FPS NOT ACHIEVED.\n\n**Cumple:** NO. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** 17.61FPS observado<30; PC oficial/modelos/nativos distribuidos pendientes;#12/#14. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "performance"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:camera-tracking"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 28
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 14,
+          "state": "OPEN",
+          "title": "[T004] Crear base Unity con Bootstrap y separación inicial"
+        },
+        {
+          "number": 12,
+          "state": "OPEN",
+          "title": "[T003] Validar versiones Unity/Java y ruta de integración nativa"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQowXQ",
+    "number": 30,
+    "title": "[T017] Validar ROI, Player Lock y recuperación de tracking",
+    "body": "<!-- gorilla-backlog:T017 -->\n\n## Objective\nValidar ROI, Player Lock y recuperación de tracking\n\n## Context\nv4 §9; v4 §12; v4 §25; v4 §37; v4 §43. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] 20 entradas de otra persona: cero cambios accidentales.\n- [ ] Oclusión/tracking perdido pausa; retorno recuperable.\n- [ ] Nunca seleccionar automáticamente otro jugador.\n\n## Dependencies\n- Blocked by #29\n\n## Technical Notes\nTipo: Task. Área: Camera/Tracking. Parent: #28. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. PlayerLock fixtures/replayPASS, no validación humana.\n\n**Cumple:** NO. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** 20 entradas humanas/cero switches/occlusión física NOT RUN;#29. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:camera-tracking"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 28
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 29,
+          "state": "OPEN",
+          "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQoxzw",
+    "number": 31,
+    "title": "[F05] Evidencia de viabilidad técnica end-to-end",
+    "body": "<!-- gorilla-backlog:F05 -->\n\n## Objective\nEvidencia de viabilidad técnica end-to-end\n\n## Context\nv4 §36; v4 §37; v4 §38; v4 §41; v4 §42; v4 §43. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Pruebas base reproducibles y riesgos documentados.\n- [ ] Salida completa del Spike condicionada a aclaración 42/50 y slice posterior.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Feature. Área: CI/QA. Parent: #1. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. AuditPASSSoftwareLab y riesgos, sin aceptación de feature.\n\n**Cumple:** NO. **Acción:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** Hijos #32/#33/#34 abiertos; frontera técnica no equivale a slice. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "type:feature"
+        },
+        {
+          "name": "area:ci-qa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 1
+    },
+    "subIssues": {
+      "nodes": [
+        {
+          "number": 32,
+          "state": "OPEN"
+        },
+        {
+          "number": 33,
+          "state": "OPEN"
+        },
+        {
+          "number": 34,
+          "state": "OPEN"
+        }
+      ]
+    },
+    "blockedBy": {
+      "nodes": []
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQozAA",
+    "number": 32,
+    "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales",
+    "body": "<!-- gorilla-backlog:T018 -->\n\n## Objective\nInstrumentar latencia, Hz, FPS y errores locales\n\n## Context\nv4 §35; v4 §36; v4 §40; v4 §47. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Trazas correlacionadas con reloj/unidad/error de sincronización definidos.\n- [ ] P50/P95, Hz efectivos, FPS y pérdidas con tamaño muestral.\n- [ ] Buffer de telemetría no afecta perceptiblemente framerate; sin video.\n\n## Dependencies\n- Blocked by #26\n- Blocked by #29\n\n## Technical Notes\nTipo: Task. Área: CI/QA. Parent: #31. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Métricas IPC/RTC/replay separadas;boundedbuffers; no física sincronizada.\n\n**Cumple:** PARCIAL. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** Clock físico/error incertidumbre y efecto telemetría/framerate no medidos;#26/#29. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "performance"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:ci-qa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 31
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 29,
+          "state": "OPEN",
+          "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput"
+        },
+        {
+          "number": 26,
+          "state": "OPEN",
+          "title": "[T014] Conectar adaptador Unity a PhoneInput"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQo0TA",
+    "number": 33,
+    "title": "[T019] Ejecutar validación base con cuatro teléfonos y fallos",
+    "body": "<!-- gorilla-backlog:T019 -->\n\n## Objective\nEjecutar validación base con cuatro teléfonos y fallos\n\n## Context\nv4 §25; v4 §36; v4 §37; v4 §42. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] 1 y 4 controles; 20 conexiones y 20 reconexiones, >=95% exitosas.\n- [ ] Probar pérdida red/cámara, permiso negado, teléfono bloqueado y datos inválidos.\n- [ ] P95 <150 ms y demás objetivos con mediciones reales; documentar incumplimientos.\n\n## Dependencies\n- Blocked by #22\n- Blocked by #27\n- Blocked by #30\n- Blocked by #32\n\n## Technical Notes\nTipo: Task. Área: CI/QA. Parent: #31. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. 4Chrome lab y18 negativos, no cuatro teléfonos.\n\n**Cumple:** NO. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** 1/4 teléfonos,20 conexiones/reconexiones>=95%,fallos/P95realNOT RUN;#22/#27/#30/#32. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "performance"
+        },
+        {
+          "name": "type:task"
+        },
+        {
+          "name": "area:ci-qa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 31
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 32,
+          "state": "OPEN",
+          "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales"
+        },
+        {
+          "number": 30,
+          "state": "OPEN",
+          "title": "[T017] Validar ROI, Player Lock y recuperación de tracking"
+        },
+        {
+          "number": 27,
+          "state": "OPEN",
+          "title": "[T015] Implementar heartbeat, reconexión y cancelación segura"
+        },
+        {
+          "number": 22,
+          "state": "OPEN",
+          "title": "[T011] Validar PWA/red sin WAN y recuperación de visibilidad"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDOU9aZ0c8AAAABVQo1jw",
+    "number": 34,
+    "title": "[T020] Validar build mínima en PC limpia y dictamen de viabilidad",
+    "body": "<!-- gorilla-backlog:T020 -->\n\n## Objective\nValidar build mínima en PC limpia y dictamen de viabilidad\n\n## Context\nv4 §39; v4 §41; v4 §42; v4 §43; v4 §57. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposición interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Build base funciona fuera del entorno de desarrollo sin SDK/Editor.\n- [ ] Recursos locales, cierre y errores comprobados.\n- [ ] Dictamen distingue base técnica de slice jugable; activar Plan B sólo con evidencia y decisión.\n\n## Dependencies\n- Blocked by #17\n- Blocked by #33\n- Blocked by #10\n\n## Technical Notes\nTipo: Spike. Área: CI/QA. Parent: #31. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliación Project — 2026-10-08\n\nCheckpoint técnico **PASS — SOFTWARE/LAB**, no Project Done. Player Linux probado en host de desarrollo;dictamen técnico≠slice.\n\n**Cumple:** NO. **Acción:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** PC limpia sin SDK/Editor NOT RUN;#10/#17/#33. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulación.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit histórico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato técnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisión/checks/integración normal. Evidence Required/DoD originales siguen aplicando.\n",
+    "state": "OPEN",
+    "labels": {
+      "nodes": [
+        {
+          "name": "blocked"
+        },
+        {
+          "name": "needs-device-test"
+        },
+        {
+          "name": "needs-decision"
+        },
+        {
+          "name": "type:spike"
+        },
+        {
+          "name": "area:ci-qa"
+        }
+      ]
+    },
+    "assignees": {
+      "nodes": []
+    },
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "parent": {
+      "number": 31
+    },
+    "subIssues": {
+      "nodes": []
+    },
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 10,
+          "state": "OPEN",
+          "title": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados"
+        },
+        {
+          "number": 33,
+          "state": "OPEN",
+          "title": "[T019] Ejecutar validación base con cuatro teléfonos y fallos"
+        },
+        {
+          "number": 17,
+          "state": "OPEN",
+          "title": "[T007] Configurar CI por componentes y build reproducible inicial"
+        }
+      ]
+    }
+  }
+]

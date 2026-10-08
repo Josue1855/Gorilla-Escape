@@ -55,7 +55,10 @@
       "type:epic",
       "area:unity-core"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Aceptar únicamente con evidencia de todas las features incluidas.\n- [ ] Respetar la fase y la Definition of Done v4.",
+    "titleAfter": "[E0] Base técnica y viabilidad",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 9,
@@ -113,7 +116,10 @@
       "type:feature",
       "area:documentation"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Hardware y límites de fase documentados.\n- [ ] Decisiones sin alterar stack ni aceptación silenciosamente.",
+    "titleAfter": "[F00] Decisiones de viabilidad y hardware",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 10,
@@ -122,7 +128,7 @@
     "stateBefore": "OPEN",
     "projectStatusBefore": "Backlog",
     "projectStatusPlanned": "PO Review",
-    "acceptanceCriteria": "- [ ] Josue registra resolución de frontera 42/50.\n- [ ] Precisar qué componente confirma resultado oficial; no duplicar autoridad.\n- [ ] Resolver slow motion P1 frente a sección 26 antes de incluirlo en MVP.",
+    "acceptanceCriteria": "- [x] Josue registra resolución de frontera 42/50.\n- [x] Precisar qué componente confirma resultado oficial; no duplicar autoridad.\n- [ ] Resolver slow motion P1 frente a sección 26 antes de incluirlo en MVP.",
     "evidence": "Frontera y autoridad PO: DEC005/010 y audit; sólo slow motion pendiente",
     "complies": "PARCIAL 2/3",
     "action": "PO REVIEW",
@@ -173,7 +179,10 @@
       "type:documentation",
       "area:documentation"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Josue registra resolución de frontera 42/50.\n- [ ] Precisar qué componente confirma resultado oficial; no duplicar autoridad.\n- [ ] Resolver slow motion P1 frente a sección 26 antes de incluirlo en MVP.",
+    "titleAfter": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 11,
@@ -233,7 +242,10 @@
       "type:documentation",
       "area:ci-qa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Inventario con OS, CPU/GPU/RAM, cámara y modelos/OS/navegadores móviles.\n- [ ] Definir hardware oficial y registrar restricciones reales.",
+    "titleAfter": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 12,
@@ -295,7 +307,10 @@
       "type:spike",
       "area:unity-core"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Comparar candidatos de investigación contra build mínimo.\n- [ ] Fijar versiones sólo con evidencia; compatibilidad de plugin/modelos documentada.",
+    "titleAfter": "[T003] Validar versiones Unity/Java y ruta de integración nativa",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 13,
@@ -353,7 +368,10 @@
       "type:feature",
       "area:unity-core"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Proyectos Unity/Server/PWA propios en un repo.\n- [ ] Build y contratos compatibles comprobados.",
+    "titleAfter": "[F01] Monorepo y base ejecutable",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 14,
@@ -414,7 +432,10 @@
       "type:task",
       "area:unity-core"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Proyecto PC compila en versión fijada.\n- [ ] Bootstrap inicia/cierra base técnica; sin gameplay adelantado.\n- [ ] Assets/meta y configuración adecuados al repo.",
+    "titleAfter": "[T004] Crear base Unity con Bootstrap y separación inicial",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 15,
@@ -476,7 +497,10 @@
       "type:task",
       "area:server"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Host sirve recursos locales; puertos y límites configurables.\n- [ ] Arranque/cierre, puerto ocupado y fallo recuperable tratados.\n- [ ] Puente con Unity documentado según decisión de autoridad.",
+    "titleAfter": "[T005] Preparar host Java/Spring Boot local y ciclo de vida",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 16,
@@ -538,7 +562,10 @@
       "type:task",
       "area:protocol"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Envelope y tipos de mensajes de v1 representados sin UnityEngine en DTO de red.\n- [ ] Unidades, timestamp, sequence y null/rangos definidos.\n- [ ] Fixtures consumidas por React/Java/Unity y mensajes inválidos rechazados.",
+    "titleAfter": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 17,
@@ -601,7 +628,10 @@
       "type:task",
       "area:ci-qa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Jobs reales restore/tests/build según proyectos existentes.\n- [ ] Cambios de contratos validan todos los consumidores.\n- [ ] Licencia Unity y artifacts comprobados; no fingir QA física.",
+    "titleAfter": "[T007] Configurar CI por componentes y build reproducible inicial",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 18,
@@ -659,7 +689,10 @@
       "type:feature",
       "area:mobile-pwa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] PWA conecta por QR y entrega input en navegadores oficiales.\n- [ ] Partida no requiere Internet.",
+    "titleAfter": "[F02] Control móvil seguro y offline",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 19,
@@ -668,7 +701,7 @@
     "stateBefore": "OPEN",
     "projectStatusBefore": "Backlog",
     "projectStatusPlanned": "Validation",
-    "acceptanceCriteria": "- [ ] Validar contexto seguro y confianza del certificado en Android/iPhone oficiales.\n- [ ] QR lleva al origen local correcto.\n- [ ] Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.\n- [ ] Registrar fallo/alternativas antes de activar Plan B.",
+    "acceptanceCriteria": "- [ ] Validar contexto seguro HTTPS de la PWA y confianza del certificado en Android/iPhone oficiales; DTLS/WebRTC no sustituye esa confianza de navegación.\n- [ ] QR incorpora al origen PWA seguro correcto y localiza/autentica la sesión Java LAN; señalización y WebRTC DataChannel locales con Gorilla Protocol, sin cloud ni STUN/TURN público obligatorio.\n- [ ] Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.\n- [ ] Registrar fallo/alternativas antes de activar Plan B.",
     "evidence": "QR técnico y HTTPS laboratorio históricos, no flujo físico final",
     "complies": "PARCIAL",
     "action": "BLOCKED",
@@ -724,7 +757,10 @@
       "type:spike",
       "area:network"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Validar contexto seguro y confianza del certificado en Android/iPhone oficiales.\n- [ ] QR lleva al origen local correcto.\n- [ ] Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.\n- [ ] Registrar fallo/alternativas antes de activar Plan B.",
+    "titleAfter": "[T008] Resolver contexto seguro PWA, señalización LAN e incorporación por QR",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 20,
@@ -785,7 +821,10 @@
       "type:task",
       "area:mobile-pwa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Pantallas CONNECT y permiso accionado por usuario.\n- [ ] Negar permiso/no sensor devuelve explicación y recuperación.\n- [ ] Advertencia de no soltar teléfono visible.",
+    "titleAfter": "[T009] Crear shell PWA y flujo de permisos",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 21,
@@ -849,7 +888,10 @@
       "type:task",
       "area:mobile-pwa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Muestras válidas y únicas; unidades y ejes trazables.\n- [ ] Medir objetivo 50 Hz y degradaciones 60/50/30/20 según capacidad.\n- [ ] No simular Hz repitiendo muestras ni admitir potencia infinita.",
+    "titleAfter": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 22,
@@ -912,7 +954,10 @@
       "type:spike",
       "area:mobile-pwa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Conectar sin cache previo y con WAN desconectada.\n- [ ] Recursos/modelos disponibles localmente.\n- [ ] Suspensión/retorno del teléfono produce pausa o recuperación segura.",
+    "titleAfter": "[T011] Validar PWA/red sin WAN y recuperación de visibilidad",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 23,
@@ -970,7 +1015,10 @@
       "type:feature",
       "area:network"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] 1–4 controles asociados correctamente.\n- [ ] Datos de red convertidos a PhoneInput; reconexión segura.",
+    "titleAfter": "[F03] Red local y adaptador Unity",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 24,
@@ -979,7 +1027,7 @@
     "stateBefore": "OPEN",
     "projectStatusBefore": "Backlog",
     "projectStatusPlanned": "PO Review",
-    "acceptanceCriteria": "- [ ] Envelope/version/session/player/sequence validados.\n- [ ] Heartbeat, mensajes fragmentados y límites de tasa/tamaño probados.\n- [ ] Colas acotadas sin perder indiscriminadamente eventos discretos.",
+    "acceptanceCriteria": "- [ ] Envelope/version/session/player/sequence validados.\n- [ ] Heartbeat, límites de tasa/tamaño y reassembly/framing de mensajes RTC completos (SCTP, en sustitución de fragmentación WebSocket) probados, incluidos oversized/incompletos; señalización local sin cloud ni STUN/TURN público obligatorio.\n- [ ] Buffers/colas acotados: control fiable/ordenado para eventos discretos y motion latest-only/unordered; errores/backpressure explícitos sin pérdida silenciosa de eventos discretos.",
     "evidence": "GorillaProtocol17,identity/version/rate/size,control reliable/motion latest-only",
     "complies": "PARCIAL",
     "action": "PO REVIEW",
@@ -1032,7 +1080,10 @@
       "type:task",
       "area:network"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Envelope/version/session/player/sequence validados.\n- [ ] Heartbeat, mensajes fragmentados y límites de tasa/tamaño probados.\n- [ ] Colas acotadas sin perder indiscriminadamente eventos discretos.",
+    "titleAfter": "[T012] Implementar WebRTC DataChannel y validación Gorilla Protocol v1",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 25,
@@ -1094,7 +1145,10 @@
       "type:task",
       "area:server"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Sesión admite 1–4 jugadores; rechazo de quinto control.\n- [ ] PlayerId preservado; entrada nueva impedida después de inicio.\n- [ ] Identidad y READY coherentes con autoridad definida.",
+    "titleAfter": "[T013] Implementar admisión y asociación de controles al lobby",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 26,
@@ -1157,7 +1211,10 @@
       "type:task",
       "area:unity-core"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Input del teléfono llega a Unity con conversión de tipos documentada.\n- [ ] Red desacoplada de gameplay y ciclo de vida cancelable.\n- [ ] Prueba integrada JS→host→Unity con trazas.",
+    "titleAfter": "[T014] Conectar adaptador Unity a PhoneInput",
+    "projectStatusAfter": "PO Review"
   },
   {
     "number": 27,
@@ -1219,7 +1276,10 @@
       "type:task",
       "area:network"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Desconexión detectada y comunicada; PlayerId conservado.\n- [ ] Acción sin validar se cancela y resultado confirmado se conserva.\n- [ ] Duplicados/atrasados no reproducen acciones oficiales.",
+    "titleAfter": "[T015] Implementar heartbeat, reconexión y cancelación segura",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 28,
@@ -1277,7 +1337,10 @@
       "type:feature",
       "area:camera-tracking"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Captura e inferencia locales en build PC.\n- [ ] ROI y Player Lock sin reasignación automática.",
+    "titleAfter": "[F04] Cámara local y viabilidad de tracking",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 29,
@@ -1341,7 +1404,10 @@
       "type:task",
       "area:camera-tracking"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Medir captura >=30 FPS e inferencia separada en PC oficial.\n- [ ] Build incluye modelos/nativos/recursos offline.\n- [ ] No guardar imágenes/video ni reconocer caras.",
+    "titleAfter": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 30,
@@ -1403,7 +1469,10 @@
       "type:task",
       "area:camera-tracking"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] 20 entradas de otra persona: cero cambios accidentales.\n- [ ] Oclusión/tracking perdido pausa; retorno recuperable.\n- [ ] Nunca seleccionar automáticamente otro jugador.",
+    "titleAfter": "[T017] Validar ROI, Player Lock y recuperación de tracking",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 31,
@@ -1461,7 +1530,10 @@
       "type:feature",
       "area:ci-qa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Pruebas base reproducibles y riesgos documentados.\n- [ ] Salida completa del Spike condicionada a aclaración 42/50 y slice posterior.",
+    "titleAfter": "[F05] Evidencia de viabilidad técnica end-to-end",
+    "projectStatusAfter": "In Progress"
   },
   {
     "number": 32,
@@ -1524,7 +1596,10 @@
       "type:task",
       "area:ci-qa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Trazas correlacionadas con reloj/unidad/error de sincronización definidos.\n- [ ] P50/P95, Hz efectivos, FPS y pérdidas con tamaño muestral.\n- [ ] Buffer de telemetría no afecta perceptiblemente framerate; sin video.",
+    "titleAfter": "[T018] Instrumentar latencia, Hz, FPS y errores locales",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 33,
@@ -1590,7 +1665,10 @@
       "type:task",
       "area:ci-qa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] 1 y 4 controles; 20 conexiones y 20 reconexiones, >=95% exitosas.\n- [ ] Probar pérdida red/cámara, permiso negado, teléfono bloqueado y datos inválidos.\n- [ ] P95 <150 ms y demás objetivos con mediciones reales; documentar incumplimientos.",
+    "titleAfter": "[T019] Ejecutar validación base con cuatro teléfonos y fallos",
+    "projectStatusAfter": "Validation"
   },
   {
     "number": 34,
@@ -1655,6 +1733,9 @@
       "type:spike",
       "area:ci-qa"
     ],
-    "assigneesBefore": []
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Build base funciona fuera del entorno de desarrollo sin SDK/Editor.\n- [ ] Recursos locales, cierre y errores comprobados.\n- [ ] Dictamen distingue base técnica de slice jugable; activar Plan B sólo con evidencia y decisión.",
+    "titleAfter": "[T020] Validar build mínima en PC limpia y dictamen de viabilidad",
+    "projectStatusAfter": "Validation"
   }
 ]
