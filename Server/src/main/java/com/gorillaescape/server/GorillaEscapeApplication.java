@@ -5,6 +5,7 @@ import com.gorillaescape.server.ipc.ParentLifetime;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import com.gorillaescape.server.hosting.MobileHttpsSettings;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,7 +15,7 @@ public class GorillaEscapeApplication {
     public static ParentLifetime managedParent() { return parent; }
     public static void main(String[] args) throws Exception {
         if (!Arrays.asList(args).contains("--gorilla.ipc.managed=true")) {
-            SpringApplication.run(GorillaEscapeApplication.class, args);
+            start(args);
             return;
         }
         String directory = System.getenv("GORILLA_IPC_LOCK_DIR");
@@ -30,10 +31,15 @@ public class GorillaEscapeApplication {
         }
         try (guard) {
             parent = new ParentLifetime();
-            try (var context = SpringApplication.run(GorillaEscapeApplication.class, args)) {
+            try (var context = start(args)) {
                 parent.awaitEof();
             }
         } finally { parent = null; }
+    }
+    private static org.springframework.context.ConfigurableApplicationContext start(String[] args) {
+        var application = new SpringApplication(GorillaEscapeApplication.class);
+        MobileHttpsSettings.configure(application, System.getenv("GORILLA_MOBILE_CONFIG"));
+        return application.run(args);
     }
     private static void bootstrapError(String code) {
         System.err.println("{\"component\":\"ipc-java\",\"event\":\"" + code + "\"}");

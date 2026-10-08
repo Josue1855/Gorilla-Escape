@@ -1,0 +1,22 @@
+{
+  "historicalAuditPreserved": true,
+  "functionalSourcesEqualAudit": true,
+  "unpublishedToPublished": "Initial 0d940f77 → candidate9d45f89; further documentation reconciliation only",
+  "artifacts": {
+    "publication-checks.json": "0248cfac1d19c2f4ae8c2f120ebb3e2870de369b0e2668f47f6ab780ba53091b",
+    "issues-before.json": "5894e45db32b8a86b15c883f2f32b8bfb0480944f38cdfef875afea4379eaabd",
+    "phase1-before.json": "3fc88c131889e650271f9b283dd093f1e269ad50c75780a1c2ea81942560cd6b",
+    "milestones-after.json": "1c82fc221ff56df38bdc1d1b770af6d89110d4d67ad4f76a6e69daedb578f405",
+    "mutation-receipts.json": "e25f8ab23b8bcaa5434f377cec97e347e1708a3327cb0ed6337b0295277bfbd0",
+    "project-verification.json": "1c69ecf5b32bdffd6b3363be253715309e5cb787938d8ed638048662300b2793",
+    "issue-matrix.json": "d77099bc36fed9d12332d866d3ad0130338240cd518ff7ac9a2fcabceadbd386",
+    "dependency-path.json": "66a2c7436182d8c49d4a8e2993956ecf0a1425232b50faed8f32415171de0058",
+    "milestones-before.json": "26c18607d8c16031f20c8de600afaf4aa0f189b99d8bb2a2406b2a0369ea81f1",
+    "issues-after.json": "812d7883216f6423f203a711a7419b484b1c294e0fdea1e179ea8cc2f740336c"
+  },
+  "closedIssues": [],
+  "noIssueAutoCloseRefs": true,
+  "projectPhase0": "SOFTWARE/LAB COMPLETE — PROJECT PHASE 0 STILL OPEN",
+  "phase1": "BLOCKED / NOT STARTED",
+  "nextOnly": "#34/T020 and pending dependencies"
+}

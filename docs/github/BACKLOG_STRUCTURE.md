@@ -1,5 +1,7 @@
 # Gorilla Escape — Estructura del Product Backlog
 
+> **Estado de trazabilidad:** este inventario conserva el backlog histórico y no acredita implementación ni cierre físico. El transporte WebSocket anterior está superseded / replaced by DEC-010 WebRTC. La cobertura Software/Lab y la deuda física se separan en [auditoría final](../PHASE0_FINAL_AUDIT.md); no se modifican Issues/Project/remoto.
+
 **Fuente principal:** [v4](../Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md), no sustituida ni alterada.
 **Estado inicial:** todo Backlog; sin assignees, prioridades, puntos ni Iteration asignados. Estos valores los define el equipo durante planificación.
 

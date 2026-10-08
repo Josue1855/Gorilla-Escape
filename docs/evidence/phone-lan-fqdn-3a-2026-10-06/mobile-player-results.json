@@ -1,0 +1,29 @@
+{
+  "scope": "PC automated smoke; physical phones and WAN-off NOT RUN",
+  "hostname": "probe.gorilla.test",
+  "publicOrigin": "https://probe.gorilla.test",
+  "public443": "NOT RUN",
+  "testRouting": "direct IPv4 with DNS SNI; no system DNS changes",
+  "status": "PASS",
+  "listeners": [
+    {
+      "address": "127.0.0.1",
+      "port": 37469
+    },
+    {
+      "address": "10.1.125.17",
+      "port": 8443
+    }
+  ],
+  "httpsHealth": true,
+  "packagedShell": true,
+  "ipcHandshake": true,
+  "unprivilegedJava": true,
+  "effectiveCapabilities": 0,
+  "lanToIpcFromPc": "REJECTED",
+  "secondPhysicalDevice": "NOT RUN",
+  "unityExit": 0,
+  "javaExit": 0,
+  "cleanup": true,
+  "ownedJavaResidual": 0
+}

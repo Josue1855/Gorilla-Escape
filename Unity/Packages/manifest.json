@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "com.gorillaescape.contracts": "file:../../Shared/CSharp",
+    "com.unity.sdk.linux-x86_64": "1.1.0",
     "com.unity.test-framework": "1.6.0",
+    "com.unity.toolchain.linux-x86_64-linux": "1.1.0",
     "com.unity.modules.jsonserialize": "1.0.0"
   }
 }

@@ -1,5 +1,7 @@
 # Reglas de desarrollo — Gorilla Escape: Gorilimpiadas
 
+> **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
+
 ## Source of Truth
 
 Antes de desarrollar cualquier función o modificar código, lee:
@@ -33,7 +35,7 @@ Mantener salvo evidencia técnica objetiva de inviabilidad:
 - Modular Monolith.
 - Java 21 + Spring Boot local.
 - PWA React como control móvil.
-- WebSocket.
+- WebRTC DataChannel, DEC-010 Accepted for Phase 0 architecture; WT conserva evidencia experimental histórica, no transporte productivo paralelo.
 - JSON para protocolo MVP.
 - MediaPipe + OpenCV.
 - 1–4 jugadores.
@@ -57,7 +59,7 @@ No introducir:
 - cuentas;
 - base de datos remota;
 - multijugador online;
-- app móvil nativa salvo activación documentada del Plan B;
+- app móvil nativa fuera de la autorización de DEC-006 (Flutter Android opcional diseñado para4C; no implementación ahora);
 - frameworks adicionales sin justificación;
 - servicios externos innecesarios;
 - matchmaking;
@@ -219,7 +221,7 @@ Mantener configurables DeadZone, MaximumAcceleration, SynchronizationWindow, Min
 ## Cobertura de testing
 
 - Unit Tests: normalización, scoring, Gorilla Points, desempates, validaciones y transformaciones.
-- Integration Tests: WebSocket → PhoneInput, CameraInput → InputFusion, PlayerInput → gameplay y resultados → torneo.
+- Integration Tests: WebRTC → Java → IPC → PhoneInput, CameraInput → InputFusion; PlayerInput → gameplay y resultados → torneo requieren fases posteriores.
 - Unity PlayMode: escenas, sesión, reinicios, resultados, desconexiones y recuperación.
 - Manual: sensores y teléfonos reales, webcam, movimiento físico, UX y game feel.
 
@@ -262,3 +264,12 @@ Aceptados, pendientes o bloqueados con evidencia.
 Únicamente la siguiente fase lógica; no iniciarla automáticamente.
 
 Actualizar siempre docs/DEVELOPMENT_PROGRESS.md. Después detenerse. El formato de entrega acordado para cada tarea tiene prioridad.
+
+
+## Precisión DEC-007 — alcance de investigación móvil
+
+Requisitos de movimiento completo, webcam exclusivamente PC y autoridad Unity según enmienda v4. No incorporar transportes/dependencias ni emitir/desplegar/configurar infraestructura por aprobar la base del Spike. No confundir autorización de investigación con concesión online o aprobación de un transporte. Preservar toda evidencia previa y #94 DRAFT.
+
+### Autorización vigente de cierre Software/Lab (PO, 2026-10-07)
+
+Se autorizan incrementos técnicos A–L del cierre Fase0: comparador RTC, selección DEC-010, sesión/QR, protocolo común, pipeline móvil lab→Java→IPC→Unity, webcam PC/fixtures, asociación/temporal/Fusion infrastructure, multicliente y regresión. No se requieren teléfonos físicos para progresar; siguen DEFERRED hasta MVP. No se autoriza gameplay final/Fase1 antes de audit/cierre, ni push/merge automático. Toda dependencia debe estar fijada, justificada y registrada; no se instalan paquetes globales ni se altera infraestructura por este alcance. No se convierte evidencia LAB en aceptación física.

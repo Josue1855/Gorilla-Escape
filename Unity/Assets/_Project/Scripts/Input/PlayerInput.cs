@@ -17,15 +17,18 @@ namespace GorillaEscape.Input
     public struct CameraInput
     {
         public int PlayerId;
+        public GorillaEscape.Contracts.CameraInputWire Frame;
+        public GorillaEscape.Contracts.CameraSubject Subject;
         public bool PlayerDetected;
-        public Vector2 BodyPosition, LeftHand, RightHand, LeftArmDirection, RightArmDirection;
-        public bool ThrowGesture, SmashGesture;
         public float TrackingConfidence;
         public long Timestamp;
     }
     public struct PhoneInput
     {
         public int PlayerId;
+        // Raw protocol sample retains per-axis availability, units and clock provenance.
+        public GorillaEscape.Contracts.PhoneInputWire ProtocolSample;
+        public bool HasAcceleration, HasAngularVelocity, HasOrientation;
         public Vector3 Acceleration, AngularVelocity;
         public Quaternion Orientation;
         public bool ActionPressed, IsConnected;

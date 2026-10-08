@@ -1,0 +1,12 @@
+{
+  "Unity": "6000.3.23f1 / Linux Mono development Player",
+  "Java": "openjdk 21.0.12.1 2026-08-18",
+  "Node": "v24.19.0",
+  "Chrome": "Google Chrome 155.0.8059.39",
+  "physicalPython": "3.12.3 host private venv",
+  "fixturePlayModePython": "3.13.15 Flatpak interpreter, stdlib only",
+  "MediaPipe": "0.10.33",
+  "OpenCV": "4.13.0.92 wheel / cv2 4.13.0",
+  "networkChanges": false,
+  "globalInstallations": false
+}

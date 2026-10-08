@@ -1,0 +1,92 @@
+{
+  "scope": "Java regression + TechnicalSession unit foundation; not session over network/QR/Unity integration",
+  "counts": {
+    "tests": 37,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "suites": [
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeCorpusTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeWriteDeadlineTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.protocol.TechnicalSessionTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ProtocolContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.hosting.MobileHttpsTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeCodecTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ServerIntegrationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbePressureProcessTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "sourceHashes": {
+    "Server/src/main/java/com/gorillaescape/server/protocol/TechnicalSession.java": "678b04f43eb6908f577cb1493d7e4b4b116001b2ea9c27a1dc1ec3bc8a3f4632",
+    "Server/src/test/java/com/gorillaescape/server/protocol/TechnicalSessionTest.java": "11deb390086f93dfe74c54cee55b680f2f5dcf29b0ec16f0b66d4f7d5cde669e"
+  }
+}

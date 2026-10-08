@@ -1,0 +1,1741 @@
+[
+  {
+    "number": 1,
+    "key": "E0",
+    "title": "[E0] Base técnica y viabilidad",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] Aceptar únicamente con evidencia de todas las features incluidas.\n- [ ] Respetar la fase y la Definition of Done v4.",
+    "evidence": "Audit Software/Lab PASS; no aceptación de Epic",
+    "complies": "NO",
+    "action": "KEEP OPEN",
+    "remaining": "Features #9/#13/#18/#23/#28/#31 tienen hijos abiertos",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Unity/Core",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "type:epic",
+      "area:unity-core"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Aceptar únicamente con evidencia de todas las features incluidas.\n- [ ] Respetar la fase y la Definition of Done v4.",
+    "titleAfter": "[E0] Base técnica y viabilidad",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 9,
+    "key": "F00",
+    "title": "[F00] Decisiones de viabilidad y hardware",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] Hardware y límites de fase documentados.\n- [ ] Decisiones sin alterar stack ni aceptación silenciosamente.",
+    "evidence": "Decisiones y hardware lab documentados",
+    "complies": "NO",
+    "action": "KEEP OPEN",
+    "remaining": "T001 parcial; hardware oficial y dependencias pendientes",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Documentation",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "type:feature",
+      "area:documentation"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Hardware y límites de fase documentados.\n- [ ] Decisiones sin alterar stack ni aceptación silenciosamente.",
+    "titleAfter": "[F00] Decisiones de viabilidad y hardware",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 10,
+    "key": "T001",
+    "title": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [x] Josue registra resolución de frontera 42/50.\n- [x] Precisar qué componente confirma resultado oficial; no duplicar autoridad.\n- [ ] Resolver slow motion P1 frente a sección 26 antes de incluirlo en MVP.",
+    "evidence": "Frontera y autoridad PO: DEC005/010 y audit; sólo slow motion pendiente",
+    "complies": "PARCIAL 2/3",
+    "action": "PO REVIEW",
+    "remaining": "Slow motion P1 versus §26 no resuelto explícitamente",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Documentation",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "documentation",
+      "needs-decision",
+      "type:documentation",
+      "area:documentation"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Josue registra resolución de frontera 42/50.\n- [ ] Precisar qué componente confirma resultado oficial; no duplicar autoridad.\n- [ ] Resolver slow motion P1 frente a sección 26 antes de incluirlo en MVP.",
+    "titleAfter": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 11,
+    "key": "T002",
+    "title": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Inventario con OS, CPU/GPU/RAM, cámara y modelos/OS/navegadores móviles.\n- [ ] Definir hardware oficial y registrar restricciones reales.",
+    "evidence": "Inventarios Linux/webcam/iPhone15 declarados; emulador no Android físico",
+    "complies": "PARCIAL",
+    "action": "BLOCKED",
+    "remaining": "No definición completa de PC/Android/iPhone/red/navegadores oficiales",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "CI/QA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "documentation",
+      "needs-device-test",
+      "type:documentation",
+      "area:ci-qa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Inventario con OS, CPU/GPU/RAM, cámara y modelos/OS/navegadores móviles.\n- [ ] Definir hardware oficial y registrar restricciones reales.",
+    "titleAfter": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 12,
+    "key": "T003",
+    "title": "[T003] Validar versiones Unity/Java y ruta de integración nativa",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [ ] Comparar candidatos de investigación contra build mínimo.\n- [ ] Fijar versiones sólo con evidencia; compatibilidad de plugin/modelos documentada.",
+    "evidence": "Unity6000.3.23f1,Java21,RTC JNI y modelo documentados; build Linux PASS",
+    "complies": "AC LAB; DEP PENDIENTE",
+    "action": "BLOCKED",
+    "remaining": "Blocked by #11; compatibilidad/packaging oficial pendiente",
+    "dependencies": [
+      11
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Unity/Core",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-decision",
+      "type:spike",
+      "area:unity-core"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Comparar candidatos de investigación contra build mínimo.\n- [ ] Fijar versiones sólo con evidencia; compatibilidad de plugin/modelos documentada.",
+    "titleAfter": "[T003] Validar versiones Unity/Java y ruta de integración nativa",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 13,
+    "key": "F01",
+    "title": "[F01] Monorepo y base ejecutable",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] Proyectos Unity/Server/PWA propios en un repo.\n- [ ] Build y contratos compatibles comprobados.",
+    "evidence": "Monorepo/base y contratos lab PASS",
+    "complies": "NO",
+    "action": "KEEP OPEN",
+    "remaining": "Todos sus hijos siguen abiertos por dependencias/DoD",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Unity/Core",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "type:feature",
+      "area:unity-core"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Proyectos Unity/Server/PWA propios en un repo.\n- [ ] Build y contratos compatibles comprobados.",
+    "titleAfter": "[F01] Monorepo y base ejecutable",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 14,
+    "key": "T004",
+    "title": "[T004] Crear base Unity con Bootstrap y separación inicial",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [ ] Proyecto PC compila en versión fijada.\n- [ ] Bootstrap inicia/cierra base técnica; sin gameplay adelantado.\n- [ ] Assets/meta y configuración adecuados al repo.",
+    "evidence": "PR90 MERGED; Bootstrap/meta/Edit/Play/LinuxPASS",
+    "complies": "AC SÍ; DEP PENDIENTE",
+    "action": "PO REVIEW",
+    "remaining": "Blocked by #12, no borrar dependencia retroactivamente",
+    "dependencies": [
+      12
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Unity/Core",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:unity-core"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Proyecto PC compila en versión fijada.\n- [ ] Bootstrap inicia/cierra base técnica; sin gameplay adelantado.\n- [ ] Assets/meta y configuración adecuados al repo.",
+    "titleAfter": "[T004] Crear base Unity con Bootstrap y separación inicial",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 15,
+    "key": "T005",
+    "title": "[T005] Preparar host Java/Spring Boot local y ciclo de vida",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [ ] Host sirve recursos locales; puertos y límites configurables.\n- [ ] Arranque/cierre, puerto ocupado y fallo recuperable tratados.\n- [ ] Puente con Unity documentado según decisión de autoridad.",
+    "evidence": "IPC2ABC MERGED; HTTP/TLS/resources;11 escenarios PlayerPASS",
+    "complies": "AC SÍ; DEP PENDIENTE",
+    "action": "PO REVIEW",
+    "remaining": "Blocked by #10/#12; PR94 aún requiere integración",
+    "dependencies": [
+      12,
+      10
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Server",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:server"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Host sirve recursos locales; puertos y límites configurables.\n- [ ] Arranque/cierre, puerto ocupado y fallo recuperable tratados.\n- [ ] Puente con Unity documentado según decisión de autoridad.",
+    "titleAfter": "[T005] Preparar host Java/Spring Boot local y ciclo de vida",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 16,
+    "key": "T006",
+    "title": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [ ] Envelope y tipos de mensajes de v1 representados sin UnityEngine en DTO de red.\n- [ ] Unidades, timestamp, sequence y null/rangos definidos.\n- [ ] Fixtures consumidas por React/Java/Unity y mensajes inválidos rechazados.",
+    "evidence": "Corpus móvil17 e IPC71; JS/Java/C#;null/unidades/secuencia",
+    "complies": "AC LAB; DEP PENDIENTE",
+    "action": "PO REVIEW",
+    "remaining": "Blocked by #10/#12; contratos actuales pendientes integración",
+    "dependencies": [
+      12,
+      10
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Protocol",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:protocol"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Envelope y tipos de mensajes de v1 representados sin UnityEngine en DTO de red.\n- [ ] Unidades, timestamp, sequence y null/rangos definidos.\n- [ ] Fixtures consumidas por React/Java/Unity y mensajes inválidos rechazados.",
+    "titleAfter": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 17,
+    "key": "T007",
+    "title": "[T007] Configurar CI por componentes y build reproducible inicial",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [ ] Jobs reales restore/tests/build según proyectos existentes.\n- [ ] Cambios de contratos validan todos los consumidores.\n- [ ] Licencia Unity y artifacts comprobados; no fingir QA física.",
+    "evidence": "CI real Java/PWA/management;Unity local licenciado64/16,build0/0; no CI Unity fingido",
+    "complies": "AC LAB; DEP PENDIENTE",
+    "action": "PO REVIEW",
+    "remaining": "Blocked by #14/#15/#16; revisión/integración candidato",
+    "dependencies": [
+      16,
+      15,
+      14
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "CI/QA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:ci-qa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Jobs reales restore/tests/build según proyectos existentes.\n- [ ] Cambios de contratos validan todos los consumidores.\n- [ ] Licencia Unity y artifacts comprobados; no fingir QA física.",
+    "titleAfter": "[T007] Configurar CI por componentes y build reproducible inicial",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 18,
+    "key": "F02",
+    "title": "[F02] Control móvil seguro y offline",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] PWA conecta por QR y entrega input en navegadores oficiales.\n- [ ] Partida no requiere Internet.",
+    "evidence": "PWA y RTC lab; HTTPS histórico sin aceptación pública móvil",
+    "complies": "NO",
+    "action": "KEEP OPEN",
+    "remaining": "Navegadores oficiales/secure-context/offline sin aceptación física; hijos abiertos",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Mobile/PWA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "type:feature",
+      "area:mobile-pwa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] PWA conecta por QR y entrega input en navegadores oficiales.\n- [ ] Partida no requiere Internet.",
+    "titleAfter": "[F02] Control móvil seguro y offline",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 19,
+    "key": "T008",
+    "title": "[T008] Resolver HTTPS/WSS local e incorporación por QR",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Validar contexto seguro HTTPS de la PWA y confianza del certificado en Android/iPhone oficiales; DTLS/WebRTC no sustituye esa confianza de navegación.\n- [ ] QR incorpora al origen PWA seguro correcto y localiza/autentica la sesión Java LAN; señalización y WebRTC DataChannel locales con Gorilla Protocol, sin cloud ni STUN/TURN público obligatorio.\n- [ ] Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.\n- [ ] Registrar fallo/alternativas antes de activar Plan B.",
+    "evidence": "QR técnico y HTTPS laboratorio históricos, no flujo físico final",
+    "complies": "PARCIAL",
+    "action": "BLOCKED",
+    "remaining": "Secure-context Android/iPhone oficiales y onboarding nuevo <60s pendientes;#11/#15",
+    "dependencies": [
+      15,
+      11
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Network",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-device-test",
+      "needs-decision",
+      "security",
+      "type:spike",
+      "area:network"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Validar contexto seguro y confianza del certificado en Android/iPhone oficiales.\n- [ ] QR lleva al origen local correcto.\n- [ ] Medir usuario nuevo <60 s; diferenciar dispositivos preparados de incorporación nueva.\n- [ ] Registrar fallo/alternativas antes de activar Plan B.",
+    "titleAfter": "[T008] Resolver contexto seguro PWA, señalización LAN e incorporación por QR",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 20,
+    "key": "T009",
+    "title": "[T009] Crear shell PWA y flujo de permisos",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Pantallas CONNECT y permiso accionado por usuario.\n- [ ] Negar permiso/no sensor devuelve explicación y recuperación.\n- [ ] Advertencia de no soltar teléfono visible.",
+    "evidence": "Capturador botón/denegación/no sensor/warning lab; shell React",
+    "complies": "PARCIAL",
+    "action": "BLOCKED",
+    "remaining": "Blocked by #19; UX CONNECT producto y permisos físicos pendientes",
+    "dependencies": [
+      19
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Mobile/PWA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:mobile-pwa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Pantallas CONNECT y permiso accionado por usuario.\n- [ ] Negar permiso/no sensor devuelve explicación y recuperación.\n- [ ] Advertencia de no soltar teléfono visible.",
+    "titleAfter": "[T009] Crear shell PWA y flujo de permisos",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 21,
+    "key": "T010",
+    "title": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Muestras válidas y únicas; unidades y ejes trazables.\n- [ ] Medir objetivo 50 Hz y degradaciones 60/50/30/20 según capacidad.\n- [ ] No simular Hz repitiendo muestras ni admitir potencia infinita.",
+    "evidence": "Unidades/capacidades/null y muestras sintéticas/replay; emulador histórico",
+    "complies": "PARCIAL",
+    "action": "BLOCKED",
+    "remaining": "Hz reales50/60/30/20 no medidos;#20/#16",
+    "dependencies": [
+      20,
+      16
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Mobile/PWA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-device-test",
+      "performance",
+      "type:task",
+      "area:mobile-pwa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Muestras válidas y únicas; unidades y ejes trazables.\n- [ ] Medir objetivo 50 Hz y degradaciones 60/50/30/20 según capacidad.\n- [ ] No simular Hz repitiendo muestras ni admitir potencia infinita.",
+    "titleAfter": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 22,
+    "key": "T011",
+    "title": "[T011] Validar PWA/red sin WAN y recuperación de visibilidad",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Conectar sin cache previo y con WAN desconectada.\n- [ ] Recursos/modelos disponibles localmente.\n- [ ] Suspensión/retorno del teléfono produce pausa o recuperación segura.",
+    "evidence": "Assets locales/caché escritorio; lifecycle lab no prueba sin WAN física",
+    "complies": "NO",
+    "action": "BLOCKED",
+    "remaining": "Primera carga sin caché/WAN y suspensión teléfono físico NOT RUN;#20/#21",
+    "dependencies": [
+      21,
+      20
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Mobile/PWA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-device-test",
+      "type:spike",
+      "area:mobile-pwa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Conectar sin cache previo y con WAN desconectada.\n- [ ] Recursos/modelos disponibles localmente.\n- [ ] Suspensión/retorno del teléfono produce pausa o recuperación segura.",
+    "titleAfter": "[T011] Validar PWA/red sin WAN y recuperación de visibilidad",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 23,
+    "key": "F03",
+    "title": "[F03] Red local y adaptador Unity",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] 1–4 controles asociados correctamente.\n- [ ] Datos de red convertidos a PhoneInput; reconexión segura.",
+    "evidence": "RTC→Java→IPC→PhoneInput4Chrome PASS",
+    "complies": "NO",
+    "action": "KEEP OPEN",
+    "remaining": "Hijos requeridos no aceptados; oficial 1–4 controles pendiente",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Network",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "type:feature",
+      "area:network"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] 1–4 controles asociados correctamente.\n- [ ] Datos de red convertidos a PhoneInput; reconexión segura.",
+    "titleAfter": "[F03] Red local y adaptador Unity",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 24,
+    "key": "T012",
+    "title": "[T012] Implementar WebSocket v1 y validación de entrada",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [ ] Envelope/version/session/player/sequence validados.\n- [ ] Heartbeat, límites de tasa/tamaño y reassembly/framing de mensajes RTC completos (SCTP, en sustitución de fragmentación WebSocket) probados, incluidos oversized/incompletos; señalización local sin cloud ni STUN/TURN público obligatorio.\n- [ ] Buffers/colas acotados: control fiable/ordenado para eventos discretos y motion latest-only/unordered; errores/backpressure explícitos sin pérdida silenciosa de eventos discretos.",
+    "evidence": "GorillaProtocol17,identity/version/rate/size,control reliable/motion latest-only",
+    "complies": "PARCIAL",
+    "action": "PO REVIEW",
+    "remaining": "Blocked by #15/#16; reassembly SCTP no medido explícitamente; integración pendiente",
+    "dependencies": [
+      16,
+      15
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Network",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:network"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Envelope/version/session/player/sequence validados.\n- [ ] Heartbeat, mensajes fragmentados y límites de tasa/tamaño probados.\n- [ ] Colas acotadas sin perder indiscriminadamente eventos discretos.",
+    "titleAfter": "[T012] Implementar WebRTC DataChannel y validación Gorilla Protocol v1",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 25,
+    "key": "T013",
+    "title": "[T013] Implementar admisión y asociación de controles al lobby",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] Sesión admite 1–4 jugadores; rechazo de quinto control.\n- [ ] PlayerId preservado; entrada nueva impedida después de inicio.\n- [ ] Identidad y READY coherentes con autoridad definida.",
+    "evidence": "TechnicalSession1–4/rechazo5/resume/epochPASS; sólo sesión técnica",
+    "complies": "PARCIAL",
+    "action": "BLOCKED",
+    "remaining": "Blocked by #10/#24; no cierre admisión al inicio oficial ni READY lobby gameplay",
+    "dependencies": [
+      24,
+      10
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Server",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:server"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Sesión admite 1–4 jugadores; rechazo de quinto control.\n- [ ] PlayerId preservado; entrada nueva impedida después de inicio.\n- [ ] Identidad y READY coherentes con autoridad definida.",
+    "titleAfter": "[T013] Implementar admisión y asociación de controles al lobby",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 26,
+    "key": "T014",
+    "title": "[T014] Conectar adaptador Unity a PhoneInput",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "PO Review",
+    "acceptanceCriteria": "- [ ] Input del teléfono llega a Unity con conversión de tipos documentada.\n- [ ] Red desacoplada de gameplay y ciclo de vida cancelable.\n- [ ] Prueba integrada JS→host→Unity con trazas.",
+    "evidence": "JS→RTC→Java→IPC→Unity traces PASS; DTO/PhoneInput desacoplados",
+    "complies": "AC LAB; DEP PENDIENTE",
+    "action": "PO REVIEW",
+    "remaining": "Blocked by #14/#21/#24; teléfono físico no acreditado",
+    "dependencies": [
+      24,
+      21,
+      14
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Unity/Core",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:unity-core"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Input del teléfono llega a Unity con conversión de tipos documentada.\n- [ ] Red desacoplada de gameplay y ciclo de vida cancelable.\n- [ ] Prueba integrada JS→host→Unity con trazas.",
+    "titleAfter": "[T014] Conectar adaptador Unity a PhoneInput",
+    "projectStatusAfter": "PO Review"
+  },
+  {
+    "number": 27,
+    "key": "T015",
+    "title": "[T015] Implementar heartbeat, reconexión y cancelación segura",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] Desconexión detectada y comunicada; PlayerId conservado.\n- [ ] Acción sin validar se cancela y resultado confirmado se conserva.\n- [ ] Duplicados/atrasados no reproducen acciones oficiales.",
+    "evidence": "Heartbeat/desconexión/resume/seq/epoch labPASS; sin acciones gameplay",
+    "complies": "PARCIAL",
+    "action": "BLOCKED",
+    "remaining": "Blocked by #25/#26; cancelación de acción y resultado oficial no implementados",
+    "dependencies": [
+      26,
+      25
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Network",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "type:task",
+      "area:network"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Desconexión detectada y comunicada; PlayerId conservado.\n- [ ] Acción sin validar se cancela y resultado confirmado se conserva.\n- [ ] Duplicados/atrasados no reproducen acciones oficiales.",
+    "titleAfter": "[T015] Implementar heartbeat, reconexión y cancelación segura",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 28,
+    "key": "F04",
+    "title": "[F04] Cámara local y viabilidad de tracking",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] Captura e inferencia locales en build PC.\n- [ ] ROI y Player Lock sin reasignación automática.",
+    "evidence": "MediaPipe→CameraInput técnico; lock fixture/replayPASS",
+    "complies": "NO",
+    "action": "KEEP OPEN",
+    "remaining": "T016/T017 físicos/model packaging pendientes",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Camera/Tracking",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "type:feature",
+      "area:camera-tracking"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Captura e inferencia locales en build PC.\n- [ ] ROI y Player Lock sin reasignación automática.",
+    "titleAfter": "[F04] Cámara local y viabilidad de tracking",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 29,
+    "key": "T016",
+    "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Medir captura >=30 FPS e inferencia separada en PC oficial.\n- [ ] Build incluye modelos/nativos/recursos offline.\n- [ ] No guardar imágenes/video ni reconocer caras.",
+    "evidence": "640×480 technicalPASS;privacidadPASS;30FPS NOT ACHIEVED",
+    "complies": "NO",
+    "action": "BLOCKED",
+    "remaining": "17.61FPS observado<30; PC oficial/modelos/nativos distribuidos pendientes;#12/#14",
+    "dependencies": [
+      14,
+      12
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Camera/Tracking",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-device-test",
+      "performance",
+      "type:task",
+      "area:camera-tracking"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Medir captura >=30 FPS e inferencia separada en PC oficial.\n- [ ] Build incluye modelos/nativos/recursos offline.\n- [ ] No guardar imágenes/video ni reconocer caras.",
+    "titleAfter": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 30,
+    "key": "T017",
+    "title": "[T017] Validar ROI, Player Lock y recuperación de tracking",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] 20 entradas de otra persona: cero cambios accidentales.\n- [ ] Oclusión/tracking perdido pausa; retorno recuperable.\n- [ ] Nunca seleccionar automáticamente otro jugador.",
+    "evidence": "PlayerLock fixtures/replayPASS, no validación humana",
+    "complies": "NO",
+    "action": "BLOCKED",
+    "remaining": "20 entradas humanas/cero switches/occlusión física NOT RUN;#29",
+    "dependencies": [
+      29
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "Camera/Tracking",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-device-test",
+      "type:task",
+      "area:camera-tracking"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] 20 entradas de otra persona: cero cambios accidentales.\n- [ ] Oclusión/tracking perdido pausa; retorno recuperable.\n- [ ] Nunca seleccionar automáticamente otro jugador.",
+    "titleAfter": "[T017] Validar ROI, Player Lock y recuperación de tracking",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 31,
+    "key": "F05",
+    "title": "[F05] Evidencia de viabilidad técnica end-to-end",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "In Progress",
+    "acceptanceCriteria": "- [ ] Pruebas base reproducibles y riesgos documentados.\n- [ ] Salida completa del Spike condicionada a aclaración 42/50 y slice posterior.",
+    "evidence": "AuditPASSSoftwareLab y riesgos, sin aceptación de feature",
+    "complies": "NO",
+    "action": "KEEP OPEN",
+    "remaining": "Hijos #32/#33/#34 abiertos; frontera técnica no equivale a slice",
+    "dependencies": [],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "CI/QA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "type:feature",
+      "area:ci-qa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Pruebas base reproducibles y riesgos documentados.\n- [ ] Salida completa del Spike condicionada a aclaración 42/50 y slice posterior.",
+    "titleAfter": "[F05] Evidencia de viabilidad técnica end-to-end",
+    "projectStatusAfter": "In Progress"
+  },
+  {
+    "number": 32,
+    "key": "T018",
+    "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Trazas correlacionadas con reloj/unidad/error de sincronización definidos.\n- [ ] P50/P95, Hz efectivos, FPS y pérdidas con tamaño muestral.\n- [ ] Buffer de telemetría no afecta perceptiblemente framerate; sin video.",
+    "evidence": "Métricas IPC/RTC/replay separadas;boundedbuffers; no física sincronizada",
+    "complies": "PARCIAL",
+    "action": "BLOCKED",
+    "remaining": "Clock físico/error incertidumbre y efecto telemetría/framerate no medidos;#26/#29",
+    "dependencies": [
+      29,
+      26
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "CI/QA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "performance",
+      "type:task",
+      "area:ci-qa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Trazas correlacionadas con reloj/unidad/error de sincronización definidos.\n- [ ] P50/P95, Hz efectivos, FPS y pérdidas con tamaño muestral.\n- [ ] Buffer de telemetría no afecta perceptiblemente framerate; sin video.",
+    "titleAfter": "[T018] Instrumentar latencia, Hz, FPS y errores locales",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 33,
+    "key": "T019",
+    "title": "[T019] Ejecutar validación base con cuatro teléfonos y fallos",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] 1 y 4 controles; 20 conexiones y 20 reconexiones, >=95% exitosas.\n- [ ] Probar pérdida red/cámara, permiso negado, teléfono bloqueado y datos inválidos.\n- [ ] P95 <150 ms y demás objetivos con mediciones reales; documentar incumplimientos.",
+    "evidence": "4Chrome lab y18 negativos, no cuatro teléfonos",
+    "complies": "NO",
+    "action": "BLOCKED",
+    "remaining": "1/4 teléfonos,20 conexiones/reconexiones>=95%,fallos/P95realNOT RUN;#22/#27/#30/#32",
+    "dependencies": [
+      32,
+      30,
+      27,
+      22
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "CI/QA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-device-test",
+      "performance",
+      "type:task",
+      "area:ci-qa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] 1 y 4 controles; 20 conexiones y 20 reconexiones, >=95% exitosas.\n- [ ] Probar pérdida red/cámara, permiso negado, teléfono bloqueado y datos inválidos.\n- [ ] P95 <150 ms y demás objetivos con mediciones reales; documentar incumplimientos.",
+    "titleAfter": "[T019] Ejecutar validación base con cuatro teléfonos y fallos",
+    "projectStatusAfter": "Validation"
+  },
+  {
+    "number": 34,
+    "key": "T020",
+    "title": "[T020] Validar build mínima en PC limpia y dictamen de viabilidad",
+    "stateBefore": "OPEN",
+    "projectStatusBefore": "Backlog",
+    "projectStatusPlanned": "Validation",
+    "acceptanceCriteria": "- [ ] Build base funciona fuera del entorno de desarrollo sin SDK/Editor.\n- [ ] Recursos locales, cierre y errores comprobados.\n- [ ] Dictamen distingue base técnica de slice jugable; activar Plan B sólo con evidencia y decisión.",
+    "evidence": "Player Linux probado en host de desarrollo;dictamen técnico≠slice",
+    "complies": "NO",
+    "action": "BLOCKED",
+    "remaining": "PC limpia sin SDK/Editor NOT RUN;#10/#17/#33",
+    "dependencies": [
+      10,
+      33,
+      17
+    ],
+    "milestone": {
+      "number": 1,
+      "title": "Fase 0 — Base técnica y viabilidad",
+      "state": "OPEN"
+    },
+    "fieldsBefore": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "name": "Backlog",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+          "name": "Status"
+        }
+      },
+      {
+        "name": "0",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+          "name": "Phase"
+        }
+      },
+      {
+        "name": "CI/QA",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+          "name": "Area"
+        }
+      },
+      {
+        "name": "v1.0 — MVP",
+        "field": {
+          "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+          "name": "Target Release"
+        }
+      }
+    ],
+    "labelsBefore": [
+      "blocked",
+      "needs-device-test",
+      "needs-decision",
+      "type:spike",
+      "area:ci-qa"
+    ],
+    "assigneesBefore": [],
+    "acceptanceCriteriaBefore": "- [ ] Build base funciona fuera del entorno de desarrollo sin SDK/Editor.\n- [ ] Recursos locales, cierre y errores comprobados.\n- [ ] Dictamen distingue base técnica de slice jugable; activar Plan B sólo con evidencia y decisión.",
+    "titleAfter": "[T020] Validar build mínima en PC limpia y dictamen de viabilidad",
+    "projectStatusAfter": "Validation"
+  }
+]

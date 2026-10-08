@@ -1,0 +1,21 @@
+{
+  "scope": "PHYSICAL / PLATFORM VALIDATION DEBT",
+  "items": {
+    "iPhone physical": "DEFERRED",
+    "Android physical": "DEFERRED",
+    "Windows": "DEFERRED",
+    "human motion validation": "DEFERRED",
+    "physical phone + camera fusion": "DEFERRED",
+    "physical clock synchronization": "DEFERRED",
+    "final threshold tuning": "DEFERRED",
+    "product HTTPS/onboarding": "DEFERRED",
+    "distribution packaging/licenses": "DEFERRED",
+    "Android Emulator RTC": "BLOCKED",
+    "physical webcam human tracking reliable": "NOT RUN",
+    "physical webcam 30 FPS target": "NOT ACHIEVED in smoke"
+  },
+  "blocksSoftwareLabClosure": false,
+  "mustBlockRelevantFinalMvpPhysicalAcceptance": true,
+  "historicalAndroid": "PASS within historical scope; original 10 PASS / 2 BLOCKED / 1 SKIP and subsequent 16 PASS unchanged",
+  "physicalWebcam": "capture → MediaPipe → Unity technical PASS; 640×480;17.611159 FPS, no reliable human evidence"
+}

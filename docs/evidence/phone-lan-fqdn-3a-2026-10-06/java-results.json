@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "tests": 30,
+  "passed": 30,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "scope": "JDK21 full verify with explicit physical LAN IPv4/interface from PC; no phone acceptance",
+  "suites": [
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbePressureProcessTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 20.0
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbeCorpusTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.069
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.372
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 6.449
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbeCodecTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.021
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbeWriteDeadlineTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.226
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.01
+    },
+    {
+      "suite": "com.gorillaescape.server.hosting.MobileHttpsTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 7.397
+    },
+    {
+      "suite": "com.gorillaescape.server.ProtocolContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.043
+    },
+    {
+      "suite": "com.gorillaescape.server.ServerIntegrationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.714
+    }
+  ],
+  "portableTls": {
+    "tests": 8,
+    "passed": 6,
+    "skipped": 2,
+    "reason": "LAN-only preflight tests require explicit physical interface; separate LAN run above passed all eight"
+  },
+  "build": "PASS",
+  "existingCompilerNotice": "ProbeCodec deprecated API; unchanged"
+}

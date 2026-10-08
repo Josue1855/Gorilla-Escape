@@ -52,6 +52,9 @@ namespace GorillaEscape.Network
         private readonly IpcLifecycle lifecycle = new IpcLifecycle();
         private Attempt current;
         private bool disposed;
+        public GorillaEscape.Input.PhoneInputStore PhoneInputs { get; } = new GorillaEscape.Input.PhoneInputStore();
+        public event Action<PhoneInputWire> PhoneInputReceived;
+        public event Action<int> HttpReady;
         public IpcState State => lifecycle.State;
         public bool CleanupComplete => lifecycle.CleanupComplete;
         public int Launches => budget.Launches;
@@ -124,6 +127,7 @@ namespace GorillaEscape.Network
                 var start = new ProcessStartInfo { FileName = java, UseShellExecute = false, RedirectStandardInput = true,
                     RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true, WorkingDirectory = Path.GetDirectoryName(jar) };
                 start.Arguments = "-Djava.net.preferIPv4Stack=true -jar " + Quote(jar) + " --gorilla.ipc.managed=true --server.address=127.0.0.1 --server.port=0 --logging.config=classpath:ipc-logback.xml";
+                if(Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1")start.Arguments+=" --gorilla.mobile.rtc-enabled=true";
                 start.EnvironmentVariables["GORILLA_IPC_INSTANCE"] = a.result.instanceId;
                 start.EnvironmentVariables["GORILLA_IPC_TOKEN"] = secret;
                 start.EnvironmentVariables["GORILLA_IPC_LOCK_DIR"] = DefaultLockDirectory;
@@ -150,6 +154,7 @@ namespace GorillaEscape.Network
                     var ready = IpcProbeContract.Ready(json, a.result.instanceId, a.result.pid);
                     if (ready == null || ready.ipcVersion != 1 || ready.instanceId != a.result.instanceId || ready.pid != a.result.pid
                         || ready.ipcPort < 1 || ready.ipcPort > 65535 || ready.httpPort < 1 || ready.httpPort > 65535) throw new Failure("READY_INVALID");
+                    HttpReady?.Invoke(ready.httpPort);
                     var stdout = Task.Run(() => Drain(a.child.StandardOutput));
                     a.readers = new Task[] { stderr, stdout };
                     Move(a, IpcState.CONNECTING, "READY_RECEIVED"); a.stage = "CONNECT";
@@ -175,7 +180,7 @@ namespace GorillaEscape.Network
                                 double wait = nextStart - a.sessionClock.Elapsed.TotalMilliseconds;
                                 if (wait > 0) await Task.Delay((int)Math.Ceiling(wait), token);
 
-                            } else await Task.Delay(samples == 0 ? 1000 : 20, token);
+                            } else await Task.Delay(samples == 0 ? (Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1"?20:1000) : 20, token);
                             token.ThrowIfCancellationRequested();
                             if (sequence == int.MaxValue) throw new Failure("SEQUENCE_EXHAUSTED");
                             double started = a.sessionClock.Elapsed.TotalMilliseconds;
@@ -191,7 +196,7 @@ namespace GorillaEscape.Network
                 }
             }
         }
-        private static double Exchange(NetworkStream stream, string secret, string connection, int sequence, Attempt a, int milliseconds, CancellationToken token)
+        private double Exchange(NetworkStream stream, string secret, string connection, int sequence, Attempt a, int milliseconds, CancellationToken token)
         {
             using (var deadline = CancellationTokenSource.CreateLinkedTokenSource(token))
             {
@@ -200,12 +205,21 @@ namespace GorillaEscape.Network
                 {
                     var clock = Stopwatch.StartNew();
                     string payload = secret == null ? "{}" : "{\"launchToken\":\"" + secret + "\"}";
+                    bool phone=Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1";
+                    if(phone&&secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"phoneInputVersion\":1}";
                     a.result.sent++;
                     IpcFrameCodec.Write(stream, "{\"ipcVersion\":1,\"type\":\"PING\",\"instanceId\":\"" + a.result.instanceId
                         + "\",\"connectionId\":\"" + connection + "\",\"sequence\":" + sequence + ",\"payload\":" + payload + "}");
                     string body = IpcFrameCodec.Read(stream); a.result.received++;
                     IpcPong pong;
-                    try { pong = IpcProbeContract.Pong(body, a.result.instanceId, connection, sequence); }
+                    try {
+                        if(phone){
+                            var mobile=JsonUtility.FromJson<PhonePong>(body);
+                            if(mobile==null||mobile.ipcVersion!=1||mobile.type!="PONG"||mobile.instanceId!=a.result.instanceId||mobile.connectionId!=connection||mobile.sequence!=sequence||mobile.payload?.phoneInputs==null||mobile.payload.phoneInputs.Length>4)throw new InvalidDataException("PHONE_PONG");
+                            foreach(var input in mobile.payload.phoneInputs)if(PhoneInputs.Accept(input))PhoneInputReceived?.Invoke(input);
+                            pong=new IpcPong{ipcVersion=mobile.ipcVersion,type=mobile.type,instanceId=mobile.instanceId,connectionId=mobile.connectionId,sequence=mobile.sequence};
+                        }else pong = IpcProbeContract.Pong(body, a.result.instanceId, connection, sequence);
+                    }
                     catch (InvalidDataException) { throw new Failure("PROTOCOL_INVALID"); }
                     if (pong == null || pong.ipcVersion != 1 || pong.type != "PONG" || pong.instanceId != a.result.instanceId
                         || pong.connectionId != connection || pong.sequence != sequence) throw new Failure("HANDSHAKE_FAILED");

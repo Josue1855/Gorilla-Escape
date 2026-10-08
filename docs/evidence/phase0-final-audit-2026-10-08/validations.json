@@ -1,0 +1,18 @@
+{
+  "foundation": {
+    "exit": 0,
+    "output": "PASS: local UPM, 61 unique meta GUIDs, engine-independent contracts, fixture, PWA icons and amended architecture.",
+    "error": ""
+  },
+  "management": {
+    "exit": 0,
+    "output": "PASS: 88 backlog records, acyclic dependencies, valid hierarchy, 356 local links; no fake assignments/Sprints.",
+    "error": ""
+  },
+  "diffCheck": {
+    "exit": 0,
+    "output": "",
+    "error": ""
+  },
+  "result": "PASS"
+}

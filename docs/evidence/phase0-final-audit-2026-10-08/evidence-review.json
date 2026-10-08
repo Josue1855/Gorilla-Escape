@@ -1,0 +1,16 @@
+{
+  "historicalArtifacts": 145,
+  "historicalChanged": [],
+  "privateKeyOrGithubSecretFindings": [],
+  "previousDetailedReview": "../camera-fusion-2026-10-08/evidence-review.json",
+  "discardedAttempt": "../camera-fusion-2026-10-08/e2e-vision-failure01.json; original isolation PASS does not accredit exit134; companion attempt-failure01-review.json is authoritative FAIL",
+  "acceptedFailureRegression": "../camera-fusion-2026-10-08/e2e-vision-failure03.json; expected vision exit2",
+  "sampleCombination": false,
+  "physicalLandmarksOrVideoPublished": false,
+  "screenshots": "historical emulator UI only, preserved; previous sanitation retained",
+  "workflow": "gstack skill not found in installed skill roots; proportional direct audit, no installation",
+  "newEvidenceSensitiveConcreteFieldFindings": [],
+  "finalHistoricalHashChanges": 0,
+  "discardedAttemptsAccreditAcceptance": false,
+  "result": "PASS"
+}

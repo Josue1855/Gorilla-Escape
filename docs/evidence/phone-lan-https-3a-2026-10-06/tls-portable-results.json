@@ -1,0 +1,9 @@
+{
+  "scope": "Portable CI TLS loopback, not LAN/phone acceptance",
+  "tests": 4,
+  "pass": 3,
+  "skipped": 1,
+  "skipReason": "LAN-specific SAN/password preflight requires explicit address/interface; passed separately in LAN suite",
+  "errors": 0,
+  "failures": 0
+}

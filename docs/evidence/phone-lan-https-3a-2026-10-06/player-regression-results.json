@@ -1,0 +1,99 @@
+{
+  "groups": 11,
+  "status": "PASS",
+  "ownedJavaResidual": 0,
+  "results": {
+    "regression2A": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 7.443,
+      "observed": {}
+    },
+    "deathManualRecoveryLimit": {
+      "playerExit": 0,
+      "children": 3,
+      "residuals": [],
+      "elapsedSeconds": 10.055,
+      "observed": {}
+    },
+    "cancelStartup": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 4.717,
+      "observed": {}
+    },
+    "cancelRunning": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 5.165,
+      "observed": {}
+    },
+    "normalQuitEof": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 4.951,
+      "observed": {}
+    },
+    "singleton": {
+      "owner": {
+        "playerExit": 0,
+        "children": 1,
+        "residuals": [],
+        "elapsedSeconds": 8.332,
+        "observed": {}
+      },
+      "second": {
+        "playerExit": 0,
+        "children": 1,
+        "residuals": [],
+        "elapsedSeconds": 3.755,
+        "observed": {}
+      }
+    },
+    "readyTimeoutFixture": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 18.405,
+      "observed": {
+        "readyTimeoutAndCleanupMs": 15047.415
+      }
+    },
+    "connectRefusedFixture": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 3.482,
+      "observed": {}
+    },
+    "pongDeadlineRealJava": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 7.914,
+      "observed": {
+        "livenessLossDetectedMs": 3040.751
+      }
+    },
+    "forcedOwnedShutdown": {
+      "playerExit": 0,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 17.973,
+      "observed": {}
+    },
+    "abruptParentEof": {
+      "playerExit": -9,
+      "children": 1,
+      "residuals": [],
+      "elapsedSeconds": 4.849,
+      "observed": {
+        "javaExitCode": "NOT_OBSERVABLE_AFTER_PARENT_CRASH"
+      }
+    }
+  }
+}

@@ -1,0 +1,480 @@
+{
+  "scope": "Linux desktop Chromium ↔ real Java; software/lab only",
+  "library": "webrtc-java 0.19.0 linux-x86_64",
+  "signaling": "owned pipes via automation; not product onboarding",
+  "iceServers": [],
+  "physical": "DEFERRED",
+  "runs": [
+    {
+      "case": "single",
+      "metrics": [
+        {
+          "channel": "reliable",
+          "ordered": true,
+          "maxRetransmits": null,
+          "payloadPadding": 32,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0.09999999962747097,
+          "p50Ms": 0.20000000018626451,
+          "p95Ms": 0.599999999627471,
+          "maxMs": 1.5,
+          "durationMs": 27.899999999906868
+        },
+        {
+          "channel": "reliable",
+          "ordered": true,
+          "maxRetransmits": null,
+          "payloadPadding": 1024,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0.09999999962747097,
+          "p50Ms": 0.3000000002793968,
+          "p95Ms": 0.599999999627471,
+          "maxMs": 1.5,
+          "durationMs": 35.1999999997206
+        },
+        {
+          "channel": "unordered",
+          "ordered": false,
+          "maxRetransmits": 0,
+          "payloadPadding": 32,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0.09999999962747097,
+          "p50Ms": 0.20000000018626451,
+          "p95Ms": 0.3000000002793968,
+          "maxMs": 0.5,
+          "durationMs": 22.600000000093132
+        },
+        {
+          "channel": "unordered",
+          "ordered": false,
+          "maxRetransmits": 0,
+          "payloadPadding": 1024,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0.09999999962747097,
+          "p50Ms": 0.20000000018626451,
+          "p95Ms": 0.3000000002793968,
+          "maxMs": 0.5,
+          "durationMs": 22.799999999813735
+        }
+      ]
+    },
+    {
+      "case": "manual-reconnect-new-peer",
+      "metrics": [
+        {
+          "channel": "reliable",
+          "ordered": true,
+          "maxRetransmits": null,
+          "payloadPadding": 32,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0,
+          "p50Ms": 0.20000000018626451,
+          "p95Ms": 0.3000000002793968,
+          "maxMs": 0.39999999990686774,
+          "durationMs": 22.399999999906868
+        },
+        {
+          "channel": "reliable",
+          "ordered": true,
+          "maxRetransmits": null,
+          "payloadPadding": 1024,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0.10000000009313226,
+          "p50Ms": 0.39999999990686774,
+          "p95Ms": 0.8999999999068677,
+          "maxMs": 1.6999999997206032,
+          "durationMs": 43.200000000186265
+        },
+        {
+          "channel": "unordered",
+          "ordered": false,
+          "maxRetransmits": 0,
+          "payloadPadding": 32,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0.09999999962747097,
+          "p50Ms": 0.20000000018626451,
+          "p95Ms": 0.39999999990686774,
+          "maxMs": 0.39999999990686774,
+          "durationMs": 24.5
+        },
+        {
+          "channel": "unordered",
+          "ordered": false,
+          "maxRetransmits": 0,
+          "payloadPadding": 1024,
+          "sent": 100,
+          "received": 100,
+          "timeouts": 0,
+          "errors": 0,
+          "loss": 0,
+          "minMs": 0.09999999962747097,
+          "p50Ms": 0.20000000018626451,
+          "p95Ms": 0.39999999990686774,
+          "maxMs": 0.7000000001862645,
+          "durationMs": 26.399999999906868
+        }
+      ]
+    },
+    {
+      "case": "four-active-peers",
+      "clients": [
+        {
+          "id": "p3",
+          "metrics": [
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.7000000001862645,
+              "maxMs": 1.8000000002793968,
+              "durationMs": 44
+            },
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.2999999998137355,
+              "p50Ms": 0.5,
+              "p95Ms": 0.7999999998137355,
+              "maxMs": 1.8000000002793968,
+              "durationMs": 53.700000000186265
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.6000000000931323,
+              "maxMs": 0.7000000001862645,
+              "durationMs": 41.5
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.40000000037252903,
+              "p95Ms": 0.7000000001862645,
+              "maxMs": 1.1000000000931323,
+              "durationMs": 46.200000000186265
+            }
+          ]
+        },
+        {
+          "id": "p4",
+          "metrics": [
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.8000000002793968,
+              "maxMs": 1.8999999999068677,
+              "durationMs": 44.5
+            },
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.2999999998137355,
+              "p50Ms": 0.5,
+              "p95Ms": 0.8999999999068677,
+              "maxMs": 1.8999999999068677,
+              "durationMs": 54.3000000002794
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.20000000018626451,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.6000000000931323,
+              "maxMs": 0.8000000002793968,
+              "durationMs": 41.5
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.7000000001862645,
+              "maxMs": 1.2000000001862645,
+              "durationMs": 46.5
+            }
+          ]
+        },
+        {
+          "id": "p5",
+          "metrics": [
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.7000000001862645,
+              "maxMs": 1.6999999997206032,
+              "durationMs": 44.09999999962747
+            },
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.2999999998137355,
+              "p50Ms": 0.5,
+              "p95Ms": 1,
+              "maxMs": 2,
+              "durationMs": 54.40000000037253
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.6000000000931323,
+              "maxMs": 0.8000000002793968,
+              "durationMs": 41.799999999813735
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.7000000001862645,
+              "maxMs": 1.1000000000931323,
+              "durationMs": 45.39999999990687
+            }
+          ]
+        },
+        {
+          "id": "p6",
+          "metrics": [
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.7000000001862645,
+              "maxMs": 1.6999999997206032,
+              "durationMs": 43.89999999990687
+            },
+            {
+              "channel": "reliable",
+              "ordered": true,
+              "maxRetransmits": null,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.20000000018626451,
+              "p50Ms": 0.5,
+              "p95Ms": 0.8000000002793968,
+              "maxMs": 2,
+              "durationMs": 54.89999999990687
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 32,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.09999999962747097,
+              "p50Ms": 0.39999999990686774,
+              "p95Ms": 0.6000000000931323,
+              "maxMs": 0.8000000002793968,
+              "durationMs": 41.799999999813735
+            },
+            {
+              "channel": "unordered",
+              "ordered": false,
+              "maxRetransmits": 0,
+              "payloadPadding": 1024,
+              "sent": 100,
+              "received": 100,
+              "timeouts": 0,
+              "errors": 0,
+              "loss": 0,
+              "minMs": 0.19999999972060323,
+              "p50Ms": 0.40000000037252903,
+              "p95Ms": 0.7000000001862645,
+              "maxMs": 1.1000000000931323,
+              "durationMs": 46.39999999990687
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "negatives": [
+    {
+      "case": "invalid-sdp",
+      "gate": "PASS"
+    },
+    {
+      "case": "duplicate-peer-offer-isolated",
+      "gate": "PASS"
+    },
+    {
+      "case": "invalid-payload",
+      "gate": "PASS"
+    },
+    {
+      "case": "fifth-peer-bounded",
+      "gate": "PASS"
+    },
+    {
+      "case": "one-disconnect-others-alive",
+      "gate": "PASS"
+    },
+    {
+      "case": "invalid-credential",
+      "gate": "PASS"
+    },
+    {
+      "case": "oversize",
+      "gate": "PASS"
+    }
+  ],
+  "cleanup": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "residualPeersZero": true,
+    "pendingCommands": 0,
+    "stderrBytes": 0
+  },
+  "gate": "PASS",
+  "javaStartupMs": 264.52309399999996,
+  "browser": "155.0.8059.39",
+  "pathEvidence": {
+    "localCandidateType": "host",
+    "remoteCandidateType": "host",
+    "protocol": "udp"
+  },
+  "sourceHashes": {
+    "pom.xml": "dfd1177e7d00dbd78ba834bf97c2bc8010dce76688f312dd2c211eb692f5ff69",
+    "run.mjs": "e33bf1fb3d77af8b1021943e47a647b789267fc7d0d0fecd2a627894934e1504",
+    "src/main/java/com/gorillaescape/spike/RtcProbe.java": "74254273888276153c22a7f39daa2dbe281874acf49adf441b60217f04634c22"
+  }
+}

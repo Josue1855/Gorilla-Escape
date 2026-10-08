@@ -1,0 +1,109 @@
+{
+  "scope": "Android emulator component/browser tests; not physical LAN or public trust",
+  "gate3A": "IN PROGRESS",
+  "cases": [
+    {
+      "name": "android_boot",
+      "status": "PASS",
+      "detail": "API36, KVM, headless software rendering; isolated temporary AVD"
+    },
+    {
+      "name": "chrome_launch",
+      "status": "PASS",
+      "detail": "Native browser UI available; initial dialogs handled from UI tree"
+    },
+    {
+      "name": "react_load",
+      "status": "PASS",
+      "detail": "HTTP localhost via isolated adb reverse: component test, not product HTTPS"
+    },
+    {
+      "name": "health_and_interaction",
+      "status": "PASS",
+      "detail": "Actual Java response; HTTP explicitly recorded, no TLS/public-trust claim"
+    },
+    {
+      "name": "page_reload",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "browser_restart",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "connection_failure",
+      "status": "PASS",
+      "detail": "Real Java stopped by stdin EOF; no mock or fake API success"
+    },
+    {
+      "name": "untrusted_tls_rejected",
+      "status": "PASS",
+      "detail": "Ephemeral certificate rejected by stock Chrome; no bypass or CA installation"
+    },
+    {
+      "name": "public_android_trust",
+      "status": "BLOCKED",
+      "detail": "Controlled FQDN/public certificate pending; test PKI cannot validate this"
+    },
+    {
+      "name": "physical_lan_dns_443_android_iphone",
+      "status": "BLOCKED",
+      "detail": "Original physical gates remain; emulator NAT/adb reverse not router LAN"
+    },
+    {
+      "name": "sensors_qr_sessions_wss_flutter",
+      "status": "SKIP",
+      "detail": "Outside3A; Chrome DevTools WS is QA-only local debugging, not mobile protocol"
+    },
+    {
+      "name": "cleanup",
+      "status": "PASS",
+      "detail": "Owned process handles closed; no shared ADB server/device/profile killed"
+    },
+    {
+      "name": "android_logcat",
+      "status": "PASS",
+      "detail": "Bounded Chrome PID log capture in disposable AVD; raw logs ignored"
+    }
+  ],
+  "cleanup": {
+    "processes": [
+      {
+        "component": "java-tls",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "java-http",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "jarSha256": "867c625a6a48279852b0cdc60b43a5bb89fe703037802a7d1413bbf9844bbcc7",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "httpComponent": {
+    "status": 200,
+    "noStore": true,
+    "javaSecure": false,
+    "requestNumber": 2
+  }
+}

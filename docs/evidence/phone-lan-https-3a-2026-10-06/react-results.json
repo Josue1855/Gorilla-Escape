@@ -1,0 +1,8 @@
+{
+  "tests": 5,
+  "pass": 5,
+  "fail": 0,
+  "build": "PASS",
+  "packagedPcChrome390px": "PASS (HTTP loopback UI only)",
+  "physicalServiceWorker": "NOT RUN"
+}

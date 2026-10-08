@@ -1,0 +1,227 @@
+{
+  "result": "PASS",
+  "closedIssues": [],
+  "all27Open": true,
+  "milestoneClosed": false,
+  "phase1Status": "Backlog / blocked by #34 / NOT STARTED",
+  "unchangedPlanningFields": true,
+  "allDependencyAndHierarchyEdgesPreserved": true,
+  "items": [
+    {
+      "number": 1,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 9,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 10,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 11,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 12,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 13,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 14,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 15,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 16,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 17,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 18,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 19,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 20,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 21,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 22,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 23,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 24,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 25,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 26,
+      "state": "OPEN",
+      "status": "PO Review",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 27,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 28,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 29,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 30,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 31,
+      "state": "OPEN",
+      "status": "In Progress",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 32,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 33,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    },
+    {
+      "number": 34,
+      "state": "OPEN",
+      "status": "Validation",
+      "metadataExceptStatusPreserved": true,
+      "dependenciesPreserved": true,
+      "hierarchyPreserved": true
+    }
+  ]
+}

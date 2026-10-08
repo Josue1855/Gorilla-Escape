@@ -1,0 +1,9 @@
+{
+  "case": "real OpenCV nonexistent device startup",
+  "exitCode": 2,
+  "ready": false,
+  "durationMs": 504.4863799994346,
+  "stderrBytes": 156,
+  "residualOwn": false,
+  "gate": "PASS"
+}

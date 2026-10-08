@@ -1,0 +1,275 @@
+{
+  "date": "2026-10-07",
+  "scope": "Android emulator; secure loopback fixture via ADB reverse; QUIC UDP via emulator host alias 10.0.2.2",
+  "cases": [
+    {
+      "name": "react_load",
+      "status": "PASS",
+      "detail": "Java-hosted React via adb reverse; HTTP component, not LAN HTTPS"
+    },
+    {
+      "name": "health_and_interaction",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "react_reload",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "chrome_restart",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "java_connection_failure",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "wt_correct-certificate",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_wrong-fingerprint",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_unauthorized-session",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_oversize",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_manual-recovery",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_expired-certificate",
+      "status": "PASS",
+      "detail": "Expected result and exact failure stage; no TLS bypass"
+    },
+    {
+      "name": "wt_after_reload",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "automation",
+      "status": "FAIL",
+      "detail": "TimeoutError"
+    },
+    {
+      "name": "cleanup",
+      "status": "PASS",
+      "detail": ""
+    }
+  ],
+  "dependencyCommit": "b63ebb06b0ab33af73c9bf1f96bedd9e7cb73243",
+  "physicalAndroid": "NOT RUN",
+  "iphone": "NOT RUN",
+  "physicalLan": "NOT RUN",
+  "offlinePwa": "NOT RUN",
+  "gate3A": "IN PROGRESS",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "health": {
+    "status": 200,
+    "cache": "no-store",
+    "service": "gorilla-escape-local"
+  },
+  "validStartupMs": 587.454937000075,
+  "expiredStartupMs": 748.8078900000801,
+  "features": {
+    "secureContext": true,
+    "webtransport": true
+  },
+  "wtResults": [
+    {
+      "name": "correct-certificate",
+      "expected": "PASS",
+      "status": "PASS",
+      "connectMs": 497.8000000000029,
+      "reliable": {
+        "n": 20,
+        "minMs": 2.3000000000029104,
+        "p50Ms": 3.3000000000029104,
+        "p95Ms": 15,
+        "maxMs": 16.79999999998836
+      },
+      "datagrams": {
+        "n": 20,
+        "minMs": 1.9000000000087311,
+        "p50Ms": 8.200000000011642,
+        "p95Ms": 16.60000000000582,
+        "maxMs": 18.39999999999418
+      },
+      "invalidRejected": true,
+      "disconnect": "PASS",
+      "sent": 20,
+      "received": 20,
+      "loss": 0,
+      "errors": 0
+    },
+    {
+      "name": "wrong-fingerprint",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "CONNECTING",
+      "elapsedMs": 105.39999999999418,
+      "errorName": "WebTransportError",
+      "errorMessage": "Opening handshake failed.",
+      "deadline": false
+    },
+    {
+      "name": "unauthorized-session",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "AUTHENTICATING",
+      "elapsedMs": 186.3000000000029,
+      "errorName": "WebTransportError",
+      "errorMessage": "The session is closed.",
+      "deadline": false
+    },
+    {
+      "name": "oversize",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "OVERSIZE",
+      "elapsedMs": 134.39999999999418,
+      "errorName": "WebTransportError",
+      "errorMessage": "The session is closed.",
+      "deadline": false
+    },
+    {
+      "name": "manual-recovery",
+      "expected": "PASS",
+      "status": "PASS",
+      "connectMs": 68.69999999999709,
+      "reliable": {
+        "n": 20,
+        "minMs": 2.3999999999941792,
+        "p50Ms": 6.69999999999709,
+        "p95Ms": 12.89999999999418,
+        "maxMs": 16.19999999999709
+      },
+      "datagrams": {
+        "n": 20,
+        "minMs": 2.7000000000116415,
+        "p50Ms": 5.7000000000116415,
+        "p95Ms": 11.5,
+        "maxMs": 12.599999999991269
+      },
+      "invalidRejected": true,
+      "disconnect": "PASS",
+      "sent": 20,
+      "received": 20,
+      "loss": 0,
+      "errors": 0
+    },
+    {
+      "name": "expired-certificate",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "CONNECTING",
+      "elapsedMs": 331,
+      "errorName": "WebTransportError",
+      "errorMessage": "Opening handshake failed.",
+      "deadline": false
+    }
+  ],
+  "wtAfterReload": {
+    "status": "PASS",
+    "connectMs": 280.6999999999971,
+    "reliable": {
+      "n": 20,
+      "minMs": 2,
+      "p50Ms": 6.400000000008731,
+      "p95Ms": 13.60000000000582,
+      "maxMs": 13.900000000008731
+    },
+    "datagrams": {
+      "n": 20,
+      "minMs": 2,
+      "p50Ms": 5.69999999999709,
+      "p95Ms": 9.10000000000582,
+      "maxMs": 12.900000000008731
+    },
+    "invalidRejected": true,
+    "disconnect": "PASS",
+    "sent": 20,
+    "received": 20,
+    "loss": 0,
+    "errors": 0
+  },
+  "wtCleanup": [
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 32.18259000004764,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=11 datagrams=60"
+    },
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 66.29939899994497,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=0 datagrams=0"
+    }
+  ],
+  "fixtureStopped": true,
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "java-http",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "diagnostic": {
+    "boundedChromeLogCaptured": true,
+    "rawLogsPublished": false
+  },
+  "counts": {
+    "PASS": 13,
+    "FAIL": 1,
+    "SKIP": 0,
+    "BLOCKED": 0
+  },
+  "pass": false,
+  "javaHostJarSha256": "867c625a6a48279852b0cdc60b43a5bb89fe703037802a7d1413bbf9844bbcc7",
+  "sourceHashes": {
+    "tools/spikes/webtransport/android.py": "d2bdd88af89ebceb18e5524ac1df3290b123c3a895b94422eb89ea380bcdf950",
+    "tools/spikes/webtransport/client.js": "b86e082aaa962e1aa5661a3aed2b241783f208935c1bca3330563a31c84d686c",
+    "tools/spikes/webtransport/run.py": "cc40a5efc8acde6930759c6c18718f836a4d7fa69df108b0e3d5062aac9559a9",
+    "tools/validate_android_3a.py": "0025393bb3ed6a425b3c933833350fe4c7fbb9b1f49903783c867ea175f117ef",
+    "PWA/spikes/sensors/capture.js": "d750d430e4cf6fba62ca44f90870144b89c1139de896359fe1b345de3a2bf723"
+  }
+}

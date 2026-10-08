@@ -17,6 +17,8 @@ import org.springframework.beans.factory.DisposableBean;
 @Component
 @ConditionalOnProperty(name = "gorilla.ipc.managed", havingValue = "true")
 public final class ManagedProbe implements DisposableBean {
+    @org.springframework.beans.factory.annotation.Autowired(required=false)
+    private com.gorillaescape.server.mobile.MobileRuntime mobile;
     private final AtomicBoolean running = new AtomicBoolean();
     private ServerSocket listener;
     private volatile Socket client;
@@ -58,18 +60,33 @@ public final class ManagedProbe implements DisposableBean {
                 socket.setSoTimeout(2000);
                 socket.setTcpNoDelay(true);
                 String connection = null;
-                int sequence = 1;
+                int sequence = 1; boolean phone=false;
                 while (running.get()) {
-                    var ping = ProbeCodec.ping(readFrame(socket), instance, connection,
+                    String body=readFrame(socket);
+                    if(connection==null && mobile!=null) {
+                        var root=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
+                        var payload=root.get("payload");
+                        if(payload!=null && payload.has("phoneInputVersion")) {
+                            if(!payload.get("phoneInputVersion").isInt()||payload.get("phoneInputVersion").intValue()!=1)throw new IOException("IPC_CONTRACT");
+                            ((tools.jackson.databind.node.ObjectNode)payload).remove("phoneInputVersion");
+                            body=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(root);phone=true;
+                        }
+                    }
+                    var ping = ProbeCodec.ping(body, instance, connection,
                             sequence, connection == null ? token : null);
                     connection = ping.connectionId();
-                    writeFrame(socket, ProbeCodec.pong(ping));
+                    String pong=ProbeCodec.pong(ping);
+                    if(phone){var root=(tools.jackson.databind.node.ObjectNode)com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(pong);
+                        ((tools.jackson.databind.node.ObjectNode)root.get("payload")).set("phoneInputs",mobile.inputs.drain());
+                        pong=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(root);}
+                    writeFrame(socket,pong);
                     validFrames++;
                     if (sequence == Integer.MAX_VALUE) break;
                     sequence++;
                 }
             } catch (EOFException ignored) { log("CLIENT_EOF"); }
             catch (IOException e) { if (running.get()) log("CONNECTION_CLOSED", reason(e)); }
+            catch (RuntimeException e) { if (running.get()) log("CONNECTION_CLOSED", "IPC_CONTRACT"); }
             finally { client = null; closedConnections++; }
         }
     }

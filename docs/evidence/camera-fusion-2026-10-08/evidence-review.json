@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "sensitiveFields": 0,
+  "publicModelUrlFields": 1,
+  "physicalImagesOrVideos": 0,
+  "rawPhysicalLandmarksStored": 0,
+  "historicalEvidenceCheckpointFiles": 54,
+  "historicalEvidenceHashChanges": 0,
+  "failedAttemptsPreserved": true,
+  "benchmarkSamplesCombined": false
+}

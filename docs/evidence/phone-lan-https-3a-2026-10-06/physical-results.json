@@ -1,0 +1,11 @@
+{
+  "status": "NOT RUN",
+  "androidChrome": "NOT RUN",
+  "iphoneSafari": "NOT RUN",
+  "wanDisconnectedFirstLoad": "NOT RUN",
+  "secondLanDeviceToIpc": "NOT RUN",
+  "reason": "Phone model/version, operator LAN confirmation, device CA preparation and physical checks pending; PC automation is not a substitute",
+  "caDemoSetup": "NOT RUN",
+  "firewallChanges": "NONE",
+  "mkcert": "NOT INSTALLED"
+}

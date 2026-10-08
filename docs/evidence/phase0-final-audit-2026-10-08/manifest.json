@@ -1,0 +1,40 @@
+{
+  "audit": "PASS \u2014 SOFTWARE/LAB",
+  "gateIndex": "gate-summary.json",
+  "tests": "test-summary.json",
+  "sourceHashIndex": "candidate-hashes.json",
+  "retainedHashIndex": "historical-hashes.json",
+  "physicalDebt": "deferred-validation.json",
+  "hashAlgorithm": "SHA-256",
+  "selfExcludedFromHashes": true,
+  "artifacts": {
+    "candidate-hashes.json": "234f8a72a8b042d0ef0ebfafa9d44a4a7534aae09d634cd3a6b5b12b0181c10f",
+    "packaged-pwa-verification.json": "6f4aabf34aa741cdea847c6da9bf1092fe69875dfabfb68dfabaf7540b5fa0ea",
+    "deferred-validation.json": "aa5a6f389261f38c631a4b48446f1d647cf6368ecfbb8d6e0f05cd3a2da67c39",
+    "evidence-review.json": "a46d3fdf2ec71bbc7eb2cd0172e20a0a9386a038080d2c3a196454823aad83b7",
+    "ipc-2a-2b-regression.json": "cea021c512320af4661308fe0b8076c041b55d2a3e865d853c1cc340e386427e",
+    "git-state.json": "b7a15c43f3e8b5e57d321e356b8efd59486ca9b99edb6a0c017a90307f4cc0be",
+    "architecture-review.json": "020370180ffd46780ebab9093a32de6a97b28ec013a5604237426756cb84eecf",
+    "validation-attempt01.json": "6544a55d398cb63be592e47d3f8b359597b9bee7f2c6ccae92239137e3667ed9",
+    "retention-verification.json": "f6fb3605d0dc793e34a4ca3a63f7cd5149b9dfc7fea89469c9b71507fd53302f",
+    "cleanup.json": "ec60222a7b2462b87e84cb7973ce38751315997e1f54703e6eb2c93846a3ebef",
+    "independent-metrics.json": "c3659b9b972d827631e1e7451befcbc87bbb3b1be1cf51517bf95610e1e98a28",
+    "historical-hashes.json": "ad874f5c0c82bcb8221f013f9d3b0b626660dd7a0153e4203b5fadc8218fbc04",
+    "camera-fusion.json": "fee1a71e8d8090d4fa5a51ec8e0a6a1a9ca6ea5965db069e1c13e13d5ada8be3",
+    "github-readonly.json": "9f77fb3867ed5366fc4e97c6126f4841402aae18a844f34fcdb813945f9c8b8c",
+    "test-summary.json": "ee6e94ee921e9e39264aa14f371fb41436341b8708bf19fc188ebb520d589cd6",
+    "validations.json": "1a3e64561dc6a307eda8b3d548d18045c359b8f3b8e8d8678955b8383fe5406a",
+    "remote-checks.json": "17aa4636d991af2d5fbea2f963eea8d1874175ba0413bbcd37e2927cb7c837fc",
+    "gate-summary.json": "60e0ffce3393616093e64edcc1946ed58a6056e542f5b5a152a2e63ab0b67f0a",
+    "mobile-runtime.json": "14b4f4113bf885aa1e52214bb37652da257160d60b6481f91a908e9f3a448de3"
+  },
+  "attemptDispositions": {
+    "../camera-fusion-2026-10-08/e2e-vision-failure01.json": "NOT ACCEPTED for exit; companion workerExitReview FAIL; accepted later failure03 expected2",
+    "../camera-fusion-2026-10-08/attempt-edit01.json": "FAIL preserved, not final",
+    "../camera-fusion-2026-10-08/attempt-edit02.json": "FAIL preserved, not final",
+    "../camera-fusion-2026-10-08/e2e-replay01.json": "FAIL preserved, not final",
+    "../mobile-input-runtime-2026-10-07/end-to-end03.json": "FAIL preserved, singleton collision attempt not final",
+    "../mobile-input-runtime-2026-10-07/ipc-regression-attempt01.json": "stability FAIL preserved, not accepted; independent frozen-JAR final evidence retained",
+    "validation-attempt01.json": "documentation assembly missing manifest, resolved before final validation; preserved"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "result": "PASS",
+  "residualProcesses": {
+    "Unity": [],
+    "Java": [],
+    "vision": [],
+    "testServers": []
+  },
+  "RTCpeers": {
+    "mobile": 0,
+    "camera": 0
+  },
+  "mobile": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 0,
+    "lifecycleStopped": {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    },
+    "residualOwnedChildren": 0
+  },
+  "camera": {
+    "camera": {
+      "pid": 77645,
+      "exitCode": 0,
+      "complete": true,
+      "forced": false,
+      "state": "STOPPED",
+      "overwritten": 3
+    },
+    "player": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 0,
+    "java": {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "complete": true,
+      "forced": false
+    },
+    "residualOwn": 0
+  },
+  "ipcScenariosOwnResiduals": {
+    "regression2A": [],
+    "deathManualRecoveryLimit": [],
+    "cancelStartup": [],
+    "cancelRunning": [],
+    "normalQuitEof": [],
+    "singleton": null,
+    "readyTimeoutFixture": [],
+    "connectRefusedFixture": [],
+    "pongDeadlineRealJava": [],
+    "forcedOwnedShutdown": [],
+    "abruptParentEof": []
+  },
+  "testedTcpPorts": [
+    32769,
+    33033,
+    39669,
+    40249,
+    41279,
+    45603,
+    46519,
+    46675
+  ],
+  "stillListeningTestTcpPorts": [],
+  "webcam": "No capture opened in audit. Historical physical smoke closed capture/detector; no current vision child. Preexisting OS webcam observers untouched.",
+  "temporaryFiles": "Sanitized evidence in repo; raw test logs/XML and nonsensitive command fixtures retained in private cache/ignored build dirs. No reusable credentials or key material published.",
+  "networkConfigurationChanges": false,
+  "routerFirewallDnsTrustChanges": false,
+  "globalLeakClaim": false
+}
