@@ -27,7 +27,7 @@ export class MobileClient {
  constructor({source='synthetic',fetcher=fetch}={}){
   if(!['synthetic','replay','emulator','physical'].includes(source))throw Error('evidence source');
   this.source=source;this.fetcher=(...args)=>fetcher(...args);this.sequence=0;this.pending=new Map();this.latest=null;this.state='STOPPED';
-  this.metrics={sent:0,received:0,errors:0,overwritten:0,rtt:[]};
+  this.metrics={sent:0,received:0,errors:0,overwritten:0,motionSubmitted:0,motionSent:0,motionAck:0,motionErrors:0,rtt:[]};
  }
  diagnosticEvent(event,value){
   if(this.trace.events.length<96)this.trace.events.push({ms:Math.round((performance.now()-this.started)*100)/100,event,value});
@@ -98,15 +98,15 @@ export class MobileClient {
   const message=this.envelope(type,payload,clientTimestamp),channel=this.channels[type==='MOTION_SAMPLE'?'motion':'control'];
   const text=JSON.stringify(message);if(new TextEncoder().encode(text).length>2048||channel.bufferedAmount>8192||this.pending.size>=8)return Promise.reject(Error('bounded send'));
   this.metrics.sent++;
-  return new Promise((resolve,reject)=>{const started=performance.now();const timer=setTimeout(()=>{this.pending.delete(message.sequence);reject(Error('ACK deadline'));},2000);this.pending.set(message.sequence,{resolve,reject,timer,started});try{channel.send(text);}catch(error){clearTimeout(timer);this.pending.delete(message.sequence);reject(error);}});
+  return new Promise((resolve,reject)=>{const started=performance.now();const timer=setTimeout(()=>{this.pending.delete(message.sequence);reject(Error('ACK deadline'));},2000);this.pending.set(message.sequence,{resolve,reject,timer,started,type});try{channel.send(text);if(type==='MOTION_SAMPLE')this.metrics.motionSent++;}catch(error){clearTimeout(timer);this.pending.delete(message.sequence);reject(error);}});
  }
  receive(text){let n;try{n=JSON.parse(text);}catch{this.metrics.errors++;return;}
   if(n.messageType==='ERROR'){this.metrics.errors++;return;}
-  const p=this.pending.get(n.sequence);if(!p)return;clearTimeout(p.timer);this.pending.delete(n.sequence);this.metrics.received++;
+  const p=this.pending.get(n.sequence);if(!p)return;clearTimeout(p.timer);this.pending.delete(n.sequence);this.metrics.received++;if(p.type==='MOTION_SAMPLE')this.metrics.motionAck++;
   if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-p.started);p.resolve(n);
  }
- motion(payload,clientTimestamp=Date.now()){if(this.latest)this.metrics.overwritten++;this.latest={payload,clientTimestamp};if(!this.inFlight)this.flush();}
- flush(){if(!this.latest||this.state!=='RUNNING')return;const sample=this.latest;this.latest=null;this.inFlight=true;this.send('MOTION_SAMPLE',sample.payload,sample.clientTimestamp).catch(()=>{this.metrics.errors++;}).finally(()=>{this.inFlight=false;this.flush();});}
+ motion(payload,clientTimestamp=Date.now()){this.metrics.motionSubmitted++;if(this.latest)this.metrics.overwritten++;this.latest={payload,clientTimestamp};if(!this.inFlight)this.flush();}
+ flush(){if(!this.latest||this.state!=='RUNNING')return;const sample=this.latest;this.latest=null;this.inFlight=true;this.send('MOTION_SAMPLE',sample.payload,sample.clientTimestamp).catch(()=>{this.metrics.errors++;this.metrics.motionErrors++;}).finally(()=>{this.inFlight=false;this.flush();});}
  async close(notify=true){
   clearInterval(this.heartbeat);this.latest=null;const identity=this.identity;this.state='STOPPING';
   for(const p of this.pending.values()){clearTimeout(p.timer);p.reject(Error('client closed'));}this.pending.clear();
@@ -114,7 +114,33 @@ export class MobileClient {
   if(notify&&identity)await this.signal('/mobile/disconnect',{peerId:identity.peerId,resumeToken:identity.resumeToken});
  }
 }
-export function bindCapture(capture,client){let last='';return snapshot=>{const motion=snapshot.channels.motion.latest,orientation=snapshot.channels.orientation.latest;const key=`${motion?.sequence??-1}:${orientation?.sequence??-1}`;if((!motion&&!orientation)||key===last||client.state!=='RUNNING')return;last=key;client.motion(normalizeMotion(motion||{},orientation||{},motion?.screenAngleDegrees??orientation?.screenAngleDegrees));};}
+export function bindCapture(capture,client,{onEmit=()=>{},maximumHz=null}={}) {
+ if(maximumHz!==null&&(!Number.isFinite(maximumHz)||maximumHz<=0))throw new RangeError('maximumHz');
+ let last='',generation=null,nextDue=null,emitted=0,budgetDropped=0;
+ const bind=snapshot=>{
+  const m=snapshot.channels.motion,o=snapshot.channels.orientation;
+  const motion=m.latest,orientation=o.latest;
+  const ms=m.validSequence??motion?.sequence??0,os=o.validSequence??orientation?.sequence??0;
+  const key=`${snapshot.generation??0}:${ms}:${os}`;
+  if((ms===0&&os===0)||key===last||client.state!=='RUNNING')return;
+  last=key;
+  const currentGeneration=snapshot.generation??0;
+  if(generation!==currentGeneration){generation=currentGeneration;nextDue=null;}
+  const latest=(motion?.callbackMonotonicMs??-1)>=(orientation?.callbackMonotonicMs??-1)?motion:orientation;
+  const at=latest?.callbackMonotonicMs;
+  if(maximumHz!==null){
+   // Event-driven deterministic discard after physical measurement. No timer or catch-up burst.
+   if(!Number.isFinite(at)||(nextDue!==null&&at<nextDue)){budgetDropped++;return;}
+   const step=1000/maximumHz;
+   nextDue=nextDue===null?at+step:nextDue+step;
+   if(nextDue<=at)nextDue=at+step;
+  }
+  client.motion(normalizeMotion(motion||{},orientation||{},latest?.screenAngleDegrees),latest?.receiptUtcMs??Date.now());
+  emitted++;onEmit();
+ };
+ bind.metrics=()=>({maximumHz,emitted,budgetDropped,policy:'real-event discard; latest values at accepted event; no timer'});
+ return bind;
+}
 
 export function attachCapture(capture,client,win=window){
  const normalize=bindCapture(capture,client);

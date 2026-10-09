@@ -360,3 +360,33 @@ Shared/ControllerDesign/
 ```
 
 El esquema no autoriza estructura prematura, dependencias, motor de temas, Flutter runtime ni otro Issue. SKIN != NEW CONTROL LAYOUT y ausencia de ventaja competitiva permanecen obligatorios. T010/T011/Fase1 no se inician por esta enmienda.
+
+## DEC-020 — Sensor Sampling & Quality Policy
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Decisión explícita del PO para #21/T010.
+
+Adquirir exclusivamente eventos DeviceMotion/DeviceOrientation del navegador; ninguna muestra creada por timer, repetición, interpolación, upsampling o ceros inventados. Los relojes monotónicos miden callbacks y jitter; UTC Unix ms conserva `clientTimestamp` v1. Un permiso concedido no acredita señal. `INPUT_READY` exige NETWORK_READY, permisos utilizables, tres eventos únicos con campos finitos por cada canal, frescura <2s y todos los grupos requeridos presentes. Señal parcial = INPUT_LIMITED; ausencia/interrupción = NO_SENSOR_INPUT; no PLAYER_READY ni calibración acreditada.
+
+Separar raw acquisition, valid unique acquisition, emisiones a `MobileClient.motion`, frames RTC y ACK. `actualMeasuredHz=(N-1)*1000/(último-primer callback)` en ventana acotada; nunca inferir frecuencia física desde ACK/RTT. Tiers conservadores: mayor umbral realmente alcanzado entre60/50/30/20; inferior20 = degraded-below-20; no redondear hacia arriba ni sustituir la medición con el tier. Fixtures prueban esos umbrales, no hardware. Medir iPhone físico >=15s por corrida; Android físico NOT RUN permanece en QA/T019 sin bloquear artificialmente T010.
+
+Conservar m/s² para acceleration/accelerationIncludingGravity, grados/s alpha/beta/gamma rotationRate y grados Euler/screenOrientation del contrato móvil vigente. Ejes web, no anatómicos/Unity/cámara; ausencia=null, cero válido, present/partial/unavailable. No límites físicos arbitrarios ni cálculo Power/Spin. [Estándar Device Orientation and Motion](https://www.w3.org/TR/orientation-event/). No cambio del contrato JSON2048, quality ni RTC/IPC. La futura app Flutter+Dart debe producir la misma semántica, sin introducir DOM en el contrato compartido.
+
+Una identidad por canal/generación/evento; descartar objeto repetido y timestamps DOM repetidos/fuera de orden cuando disponibles. Motion/orientation independientes: combinar últimos valores no implica simultaneidad. Un motion en vuelo + un último pendiente, sobrescrituras contadas; no cola creciente. No throttling antes de observar la tasa física. Sólo el último evento y ventanas numéricas acotadas; evidencia agregada, sin trazas físicas prolongadas. [Implementación y gate T010](PHASE0_T010_SENSOR_CAPTURE.md).
+
+## DEC-021 — T010 Exit with Deferred Physical QA
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Autorización explícita del Product Owner para cerrar implementación #21/T010 con software + Android Emulator, integrar por PR y transferir acreditación física final a #33/T019. No cambia los AC históricos ni acredita QA física.
+
+La ruta browser APIs → normalización → Gorilla Protocol → WebRTC → Java → IPC → Unity está demostrada en laboratorio. Evidencia retenida: PWA51/51 PASS/build PASS, Java54 PASS/2 SKIP históricos, controles enfocados5/5 PASS. Emulador09: motion59.39745428038163Hz, orientation52.36276407777539Hz, emisión49.56346487484926/s; submitted/sent/ACK1238, motionErrors/errors/overwritten0. No son frecuencias de Android físico. Corridas nominales FAIL previas permanecen intactas.
+
+| AC | Literal evidence status | Phase-0 exit status |
+|---|---|---|
+| AC1 | PARTIAL — physical final accreditation deferred | PASS FOR T010 EXIT under DEC-021 |
+| AC2 | PARTIAL — physical final accreditation deferred | PASS FOR T010 EXIT under DEC-021 |
+| AC3 | PASS | PASS |
+
+**PASS FOR T010 EXIT != physical QA completed.** iPhone REST ≥15s, GENTLE ≥25s y Android físico permanecen NOT RUN. T019 recibe medición física motion/orientation actualMeasuredHz, emisión maximumHz50, frescura estacionaria, rangos alpha/beta/gamma, comparación cross-device y ausencia de errores significativos de transporte; conserva sus AC/dependencias y permanece bloqueado, sin iniciarlo.
+
+Producto idéntico al candidato final probado: captureRevision `t010-2-coarsened-clock`, maximumHz50; alpha>=0 && alpha<360. Observador AVD/API36/Chrome: alphaViolationCount14/min360/max360, beta/gamma0; alpha360→invalid→null, sin clamp/modulo/ampliación. Comportamiento físico NOT VALIDATED. Frescura2000ms intacta; orientation estacionaria que deja de actualizar→NO_SENSOR_INPUT es LAB OBSERVATION, physical applicability UNKNOWN; no eventos fabricados ni bug físico declarado.
+
+Se autoriza commit/push/PR Ready, revisión de seguridad/checks y merge normal; cierre completed/Done de #21 sólo después de integración y Management/Foundation post-merge PASS. QA transferida justifica retirar needs-device-test de #21. #22 sólo se desbloquea/Ready tras #20 y #21 Closed/Done; no se implementa T011. F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. [Registro y evidencia](PHASE0_T010_SENSOR_CAPTURE.md).

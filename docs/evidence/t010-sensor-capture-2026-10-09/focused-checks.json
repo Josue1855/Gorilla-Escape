@@ -1,0 +1,13 @@
+{
+  "scope": "focused QA of recorded emulator measurements and deterministic replay; not physical QA; not nominal gate acceptance",
+  "checks": 5,
+  "pass": 5,
+  "fail": 0,
+  "nominalHistoricalGates": "FAIL preserved",
+  "physical": "NOT RUN / deferred at PO request",
+  "productChangesThisIteration": false,
+  "sourceHashes": {
+    "tools/t010/verify_diagnostics.mjs": "50a57d8f2dca57353a5b0182daaa5a070ae5e042ef93ba7a6c455f29a818774c",
+    "tools/t010/android_capture.py": "e0042306081c1521dcc4191b061890162fc05cc3415ea06052eed9c76ae76199"
+  }
+}

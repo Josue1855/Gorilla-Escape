@@ -1,0 +1,10 @@
+{
+  "scope": "iPhone private Safari loaded corrected capture but missing QR admission; not a sensor measurement",
+  "captureRevision": "t010-2-coarsened-clock",
+  "controllerState": "NO_ADMISSION",
+  "network": "NOT_CONNECTED",
+  "measurement": null,
+  "sensorCounts": 0,
+  "sensorHz": null,
+  "classification": "NOT MEASURED; no admission/permissions/capture started. Do not interpret zero counts as absent hardware."
+}

@@ -56,14 +56,14 @@ try {
     await page.getByRole('button', { name: 'ACTIVAR CONTROL', exact: true }).waitFor();
     assert.equal(await page.evaluate(() => window.testRequests), 0);
     await page.getByRole('button', { name: 'ACTIVAR CONTROL', exact: true }).click();
-    const expected = scenario === 'denied' ? 'Movimiento sin permiso' : ['absent', 'partial'].includes(scenario) ? 'Movimiento limitado' : scenario === 'request-error' ? 'No se completó la preparación' : 'Acceso al movimiento permitido';
+    const expected = scenario === 'denied' ? 'Movimiento sin permiso' : scenario === 'absent' ? 'Movimiento limitado' : scenario === 'request-error' ? 'No se completó la preparación' : 'Preparando sensores…';
     await page.getByRole('heading', { name: expected, exact: true }).waitFor();
     if (scenario === 'denied') {
       assert.ok(await page.getByText(/Si el navegador recuerda tu respuesta/).isVisible());
       await page.screenshot({ path: output + '/denied-390.png' });
       await page.evaluate(() => { window.testAnswer = 'granted'; });
       await page.getByRole('button', { name: 'REINTENTAR PERMISO' }).click();
-      await page.getByRole('heading', { name: 'Acceso al movimiento permitido' }).waitFor();
+      await page.getByRole('heading', { name: 'Preparando sensores…' }).waitFor();
       assert.equal(await page.evaluate(() => window.testRequests), 4);
     }
     if (scenario === 'granted') {
@@ -83,6 +83,25 @@ try {
     assert.equal(report.controller.network, 'NETWORK_READY'); assert.equal(report.signalVerified, false);
     assert.equal(JSON.stringify(report).includes('UNIT_PRIVATE'), false);
     assert.equal(JSON.stringify(report).includes('INPUT_READY'), false);
+    if (scenario === 'granted' || scenario === 'no-permission-api' || scenario === 'partial') {
+      // Synthetic browser events test the component path only; never physical cadence evidence.
+      for (let i=0;i<3;i++) {
+        await page.evaluate(() => {
+          const fire = (type, fields) => { const event = new Event(type); for(const [k,v] of Object.entries(fields)) Object.defineProperty(event,k,{value:v}); window.dispatchEvent(event); };
+          const v={x:0,y:0,z:0};
+          fire('devicemotion',{acceleration:v,accelerationIncludingGravity:v,rotationRate:{alpha:0,beta:0,gamma:0},interval:20});
+          fire('deviceorientation',{alpha:0,beta:0,gamma:0});
+        });
+        await page.waitForTimeout(20);
+      }
+      await page.getByRole('heading',{name:scenario==='partial'?'Señal de movimiento limitada':'Sensores listos',exact:true}).waitFor();
+      await page.getByRole('button',{name:'Copiar diagnóstico'}).click();
+      const observed=JSON.parse(await page.locator('pre').textContent());
+      assert.equal(observed.signalVerified,scenario!=='partial');
+      assert.ok(observed.sensors.channels.orientation.validSamples>=3);
+      assert.equal(JSON.stringify(observed).includes('UNIT_PRIVATE'),false);
+      if(scenario==='granted') await page.screenshot({path:output+'/sensors-ready-1280.png'});
+    }
     assert.deepEqual(errors, []);
     results.push({ scenario, evidence: 'BROWSER COMPONENT FIXTURES — NOT PHYSICAL', gate: 'PASS' }); await context.close();
   }
@@ -91,6 +110,6 @@ try {
   assert.equal(await page.getByRole('button', { name: 'CONECTAR', exact: true }).count(), 0);
   await page.goto(origin + '/?view=health'); await page.getByRole('button', { name: 'Comprobar Java ahora' }).waitFor();
   results.push({ scenario: 'missing-QR-and-retained-health', gate: 'PASS' });
-  await writeFile(output + '/summary.json', JSON.stringify({ scope: 'T009 shell browser component QA; simulated transport/permissions, no physical sensors', results, responsive: [320, 390, 768, 1280], gate: 'PASS' }, null, 2) + '\n');
+  await writeFile(output + '/summary.json', JSON.stringify({ scope: 'T009 regression / T010 capture UI component QA; simulated transport/permissions and explicit synthetic events, no physical sensor measurement', results, responsive: [320, 390, 768, 1280], gate: 'PASS' }, null, 2) + '\n');
   console.log(JSON.stringify({ gate: 'PASS', cases: results.length, output }));
 } finally { await browser.close(); await new Promise(r => server.close(r)); }

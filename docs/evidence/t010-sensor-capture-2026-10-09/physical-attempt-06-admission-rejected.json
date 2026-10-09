@@ -1,0 +1,239 @@
+{
+  "stage": "SIGNALING_RESPONSE",
+  "code": "JOIN_E04_SIGNAL_REJECTED",
+  "postExecuted": true,
+  "httpStatus": 400,
+  "rejectionCode": "ADMISSION_EXPIRED_OR_USED",
+  "remoteDescription": "NOT RUN",
+  "candidates": [
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL"
+    },
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL"
+    }
+  ],
+  "events": [
+    {
+      "ms": 1,
+      "event": "signalingState",
+      "value": "stable"
+    },
+    {
+      "ms": 1,
+      "event": "iceGatheringState",
+      "value": "new"
+    },
+    {
+      "ms": 1,
+      "event": "iceConnectionState",
+      "value": "new"
+    },
+    {
+      "ms": 1,
+      "event": "connectionState",
+      "value": "new"
+    },
+    {
+      "ms": 1,
+      "event": "control",
+      "value": "connecting"
+    },
+    {
+      "ms": 1,
+      "event": "motion",
+      "value": "connecting"
+    },
+    {
+      "ms": 1,
+      "event": "stage",
+      "value": "CREATE_OFFER"
+    },
+    {
+      "ms": 3,
+      "event": "stage",
+      "value": "LOCAL_DESCRIPTION"
+    },
+    {
+      "ms": 4,
+      "event": "signalingState",
+      "value": "have-local-offer"
+    },
+    {
+      "ms": 4,
+      "event": "stage",
+      "value": "ICE_GATHERING"
+    },
+    {
+      "ms": 4,
+      "event": "iceGatheringState",
+      "value": "gathering"
+    },
+    {
+      "ms": 114,
+      "event": "iceGatheringState",
+      "value": "complete"
+    },
+    {
+      "ms": 114,
+      "event": "stage",
+      "value": "SIGNALING_POST"
+    },
+    {
+      "ms": 217,
+      "event": "stage",
+      "value": "SIGNALING_RESPONSE"
+    },
+    {
+      "ms": 219,
+      "event": "control",
+      "value": "closed"
+    },
+    {
+      "ms": 219,
+      "event": "motion",
+      "value": "closed"
+    }
+  ],
+  "channelStates": {
+    "control": "connecting",
+    "motion": "connecting"
+  },
+  "controller": {
+    "state": "ERROR",
+    "network": "NOT_CONNECTED",
+    "capabilities": {
+      "motion": "request-required",
+      "orientation": "request-required"
+    },
+    "permissions": null,
+    "measurement": null
+  },
+  "signalVerified": false,
+  "sensors": {
+    "captureRevision": "t010-2-coarsened-clock",
+    "state": "STOPPED",
+    "measurementClock": "monotonic callback receipt",
+    "channels": {
+      "motion": {
+        "permission": "not-requested",
+        "captured": 0,
+        "rawCallbacks": 0,
+        "validSamples": 0,
+        "rawAcquisition": {
+          "count": 0,
+          "windowCount": 0,
+          "capacity": 4096,
+          "durationMs": 0,
+          "actualMeasuredHz": null,
+          "tier": "unmeasured",
+          "intervalMs": {
+            "min": null,
+            "median": null,
+            "p95": null
+          }
+        },
+        "validUnique": {
+          "count": 0,
+          "windowCount": 0,
+          "capacity": 4096,
+          "durationMs": 0,
+          "actualMeasuredHz": null,
+          "tier": "unmeasured",
+          "intervalMs": {
+            "min": null,
+            "median": null,
+            "p95": null
+          }
+        },
+        "duplicateOrOutOfOrder": 0,
+        "timingRejected": 0,
+        "invalidFields": 0,
+        "missingFields": 0,
+        "missingAxes": {},
+        "invalidAxes": {},
+        "ageMs": null,
+        "availability": {
+          "acceleration": "unavailable",
+          "accelerationIncludingGravity": "unavailable",
+          "rotationRate": "unavailable"
+        }
+      },
+      "orientation": {
+        "permission": "not-requested",
+        "captured": 0,
+        "rawCallbacks": 0,
+        "validSamples": 0,
+        "rawAcquisition": {
+          "count": 0,
+          "windowCount": 0,
+          "capacity": 4096,
+          "durationMs": 0,
+          "actualMeasuredHz": null,
+          "tier": "unmeasured",
+          "intervalMs": {
+            "min": null,
+            "median": null,
+            "p95": null
+          }
+        },
+        "validUnique": {
+          "count": 0,
+          "windowCount": 0,
+          "capacity": 4096,
+          "durationMs": 0,
+          "actualMeasuredHz": null,
+          "tier": "unmeasured",
+          "intervalMs": {
+            "min": null,
+            "median": null,
+            "p95": null
+          }
+        },
+        "duplicateOrOutOfOrder": 0,
+        "timingRejected": 0,
+        "invalidFields": 0,
+        "missingFields": 0,
+        "missingAxes": {},
+        "invalidAxes": {},
+        "ageMs": null,
+        "availability": {
+          "orientation": "unavailable"
+        }
+      }
+    }
+  },
+  "emissionPolicy": {
+    "maximumHz": 50,
+    "emitted": 0,
+    "budgetDropped": 0,
+    "policy": "real-event discard; latest values at accepted event; no timer"
+  },
+  "emission": {
+    "count": 0,
+    "windowCount": 0,
+    "capacity": 4096,
+    "durationMs": 0,
+    "actualMeasuredHz": null,
+    "tier": "unmeasured",
+    "intervalMs": {
+      "min": null,
+      "median": null,
+      "p95": null
+    }
+  },
+  "transport": {
+    "motionSubmitted": 0,
+    "motionSent": 0,
+    "motionAck": 0,
+    "motionErrors": 0,
+    "overwritten": 0,
+    "errors": 0
+  },
+  "measurement": null,
+  "evidenceClassification": "Rejected admission; final rest and gentle measurements NOT RUN"
+}

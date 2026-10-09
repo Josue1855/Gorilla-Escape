@@ -1,0 +1,18 @@
+{
+  "scope": "iPhone T010 measurement attempt; previous T009 shell observed",
+  "device": "iPhone 15",
+  "osReportedByPO": "iOS 27",
+  "browser": "Safari",
+  "stage": "READY",
+  "httpStatus": 200,
+  "remoteDescription": "PASS",
+  "controllerState": "PERMISSION_GRANTED",
+  "permissions": {
+    "motion": "granted",
+    "orientation": "granted"
+  },
+  "signalVerified": false,
+  "measurement": "NOT MEASURED",
+  "physicalSensorHz": "NOT MEASURED",
+  "conclusion": "Cannot count as T010 Run A; capture/measurement fields absent in PO diagnostic. Java independently serves current T010 build; prior browser shell observed, service-worker waiting/cached origin suspected, not browser-internal state proved."
+}

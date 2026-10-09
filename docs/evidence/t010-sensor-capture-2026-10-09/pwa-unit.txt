@@ -1,0 +1,63 @@
+
+> gorilla-escape-controller@0.1.0 test
+> node --test tests/*.test.js
+
+✔ permission probe never requests access on load; capability-based, no UA (2.963633ms)
+✔ both permissions invoked synchronously before awaiting, granted is not a verified stream (0.561074ms)
+✔ denial is separate from absent API and retry really requests again (3.233804ms)
+✔ all APIs absent and partial API support remain explicit, no zeros manufactured (0.451421ms)
+✔ Android-style API without requestPermission is not reported as an explicit grant (0.427665ms)
+✔ insecure context never invokes sensor permission, errors are sanitized (0.329217ms)
+✔ CONNECT admission used once, technical connection precedes explicit permission (1.16647ms)
+✔ no QR does not simulate discovery or invoke transport (0.330246ms)
+✔ failed admission cannot be replayed; transport error text stays private (0.527592ms)
+✔ transport disconnect observed, late permission cannot override it, monitor cleaned (2.007984ms)
+✔ disposing during connect cannot publish readiness or retain owned transport (0.721145ms)
+✔ accepts the compatible local health response (1.938171ms)
+✔ rejects unavailable and incompatible servers (0.894443ms)
+✔ propagates network and malformed response failures for recoverable UI (0.554527ms)
+✔ rejects stale/incomplete health, without inventing a connected session (2.10514ms)
+✔ candidate metadata never retains addresses or SDP (2.028564ms)
+✔ successful connect stages and bounded report exclude credentials (6.825632ms)
+✔ HTTP rejection is distinguished; native/untrusted text never escapes (1.76181ms)
+✔ network exception maps to HTTP stage without reflecting its message (1.077175ms)
+✔ unknown server error is sanitized (0.926666ms)
+✔ partial is not zero; unavailable explicit (1.964803ms)
+✔ full fields and touch false preserved (0.446891ms)
+✔ source provenance required (0.51792ms)
+✔ orientation-only capture and independent orientation updates are forwarded (1.942516ms)
+✔ shared wire example preserves fields, scalar vectors and version (1.17359ms)
+✔ permissions requested in same gesture; one source denied does not invent readings (3.116063ms)
+✔ denied, missing APIs, permission exception and insecure context are explicit (1.434876ms)
+✔ actual fields, nulls and invalid numeric values are distinguished (2.566591ms)
+✔ cadence is observed callback frequency; interruption does not claim sensor loss (0.597685ms)
+✔ orientation angles and screen changes stay separate (0.407207ms)
+✔ suspension removes listeners, resumes without counting hidden time as cadence (0.571017ms)
+✔ cleanup idempotent, pagehide cleans up; restart never duplicates listeners (0.434094ms)
+✔ stop or restart while permission pending isolates late results (0.510459ms)
+✔ native-style timers retain Window receiver and publish RUNNING before cleanup (0.951926ms)
+✔ sequence advances only for actual unique events, never snapshots or metric ticks (0.972121ms)
+✔ duplicate/out-of-order timestamps rejected independently per channel; UTC jumps do not alter Hz (0.417499ms)
+✔ partial axes, zero and nonfinite values remain distinct and no invalid-only emission occurs (0.356256ms)
+✔ motion and orientation rates are independent, snapshot dedup and UTC receipt preserved (1.527754ms)
+✔ deterministic 60 Hz fixture classifier, not physical evidence (0.189951ms)
+✔ deterministic 50 Hz fixture classifier, not physical evidence (0.073678ms)
+✔ deterministic 30 Hz fixture classifier, not physical evidence (0.061686ms)
+✔ deterministic 20 Hz fixture classifier, not physical evidence (0.060442ms)
+✔ deterministic 15 Hz fixture classifier, not physical evidence (0.039346ms)
+✔ classifier conservative boundaries and bounded metrics with interval statistics (0.130314ms)
+✔ latest-only transport retains one in flight and one pending, counts overwrite separately (7.917668ms)
+✔ permission without events never INPUT_READY; sufficient valid finite events required, loss visible (0.441749ms)
+✔ partial actual input is LIMITED, not full readiness (0.375844ms)
+✔ physical measurement aggregates freeze independently; timers do not emit samples and cleanup cancels (1.162306ms)
+✔ coarsened receipt clock preserves distinct events and honest zero intervals (0.09338ms)
+✔ measured-pressure emission budget selects real unique events at 50Hz from two 60Hz channels, never fills idle time (2.886987ms)
+✔ emission budget resets due time on acquisition generation change without replaying snapshot (0.387174ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110.77062

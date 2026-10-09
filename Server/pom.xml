@@ -18,7 +18,6 @@
       <resource><directory>../Shared/Protocol/fixtures</directory><targetPath>protocol-fixtures</targetPath></resource>
       <resource><directory>../Shared/Protocol/ipc</directory><targetPath>ipc-fixtures</targetPath></resource>
       <resource><directory>../PWA/src/input</directory><targetPath>static/mobile-lab</targetPath></resource>
-      <resource><directory>../PWA/spikes/sensors</directory><targetPath>static/mobile-lab/sensors</targetPath><includes><include>capture.js</include></includes></resource>
     </resources>
     <plugins><plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin></plugins>
   </build>
