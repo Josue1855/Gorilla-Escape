@@ -311,3 +311,52 @@ Estado funcional → componentes Gorilla Core → tokens CSS. Sin Theme Engine n
 CONNECT consume el QR/admission real de T008; NETWORK_READY sólo acredita conexión técnica. Permisos desde gesto explícito; disponibilidad API ≠ hardware presente ≠ señal verificada. INPUT_READY, CALIBRATION_REQUIRED y PLAYER_READY quedan reservados, sin presentarse como acreditados por T009. Reconexión/captura/frecuencia/calibración siguen sus Issues correspondientes. Diagnóstico secundario sanitizado, advertencia física visible antes del permiso.
 
 [Implementación, alcance, estados y evidencia T009](PHASE0_T009_PWA_SHELL.md). Estándar de permisos: [Device Orientation and Motion](https://www.w3.org/TR/orientation-event/), secure context y transient user activation. Sin certificación universal de Android/iPhone; QA física separada y trazable en T019.
+
+### Enmienda PO de DEC-019 — tecnologías móviles y catálogo, 2026-10-09
+
+**Estado: ACCEPTED.** Se completa DEC-019 sin borrar su registro previo: **PWA = React + Vite; Native App = Flutter + Dart**. React PWA conserva Gorilla Core, rol universal, instalación de app no obligatoria, LAN/offline y gameplay esencial completo. Flutter App es controlador nativo opcional: mismo Gorilla Protocol, gameplay y controles críticos, con haptics nativos, perfiles, preferencias, skins y feedback avanzado; nunca ventaja competitiva. La app no será React Native, Flutter Web sustituyendo la PWA ni otra PWA empaquetada.
+
+**Flutter = arquitectura futura ACCEPTED; Flutter implementation in T009 = OUT OF SCOPE.** No proyecto Flutter, paquetes Dart, proyecto nativo Android/iOS ni Flutter CI en T009. La enmienda es documental; no cambia el stack/runtime React actual, contratos, aceptación, decisiones de transporte ni los gates físicos.
+
+**candidate catalog != installed dependencies.** Las siguientes herramientas son CANDIDATAS, no dependencias aprobadas, instaladas ni compatibles/validadas por este catálogo. Cada futura incorporación exige necesidad/justificación y revisión de compatibilidad, licencia, coste, seguridad y pruebas antes de adoptarla. No se fija versión ni se selecciona proveedor nuevo aquí.
+
+| React / PWA — categoría | Candidatos |
+|---|---|
+| Base | Base UI; shadcn/ui |
+| Motion | Motion |
+| Feedback | Sileo |
+| Icons | Phosphor |
+| Shared animated assets | Rive |
+| Specialized / theme references | React Bits; beUI; Animate UI; SmoothUI; Bencho; Rare UI; Rough.js; Drawably |
+| Diagnostics only | Nivo |
+
+| Flutter App — categoría | Candidatos |
+|---|---|
+| Theme/style system | Mix |
+| Motion | flutter_animate |
+| Shared animated assets | Rive |
+| Haptics | haptic_feedback; vibration |
+| Sensors | sensors_plus |
+| Audio | audioplayers |
+| Notifications | Toastification |
+| Vector assets | flutter_svg |
+| Icons | Phosphor Flutter |
+| General UI candidate | Forui |
+| Sketch theme candidates | rough_flutter; hand_drawn_toolkit |
+| Future/Neon candidates | mesh_gradient; shaders/Rive |
+| Diagnostics only | fl_chart |
+
+**Assets compartidos — dirección futura, no implementación:** React, Flutter y Unity pueden compartir assets Rive/SVG/sonido, design tokens, eventos semánticos de feedback y semántica PlayerColor. No compartir código UI entre TypeScript y Dart; cada runtime renderiza su propia UI. Esquema conceptual, aún no creado:
+
+```text
+Shared/ControllerDesign/
+├── theme.schema.json
+├── motion.tokens.json
+├── feedback.events.json
+├── themes/
+├── rive/
+├── svg/
+└── sounds/
+```
+
+El esquema no autoriza estructura prematura, dependencias, motor de temas, Flutter runtime ni otro Issue. SKIN != NEW CONTROL LAYOUT y ausencia de ventaja competitiva permanecen obligatorios. T010/T011/Fase1 no se inician por esta enmienda.

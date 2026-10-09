@@ -61,3 +61,11 @@ Run A y B: NETWORK_READY/HTTP200/SDP PASS/ambos DataChannels OPEN/HELLO-ACK, per
 | AC3 Warning visible | PASS | Browser responsive y confirmación PO Run A Safari |
 
 PR de revisión normal hacia develop; sin merge automático ni cierre antes de DoD/integración. No T010. Deuda QA Android/versiones/dispositivos permanece explícita, sin ampliar DEC-018 para convertir NOT RUN en PASS.
+
+## Enmienda e integración administrativa autorizada — 2026-10-09
+
+PO completa DEC-019: **React + Vite PWA / Flutter + Dart app nativa futura**. Catálogo candidato y assets compartidos conceptuales registrados en DEC-019; ninguna dependencia instalada, estructura Shared/ControllerDesign creada ni Flutter implementado. Código/evidencia de este candidato sin cambios: PWA25/25, browser7, Java54 PASS/2 SKIP y Safari conservados, no ejecuciones nuevas por la enmienda documental.
+
+PO acepta AC1/AC2/AC3 y fuente unit/browser para AC2, conservando denial/recovery físicos y Android físico NOT RUN. QA diferida T009→T019: Android PWA permisos; denegación/recuperación física donde sea reproducible; metadatos exactos OS/browser iPhone/Android; UX Gorilla Core entre dispositivos. No cambiar AC de T019 ni iniciarlo. **Frecuencia/Hz reales permanecen responsabilidad específica T010**, no se trasladan a T019 para eludir ese criterio.
+
+Orden de integración autorizado: completar DEC-019 → cerrar F00 por evidencia previa integrada → revisar/checks/security del nuevo head de PR97 → merge normal → fetch/ff-only y validaciones post-merge → cerrar T009 completed/Done → retirar sólo blocked de T010 tras confirmar #16 y #20 completed. Los estados de candidato anteriores son el snapshot antes del merge; resultado efectivo y SHA se registran en PR97/Issues9,20,21/Project tras ejecutar el flujo, sin declarar una integración anticipadamente. No fuerza/bypass/push directo, no nuevo runtime, T010/T011 no iniciados, F02 OPEN y Fase1 NOT STARTED.
