@@ -1,0 +1,20 @@
+{
+  "scope": "GitHub Actions; not user laptop or physical phone",
+  "failedHeads": [
+    "8527bde8924d8e028914cf49275bb0c015fae056",
+    "5401ece",
+    "ce6d814",
+    "e522efa"
+  ],
+  "foundation": "FAIL preserved",
+  "java": {
+    "tests": 52,
+    "passed": 49,
+    "errors": 1,
+    "skipped": 2
+  },
+  "failingTest": "LocalTrustProcessTest.realLanTlsBootstrapProductQrOperatorIsolationAndEof",
+  "rootError": "Initialize the default AudioDeviceModule failed. On a host without an audio system, pass an AudioDeviceModule created with AudioLayer.kDummyAudio.",
+  "fix": "Provision PulseAudio only on disposable CI runner. No product RTC changes, no test skip, no additional Maven framework.",
+  "subsequentResult": "Recorded separately in PR checks; do not replace earlier FAIL."
+}

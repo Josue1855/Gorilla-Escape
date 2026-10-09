@@ -78,3 +78,9 @@ Siguiente intervención: autorización y ejecución administrativa de una excepc
 ## Resultado final Software/Lab
 
 Java 52/52 PASS (0 fail/error/SKIP), PWA 9/9 PASS/build PASS, validadores Management/Foundation PASS. Regresión RTC serial PASS con 4 clientes Chrome, 641 observaciones Unity, 18 negativos, manual recovery y cleanup normal (STOPPED, exit 0, residuales 0). Esta ejecución sustituye únicamente el gate de regresión requerido del nuevo JAR, no los resultados históricos fallidos ni los gates físicos pendientes. Evidencia: [software](evidence/t008-local-trust-2026-10-08/software-results.json) y [RTC](evidence/t008-local-trust-2026-10-08/rtc-regression-serial.json). AC3 permanece NOT RUN por ausencia de mediciones humanas.
+
+## CI native prerequisite
+
+Las primeras cuatro ejecuciones Foundation del candidato fallaron (Java 52: 49 PASS, 1 error, 2 SKIP de gates HTTPS LAN históricos). El diagnóstico final identifica `Initialize the default AudioDeviceModule failed`: el runner no tiene sistema de audio activo y la fábrica nativa RTC existente lo solicita incluso para DataChannel. No era un fallo TLS ni se demuestra inviabilidad de DEC-016. Fallos conservados en [evidencia](evidence/t008-local-trust-2026-10-08/ci-native-audio.json).
+
+Corrección de entorno: el workflow prepara PulseAudio exclusivamente en el runner efímero de CI. No cambia la fábrica/contrato WebRTC, no salta la prueba real y no instala software en la laptop del usuario. No añade dependencia Maven ni servicio de gameplay. La repetición de checks se publica separadamente en el PR.

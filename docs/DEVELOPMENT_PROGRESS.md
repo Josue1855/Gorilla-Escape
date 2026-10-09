@@ -346,3 +346,9 @@ Fallos conservados por separado: primer test Java real falló por lector de test
 **iPhone 15 BLOCKED antes de instalar CA:** `/prepare` no carga. Cinco eventos UFW BLOCK coinciden con la IP del teléfono y los puertos del gate; lectura administrativa de estado rechazada con `sudo: a password is required`. No modificaciones de firewall/router/DNS/CA del sistema. No fallo TLS/Safari acreditado. Gate cerrado Player/Java exit 0, STOPPED/cleanup completo, residuales 0. Confianza HTTPS física, QR→READY humano y ambas duraciones NOT RUN/NOT MEASURED; Android físico NOT RUN. [Evidencia sanitizada](evidence/t008-local-trust-2026-10-08/physical-gate-01.json).
 
 **Estado:** AC1 PARTIAL; AC2 PARTIAL; AC3 NOT RUN (preparación/JOIN humanos); AC4 PASS. T008/#19 OPEN / Validation, T009/#20 bloqueado por #19, F02/E0/Fase0 OPEN, Fase1 NOT STARTED. No cierre/merge automático. Siguiente gate exclusivo: intervención autorizada y administrativa para resolver el filtrado LAN observado, seguida de preparación/confianza iPhone. El nuevo candidato no constituye aceptación física ni integración en develop.
+
+## CI native prerequisite
+
+Las primeras cuatro ejecuciones Foundation del candidato fallaron (Java 52: 49 PASS, 1 error, 2 SKIP de gates HTTPS LAN históricos). El diagnóstico final identifica `Initialize the default AudioDeviceModule failed`: el runner no tiene sistema de audio activo y la fábrica nativa RTC existente lo solicita incluso para DataChannel. No era un fallo TLS ni se demuestra inviabilidad de DEC-016. Fallos conservados en [evidencia](evidence/t008-local-trust-2026-10-08/ci-native-audio.json).
+
+Corrección de entorno: el workflow prepara PulseAudio exclusivamente en el runner efímero de CI. No cambia la fábrica/contrato WebRTC, no salta la prueba real y no instala software en la laptop del usuario. No añade dependencia Maven ni servicio de gameplay. La repetición de checks se publica separadamente en el PR.

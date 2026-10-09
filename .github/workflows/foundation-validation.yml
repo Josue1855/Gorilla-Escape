@@ -23,5 +23,14 @@ jobs:
       - run: npm --prefix PWA ci
       - run: npm --prefix PWA test
       - run: npm --prefix PWA run build
+      # Existing native WebRTC factory needs an audio service even for DataChannel-only tests.
+      # Provision only the disposable CI runner; do not alter product RTC or skip the real test.
+      - name: Prepare audio service for native WebRTC integration
+        run: |
+          if ! command -v pulseaudio >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends pulseaudio
+          fi
+          pulseaudio --start --exit-idle-time=-1
       - run: Server/mvnw -B -f Server/pom.xml verify
       - run: python3 tools/validate_foundation.py
