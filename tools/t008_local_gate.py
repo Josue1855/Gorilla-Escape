@@ -52,9 +52,18 @@ def main():
             if command=='admission':
                 request=urllib.request.Request(origin+'/mobile/admission',method='POST',headers={'X-Gorilla-Operator':operator})
                 with urllib.request.urlopen(request,context=context,timeout=5) as response:admission=json.load(response)
-                (output/'join-qr.png').write_bytes(base64.b64decode(admission['qrPng']))
+                for old in output.glob('join-qr-*.png'):old.unlink()
+                qr=output/f'join-qr-{time.monotonic_ns()}.png'
+                qr.write_bytes(base64.b64decode(admission['qrPng']))
                 # URLs/admission are transient display data, not historical evidence. Do not print/save the URL.
-                print(json.dumps({'event':'QR_READY','image':str(output/'join-qr.png'),'expiresInSeconds':admission['expiresInSeconds']}),flush=True)
+                print(json.dumps({'event':'QR_READY','image':str(qr),'expiresInSeconds':admission['expiresInSeconds'],'issuedMonotonic':time.monotonic()}),flush=True)
+            if command=='diagnostics':
+                request=urllib.request.Request(origin+'/mobile/diagnostics',headers={'X-Gorilla-Operator':operator})
+                with urllib.request.urlopen(request,context=context,timeout=5) as response:diagnostics=json.load(response)
+                # Only server-enforced bounded metadata; never include SDP or peer identities.
+                report={'joinAttempts':diagnostics['joinAttempts'],'peers':diagnostics['peers']}
+                (output/'join-diagnostics.json').write_text(json.dumps(report,indent=2)+'\n')
+                print(json.dumps({'event':'JOIN_DIAGNOSTICS',**report}),flush=True)
     finally:
         if player.poll() is None:
             try:
@@ -68,7 +77,7 @@ def main():
         own=[e['pid'] for e in events if e.get('event')=='PROCESS_STARTED']
         summary.update(playerExit=player.returncode,javaResiduals=sum(Path('/proc',str(pid)).exists() for pid in own),cleanup=[{k:e.get(k) for k in ('state','exitCode','cleanupComplete','forced')} for e in events if e.get('event')=='STOPPED'])
         # Remove transient QR/admission on close, retain only sanitized operational summary.
-        (output/'join-qr.png').unlink(missing_ok=True)
+        for qr in output.glob('join-qr*.png'):qr.unlink()
         (output/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
         print(json.dumps({'event':'CLOSED','playerExit':summary['playerExit'],'javaResiduals':summary['javaResiduals']}),flush=True)
 if __name__=='__main__':main()

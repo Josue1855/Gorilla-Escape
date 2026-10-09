@@ -370,3 +370,11 @@ Cleanup PASS: eliminadas exclusivamente las dos reglas añadidas; ninguna regla 
 API de rango ICE confirmada en artefacto0.19.0: `RTCConfiguration.portAllocatorConfig.minPort/maxPort`; guía oficial con extremos inclusivos y 0 no especificado. Config actual sólo deshabilita STUN/relay/TCP. No rango seleccionado/aplicado/abierto ni validación nativa de rango. **DEC-017 Proposed — ONE-TIME NETWORK SETUP**, pendiente necesidad UDP observada, dimensionamiento1/4peers y aprobación PO; no producto firewall integrado ahora.
 
 AC1 PARTIAL global (iPhoneHTTPS PASS; Android físico pendiente); AC2 PARTIAL (QR/PWA accesibles; RTC/READY no); AC3 PARTIAL / mediciones no disponibles; AC4 PASS (registro/alternativas, Plan B no activado). #19 OPEN/Validation, #20 bloqueado; PR96 OPEN/DRAFT, sin merge; Fase0 IN PROGRESS, Fase1 NOT STARTED. Próximo bloqueo real: JOIN no alcanza READY y el mensaje no distingue fase/causa. Proponer intento controlado con QR nuevo y diagnóstico de señalización/ICE antes de modificar transporte o abrir UDP. No ejecutado después del cierre del gate.
+
+## T008 JOIN — instrumentación y rollback acotados, 2026-10-08
+
+[Diagnóstico y procedimiento](PHASE0_T008_LOCAL_TRUST.md). [Evidencia software](evidence/t008-local-trust-2026-10-08/join-diagnostics-software.json): verificación Java serial 54 PASS + 2 SKIP; ejecución suplementaria LAN 8/8 PASS cubre ambos SKIP (56 tests distintos PASS, sin reescribir resultados de corridas). PWA 14/14 PASS/build PASS; Management/Foundation locales PASS. Intentos intermedios y causas conservados; no cambios a tests históricos para obtener PASS.
+
+[Regresión real RTC](evidence/t008-local-trust-2026-10-08/join-diagnostics-rtc-regression.json): cuatro clientes Chrome → Java hijo → IPC → Unity Player, 640 observaciones, 18 negativos PASS; manual resume y cleanup STOPPED/exit0/residuales0. Unity completo no repetido: fuentes/config intactas, evidencia anterior retenida. Ningún cambio a configuración ICE/transportes/puertos; DEC-017 Proposed.
+
+Gate físico instrumentado pendiente; HTTPS iPhone anterior PASS conservado, fallo JOIN anterior y ausencia de UFW UDP observada no reinterpretados. AC1/AC2 PARTIAL, AC3 sin medición humana completa, AC4 registro PASS; #19 OPEN/Validation, PR96 OPEN/DRAFT, T009 bloqueado; Fase0 IN PROGRESS/Fase1 NOT STARTED.
