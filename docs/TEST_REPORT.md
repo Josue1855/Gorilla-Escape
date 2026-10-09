@@ -1,5 +1,29 @@
 # Reporte de pruebas
 
+## Recuperación local y salida T011 — 2026-10-09
+
+Se recuperó la rama local existente sin reset/clean/recreación. [Inventario inicial](evidence/t011-offline-lifecycle-2026-10-09/recovery-inventory.json): seis archivos modificados, cinco entradas no rastreadas, índice vacío; HEAD base a41257c18dd6dc525c076e0933fec0a180c8fa44. Los tres fuentes productivos locales conservan exactamente sus hashes previos a la recuperación; sólo se ajustaron harness, assertions de QA y documentación.
+
+**DEC-022 ACCEPTED. Candidato listo para PR hacia develop; sin merge ni cierre de #22.** AC1 literal PASS LAB/EMULATOR, salida PASS FOR T011 EXIT under DEC-022; AC2 PASS literal; AC3 PASS LAB/EMULATOR, salida PASS FOR T011 EXIT under DEC-022. **PASS FOR T011 EXIT != physical mobile QA completed.** Todos los gates físicos siguen NOT RUN, ya transferidos a #33/T019 con AC/dependencias/bloqueo intactos. F02 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED.
+
+Ejecución nueva [Android final13](evidence/t011-offline-lifecycle-2026-10-09/android-final-13.json): perfil limpio usage0/SW0, primera y segunda carga sin WAN PASS, Java local200, seis recursos locales200/cache exacta, modelos NONE, requests externos runtime0. HOME→CONTROL_SUSPENDED, motionSubmitted oculto delta0, medición INTERRUPTED, retorno INPUT_READY con callbacks frescos; pérdida RTC propia después de >=3s oculta→DISCONNECTED/STOPPED, sin reconnect automático. Esto no mide throttling de hardware físico.
+
+Pagehide acreditado con unit tests + navegación real a vista health + observación externa Unity/RTC: agregado escrito durante pagehide antes de destruir documento, sensor listeners0/0, intervals0, timeouts0, connection closed, input Unity post-drenaje delta0. CDP binding final13 permanece null aunque el agregado prueba que pagehide ocurrió: pérdida del canal de observación al destruir contexto (categoría C; dependencia de timing del harness D), no defecto de producto demostrado. No se cambia producto para sostener un observer. Un único agregado sin tokens/vectores en sessionStorage de QA desechable; ninguna API de debug o almacenamiento productivo agregado. Receptor HTTP de QA retirado. Unit comprueba cancelación de medición y estado DISCONNECTED sin READY viejo.
+
+Listeners: RUNNING1 por canal, SUSPENDED0; ocho ciclos unit hide/show con notificaciones duplicadas, sin duplicar intervalos/timeouts; tras STOPPED0 listeners/intervals/timeouts y peer closed en emulador. Java/Unity exit0, cleanupComplete=true, forced=false, Java/ADB/AVD/helpers residual0; reglas del guest restauradas, red/firewall host sin cambios.
+
+Ejecución nueva: PWA58/58 PASS [log](evidence/t011-offline-lifecycle-2026-10-09/pwa-unit-recovery.txt), build PASS [log](evidence/t011-offline-lifecycle-2026-10-09/pwa-build-recovery.txt); [auditoría de recursos/JAR](evidence/t011-offline-lifecycle-2026-10-09/resource-audit-recovery.json) PASS. Browser7 fixtures [retenidos](evidence/t011-offline-lifecycle-2026-10-09/browser-summary-final.json), no nueva ejecución; build idéntico al resource-audit-final. Java54 PASS/2 SKIP históricos y build Unity retenidos, fuentes intactas, sin nueva suite pesada local. Validaciones finales Management/Foundation/diff-check y security review registradas en integration-preflight.json. PR/head/checks remotos se registran en #22/PR para evitar push directo a develop.
+
+Intentos01–11 FAIL/BLOCKED conservados íntegros; intento12 PASS conservado como checkpoint previo a retirar receptor sobrante; final13 PASS sobre helper final. Los snapshots siguientes conservan el estado pendiente anterior, superseded sólo por este resultado, sin transformar FAIL/NOT RUN en PASS.
+
+
+## T011 / #22 — offline y lifecycle, 2026-10-09
+
+DEC-022 ACCEPTED por PO. [Implementación/auditoría/gates](PHASE0_T011_OFFLINE_LIFECYCLE.md). Base developa41257c18dd6dc525c076e0933fec0a180c8fa44, rama feature/mobile-t011-offline-lifecycle. SW existente conservado: precache exacto local, /api y rutas mobile/session excluidas. Corrección mínima: CONTROL_SUSPENDED, descarte pending no enviado, cancelación inmediata de medición, nueva epoch de adquisición con tres eventos frescos por canal al volver, pagehide dispose. Sin rangos/tiers/freshness2000ms/captureRevision/budget50/protocolo cambiados.
+
+Nuevos PWA57/57 PASS/build PASS, browser7 fixtures PASS; Management/Foundation/diff-check PASS iniciales. Emulador offline/lifecycle en ejecución; resultados pendientes, no PASS provisional. JAR actual reempaquetado; Java fuentes intactas/evidencia histórica retenida, no nueva suite Java local. QA física T011 NOT RUN formalmente añadida a #33/T019 preservando AC/dependencias/bloqueo. PASS FOR T011 EXIT != physical mobile QA completed. #22 OPEN/In Progress hasta gates/PR; sin merge/cierre. F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED.
+
+
 ## DEC-021 — estado vigente de salida T010, 2026-10-09
 
 DEC-021 ACCEPTED por PO: candidato autorizado para integración normal y cierre de implementación después de checks post-merge; integración pendiente en este snapshot documental. El estado efectivo de integración y sus SHA se registran en #21/PR. AC1/AC2 literales PARTIAL (acreditación física final diferida), ambos PASS FOR T010 EXIT under DEC-021; AC3 PASS. **PASS FOR T010 EXIT != physical QA completed.** QA física final iPhone REST/GENTLE y Android NOT RUN transferida a T019, conservando sus AC/dependencias/bloqueos.

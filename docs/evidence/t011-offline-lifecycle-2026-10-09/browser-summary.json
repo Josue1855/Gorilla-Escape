@@ -1,0 +1,46 @@
+{
+  "scope": "T009 regression / T010 capture UI component QA; simulated transport/permissions and explicit synthetic events, no physical sensor measurement",
+  "results": [
+    {
+      "scenario": "granted",
+      "evidence": "BROWSER COMPONENT FIXTURES — NOT PHYSICAL",
+      "gate": "PASS"
+    },
+    {
+      "scenario": "denied",
+      "evidence": "BROWSER COMPONENT FIXTURES — NOT PHYSICAL",
+      "gate": "PASS"
+    },
+    {
+      "scenario": "absent",
+      "evidence": "BROWSER COMPONENT FIXTURES — NOT PHYSICAL",
+      "gate": "PASS"
+    },
+    {
+      "scenario": "partial",
+      "evidence": "BROWSER COMPONENT FIXTURES — NOT PHYSICAL",
+      "gate": "PASS"
+    },
+    {
+      "scenario": "request-error",
+      "evidence": "BROWSER COMPONENT FIXTURES — NOT PHYSICAL",
+      "gate": "PASS"
+    },
+    {
+      "scenario": "no-permission-api",
+      "evidence": "BROWSER COMPONENT FIXTURES — NOT PHYSICAL",
+      "gate": "PASS"
+    },
+    {
+      "scenario": "missing-QR-and-retained-health",
+      "gate": "PASS"
+    }
+  ],
+  "responsive": [
+    320,
+    390,
+    768,
+    1280
+  ],
+  "gate": "PASS"
+}

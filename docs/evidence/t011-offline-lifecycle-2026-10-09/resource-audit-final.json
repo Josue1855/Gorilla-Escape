@@ -1,0 +1,42 @@
+{
+  "gate": "PASS",
+  "files": {
+    "assets/index-CZvKtJwk.js": "c4df91098baa1e94252489eec6529727e038144b2946aa481eaff0d1a13f5422",
+    "assets/index-Dif6RnX5.css": "b259ea57045c23a6c63741f82efba1a73c5901277a18a3516460f049230964bd",
+    "icons/icon-192.png": "26be2b6e260d195f4ba2d13555d25152745c12004dd1e4ada17b4a2760485801",
+    "icons/icon-512.png": "1cbaffca751544104aca7d73dfc38922faa8801a8b26b50f7f4831df1f5c0cdc",
+    "index.html": "a53dd13638826ef91010ee6e5749dd0fbb1fd338106b654f36721bb6af3afd88",
+    "manifest.webmanifest": "0a8bff7a016e1b998614274027580e977e4554c1d24a983924790b43bdad268e",
+    "sw.js": "6698673a37e8916ef4be479e6c9ec678811bd15763e2c3f04971d5bc31fb97bf"
+  },
+  "precache": [
+    "/assets/index-CZvKtJwk.js",
+    "/assets/index-Dif6RnX5.css",
+    "/icons/icon-192.png",
+    "/icons/icon-512.png",
+    "/index.html",
+    "/manifest.webmanifest"
+  ],
+  "htmlReferences": [
+    "/manifest.webmanifest",
+    "/assets/index-CZvKtJwk.js",
+    "/assets/index-Dif6RnX5.css"
+  ],
+  "manifestIcons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "runtimeModelDependencies": "NONE",
+  "externalAssetDependencies": "NONE",
+  "inertBundleURLs": "React error-documentation links and W3C SVG/XML/MathML namespace identifiers, not network resources",
+  "PRODOnlySWRegistration": "unchanged",
+  "cacheSessionData": false
+}

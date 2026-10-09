@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-09",
+  "branch": "feature/mobile-t011-offline-lifecycle",
+  "head": "a41257c18dd6dc525c076e0933fec0a180c8fa44",
+  "stagedChanges": false,
+  "modified": [
+    "PWA/src/controller/presentation.js",
+    "PWA/src/controller/session.js",
+    "PWA/src/input/sensors/capture.js",
+    "docs/DECISIONS.md",
+    "docs/DEVELOPMENT_PROGRESS.md",
+    "docs/TEST_REPORT.md"
+  ],
+  "untrackedEntries": [
+    "PWA/tests/lifecycle.test.js",
+    "PWA/tests/offline.test.js",
+    "docs/PHASE0_T011_OFFLINE_LIFECYCLE.md",
+    "docs/evidence/t011-offline-lifecycle-2026-10-09/",
+    "tools/t011/"
+  ],
+  "acceptedLocalProductHashes": {
+    "PWA/src/controller/presentation.js": "48ef0eafcd6f5103d77373c6a8d7dcd3cd2bd08c5af09f286444b2aaa9e396e0",
+    "PWA/src/controller/session.js": "130f1439abcbe6151a4871b02daa93df055a3e3993100d67a8cd1c015df4dc08",
+    "PWA/src/input/sensors/capture.js": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d"
+  },
+  "priorAttempt08ProductMatches": true,
+  "physicalQA": "NOT RUN",
+  "destructiveRecoveryCommandsUsed": false
+}
