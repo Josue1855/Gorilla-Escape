@@ -406,3 +406,13 @@ T011 termina en PR Ready hacia develop, sin merge/cierre: #22 OPEN/In Review, F0
 ### DEC-022 — acreditación de salida del candidato recuperado
 
 2026-10-09: AC1 PASS literal LAB/EMULATOR y PASS FOR T011 EXIT under DEC-022; AC2 PASS literal; AC3 PASS literal LAB/EMULATOR y PASS FOR T011 EXIT under DEC-022. Android final13 acredita primera/segunda carga sin WAN, recursos locales, zero hidden motion, recuperación fresca, medición interrumpida, pérdida RTC y pagehide cleanup. Datos físicos permanecen NOT RUN en T019, sin modificar sus AC/dependencias ni iniciarlo. Pagehide observer se corrige sólo en QA: agregado bounded escrito antes de pérdida de contexto, unit cleanup y RTC/Unity externos. Producto local recuperado intacto. Publicar PR hacia develop, #22 OPEN/In Review; no merge/cierre. F02 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED. Historia FAIL/BLOCKED anterior conservada.
+
+## DEC-024 — Official Action Lifecycle and Idempotency
+
+**Fecha: 2026-10-09. Status: ACCEPTED.** Autorización explícita del Product Owner para T015/#27.
+
+Unity is the sole authority for official actions/results. Java transporta estado/input. Java ACK != gameplay confirmation; NETWORK_READY != action confirmation; INPUT_READY != action confirmation; PLAYER_READY != action confirmation.
+
+Unity crea CANDIDATE explícitamente desde input aceptado y decide validación, confirmación, cancelación y resultado. Terminales CONFIRMED/CANCELLED inmutables. ActionKey incluye sesión/dispositivo/playerId/connectionEpoch/sourceSequence/actionKind; ningún ID del teléfono ni credencial es autoridad. Un origen consumido no se reutiliza con otra clave semántica. Lock único arbitra confirmación/desconexión: gana la primera transición terminal, resultado completo o ausente.
+
+Retención sin eviction de hasta256 acciones por sesión; al límite se rechazan nuevas candidatas, conservando todos los resultados confirmados hasta reset explícito. Epoch nuevo permite secuencias independientes; epoch anterior y secuencias consumidas no reabren acciones. Sin scoring, física, reconocimiento de gestos ni eventos GAME→PHONE. [Contrato, integración y límites](PHASE0_T015_ACTION_LIFECYCLE.md).
