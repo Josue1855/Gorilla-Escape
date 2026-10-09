@@ -36,6 +36,12 @@ class LocalTrustProcessTest {
             String line;while((line=lines.readLine())!=null){
                 var exception=java.util.regex.Pattern.compile("(?:Caused by: |^)([a-zA-Z0-9_.$]+(?:Exception|Error))").matcher(line);
                 if(exception.find()&&diagnostic.size()<12)diagnostic.add(exception.group(1));
+                if(line.startsWith("Caused by: java.lang.Error: ")&&diagnostic.size()<12){
+                    String message=line.substring("Caused by: java.lang.Error: ".length())
+                        .replaceAll("https?://[^ ]+","[uri]").replaceAll("(?:/[A-Za-z0-9_.-]+)+","[path]")
+                        .replaceAll("[A-Za-z0-9_-]{32,}","[redacted]");
+                    diagnostic.add("NativeError:"+message.substring(0,Math.min(160,message.length())));
+                }
                 for(String known:List.of("Create AudioDeviceModule failed","Initialize AudioDeviceModule failed","Create PeerConnectionFactory failed","Create AudioProcessing failed","Failed to create threads"))
                     if(line.contains(known)&&diagnostic.size()<12)diagnostic.add(known);
                 var library=java.util.regex.Pattern.compile("(lib[A-Za-z0-9_.-]+\\.so(?:\\.[0-9]+)*): cannot open shared object file").matcher(line);
