@@ -276,3 +276,24 @@ No incluir UDP preventivo en la propuesta ni seleccionar minPort/maxPort/rango, 
 **Pendiente para aceptar DEC-017 como diseño final:** validación física Android y más redes/gates representativos; adaptadores Linux/Windows, propiedad/idempotencia/remoción de reglas y preservación de políticas. ONE-TIME NETWORK SETUP sigue propuesto: reglas propias mínimas demostradas, starts normales sin elevación y remoción segura, sin aprobación de diseño universal todavía.
 
 Criterios de aceptación de una implementación futura: autorización visible, reglas mínimas/idempotentes/propias, rechazo de interfaces ambiguas, fallo recuperable cuando la elevación se rechaza, no cambiar políticas/forwarding, funcionamiento normal sin elevación, remoción de reglas propias y preservación de cambios concurrentes ajenos, validación física y rollback documentado. Esta propuesta no cierra #19 ni desbloquea T009.
+
+## DEC-018 — T008 Spike Exit / Deferred Physical QA
+
+**Fecha: 2026-10-09. Estado: ACCEPTED. Aprobación: autorización formal del Product Owner en este chat.** Aplica únicamente a la salida del Spike T008/#19 y su PR #96; no acepta la QA diferida ni inicia T019/T009/Fase 1.
+
+La prueba física iPhone 15 demostró trusted HTTPS → QR seguro → sesión Java LAN → `/mobile/join` HTTP200 → SDP PASS → ICE CONNECTED → control/motion DataChannels OPEN → Gorilla Protocol HELLO/ACK → READY técnico. [Primera evidencia instrumentada](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json) y [segunda corrida](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json). Esto satisface el objetivo técnico del Spike. La falta de Android físico no bloquea su salida bajo esta decisión; no implica compatibilidad universal.
+
+| AC final T008 | Dictamen de salida | Evidencia o deuda conservada |
+|---|---|---|
+| AC1 | PASS FOR SPIKE EXIT under DEC-018 | iPhone físico PASS; Android físico DEFERRED / NOT RUN |
+| AC2 | PASS | QR seguro, sesión/signaling LAN, RTC y HELLO/ACK/READY físicos iPhone |
+| AC3 | PASS FOR SPIKE EXIT under DEC-018 | Cronómetros humanos DEFERRED / NOT MEASURED; no target <60s acreditado |
+| AC4 | PASS | Fallos/alternativas e historia conservados; Plan B no activado |
+
+**PASS FOR SPIKE EXIT != all physical QA completed.** Android physical HTTPS/trust y QR→READY siguen NOT RUN. PREPARE DEVICE y prepared JOIN humanos siguen NOT MEASURED. No usar 316ms,340ms ni «unos pocos segundos» como cronometraje humano; tampoco son latencia teléfono→gameplay. El fallo genérico anterior sigue UNKNOWN / NOT REPRODUCED.
+
+**Deferred QA from T008 / DEC-018 → #33/T019:** Android físico trusted HTTPS; Android físico QR→signaling→RTC→READY; metadatos de compatibilidad iPhone/Android (modelo/OS/browser/red por ejecución); duración humana PREPARE DEVICE inicial completa; duración humana QR→READY de dispositivo preparado; verificar target<60s o registrar fallo; reevaluar firewall en dispositivos/redes adicionales. Añadir estos gates sin borrar/modificar AC ni dependencias existentes de T019. T019 permanece bloqueado, no iniciado; conserva sus gates de 1/4 controles, conexiones/reconexiones, fallos y P95 real.
+
+DEC-017 permanece **Proposed**: acceso TCP requerido en la red probada; reglas inbound UDP adicionales no demostradas necesarias. No minPort/maxPort, UDP preventivo, cambios ICE/mDNS/STUN/TURN ni configuración nueva de infraestructura.
+
+DoD: documentación/decisión y carry-forward → checks aplicables → PR96 Ready for Review → merge normal autorizado a develop → validación post-merge → #19 CLOSED/completed/Done. Sólo entonces retirar needs-device-test de #19 (QA transferida), conservar security/type:spike/area:network y reevaluar #20/T009 sin implementarlo. Registrar SHA/checks/cierre efectivos en el PR e Issues tras integración; esta aprobación no declara que el merge ya ocurrió. F02/#18 y Fase0 permanecen OPEN/IN PROGRESS; Fase1 NOT STARTED. DEC-018 enmienda sólo las condiciones de salida anteriores de T008, no elimina su historial ni cambia DEC-016/autoridad/protocolo.
