@@ -13,6 +13,6 @@ public final class MobileOrigin {
         if(!"https".equals(uri.getScheme())||!address.equals(uri.getHost())||uri.getPort()!=port
             ||uri.getUserInfo()!=null||uri.getRawQuery()!=null||uri.getRawFragment()!=null
             ||uri.getRawPath()!=null&&!uri.getRawPath().isEmpty())throw new IllegalArgumentException("MOBILE_ORIGIN_INVALID");
-        return uri.resolve("/mobile-lab/index.html");
+        return uri.resolve("/");
     }
 }

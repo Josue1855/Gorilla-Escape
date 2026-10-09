@@ -1,0 +1,50 @@
+{
+  "scope": "Physical iPhone Safari T009; sanitized projection of PO-pasted diagnostic, not synthetic",
+  "run": "A",
+  "device": "iPhone 15",
+  "iOS": "27 (PO-reported)",
+  "iOSExactBuild": "UNKNOWN",
+  "SafariExactVersion": "UNKNOWN",
+  "trustedHTTPS": "PASS (PO confirmation)",
+  "gorillaCoreVisible": "PASS (PO confirmation)",
+  "safetyVisible": "PASS (PO confirmation)",
+  "promptObserved": "PO_REPORTED_YES",
+  "denialPhysical": "NOT RUN",
+  "recoveryAfterDenialPhysical": "NOT RUN",
+  "stage": "READY",
+  "code": null,
+  "postExecuted": true,
+  "httpStatus": 200,
+  "rejectionCode": null,
+  "remoteDescription": "PASS",
+  "candidates": [
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL",
+      "port": 58678
+    },
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL",
+      "port": 55605
+    }
+  ],
+  "controller": {
+    "state": "PERMISSION_GRANTED",
+    "network": "NETWORK_READY",
+    "capabilities": {
+      "motion": "request-required",
+      "orientation": "request-required"
+    },
+    "permissions": {
+      "motion": "granted",
+      "orientation": "granted"
+    }
+  },
+  "signalVerified": false,
+  "internalConnectMs": 270,
+  "humanQRJoinTiming": "NOT MEASURED",
+  "note": "Internal timing is not human onboarding duration or motion latency."
+}

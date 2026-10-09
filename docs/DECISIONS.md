@@ -297,3 +297,17 @@ La prueba física iPhone 15 demostró trusted HTTPS → QR seguro → sesión Ja
 DEC-017 permanece **Proposed**: acceso TCP requerido en la red probada; reglas inbound UDP adicionales no demostradas necesarias. No minPort/maxPort, UDP preventivo, cambios ICE/mDNS/STUN/TURN ni configuración nueva de infraestructura.
 
 DoD: documentación/decisión y carry-forward → checks aplicables → PR96 Ready for Review → merge normal autorizado a develop → validación post-merge → #19 CLOSED/completed/Done. Sólo entonces retirar needs-device-test de #19 (QA transferida), conservar security/type:spike/area:network y reevaluar #20/T009 sin implementarlo. Registrar SHA/checks/cierre efectivos en el PR e Issues tras integración; esta aprobación no declara que el merge ya ocurrió. F02/#18 y Fase0 permanecen OPEN/IN PROGRESS; Fase1 NOT STARTED. DEC-018 enmienda sólo las condiciones de salida anteriores de T008, no elimina su historial ni cambia DEC-016/autoridad/protocolo.
+
+## DEC-019 — Controller UX & Theme Strategy
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Instrucción explícita del Product Owner para T009/#20.
+
+PWA = controlador universal, ligero, touch-first, sin instalación obligatoria, Gorilla Core como única apariencia y funcionalidad esencial completa. Native App = opcional, mismos controles esenciales/gameplay/protocolo; puede mejorar haptics, perfiles, preferencias, skins y feedback, nunca otorgar ventaja competitiva. La arquitectura sigue LAN-first, Java backend local y Unity autoridad; la preparación de confianza DEC-016 no se sustituye ni se oculta.
+
+**SKIN != NEW CONTROL LAYOUT.** Skins futuras pueden cambiar colores, tipografía, decoración, bordes, fondos, animaciones, partículas, iconos, sonidos y mapeo háptico. No cambian posiciones críticas, hit targets funcionales, sensibilidad, calibración, latencia, reglas, comportamiento competitivo ni semántica de protocolo. Jungle, Sketch, Neon Future, Arcade, Sport, Blueprint, Comic, Clay, Volcano e Ice son posibilidades futuras de la app, NO implementadas. PlayerColor independiente de theme y compartido conceptualmente con Unity; no se añade al contrato actual.
+
+Estado funcional → componentes Gorilla Core → tokens CSS. Sin Theme Engine ni nuevas dependencias: controles HTML nativos, React y CSS existentes cubren foco, accesibilidad y feedback. Motion for React/headless primitives evaluados como innecesarios en esta pantalla; no se incorporan Motion/GSAP/React Bits/Animate UI/beUI. Feedback semántico CONNECTING/SUCCESS/WARNING/ERROR/READY; máximo un movimiento primario y un feedback secundario, reduced-motion obligatorio. Haptics opcionales futuros por capability; no prometer vibración iPhone PWA ni implementar Flutter.
+
+CONNECT consume el QR/admission real de T008; NETWORK_READY sólo acredita conexión técnica. Permisos desde gesto explícito; disponibilidad API ≠ hardware presente ≠ señal verificada. INPUT_READY, CALIBRATION_REQUIRED y PLAYER_READY quedan reservados, sin presentarse como acreditados por T009. Reconexión/captura/frecuencia/calibración siguen sus Issues correspondientes. Diagnóstico secundario sanitizado, advertencia física visible antes del permiso.
+
+[Implementación, alcance, estados y evidencia T009](PHASE0_T009_PWA_SHELL.md). Estándar de permisos: [Device Orientation and Motion](https://www.w3.org/TR/orientation-event/), secure context y transient user activation. Sin certificación universal de Android/iPhone; QA física separada y trazable en T019.
