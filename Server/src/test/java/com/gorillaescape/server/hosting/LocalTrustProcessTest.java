@@ -36,6 +36,8 @@ class LocalTrustProcessTest {
             String line;while((line=lines.readLine())!=null){
                 var exception=java.util.regex.Pattern.compile("(?:Caused by: |^)([a-zA-Z0-9_.$]+(?:Exception|Error))").matcher(line);
                 if(exception.find()&&diagnostic.size()<12)diagnostic.add(exception.group(1));
+                for(String known:List.of("Create AudioDeviceModule failed","Initialize AudioDeviceModule failed","Create PeerConnectionFactory failed","Create AudioProcessing failed","Failed to create threads"))
+                    if(line.contains(known)&&diagnostic.size()<12)diagnostic.add(known);
                 var library=java.util.regex.Pattern.compile("(lib[A-Za-z0-9_.-]+\\.so(?:\\.[0-9]+)*): cannot open shared object file").matcher(line);
                 if(library.find()&&diagnostic.size()<12)diagnostic.add("MISSING_NATIVE_LIBRARY:"+library.group(1));
                 var code=java.util.regex.Pattern.compile("LOCAL_TRUST_SETUP_FAILED: ([A-Z_]+)").matcher(line);
