@@ -11,7 +11,7 @@ from prepare import JAVA, SHA
 
 class Fixture(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        routes={'/sensors/':REPO/'PWA/spikes/sensors/index.html','/sensors/capture.js':REPO/'PWA/spikes/sensors/capture.js'}
+        routes={'/sensors/':REPO/'PWA/spikes/sensors/index.html','/sensors/capture.js':REPO/'PWA/src/input/sensors/capture.js'}
         if self.path=='/':
             data=b'<!doctype html><meta name="viewport" content="width=device-width"><title>WT Android lab</title><h1>WebTransport Android</h1><p>Laboratorio aislado. Sin gameplay.</p><pre id="results"></pre>';mime='text/html'
         elif self.path in routes:data=routes[self.path].read_bytes();mime='text/javascript' if self.path.endswith('.js') else 'text/html'
@@ -128,7 +128,7 @@ def main():
     report['counts']={s:sum(c['status']==s for c in report['cases']) for s in ['PASS','FAIL','SKIP','BLOCKED']}
     report['pass']=report['counts']['FAIL']==0 and report['counts']['BLOCKED']==0 and len(report.get('wtResults',[]))==6
     report['javaHostJarSha256']=hashlib.sha256((REPO/'Server/target/local-server-0.1.0-SNAPSHOT.jar').read_bytes()).hexdigest()
-    report['sourceHashes']={str(p.relative_to(REPO)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),ROOT/'client.js',ROOT/'run.py',REPO/'tools/validate_android_3a.py',REPO/'PWA/spikes/sensors/capture.js']}
+    report['sourceHashes']={str(p.relative_to(REPO)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),ROOT/'client.js',ROOT/'run.py',REPO/'tools/validate_android_3a.py',REPO/'PWA/spikes/sensors/capture.js',REPO/'PWA/src/input/sensors/capture.js']}
     (output/'results.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({'pass':report['pass'],'counts':report['counts'],'report':str(output/'results.json')}))
     raise SystemExit(0 if report['pass'] else 1)

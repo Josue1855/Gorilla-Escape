@@ -1,0 +1,17 @@
+{
+  "base": "1f4b129100ab37f8621ca655a325599578359192",
+  "captureRevision": "t010-2-coarsened-clock",
+  "jarCaptureMatchesSource": true,
+  "jarIndexMatchesDist": true,
+  "runtimeFiles": {
+    "PWA/src/input/sensors/capture.js": "62edd2965c6b3ce1dcebc89aad2b6c025e198cd677fb1b4a7976b50cae0cf536",
+    "PWA/src/input/mobileClient.js": "9f83dececc871a6dfaa3315c8905290e2d4eddb78e0d58f0d100d04950339e09",
+    "PWA/src/controller/session.js": "56f0dcb4df865003e2d14b79d4e20451cac91beb64d9990f0ecff95c9b00009e",
+    "PWA/src/App.jsx": "84e47ea4eeee1b0c77797b3554ea322d2b6e7c8be5038a9a0e5ae7362e36e070",
+    "PWA/src/controller/presentation.js": "7d705f9ab15d7895dbe36d713c5d0d66ae5c13911c9eb32f5f8d6f20c9ffe2cf",
+    "PWA/src/controller/permissions.js": "44864ebca4a598b44258c2e0582b9de9298e8230f0030d97e417ab66687cba70",
+    "Server/pom.xml": "e1c17d99d5b9e7d09d3e1475f953292c69dc1e6cf456299376949235cfebbb16"
+  },
+  "artifactSha256": "49052e84cc17f0684bf6dd3059687595afcadd377d314d71189e2657d6b549d6",
+  "emissionBudget": 50
+}

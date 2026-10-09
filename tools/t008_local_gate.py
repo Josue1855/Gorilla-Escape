@@ -26,9 +26,16 @@ def main():
     origin=f'https://{args.address}:{args.https_port}'
     player=subprocess.Popen([str(REPO/'Unity/Builds/FoundationLinux/GorillaEscape.x86_64'),'-screen-fullscreen','0','-screen-width','640','-screen-height','360','-logFile','-'],env=env,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,text=True)
     events=[];ready=threading.Event()
+    input_counts={'physical':0,'synthetic':0,'replay':0,'emulator':0,'other':0}
     def drain():
         for line in player.stdout:
             if line.startswith('PHONE_LAB_HTTP_READY '):ready.set()
+            if line.startswith('PHONE_INPUT_OBSERVED '):
+                try:
+                    # Aggregate only: discard vectors, identities and timestamps immediately.
+                    source=json.loads(line[len('PHONE_INPUT_OBSERVED '):]).get('source')
+                    input_counts[source if source in input_counts else 'other']+=1
+                except ValueError:pass
             if line.startswith('{"component":"ipc-unity"') and len(events)<100:
                 try:events.append(json.loads(line))
                 except ValueError:pass
@@ -61,7 +68,7 @@ def main():
                 request=urllib.request.Request(origin+'/mobile/diagnostics',headers={'X-Gorilla-Operator':operator})
                 with urllib.request.urlopen(request,context=context,timeout=5) as response:diagnostics=json.load(response)
                 # Only server-enforced bounded metadata; never include SDP or peer identities.
-                report={'joinAttempts':diagnostics['joinAttempts'],'peers':diagnostics['peers']}
+                report={'joinAttempts':diagnostics['joinAttempts'],'peers':diagnostics['peers'],'unityInputObservedByDeclaredSource':dict(input_counts)}
                 (output/'join-diagnostics.json').write_text(json.dumps(report,indent=2)+'\n')
                 print(json.dumps({'event':'JOIN_DIAGNOSTICS',**report}),flush=True)
     finally:
@@ -75,6 +82,7 @@ def main():
                 except subprocess.TimeoutExpired:
                     player.kill();player.wait(timeout=5)
         own=[e['pid'] for e in events if e.get('event')=='PROCESS_STARTED']
+        summary['unityInputObservedByDeclaredSource']=dict(input_counts)
         summary.update(playerExit=player.returncode,javaResiduals=sum(Path('/proc',str(pid)).exists() for pid in own),cleanup=[{k:e.get(k) for k in ('state','exitCode','cleanupComplete','forced')} for e in events if e.get('event')=='STOPPED'])
         # Remove transient QR/admission on close, retain only sanitized operational summary.
         for qr in output.glob('join-qr*.png'):qr.unlink()

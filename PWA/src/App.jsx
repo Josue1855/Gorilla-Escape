@@ -45,6 +45,12 @@ function Controller() {
     </section>
     <footer><p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
       <button className="secondary" onClick={copyDiagnostic}>Copiar diagnóstico</button>
+      {view?.network === 'NETWORK_READY' && <details><summary>Medición técnica de sensores</summary>
+        <p>Sujeta el teléfono. No lo lances ni lo agites con fuerza.</p>
+        <button className="secondary" disabled={view?.measurement?.status === 'MEASURING'} onClick={() => model.current.startMeasurement('rest')}>Medir reposo · 15 s</button>
+        <button className="secondary" disabled={view?.measurement?.status === 'MEASURING'} onClick={() => model.current.startMeasurement('gentle')}>Medir movimiento suave · 25 s</button>
+        <p role="status">{view?.measurement?.status === 'MEASURING' ? 'Medición en curso. Mantén esta página visible.' : view?.measurement?.status === 'COMPLETE' ? 'Medición terminada. Copia el diagnóstico antes de iniciar otra.' : view?.measurement?.status === 'INTERRUPTED' ? 'Medición interrumpida.' : 'Las métricas aparecen al copiar el diagnóstico.'}</p>
+      </details>}
       <p role="status" className="copy-status">{copyStatus}</p>
       {diagnostic && <details open><summary>Diagnóstico técnico</summary><pre tabIndex="0">{JSON.stringify(diagnostic, null, 2)}</pre></details>}
     </footer>

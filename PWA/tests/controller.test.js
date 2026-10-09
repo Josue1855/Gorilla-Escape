@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { permissionCapabilities, requestControlPermissions, permissionState } from '../src/controller/permissions.js';
 import { ControllerSession } from '../src/controller/session.js';
-const win = (extra = {}) => ({ isSecureContext: true, setInterval, clearInterval, ...extra });
+const win = (extra = {}) => { const w = new EventTarget(), doc = new EventTarget(); doc.visibilityState = 'visible'; return Object.assign(w, { document: doc, isSecureContext: true, setInterval, clearInterval, setTimeout, clearTimeout, ...extra }); };
 const url = 'https://example.invalid/#sessionId=test&admission=UNIT_SECRET';
 const client = () => ({ state: 'STOPPED', calls: 0, async connect() { this.calls++; this.state = 'RUNNING'; }, async close() { this.state = 'STOPPED'; }, diagnostic() { return { stage: 'READY', code: null }; } });
 
@@ -25,7 +25,7 @@ test('denial is separate from absent API and retry really requests again', async
   const api = { requestPermission: () => { requests++; return Promise.resolve(allowed ? 'granted' : 'denied'); } };
   const model = new ControllerSession({ win: win({ DeviceMotionEvent: api, DeviceOrientationEvent: api }), url, client: client() });
   await model.connect(); await model.activate(); assert.equal(model.state, 'PERMISSION_DENIED');
-  allowed = true; await model.activate(); assert.equal(model.state, 'PERMISSION_GRANTED'); assert.equal(requests, 4);
+  allowed = true; await model.activate(); assert.equal(model.state, 'PREPARING_SENSORS'); assert.equal(requests, 4);
   await model.dispose();
 });
 test('all APIs absent and partial API support remain explicit, no zeros manufactured', async () => {

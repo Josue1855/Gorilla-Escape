@@ -1,0 +1,64 @@
+{
+  "scope": "iPhone physical gentle run, corrected coarsened clock but before measured-pressure emission budget",
+  "device": "iPhone 15",
+  "osReportedByPO": "iOS 27",
+  "browser": "Safari private laboratory context",
+  "captureRevision": "t010-2-coarsened-clock",
+  "mode": "gentle",
+  "status": "COMPLETE",
+  "durationMs": 25001,
+  "motion": {
+    "captured": 1500,
+    "rawCallbacks": 1500,
+    "validSamples": 1500,
+    "durationMs": 24982,
+    "actualMeasuredHz": 60.003202305660075,
+    "tier": 60,
+    "intervalMs": {
+      "min": 13,
+      "median": 17,
+      "p95": 18
+    },
+    "invalidFields": 0,
+    "missingFields": 0,
+    "duplicateOrOutOfOrder": 0
+  },
+  "orientation": {
+    "captured": 1500,
+    "rawCallbacks": 1500,
+    "validSamples": 1500,
+    "durationMs": 24983,
+    "actualMeasuredHz": 60.00080054437017,
+    "tier": 60,
+    "intervalMs": {
+      "min": 13,
+      "median": 17,
+      "p95": 18
+    },
+    "invalidFields": 0,
+    "missingFields": 0,
+    "duplicateOrOutOfOrder": 0
+  },
+  "emission": {
+    "count": 3000,
+    "windowCount": 3000,
+    "durationMs": 24983,
+    "actualMeasuredHz": 120.04162830724893,
+    "intervalMs": {
+      "min": 0,
+      "median": 1,
+      "p95": 17
+    }
+  },
+  "transportDelta": {
+    "motionSubmitted": 3000,
+    "motionSent": 1290,
+    "motionAck": 1283,
+    "motionErrors": 7,
+    "overwritten": 1710,
+    "errors": 13
+  },
+  "inputState": "INPUT_READY",
+  "rest": "NOT MEASURED in supplied result",
+  "finding": "Real capture ~60Hz/channel creates ~120 emissions/s plus heartbeat against Java 120 messages/s limit. Pressure errors observed; individual cause not established. Adopt approved initial 50/s event-driven deterministic discard after observation, preserve acquisition rates and repeat final candidate. Do not relabel this as rest or remove errors."
+}

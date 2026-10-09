@@ -1,0 +1,48 @@
+{
+  "scope": "PO iPhone live snapshot; insufficient duration, not Run A",
+  "device": "iPhone 15",
+  "osReportedByPO": "iOS 27",
+  "browser": "Safari",
+  "inputState": "INPUT_READY",
+  "signalVerified": true,
+  "measurement": null,
+  "motion": {
+    "captured": 74,
+    "validSamples": 74,
+    "durationMs": 2432,
+    "actualMeasuredHz": 30.01644736842105,
+    "intervalMs": {
+      "min": 5,
+      "median": 17,
+      "p95": 37
+    }
+  },
+  "orientation": {
+    "captured": 74,
+    "validSamples": 74,
+    "durationMs": 2431,
+    "actualMeasuredHz": 30.02879473467709,
+    "intervalMs": {
+      "min": 3,
+      "median": 17,
+      "p95": 37
+    }
+  },
+  "invalidFields": 0,
+  "missingFields": 0,
+  "duplicateOrOutOfOrder": 0,
+  "transport": {
+    "motionSubmitted": 148,
+    "motionSent": 138,
+    "motionAck": 137,
+    "motionErrors": 0,
+    "overwritten": 10,
+    "errors": 0
+  },
+  "originalEmission": {
+    "count": 88,
+    "durationMs": 2431,
+    "actualMeasuredHz": 35.78774167009461
+  },
+  "finding": "Original emission rate undercounted different events sharing a coarsened monotonic millisecond. Corrected RateWindow to accept equal receipt times for already-distinct events, retaining zero intervals. New deterministic regression added. Original metrics remain recorded, not converted into final-window evidence."
+}

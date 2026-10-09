@@ -1,5 +1,8 @@
 # Spike aislado de sensores PWA
 
+> Continuidad T010, 2026-10-09: el módulo mantenido se promovió a `PWA/src/input/sensors/capture.js`; este entry lo reexporta. Los tests históricos se incluyen ahora en `npm --prefix PWA test`, junto con pruebas de calidad/captura. La UI React usa la misma adquisición. Los apartados siguientes describen el experimento histórico y no equivalen al estado operativo actual. [Gate vigente](../../../docs/PHASE0_T010_SENSOR_CAPTURE.md).
+
+
 Implementado el 2026-10-07. No está conectado al shell React productivo, Java, Unity ni transporte móvil. No modifica package.json, lockfiles, Service Worker o protocolo. Se conserva la base React y su build; este experimento usa APIs browser directamente para aislar captura, sin dependencia adicional.
 
 Prueba automatizada reproducible desde raíz:

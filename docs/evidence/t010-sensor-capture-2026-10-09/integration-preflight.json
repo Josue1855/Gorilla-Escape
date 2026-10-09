@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-09",
+  "decision": "DEC-021 Accepted",
+  "productHashesMatchAcceptedCandidate": true,
+  "securityReview": "PASS \u2014 candidate diff and sanitized evidence reviewed; no credentials/private keys/admission tokens/SDP/raw sensor histories included",
+  "newLocalChecks": {
+    "management": "PASS",
+    "foundation": "PASS",
+    "diffCheck": "PASS"
+  },
+  "retainedEvidence": {
+    "pwa": "51/51 PASS",
+    "pwaBuild": "PASS",
+    "java": "54 PASS / 2 historical SKIP",
+    "focused": "5/5 PASS"
+  },
+  "physicalQA": "DEFERRED / NOT RUN \u2014 T019",
+  "priorFailures": "preserved unchanged",
+  "scope": "T010 only; no T011/Flutter/gameplay"
+}
