@@ -53,6 +53,8 @@ namespace GorillaEscape.Network
         private Attempt current;
         private bool disposed;
         public GorillaEscape.Input.PhoneInputStore PhoneInputs { get; } = new GorillaEscape.Input.PhoneInputStore();
+        public LobbyAuthorityBridge Lobby { get; } = new LobbyAuthorityBridge();
+        private readonly bool lobbyEnabled;
         public event Action<PhoneInputWire> PhoneInputReceived;
         public event Action<int> HttpReady;
         public IpcState State => lifecycle.State;
@@ -61,7 +63,7 @@ namespace GorillaEscape.Network
         public ProbeSummary LastSummary { get; private set; }
         // Same absolute user/product directory is used by Editor Flatpak and host Player.
         public static string DefaultLockDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gorilla-escape", "managed");
-        public JavaProbeSupervisor(IpcLaunchBudget launchBudget = null) { budget = launchBudget ?? IpcLaunchBudget.Execution; }
+        public JavaProbeSupervisor(IpcLaunchBudget launchBudget = null, bool enableLobby = false) { budget = launchBudget ?? IpcLaunchBudget.Execution; lobbyEnabled=enableLobby; }
         public Task<ProbeSummary> RunAsync(string java, string jar, CancellationToken token, int sampleCount = 100)
         {
             if (sampleCount < 1 || sampleCount > 1000) throw new ArgumentOutOfRangeException(nameof(sampleCount));
@@ -76,7 +78,9 @@ namespace GorillaEscape.Network
             {
                 if (disposed) throw new ObjectDisposedException(nameof(JavaProbeSupervisor));
                 if (budget.Launches >= 3) throw new InvalidOperationException("LAUNCH_LIMIT");
-                attempt = new Attempt { generation = lifecycle.Begin(), benchmark = benchmark };
+                long generation=lifecycle.Begin();
+                Lobby.Reset();
+                attempt = new Attempt { generation = generation, benchmark = benchmark };
                 attempt.cancellation = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime.Token);
                 current = attempt; LastSummary = attempt.result;
                 Log(attempt, "START_REQUESTED");
@@ -97,6 +101,7 @@ namespace GorillaEscape.Network
             }
             finally
             {
+                Lobby.Reset();
                 Summarize(a);
                 Move(a, IpcState.STOPPING, "STOP_REQUESTED");
                 try { await Cleanup(a); }
@@ -127,7 +132,7 @@ namespace GorillaEscape.Network
                 var start = new ProcessStartInfo { FileName = java, UseShellExecute = false, RedirectStandardInput = true,
                     RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true, WorkingDirectory = Path.GetDirectoryName(jar) };
                 start.Arguments = "-Djava.net.preferIPv4Stack=true -jar " + Quote(jar) + " --gorilla.ipc.managed=true --server.address=127.0.0.1 --server.port=0 --logging.config=classpath:ipc-logback.xml";
-                if(Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1")start.Arguments+=" --gorilla.mobile.rtc-enabled=true";
+                if(lobbyEnabled||Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1")start.Arguments+=" --gorilla.mobile.rtc-enabled=true";
                 start.EnvironmentVariables["GORILLA_IPC_INSTANCE"] = a.result.instanceId;
                 start.EnvironmentVariables["GORILLA_IPC_TOKEN"] = secret;
                 start.EnvironmentVariables["GORILLA_IPC_LOCK_DIR"] = DefaultLockDirectory;
@@ -180,7 +185,7 @@ namespace GorillaEscape.Network
                                 double wait = nextStart - a.sessionClock.Elapsed.TotalMilliseconds;
                                 if (wait > 0) await Task.Delay((int)Math.Ceiling(wait), token);
 
-                            } else await Task.Delay(samples == 0 ? (Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1"?20:1000) : 20, token);
+                            } else await Task.Delay(samples == 0 ? (lobbyEnabled||Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1"?20:1000) : 20, token);
                             token.ThrowIfCancellationRequested();
                             if (sequence == int.MaxValue) throw new Failure("SEQUENCE_EXHAUSTED");
                             double started = a.sessionClock.Elapsed.TotalMilliseconds;
@@ -205,8 +210,12 @@ namespace GorillaEscape.Network
                 {
                     var clock = Stopwatch.StartNew();
                     string payload = secret == null ? "{}" : "{\"launchToken\":\"" + secret + "\"}";
-                    bool phone=Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1";
+                    bool phone=lobbyEnabled||Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1";
                     if(phone&&secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"phoneInputVersion\":1}";
+                    if(lobbyEnabled) {
+                        if(secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"lobbyVersion\":1}";
+                        else {var command=Lobby.TakeCommand();if(command!=null)payload="{\"lobbyCommand\":"+JsonUtility.ToJson(command)+"}";}
+                    }
                     a.result.sent++;
                     IpcFrameCodec.Write(stream, "{\"ipcVersion\":1,\"type\":\"PING\",\"instanceId\":\"" + a.result.instanceId
                         + "\",\"connectionId\":\"" + connection + "\",\"sequence\":" + sequence + ",\"payload\":" + payload + "}");
@@ -216,11 +225,12 @@ namespace GorillaEscape.Network
                         if(phone){
                             var mobile=JsonUtility.FromJson<PhonePong>(body);
                             if(mobile==null||mobile.ipcVersion!=1||mobile.type!="PONG"||mobile.instanceId!=a.result.instanceId||mobile.connectionId!=connection||mobile.sequence!=sequence||mobile.payload?.phoneInputs==null||mobile.payload.phoneInputs.Length>4)throw new InvalidDataException("PHONE_PONG");
+                            if(lobbyEnabled)Lobby.Accept(mobile.payload.lobby,mobile.payload.hasLobbyResult?mobile.payload.lobbyResult:null);
                             foreach(var input in mobile.payload.phoneInputs)if(PhoneInputs.Accept(input))PhoneInputReceived?.Invoke(input);
                             pong=new IpcPong{ipcVersion=mobile.ipcVersion,type=mobile.type,instanceId=mobile.instanceId,connectionId=mobile.connectionId,sequence=mobile.sequence};
                         }else pong = IpcProbeContract.Pong(body, a.result.instanceId, connection, sequence);
                     }
-                    catch (InvalidDataException) { throw new Failure("PROTOCOL_INVALID"); }
+                    catch (InvalidDataException error) { if(lobbyEnabled)UnityEngine.Debug.Log("LOBBY_IPC_REJECTED "+(error.Message.StartsWith("LOBBY_")?error.Message:"PHONE_PONG"));throw new Failure("PROTOCOL_INVALID"); }
                     if (pong == null || pong.ipcVersion != 1 || pong.type != "PONG" || pong.instanceId != a.result.instanceId
                         || pong.connectionId != connection || pong.sequence != sequence) throw new Failure("HANDSHAKE_FAILED");
                     deadline.Token.ThrowIfCancellationRequested(); a.result.valid++; return clock.Elapsed.TotalMilliseconds;

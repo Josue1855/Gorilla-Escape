@@ -13,7 +13,7 @@ namespace GorillaEscape.Contracts
         public PhoneQuality quality;
         public PhoneValues acceleration,accelerationIncludingGravity,rotationRate,orientation,screenOrientation,touch;
     }
-    [Serializable] public sealed class PhonePongPayload { public PhoneInputWire[] phoneInputs; }
+    [Serializable] public sealed class PhonePongPayload { public PhoneInputWire[] phoneInputs; public bool hasLobbyResult; public LobbySnapshotWire lobby; public LobbyCommandResult lobbyResult; }
     [Serializable] public sealed class PhonePong {
         public int ipcVersion,sequence;public string type,instanceId,connectionId;public PhonePongPayload payload;
     }

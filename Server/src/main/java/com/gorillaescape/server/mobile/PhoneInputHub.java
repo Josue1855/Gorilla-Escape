@@ -25,10 +25,11 @@ public final class PhoneInputHub {
         }
         if(pending.put(player,wire)!=null)overwritten++;received++;
     }
-    public synchronized ArrayNode drain(){
+    public synchronized ArrayNode drain(){return drain(3500);}
+    public synchronized ArrayNode drain(int maximumBytes){
         ArrayNode batch=GorillaProtocol.JSON.createArrayNode();int size=2;
         for(var it=pending.entrySet().iterator();it.hasNext();){var entry=it.next();int bytes=GorillaProtocol.JSON.writeValueAsBytes(entry.getValue()).length;
-            if(size+bytes+1>3500)continue;batch.add(entry.getValue());size+=bytes+1;it.remove();forwarded++;}
+            if(size+bytes+1>maximumBytes)continue;batch.add(entry.getValue());size+=bytes+1;it.remove();forwarded++;}
         return batch;
     }
     public synchronized void reject(){rejected++;}
