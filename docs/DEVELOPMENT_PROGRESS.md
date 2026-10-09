@@ -458,3 +458,14 @@ AC1PARTIAL, **AC2PASS** por criterio demostrado iPhone (no compatibilidadunivers
 Carry-forward obligatorio a #33/T019: Android trust/QR→signaling→RTC→READY, metadatos iPhone/Android, ambos cronómetros humanos, verificar<60s o documentar fallo, firewall en más redes/dispositivos. T019 conserva todos sus AC/dependencias, bloqueado/no iniciado. DEC-017 Proposed; sin UDP preventivo ni cambios de código/transporte. Esta tarea sólo añade decisión/documentación y transferencia de QA; software/Unity retenidos, no nueva suite física/costosa manual.
 
 Salida aprobada para integración normal del PR96; DoD y cierre efectivo #19 después del merge y validaciones post-merge, con SHA/resultado registrados en GitHub. needs-device-test se retira de #19 al transferir formalmente QA, security/type:spike/area:network conservados. #20 sólo siguiente candidato tras reevaluar sus dependencias, no iniciado. F02 OPEN/Fase0 IN PROGRESS/Fase1 NOT STARTED.
+
+
+## 2026-10-09 — T013 lobby admission — implementation and acceptance
+
+Implementation `b581606e6c9885b8b518a87e19d59ba94a8a801b`, branch `feature/server-t013-lobby-admission`, base develop `10b02121bc0d2134ba03f39236d18553cbfdd058`. [T013 report](PHASE0_T013_LOBBY_ADMISSION.md) and [sanitized evidence](evidence/t013-lobby-admission-2026-10-09/summary.json).
+
+Existing TechnicalSession/RTC/IPC reused; Unity explicitly authorizes PLAYER_READY and OPEN→STARTING→STARTED. Admission closes at STARTING, including outstanding tokens. One-to-four owners, fifth rejection, credential-authorized resume, epoch rotation, expiry/replay/spoof, concurrent JOIN and JOIN/start races, fresh input prerequisites and cleanup PASS LAB. Java only mirrors Unity authority; no phone GAME_START, gameplay/action lifecycle, results, scoring, lobby UI or T016 change.
+
+Java21 full verify 77 cases (75 PASS, two unrelated LAN-configuration skips); final focused 30/30 PASS, including the additional exact-freshness-boundary test and recovery during STARTING. PWA 59/59 + build PASS; Unity EditMode71/71 and PlayMode17/17 PASS, including four real Chrome RTC clients through owned Java/IPC into Unity and post-start resume. Build/check results are recorded in the evidence summary. No physical pass claimed.
+
+T013 AC1/AC2/AC3 PASS Software/Lab, integration/administrative closure through its PR. T015 AC1 ALREADY PASS LAB; AC2/AC3 NEEDS PRODUCT IMPLEMENTATION: official-action cancellation, confirmed-result persistence and official-action idempotency are absent. After #25/#26 completed, remove blocked and preserve dependency history; keep #27 and F03 open. T016 OPEN/Ready independently; E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED until the future FINAL EXIT AUDIT including T019/T020/performance/physical gates.
