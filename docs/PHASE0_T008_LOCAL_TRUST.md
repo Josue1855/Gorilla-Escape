@@ -124,3 +124,33 @@ Safari ofrece un candidato host/udp/MDNS_LOCAL puerto62352; Java ofrece host/udp
 Java registró cierre posterior a39.296s y peers0: causa no establecida, sin declarar estabilidad/suspensión/reconexión físicas PASS. Cierre del gate: Player/Javaexit0, STOPPED, cleanupComplete=true, forced=false, Java propio residual0, listeners18000/8443 cerrados, QR eliminado. Ambas excepcionesTCP temporales retiradas; UFW activo, políticas y status completo iguales al snapshot anterior (comparación, no restauración). Sin reinstalarCA ni modificarrouter/DNS/WAN.
 
 AC1 PARTIAL (iPhoneHTTPS PASS, Android físicoNOTRUN); AC2 PARTIALglobal (flujoQR/signaling/RTC/HELLOACK/READY iPhonePASS, matrizfísica incompleta); AC3 PARTIAL/sin medicioneshumanas completas; AC4 PASS (registro, PlanB noactivado). #19 OPEN/Validation; PR96 OPEN/DRAFT; T009 bloqueado, Fase0 INPROGRESS/Fase1 NOTSTARTED. Checks del código probadof62fa22: Management/Foundation SUCCESS. Próxima acción propuesta, no ejecutada: completar cronómetros humanos PREPARE/JOIN y gateAndroid físico mediante nueva autorización/prueba. No cambioscorrectivos adicionales tras estaobservación.
+
+## Reevaluación T008 y medición humana — 2026-10-08
+
+[Segundo intento físico, QR nuevo](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json), runtime `7dcd8b213ca62dc209eff2a4126200403a878ced` sin cambios. PO confirma READY técnico y comparte diagnóstico sanitizado: HTTPSconfiable, HTTP200, signaling/remoteSDPPASS, ICECONNECTED, control/motionOPEN301ms, HELLOACK→READY316ms desde connect. Safari host/UDP/MDNS_LOCAL puerto62660; Java host/UDP/IPV4 puerto38819. Sin reglasUDP adicionales ni cambiosICE/minPort/maxPort/STUN/TURN/mDNS. Estas duraciones internas **no** satisfacen AC3. Corrida anterior340ms e historial fallido se conservan sin reinterpretación; raíz del JOIN genérico anterior UNKNOWN / NOT REPRODUCED.
+
+### Cronómetros humanos y procedimiento reproducible
+
+PREPARE inicial: comenzar cuando el usuario recibe PREPARE DEVICE y empieza; terminar sólo cuando la CA esté instalada, confianza SSL activada si corresponde y `/prepare` HTTPS abra sin warning. Incluir descarga, ajustes, instalación, trust, regreso al navegador y todas las correcciones/intervenciones. Registrar dispositivo/OS/browser/pasos/red y cronómetro externo completo; no target60s. Usar un dispositivo realmente no preparado para esta CA; no fingir estado nuevo borrando parcialmente datos, ni reinstalar la CA del iPhone para inventar la medición inicial.
+
+JOIN preparado: QR nuevo visible y usuario empieza a usar el teléfono → abrir cámara/lector → escanear → enlace → cargaPWA → JOIN → signaling/ICE → amboscanalesOPEN y READY técnico. Cronómetro externo humano de principio a fin; target **<60s**. Cada fallo queda registrado y todo reintento requiere QRnuevo. No medir únicamente connect/JS ni deducir duración por tiempos del chat.
+
+En este intento se pidió cronómetro dos veces; el PO confirmó «no lo medí, unos pocos segundos». Se registra **NOT MEASURED**, sin estimación ni PASS<60s. PREPARE anterior tampoco fue cronometrado. No se reinstalóCA. No ejecución Android físico: PO confirma que actualmente no dispone de uno; modelo/OS/Chrome UNKNOWN. Emulador no sustituye el gate físico y sus resultados previos siguen retenidos.
+
+| Device | PREPARE DEVICE | Prepared JOIN | JOIN <60s |
+|---|---|---|---|
+| iPhone15 / Safari / iOS27 declarado | NOT MEASURED | NOT MEASURED | NOT EVALUATED |
+| Android físico, modelo/OS/Chrome UNKNOWN | NOT RUN | NOT RUN | NOT RUN |
+
+### AC actuales y cierre
+
+- **AC1 PARTIAL:** iPhone physical trustedHTTPS PASS; Android physical NOT RUN.
+- **AC2 PASS:** el criterio de QR al origenHTTPS correcto, admission/sesiónJavaLAN, señalizaciónlocal, WebRTCDataChannels y GorillaProtocol HELLO/ACK se demostró físicamente en iPhone. No mantener PARTIAL por inercia del gate anterior; no equivale a Android físico PASS ni compatibilidad universal. El gateAndroid añadirá evidencia del mismo flujo.
+- **AC3 no satisfecho:** PREPARE inicial sin medición publicada y JOIN preparado sin cronómetro humano; ninguna afirmación<60s.
+- **AC4 PASS:** QRloopbackoriginal, UFWTCPblocker, JOINgenéricoUNKNOWN, mDNS exitoso y falta de necesidadUDPdemostrada conservados; PlanBNOactivado.
+
+**IPHONE PHYSICAL = PASS; ANDROID PHYSICAL = NOT RUN. ONLY REMAINING DEVICE GATE = physical Android trust + QR→READY validation.** Además siguen pendientes los cronómetros humanos de AC3; no decir que Android es el único pendiente de todo el DoD. Un Android moderno representativo puede servir como hardwareQA, no límite de compatibilidad: registrar fabricante/modelo/Android/Chrome/red; ejecutar PREPARE inicial real, HTTPSsinwarning, QRnuevo→READY y amboscronómetros. El iPhone ya preparado permite medir JOIN; su PREPARE histórico no se puede reconstruir.
+
+Cleanup: Player/Javaexit0, STOPPED/cleanupComplete=true/forced=false, Javaresidual0, listeners18000/8443 cerrados, QRborrado. Exactamente dos excepcionesTCP temporales retiradas; UFWactivo, políticas y statuscompleto conservados. Sin snapshotrestore, UDP, router/DNS/WAN. Código de producto sin cambios; resultados de software y Unity retenidos, sin presentarlos como ejecución nueva. [Resultados software exactos](evidence/t008-local-trust-2026-10-08/join-diagnostics-software.json).
+
+DEC-017 **Proposed**: TCP observado; reglas adicionales inboundUDP **NOT DEMONSTRATED AS NECESSARY**. Sin reglaspreventivas ni adoptar diseño universal, pendiente másgatesfísicos/red. PR96OPEN/DRAFT, #19OPEN/Validation conneeds-device-test; no cerrar antes de integración. Secuencia: AC1–4PASS → PRreadyforreview → review/checks → merge normal autorizado → validaciónpostmerge → #19completed/Done → reevaluar#20sin iniciarlo. No mergeautomático; F02OPEN, Fase0INPROGRESS, Fase1NOTSTARTED.

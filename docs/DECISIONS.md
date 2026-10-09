@@ -259,7 +259,7 @@ Esta decisión reemplaza **para el enfoque principal de T008** las exigencias hi
 
 ## DEC-017 — Local Firewall Integration
 
-**Estado: Proposed — pendiente de aprobación PO y evidencia UDP. Fecha: 2026-10-08.** Esta propuesta no autoriza integración automática del firewall en el producto ni modifica DEC-010. T008/#19 sigue siendo el único Issue operativo.
+**Estado: Proposed — pendiente de aprobación PO y gates físicos/red adicionales. Fecha: 2026-10-08.** Esta propuesta no autoriza integración automática del firewall en el producto ni modifica DEC-010. T008/#19 sigue siendo el único Issue operativo.
 
 Recomendación: **ONE-TIME NETWORK SETUP** por instalación o desde Settings. El instalador/configurador detecta requisitos y solicita elevación normal del sistema para crear exclusivamente reglas identificables de Gorilla Escape. Los inicios normales de Unity/Java no requieren elevación. Settings/uninstall puede retirar las reglas propias, preservando reglas ajenas y políticas por defecto. El juego y Java nunca se ejecutan como root. No guardar ni automatizar contraseña administrativa.
 
@@ -269,6 +269,10 @@ Reglas mínimas por protocolo y puerto, restringidas a interfaz/subred LAN confi
 
 **Capacidad de rango ICE demostrada en API, no en ejecución:** el artefacto instalado `webrtc-java 0.19.0` expone `RTCConfiguration.portAllocatorConfig` y `PortAllocatorConfig.minPort/maxPort`. La [guía oficial](https://jrtc.dev/guide/networking/port-allocator-config) describe límites inclusivos y 0 como no especificado. El código actual únicamente deshabilita STUN/relay/TCP; no fija min/max. Es posible diseñar un rango acotado para Java, pero no se configuró ni abrió ninguno. El rango de los puertos remotos del navegador no se controla con esta API.
 
-**Pendiente antes de escoger tamaño/puertos o aceptar DEC-017:** observar ICE/UDP reales del gate y correlacionar sólo UFW BLOCK desde el iPhone a la PC en su ventana temporal; probar asignación nativa dentro del rango propuesto, puertos ocupados, agotamiento, 1/4 peers y reconexión/cleanup. No adoptar `50000–50010` por ser ejemplo. Presentar rango mínimo sustentado y alcance al PO antes de abrirlo permanentemente. No modificar WebRTC ni ampliar reglas en esta tarea.
+**Conclusión técnica actual:** los requisitos TCP fueron observados. **Reglas adicionales de entrada UDP NO están demostradas como necesarias actualmente.** El gate físico iPhone con QR nuevo alcanzó HTTP200, remoteDescriptionPASS, ICECONNECTED, ambosDataChannelsOPEN y READY técnico usando sólo las excepciones TCP temporales; Safari host/UDP/MDNS_LOCAL y Java host/UDP/IPV4 conectaron sin reglas UDP adicionales. [Evidencia](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json). No deducir compatibilidad universal ni atribuir retrospectivamente el fallo genérico anterior, cuya causa sigue UNKNOWN / NOT REPRODUCED.
+
+No incluir UDP preventivo en la propuesta ni seleccionar minPort/maxPort/rango, modificar ICE, introducir STUN/TURN o alterar mDNS. La capacidad API documentada arriba no es un requisito operativo. Si un gate futuro demuestra un bloqueo UDP concreto, tratarlo como nueva evidencia que exige diagnóstico acotado, dimensionamiento y autorización PO separados antes de proponer reglas. No hacer de esa hipótesis un gate artificial de T008.
+
+**Pendiente para aceptar DEC-017 como diseño final:** validación física Android y más redes/gates representativos; adaptadores Linux/Windows, propiedad/idempotencia/remoción de reglas y preservación de políticas. ONE-TIME NETWORK SETUP sigue propuesto: reglas propias mínimas demostradas, starts normales sin elevación y remoción segura, sin aprobación de diseño universal todavía.
 
 Criterios de aceptación de una implementación futura: autorización visible, reglas mínimas/idempotentes/propias, rechazo de interfaces ambiguas, fallo recuperable cuando la elevación se rechaza, no cambiar políticas/forwarding, funcionamiento normal sin elevación, remoción de reglas propias y preservación de cambios concurrentes ajenos, validación física y rollback documentado. Esta propuesta no cierra #19 ni desbloquea T009.
