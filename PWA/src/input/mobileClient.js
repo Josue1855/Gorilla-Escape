@@ -41,7 +41,7 @@ export class MobileClient {
    const r=await this.fetcher(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal});
    this.trace.httpStatus=r.status;this.stage('SIGNALING_RESPONSE');
    if(!r.ok){let reply;try{reply=await r.json();}catch{}
-    const allowed=['SESSION_FULL','SIGNAL_INVALID','ADMISSION_INVALID','ADMISSION_EXPIRED_OR_USED','REMOTE_SDP_FAILED','ANSWER_CREATE_FAILED','LOCAL_SDP_FAILED','SERVER_ICE_TIMEOUT','SIGNAL_FAILED_OTHER'];
+    const allowed=['LOBBY_ADMISSION_CLOSED','SESSION_FULL','SIGNAL_INVALID','ADMISSION_INVALID','ADMISSION_EXPIRED_OR_USED','REMOTE_SDP_FAILED','ANSWER_CREATE_FAILED','LOCAL_SDP_FAILED','SERVER_ICE_TIMEOUT','SIGNAL_FAILED_OTHER'];
     this.trace.rejectionCode=allowed.includes(reply?.code)?reply.code:'SIGNAL_FAILED_OTHER';throw Error('JOIN_E04_SIGNAL_REJECTED');
    }
    return await r.json();

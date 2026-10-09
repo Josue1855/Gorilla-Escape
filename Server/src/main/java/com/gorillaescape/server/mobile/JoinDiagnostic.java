@@ -5,7 +5,7 @@ import java.util.*;
 /** Bounded operator-only metadata. No SDP, addresses, identities or exception messages. */
 final class JoinDiagnostic {
     enum Stage { VALIDATION, ADMISSION, PEER_CREATE, REMOTE_SDP, ANSWER_CREATE, LOCAL_SDP, SERVER_ICE, ANSWER_RETURNED }
-    enum Code { SESSION_FULL, SIGNAL_INVALID, ADMISSION_INVALID, ADMISSION_EXPIRED_OR_USED, REMOTE_SDP_FAILED, ANSWER_CREATE_FAILED, LOCAL_SDP_FAILED, SERVER_ICE_TIMEOUT, SIGNAL_FAILED_OTHER }
+    enum Code { LOBBY_ADMISSION_CLOSED, SESSION_FULL, SIGNAL_INVALID, ADMISSION_INVALID, ADMISSION_EXPIRED_OR_USED, REMOTE_SDP_FAILED, ANSWER_CREATE_FAILED, LOCAL_SDP_FAILED, SERVER_ICE_TIMEOUT, SIGNAL_FAILED_OTHER }
     private final long started=System.nanoTime();
     private final List<Map<String,Object>> events=new ArrayList<>();
     private final List<Map<String,Object>> candidates=new ArrayList<>();

@@ -55,6 +55,7 @@ public final class ManagedProbe implements DisposableBean {
     }
     private void accept() {
         while (running.get()) {
+            boolean lobby=false;
             try (Socket socket = listener.accept()) {
                 client = socket;
                 socket.setSoTimeout(2000);
@@ -63,6 +64,19 @@ public final class ManagedProbe implements DisposableBean {
                 int sequence = 1; boolean phone=false;
                 while (running.get()) {
                     String body=readFrame(socket);
+                    tools.jackson.databind.JsonNode lobbyCommand=null;
+                    var extension=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
+                    var extendedPayload=extension.get("payload");
+                    boolean negotiateLobby=false;
+                    if(extendedPayload!=null&&extendedPayload.has("lobbyVersion")) {
+                        if(connection!=null||mobile==null||!extendedPayload.get("lobbyVersion").isInt()||extendedPayload.get("lobbyVersion").intValue()!=1||!extendedPayload.has("phoneInputVersion"))throw new IOException("IPC_LOBBY_VERSION");
+                        ((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("lobbyVersion");negotiateLobby=true;
+                    }
+                    if(extendedPayload!=null&&extendedPayload.has("lobbyCommand")) {
+                        if(!lobby||connection==null)throw new IOException("IPC_LOBBY_AUTHORITY");
+                        lobbyCommand=((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("lobbyCommand");
+                    }
+                    body=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(extension);
                     if(connection==null && mobile!=null) {
                         var root=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
                         var payload=root.get("payload");
@@ -75,9 +89,18 @@ public final class ManagedProbe implements DisposableBean {
                     var ping = ProbeCodec.ping(body, instance, connection,
                             sequence, connection == null ? token : null);
                     connection = ping.connectionId();
+                    // Extensions execute only AFTER instance/token/connection/sequence validation.
+                    if(negotiateLobby)lobby=true;
                     String pong=ProbeCodec.pong(ping);
                     if(phone){var root=(tools.jackson.databind.node.ObjectNode)com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(pong);
-                        ((tools.jackson.databind.node.ObjectNode)root.get("payload")).set("phoneInputs",mobile.inputs.drain());
+                        var pongPayload=(tools.jackson.databind.node.ObjectNode)root.get("payload");
+                        if(lobby){
+                            pongPayload.put("hasLobbyResult",lobbyCommand!=null);
+                            if(lobbyCommand!=null)pongPayload.set("lobbyResult",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.unityLobbyCommand(lobbyCommand)));
+                            pongPayload.set("lobby",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.lobby()));
+                        }
+                        int overhead=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsBytes(root).length;
+                        pongPayload.set("phoneInputs",mobile.inputs.drain(Math.min(3500,ProbeCodec.MAX_FRAME-overhead-20)));
                         pong=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(root);}
                     writeFrame(socket,pong);
                     validFrames++;
@@ -87,7 +110,7 @@ public final class ManagedProbe implements DisposableBean {
             } catch (EOFException ignored) { log("CLIENT_EOF"); }
             catch (IOException e) { if (running.get()) log("CONNECTION_CLOSED", reason(e)); }
             catch (RuntimeException e) { if (running.get()) log("CONNECTION_CLOSED", "IPC_CONTRACT"); }
-            finally { client = null; closedConnections++; }
+            finally { if(lobby&&mobile!=null)mobile.unityDisconnected();client = null; closedConnections++; }
         }
     }
     // Package scope solely for deterministic real-socket deadline tests.

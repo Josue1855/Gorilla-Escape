@@ -44,12 +44,15 @@ public final class MobileRuntime implements DisposableBean {
         TechnicalSession.Joined joined;
         try{joined=session.join(signal.sessionId(),signal.admission());}
         catch(IllegalArgumentException e){throw failure(d,JoinDiagnostic.Code.valueOf(session.admissionFailure(signal.sessionId(),signal.admission())));}
-        catch(IllegalStateException e){throw failure(d,JoinDiagnostic.Code.SESSION_FULL);}
+        catch(IllegalStateException e){throw failure(d,"LOBBY_ADMISSION_CLOSED".equals(e.getMessage())?JoinDiagnostic.Code.LOBBY_ADMISSION_CLOSED:JoinDiagnostic.Code.SESSION_FULL);}
         return connect(joined,signal.offer(),d,true);
     }
     public synchronized Answer reconnect(String sid,int player,String resume,String offer)throws Exception{
         if(closed||offer==null||offer.length()>65536||!offer.startsWith("v=0")||offer.contains("m=audio")||offer.contains("m=video"))throw new IOException("SIGNAL_INVALID");
-        localOffer(offer);var joined=session.reconnect(sid,player,resume);return connect(joined,offer,attempt(),false);
+        localOffer(offer);var joined=session.reconnect(sid,player,resume);
+        // Retire the prior peer before allocating the resumed epoch, even at capacity.
+        for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(p.joined.playerId()==player){it.remove();p.close();}}
+        return connect(joined,offer,attempt(),false);
     }
     static void localOffer(String offer)throws IOException{
         int count=0;
@@ -111,10 +114,10 @@ public final class MobileRuntime implements DisposableBean {
                     if(buffer.binary||buffer.data.remaining()>GorillaProtocol.MAX_BYTES)throw new IOException("MOBILE_SIZE");byte[] bytes=new byte[buffer.data.remaining()];buffer.data.get(bytes);ObjectNode n=gate.accept(bytes,ch.getLabel());
                     String type=n.get("messageType").asString();if(type.equals("MOTION_SAMPLE")!=ch.getLabel().equals("motion"))throw new IOException("MOBILE_CHANNEL");
                     session.heartbeat(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastSeen=System.nanoTime();
-                    if(type.equals("HELLO"))helloConfirmed=true;
-                    if(type.equals("MOTION_SAMPLE")||type.equals("TOUCH")){session.active(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastInput=n;inputs.accept(n,joined.epoch(),"ACTIVE");}
-                    if(type.equals("CLIENT_STATE")){var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),n.get("payload").get("state").asString().equals("suspended")?"SUSPENDED":"CONNECTED");}
-                    if(type.equals("DISCONNECT")){inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
+                    if(type.equals("HELLO")){helloConfirmed=true;session.networkReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());}
+                    if(type.equals("MOTION_SAMPLE")||type.equals("TOUCH")){session.active(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastInput=n;inputs.accept(n,joined.epoch(),"ACTIVE");if(type.equals("MOTION_SAMPLE"))session.inputReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),usableMovement(n));}
+                    if(type.equals("CLIENT_STATE")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),n.get("payload").get("state").asString().equals("suspended")?"SUSPENDED":"CONNECTED");}
+                    if(type.equals("DISCONNECT")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
                     if(ch.getBufferedAmount()<8192){var ack=n.deepCopy();ack.put("messageType","ACK");ack.set("payload",GorillaProtocol.JSON.createObjectNode());send(ch,GorillaProtocol.JSON.writeValueAsBytes(ack));}
                 }catch(Exception e){inputs.reject();error=e.getMessage();}
                 if(error!=null&&ch.getBufferedAmount()<8192){var reply=GorillaProtocol.JSON.createObjectNode();reply.put("protocolVersion",1);reply.put("messageType","ERROR");reply.put("sessionId",joined.sessionId());reply.put("playerId",joined.playerId());reply.put("deviceSessionId",joined.sessionDeviceId());reply.putNull("sequence");reply.putNull("clientTimestamp");reply.put("serverReceiveTimestamp",System.currentTimeMillis());reply.set("capabilities",GorillaProtocol.JSON.createArrayNode());reply.putNull("quality");var payload=GorillaProtocol.JSON.createObjectNode();payload.put("code","INVALID_INPUT");reply.set("payload",payload);send(ch,GorillaProtocol.JSON.writeValueAsBytes(reply));}
@@ -122,6 +125,17 @@ public final class MobileRuntime implements DisposableBean {
         }
         synchronized void close(){if(stopped)return;stopped=true;if(lastInput!=null){var state=lastInput.deepCopy();state.put("messageType","SERVER_STATE");state.put("serverReceiveTimestamp",System.currentTimeMillis());inputs.accept(state,joined.epoch(),"DISCONNECTED");}for(var ch:channels){ch.unregisterObserver();ch.close();ch.dispose();}channels.clear();pc.close();try{if(initial&&!helloConfirmed)session.abortUnconfirmedJoin(joined);else session.disconnect(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());}catch(RuntimeException ignored){}}
     }
+    private static boolean usableMovement(ObjectNode n){
+        if(n.get("quality").get("status").asString().equals("unavailable"))return false;
+        for(String key:List.of("acceleration","accelerationIncludingGravity","rotationRate","orientation"))
+            if(!n.get("payload").get(key).get("availability").asString().equals("unavailable"))return true;
+        return false;
+    }
+    public LobbyIpc.Result unityLobbyCommand(tools.jackson.databind.JsonNode command){return LobbyIpc.apply(command,session);}
+    public void unityDisconnected(){session.unityDisconnected();}
+    public TechnicalSession.LobbySnapshot lobby(){return session.lobby();}
+    public void unityLobbyPhase(String sid,TechnicalSession.LobbyPhase phase){session.unityPhase(sid,phase);}
+    public void unityPlayerReady(String sid,int player,String device,long epoch,boolean ready){session.unityPlayerReady(sid,player,device,epoch,ready);}
     private static void send(RTCDataChannel ch,byte[] bytes){try{ch.send(new RTCDataChannelBuffer(ByteBuffer.wrap(bytes),false));}catch(Exception ignored){ch.close();}}
     @Override public synchronized void destroy(){if(closed)return;closed=true;expiry.shutdownNow();for(var p:peers.values())p.close();peers.clear();session.close();factory.dispose();}
 }
