@@ -28,10 +28,23 @@ class LocalTrustProcessTest {
         var env=command.environment();env.remove("GORILLA_MOBILE_CONFIG");env.remove("GORILLA_MOBILE_LAB");
         env.put("GORILLA_LOCAL_TRUST_DIR",trust.toString());env.put("GORILLA_LAN_INTERFACE",lan.name());env.put("GORILLA_LAN_ADDRESS",lan.address());env.put("GORILLA_HTTPS_PORT",Integer.toString(https));env.put("GORILLA_TRUST_BOOTSTRAP_PORT",Integer.toString(bootstrap));
         env.put("GORILLA_MOBILE_OPERATOR",operator);env.put("GORILLA_IPC_INSTANCE",UUID.randomUUID().toString());env.put("GORILLA_IPC_TOKEN","A".repeat(43));env.put("GORILLA_IPC_LOCK_DIR",directory.resolve("lock").toString());
-        var process=command.redirectError(ProcessBuilder.Redirect.DISCARD).start();
+        var process=command.start();
+        // Drain stderr, retaining only exception classes/codes and missing native-library names.
+        // Never publish raw Spring logs, environment values, paths or certificate-store passwords.
+        var diagnostic=new java.util.concurrent.ConcurrentLinkedQueue<String>();
+        var stderr=new Thread(()->{try(var lines=new BufferedReader(new InputStreamReader(process.getErrorStream()))){
+            String line;while((line=lines.readLine())!=null){
+                var exception=java.util.regex.Pattern.compile("(?:Caused by: |^)([a-zA-Z0-9_.$]+(?:Exception|Error))").matcher(line);
+                if(exception.find()&&diagnostic.size()<12)diagnostic.add(exception.group(1));
+                var library=java.util.regex.Pattern.compile("(lib[A-Za-z0-9_.-]+\\.so(?:\\.[0-9]+)*): cannot open shared object file").matcher(line);
+                if(library.find()&&diagnostic.size()<12)diagnostic.add("MISSING_NATIVE_LIBRARY:"+library.group(1));
+                var code=java.util.regex.Pattern.compile("LOCAL_TRUST_SETUP_FAILED: ([A-Z_]+)").matcher(line);
+                if(code.find()&&diagnostic.size()<12)diagnostic.add(code.group(1));
+            }
+        }catch(IOException ignored){}},"test-trust-stderr");stderr.setDaemon(true);stderr.start();
         ExecutorService reader=Executors.newSingleThreadExecutor();
         try {
-            var ready=reader.submit(()->{try(var lines=new BufferedReader(new InputStreamReader(process.getInputStream()))){String line;while((line=lines.readLine())!=null)if(line.startsWith("GORILLA_IPC_READY "))return GorillaProtocol.JSON.readTree(line.substring(18));}throw new IOException("READY_MISSING");});
+            var ready=reader.submit(()->{try(var lines=new BufferedReader(new InputStreamReader(process.getInputStream()))){String line;while((line=lines.readLine())!=null)if(line.startsWith("GORILLA_IPC_READY "))return GorillaProtocol.JSON.readTree(line.substring(18));}throw new IOException("READY_MISSING; diagnostics="+diagnostic);});
             var message=ready.get(20,TimeUnit.SECONDS);assertEquals(https,message.get("httpPort").intValue());
             var roots=KeyStore.getInstance("PKCS12");roots.load(null);roots.setCertificateEntry("installation",material.root());
             var factory=TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());factory.init(roots);var ssl=SSLContext.getInstance("TLS");ssl.init(null,factory.getTrustManagers(),null);
