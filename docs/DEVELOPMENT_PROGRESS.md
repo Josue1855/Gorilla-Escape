@@ -330,3 +330,19 @@ Unity/Java/vision exit0, sin forced. Sólo FINAL PHASE0 AUDIT pendiente; no ejec
 ## Reconciliación operativa Project — 2026-10-08
 
 SoftwareLab technical checkpoint PASS retenido; Project Phase0 stillOPEN. Se publican los cambios auditados en PR94; no nuevo código de producto. 27Issues reales reconciliados con AC/Dependencies/DoD:0cierres,9InProgress/8POReview/10Validation; metadata/dependencias preservadas. T0012/3,slowmotion pendiente; T016/T017/T019 físicos y T020PC limpia pendientes. #35blockedby#34;Fase1NOTSTARTED. [Matriz/evidencia](PHASE0_PROJECT_RECONCILIATION.md). Checks del head publicado inicialPASS; final e integración se verifican separadamente.
+
+## T008 / DEC-016 — candidato local trust, 2026-10-08
+
+Base integrada `7e818d5e729aad09c3b6fe40cc22422268198d2a`; rama `feature/mobile-t008-local-trust`. DEC-016 ACCEPTED FOR IMPLEMENTATION / VALIDATION: CA única por instalación, leaf corto con SAN iPAddress, origen HTTPS LAN y QR conectado al endpoint de producto. Preparación inicial de confianza y JOIN preparado son flujos/mediciones distintos; no cambia WebRTC/contrato/IPC ni añade T009. [Diseño y procedimiento](PHASE0_T008_LOCAL_TRUST.md).
+
+**Nueva ejecución del candidato:** Java **52/52 PASS**, 0 errores/fallos/SKIP y build/package PASS; PWA **9/9 PASS** y build PASS. Incluye 4 tests nuevos (3 unit + 1 Java real) de CA/leaf/permisos/IP/QR/TLS/bootstrap/EOF. TLS normal: CA confiada valida; certificado no confiado, IP incorrecta y expiración se rechazan. No trust-all ni flags. Management/Foundation validadores locales PASS.
+
+**Regresión serial nueva PASS:** Chrome real, 4 peers → WebRTC → Java hijo de Unity → IPC 127.0.0.1 → Player, 641 observaciones Unity y 18 negativos; recuperación manual, peers liberados, STOPPED, exit 0 y propios residuales 0. Entrada sintética/replay, no sensores físicos ni medición de onboarding humano. Cada corrida sintética permanece separada en [evidencia](evidence/t008-local-trust-2026-10-08/rtc-regression-serial.json). JAR final SHA256 `5c9728132226b9ac89ca057091e4aa4abffe0336529897896e4477d1eefb41de`.
+
+Unity EditMode **64/64**, PlayMode **16/16**, build Linux **0 errores/0 warnings** son evidencia **retenida, no una nueva ejecución**: fuentes/configuración Unity intactas frente a la base. Player SHA256 `26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f`. El JAR cambió; por ello se ejecutó la integración real nueva anterior. No se combinan/extrapolan métricas históricas 2C o móviles al gameplay físico.
+
+Fallos conservados por separado: primer test Java real falló por lector de test acotado para PNG; corrección exclusiva del lector, repetición PASS. Primer RTC con gate físico concurrente falló por deadline (causa exacta no demostrada); repetición serial PASS. [Resumen de software](evidence/t008-local-trust-2026-10-08/software-results.json).
+
+**iPhone 15 BLOCKED antes de instalar CA:** `/prepare` no carga. Cinco eventos UFW BLOCK coinciden con la IP del teléfono y los puertos del gate; lectura administrativa de estado rechazada con `sudo: a password is required`. No modificaciones de firewall/router/DNS/CA del sistema. No fallo TLS/Safari acreditado. Gate cerrado Player/Java exit 0, STOPPED/cleanup completo, residuales 0. Confianza HTTPS física, QR→READY humano y ambas duraciones NOT RUN/NOT MEASURED; Android físico NOT RUN. [Evidencia sanitizada](evidence/t008-local-trust-2026-10-08/physical-gate-01.json).
+
+**Estado:** AC1 PARTIAL; AC2 PARTIAL; AC3 NOT RUN (preparación/JOIN humanos); AC4 PASS. T008/#19 OPEN / Validation, T009/#20 bloqueado por #19, F02/E0/Fase0 OPEN, Fase1 NOT STARTED. No cierre/merge automático. Siguiente gate exclusivo: intervención autorizada y administrativa para resolver el filtrado LAN observado, seguida de preparación/confianza iPhone. El nuevo candidato no constituye aceptación física ni integración en develop.
