@@ -1,5 +1,14 @@
 # Progreso de desarrollo
 
+## T009 / #20 — Gorilla Core y permisos, 2026-10-09
+
+[DEC-019 Accepted](DECISIONS.md#dec-019--controller-ux--theme-strategy). [Alcance/estados/AC/evidencia](PHASE0_T009_PWA_SHELL.md): AC1/AC2/AC3 PASS en candidato, pendiente revisión/integración; #20 OPEN / In Review. PWA25/25 PASS, build PASS, Java54 PASS +2 SKIP sin fallos; browser7casos con fixtures explícitos y responsive PASS; RTC real4Chrome→Java→IPC→Unity PASS (inputs sintéticos, no físicos), cleanup/residual0. Management/Foundation PASS. Editor/build Unity previos retenidos sin nueva ejecución ni fuentes cambiadas.
+
+Safari iPhone15/iOS27 reportado: Run A HTTPS/shell/safety/NETWORK_READY y motion/orientation granted PASS; signalVerified=false. Run B conserva granted sin nuevo prompt (confirmado PO): denial/recovery físicos NOT RUN, sin reset artificial. Android físico NOT RUN, metadatos exactos OS/Safari pendientes; QA trazada a T019 sin modificar AC/dependencias/iniciarlo. No convertir tiempos internos270/284ms en cronometraje humano. Primer intento8443 mostró contenido Inear (causa exacta UNKNOWN), gate aislado18443 con misma CA y única regla TCP temporal autorizada/retirada; políticas ajenas intactas. Java/Unity exit0, residual0, QR efímeros eliminados.
+
+No nueva dependencia, Theme Engine, Flutter, frecuencia/quality/calibración, reconnect, offline/suspensión, protocolo, cámara o gameplay. T010/T011 no iniciados; F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. PR hacia develop sin merge automático; no cierre #20 antes de DoD integrado. Los apartados anteriores/siguientes de otros incrementos conservan evidencia histórica.
+
+
 ## T003 — baseline técnico documentado, 2026-10-08
 
 DEC-015 Accepted por autorización PO condicional, AC1/AC2 PASS: [baseline/comparativa/compatibilidad](PHASE0_T003_TECHNICAL_BASELINE.md). Configs/artifacts/modelo/nativos auditados; Java compile/package nuevo aislado PASS, sin reemplazar JAR histórico. Tests/build Unity y pruebas lab previas RETENIDAS con hashes idénticos, no ejecuciones nuevas. T001/T002 pendientes locales se publican junto con T003 vía rama docs/phase0-t003-baseline y PR normal hacia develop. No otros cierres/producto, no merge automático; E0/milestoneFase0 OPEN, Fase1 NOT STARTED. Los siguientes apartados describen snapshots anteriores cuando difieran de este estado.

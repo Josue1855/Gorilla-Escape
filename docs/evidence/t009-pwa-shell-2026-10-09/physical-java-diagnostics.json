@@ -1,0 +1,225 @@
+{
+  "joinAttempts": [
+    {
+      "stage": "ANSWER_RETURNED",
+      "code": "NONE",
+      "events": [
+        {
+          "ms": 0.111682,
+          "event": "stage",
+          "value": "VALIDATION"
+        },
+        {
+          "ms": 0.293365,
+          "event": "stage",
+          "value": "ADMISSION"
+        },
+        {
+          "ms": 0.474503,
+          "event": "stage",
+          "value": "PEER_CREATE"
+        },
+        {
+          "ms": 4.369669,
+          "event": "stage",
+          "value": "REMOTE_SDP"
+        },
+        {
+          "ms": 5.845081,
+          "event": "stage",
+          "value": "ANSWER_CREATE"
+        },
+        {
+          "ms": 6.119411,
+          "event": "stage",
+          "value": "LOCAL_SDP"
+        },
+        {
+          "ms": 6.409135,
+          "event": "iceConnectionState",
+          "value": "CHECKING"
+        },
+        {
+          "ms": 6.424884,
+          "event": "stage",
+          "value": "SERVER_ICE"
+        },
+        {
+          "ms": 6.43361,
+          "event": "iceGatheringState",
+          "value": "GATHERING"
+        },
+        {
+          "ms": 7.248605,
+          "event": "connectionState",
+          "value": "CONNECTING"
+        },
+        {
+          "ms": 16.676045,
+          "event": "iceGatheringState",
+          "value": "COMPLETE"
+        },
+        {
+          "ms": 16.819161,
+          "event": "stage",
+          "value": "ANSWER_RETURNED"
+        },
+        {
+          "ms": 42.300099,
+          "event": "connectionState",
+          "value": "CONNECTED"
+        },
+        {
+          "ms": 42.380978,
+          "event": "iceConnectionState",
+          "value": "CONNECTED"
+        },
+        {
+          "ms": 59.689631,
+          "event": "control",
+          "value": "OPEN"
+        },
+        {
+          "ms": 62.119144,
+          "event": "motion",
+          "value": "OPEN"
+        },
+        {
+          "ms": 38437.642189,
+          "event": "iceConnectionState",
+          "value": "CLOSED"
+        },
+        {
+          "ms": 38437.690466,
+          "event": "connectionState",
+          "value": "CLOSED"
+        }
+      ],
+      "candidates": [
+        {
+          "port": 39003,
+          "protocol": "udp",
+          "addressKind": "IPV4",
+          "type": "host"
+        },
+        {
+          "port": 45001,
+          "protocol": "udp",
+          "addressKind": "IPV6",
+          "type": "host"
+        }
+      ]
+    },
+    {
+      "stage": "ANSWER_RETURNED",
+      "code": "NONE",
+      "events": [
+        {
+          "ms": 0.00537,
+          "event": "stage",
+          "value": "VALIDATION"
+        },
+        {
+          "ms": 0.383695,
+          "event": "stage",
+          "value": "ADMISSION"
+        },
+        {
+          "ms": 0.526067,
+          "event": "stage",
+          "value": "PEER_CREATE"
+        },
+        {
+          "ms": 13.078084,
+          "event": "stage",
+          "value": "REMOTE_SDP"
+        },
+        {
+          "ms": 13.89294,
+          "event": "stage",
+          "value": "ANSWER_CREATE"
+        },
+        {
+          "ms": 14.120634,
+          "event": "stage",
+          "value": "LOCAL_SDP"
+        },
+        {
+          "ms": 15.129533,
+          "event": "iceConnectionState",
+          "value": "CHECKING"
+        },
+        {
+          "ms": 15.186239,
+          "event": "iceGatheringState",
+          "value": "GATHERING"
+        },
+        {
+          "ms": 15.279394,
+          "event": "stage",
+          "value": "SERVER_ICE"
+        },
+        {
+          "ms": 16.204558,
+          "event": "connectionState",
+          "value": "CONNECTING"
+        },
+        {
+          "ms": 27.177211,
+          "event": "iceGatheringState",
+          "value": "COMPLETE"
+        },
+        {
+          "ms": 27.376761,
+          "event": "stage",
+          "value": "ANSWER_RETURNED"
+        },
+        {
+          "ms": 43.092369,
+          "event": "connectionState",
+          "value": "CONNECTED"
+        },
+        {
+          "ms": 43.176418,
+          "event": "iceConnectionState",
+          "value": "CONNECTED"
+        },
+        {
+          "ms": 59.462074,
+          "event": "control",
+          "value": "OPEN"
+        },
+        {
+          "ms": 59.501321,
+          "event": "motion",
+          "value": "OPEN"
+        },
+        {
+          "ms": 11178.832231,
+          "event": "iceConnectionState",
+          "value": "CLOSED"
+        },
+        {
+          "ms": 11178.88626,
+          "event": "connectionState",
+          "value": "CLOSED"
+        }
+      ],
+      "candidates": [
+        {
+          "port": 60973,
+          "protocol": "udp",
+          "addressKind": "IPV4",
+          "type": "host"
+        },
+        {
+          "port": 40914,
+          "protocol": "udp",
+          "addressKind": "IPV6",
+          "type": "host"
+        }
+      ]
+    }
+  ],
+  "peers": 0
+}

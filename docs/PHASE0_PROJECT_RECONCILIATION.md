@@ -141,3 +141,12 @@ El conector GitHub rechazó PATCHPR94 con403 Resource not accessible by integrat
 | #82 | #81 |
 
 Sólo #15/#16/#25/#34/#74 dependen directamente de #10; quedaron anotados como desbloqueo parcial, todos conservan blocked. Los demás son revisión transitiva de sólo lectura, sin iniciar trabajo ni cambiar estados de fases posteriores. T002 es el único siguiente Issue operativo autorizado; T003 no iniciado. DEC-013/inventario y actualizaciones documentales son locales sin commit/push automático; la decisión y el inventario completos están publicados en #10/#11. Resultados históricos sin alteración.
+
+## Reevaluación F00/#9 — 2026-10-09
+
+Esta reevaluación posterior conserva y sustituye operativamente las conclusiones históricas «Cumple: NO», «KEEP OPEN» y «T001 parcial» de F00. T001/#10, T002/#11 y T003/#12 confirmados CLOSED/completed y Project Done. Evidencia integrada en develop `fe4d4df1e10a33323cc4dbc0d513329b2906cda2`, anterior a T009: [DEC-013/014/015](DECISIONS.md), [inventario](PHASE0_T002_HARDWARE_INVENTORY.md), [baseline](PHASE0_T003_TECHNICAL_BASELINE.md).
+
+- AC1 **PASS** — hardware PC/cámara de referencia, plataformas/capacidades móviles, restricciones LAN y límites Fase0/Fase1 documentados. No exige Android/router exclusivo ni convierte inventario en QA física.
+- AC2 **PASS** — decisiones explícitas PO; slow motion P1 fuera MVP P0, compatibilidad por capacidades, versiones fijadas DEC-015 y Unity autoridad/Java transporte. No stack ni aceptación alterados silenciosamente. Gates físicos, >=30FPS, PC limpia y mediciones humanas conservados.
+
+F00 cumple DoD documental por sus tres hijos integrados; cierre completed/Done autorizado, sin cerrar otros Features. Estado efectivo/fecha de cierre se registra en Issue #9 y GitHub Project. F01 sin modificaciones; F02/#18 OPEN, Fase0/E0/milestone abiertos, Fase1 NOT STARTED. Esta operación no empieza T010 ni certifica hardware físico universal.
