@@ -80,6 +80,7 @@ namespace GorillaEscape.Network
                 if (budget.Launches >= 3) throw new InvalidOperationException("LAUNCH_LIMIT");
                 long generation=lifecycle.Begin();
                 Lobby.Reset();
+                PhoneInputs.Clear();
                 attempt = new Attempt { generation = generation, benchmark = benchmark };
                 attempt.cancellation = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime.Token);
                 current = attempt; LastSummary = attempt.result;
@@ -102,6 +103,7 @@ namespace GorillaEscape.Network
             finally
             {
                 Lobby.Reset();
+                PhoneInputs.EndSession();
                 Summarize(a);
                 Move(a, IpcState.STOPPING, "STOP_REQUESTED");
                 try { await Cleanup(a); }
@@ -225,7 +227,7 @@ namespace GorillaEscape.Network
                         if(phone){
                             var mobile=JsonUtility.FromJson<PhonePong>(body);
                             if(mobile==null||mobile.ipcVersion!=1||mobile.type!="PONG"||mobile.instanceId!=a.result.instanceId||mobile.connectionId!=connection||mobile.sequence!=sequence||mobile.payload?.phoneInputs==null||mobile.payload.phoneInputs.Length>4)throw new InvalidDataException("PHONE_PONG");
-                            if(lobbyEnabled)Lobby.Accept(mobile.payload.lobby,mobile.payload.hasLobbyResult?mobile.payload.lobbyResult:null);
+                            if(lobbyEnabled){Lobby.Accept(mobile.payload.lobby,mobile.payload.hasLobbyResult?mobile.payload.lobbyResult:null);PhoneInputs.ObserveLobby(Lobby.Snapshot);}
                             foreach(var input in mobile.payload.phoneInputs)if(PhoneInputs.Accept(input))PhoneInputReceived?.Invoke(input);
                             pong=new IpcPong{ipcVersion=mobile.ipcVersion,type=mobile.type,instanceId=mobile.instanceId,connectionId=mobile.connectionId,sequence=mobile.sequence};
                         }else pong = IpcProbeContract.Pong(body, a.result.instanceId, connection, sequence);
