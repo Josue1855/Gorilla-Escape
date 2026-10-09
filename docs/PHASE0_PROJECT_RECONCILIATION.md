@@ -1,5 +1,19 @@
 # Fase0 — reconciliación GitHub Project, 2026-10-08
 
+## T003 — baseline técnico documentado, 2026-10-08
+
+DEC-015 Accepted por autorización PO condicional, AC1/AC2 PASS: [baseline/comparativa/compatibilidad](PHASE0_T003_TECHNICAL_BASELINE.md). Configs/artifacts/modelo/nativos auditados; Java compile/package nuevo aislado PASS, sin reemplazar JAR histórico. Tests/build Unity y pruebas lab previas RETENIDAS con hashes idénticos, no ejecuciones nuevas. T001/T002 pendientes locales se publican junto con T003 vía rama docs/phase0-t003-baseline y PR normal hacia develop. No otros cierres/producto, no merge automático; E0/milestoneFase0 OPEN, Fase1 NOT STARTED. Los siguientes apartados describen snapshots anteriores cuando difieran de este estado.
+
+
+> **Resultado remoto verificado T002:** #11 CLOSED/completed/Done; retirados sólo blocked y needs-device-test. #12 OPEN/PO Review, dependencia #11 satisfecha e intacta, blocked retirado; needs-decision conservado. No se inicia T003. T019 sin cambios, QA física pendiente. E0/milestone/Fase0 siguen OPEN; Fase1 NOT STARTED.
+
+
+> **Enmienda vigente T002 — DEC-014 Accepted:** alcance documental por plataformas/capacidades, QA hardware no exclusivo; AC1/AC2 PASS. Android/router concretos no bloquean T002; físicos y versiones exactas permanecen en T019/gates correspondientes. Los faltantes anteriores son historia superseded. [Inventario vigente](PHASE0_T002_HARDWARE_INVENTORY.md). No iniciar T003 ni Fase1; sin nuevas pruebas/producto/commit/push.
+
+
+> **Actualización posterior T001/T002:** decisión PO DEC-013 resuelve el último AC de #10: 3/3, completed/Done. #11 sigue OPEN/Validation; [inventario actual](PHASE0_T002_HARDWARE_INVENTORY.md). Los 27 elementos de la matriz siguiente describen el snapshot anterior al cierre de T001; conservar como evidencia histórica. Ahora 26 abiertos/1 cerrado, E0/milestone OPEN, Fase1 NOT STARTED. Por autorización PO actual, siguiente trabajo operativo #11; no T003. No se borran dependencias a #10: quedan satisfechas, las restantes siguen abiertas.
+
+
 **PROJECT PHASE 0 STATUS: SOFTWARE/LAB COMPLETE — PROJECT PHASE 0 STILL OPEN.**
 
 GitHub Project1, Issues, dependencias, milestone y Acceptance Criteria son la fuente operativa. El audit **PASS — SOFTWARE/LAB** se conserva como checkpoint técnico histórico; no equivale a E0/Project/Milestone Done. Fase1 **BLOCKED / NOT STARTED** por #35→#34. Technical foundation ready no autoriza saltar la dependencia.
@@ -67,3 +81,63 @@ PR94 publica sólo Phase0 Software/Lab technical foundation más reconciliación
 27 Issues OPEN; cierres0. Project:9 In Progress,8 PO Review,10 Validation. Campos Priority/Risk/SP/Iteration/Assignee siguen vacíos donde lo estaban; jerarquía/dependencias intactas. #10 2/3 AC; #19/#24 DEC010 actualizados con historia preservada. #35 Backlog/blocked-by#34, sin eliminar blocked. E0 OPEN; milestoneFase0 OPEN con27 abiertos/0cerrados. [Verificación](evidence/project-reconciliation-2026-10-08/project-verification.json).
 
 El conector GitHub rechazó PATCHPR94 con403 Resource not accessible by integration; la CLI existente/autorizada del propietario realizó la actualización normal. No cambio de permisos, protección ni bypass. La publicación inicial9d45f89 pasó management-validation y java-react-foundation; el candidato documental final vuelve a comprobarse antes de merge normal.
+
+## Propagación verificada tras T001
+
+#10 CLOSED/completed/Done, 3/3 AC; sólo needs-decision retirado. #11 OPEN/Validation. Milestone Fase0 OPEN: 26 abiertos/1 cerrado; E0 OPEN/In Progress; #34 Validation/blocked; #35 Backlog/blocked por #34. No otros cierres ni dependencias/labels eliminadas.
+
+| Issue dependiente | Dependencias directas aún abiertas |
+|---|---|
+| #15 | #12 |
+| #16 | #12 |
+| #17 | #16, #15, #14 |
+| #19 | #15, #11 |
+| #20 | #19 |
+| #21 | #20, #16 |
+| #22 | #21, #20 |
+| #24 | #16, #15 |
+| #25 | #24 |
+| #26 | #24, #21, #14 |
+| #27 | #26, #25 |
+| #32 | #29, #26 |
+| #33 | #32, #30, #27, #22 |
+| #34 | #33, #17 |
+| #35 | #34 |
+| #36 | #34 |
+| #37 | #36 |
+| #38 | #37 |
+| #39 | #38 |
+| #40 | #39 |
+| #41 | #39 |
+| #42 | #41 |
+| #44 | #42 |
+| #45 | #30, #44 |
+| #47 | #41 |
+| #48 | #47, #45 |
+| #50 | #45, #48 |
+| #51 | #50 |
+| #52 | #51 |
+| #54 | #45, #52 |
+| #55 | #54 |
+| #56 | #55 |
+| #58 | #45, #56 |
+| #59 | #58 |
+| #60 | #59 |
+| #62 | #45, #60 |
+| #63 | #62 |
+| #64 | #63 |
+| #66 | #48, #47, #64 |
+| #67 | #66 |
+| #69 | #39 |
+| #70 | #27, #66 |
+| #71 | #70, #69, #67 |
+| #73 | #71 |
+| #74 | #73 |
+| #75 | #74 |
+| #77 | #75 |
+| #78 | #77 |
+| #79 | #78 |
+| #81 | #79 |
+| #82 | #81 |
+
+Sólo #15/#16/#25/#34/#74 dependen directamente de #10; quedaron anotados como desbloqueo parcial, todos conservan blocked. Los demás son revisión transitiva de sólo lectura, sin iniciar trabajo ni cambiar estados de fases posteriores. T002 es el único siguiente Issue operativo autorizado; T003 no iniciado. DEC-013/inventario y actualizaciones documentales son locales sin commit/push automático; la decisión y el inventario completos están publicados en #10/#11. Resultados históricos sin alteración.
