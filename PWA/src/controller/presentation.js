@@ -4,6 +4,7 @@ export const screens = {
   CONNECTING: ['Conectando con la PC…', 'Mantén el teléfono en la misma Wi-Fi que la PC.', null, 'connecting'],
   PERMISSION_REQUIRED: ['Conectado. Activa tu control', 'Permite el acceso al movimiento y la orientación con el siguiente botón.', 'ACTIVAR CONTROL', 'success'],
   REQUESTING_PERMISSION: ['Esperando tu permiso…', 'Responde a la solicitud del navegador, si aparece.', null, 'connecting'],
+  CONTROL_SUSPENDED: ['Control en pausa', 'Vuelve a Gorilla Escape para reanudar.', null, 'warning'],
   PREPARING_SENSORS: ['Preparando sensores…', 'Sujeta el teléfono mientras comprobamos su señal real.', null, 'connecting'],
   INPUT_READY: ['Sensores listos', 'Recibimos movimiento y orientación. La calibración y la preparación para jugar siguen pendientes.', null, 'success'],
   INPUT_LIMITED: ['Señal de movimiento limitada', 'Recibimos parte de la señal. Algunas capacidades o ejes no están disponibles.', 'VOLVER A COMPROBAR', 'warning'],

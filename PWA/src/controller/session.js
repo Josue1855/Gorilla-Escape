@@ -10,6 +10,11 @@ export class ControllerSession {
     this.state = this.hasAdmission ? 'CONNECT' : 'NO_ADMISSION';
     this.network = 'NOT_CONNECTED'; this.attempted = false; this.disposed = false;
     this.capabilities = permissionCapabilities(win); this.permissions = null;
+    this.pagehide = () => {
+      if (!this.disposed) { this.network = 'DISCONNECTED'; this.state = 'DISCONNECTED'; this.publish(); }
+      void this.dispose().catch(() => {});
+    };
+    this.win.addEventListener('pagehide', this.pagehide);
     this.emissionRate = new RateWindow(); this.measurement = null; this.measureTimer = null;
     this.capture = new SensorCapture({ win, doc, now, notify: () => this.updateInput(),
       onSample: snapshot => { this.emitSample(snapshot); this.updateInput(); } });
@@ -58,6 +63,10 @@ export class ControllerSession {
   updateInput() {
     if (this.disposed || this.network !== 'NETWORK_READY' || !['RUNNING', 'SUSPENDED'].includes(this.capture.state)) return;
     const state = this.capture.inputState();
+    if (state === 'CONTROL_SUSPENDED') {
+      this.cancelMeasurement();
+      this.client.latest = null; // Discard unsent pre-background input, leave an already-sent frame alone.
+    }
     if (this.state !== state) { this.state = state; this.publish(); }
   }
   transportCounters() {
@@ -92,8 +101,9 @@ export class ControllerSession {
     // MobileClient owns the bounded, sanitized transport report. Never copy URL/identity/error text.
     return { ...this.client.diagnostic(), controller: this.snapshot(), signalVerified: this.state === 'INPUT_READY', sensors: this.capture.metrics(), emissionPolicy: this.emitSample.metrics(), emission: this.emissionRate.metrics(), transport: this.transportCounters(), measurement: this.measurement && structuredClone(this.measurement) };
   }
-  dispose() {
-    this.disposed = true; this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
+  async dispose() {
+    if (this.disposed) return;
+    this.disposed = true; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
     return this.client.close(false); // Owned transport cleanup only; no new lifecycle policy.
   }
 }

@@ -1,0 +1,137 @@
+{
+  "scope": "T011 LAB/EMULATOR; ADB reverse localhost != physical LAN/TLS validation",
+  "source": "emulator",
+  "physical": "NOT RUN; deferred T019/DEC-022",
+  "gate": "BLOCKED",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "cleanProfile": {
+    "method": "new disposable AVD/Chrome; explicit origin storage clear + HTTP cache clear before first navigation",
+    "usageBefore": 0,
+    "existingRegistrations": 0,
+    "preloaded": false
+  },
+  "wanProbeBeforeFirstLoad": "UNAVAILABLE",
+  "directPublicIpTcpExit": "1",
+  "wanIsolation": {
+    "method": "owned guest OUTPUT reject rules IPv4+IPv6, allow only loopback and PC endpoints; mobile data disabled",
+    "directPublicIpTcpExit": "1",
+    "hostNetworkModified": false
+  },
+  "stage": "PAGEHIDE",
+  "firstLoad": {
+    "status": "PASS",
+    "secureContext": true,
+    "network": "NETWORK_READY",
+    "source": "emulator",
+    "wan": "UNAVAILABLE",
+    "cacheBefore": 0
+  },
+  "assets": [
+    {
+      "path": "/assets/index-Da4bfLN9.js",
+      "status": 200
+    },
+    {
+      "path": "/assets/index-Dif6RnX5.css",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-192.png",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-512.png",
+      "status": 200
+    },
+    {
+      "path": "/index.html",
+      "status": 200
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200
+    }
+  ],
+  "localHealth": {
+    "status": 200
+  },
+  "cache": [
+    {
+      "name": "gorilla-shell-2af586b1468a1901",
+      "paths": [
+        "/assets/index-Da4bfLN9.js",
+        "/assets/index-Dif6RnX5.css",
+        "/icons/icon-192.png",
+        "/icons/icon-512.png",
+        "/index.html",
+        "/manifest.webmanifest"
+      ]
+    }
+  ],
+  "models": "NONE",
+  "secondLoad": {
+    "status": "PASS",
+    "controller": "INPUT_READY",
+    "SWControlled": true
+  },
+  "shortSuspension": {
+    "status": "PASS",
+    "state": "CONTROL_SUSPENDED",
+    "hiddenMotionSubmittedDelta": 0,
+    "measurement": "INTERRUPTED",
+    "sensorsDetached": true
+  },
+  "resume": {
+    "status": "PASS",
+    "state": "INPUT_READY",
+    "freshVirtualCallbacks": true
+  },
+  "duplicateListeners": "PASS \u2014 one per channel after real HOME/return; repeated epochs covered by unit test",
+  "longSuspension": {
+    "status": "PASS",
+    "method": "real HOME, >=3s hidden, intentionally close owned RTCPeerConnection, return; deterministic transport-loss case, not physical OS throttling",
+    "state": "DISCONNECTED",
+    "capture": "STOPPED",
+    "recovery": "fresh QR; no automatic reconnect"
+  },
+  "guestNetworkRestored": true,
+  "playerExit": 0,
+  "javaCleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "ownedJavaResiduals": 0,
+  "reason": "UI tree control absent: ACTIVAR CONTROL",
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t011/android_offline.py": "8fde03cadbf963765bd279689f91ec7a3364b8f4915eb836c0b9d5626bbb6f9f",
+    "PWA/src/input/sensors/capture.js": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d",
+    "PWA/src/controller/session.js": "d14e4591055b37f844051d48639c1c193f7015a580340ca45c64833247c896ad",
+    "PWA/src/controller/presentation.js": "48ef0eafcd6f5103d77373c6a8d7dcd3cd2bd08c5af09f286444b2aaa9e396e0",
+    "PWA/dist/sw.js": "e34632b0a6ae2f8eba5079eedd73e26d61ecc7ba1ca0d51b1cc61d9753bc810e",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "ea2228d220e8346fb1196dadc8502877663675fa6aff6f09b421d8f4accb2466"
+  }
+}

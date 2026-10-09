@@ -48,7 +48,7 @@ export class SensorCapture {
         intervals: 0, elapsedMs: 0, lastAt: null, previous: null, latest: null,
         sequence: 0, validSequence: 0, lastEvent: null, lastTimestamp: null,
         rawRate: new RateWindow(), validRate: new RateWindow(), duplicates: 0, timingRejected: 0, rawCallbacks: 0,
-        validAt: null, validSamples: 0, missingAxes: {}, invalidAxes: {} }]));
+        validAt: null, readySamples: 0, validSamples: 0, missingAxes: {}, invalidAxes: {} }]));
     this.startedAt = null; this.screenAngle = this.readScreen();
   }
   readScreen() {
@@ -102,7 +102,10 @@ export class SensorCapture {
   }
   suspend(hidden) {
     if (!['RUNNING', 'SUSPENDED'].includes(this.state)) return;
-    ++this.measurementEpoch; this.detach(); this.state = hidden ? 'SUSPENDED' : 'RUNNING';
+    if (hidden === (this.state === 'SUSPENDED')) return;
+    ++this.measurementEpoch; ++this.generation; this.detach(); this.state = hidden ? 'SUSPENDED' : 'RUNNING';
+    // A new visibility epoch needs new input; never reuse pre-background values.
+    for (const channel of Object.values(this.channels)) { channel.latest = null; channel.validAt = null; channel.readySamples = 0; }
     if (!hidden) {
       this.startedAt = this.now();
       for (const channel of Object.values(this.channels)) channel.lastAt = null;
@@ -161,7 +164,7 @@ export class SensorCapture {
     // Values may be unchanged at rest; identity is an event, not vector content.
     const groups = name === 'motion' ? [payload.acceleration, payload.accelerationIncludingGravity, payload.rotationRate] : [payload.angles];
     if (groups.some(group => Object.values(group).some(finite))) {
-      channel.validSamples++; channel.validSequence++; channel.validAt = at; channel.validRate.add(at);
+      channel.validSamples++; channel.readySamples++; channel.validSequence++; channel.validAt = at; channel.validRate.add(at);
       this.onSample(this.snapshot());
     }
     // Only the latest sample per source is retained.
@@ -209,7 +212,8 @@ export class SensorCapture {
     // O(1) readiness; sorting bounded metric windows belongs to diagnostics only.
     const at = this.now();
     const usable = Object.values(this.channels).filter(c => ['granted', 'not-required-by-api'].includes(c.permission));
-    const fresh = c => c.validSamples >= 3 && c.validAt !== null && at - c.validAt < this.interruptionMs;
+    if (this.state === 'SUSPENDED') return 'CONTROL_SUSPENDED';
+    const fresh = c => c.readySamples >= 3 && c.validAt !== null && at - c.validAt < this.interruptionMs;
     if (!usable.length) return 'SENSOR_UNAVAILABLE';
     if (usable.every(fresh)) {
       const m = this.channels.motion.latest, o = this.channels.orientation.latest;

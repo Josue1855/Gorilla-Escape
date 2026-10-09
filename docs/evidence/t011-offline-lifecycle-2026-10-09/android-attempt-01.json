@@ -1,0 +1,33 @@
+{
+  "scope": "T011 LAB/EMULATOR; ADB reverse localhost != physical LAN/TLS validation",
+  "source": "emulator",
+  "physical": "NOT RUN; deferred T019/DEC-022",
+  "gate": "FAIL",
+  "reason": "CommandFailure",
+  "detail": "Command failed: adb: Error: Activity not started, unable to resolve Intent { act=android.intent.acti",
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t011/android_offline.py": "701b5bb138f173703fd8e80a5987765d71b34b2a6711a2a33f8f6f7132d587f6",
+    "PWA/src/input/sensors/capture.js": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d",
+    "PWA/src/controller/session.js": "d14e4591055b37f844051d48639c1c193f7015a580340ca45c64833247c896ad",
+    "PWA/src/controller/presentation.js": "48ef0eafcd6f5103d77373c6a8d7dcd3cd2bd08c5af09f286444b2aaa9e396e0",
+    "PWA/dist/sw.js": "e34632b0a6ae2f8eba5079eedd73e26d61ecc7ba1ca0d51b1cc61d9753bc810e",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "ea2228d220e8346fb1196dadc8502877663675fa6aff6f09b421d8f4accb2466"
+  }
+}

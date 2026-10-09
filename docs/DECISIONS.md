@@ -390,3 +390,19 @@ La ruta browser APIs → normalización → Gorilla Protocol → WebRTC → Java
 Producto idéntico al candidato final probado: captureRevision `t010-2-coarsened-clock`, maximumHz50; alpha>=0 && alpha<360. Observador AVD/API36/Chrome: alphaViolationCount14/min360/max360, beta/gamma0; alpha360→invalid→null, sin clamp/modulo/ampliación. Comportamiento físico NOT VALIDATED. Frescura2000ms intacta; orientation estacionaria que deja de actualizar→NO_SENSOR_INPUT es LAB OBSERVATION, physical applicability UNKNOWN; no eventos fabricados ni bug físico declarado.
 
 Se autoriza commit/push/PR Ready, revisión de seguridad/checks y merge normal; cierre completed/Done de #21 sólo después de integración y Management/Foundation post-merge PASS. QA transferida justifica retirar needs-device-test de #21. #22 sólo se desbloquea/Ready tras #20 y #21 Closed/Done; no se implementa T011. F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. [Registro y evidencia](PHASE0_T010_SENSOR_CAPTURE.md).
+
+## DEC-022 — T011 Exit with Emulator/Lab and Deferred Physical QA
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Decisión explícita del PO: T011 puede validar primera carga sin caché/sin WAN y lifecycle mediante software/laboratorio + Android Emulator. **PASS FOR T011 EXIT != physical mobile QA completed.** No reemplaza QA física ni acepta compatibilidad universal.
+
+WAN unavailable (PC/ruta local disponibles) se distingue de servidor local unavailable: el shell cacheado no fabrica sesión ni sustituye Java/PC. Primera carga exige origen Gorilla sin SW/cache/almacenamiento previo y WAN realmente inaccesible; probe externo debe fallar y endpoint local funcionar. ADB reverse/localhost sólo evidencia LAB/EMULATOR, no Wi-Fi física ni confianza TLS pública. Recursos runtime locales, modelos runtime actuales NONE; no cloud ni CDN. SW productivo conserva precache de lista cerrada del build; no cachear API/JOIN/reconnect/admission/SDP/diagnósticos/sensores.
+
+Al ocultar, CONTROL_SUSPENDED, listeners sensores desacoplados y cero nueva emisión; último pendiente no enviado se descarta. Al volver, PREPARING_SENSORS y tres eventos frescos por canal antes de readiness. Si RTC murió, DISCONNECTED y nuevo QR; sin reconnect automático. Pagehide limpia captura/medición/transporte propio. Rangos, freshness2000ms, captureRevision t010-2-coarsened-clock, tiers, maximumHz50 y Gorilla Protocol v1 intactos.
+
+QA física diferida a #33/T019 (todos NOT RUN): primera carga sin caché con teléfono LAN/sin WAN, recursos locales iPhone/Android, background/foreground corto y largo, throttling, lock-screen/return, cero input stale oculto, recuperación segura/DISCONNECTED y diferencias Safari/Chrome. T019 mantiene AC/dependencias/bloqueo; no se inicia. AC1/AC3 evidencia literal LAB/EMULATOR; salida PASS FOR T011 EXIT bajo DEC-022 sólo con pruebas exitosas. AC2 puede ser PASS literal por recursos locales comprobados.
+
+T011 termina en PR Ready hacia develop, sin merge/cierre: #22 OPEN/In Review, F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. [Alcance y evidencia](PHASE0_T011_OFFLINE_LIFECYCLE.md).
+
+### DEC-022 — acreditación de salida del candidato recuperado
+
+2026-10-09: AC1 PASS literal LAB/EMULATOR y PASS FOR T011 EXIT under DEC-022; AC2 PASS literal; AC3 PASS literal LAB/EMULATOR y PASS FOR T011 EXIT under DEC-022. Android final13 acredita primera/segunda carga sin WAN, recursos locales, zero hidden motion, recuperación fresca, medición interrumpida, pérdida RTC y pagehide cleanup. Datos físicos permanecen NOT RUN en T019, sin modificar sus AC/dependencias ni iniciarlo. Pagehide observer se corrige sólo en QA: agregado bounded escrito antes de pérdida de contexto, unit cleanup y RTC/Unity externos. Producto local recuperado intacto. Publicar PR hacia develop, #22 OPEN/In Review; no merge/cierre. F02 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED. Historia FAIL/BLOCKED anterior conservada.
