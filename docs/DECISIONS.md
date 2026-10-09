@@ -247,3 +247,53 @@ Modelos/versiones Android/iPhone/router son metadatos de ejecución; Android fí
 **Fecha:**2026-10-08. **Estado:**Accepted bajo autorización PO explícita condicionada a evidencia, satisfecha por auditoría T003. Unity6000.3.23f1/rev09d2ecc7fb28; Java release21/JDK lab Ubuntu21.0.12.1+1-1-24.04.4-Ubuntu; Boot4.1.1/Springcore7.0.9; Maven3.9.11/wrapper3.3.2/compiler3.15.0; webrtc-java0.19.0/native linux-x86_64; GorillaProtocol mobilev1 (IPCprobev1/CameraInputv1 separados); Python LAB3.12.3/MediaPipe0.10.33/OpenCV contrib4.13.0.92/cv2 4.13.0/NumPy2.5.3, Pose Landmarker lite float16v1 hash59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a. Plataforma validada Pop!_OS24.04x86_64/DellLatitude5540.
 
 No actualización por novedad: necesidad/compatibilidad/regresión/decisión previa para upgrades. DEC-010 WebRTC transporte seleccionado permanece vigente; WT/WS históricos no regresan al producto. [Comparativa/compatibilidad/evidencia/AC](PHASE0_T003_TECHNICAL_BASELINE.md). Java mínimo nuevo aislado PASS; UnityEdit64/Play16/build0/0 retenidos con hashes/config idénticos, no nuevas ejecuciones. Windows/macOS/PC limpia/packaging final visión/licencias siguen pendientes; adaptador Python sólo LAB,17.61FPS no cumpleT016. AC1/AC2 PASS documental, no todoFase0Done. Sin inicio de otros Issues/Fase1 ni merge automático.
+
+## DEC-016 — Local HTTPS Trust Model
+
+**ACCEPTED FOR IMPLEMENTATION / VALIDATION**, decisión explícita PO 2026-10-08, dentro de T008/#19. CA raíz local única por instalación + leaf corto con SAN iPAddress para la IPv4 LAN actual. Wi-Fi doméstica existente, sin DNS/router específico ni hostname administrado. HTTPS puerto no privilegiado configurable (8443 por defecto); WebRTC DataChannel DEC-010 se conserva. Claves privadas locales fuera de Git, permisos restrictivos, fingerprint público y regeneración sólo por acción explícita del operador.
+
+Esta decisión reemplaza **para el enfoque principal de T008** las exigencias históricas de dominio/certificado público/DNS administrado/443 y la prohibición de preparación de confianza en el teléfono. No reinterpreta evidencia anterior ni convierte pruebas LAB en físicas. PREPARE DEVICE (instalar y confiar CA una vez por instalación) se separa de JOIN GAME; target <60 s aplica a dispositivo preparado, y la preparación inicial se mide/publica separadamente. Android/iPhone son hardware representativo de QA (DEC-014), no únicos modelos compatibles. Fase0/E0 abiertos; Fase1 NOT STARTED; no T009/T010/T011.
+
+[Implementación, lifecycle, seguridad, procedimiento y validación](PHASE0_T008_LOCAL_TRUST.md). JDK21/keytool existente es requisito de este Spike de generación (no biblioteca añadida ni distribución final resuelta). Windows ACL/keytool empaquetado quedan sin validar en este gate Linux; no abrir permisos para simular portabilidad. Confianza física Android/Safari y métricas humanas siguen gates pendientes antes de cerrar #19.
+
+
+## DEC-017 — Local Firewall Integration
+
+**Estado: Proposed — pendiente de aprobación PO y gates físicos/red adicionales. Fecha: 2026-10-08.** Esta propuesta no autoriza integración automática del firewall en el producto ni modifica DEC-010. T008/#19 sigue siendo el único Issue operativo.
+
+Recomendación: **ONE-TIME NETWORK SETUP** por instalación o desde Settings. El instalador/configurador detecta requisitos y solicita elevación normal del sistema para crear exclusivamente reglas identificables de Gorilla Escape. Los inicios normales de Unity/Java no requieren elevación. Settings/uninstall puede retirar las reglas propias, preservando reglas ajenas y políticas por defecto. El juego y Java nunca se ejecutan como root. No guardar ni automatizar contraseña administrativa.
+
+Reglas mínimas por protocolo y puerto, restringidas a interfaz/subred LAN confirmadas cuando el sistema lo permita; destino local y sin forwarding/NAT/router/DNS/WAN. Bootstrap HTTP de CA sólo habilitado durante preparación, no dejarlo abierto como requisito permanente de gameplay. Registrar propiedad, contenido, versión y qué reglas realmente se crearon; idempotencia no implica apropiarse de una regla equivalente preexistente. No restaurar snapshots completos. Cambios de interfaz/subred/puertos requieren revalidación y actualización explícita de la configuración, no asumir que la regla inicial cubre cualquier red futura. Linux/UFW y Windows Firewall necesitan adaptadores y validación independientes, todavía no implementados.
+
+**QA temporal actual, no diseño de producto aceptado:** dos excepciones TCP confirmadas (8443 HTTPS y 18000 PREPARE), con comentarios `Gorilla Escape T008 HTTPS` / `Gorilla Escape T008 PREPARE`. Sólo por la interfaz y desde la subred de esta ejecución; se eliminan al terminar. Estado previo saneado, verificación posterior y cleanup obligatorio. Firewall activo y políticas originales preservadas. Ningún permiso UDP implícito.
+
+**Capacidad de rango ICE demostrada en API, no en ejecución:** el artefacto instalado `webrtc-java 0.19.0` expone `RTCConfiguration.portAllocatorConfig` y `PortAllocatorConfig.minPort/maxPort`. La [guía oficial](https://jrtc.dev/guide/networking/port-allocator-config) describe límites inclusivos y 0 como no especificado. El código actual únicamente deshabilita STUN/relay/TCP; no fija min/max. Es posible diseñar un rango acotado para Java, pero no se configuró ni abrió ninguno. El rango de los puertos remotos del navegador no se controla con esta API.
+
+**Conclusión técnica actual:** los requisitos TCP fueron observados. **Reglas adicionales de entrada UDP NO están demostradas como necesarias actualmente.** El gate físico iPhone con QR nuevo alcanzó HTTP200, remoteDescriptionPASS, ICECONNECTED, ambosDataChannelsOPEN y READY técnico usando sólo las excepciones TCP temporales; Safari host/UDP/MDNS_LOCAL y Java host/UDP/IPV4 conectaron sin reglas UDP adicionales. [Evidencia](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json). No deducir compatibilidad universal ni atribuir retrospectivamente el fallo genérico anterior, cuya causa sigue UNKNOWN / NOT REPRODUCED.
+
+No incluir UDP preventivo en la propuesta ni seleccionar minPort/maxPort/rango, modificar ICE, introducir STUN/TURN o alterar mDNS. La capacidad API documentada arriba no es un requisito operativo. Si un gate futuro demuestra un bloqueo UDP concreto, tratarlo como nueva evidencia que exige diagnóstico acotado, dimensionamiento y autorización PO separados antes de proponer reglas. No hacer de esa hipótesis un gate artificial de T008.
+
+**Pendiente para aceptar DEC-017 como diseño final:** validación física Android y más redes/gates representativos; adaptadores Linux/Windows, propiedad/idempotencia/remoción de reglas y preservación de políticas. ONE-TIME NETWORK SETUP sigue propuesto: reglas propias mínimas demostradas, starts normales sin elevación y remoción segura, sin aprobación de diseño universal todavía.
+
+Criterios de aceptación de una implementación futura: autorización visible, reglas mínimas/idempotentes/propias, rechazo de interfaces ambiguas, fallo recuperable cuando la elevación se rechaza, no cambiar políticas/forwarding, funcionamiento normal sin elevación, remoción de reglas propias y preservación de cambios concurrentes ajenos, validación física y rollback documentado. Esta propuesta no cierra #19 ni desbloquea T009.
+
+## DEC-018 — T008 Spike Exit / Deferred Physical QA
+
+**Fecha: 2026-10-09. Estado: ACCEPTED. Aprobación: autorización formal del Product Owner en este chat.** Aplica únicamente a la salida del Spike T008/#19 y su PR #96; no acepta la QA diferida ni inicia T019/T009/Fase 1.
+
+La prueba física iPhone 15 demostró trusted HTTPS → QR seguro → sesión Java LAN → `/mobile/join` HTTP200 → SDP PASS → ICE CONNECTED → control/motion DataChannels OPEN → Gorilla Protocol HELLO/ACK → READY técnico. [Primera evidencia instrumentada](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json) y [segunda corrida](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json). Esto satisface el objetivo técnico del Spike. La falta de Android físico no bloquea su salida bajo esta decisión; no implica compatibilidad universal.
+
+| AC final T008 | Dictamen de salida | Evidencia o deuda conservada |
+|---|---|---|
+| AC1 | PASS FOR SPIKE EXIT under DEC-018 | iPhone físico PASS; Android físico DEFERRED / NOT RUN |
+| AC2 | PASS | QR seguro, sesión/signaling LAN, RTC y HELLO/ACK/READY físicos iPhone |
+| AC3 | PASS FOR SPIKE EXIT under DEC-018 | Cronómetros humanos DEFERRED / NOT MEASURED; no target <60s acreditado |
+| AC4 | PASS | Fallos/alternativas e historia conservados; Plan B no activado |
+
+**PASS FOR SPIKE EXIT != all physical QA completed.** Android physical HTTPS/trust y QR→READY siguen NOT RUN. PREPARE DEVICE y prepared JOIN humanos siguen NOT MEASURED. No usar 316ms,340ms ni «unos pocos segundos» como cronometraje humano; tampoco son latencia teléfono→gameplay. El fallo genérico anterior sigue UNKNOWN / NOT REPRODUCED.
+
+**Deferred QA from T008 / DEC-018 → #33/T019:** Android físico trusted HTTPS; Android físico QR→signaling→RTC→READY; metadatos de compatibilidad iPhone/Android (modelo/OS/browser/red por ejecución); duración humana PREPARE DEVICE inicial completa; duración humana QR→READY de dispositivo preparado; verificar target<60s o registrar fallo; reevaluar firewall en dispositivos/redes adicionales. Añadir estos gates sin borrar/modificar AC ni dependencias existentes de T019. T019 permanece bloqueado, no iniciado; conserva sus gates de 1/4 controles, conexiones/reconexiones, fallos y P95 real.
+
+DEC-017 permanece **Proposed**: acceso TCP requerido en la red probada; reglas inbound UDP adicionales no demostradas necesarias. No minPort/maxPort, UDP preventivo, cambios ICE/mDNS/STUN/TURN ni configuración nueva de infraestructura.
+
+DoD: documentación/decisión y carry-forward → checks aplicables → PR96 Ready for Review → merge normal autorizado a develop → validación post-merge → #19 CLOSED/completed/Done. Sólo entonces retirar needs-device-test de #19 (QA transferida), conservar security/type:spike/area:network y reevaluar #20/T009 sin implementarlo. Registrar SHA/checks/cierre efectivos en el PR e Issues tras integración; esta aprobación no declara que el merge ya ocurrió. F02/#18 y Fase0 permanecen OPEN/IN PROGRESS; Fase1 NOT STARTED. DEC-018 enmienda sólo las condiciones de salida anteriores de T008, no elimina su historial ni cambia DEC-016/autoridad/protocolo.

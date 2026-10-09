@@ -1,0 +1,333 @@
+{
+  "candidate": "f62fa22171f00ccdff987a3d282e228144a37b5f",
+  "scope": "One fresh QR / one JOIN; physical iPhone Safari on existing LAN; no new transport or UDP rules",
+  "device": {
+    "model": "iPhone 15",
+    "iOS": "27, user-reported; exact build UNKNOWN",
+    "browser": "Safari included with iOS; exact version UNKNOWN"
+  },
+  "freshQrUsed": true,
+  "qrToJoin": "NOT MEASURED",
+  "prepare": "Previous PASS retained; no CA reinstall",
+  "httpsTrust": "PASS; prepared installation CA, not public stock Android/iOS trust",
+  "safari": {
+    "stage": "READY",
+    "code": null,
+    "postExecuted": true,
+    "httpStatus": 200,
+    "rejectionCode": null,
+    "remoteDescription": "PASS",
+    "candidates": [
+      {
+        "type": "host",
+        "protocol": "udp",
+        "addressKind": "MDNS_LOCAL",
+        "port": 62352
+      }
+    ],
+    "events": [
+      {
+        "ms": 38,
+        "event": "signalingState",
+        "value": "stable"
+      },
+      {
+        "ms": 38,
+        "event": "iceGatheringState",
+        "value": "new"
+      },
+      {
+        "ms": 38,
+        "event": "iceConnectionState",
+        "value": "new"
+      },
+      {
+        "ms": 38,
+        "event": "connectionState",
+        "value": "new"
+      },
+      {
+        "ms": 40,
+        "event": "control",
+        "value": "connecting"
+      },
+      {
+        "ms": 41,
+        "event": "motion",
+        "value": "connecting"
+      },
+      {
+        "ms": 41,
+        "event": "stage",
+        "value": "CREATE_OFFER"
+      },
+      {
+        "ms": 44,
+        "event": "stage",
+        "value": "LOCAL_DESCRIPTION"
+      },
+      {
+        "ms": 48,
+        "event": "signalingState",
+        "value": "have-local-offer"
+      },
+      {
+        "ms": 48,
+        "event": "stage",
+        "value": "ICE_GATHERING"
+      },
+      {
+        "ms": 49,
+        "event": "iceGatheringState",
+        "value": "gathering"
+      },
+      {
+        "ms": 165,
+        "event": "iceGatheringState",
+        "value": "complete"
+      },
+      {
+        "ms": 165,
+        "event": "stage",
+        "value": "SIGNALING_POST"
+      },
+      {
+        "ms": 269,
+        "event": "iceConnectionState",
+        "value": "checking"
+      },
+      {
+        "ms": 269,
+        "event": "connectionState",
+        "value": "connecting"
+      },
+      {
+        "ms": 294,
+        "event": "stage",
+        "value": "SIGNALING_RESPONSE"
+      },
+      {
+        "ms": 296,
+        "event": "stage",
+        "value": "REMOTE_DESCRIPTION"
+      },
+      {
+        "ms": 298,
+        "event": "signalingState",
+        "value": "stable"
+      },
+      {
+        "ms": 298,
+        "event": "stage",
+        "value": "ICE_CONNECTING"
+      },
+      {
+        "ms": 306,
+        "event": "iceConnectionState",
+        "value": "connected"
+      },
+      {
+        "ms": 306,
+        "event": "stage",
+        "value": "ICE_CONNECTED"
+      },
+      {
+        "ms": 313,
+        "event": "connectionState",
+        "value": "connected"
+      },
+      {
+        "ms": 326,
+        "event": "control",
+        "value": "open"
+      },
+      {
+        "ms": 326,
+        "event": "stage",
+        "value": "CONTROL_OPEN"
+      },
+      {
+        "ms": 326,
+        "event": "motion",
+        "value": "open"
+      },
+      {
+        "ms": 326,
+        "event": "stage",
+        "value": "MOTION_OPEN"
+      },
+      {
+        "ms": 326,
+        "event": "stage",
+        "value": "HELLO_ACK"
+      },
+      {
+        "ms": 340,
+        "event": "stage",
+        "value": "READY"
+      }
+    ]
+  },
+  "readyFromConnectMs": 340,
+  "readyTimingScope": "Safari relative monotonic connect start; NOT QR\u2192JOIN, NOT gameplay latency",
+  "server": {
+    "joinAttempts": [
+      {
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.116415,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.275018,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.479793,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 4.4234,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 5.897033,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 6.447069,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 6.86105,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 6.875383,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 6.878066,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 7.865529,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 21.248787,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 21.3492,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 58.755336,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 58.811694,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 81.03016,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 81.056996,
+            "value": "OPEN",
+            "event": "motion"
+          },
+          {
+            "ms": 39296.069162,
+            "value": "CLOSED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 39296.109246,
+            "value": "CLOSED",
+            "event": "connectionState"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 50804,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          }
+        ]
+      }
+    ],
+    "peers": 0
+  },
+  "ufwUdpEvents": {
+    "status": "NOT RUN",
+    "reason": "No ICE failure; scoped UDP log inspection precondition not met",
+    "historicalObservedZero": "Preserved separately; not reinterpreted"
+  },
+  "tcpTemporaryRules": {
+    "added": 2,
+    "udpAdded": 0,
+    "removed": 2,
+    "firewallActiveAfter": true,
+    "policiesUnchanged": true,
+    "fullStatusMatchesBefore": true
+  },
+  "rootCause": {
+    "previousGenericFailure": "UNKNOWN / NOT REPRODUCED",
+    "newAttempt": "PASS; mDNS candidate accepted and connected, no evidence to change ICE range or transport"
+  },
+  "cleanup": {
+    "playerExit": 0,
+    "javaResiduals": 0,
+    "cleanup": [
+      {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false
+      }
+    ],
+    "listenersClosed": {
+      "18000": true,
+      "8443": true
+    },
+    "transientQrRemoved": true
+  },
+  "acceptance": {
+    "AC1": "PARTIAL: iPhone trusted HTTPS PASS, Android physical NOT RUN",
+    "AC2": "PARTIAL globally: fresh QR / local signaling / WebRTC / HELLO-ACK / READY iPhone PASS; physical Android gate remains",
+    "AC3": "PARTIAL / human durations NOT MEASURED; 340ms internal connect does not satisfy QR-human measurement",
+    "AC4": "PASS: diagnostic and alternatives recorded; Plan B not activated"
+  },
+  "issue19": "OPEN / Validation",
+  "pr96": "OPEN / DRAFT",
+  "DEC017": "Proposed",
+  "phase0": "IN PROGRESS",
+  "phase1": "NOT STARTED",
+  "nextAction": "PO-guided human PREPARE/JOIN timings and physical Android gate; no T009",
+  "serverLaterClosure": {
+    "observed": true,
+    "ms": 39296.069162,
+    "cause": "NOT ESTABLISHED; no sustained-session or background/resume acceptance inferred"
+  }
+}

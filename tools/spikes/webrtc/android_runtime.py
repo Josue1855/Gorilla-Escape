@@ -20,7 +20,7 @@ with tempfile.TemporaryDirectory(prefix='gorilla-mobile-android-') as temporary:
   # Serialize with the earlier explicit sustained regression; no lock bypass.
   marker=REPO/'Unity/Logs/MobileInputRegression2C/measurement-results.json'
   wait(lambda:marker.exists(),300)
-  operator=secrets.token_urlsafe(32);env=os.environ.copy();env.update(GORILLA_IPC_JAVA=str(run.args.java),GORILLA_IPC_JAR=str(run.args.jar),GORILLA_IPC_MODE='lifecycle',GORILLA_PHONE_INPUT='1',GORILLA_MOBILE_OPERATOR=operator)
+  operator=secrets.token_urlsafe(32);env=os.environ.copy();env.update(GORILLA_IPC_JAVA=str(run.args.java),GORILLA_IPC_JAR=str(run.args.jar),GORILLA_IPC_MODE='lifecycle',GORILLA_PHONE_INPUT='1',GORILLA_MOBILE_LAB='1',GORILLA_MOBILE_OPERATOR=operator)
   player=subprocess.Popen([str(REPO/'Unity/Builds/FoundationLinux/GorillaEscape.x86_64'),'-screen-fullscreen','0','-screen-width','640','-screen-height','360','-logFile','-'],env=env,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,text=True)
   def consume():
    for line in player.stdout:

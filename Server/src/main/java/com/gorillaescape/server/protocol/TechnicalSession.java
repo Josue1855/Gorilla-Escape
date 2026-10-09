@@ -37,6 +37,18 @@ public final class TechnicalSession {
         if(clients.size()>=4)throw new IllegalStateException("SESSION_FULL");admissions.remove(admission);
         int p=1;while(clients.containsKey(p))p++;Client c=new Client(p,UUID.randomUUID().toString(),token(),clock.getAsLong());clients.put(p,c);return joined(c);
     }
+    /** Only an unconfirmed initial RTC allocation may be rolled back. Admission stays one-use. */
+    public synchronized void abortUnconfirmedJoin(Joined joined){
+        Client c=owned(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());
+        if(!c.resume.equals(joined.resumeToken()))throw new IllegalArgumentException("CLIENT_IDENTITY");
+        clients.remove(c.player);
+    }
+    public synchronized String admissionFailure(String sid,String token){
+        live();
+        if(!session.equals(sid)||token==null||!token.matches("[A-Za-z0-9_-]{43}"))return "ADMISSION_INVALID";
+        // Missing well-formed tokens are indistinguishable: expired, consumed or never issued.
+        return "ADMISSION_EXPIRED_OR_USED";
+    }
     private Joined joined(Client c){return new Joined(session,c.player,c.device,c.resume,c.epoch);}
     private Client owned(String sid,int pid,String device,long epoch){live();Client c=clients.get(pid);
         if(!session.equals(sid)||c==null||!c.device.equals(device)||c.epoch!=epoch)throw new IllegalArgumentException("CLIENT_IDENTITY");return c;}

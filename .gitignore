@@ -43,3 +43,7 @@ __pycache__/
 *.pfx
 *.p12
 *.jks
+
+# DEC-016 private trust material is outside the checkout; defense in depth.
+*.key
+*.pem

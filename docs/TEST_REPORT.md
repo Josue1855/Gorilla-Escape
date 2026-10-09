@@ -483,3 +483,77 @@ Unity/Java/vision exit0, sin forced. Sólo FINAL PHASE0 AUDIT pendiente; no ejec
 ## Reconciliación operativa Project — 2026-10-08
 
 SoftwareLab technical checkpoint PASS retenido; Project Phase0 stillOPEN. Se publican los cambios auditados en PR94; no nuevo código de producto. 27Issues reales reconciliados con AC/Dependencies/DoD:0cierres,9InProgress/8POReview/10Validation; metadata/dependencias preservadas. T0012/3,slowmotion pendiente; T016/T017/T019 físicos y T020PC limpia pendientes. #35blockedby#34;Fase1NOTSTARTED. [Matriz/evidencia](PHASE0_PROJECT_RECONCILIATION.md). Checks del head publicado inicialPASS; final e integración se verifican separadamente.
+
+## T008 / DEC-016 — candidato local trust, 2026-10-08
+
+Base integrada `7e818d5e729aad09c3b6fe40cc22422268198d2a`; rama `feature/mobile-t008-local-trust`. DEC-016 ACCEPTED FOR IMPLEMENTATION / VALIDATION: CA única por instalación, leaf corto con SAN iPAddress, origen HTTPS LAN y QR conectado al endpoint de producto. Preparación inicial de confianza y JOIN preparado son flujos/mediciones distintos; no cambia WebRTC/contrato/IPC ni añade T009. [Diseño y procedimiento](PHASE0_T008_LOCAL_TRUST.md).
+
+**Nueva ejecución del candidato:** Java **52/52 PASS**, 0 errores/fallos/SKIP y build/package PASS; PWA **9/9 PASS** y build PASS. Incluye 4 tests nuevos (3 unit + 1 Java real) de CA/leaf/permisos/IP/QR/TLS/bootstrap/EOF. TLS normal: CA confiada valida; certificado no confiado, IP incorrecta y expiración se rechazan. No trust-all ni flags. Management/Foundation validadores locales PASS.
+
+**Regresión serial nueva PASS:** Chrome real, 4 peers → WebRTC → Java hijo de Unity → IPC 127.0.0.1 → Player, 641 observaciones Unity y 18 negativos; recuperación manual, peers liberados, STOPPED, exit 0 y propios residuales 0. Entrada sintética/replay, no sensores físicos ni medición de onboarding humano. Cada corrida sintética permanece separada en [evidencia](evidence/t008-local-trust-2026-10-08/rtc-regression-serial.json). JAR final SHA256 `5c9728132226b9ac89ca057091e4aa4abffe0336529897896e4477d1eefb41de`.
+
+Unity EditMode **64/64**, PlayMode **16/16**, build Linux **0 errores/0 warnings** son evidencia **retenida, no una nueva ejecución**: fuentes/configuración Unity intactas frente a la base. Player SHA256 `26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f`. El JAR cambió; por ello se ejecutó la integración real nueva anterior. No se combinan/extrapolan métricas históricas 2C o móviles al gameplay físico.
+
+Fallos conservados por separado: primer test Java real falló por lector de test acotado para PNG; corrección exclusiva del lector, repetición PASS. Primer RTC con gate físico concurrente falló por deadline (causa exacta no demostrada); repetición serial PASS. [Resumen de software](evidence/t008-local-trust-2026-10-08/software-results.json).
+
+**iPhone 15 BLOCKED antes de instalar CA:** `/prepare` no carga. Cinco eventos UFW BLOCK coinciden con la IP del teléfono y los puertos del gate; lectura administrativa de estado rechazada con `sudo: a password is required`. No modificaciones de firewall/router/DNS/CA del sistema. No fallo TLS/Safari acreditado. Gate cerrado Player/Java exit 0, STOPPED/cleanup completo, residuales 0. Confianza HTTPS física, QR→READY humano y ambas duraciones NOT RUN/NOT MEASURED; Android físico NOT RUN. [Evidencia sanitizada](evidence/t008-local-trust-2026-10-08/physical-gate-01.json).
+
+**Estado:** AC1 PARTIAL; AC2 PARTIAL; AC3 NOT RUN (preparación/JOIN humanos); AC4 PASS. T008/#19 OPEN / Validation, T009/#20 bloqueado por #19, F02/E0/Fase0 OPEN, Fase1 NOT STARTED. No cierre/merge automático. Siguiente gate exclusivo: intervención autorizada y administrativa para resolver el filtrado LAN observado, seguida de preparación/confianza iPhone. El nuevo candidato no constituye aceptación física ni integración en develop.
+
+## CI native prerequisite
+
+Las primeras cuatro ejecuciones Foundation del candidato fallaron (Java 52: 49 PASS, 1 error, 2 SKIP de gates HTTPS LAN históricos). El diagnóstico final identifica `Initialize the default AudioDeviceModule failed`: el runner no tiene sistema de audio activo y la fábrica nativa RTC existente lo solicita incluso para DataChannel. No era un fallo TLS ni se demuestra inviabilidad de DEC-016. Fallos conservados en [evidencia](evidence/t008-local-trust-2026-10-08/ci-native-audio.json).
+
+Corrección de entorno: el workflow prepara PulseAudio exclusivamente en el runner efímero de CI. No cambia la fábrica/contrato WebRTC, no salta la prueba real y no instala software en la laptop del usuario. No añade dependencia Maven ni servicio de gameplay. La repetición de checks se publica separadamente en el PR.
+
+## T008 gate físico con excepción UFW temporal — 2026-10-08
+
+Código probado: `023c0725af3a6e015cf7921c452deed9438f3def`. Sólo documentación/evidencia cambia después de esta prueba; no nueva ejecución de suites retenidas ni modificación de WebRTC. [Evidencia sanitizada](evidence/t008-local-trust-2026-10-08/physical-firewall-gate-03.json).
+
+LAN comprobada: `wlp0s20f3`, PC `10.1.125.17/22`, subred `10.1.124.0/22`, gateway `10.1.124.1`; iPhone confirmado `10.1.124.240`. Runtime real comprobado escuchando HTTPS TCP8443 y bootstrap TCP18000. Elevación normal `pkexec` autorizada por PO; no contraseña guardada/automatizada. UFW activo antes/después, políticas deny incoming / allow outgoing / disabled routed preservadas. Sólo dos reglas ALLOW IN TCP hacia la IP de la PC por esa interfaz y desde esa subred, comentarios `Gorilla Escape T008 PREPARE` y `Gorilla Escape T008 HTTPS`; ningún UDP abierto.
+
+**Bootstrap físico PASS:** PO confirma PREPARE DEVICE visible. **HTTPS /prepare iPhone PASS:** PO confirma apertura en Safari sin advertencia tras instalar/confiar CA. Evidencia humana declarada, no inspección remota del teléfono. Misma CA de instalación, sin regeneración. iOS27 es dato PO previo; patch/build/Safari exactos no verificados. Android físico NOT RUN.
+
+**JOIN FAIL / READY no acreditado:** tras QR y JOIN, Safari muestra `No se pudo conectar. Comprueba LAN, confianza TLS y QR vigente.` Snapshot posterior Java: peers0, received0, forwarded0; no inferir ausencia de peer transitorio desde ese snapshot. Filtro del journal desde emisión de QR: sólo UFW BLOCK UDP source iPhone / destination PC, **0 eventos observados**, ningún puerto UDP acreditado. La ausencia de logs no demuestra ausencia de tráfico o drops. No atribuir fallo a UDP/TLS/Safari/expiración sin evidencia. El QR tenía TTL30s al emitirse; hora de escaneo/llegada de JOIN no medida. Panel de archivo inicialmente queued, imagen después mostrada inline; no acreditar tiempo de visibilidad humana.
+
+**FIRST-TIME PREPARATION: NOT MEASURED. PREPARED DEVICE JOIN: NOT MEASURED; READY no alcanzado.** Se solicitó cronómetro y duración, pero no se recibió valor. No estimar tiempos por respuestas del chat, excluir pasos manuales, afirmar target<60s ni reinstalar CA sólo para inventar medición inicial.
+
+Cleanup PASS: eliminadas exclusivamente las dos reglas añadidas; ninguna regla propia restante. UFW activo, políticas intactas y estado completo coincidente con el anterior (comparación, no restauración de snapshot). Player/Java exit0, STOPPED, cleanupComplete=true, forced=false, Java propio residual0, listeners18000/8443 cerrados, QR efímero eliminado. CA privada sigue fuera de Git; confianza del teléfono no se retira automáticamente. No router/DNS/NAT/WAN/forwarding modificados.
+
+API de rango ICE confirmada en artefacto0.19.0: `RTCConfiguration.portAllocatorConfig.minPort/maxPort`; guía oficial con extremos inclusivos y 0 no especificado. Config actual sólo deshabilita STUN/relay/TCP. No rango seleccionado/aplicado/abierto ni validación nativa de rango. **DEC-017 Proposed — ONE-TIME NETWORK SETUP**, pendiente necesidad UDP observada, dimensionamiento1/4peers y aprobación PO; no producto firewall integrado ahora.
+
+AC1 PARTIAL global (iPhoneHTTPS PASS; Android físico pendiente); AC2 PARTIAL (QR/PWA accesibles; RTC/READY no); AC3 PARTIAL / mediciones no disponibles; AC4 PASS (registro/alternativas, Plan B no activado). #19 OPEN/Validation, #20 bloqueado; PR96 OPEN/DRAFT, sin merge; Fase0 IN PROGRESS, Fase1 NOT STARTED. Próximo bloqueo real: JOIN no alcanza READY y el mensaje no distingue fase/causa. Proponer intento controlado con QR nuevo y diagnóstico de señalización/ICE antes de modificar transporte o abrir UDP. No ejecutado después del cierre del gate.
+
+## T008 JOIN — instrumentación y rollback acotados, 2026-10-08
+
+[Diagnóstico y procedimiento](PHASE0_T008_LOCAL_TRUST.md). [Evidencia software](evidence/t008-local-trust-2026-10-08/join-diagnostics-software.json): verificación Java serial 54 PASS + 2 SKIP; ejecución suplementaria LAN 8/8 PASS cubre ambos SKIP (56 tests distintos PASS, sin reescribir resultados de corridas). PWA 14/14 PASS/build PASS; Management/Foundation locales PASS. Intentos intermedios y causas conservados; no cambios a tests históricos para obtener PASS.
+
+[Regresión real RTC](evidence/t008-local-trust-2026-10-08/join-diagnostics-rtc-regression.json): cuatro clientes Chrome → Java hijo → IPC → Unity Player, 640 observaciones, 18 negativos PASS; manual resume y cleanup STOPPED/exit0/residuales0. Unity completo no repetido: fuentes/config intactas, evidencia anterior retenida. Ningún cambio a configuración ICE/transportes/puertos; DEC-017 Proposed.
+
+Gate físico instrumentado pendiente; HTTPS iPhone anterior PASS conservado, fallo JOIN anterior y ausencia de UFW UDP observada no reinterpretados. AC1/AC2 PARTIAL, AC3 sin medición humana completa, AC4 registro PASS; #19 OPEN/Validation, PR96 OPEN/DRAFT, T009 bloqueado; Fase0 IN PROGRESS/Fase1 NOT STARTED.
+
+## T008 intento físico instrumentado — 2026-10-08
+
+Código probado `f62fa22171f00ccdff987a3d282e228144a37b5f`. [Reporte sanitizado, sin IPs/SDP/tokens](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json). iPhone15/Safari/iOS27 declarado (build/version exactos UNKNOWN), QR nuevo y un único JOIN: **READY técnico PASS**, HTTP200, remoteDescriptionPASS, ICE new38ms→checking269ms→connected306ms, connection new38ms→connecting269ms→connected313ms, canales control/motionOPEN326ms, HELLOACK→READY340ms. Tiempos relativos a connect en Safari; **QR→JOIN y preparación humana NOT MEASURED**. No inferir P95, latencia gameplay ni gate temporal humano de esos340ms.
+
+Safari ofrece un candidato host/udp/MDNS_LOCAL puerto62352; Java ofrece host/udp/IPV4 puerto50804. El mDNS funciona en este intento; no afirmar compatibilidad universal ni identificarlo como causa anterior. Error genérico anterior **UNKNOWN / NOT REPRODUCED**. No inspección UFW UDP nueva: no hubo fallo de ICE que activara esa condición. El cero de eventos histórico permanece intacto y no se atribuye a este intento. No UDP abierto/rango seleccionado, no cambios de transporte. DEC-017 Proposed.
+
+Java registró cierre posterior a39.296s y peers0: causa no establecida, sin declarar estabilidad/suspensión/reconexión físicas PASS. Cierre del gate: Player/Javaexit0, STOPPED, cleanupComplete=true, forced=false, Java propio residual0, listeners18000/8443 cerrados, QR eliminado. Ambas excepcionesTCP temporales retiradas; UFW activo, políticas y status completo iguales al snapshot anterior (comparación, no restauración). Sin reinstalarCA ni modificarrouter/DNS/WAN.
+
+AC1 PARTIAL (iPhoneHTTPS PASS, Android físicoNOTRUN); AC2 PARTIALglobal (flujoQR/signaling/RTC/HELLOACK/READY iPhonePASS, matrizfísica incompleta); AC3 PARTIAL/sin medicioneshumanas completas; AC4 PASS (registro, PlanB noactivado). #19 OPEN/Validation; PR96 OPEN/DRAFT; T009 bloqueado, Fase0 INPROGRESS/Fase1 NOTSTARTED. Checks del código probadof62fa22: Management/Foundation SUCCESS. Próxima acción propuesta, no ejecutada: completar cronómetros humanos PREPARE/JOIN y gateAndroid físico mediante nueva autorización/prueba. No cambioscorrectivos adicionales tras estaobservación.
+
+## T008 reevaluación física / cronómetros — 2026-10-08
+
+[Procedimiento, tabla y AC actuales](PHASE0_T008_LOCAL_TRUST.md), [evidencia nueva](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json). Un nuevo QR/unJOIN iPhone vuelve a READYtécnicoPASS, HTTP200/remoteSDPPASS/ICECONNECTED/control+motionOPEN/HELLOACK. 316ms sólo desdeconnect, **no onboarding humano**. PO no usó cronómetro: PREPARE/JOIN humanosNOTMEASURED. Androidfísico no disponible/NOTRUN, modeloOSChromeUNKNOWN; emuladorauxiliar no sustituyehardwarereal.
+
+AC1PARTIAL, **AC2PASS** por criterio demostrado iPhone (no compatibilidaduniversal), AC3nosatisfecho por medicionespendientes, AC4PASS. DEC-017Proposed actualizada: TCPobservado, UDPadicionalno demostrado necesario, sinreglaspreventivas/rangominmax/cambiosRTC. Historialanteriorconservado. Producto/Unity/tests sin cambios; sólo evidenciafísicanueva y documentos, suitescostosasno repetidas. AmbasreglasTCPtemporales retiradas, UFWactivo/políticas/statusintactos, PlayerJavaexit0/STOPPED/cleanup/residuales0/listenerscerrados.
+
+#19OPEN/Validation/needs-device-test, PR96OPEN/DRAFT; Android es el único gate de **dispositivo** pendiente, pero también quedan cronómetrosAC3 y DoD de integración. No declararONLY_ANDROID_BLOCKER para todoT008. No cierreantesdemerge, noPRreadyhastaAC1–4PASS, noT009; F02OPEN/Fase0INPROGRESS/Fase1NOTSTARTED.
+
+## T008 salida de Spike / DEC-018 — 2026-10-09
+
+[DEC-018 Accepted](DECISIONS.md#dec-018--t008-spike-exit--deferred-physical-qa): iPhone físico cumple el objetivo técnico del Spike. AC1 y AC3 **PASS FOR SPIKE EXIT under DEC-018**, AC2/AC4 PASS; **no toda la QA física completada**. Android físico trustedHTTPS/QR→READY sigue NOT RUN; PREPARE/preparedJOIN humanos NOT MEASURED. Evidencia anterior intacta;316/340ms no usados como cronómetros humanos. [Corrida04](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json), [corrida05](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json).
+
+Carry-forward obligatorio a #33/T019: Android trust/QR→signaling→RTC→READY, metadatos iPhone/Android, ambos cronómetros humanos, verificar<60s o documentar fallo, firewall en más redes/dispositivos. T019 conserva todos sus AC/dependencias, bloqueado/no iniciado. DEC-017 Proposed; sin UDP preventivo ni cambios de código/transporte. Esta tarea sólo añade decisión/documentación y transferencia de QA; software/Unity retenidos, no nueva suite física/costosa manual.
+
+Salida aprobada para integración normal del PR96; DoD y cierre efectivo #19 después del merge y validaciones post-merge, con SHA/resultado registrados en GitHub. needs-device-test se retira de #19 al transferir formalmente QA, security/type:spike/area:network conservados. #20 sólo siguiente candidato tras reevaluar sus dependencias, no iniciado. F02 OPEN/Fase0 IN PROGRESS/Fase1 NOT STARTED.

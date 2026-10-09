@@ -39,6 +39,9 @@ public class GorillaEscapeApplication {
     private static org.springframework.context.ConfigurableApplicationContext start(String[] args) {
         var application = new SpringApplication(GorillaEscapeApplication.class);
         MobileHttpsSettings.configure(application, System.getenv("GORILLA_MOBILE_CONFIG"));
+        com.gorillaescape.server.hosting.LocalTrust.configure(application, System.getenv("GORILLA_LOCAL_TRUST_DIR"));
+        if ("1".equals(System.getenv("GORILLA_MOBILE_LAB")))
+            application.setDefaultProperties(java.util.Map.of("gorilla.mobile.lab-enabled", true));
         return application.run(args);
     }
     private static void bootstrapError(String code) {
