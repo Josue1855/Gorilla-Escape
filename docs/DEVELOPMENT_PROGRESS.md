@@ -1,5 +1,31 @@
 # Progreso de desarrollo
 
+## T003 — baseline técnico documentado, 2026-10-08
+
+DEC-015 Accepted por autorización PO condicional, AC1/AC2 PASS: [baseline/comparativa/compatibilidad](PHASE0_T003_TECHNICAL_BASELINE.md). Configs/artifacts/modelo/nativos auditados; Java compile/package nuevo aislado PASS, sin reemplazar JAR histórico. Tests/build Unity y pruebas lab previas RETENIDAS con hashes idénticos, no ejecuciones nuevas. T001/T002 pendientes locales se publican junto con T003 vía rama docs/phase0-t003-baseline y PR normal hacia develop. No otros cierres/producto, no merge automático; E0/milestoneFase0 OPEN, Fase1 NOT STARTED. Los siguientes apartados describen snapshots anteriores cuando difieran de este estado.
+
+
+> **Resultado remoto verificado T002:** #11 CLOSED/completed/Done; retirados sólo blocked y needs-device-test. #12 OPEN/PO Review, dependencia #11 satisfecha e intacta, blocked retirado; needs-decision conservado. No se inicia T003. T019 sin cambios, QA física pendiente. E0/milestone/Fase0 siguen OPEN; Fase1 NOT STARTED.
+
+
+> **Enmienda vigente T002 — DEC-014 Accepted:** alcance documental por plataformas/capacidades, QA hardware no exclusivo; AC1/AC2 PASS. Android/router concretos no bloquean T002; físicos y versiones exactas permanecen en T019/gates correspondientes. Los faltantes anteriores son historia superseded. [Inventario vigente](PHASE0_T002_HARDWARE_INVENTORY.md). No iniciar T003 ni Fase1; sin nuevas pruebas/producto/commit/push.
+
+
+## T002 — última reevaluación PO
+
+PO proporciona iOS exacto27 y designa Android oficial, pero sus campos fabricante/modelo/OS/Chrome siguen `[PEGAR]`. AC1/AC2 PARTIAL por **único faltante: ficha real del Android físico**. Router/modelo/firmware y políticas LAN desconocidas se registran UNKNOWN, no blocker artificial. #11 OPEN/Validation, blocked/needs-device-test por Android; #12 sigue bloqueado, no iniciado. [Inventario vigente](PHASE0_T002_HARDWARE_INVENTORY.md). Sin pruebas nuevas ni commit/push.
+
+
+## T002 — designaciones PO oficiales registradas
+
+PC/Pop!_OS/webcam/iPhone15/Safari/familias de navegador/modelo Wi-Fi LAN aceptados por PO. [Inventario vigente](PHASE0_T002_HARDWARE_INVENTORY.md): AC1 PARTIAL/AC2 PARTIAL; faltan iOS exacto, Android físico oficial/OS/Chrome y router/firmware/restricciones físicas. #11 OPEN/Validation, blocked y needs-device-test por faltantes reales; #12 bloqueado por #11. Inspección sólo lectura (SMBIOS denegado, sin elevación); sin suites ni resultados históricos alterados. No commit/push ni T003/Fase1.
+
+
+## Actualización T001/T002 — 2026-10-08
+
+PO resuelve slow motion: P1, fuera MVP P0, no bloquea Smash; sin implementación autorizada. [DEC-013](DECISIONS.md#dec-013--slow-motion-p1-fuera-del-mvp-p0-t00110), T001 3/3 AC. Auditoría T002 sólo lectura: [inventario y faltantes](PHASE0_T002_HARDWARE_INVENTORY.md); #11 OPEN/Validation, hardware oficial y Android físico pendientes. Ninguna suite reejecutada ni resultado histórico alterado. Base integrada develop `65aecf8c3198ed960a43eaa50cfcc495f4562b53`; PR94 MERGED. Software/Lab COMPLETE; E0/milestone OPEN; #35 bloqueado por #34, Fase1 NOT STARTED. Siguiente Issue operativo autorizado: #11, sin empezar #12.
+
+
 > **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
 
 ## Estado vigente — FINAL PHASE0 AUDIT, 2026-10-08

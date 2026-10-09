@@ -217,3 +217,33 @@ pendientes; ninguna cifra de gesture accuracy/switches físicos se atribuye a lo
 ## Registro de cierre audit — 2026-10-08
 
 [FINAL PHASE0 AUDIT](PHASE0_FINAL_AUDIT.md): **PASS — SOFTWARE/LAB**; Fase0 **COMPLETED — SOFTWARE/LAB** y Fase1 **READY TO START**, no iniciada. No nueva decisión de arquitectura ni implementación de gameplay. DEC-010 WebRTC Accepted for Phase0 architecture; WT sólo histórico experimental. 3A físico/onboarding DEFERRED / IN PROGRESS. Deuda física/plataforma abierta, obligatoria antes del MVP. Candidato integrado localmente, no remoto; #94 OPEN/DRAFT, sin commit/push/merge.
+
+
+## DEC-013 — Slow motion P1 fuera del MVP P0 (T001/#10)
+
+**Fecha:** 2026-10-08. **Estado:** Accepted. **Aprobación:** decisión oficial explícita del Product Owner en este chat.
+
+Slow motion se clasifica **P1**, **no incluido en MVP P0** y **no bloquea el desarrollo de Fase 1 Gorilla Smash** por este concepto. Sólo podrá reconsiderarse mediante decisión explícita futura del PO. No implementar ahora, no introducir silenciosamente en Smash, no reclasificar a P0 y no crear trabajo técnico relacionado sin autorización.
+
+Resuelve el tercer AC de #10 (P1 frente a v4 §26). La mención micro slow-motion en LEGENDARY de §26 es una opción futura subordinada a esta decisión, no una exigencia del MVP. Los otros dos AC ya están aceptados: frontera Fase0 base/Spike versus Fase1 slice, y Unity autoridad de resultados/input; Java transporte/sesión técnica. T001: 3/3 AC; documentación/decisión sin código nuevo ni suites aplicables. No resuelve otros gates: #35 sigue bloqueado por #34. Fase0/E0/milestone OPEN, Fase1 NOT STARTED.
+
+
+## Decisión PO oficial — referencias de hardware T002/#11
+
+**Estado:** Accepted,2026-10-08. Dell Latitude5540/Pop!_OS24.04LTS x86_64/i7-1355U/Iris Xe/RAM comprobable y Integrated_Webcam_FHD son referencias oficiales Phase0; iPhone15/Safari es referencia iOS. Modelo oficial de red: existing local Wi-Fi LAN, WAN opcional, gameplay local, sin hotspot ni cloud/STUN/TURN público obligatorio. Android físico pendiente de selección/designación; router físico real de pruebas pendiente fabricante/modelo/firmware. Safari corresponde al iOS instalado; Chrome estable Android; registrar dispositivo/OS/navegador/fecha exactos por ejecución sin congelar parches. Windows/macOS futuros no descartados. 17.61FPS no cumple >=30FPS. [Inventario/AC/faltantes vigentes](PHASE0_T002_HARDWARE_INVENTORY.md). #11 no aceptado aún; #12 continúa bloqueado, Fase1 NOT STARTED.
+
+
+## DEC-014 — Compatibilidad por plataforma/capacidades y hardware de referencia QA
+
+**Fecha:**2026-10-08. **Estado:**Accepted. **Aprobación:** instrucción explícita PO de esta tarea. Sustituye interpretación de T002 que exigía Android físico/modelo router para definir compatibilidad. Hardware concreto = REFERENCE TEST HARDWARE, no ONLY SUPPORTED HARDWARE.
+
+T002 inventaría PC/cámara y plataformas Android moderno/Chrome estable e iOS moderno/Safari incluido, secure context/RTC/touch/LAN y sensores según capacidades/permisos. Política FULL/LIMITED/INCOMPATIBLE con detección runtime requerida conceptualmente, sin implementación nueva ni sensores inventados. Misma LAN accesible, WAN opcional y juego local sin cloud/STUN/TURN público obligatorio. PC/cámara actuales e iPhone15 son referencias de QA, no límites exclusivos.
+
+Modelos/versiones Android/iPhone/router son metadatos de ejecución; Android físico se selecciona en T019. T019/gates posteriores conservan móviles físicos,1/4controles, conexiones/reconexiones, fallos yP95real, fecha/OS/browser exactos. Firmware UNKNOWN no bloquea inventario. No reducir FPS, PC limpia ni pruebas humanas. AC T002 enmendados con texto histórico preservado, [inventario/evidencia](PHASE0_T002_HARDWARE_INVENTORY.md). AC1/AC2 PASS documental, no certificación universal ni aprobación física. #12 requiere reevaluación, sin iniciarlo; Fase1 NOT STARTED.
+
+
+## DEC-015 — Phase 0 Technical Baseline
+
+**Fecha:**2026-10-08. **Estado:**Accepted bajo autorización PO explícita condicionada a evidencia, satisfecha por auditoría T003. Unity6000.3.23f1/rev09d2ecc7fb28; Java release21/JDK lab Ubuntu21.0.12.1+1-1-24.04.4-Ubuntu; Boot4.1.1/Springcore7.0.9; Maven3.9.11/wrapper3.3.2/compiler3.15.0; webrtc-java0.19.0/native linux-x86_64; GorillaProtocol mobilev1 (IPCprobev1/CameraInputv1 separados); Python LAB3.12.3/MediaPipe0.10.33/OpenCV contrib4.13.0.92/cv2 4.13.0/NumPy2.5.3, Pose Landmarker lite float16v1 hash59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a. Plataforma validada Pop!_OS24.04x86_64/DellLatitude5540.
+
+No actualización por novedad: necesidad/compatibilidad/regresión/decisión previa para upgrades. DEC-010 WebRTC transporte seleccionado permanece vigente; WT/WS históricos no regresan al producto. [Comparativa/compatibilidad/evidencia/AC](PHASE0_T003_TECHNICAL_BASELINE.md). Java mínimo nuevo aislado PASS; UnityEdit64/Play16/build0/0 retenidos con hashes/config idénticos, no nuevas ejecuciones. Windows/macOS/PC limpia/packaging final visión/licencias siguen pendientes; adaptador Python sólo LAB,17.61FPS no cumpleT016. AC1/AC2 PASS documental, no todoFase0Done. Sin inicio de otros Issues/Fase1 ni merge automático.

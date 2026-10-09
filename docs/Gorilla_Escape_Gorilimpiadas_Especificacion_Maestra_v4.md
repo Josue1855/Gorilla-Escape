@@ -324,6 +324,8 @@ El nombre **Gorilla Escape** funciona como marca de plataforma y **Gorilimpiadas
 
 ## P1 — Si hay tiempo
 
+**Decisión PO vigente (DEC-013, T001/#10, 2026-10-08):** slow motion P1 fuera del MVP P0; no bloquea Gorilla Smash. Reconsideración sólo con decisión explícita futura del PO; sin implementación ni trabajo técnico autorizado.
+
 - Vibración.
 - Replays breves.
 - Slow motion contextual.
@@ -1779,6 +1781,8 @@ Score
 ## Regla
 
 El slow motion no debe romper la sincronización de input ni hacer lenta la sesión.
+
+**Aclaración PO DEC-013:** la mención micro slow-motion de LEGENDARY es una opción P1 futura, no un requisito MVP P0 ni un bloqueo para Gorilla Smash. No implementarlo sin nueva autorización.
 
 ---
 
@@ -3923,3 +3927,8 @@ Por el gate final autorizado por el PO, **PHASE 0 FINAL AUDIT: PASS — SOFTWARE
 Fase0 — Base/Spike: **COMPLETED — SOFTWARE/LAB**; Fase1 — Gorilla Smash Vertical Slice: **READY TO START**, no iniciada. La [auditoría](PHASE0_FINAL_AUDIT.md) acredita cada gate técnico y las regresiones del candidato local.
 Foundation/2A/2B/2C PASS/MERGED; móvil/cámara/lock/alineación/Fusion infra PASS Software/Lab local, todavía sin integración Git de cambios recientes. #94 OPEN/DRAFT; local candidate != remote PR head. Sin commit/push/merge ni gameplay.
 3A product/physical onboarding **DEFERRED / IN PROGRESS**; deuda física/plataforma sigue abierta y obligatoria antes de aceptación final del MVP. No declarar cámara/fusión físicamente validadas, no inferir timing humano de replay ni convertir emulador RTC BLOCKED en PASS. Esta enmienda prevalece sobre estados de avance anteriores; no elimina requisitos de producto ni cambia thresholds.
+
+
+# Enmienda PO — hardware QA y compatibilidad por capacidades (DEC-014)
+
+T002 define plataformas/capacidades y REFERENCE TEST HARDWARE, no únicos equipos soportados. Android moderno/Chrome estable e iOS moderno/Safari del sistema; secure context/WebRTC DataChannel/touch/LAN, sensores según disponibilidad y permisos normales. Detección runtime requerida con FULL/LIMITED/INCOMPATIBLE sin inventar señales, no implementada por esta decisión. Red Wi-Fi LAN estándar, WAN opcional, gameplay local. Modelos/versiones/firmware se registran en QA física: Android no identificado/router UNKNOWN no bloquean T002. T019 y gates físicos mantienen todas sus obligaciones, sin compatibilidad universal prometida. [DEC-014/inventario](PHASE0_T002_HARDWARE_INVENTORY.md).
