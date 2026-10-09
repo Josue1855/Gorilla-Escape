@@ -469,3 +469,11 @@ Existing TechnicalSession/RTC/IPC reused; Unity explicitly authorizes PLAYER_REA
 Java21 full verify 77 cases (75 PASS, two unrelated LAN-configuration skips); final focused 30/30 PASS, including the additional exact-freshness-boundary test and recovery during STARTING. PWA 59/59 + build PASS; Unity EditMode71/71 and PlayMode17/17 PASS, including four real Chrome RTC clients through owned Java/IPC into Unity and post-start resume. Build/check results are recorded in the evidence summary. No physical pass claimed.
 
 T013 AC1/AC2/AC3 PASS Software/Lab, integration/administrative closure through its PR. T015 AC1 ALREADY PASS LAB; AC2/AC3 NEEDS PRODUCT IMPLEMENTATION: official-action cancellation, confirmed-result persistence and official-action idempotency are absent. After #25/#26 completed, remove blocked and preserve dependency history; keep #27 and F03 open. T016 OPEN/Ready independently; E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED until the future FINAL EXIT AUDIT including T019/T020/performance/physical gates.
+
+## T015 — Official action lifecycle / 2026-10-09
+
+DEC-024 ACCEPTED; Unity authority implemented in OfficialActionLedger at the existing JavaProbeSupervisor→PhoneInputStore boundary. Explicit candidates only, immutable confirmed results, cancellation on disconnect/invalidation/epoch replacement/transport end, per-player replay protection, one-lock races, bounded256 records without eviction. No Java/PWA/mobile-protocol product change, gameplay/Phase1 or T016 implementation.
+
+AC1/AC2/AC3 PASS SOFTWARE/LAB: EditMode92/92 (21 new), PlayMode18/18 (one new real4Chrome→RTC→Java→IPC→Unity action scenario), action-client16/16 and T013 client15/15. Stress100 confirm/disconnect races and100 eight-thread duplicate confirmations: one terminal transition/result. Linux Mono development build Succeeded,0errors/0warnings. PhysicalQA NOT RUN, remains T019/Final Exit Audit.
+
+[Design and reproduction](PHASE0_T015_ACTION_LIFECYCLE.md) · [sanitized evidence and source hashes](evidence/t015-action-lifecycle-2026-10-09/summary.json). Candidate requires normal PR/checks/security review/merge before completed/Done; F03 closure then uses integrated T012–T015 evidence. T018 still depends T016; T019 still depends T017/T018/physicalQA. E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED; next recommended T016 OPEN/Ready without starting it here.
