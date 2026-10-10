@@ -74,3 +74,62 @@ Weighted rates = sum(N−1)/sum(first-to-last monotonic durations), retaining ea
 - dynamicFramerateOff: capture19.758632723809 / inference19.752928156158 / output19.752927288280 FPS; runs3, overwrites0.
 - manualExposureDiagnostic: capture21.982174020774 / inference21.978099350689 / output21.978099807088 FPS; runs3, overwrites0.
 - finalDefaultControls: capture19.940556524680 / inference19.953212790174 / output19.953216500547 FPS; runs1, overwrites0.
+
+## Layered Capture Diagnosis
+
+2026-10-09 America/Chihuahua; continuation of local commits `f4f110d` and `768ec10`, no reset/rebase or replacement of prior evidence. Original candidate remains unchanged. Thirteen additional isolated physical trials:5s warmup + at least35s first-to-last measured interval. All temporary controls/mode/FPS restored after **every** trial. No lighting comparison: PO cannot change lighting now; current ambient illuminance unmeasured.
+
+Raw path is `v4l2-ctl --verbose --stream-mmap=N --stream-to=/dev/null`. Python supervises dequeue **text**, not pixel bytes; aggregate FPS `(frames−1)/(last−first)` uses V4L2 monotonic SOE timestamps, cross-checked against monotonic text-receipt elapsed time. No OpenCV, Python image processing or MediaPipe in the raw byte path. Kernel timestamps have microsecond precision; no inference from driver-reported30.
+
+| Layer | Mode | FPS | P50 interval ms | P95 interval ms | Result |
+|---|---|---:|---:|---:|---|
+|A V4L2 MMAP|MJPG 640×480 @30; buffers3; auto3/exposure156/priority1|19.966963958|51.871000|52.067000|<30|
+|B OpenCV minimal|MJPG 640×480 @30; buffers1; auto3/exposure156/priority1|19.967754949|50.856279|53.074693|<30|
+|C Gorilla CapturePump|MJPG 640×480 @30; buffers1; auto3/exposure156/priority1|19.967252111|50.822751|52.769884|<30|
+|A V4L2 MMAP|MJPG 640×480 @30; buffers3; auto3/exposure156/priority0|29.836819721|32.041000|36.042000|<30|
+|B OpenCV minimal|MJPG 640×480 @30; buffers1; auto3/exposure156/priority0|19.760770055|62.761349|68.266411|<30|
+|A V4L2 MMAP|MJPG 1280×720 @30; buffers3; auto3/exposure156/priority1|19.964706740|51.864000|52.068000|<30|
+|A V4L2 MMAP|MJPG 1920×1080 @30; buffers3; auto3/exposure156/priority1|19.964727268|51.868000|52.079000|<30|
+|A V4L2 MMAP|MJPG 640×480 @30; buffers3; auto1/exposure100/priority0|30.225314867|32.033000|36.013000|>=30 diagnostic only|
+|B OpenCV minimal|MJPG 640×480 @30; buffers1; auto1/exposure100/priority0|21.965685098|36.097071|64.452903|<30|
+|A V4L2 MMAP|MJPG 640×480 @30; buffers1; auto3/exposure156/priority0|19.874543656|67.834000|68.076000|<30|
+|B OpenCV minimal|MJPG 640×480 @30; buffers3; auto3/exposure156/priority0|29.840090869|32.484208|36.685271|<30|
+|A V4L2 MMAP|MJPG 640×480 @30; buffers1; auto1/exposure100/priority0|22.006096288|35.947000|67.996000|<30|
+|B OpenCV minimal|MJPG 640×480 @30; buffers3; auto1/exposure100/priority0|30.225872048|32.246183|36.474782|>=30 diagnostic only|
+|D unchanged Gorilla capture + MediaPipe (prior final source)|MJPG640×480 @30, buffer1, original controls|capture19.940556525; inference19.953212790|Not previously instrumented|Not previously instrumented|Historical final candidate; AC1 FAIL|
+
+For D, historical capture **read duration**, distinct from inter-capture interval: P50/P95 50.174531/53.547268ms; inference duration31.092922/52.245931ms. No fabricated interval percentiles and no rerun/tuning of MediaPipe. Current minimal baseline read P50/P95 50.839656/53.039687ms.
+
+### Controls before, temporary tests and exact restore
+
+Initial/after every test:MJPG640×480, requested/reported30, `auto_exposure=3`, `exposure_time_absolute=156` (inactive under auto), `exposure_dynamic_framerate=1`. Control IDs `0x009a0901/02/03` match installed kernel definitions EXPOSURE_AUTO/ABSOLUTE/AUTO_PRIORITY; tool aliases are the actual exposed names, not guessed names. Temporary priority0; temporary manual1/exposure100 (100µs units →10ms, below33.33ms frame interval), priority0. Not adopted as product/global presets. OpenCV v2 diagnostic reads controls back after actual capture; manual100/priority0 remain applied. Mode1280×720 and1920×1080 returned as requested and then restored to640×480.
+
+Kernel [camera control documentation](https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/ext-ctrls-camera.html) defines dynamic cadence under auto-priority and the100µs exposure units. Stored156 in automatic mode is an inactive control value, **not a measurement of actual auto exposure**. Manual100 is a causal experiment, not image-quality acceptance.
+
+### Interpretation and limits
+
+The first ~20FPS is already present in A under original controls:19.966964FPS. B19.967755 and C19.967252 introduce no material additional baseline loss; MediaPipe does not cause that original cadence. Disabling auto-priority with MMAP3 changes A to29.836820, still below literal30. Manual10ms plus MMAP3 produces30.225315; independent OpenCV3/manual10ms produces30.225872. Thus this hardware can deliver>=30 in a temporary diagnostic mode; a blanket claim that it cannot is unsupported.
+
+A second controlled limit appears with **one V4L2 buffer**: priority0/MMAP1 delivers19.874544 vs MMAP3 29.836820; manual10ms/MMAP1 delivers22.006096 vs MMAP3 30.225315. OpenCV1 vs3 follows the same pattern. Driver dequeue sequence gaps349/288 in those MMAP1 trials are counted observations, not an invented sensor/USB hardware-drop total. Raw3 trials have no observed sequence gaps. Changing buffers preserves the bounded latest slot in principle, but no product change or latency/quality claim is made here.
+
+Classification: **exposure/dynamic-cadence controls and V4L2 buffer count have measured causal effects**. Underlying sensor/firmware/UVC mechanism remains **ROOT CAUSE NOT PROVEN / UNKNOWN BELOW V4L2 USERSPACE**. USB bus3/port6,480M,uvcvideo observed; no evidence establishes USB transport defect. MJPG720p and1080p default-control raw both ~19.9647, so the baseline limitation is not specific to640×480. YUYV not selected as a remedy; optional YUYV/compliance tests not run. No physical lighting or human quality comparison available.
+
+WirePlumber PID3947 held a device fd before diagnostics; MMAP STREAMON succeeded and the raw baseline completed without stopping that unrelated service. No competing streaming owner observed; no foreign process killed.
+
+### Actual redistribution inventory
+
+Fresh augmented local staging retains the original candidate manifest and payload unchanged. New independent runtime-manifest hashes2868 files, including128 authentic license/notice texts in LICENSES and57 component notices in THIRD_PARTY_NOTICES.18 wheel inventories come from **actual retained RECORD files**, omissions are explicit;35 copied system libraries have dpkg source-package/version provenance, matching host hashes and authentic copyright/common-license texts. Qt and FFmpeg are also separately identified native subcomponents, not inferred solely from package names. FlatBuffers25.12.19 wheel lacks bundled license text; added [authentic tagged upstream LICENSE](https://raw.githubusercontent.com/google/flatbuffers/v25.12.19/LICENSE), recorded origin/hash.
+
+193 actual ELF files in Vision include the prior158 plus35 copied system libraries. DT_NEEDED is recorded for each. Import+PoseLandmarker creation probe (no webcam/inference) observed80 bundled native files loaded,113 not loaded in that probe, and141 system-provided mapped files. Unloaded in this probe does **not** establish removable. Host-loaded PortAudio/ALSA plugins and distro FFmpeg60 are separate from the wheel FFmpeg62. These dynamic host paths were missed by ldd-only closure: reference-PC offline operation still passed historically, while clean-host portability/native closure remains incomplete.
+
+Qt5.15.18 Core/Gui/Widgets/Test and FFmpeg avcodec62.11.100/avformat62.3.100/avutil60.8.100/swscale9/avdevice62 are bundled, direct DT_NEEDED of cv2, and runtime-loaded. Current binary cannot be safely pruned of them. No headless wheel/dependency swap performed. Authentic OpenCV notices identify Qt LGPL3 and FFmpeg LGPL2.1; exact build-option/source correspondence is still pending. [FFmpeg legal guidance](https://ffmpeg.org/legal.html) reinforces source/build-configuration verification; copied notice text alone does not fulfill source obligations.
+
+Source fulfillment remains OPEN: matching Qt/FFmpeg source revisions, wheel modifications/build recipes, applicable library replacement/relinking materials; matching copyleft-covered distro source versions/patches and license-compliant delivery mechanism. Planned delivery is verified matching sources/build materials alongside eventual binaries; no source archive/offer has been assembled or falsely claimed. Per-file exceptions in full copyright files control applicability. Model family Apache2 remains historical evidence; artifact-specific notice/provenance and NOTICE applicability are unverified.
+
+A supplemental whole-Player inventory covers221 files outside Vision, including9 ELF/debug artifacts. Unity6000.3.23f1/Mono and Unity-supplied libdecor/Cairo plugin provenance/license/source notices are explicitly unresolved; unrelated editor-tool notices were not copied as player proof. No final-distribution-wide legal compliance claim. **AC2 PARTIAL** despite improved inventory.
+
+[All physical aggregate trials and sanitized snapshots](evidence/t016-camera-runtime-2026-10-09/layered/summary.json), [actual redistribution ledger](evidence/t016-camera-runtime-2026-10-09/layered/redistribution.json), [new exact file hashes](evidence/t016-camera-runtime-2026-10-09/layered/runtime-manifest.json), [whole Player inventory](evidence/t016-camera-runtime-2026-10-09/layered/player-files.json), [explicit source gaps](evidence/t016-camera-runtime-2026-10-09/layered/source-obligations.json). Original manifests/results above are preserved.
+
+Reproduce with tools/t016/layered_capture.py --layer raw|minimal|thread --output <new-path>, optional --priority0 (syntax `--priority 0`), --manual-exposure100 (syntax `--manual-exposure 100`), --buffers1|3 (syntax `--buffers 3`). Use the prepared pinned Python for OpenCV. Every trial restores its own initial snapshot; never run camera diagnostics concurrently. runtime_library_probe.py --root <Vision> emits loaded paths only; redistribution.py --root <fresh-Vision> --loaded <probe.json> adds authentic notices/inventory, not a source-compliance certification. player_inventory.py audits the preserved actual build.
+
+AC1 FAIL for unchanged product defaults; AC2 PARTIAL; AC3 PASS retained, all new evidence aggregate/text/file-inventory only.13 component tests pass again; original99 EditMode/19 PlayMode/build0errors evidence remains applicable to unchanged product sources, no unnecessary Unity/Java/PWA rerun. No push/PR/merge/closure. T016 OPEN/In Progress; T017/T018 OPEN/blocked; F04/E0 OPEN/In Progress; Phase0 IN PROGRESS; Phase1 NOT STARTED. PO next decision: authorize a separate controlled product-quality/latency validation of manual10ms+buffers3 at unchanged>=30 threshold, or select different reference hardware / explicitly revise requirement / commission further driver-firmware investigation. No option automatically chosen. Source/native-closure gaps must also close before acceptance.
