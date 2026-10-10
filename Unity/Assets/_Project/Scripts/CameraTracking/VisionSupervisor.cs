@@ -8,7 +8,7 @@ using GorillaEscape.Contracts;
 using UnityEngine;
 namespace GorillaEscape.CameraTracking
 {
-    /// <summary>Local opt-in Linux lab adapter. Private child pipes, latest-only delivery, no image transport.</summary>
+    /// <summary>Local owned Linux vision adapter. Private child pipes, latest-only delivery, no image transport.</summary>
     public sealed class VisionSupervisor : IDisposable {
         public const int MaxLine=16384;
         readonly object gate=new object(); CameraInputWire pending;Process child;
@@ -20,6 +20,10 @@ namespace GorillaEscape.CameraTracking
         public string Summary {get;private set;}
         public bool Take(out CameraInputWire frame,out long timestamp){lock(gate){frame=pending;timestamp=received;pending=null;return frame!=null;}}
         static string Quote(string value){if(value==null||value.IndexOfAny(new[]{'"','\n','\r'})>=0)throw new ArgumentException("Invalid adapter path");return "\""+value+"\"";}
+        public Task StartPackagedAsync(string productDirectory,CancellationToken token) {
+            try {var paths=CameraRuntimePaths.Resolve(productDirectory);return StartAsync(paths.Python,paths.Worker,paths.Mode,paths.Fixture,paths.Model,paths.Device,token);}
+            catch(FileNotFoundException error){Error=error.Message;State="FAILED";return Task.FromException(error);}
+        }
         public async Task StartAsync(string python,string script,string mode,string fixture,string model,string device,CancellationToken token){
             if(child!=null)throw new InvalidOperationException("Stop prior own camera child first");
             CleanupComplete=false;State="STARTING";Error=null;ready=false;Forced=false;ExitCode=null;Summary=null;
