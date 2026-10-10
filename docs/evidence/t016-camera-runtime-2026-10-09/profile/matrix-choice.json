@@ -1,0 +1,6 @@
+{
+  "buffers": 2,
+  "dynamicFramerate": "preserve original",
+  "quality": "pending human/lighting input",
+  "decision": "provisional minimum from diagnostic; every sustained acceptance run must also pass"
+}

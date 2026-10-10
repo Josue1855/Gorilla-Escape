@@ -133,3 +133,68 @@ A supplemental whole-Player inventory covers221 files outside Vision, including9
 Reproduce with tools/t016/layered_capture.py --layer raw|minimal|thread --output <new-path>, optional --priority0 (syntax `--priority 0`), --manual-exposure100 (syntax `--manual-exposure 100`), --buffers1|3 (syntax `--buffers 3`). Use the prepared pinned Python for OpenCV. Every trial restores its own initial snapshot; never run camera diagnostics concurrently. runtime_library_probe.py --root <Vision> emits loaded paths only; redistribution.py --root <fresh-Vision> --loaded <probe.json> adds authentic notices/inventory, not a source-compliance certification. player_inventory.py audits the preserved actual build.
 
 AC1 FAIL for unchanged product defaults; AC2 PARTIAL; AC3 PASS retained, all new evidence aggregate/text/file-inventory only.13 component tests pass again; original99 EditMode/19 PlayMode/build0errors evidence remains applicable to unchanged product sources, no unnecessary Unity/Java/PWA rerun. No push/PR/merge/closure. T016 OPEN/In Progress; T017/T018 OPEN/blocked; F04/E0 OPEN/In Progress; Phase0 IN PROGRESS; Phase1 NOT STARTED. PO next decision: authorize a separate controlled product-quality/latency validation of manual10ms+buffers3 at unchanged>=30 threshold, or select different reference hardware / explicitly revise requirement / commission further driver-firmware investigation. No option automatically chosen. Source/native-closure gaps must also close before acceptance.
+
+## Product profile validation — latest local continuation
+
+2026-10-09 America/Chihuahua. This section supersedes earlier candidate measurements without deleting their history. PO authorized evaluation only; DEC-025 remains **LOCAL CANDIDATE / VALIDATION IN PROGRESS**. Original remains the default. The candidate is opt-in and session-owned; no global persistent settings, push, PR or issue cascade.
+
+### New controlled comparison
+
+Five seconds warmup plus 61 seconds requested measurement per paired run, actual first-to-last capture >60 seconds. Original: auto3, exposure156 inactive, priority1, buffer1. Candidate: manual1, exposure100 V4L2 units (10ms), priority preserved1, buffer2. Same MJPG640×480/30, num_poses=2, one capture thread/latest-slot(1)/inference. Same ambient scene, no human participation.
+
+|Run|Capture FPS (literal)|Inference FPS|Output FPS|Age P50/P95/max ms|Age N|Overwritten / stale skipped|
+|---|---:|---:|---:|---|---:|---|
+|paired-candidate-1.json|30.224215376583782|30.191347599050747|30.19134794247807|33.531436 / 37.995365 / 61.578192|1843|1 / 0|
+|paired-candidate-2.json|30.225402700303786|30.18693694690809|30.18693710390082|33.434668 / 36.346701 / 61.723291|1841|3 / 0|
+|paired-candidate-3.json|30.225225678964854|30.22342847330064|30.223430877131435|33.497143 / 36.617483 / 65.139837|1844|0 / 0|
+|paired-original-1.json|19.95006159447478|19.906832216364982|19.906832081224344|34.622154 / 39.750378 / 66.809819|1214|3 / 0|
+|paired-original-2.json|19.966789070751005|19.967356186098513|19.967357016877447|37.176786 / 39.449995 / 73.181687|1218|0 / 0|
+|paired-original-3.json|19.964108287928628|19.898428201812244|19.89842802079838|35.996065 / 50.430139 / 80.109317|1214|4 / 0|
+
+Each candidate capture run passes >=30.000 individually. No averaging of failures. Earlier explicitly configured paired runs have source revisions recorded individually; candidate3 uses final worker/pipeline/control source. Empty-scene throughput does **not** prove human-pose inference performance. Measurement/lifetime captured-consumed counts, capture/inference P50/P95/max/N, delivery, handover, frame age and output latency remain in [paired comparison](evidence/t016-camera-runtime-2026-10-09/profile/paired-comparison.json).
+
+### Buffer / priority matrix
+
+Diagnostic matrix uses 5s warmup+35s measurement; selection is provisional, paired runs validate longer duration.
+
+|Manual10ms|Priority|Capture FPS|Inference FPS|Frame age P95 ms|
+|---|---:|---:|---:|---:|
+|buffers=1|1|21.859596381592723|21.862612409336645|36.585236|
+|buffers=2|1|30.224011234295514|30.220775221846115|36.329266|
+|buffers=3|1|30.223288801289755|30.196658159718552|37.077287|
+|buffers=2|0|30.22397378899492|30.001488244559436|41.238849|
+
+Minimum measured passing buffers = **2**; priority0 is unnecessary here. This does not make the profile accepted or universal. Capture buffers belong to the handle and are released on exit.
+
+### Quality and ownership
+
+User explicitly cannot participate or change lighting. **BRIGHT, NORMAL and LOW-LIGHT human quality: NOT RUN.** Both baseline/candidate have zero subjects, zero visible landmarks/confidence and constant mean pixel value4.691848958333333/255. This scene is unusable for evaluating pose quality; its physical cause is unproven. Do not attribute darkness to10ms, claim stable tracking, or invent motion/blur results. No adaptive exposure policy is justified from this evidence. AC1 remains **FAIL acceptance / quality unproven**, despite three throughput passes.
+
+Linux standard V4L2 capability/range/menu checks guard opt-in manual10ms. No hardware-name allowlist; unsupported profiles fail explicitly and restore partial application. Snapshot precedes mutation and is sent over private stdout to the owning supervisor. Worker restores after capture release on EOF/signals/failure; parent restores saved controls/full format/frame interval after owned-child termination. Parent crash/OS failure itself is not proven recoverable. PlayMode verifies forced-child recovery, unit tests verify partial startup rollback. No user v4l2-ctl setup. The original auto configuration remains default; stale frames >100ms are explicitly skipped (provisional budget, not a validated gameplay threshold).
+
+Timing semantics: V4L2 CAP_PROP_POS_MSEC derives kernel buffer timestamp, checked for monotonicity/range; this is an acquisition proxy, not optical ground truth. Delivery = kernel timestamp→read complete; handover = read complete→inference start; inference = conversion/detection/adapter processing; read→output includes handover/processing/serialization. Unity transit = processTimestamp→pipe receive on same-PC UTC, millisecond resolution, not optical/gameplay latency. No cross-clock optical correlation or T018 acceptance claimed. Bounded4096 sample windows retain lifetimeN/extremes; percentile window semantics documented by retained count.
+
+### Packaging and redistribution
+
+Headless4.13.0.92 evaluation: import/MediaPipe/V4L2 PASS, GUI NONE, FFmpeg YES; physical capture30.22491833686343/inference30.22523864434588/output30.22523922232573. **Not adopted:** full physical quality/adoption/license gates unresolved. Original locked18-package environment is preserved. Controlled Qt removal breaks loader; isolated FFmpeg-only removal breaks libavcodec load. First broad removal also matchedAVIF and is explicitly NOT ISOLATED; corrected experiment preservesAVIF. Original binaries retained.
+
+Fresh final staging `/tmp/gorilla-t016-profile-final` is separate from all earlier staging. Vision inventory2881files/193ELF/57components,525976819manifested bytes; sources increase size over456MB payload. Authentic model Apache2 notice/text and Flatbuffers license included. Exact FFmpeg8.0.1 and QtBase5.15.18 upstream tarballs provided in SOURCES/upstream with URLs/SHA; FFmpeg exported license/config recorded, no observed GPL/nonfree flags. **PARTIAL:** wheel-specific patches/build correspondence, applicable LGPL replacement/relinking materials and copied GPL/LGPL distro sources remain unverified. Concrete required materials and delivery directory documented; no unfulfilled source offer asserted. Sources/binaries stay in local staging, no repository binary upload.
+
+Model exact5777746-byte hash59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a, official family model-card Apache2 and creator attribution are retained in authentic notice; no additional model publisher NOTICE found. Player inventory separates221actual files/9ELF from Vision and host. Mono runtime export identifies6.13.0(explicit/9d7c9afd); matching Player/Mono/libdecor provenance and applicable notices remain OPEN. Editor/tool notices are not substituted. Runtime maps still show dynamic host audio/graphics dependencies beyond the copied ldd closure; Vision native closure is not falsely declared complete. **AC2 PARTIAL**. Size alone does not block.
+
+### Verification and delivery boundary
+
+Components19/19, UnityEdit99/99, UnityPlay20/20, LinuxBuildSucceeded errors0/warnings0, Management/Foundation validatorsPASS. PlayMode includes CameraInputStore/player-lock/fusion/T015 regressions and packaged physical cleanup plus forced-child restoration. CI remote checks NOT RUN (no push/PR). [Validation aggregate](evidence/t016-camera-runtime-2026-10-09/profile/validation.json). Integrated final physical/offline/privacy results are appended below after completion.
+
+T016/#29 OPEN/InProgress, T017/#30 OPEN/Validation+blocked, T018/#32 OPEN/Validation+blocked, F04/#28 OPEN/InProgress, E0/#1 OPEN/InProgress; Phase0 INPROGRESS, E1/#2Backlog/Phase1NOTSTARTED. No acceptance/DEC adoption/cascade without all ACs.
+
+
+Fresh final integrated Player (5s warmup+61s): capture1845frames/61.010225535s=**30.224441621546614FPS**, inference1823frames=29.854089942381933FPS, output1823frames=29.85409429745793FPS. Lifetimecaptured1989/consumed1964/emitted1964; Unityaccepted1963 (shutdown boundary), worker-overwrites25, parent-overwrites0, staleframesSkipped0, pendingdiscard0, timestampUnavailable0. Frame ageP50/P95/max33.355845/46.324587/66.864654ms N1822; delivery32.833892/33.981744/64.359287 N1845; handover0.297707/13.589672/36.102638 N1822; processing25.147072/40.748903/99.31088 N1823; read→output27.809445/47.529048/110.6894 N1823. UTCprocess→UnityreceiveP50/P95/max7/15/32ms N1964 invalid0. Independent boundary timestamps explain differing metricN. No sum of percentiles or end-to-end optical claim.
+
+[Physical offline aggregate](evidence/t016-camera-runtime-2026-10-09/profile/physical-offline-final.json): technical gatePASS, actualcapture thresholdPASS, numposes2/MJPG640×480; WANprobeunreachable101, developer .cachehidden, HOMEisolated, relativeVisionruntime/localmodel loaded. Playerexit0, ownworkerexit0, noforcedshutdown, capture/detectorreleased/threadjoined, parentcontrolrestorePASS, noresidualworker/helper. Image/video writes0; physical per-frame logs0; onlyaggregates retained. **AC3 PASS** for static source plus this physical Linux runtime audit. Human quality remains NOTRUN; AC1 is not accepted. T020clean-PC/platform testing remains independent.
+
+Final Visiontotal526652611bytes (including675792-byte manifest), wholePlayer+Vision683362308bytes/3103files. Visionmanifested525976819bytes/2881files,193ELF,57componentnotices; allhashes verified after run. Runtime-manifest SHA3f2fcf9f49d26dd3ef701962809074c77566ce638bac86cea91464d8e121f07f. [Final staging aggregate](evidence/t016-camera-runtime-2026-10-09/profile/staging-final.json), [final source obligations](evidence/t016-camera-runtime-2026-10-09/profile/final-source-obligations.json), [actual Player inventory](evidence/t016-camera-runtime-2026-10-09/profile/player-files-final.json). Final camera settings equal first measured matrix settings: auto3/exposure156/priority1/MJPG640×480/1÷30; each session also verifies its own full saved format/parameters readback. [Restoration aggregate](evidence/t016-camera-runtime-2026-10-09/profile/final-camera-restoration.json). No settings are left applied outside Gorilla-owned sessions.
+
+Current source deliberately retains authorized candidate defaultbuffers3 when no buffer argument is supplied; the selected minimal evaluated profile is explicitly `--profile candidate --buffers 2` / corresponding environment values. Original remains default. No candidate profile is accepted for normal product use.
+
+Latest remote read confirms T016InProgress; T017/T018Validation with blocked labels; F04/E0InProgress; E1Backlog; noT016PR. [Remote state](evidence/t016-camera-runtime-2026-10-09/profile/remote-state-final.json). Remaining real gaps: participating movinghuman comparison inBRIGHT/NORMAL/LOW-LIGHT, quality-loaded inference/latency acceptance, matching wheel/distro corresponding-source and exact Player notices/provenance, dynamic Vision native closure. No dependency cascade or publication.

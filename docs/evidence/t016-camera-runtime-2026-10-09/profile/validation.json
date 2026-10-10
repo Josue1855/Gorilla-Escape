@@ -1,0 +1,33 @@
+{
+  "components": {
+    "passed": 19,
+    "failed": 0
+  },
+  "management": "PASS",
+  "foundation": "PASS",
+  "linuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "physicalFault": "ParentRestoresCandidateControlsAfterOwnedWorkerIsKilled PASS; helper readback verifies saved full controls/format/interval after owned worker kill",
+  "editmode-profile": {
+    "result": "Passed",
+    "total": "99",
+    "passed": "99",
+    "failed": "0",
+    "skipped": "0",
+    "artifactSha256": "bf12e51c312f98c355f3d077656d3a0f657a92d1974f9db116f1e4fd4dfbe85b",
+    "artifact": "/home/josuegalvan/.cache/gorilla-t016-validation/evidence/editmode-profile.xml"
+  },
+  "playmode-profile": {
+    "result": "Passed",
+    "total": "20",
+    "passed": "20",
+    "failed": "0",
+    "skipped": "0",
+    "artifactSha256": "5b371f19ac6836652156145886bd269667622567dccfa745f43ae95563ca447b",
+    "artifact": "/home/josuegalvan/.cache/gorilla-t016-validation/evidence/playmode-profile.xml"
+  },
+  "buildLogSha256": "f6365a3623f2907f5ec229babb65a5bd34d7e7eca23fb7021953ca5dd454cefb"
+}

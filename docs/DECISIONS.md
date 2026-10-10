@@ -419,7 +419,7 @@ Retención sin eviction de hasta256 acciones por sesión; al límite se rechazan
 
 ## DEC-025 — Bounded Camera Capture / Inference Pipeline
 
-**Fecha:2026-10-09. Estado: LOCAL CANDIDATE / ACCEPTANCE BLOCKED.** Selección implementada y medida para T016, sin aprobación de distribución/integración ni cambio de AC.
+**Fecha:2026-10-09. Estado: LOCAL CANDIDATE / VALIDATION IN PROGRESS.** Selección implementada y medida para T016, sin aprobación de distribución/integración ni cambio de AC.
 
 Un hilo OpenCV de captura real→un slot latest de frame owned→inferencia VIDEO/writer en hilo principal. Retener MediaPipe0.10.33/OpenCV4.13.0.92/model lite float16v1/640×480/MJPG/num_poses2. FPS separados con reloj monotónico, overruns medidos, sin queue/interpolación/duplicados/imágenes persistentes. EOF/join/release/close; contrato CameraInput v1 y Player Lock intactos. LIVE_STREAM no necesario para el boundary acotado.
 
@@ -429,3 +429,5 @@ Bundle relativo de Python preparado/stdlib/wheels/nativos/model/manifest, sin nu
 
 
 T016 local continuation (2026-10-09):13 layered physical diagnostics preserve DEC-025 candidate. Default raw19.966964FPS; manual10ms/MMAP3 raw30.225315 and independent OpenCV3 30.225872 diagnostic-only; single-buffer delivery limit reproduced in raw V4L2. Product settings unchanged, AC1 FAIL/AC2 PARTIAL/AC3 PASS. Authentic runtime notices/inventory expanded; source/native-closure/model/Player provenance remain OPEN. No push/PR or cascade. See [Layered Capture Diagnosis](PHASE0_T016_CAMERA_RUNTIME.md#layered-capture-diagnosis).
+
+PO-authorized T016 profile evaluation: manual10ms/buffers1–3; minimum passing2 preserves original priority1. New paired capture30.224215376583782/30.225402700303786/30.225225678964854FPS, everyrun>=30.000. Original default retained. Capability-based session controls and parent restoration after owned-child kill verified. Human BRIGHT/NORMAL/LOW-LIGHT NOTRUN by user availability, so AC1 acceptance remains FAIL/unproven and DEC-025 is not ACCEPTED. AC2 PARTIAL despite supplied matching upstream Qt/FFmpeg sources/model notice. [Latest validation](PHASE0_T016_CAMERA_RUNTIME.md#product-profile-validation--latest-local-continuation). No push/PR/closure.

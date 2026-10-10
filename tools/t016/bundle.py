@@ -33,7 +33,7 @@ def build(venv,model,output):
     shutil.copytree(site,runtime/'lib/python3.12/dist-packages',ignore=shutil.ignore_patterns('__pycache__','*.pyc','tests','test','pip','pip-*.dist-info'))
     (root/'licenses').mkdir();shutil.copy2('/usr/share/doc/python3.12/copyright',root/'licenses/Python-copyright.txt')
     shutil.copy2(model,root/'pose_landmarker_lite-v1.task')
-    for name in ['worker.py','pipeline.py']:shutil.copy2(repo/'tools/spikes/camera'/name,root/name)
+    for name in ['worker.py','pipeline.py','camera_controls.py']:shutil.copy2(repo/'tools/spikes/camera'/name,root/name)
     shutil.copy2(repo/'Shared/Protocol/camera/corpus-v1.json',root/'corpus-v1.json')
     shutil.copy2(__file__,root/'bundle.py')
     native=[];external=set()

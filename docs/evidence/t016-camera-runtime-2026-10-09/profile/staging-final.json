@@ -1,0 +1,15 @@
+{
+  "staging": "/tmp/gorilla-t016-profile-final",
+  "visionManifestedBytes": 525976819,
+  "visionTotalBytes": 526652611,
+  "distributionTotalBytes": 683362308,
+  "distributionFiles": 3103,
+  "visionManifestAllHashesPass": true,
+  "visionRuntimeManifestSha256": "3f2fcf9f49d26dd3ef701962809074c77566ce638bac86cea91464d8e121f07f",
+  "workerHashes": {
+    "worker.py": "6657c184aa0d0a9f55b70977cf474759b1d39cfe727222f12b3eee9693962c6e",
+    "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+    "camera_controls.py": "e44fb902af0cf091f4770d00dde193f6831a9f7a5b84d6f7915b2efc757059be"
+  },
+  "localOnly": true
+}

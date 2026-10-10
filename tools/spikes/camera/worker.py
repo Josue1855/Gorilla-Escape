@@ -2,9 +2,10 @@
 """Linux lab vision adapter: local capture only; outputs bounded landmark JSON, never images.
 One capture thread/one pending owned frame; one detector/writer, at most two subjects. Parent stdin EOF ends capture.
 """
-import argparse,json,os,sys,threading,time
+import argparse,json,os,sys,threading,time,signal
 from pathlib import Path
 from pipeline import CapturePump, Metrics
+from camera_controls import CameraSession
 
 def now(): return time.time_ns()//1_000_000
 
@@ -16,15 +17,22 @@ def emit(prefix,data=None):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--mode',choices=['replay','physical','unavailable','failure','malformed','oversized','silent'],required=True)
     for n in ['fixture','model','device']: p.add_argument('--'+n,default='')
-    p.add_argument('--warmup',type=float,default=0);p.add_argument('--duration',type=float,default=0)
+    p.add_argument('--warmup',type=float,default=os.environ.get('GORILLA_CAMERA_WARMUP','0'));p.add_argument('--duration',type=float,default=0)
+    p.add_argument('--profile',choices=['original','candidate'],default=os.environ.get('GORILLA_CAMERA_PROFILE','original'))
+    p.add_argument('--buffers',type=int,choices=[1,2,3],default=os.environ.get('GORILLA_CAMERA_BUFFERS'))
+    p.add_argument('--dynamic-framerate',type=int,choices=[0,1],default=None)
     a=p.parse_args()
     if a.warmup<0 or a.duration<0:raise ValueError('CAMERA_DURATION_INVALID')
+    if a.buffers not in [None,1,2,3]:raise ValueError('CAMERA_BUFFER_INVALID')
     stop=threading.Event()
+    if threading.current_thread() is threading.main_thread():
+        signal.signal(signal.SIGTERM,lambda *_:stop.set())
+        signal.signal(signal.SIGINT,lambda *_:stop.set())
     def parent():
         while os.read(0,1): pass
         stop.set()
     reader=threading.Thread(target=parent,name='parent-eof',daemon=True);reader.start()
-    capture=detector=pump=timer=None;metrics=Metrics(a.warmup);frames=0;gaps=0;durations=[];captures=[];confidence=[];tracking=0;read_durations=[]
+    capture=detector=pump=timer=session=None;metrics=Metrics(a.warmup);frames=0;gaps=0;durations=[];captures=[];confidence=[];tracking=0;read_durations=[];skipped=0
     try:
         if a.mode=='unavailable': raise RuntimeError('CAMERA_UNAVAILABLE')
         if a.mode=='silent': stop.wait();return
@@ -33,14 +41,18 @@ def main():
         else:
             if not Path(a.model).is_file():raise RuntimeError("CAMERA_MODEL_MISSING")
             import cv2,mediapipe as mp
+            session=CameraSession(a.device,a.profile,a.dynamic_framerate,snapshot_callback=lambda snapshot:emit('CAMERA_CONTROL_SNAPSHOT',snapshot))
+            controls_before=session.describe(session.before)
+            buffers=a.buffers or (3 if a.profile=='candidate' else 1)
             capture=cv2.VideoCapture(a.device,cv2.CAP_V4L2)
-            capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'));capture.set(cv2.CAP_PROP_FRAME_WIDTH,640);capture.set(cv2.CAP_PROP_FRAME_HEIGHT,480);capture.set(cv2.CAP_PROP_FPS,30);capture.set(cv2.CAP_PROP_BUFFERSIZE,1)
+            capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'));capture.set(cv2.CAP_PROP_FRAME_WIDTH,640);capture.set(cv2.CAP_PROP_FRAME_HEIGHT,480);capture.set(cv2.CAP_PROP_FPS,30);capture.set(cv2.CAP_PROP_BUFFERSIZE,buffers)
             if not capture.isOpened():raise RuntimeError('CAMERA_UNAVAILABLE')
             detector=mp.tasks.vision.PoseLandmarker.create_from_options(mp.tasks.vision.PoseLandmarkerOptions(base_options=mp.tasks.BaseOptions(model_asset_path=a.model),running_mode=mp.tasks.vision.RunningMode.VIDEO,num_poses=2))
             fourcc=int(capture.get(cv2.CAP_PROP_FOURCC))
             configuration=dict(backend=capture.getBackendName(),device=a.device,width=capture.get(cv2.CAP_PROP_FRAME_WIDTH),height=capture.get(cv2.CAP_PROP_FRAME_HEIGHT),fourcc=''.join(chr((fourcc>>(8*i))&255) for i in range(4)),requestedFps=30,reportedFps=capture.get(cv2.CAP_PROP_FPS),reportedBuffer=capture.get(cv2.CAP_PROP_BUFFERSIZE),numPoses=2)
+            configuration.update(profile=a.profile,controlsBefore=controls_before,controlsApplied=session.describe(),acquisitionTimestampSource='OpenCV V4L2 CAP_PROP_POS_MSEC / kernel timestamp; validated monotonic range, not optical ground truth',staleBudgetMs=100)
             previous=[];next_id=1;origin=now();mono=time.monotonic_ns();last_detector_time=-1
-            metrics=Metrics(a.warmup);pump=CapturePump(capture,stop,metrics);pump.start()
+            metrics=Metrics(a.warmup);pump=CapturePump(capture,stop,metrics,acquisition_clock=lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6));pump.start()
             if a.duration:
                 timer=threading.Timer(a.warmup+a.duration,stop.set);timer.daemon=True;timer.start()
         emit('CAMERA_READY')
@@ -58,6 +70,10 @@ def main():
                 captured=pump.slot.take(stop)
                 if captured is None:break
                 image=captured.image;stamp=captured.capture_timestamp;processing_started=time.monotonic_ns();read_ms=0
+                metrics.observe('handoverMs',(processing_started-captured.monotonic_ns)/1e6,processing_started)
+                if captured.acquisition_ns is not None:
+                    age=(processing_started-captured.acquisition_ns)/1e6;metrics.observe('frameAgeAtInferenceMs',age,processing_started)
+                    if age>100:skipped+=1;metrics.event('staleSkipped');continue
                 dt=max(last_detector_time+1,(captured.monotonic_ns-mono)//1_000_000);last_detector_time=dt
                 result=detector.detect_for_video(mp.Image(image_format=mp.ImageFormat.SRGB,data=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)),dt)
                 subjects=[];used=set()
@@ -77,7 +93,14 @@ def main():
                 frame=dict(version=1,width=image.shape[1],height=image.shape[0],source='physical-webcam',quality='observed',clockDomain='pc-unix-ms',captureTimeSource='read-complete',captureTimestamp=stamp,processTimestamp=now(),subjects=subjects,trackingState='TRACKING' if subjects else 'LOST')
             processing_ms=(time.monotonic_ns()-processing_started)/1e6
             frames+=1;frame['frameSequence']=captured.sequence if a.mode=='physical' else frames;emit('CAMERA_FRAME',frame)
-            if a.mode=='physical':metrics.event('inference',duration=processing_ms);metrics.event('output');metrics.event('tracking' if frame['subjects'] else 'trackingGap')
+            if a.mode=='physical':
+                metrics.event('inference',duration=processing_ms);metrics.event('output');metrics.event('tracking' if frame['subjects'] else 'trackingGap')
+                metrics.observe('inferenceDurationMs',processing_ms)
+                metrics.observe('readCompleteToOutputMs',(time.monotonic_ns()-captured.monotonic_ns)/1e6)
+                metrics.observe('subjectsDetected',len(subjects));metrics.observe('confidence',max((s['confidence'] for s in subjects),default=0))
+                metrics.observe('visibleLandmarks',sum(l['visible'] for s in subjects for l in s['landmarks']))
+                metrics.observe('meanPixelValue',float(image.mean()))
+                metrics.event('usefulTracking' if any(s['confidence']>=.5 and sum(l['visible'] for l in s['landmarks'])>=6 for s in subjects) else 'qualityGap')
             durations.append(processing_ms);read_durations.append(read_ms);captures.append(frame['captureTimestamp']);tracking+=bool(frame['subjects']);gaps+=not bool(frame['subjects']);confidence.extend(s['confidence'] for s in frame['subjects'])
             # Bound observation metrics, no lifetime growth.
             if len(durations)>4096:durations.pop(0);read_durations.pop(0);captures.pop(0)
@@ -89,9 +112,13 @@ def main():
             if pump is not None:pump.close()
             elif capture is not None:capture.release()
         finally:
-            if detector is not None:detector.close()
+            try:
+                if detector is not None:detector.close()
+            finally:
+                if session is not None:session.close()
         if pump is not None:
             report=metrics.report();report.update(configuration=configuration,capturedFrames=pump.frames,inferredFrames=frames,cameraInputEmitted=frames,overwrittenBeforeInference=pump.slot.overwritten,pendingDiscarded=pump.slot.published-pump.slot.taken-pump.slot.overwritten,captureThreadJoined=not pump.thread.is_alive(),cameraReleased=pump.released,detectorClosed=detector is not None,hardwareDroppedFrames=None,warmupSeconds=a.warmup)
+            report.update(staleSkipped=skipped,acquisitionTimestampUnavailable=pump.timestamp_unavailable,controlsRestored=session.restored,clockCorrelation='Worker latency monotonic; CameraInput UTC timestamps unchanged',humanQualityAcceptance='NOT PROVEN by presence/confidence aggregates alone')
             emit('CAMERA_SUMMARY',report)
         elif frames:
             values=sorted(durations);reads=sorted(read_durations)

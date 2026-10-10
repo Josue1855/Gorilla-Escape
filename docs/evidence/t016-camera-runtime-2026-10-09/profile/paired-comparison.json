@@ -1,0 +1,771 @@
+{
+  "interpretation": "Same ambient scene; zero subjects; throughput proof only. No human or illumination acceptance; earlier explicitly configured runs contain source revisions recorded individually. Kernel V4L2 timestamp proxy, not optical timing.",
+  "warmupSeconds": 5,
+  "requestedMeasurementSeconds": 61,
+  "runs": [
+    {
+      "file": "paired-candidate-1.json",
+      "profile": "candidate",
+      "captureFps": 30.224215376583782,
+      "inferenceFps": 30.191347599050747,
+      "outputFps": 30.19134794247807,
+      "captureFrames": 1844,
+      "inferenceFrames": 1843,
+      "outputFrames": 1843,
+      "captureDuration": 60.977596177,
+      "overwritten": 1,
+      "staleSkipped": 0,
+      "capturedTotal": 1988,
+      "consumedTotal": 1987,
+      "pendingDiscarded": 0,
+      "latency": {
+        "captureReadDurationMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 30.533161,
+          "P50": 31.994161,
+          "P95": 36.65656,
+          "min": 29.121723,
+          "max": 39.220143
+        },
+        "captureIntervalMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 30.847801,
+          "P50": 32.17227,
+          "P95": 36.81456,
+          "min": 29.352627,
+          "max": 39.480345
+        },
+        "cameraDeliveryMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 28.947348,
+          "P50": 33.082846,
+          "P95": 34.543816,
+          "min": 28.569283,
+          "max": 36.294308
+        },
+        "handoverMsStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 0.204401,
+          "P50": 0.353508,
+          "P95": 5.600538,
+          "min": 0.110631,
+          "max": 26.772474
+        },
+        "frameAgeAtInferenceMsStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 29.291017,
+          "P50": 33.531436,
+          "P95": 37.995365,
+          "min": 28.788901,
+          "max": 61.578192
+        },
+        "inferenceDurationMsStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 14.522326,
+          "P50": 23.293784,
+          "P95": 35.056096,
+          "min": 12.126515,
+          "max": 77.13332
+        },
+        "readCompleteToOutputMsStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 15.521035,
+          "P50": 24.358057,
+          "P95": 36.721535,
+          "min": 12.409389,
+          "max": 77.723769
+        }
+      },
+      "quality": {
+        "trackingGapFrames": 1843,
+        "qualityGapFrames": 1843,
+        "subjectsDetectedStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "confidenceStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "visibleLandmarksStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "meanPixelValueStats": {
+          "N": 1843,
+          "retained": 1843,
+          "P05": 4.691848958333333,
+          "P50": 4.691848958333333,
+          "P95": 4.691848958333333,
+          "min": 4.691848958333333,
+          "max": 4.691848958333333
+        }
+      },
+      "controlsRestored": true,
+      "sourceHashes": {
+        "worker.py": "e93895daf6e8077062290d6f33b8ae117e573f801d1e1e2974b72d47ee6caabf",
+        "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+        "camera_controls.py": "e44fb902af0cf091f4770d00dde193f6831a9f7a5b84d6f7915b2efc757059be"
+      }
+    },
+    {
+      "file": "paired-candidate-2.json",
+      "profile": "candidate",
+      "captureFps": 30.225402700303786,
+      "inferenceFps": 30.18693694690809,
+      "outputFps": 30.18693710390082,
+      "captureFrames": 1844,
+      "inferenceFrames": 1841,
+      "outputFrames": 1841,
+      "captureDuration": 60.975200836,
+      "overwritten": 3,
+      "staleSkipped": 0,
+      "capturedTotal": 1988,
+      "consumedTotal": 1985,
+      "pendingDiscarded": 0,
+      "latency": {
+        "captureReadDurationMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 30.668529,
+          "P50": 31.975331,
+          "P95": 36.637249,
+          "min": 27.318718,
+          "max": 39.701303
+        },
+        "captureIntervalMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 30.979335,
+          "P50": 32.165864,
+          "P95": 36.792847,
+          "min": 28.039527,
+          "max": 39.820305
+        },
+        "cameraDeliveryMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 28.917708,
+          "P50": 33.053583,
+          "P95": 34.442417,
+          "min": 28.499188,
+          "max": 39.10933
+        },
+        "handoverMsStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 0.194753,
+          "P50": 0.343143,
+          "P95": 3.759379,
+          "min": 0.126095,
+          "max": 31.562894
+        },
+        "frameAgeAtInferenceMsStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 29.196863,
+          "P50": 33.434668,
+          "P95": 36.346701,
+          "min": 28.666304,
+          "max": 61.723291
+        },
+        "inferenceDurationMsStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 14.316941,
+          "P50": 22.884275,
+          "P95": 34.560406,
+          "min": 11.864764,
+          "max": 88.93047
+        },
+        "readCompleteToOutputMsStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 15.170327,
+          "P50": 23.642632,
+          "P95": 35.636904,
+          "min": 12.097116,
+          "max": 89.818323
+        }
+      },
+      "quality": {
+        "trackingGapFrames": 1841,
+        "qualityGapFrames": 1841,
+        "subjectsDetectedStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "confidenceStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "visibleLandmarksStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "meanPixelValueStats": {
+          "N": 1841,
+          "retained": 1841,
+          "P05": 4.691848958333333,
+          "P50": 4.691848958333333,
+          "P95": 4.691848958333333,
+          "min": 4.691848958333333,
+          "max": 4.691848958333333
+        }
+      },
+      "controlsRestored": true,
+      "sourceHashes": {
+        "worker.py": "6657c184aa0d0a9f55b70977cf474759b1d39cfe727222f12b3eee9693962c6e",
+        "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+        "camera_controls.py": "e44fb902af0cf091f4770d00dde193f6831a9f7a5b84d6f7915b2efc757059be"
+      }
+    },
+    {
+      "file": "paired-candidate-3.json",
+      "profile": "candidate",
+      "captureFps": 30.225225678964854,
+      "inferenceFps": 30.22342847330064,
+      "outputFps": 30.223430877131435,
+      "captureFrames": 1844,
+      "inferenceFrames": 1844,
+      "outputFrames": 1844,
+      "captureDuration": 60.975557952,
+      "overwritten": 0,
+      "staleSkipped": 0,
+      "capturedTotal": 1988,
+      "consumedTotal": 1988,
+      "pendingDiscarded": 0,
+      "latency": {
+        "captureReadDurationMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 30.623181,
+          "P50": 31.978495,
+          "P95": 36.592639,
+          "min": 28.363894,
+          "max": 38.716566
+        },
+        "captureIntervalMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 30.955147,
+          "P50": 32.168225,
+          "P95": 36.752225,
+          "min": 28.790691,
+          "max": 38.887371
+        },
+        "cameraDeliveryMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 28.933796,
+          "P50": 33.083983,
+          "P95": 34.377998,
+          "min": 28.578806,
+          "max": 36.483826
+        },
+        "handoverMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 0.195474,
+          "P50": 0.346263,
+          "P95": 4.504834,
+          "min": 0.113368,
+          "max": 31.515796
+        },
+        "frameAgeAtInferenceMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 29.256245,
+          "P50": 33.497143,
+          "P95": 36.617483,
+          "min": 28.710754,
+          "max": 65.139837
+        },
+        "inferenceDurationMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 13.874337,
+          "P50": 23.38633,
+          "P95": 34.345571,
+          "min": 10.659302,
+          "max": 61.781412
+        },
+        "readCompleteToOutputMsStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 15.058324,
+          "P50": 24.168331,
+          "P95": 36.148757,
+          "min": 10.96819,
+          "max": 62.237496
+        }
+      },
+      "quality": {
+        "trackingGapFrames": 1844,
+        "qualityGapFrames": 1844,
+        "subjectsDetectedStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "confidenceStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "visibleLandmarksStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "meanPixelValueStats": {
+          "N": 1844,
+          "retained": 1844,
+          "P05": 4.691848958333333,
+          "P50": 4.691848958333333,
+          "P95": 4.691848958333333,
+          "min": 4.691848958333333,
+          "max": 4.691848958333333
+        }
+      },
+      "controlsRestored": true,
+      "sourceHashes": {
+        "worker.py": "6657c184aa0d0a9f55b70977cf474759b1d39cfe727222f12b3eee9693962c6e",
+        "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+        "camera_controls.py": "e44fb902af0cf091f4770d00dde193f6831a9f7a5b84d6f7915b2efc757059be"
+      }
+    },
+    {
+      "file": "paired-original-1.json",
+      "profile": "original",
+      "captureFps": 19.95006159447478,
+      "inferenceFps": 19.906832216364982,
+      "outputFps": 19.906832081224344,
+      "captureFrames": 1217,
+      "inferenceFrames": 1215,
+      "outputFrames": 1215,
+      "captureDuration": 60.952192766,
+      "overwritten": 3,
+      "staleSkipped": 0,
+      "capturedTotal": 1313,
+      "consumedTotal": 1310,
+      "pendingDiscarded": 0,
+      "latency": {
+        "captureReadDurationMsStats": {
+          "N": 1217,
+          "retained": 1217,
+          "P05": 46.121734,
+          "P50": 50.212494,
+          "P95": 53.483349,
+          "min": 43.325952,
+          "max": 97.310852
+        },
+        "captureIntervalMsStats": {
+          "N": 1217,
+          "retained": 1217,
+          "P05": 46.41087,
+          "P50": 50.466473,
+          "P95": 53.665727,
+          "min": 43.652008,
+          "max": 97.686507
+        },
+        "cameraDeliveryMsStats": {
+          "N": 1217,
+          "retained": 1217,
+          "P05": 29.726577,
+          "P50": 34.061125,
+          "P95": 36.656652,
+          "min": 28.663013,
+          "max": 41.11188
+        },
+        "inferenceDurationMsStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 19.515471,
+          "P50": 30.268026,
+          "P95": 51.70853,
+          "min": 12.704464,
+          "max": 103.948654
+        },
+        "readCompleteToOutputMsStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 20.200341,
+          "P50": 31.062754,
+          "P95": 54.672148,
+          "min": 12.988957,
+          "max": 124.637726
+        },
+        "handoverMsStats": {
+          "N": 1214,
+          "retained": 1214,
+          "P05": 0.226294,
+          "P50": 0.462278,
+          "P95": 5.544805,
+          "min": 0.136981,
+          "max": 30.135467
+        },
+        "frameAgeAtInferenceMsStats": {
+          "N": 1214,
+          "retained": 1214,
+          "P05": 30.09488,
+          "P50": 34.622154,
+          "P95": 39.750378,
+          "min": 28.913119,
+          "max": 66.809819
+        }
+      },
+      "quality": {
+        "trackingFrames": 430,
+        "qualityGapFrames": 1215,
+        "trackingGapFrames": 785,
+        "subjectsDetectedStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 0,
+          "P95": 1,
+          "min": 0,
+          "max": 1
+        },
+        "confidenceStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0.008543276228010654,
+          "min": 0,
+          "max": 0.0202647615224123
+        },
+        "visibleLandmarksStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 0,
+          "P95": 2,
+          "min": 0,
+          "max": 2
+        },
+        "meanPixelValueStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 4.691848958333333,
+          "P50": 4.691848958333333,
+          "P95": 43.97048936631944,
+          "min": 4.691848958333333,
+          "max": 46.28338107638889
+        }
+      },
+      "controlsRestored": true,
+      "sourceHashes": {
+        "worker.py": "275cc7a0a62c2f8610aa66e839e7423dc5b7bf1293feff4f6f2e24e1c2c9e058",
+        "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+        "camera_controls.py": "5f7d4b7ac804898a11036471db624e3a8522c758d4f98d5ade9e288861426e3b"
+      }
+    },
+    {
+      "file": "paired-original-2.json",
+      "profile": "original",
+      "captureFps": 19.966789070751005,
+      "inferenceFps": 19.967356186098513,
+      "outputFps": 19.967357016877447,
+      "captureFrames": 1218,
+      "inferenceFrames": 1219,
+      "outputFrames": 1219,
+      "captureDuration": 60.95121232,
+      "overwritten": 0,
+      "staleSkipped": 0,
+      "capturedTotal": 1315,
+      "consumedTotal": 1315,
+      "pendingDiscarded": 0,
+      "latency": {
+        "inferenceDurationMsStats": {
+          "N": 1219,
+          "retained": 1219,
+          "P05": 16.9549,
+          "P50": 24.975321,
+          "P95": 36.309755,
+          "min": 11.912124,
+          "max": 86.859593
+        },
+        "readCompleteToOutputMsStats": {
+          "N": 1219,
+          "retained": 1219,
+          "P05": 17.534027,
+          "P50": 25.501121,
+          "P95": 36.869147,
+          "min": 12.810265,
+          "max": 87.380956
+        },
+        "captureReadDurationMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 45.036287,
+          "P50": 50.03857,
+          "P95": 54.383017,
+          "min": 41.594317,
+          "max": 57.048153
+        },
+        "captureIntervalMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 45.310037,
+          "P50": 50.346403,
+          "P95": 54.583187,
+          "min": 42.020817,
+          "max": 57.169775
+        },
+        "cameraDeliveryMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 31.878535,
+          "P50": 36.746883,
+          "P95": 38.876272,
+          "min": 29.93967,
+          "max": 41.208076
+        },
+        "handoverMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 0.264864,
+          "P50": 0.421874,
+          "P95": 0.590719,
+          "min": 0.148707,
+          "max": 36.114126
+        },
+        "frameAgeAtInferenceMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 32.261754,
+          "P50": 37.176786,
+          "P95": 39.449995,
+          "min": 30.122084,
+          "max": 73.181687
+        }
+      },
+      "quality": {
+        "trackingGapFrames": 1219,
+        "qualityGapFrames": 1219,
+        "subjectsDetectedStats": {
+          "N": 1219,
+          "retained": 1219,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "confidenceStats": {
+          "N": 1219,
+          "retained": 1219,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "visibleLandmarksStats": {
+          "N": 1219,
+          "retained": 1219,
+          "P05": 0,
+          "P50": 0,
+          "P95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "meanPixelValueStats": {
+          "N": 1219,
+          "retained": 1219,
+          "P05": 37.68208875868056,
+          "P50": 39.80889973958333,
+          "P95": 40.705419921875,
+          "min": 37.216555989583334,
+          "max": 41.71828667534722
+        }
+      },
+      "controlsRestored": true,
+      "sourceHashes": {
+        "worker.py": "6657c184aa0d0a9f55b70977cf474759b1d39cfe727222f12b3eee9693962c6e",
+        "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+        "camera_controls.py": "e44fb902af0cf091f4770d00dde193f6831a9f7a5b84d6f7915b2efc757059be"
+      }
+    },
+    {
+      "file": "paired-original-3.json",
+      "profile": "original",
+      "captureFps": 19.964108287928628,
+      "inferenceFps": 19.898428201812244,
+      "outputFps": 19.89842802079838,
+      "captureFrames": 1218,
+      "inferenceFrames": 1215,
+      "outputFrames": 1215,
+      "captureDuration": 60.959396856,
+      "overwritten": 4,
+      "staleSkipped": 0,
+      "capturedTotal": 1313,
+      "consumedTotal": 1309,
+      "pendingDiscarded": 0,
+      "latency": {
+        "inferenceDurationMsStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 22.980265,
+          "P50": 37.834529,
+          "P95": 57.274135,
+          "min": 12.366614,
+          "max": 106.09237
+        },
+        "readCompleteToOutputMsStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 23.462796,
+          "P50": 40.121101,
+          "P95": 65.438523,
+          "min": 12.691968,
+          "max": 114.928034
+        },
+        "captureReadDurationMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 45.114501,
+          "P50": 50.011756,
+          "P95": 54.583757,
+          "min": 39.968579,
+          "max": 57.398104
+        },
+        "captureIntervalMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 45.431317,
+          "P50": 50.247907,
+          "P95": 54.756789,
+          "min": 40.329422,
+          "max": 57.558581
+        },
+        "cameraDeliveryMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 30.085968,
+          "P50": 34.781017,
+          "P95": 38.09635,
+          "min": 29.693615,
+          "max": 42.588321
+        },
+        "handoverMsStats": {
+          "N": 1214,
+          "retained": 1214,
+          "P05": 0.198443,
+          "P50": 0.380043,
+          "P95": 16.256377,
+          "min": 0.120771,
+          "max": 48.327668
+        },
+        "frameAgeAtInferenceMsStats": {
+          "N": 1214,
+          "retained": 1214,
+          "P05": 30.620538,
+          "P50": 35.996065,
+          "P95": 50.430139,
+          "min": 29.839736,
+          "max": 80.109317
+        }
+      },
+      "quality": {
+        "trackingGapFrames": 175,
+        "qualityGapFrames": 1215,
+        "trackingFrames": 1040,
+        "subjectsDetectedStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 1,
+          "P95": 1,
+          "min": 0,
+          "max": 2
+        },
+        "confidenceStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 0.02815030701458454,
+          "P95": 0.14631982147693634,
+          "min": 0,
+          "max": 0.2598617672920227
+        },
+        "visibleLandmarksStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 0,
+          "P95": 2,
+          "min": 0,
+          "max": 4
+        },
+        "meanPixelValueStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 34.577733289930556,
+          "P50": 37.10616861979167,
+          "P95": 38.54186414930555,
+          "min": 30.894949001736112,
+          "max": 46.93485460069444
+        }
+      },
+      "controlsRestored": true,
+      "sourceHashes": {
+        "worker.py": "6657c184aa0d0a9f55b70977cf474759b1d39cfe727222f12b3eee9693962c6e",
+        "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+        "camera_controls.py": "e44fb902af0cf091f4770d00dde193f6831a9f7a5b84d6f7915b2efc757059be"
+      }
+    }
+  ]
+}

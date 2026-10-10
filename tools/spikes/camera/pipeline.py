@@ -11,11 +11,19 @@ class CapturedFrame:
     image: object
     capture_timestamp: int
     monotonic_ns: int
+    acquisition_ns: int | None = None
 
 class Metrics:
     def __init__(self, warmup=0, clock=time.monotonic_ns):
         self.clock=clock; self.start=clock(); self.after=self.start+int(warmup*1e9)
-        self.counts={}; self.first={}; self.last={}; self.timings={}; self.lock=threading.Lock()
+        self.counts={}; self.first={}; self.last={}; self.timings={}; self.lock=threading.Lock();self.samples={};self.sample_counts={};self.extremes={}
+    def observe(self,name,value,stamp=None):
+        stamp=self.clock() if stamp is None else stamp
+        if stamp<self.after:return
+        with self.lock:
+            self.samples.setdefault(name,deque(maxlen=4096)).append(value)
+            self.sample_counts[name]=self.sample_counts.get(name,0)+1
+            low,high=self.extremes.get(name,(value,value));self.extremes[name]=(min(low,value),max(high,value))
     def event(self, name, stamp=None, duration=None):
         stamp=self.clock() if stamp is None else stamp
         if stamp<self.after:return
@@ -32,6 +40,9 @@ class Metrics:
                 result[name+'Fps']=(n-1)/elapsed if elapsed>0 else None
             for name,values in self.timings.items():
                 values=sorted(values);result[name+'P50Ms']=values[math.ceil(len(values)*.5)-1];result[name+'P95Ms']=values[math.ceil(len(values)*.95)-1]
+            for name,values in self.samples.items():
+                values=sorted(values);low,high=self.extremes[name]
+                result[name+'Stats']=dict(N=self.sample_counts[name],retained=len(values),P05=values[math.ceil(len(values)*.05)-1],P50=values[math.ceil(len(values)*.5)-1],P95=values[math.ceil(len(values)*.95)-1],min=low,max=high)
             return result
 
 class LatestFrameSlot:
@@ -55,10 +66,11 @@ class LatestFrameSlot:
         with self.condition:self.closed=True;self.error=error if error is not None else self.error;self.pending=None;self.condition.notify_all()
 
 class CapturePump:
-    def __init__(self, capture, stop, metrics, clock=time.monotonic_ns):
+    def __init__(self, capture, stop, metrics, clock=time.monotonic_ns, acquisition_clock=None):
         self.capture=capture;self.stop=stop;self.metrics=metrics;self.clock=clock
         self.slot=LatestFrameSlot();self.frames=0;self.released=False
         self.thread=threading.Thread(target=self.run,name='camera-capture',daemon=True)
+        self.acquisition_clock=acquisition_clock;self.previous_acquisition=None;self.timestamp_unavailable=0;self.previous_read=None
     def start(self):self.thread.start()
     def run(self):
         try:
@@ -69,8 +81,16 @@ class CapturePump:
                 self.frames+=1
                 self.metrics.event('capture',stamp)
                 self.metrics.event('captureRead',stamp,(stamp-before)/1e6)
+                self.metrics.observe('captureReadDurationMs',(stamp-before)/1e6,stamp)
+                if self.previous_read is not None:self.metrics.observe('captureIntervalMs',(stamp-self.previous_read)/1e6,stamp)
+                self.previous_read=stamp
+                try:acquired=self.acquisition_clock() if self.acquisition_clock else None
+                except (ValueError,TypeError,RuntimeError):acquired=None
+                if acquired is not None and 0<=stamp-acquired<=10_000_000_000 and (self.previous_acquisition is None or acquired>self.previous_acquisition):
+                    self.previous_acquisition=acquired;self.metrics.observe('cameraDeliveryMs',(stamp-acquired)/1e6,stamp)
+                else:acquired=None;self.timestamp_unavailable+=1
                 # Producer relinquishes a detached owned buffer; never mutates the pending/inferred image.
-                frame=CapturedFrame(self.frames,image.copy(),utc,stamp)
+                frame=CapturedFrame(self.frames,image.copy(),utc,stamp,acquired)
                 self.slot.publish(frame)
         except Exception:
             self.slot.close('CAMERA_READ_FAILED');self.stop.set()

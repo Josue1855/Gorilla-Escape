@@ -49,7 +49,7 @@ def inventory(root,loaded):
         texts=[root/p for p in files if re.search(r'license|copying|copyright|notice',pathlib.Path(p).name,re.I)]
         if meta['Name'].lower()=='flatbuffers' and (root/'licenses/flatbuffers-25.12.19-LICENSE').is_file():
             texts.append(root/'licenses/flatbuffers-25.12.19-LICENSE')
-        requirement=('Exact corresponding source/build patches/options for embedded Qt/FFmpeg remain uncollected; see source-obligations.json'
+        requirement=('Corresponding-source fulfillment for embedded Qt/FFmpeg remains incomplete; see supplied upstream archives, measured configuration and open build/patch gaps in source-obligations.json'
             if meta['Name'].lower().startswith('opencv') else None)
         component(meta['Name'],meta['Version'],dict(metadata=relative(dist/'METADATA',root),
             urls=meta.get_all('Project-URL') or [meta.get('Home-page')],recordOmittedFromBundle=omitted,
@@ -57,12 +57,14 @@ def inventory(root,loaded):
             requirement)
 
     cvnotice=site/'cv2/LICENSE-3RD-PARTY.txt'
+    ffmpeg_build=root/'SOURCES/ffmpeg-build.json'
     for name,version,license,pattern,upstream in [('Qt','5.15.18','LGPL-3.0',r'libQt5','https://www.qt.io/'),
-        ('FFmpeg','ABI avcodec62.11.100/avformat62.3.100/avutil60.8.100; exact upstream source revision unresolved',
-         'LGPL-2.1 per wheel notice; build-option verification pending',r'lib(avcodec|avformat|avutil|avdevice|swscale|swresample)', 'https://ffmpeg.org/')]:
+        ('FFmpeg','8.0.1 (exported av_version_info recorded in SOURCES/ffmpeg-build.json)' if ffmpeg_build.is_file() else 'ABI avcodec62.11.100/avformat62.3.100/avutil60.8.100; upstream revision unresolved',
+         'LGPL-2.1-or-later (exported binary license/configuration recorded)' if ffmpeg_build.is_file() else 'LGPL-2.1 per wheel notice; build-option verification pending',r'lib(avcodec|avformat|avutil|avdevice|swscale|swresample)', 'https://ffmpeg.org/')]:
         files=[relative(p,root) for p in site.rglob('*') if p.is_file() and re.match(pattern,p.name)]
+        texts=[cvnotice]+([p for p in (root/'licenses').glob('QtBase-5.15.18-LICENSE.*')] if name=='Qt' else [])
         component(name,version,dict(upstream=upstream,wheel='opencv-contrib-python 4.13.0.92',declaredLicense=license),
-            files,[cvnotice],'bundled native subcomponent','See explicit source-obligations.json; exact sources/patches/build configuration and applicable linking conditions remain OPEN')
+            files,texts,'bundled native subcomponent','See source-obligations.json: matching upstream releases supplied; wheel modifications/build provenance and applicable relinking/replacement fulfillment remain OPEN')
 
     for p in sorted((root/'runtime/native').glob('*')):
         if not p.is_file():continue
@@ -92,8 +94,10 @@ def inventory(root,loaded):
         package=run('dpkg-query','-W','-f=${Version}', 'python3.12-minimal').strip()),python_files,
         [root/'licenses/Python-copyright.txt',root/'runtime/lib/python3.12/LICENSE.txt'],
         'bundled interpreter/stdlib', 'Inspect retained Python and embedded-extension licenses; GNU readline and other copied system libraries have separate source requirements.')
-    component('Pose-Landmarker-lite','float16/v1',original['model'],['pose_landmarker_lite-v1.task'],[],
-        'bundled model','Family model card reports Apache-2.0; artifact-specific notice/license provenance and any NOTICE applicability still require completion. No invented model notice.')
+    model_texts=[root/'licenses/Pose-Landmarker-NOTICE.txt',root/'licenses/Pose-Landmarker-Apache-2.0.txt']
+    has_model_notice=all(p.is_file() for p in model_texts)
+    component('Pose-Landmarker-lite','float16/v1',{**original['model'],'declaredLicense':'Apache-2.0' if has_model_notice else 'Family model-card evidence; notice incomplete'},['pose_landmarker_lite-v1.task'],model_texts,
+        'bundled model',None if has_model_notice else 'Artifact-specific license/notice provenance requires completion')
 
     native=[]
     for p in sorted((root/'runtime').rglob('*')):
@@ -111,9 +115,15 @@ def inventory(root,loaded):
             package=run('dpkg-query','-S',p).strip(),runtimeLoaded=True))
     obligations=[dict(component=name,license=license,required=required,fulfillment='OPEN; no matching source archive or valid source offer assembled; external distribution blocked') for name,license,required in [
         ('Qt 5.15.18','LGPL-3.0 (actual wheel notice)','Exact Qt library source including wheel patches/build materials, notices and applicable LGPL combined-work/relinking conditions; preserve library replacement capability'),
-        ('FFmpeg bundled avcodec62/avformat62/avutil60/swscale9/avdevice62','LGPL-2.1 (actual wheel notice; build options not fully verified)','Exact corresponding library source and modifications/build configuration, applicable LGPL linking/replacement materials and notices; verify no GPL/nonfree options'),
+        ('FFmpeg bundled avcodec62/avformat62/avutil60/swscale9/avdevice62','LGPL-2.1-or-later (wheel notice and recorded binary export)','Exact corresponding library source and modifications/build configuration, applicable LGPL linking/replacement materials and notices; exported configuration has no observed GPL/nonfree flags, build correspondence remains unverified'),
         ('Copied GPL/LGPL system libraries, including readline8 and libdb5.3','Per-package copyright files, including exceptions','Matching distro source version, patches and build materials or license-compliant offer/access mechanism; retain full per-file copyright and license notices')]]
     (root/'source-obligations.json').write_text(json.dumps(obligations,indent=2)+'\n')
+    if (root/'SOURCES/upstream/source-index.json').is_file():
+        source_index=json.loads((root/'SOURCES/upstream/source-index.json').read_text())
+        for entry in obligations:
+            entry['suppliedUpstreamSources']=[s for s in source_index if s['component'] in ['FFmpeg','QtBase'] and (s['component']=='FFmpeg')==('FFmpeg' in entry['component'])] if entry['component'] in ['Qt 5.15.18','FFmpeg bundled avcodec62/avformat62/avutil60/swscale9/avdevice62'] else []
+            entry['fulfillment']='PARTIAL: matching upstream archives supplied in SOURCES/upstream; binary-exported FFmpeg configuration recorded. Exact wheel modifications/build provenance, applicable relinking materials and remaining distro sources are not verified. No source offer issued.'
+        (root/'source-obligations.json').write_text(json.dumps(obligations,indent=2)+'\n')
     report=dict(scope='Actual Vision staging only; Unity proprietary player licensing remains outside this third-party runtime inventory',
         acceptance='AC2 PARTIAL; license/source and clean-host closure pending',components=components,native=native,
         systemAbi=original['systemAbi'],runtimeLoadedHostFiles=host_loaded,

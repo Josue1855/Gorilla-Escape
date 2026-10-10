@@ -27,7 +27,8 @@ class BundleTests(unittest.TestCase):
   for key in ['CAP_V4L2','CAP_PROP_FOURCC','CAP_PROP_FRAME_WIDTH','CAP_PROP_FRAME_HEIGHT','CAP_PROP_FPS','CAP_PROP_BUFFERSIZE']:setattr(cv2,key,0)
   def fail(*args,**kwargs):raise RuntimeError('DETECTOR_FAILURE_FIXTURE')
   mp=types.SimpleNamespace(tasks=types.SimpleNamespace(BaseOptions=lambda **kw:None,vision=types.SimpleNamespace(PoseLandmarker=types.SimpleNamespace(create_from_options=fail),PoseLandmarkerOptions=lambda **kw:None,RunningMode=types.SimpleNamespace(VIDEO=1))))
-  with tempfile.NamedTemporaryFile() as model,patch.dict(sys.modules,{'cv2':cv2,'mediapipe':mp}),patch.object(sys,'argv',['worker','--mode','physical','--model',model.name]),patch.object(worker.os,'read',return_value=b''):
+  session=types.SimpleNamespace(before={},describe=lambda *a:{},close=lambda:None)
+  with tempfile.NamedTemporaryFile() as model,patch.dict(sys.modules,{'cv2':cv2,'mediapipe':mp}),patch.object(worker,'CameraSession',return_value=session),patch.object(sys,'argv',['worker','--mode','physical','--model',model.name]),patch.object(worker.os,'read',return_value=b''):
    with self.assertRaisesRegex(RuntimeError,'DETECTOR_FAILURE_FIXTURE'):worker.main()
   self.assertTrue(camera.released)
 if __name__=='__main__':unittest.main()

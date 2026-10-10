@@ -48,8 +48,8 @@ namespace GorillaEscape.CameraTracking
         }
         static FusionSettings Settings(){string json=Environment.GetEnvironmentVariable("GORILLA_FUSION_SETTINGS");var s=string.IsNullOrEmpty(json)?new FusionSettings():JsonUtility.FromJson<FusionSettings>(json);s.Validate();return s;}
         bool WantsToQuit(){if(allowQuit)return true;quitting=true;cancellation.Cancel();return false;}
-        void LogCleanup(){Debug.Log("CAMERA_LAB_CLEANUP "+JsonUtility.ToJson(new Cleanup{pid=vision.Pid,exitCode=vision.ExitCode??-1,complete=vision.CleanupComplete,forced=vision.Forced,state=vision.State,overwritten=vision.Overwritten,accepted=CameraInputs.Accepted,source=CameraInputs.Latest?.source}));if(vision.Summary!=null)Debug.Log("CAMERA_LAB_METRICS "+vision.Summary);}
-        [Serializable]sealed class Cleanup{public int pid,exitCode;public bool complete,forced;public string state;public long overwritten,accepted;public string source;}
+        void LogCleanup(){Debug.Log("CAMERA_LAB_CLEANUP "+JsonUtility.ToJson(new Cleanup{pid=vision.Pid,exitCode=vision.ExitCode??-1,complete=vision.CleanupComplete,forced=vision.Forced,controlsRestored=vision.ControlsRestored,state=vision.State,overwritten=vision.Overwritten,accepted=CameraInputs.Accepted,source=CameraInputs.Latest?.source}));if(vision.Summary!=null)Debug.Log("CAMERA_LAB_METRICS "+vision.Summary);Debug.Log("CAMERA_LAB_TRANSIT "+vision.LatencySummary);}
+        [Serializable]sealed class Cleanup{public int pid,exitCode;public bool complete,forced,controlsRestored;public string state;public long overwritten,accepted;public string source;}
         async void OnDestroy(){Application.runInBackground=previousBackground;Application.wantsToQuit-=WantsToQuit;cancellation?.Cancel();if(start!=null)await start;if(vision!=null){await vision.StopAsync();vision.Dispose();}fusion?.Clear();cancellation?.Dispose();}
     }
 }

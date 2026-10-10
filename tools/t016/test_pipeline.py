@@ -53,5 +53,13 @@ class PipelineTests(unittest.TestCase):
         m=Metrics(clock=lambda:0)
         for i in range(5000):m.event('captureRead',i,1)
         self.assertEqual(4096,len(m.timings['captureRead']))
+    def test_latency_window_bounds_memory_but_preserves_lifetime_count_and_extremes(self):
+        m=Metrics(warmup=1,clock=lambda:0)
+        m.observe('age',99999,0)
+        for i in range(5000):m.observe('age',i,2_000_000_000)
+        stats=m.report()['ageStats']
+        self.assertEqual(5000,stats['N']);self.assertEqual(4096,stats['retained'])
+        self.assertEqual(0,stats['min']);self.assertEqual(4999,stats['max'])
+        self.assertLessEqual(stats['P50'],stats['P95']);self.assertLessEqual(stats['P95'],stats['max'])
 
 if __name__=='__main__':unittest.main()
