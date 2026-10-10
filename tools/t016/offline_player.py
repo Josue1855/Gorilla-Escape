@@ -41,7 +41,10 @@ t=threading.Thread(target=read);e=threading.Thread(target=errors);t.start();e.st
 try:
  if not ready.wait(25):raise RuntimeError('PACKAGED_CAMERA_STARTUP_FAILED')
  # Camera aggregate metrics only; no human admission/lock testing.
- time.sleep(a.warmup+a.duration)
+ print('CAMERA_VALIDATION_WARMUP',flush=True)
+ time.sleep(a.warmup)
+ print('CAMERA_VALIDATION_MEASURING',flush=True)
+ time.sleep(a.duration)
  close_player()
  code=child.wait(timeout=15);t.join(3);e.join(3);result['playerExitCode']=code
  text=trace.read_text();writes=[line for line in text.splitlines() if ('O_WRONLY' in line or 'O_RDWR' in line or 'creat(' in line) and not '= -1' in line]
