@@ -416,3 +416,13 @@ Unity is the sole authority for official actions/results. Java transporta estado
 Unity crea CANDIDATE explícitamente desde input aceptado y decide validación, confirmación, cancelación y resultado. Terminales CONFIRMED/CANCELLED inmutables. ActionKey incluye sesión/dispositivo/playerId/connectionEpoch/sourceSequence/actionKind; ningún ID del teléfono ni credencial es autoridad. Un origen consumido no se reutiliza con otra clave semántica. Lock único arbitra confirmación/desconexión: gana la primera transición terminal, resultado completo o ausente.
 
 Retención sin eviction de hasta256 acciones por sesión; al límite se rechazan nuevas candidatas, conservando todos los resultados confirmados hasta reset explícito. Epoch nuevo permite secuencias independientes; epoch anterior y secuencias consumidas no reabren acciones. Sin scoring, física, reconocimiento de gestos ni eventos GAME→PHONE. [Contrato, integración y límites](PHASE0_T015_ACTION_LIFECYCLE.md).
+
+## DEC-025 — Bounded Camera Capture / Inference Pipeline
+
+**Fecha:2026-10-09. Estado: LOCAL CANDIDATE / ACCEPTANCE BLOCKED.** Selección implementada y medida para T016, sin aprobación de distribución/integración ni cambio de AC.
+
+Un hilo OpenCV de captura real→un slot latest de frame owned→inferencia VIDEO/writer en hilo principal. Retener MediaPipe0.10.33/OpenCV4.13.0.92/model lite float16v1/640×480/MJPG/num_poses2. FPS separados con reloj monotónico, overruns medidos, sin queue/interpolación/duplicados/imágenes persistentes. EOF/join/release/close; contrato CameraInput v1 y Player Lock intactos. LIVE_STREAM no necesario para el boundary acotado.
+
+La separación elimina el acoplamiento lógico; **no resuelve el AC1**: captura-only19.967887FPS, tres corridas nominales~19.96, diagnóstico manual~21.97–22.00, final19.940556FPS. Driver30 no es medición30. Controles temporales restaurados; ningún preset manual/threshold/tolerancia adoptado para producto. Sensor/USB/firmware exacto no diagnosticado. T016 permanece OPEN.
+
+Bundle relativo de Python preparado/stdlib/wheels/nativos/model/manifest, sin nueva herramienta de freezing ni runtime pip/download. Staging offline técnico; **AC2 PARTIAL** por redistribución incompleta Qt/FFmpeg/system-library notices/corresponding source. Binaries/model no publicados. Linux reference solamente, Windows/macOS NOT VALIDATED. [Mediciones, packaging, privacidad y límites](PHASE0_T016_CAMERA_RUNTIME.md). E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED.

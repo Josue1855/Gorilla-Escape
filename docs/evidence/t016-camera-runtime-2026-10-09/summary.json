@@ -1,0 +1,730 @@
+{
+  "status": "LOCAL CANDIDATE; ACCEPTANCE BLOCKED",
+  "base": "be6980a4651c5278a53804219e6cbbb11f9412ea",
+  "branch": "feature/camera-t016-performance-packaging",
+  "ac": {
+    "AC1": "FAIL physical capture <30FPS",
+    "AC2": "PARTIAL technical local staging; external redistribution/license-source fulfillment incomplete",
+    "AC3": "PASS static and physical native file-write/privacy audit"
+  },
+  "hardware": {
+    "vendor": "Dell Inc.",
+    "model": "Latitude5540",
+    "cpu": "Intel i7-1355U",
+    "gpu": "Iris Xe",
+    "ramMemTotalKiB": 32538848,
+    "os": "Pop!_OS24.04LTS",
+    "kernel": "7.1.5-76070105-generic",
+    "camera": "Integrated_Webcam_FHD",
+    "device": "/dev/video0",
+    "backend": "V4L2/uvcvideo",
+    "resolution": [
+      640,
+      480
+    ],
+    "fourcc": "MJPG",
+    "requestedFps": 30,
+    "reportedFps": 30,
+    "buffer": 1,
+    "numPoses": 2
+  },
+  "tests": {
+    "components": {
+      "passed": 13,
+      "failed": 0
+    },
+    "EditMode": {
+      "total": 99,
+      "passed": 99,
+      "failed": 0,
+      "start": "2026-10-10 01:43:51Z",
+      "end": "2026-10-10 01:43:52Z",
+      "cases": [
+        {
+          "name": "CameraRuntimePathsTests.DefaultsAreBuildRelativePhysical",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraRuntimePathsTests.DeveloperOverridesRequireLabFlag",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraRuntimePathsTests.ExplicitLabOverridesPreserveReplay",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraRuntimePathsTests.MissingBundleFailsExplicitly(\"python\",\"CAMERA_RUNTIME_MISSING\")",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraRuntimePathsTests.MissingBundleFailsExplicitly(\"worker.py\",\"CAMERA_WORKER_MISSING\")",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraRuntimePathsTests.MissingBundleFailsExplicitly(\"pose_landmarker_lite-v1.task\",\"CAMERA_MODEL_MISSING\")",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraRuntimePathsTests.MissingBundleFailsExplicitly(\"manifest.json\",\"CAMERA_MANIFEST_MISSING\")",
+          "result": "Passed"
+        },
+        {
+          "name": "FoundationSceneTests.SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.CameraFreshPhoneStaleAndPhoneFreshCameraStale",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.ConceptSequencesRouteSignalsWithoutSportsSemantics",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.ConceptualTracesRetainEverySampleWithoutInferringIntention",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.ContractRejectsNonFiniteAndMissingLandmarks",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.CorpusHasAllRequiredCameraAndConceptualCases",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(0,True)",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(-80,True)",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(80,True)",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(-150,False)",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(150,False)",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.PhoneBufferRejectsDuplicateReorderedAndBoundsReplay",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.PhoneDisconnectReconnectEpochAndPartialSignals",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.PlayerIsolationAndInvalidPlayerNeverBecomeEligible",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.PlayerLockLossRecoveryNeverSelectsAnotherSubject",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.RejectedFusionRetainsRawQualityAgeAndTrackingWithoutInventingUsableSignals",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"phone-camera-aligned\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"phone-early\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"phone-late\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"camera-early\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"camera-late\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"phone-stale\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"camera-stale\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"both-stale\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"camera-lost\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"camera-recovered\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"phone-lost\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"phone-recovered\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"low-confidence\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"partial-capabilities\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"duplicate-phone\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"reordered-phone\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"duplicate-camera\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"player-mismatch\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"wrong-player\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"second-subject\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(\"recovery-after-loss\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.SpatialJumpAndStaleFramesDoNotRefreshLock",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.CameraFusionTests.StaleLostRecoveredAndFutureSamplesAreExplicit",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.CandidateRequiresExplicitUnityAuthority",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.CapacityRetainsEveryResultAndHighWaterRejectsReplay",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.ConcurrentConfirmsProduceOneNewResult",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.ConfirmedResultSurvivesDisconnectAndReconnect",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.ConfirmWinsThenDisconnectPreservesResult",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.DisconnectCancelsCandidateAndCannotResurrect",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.DuplicateCandidateAndSemanticAliasRejected",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.DuplicateConfirmIsIdempotentAndConflictRejected",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.ExplicitCancellationIsTerminal",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.FourPlayersAreIsolated",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.InvalidKeysAndResultsRejected",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.LateSequenceAndUnknownIdentityRejected",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.LobbyInvalidationCancelsWithoutAnotherInput",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.OldEpochRejectedNewEpochSameSequenceIndependent",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.OldInputCannotReplaceCurrentEpoch",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.RaceConfirmDisconnectHasExactlyOneTerminalState",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.ServerInvalidationCancels(\"SUSPENDED\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.ServerInvalidationCancels(\"CONNECTED\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.ServerInvalidationCancels(\"DISCONNECTED\")",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.SessionEndPreservesConfirmedAndResetCleans",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.OfficialActionLedgerTests.StaleInputCannotConfirm",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.PhoneInputStoreTests.DuplicateOldAndNewEpoch",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.PhoneInputStoreTests.FourPlayersAndClear",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.PhoneInputStoreTests.LatestFreshnessAndMissingAxis",
+          "result": "Passed"
+        },
+        {
+          "name": "GorillaEscape.Tests.PhoneInputStoreTests.RawPhoneInputPreservesPartialAndDisconnect",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcFrameCodecTests.CommonFixtureRoundTripsWithBigEndianLength",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcFrameCodecTests.ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(0)",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(4097)",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(-1)",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.ActiveAttemptRejectsAnotherStart",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.FailureMustPassThroughStopping(STARTING)",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.FailureMustPassThroughStopping(CONNECTING)",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.FailureMustPassThroughStopping(RUNNING)",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.IncompleteCleanupBlocksRecovery",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.LaunchBudgetAllowsExactlyThreeAttempts",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.OldGenerationCannotChangeNewAttempt",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleTests.SuccessfulLifecycleRequiresHandshakeAndCleanup",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcProbeContractTests.ConcatenatedFramesAndBoundedOutput",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcProbeContractTests.InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcProbeContractTests.ReadyExactSchemaAndDuplicates",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcProbeContractTests.SharedCorpus",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAuthorityBridgeTests.ActualFirstPongJsonDeserializesWithoutCommandReceipt",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAuthorityBridgeTests.CommandCarriesOwnedIdentityAndWaitsForReceipt",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAuthorityBridgeTests.ImpossibleReadyAndUnsolicitedReceiptRejected",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAuthorityBridgeTests.NetworkReadyNeverBecomesPlayerReady",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAuthorityBridgeTests.OnePendingCommandBoundAndCleanupCancels",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAuthorityBridgeTests.ReceiptCannotInventSuccess",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAuthorityBridgeTests.SnapshotsAreCopiedAndIdentityMustBeUnique",
+          "result": "Passed"
+        },
+        {
+          "name": "ProtocolContractTests.UnityReadsTheSameWireFixtureAsJavaAndReact",
+          "result": "Passed"
+        }
+      ]
+    },
+    "PlayMode": {
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "start": "2026-10-10 01:39:54Z",
+      "end": "2026-10-10 01:41:14Z",
+      "cases": [
+        {
+          "name": "BootstrapTests.BootstrapAppliesAndRestoresConfiguredFrameRate",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraBundleProcessTests.PackagedPhysicalCameraReachesUnityWithoutDeveloperPaths",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraPipelineTests.CancelStartupIsBoundedAndOwnChildStops",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraPipelineTests.ReplayChildFramesReachStoreAndEofReleases",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraPipelineTests.StartupDeadlineAndInvalidFramesAreBounded",
+          "result": "Passed"
+        },
+        {
+          "name": "CameraPipelineTests.UnavailableAndVisionFailureCleanWithoutAffectingJava",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcHardeningProcessTests.DuplicatePongFromTestJvmFailsAndCleansUp",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcHardeningProcessTests.DuplicateReadyFromTestJvmFailsBeforeConnect",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleProcessTests.CancelDuringRunningClosesRealChild",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleProcessTests.CancelDuringStartupClosesRealChild",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleProcessTests.DeathManualRetryAndThreeLaunchLimit",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleProcessTests.RealFixtureReadyTimeoutHasBoundedCleanup",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleProcessTests.RealFixtureTcpRefusedIsDifferentiated",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleProcessTests.SingletonRefusesSecondRealChildWithoutHarmingOwner",
+          "result": "Passed"
+        },
+        {
+          "name": "IpcLifecycleProcessTests.TcpLossStopsLivingOwnedJava",
+          "result": "Passed"
+        },
+        {
+          "name": "JavaProbeTests.MissingExecutableIsRecoverable",
+          "result": "Passed"
+        },
+        {
+          "name": "JavaProbeTests.StartsRealJavaAndClosesOwnedChild",
+          "result": "Passed"
+        },
+        {
+          "name": "LobbyAdmissionProcessTests.UnityAuthorityFourRealRtcClientsStartAndResume",
+          "result": "Passed"
+        },
+        {
+          "name": "OfficialActionProcessTests.RealRtcActionCancellationRetentionAndReplay",
+          "result": "Passed"
+        }
+      ]
+    }
+  },
+  "privacyStatic": "PASS application camera/pose-only API audit",
+  "windowsMacOS": "NOT VALIDATED",
+  "humanPlayerLock": "NOT RUN",
+  "physicalPhones": "NOT RUN",
+  "changes": {
+    "Java": false,
+    "PWA": false,
+    "GorillaProtocol": false,
+    "T015ActionLifecycle": false
+  },
+  "retention": "One pending owned camera frame, one inference; finite conversion buffers;4096 timing samples",
+  "normalControlsRestored": true,
+  "sourceSha256": {
+    "Unity/Assets/_Project/Scripts/CameraTracking/CameraRuntimePaths.cs": "cbecfb66751e848ddb42741e793f2af678aa520b525cbf1481fc12bd95d38f09",
+    "Unity/Assets/_Project/Scripts/CameraTracking/CameraFusionLabRunner.cs": "ed09ed3bb79268e5b484fbd0b094b3e835cde91df6dbf6d36d8fb572c2bf5338",
+    "Unity/Assets/_Project/Scripts/CameraTracking/VisionSupervisor.cs": "f08a0fd1295a0385398497b15950ecaa22429813e7ba5158c0604d59b79bd238",
+    "Unity/Assets/_Project/Scripts/CameraTracking/CameraInputStore.cs": "29758f1f39c703a781af2c3d2d3d3c100aae7e343cdbd3e0879a1d6a63703d3e",
+    "tools/t016/bundle.py": "45a41560bad47f8313f125f200217f262f422614e7e2ab315763a8f18fcd13e9",
+    "tools/t016/benchmark.py": "8ae85d8ca31be54b92c9bb51cf7ae7940476a5d0c774db4a252583a8a1589316",
+    "tools/t016/test_bundle.py": "77c1706910ca41fced60009e03347aa366530d8884b864e305d92478343bd75d",
+    "tools/t016/offline_player.py": "c0c079403c9e271bd0092235bf8fab87c61d42a8d77e230f1b8961d2aa1a8813",
+    "tools/t016/test_pipeline.py": "b3e099cd654978ff504c08b83a205b3040258f66c2bd8f6188c2aa7d6b53ca23",
+    "tools/spikes/camera/worker.py": "d215c7f3250954d8c92a3132fad5a20387db6513967c7f732226bc6f8028927f",
+    "tools/spikes/camera/pipeline.py": "2eeedf702b7a6a93af65409ac05dabf078c037450b2cb0a1fcb1312f8f4fa1f8"
+  },
+  "build": {
+    "target": "Linux Mono Development",
+    "errors": 0,
+    "warnings": 0,
+    "gate": "PASS"
+  },
+  "bundle": {
+    "bytes": 455862718,
+    "files": 2584,
+    "nativeOriginalInventoryFiles": 158,
+    "copiedSystemNativeFiles": 35,
+    "manifestSha256": "ce3c322c6a881013d8c7c2cb4118140a0842892324998424b4c1ab1dd1100e2e",
+    "packages": [
+      {
+        "name": "absl-py",
+        "version": "2.5.0"
+      },
+      {
+        "name": "cffi",
+        "version": "2.1.1"
+      },
+      {
+        "name": "contourpy",
+        "version": "1.4.0"
+      },
+      {
+        "name": "cycler",
+        "version": "0.12.1"
+      },
+      {
+        "name": "flatbuffers",
+        "version": "25.12.19"
+      },
+      {
+        "name": "fonttools",
+        "version": "4.66.1"
+      },
+      {
+        "name": "kiwisolver",
+        "version": "1.5.1"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.11.2"
+      },
+      {
+        "name": "mediapipe",
+        "version": "0.10.33"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.3"
+      },
+      {
+        "name": "opencv-contrib-python",
+        "version": "4.13.0.92"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pillow",
+        "version": "12.3.0"
+      },
+      {
+        "name": "pycparser",
+        "version": "3.0"
+      },
+      {
+        "name": "pyparsing",
+        "version": "3.3.3"
+      },
+      {
+        "name": "python-dateutil",
+        "version": "2.9.0.post0"
+      },
+      {
+        "name": "six",
+        "version": "1.17.0"
+      },
+      {
+        "name": "sounddevice",
+        "version": "0.5.6"
+      }
+    ],
+    "model": {
+      "file": "pose_landmarker_lite-v1.task",
+      "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+      "bytes": 5777746,
+      "source": "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
+      "familyModelCard": "https://storage.googleapis.com/mediapipe-assets/Model%20Card%20BlazePose%20GHUM%203D.pdf",
+      "familyLicense": "Apache-2.0"
+    },
+    "systemAbi": [
+      "/lib/x86_64-linux-gnu/libc.so.6",
+      "/lib/x86_64-linux-gnu/libdl.so.2",
+      "/lib/x86_64-linux-gnu/libm.so.6",
+      "/lib/x86_64-linux-gnu/libpthread.so.0",
+      "/lib64/ld-linux-x86-64.so.2"
+    ],
+    "redistributionReview": "LOCAL STAGING ONLY. Full corresponding-source fulfillment for Qt/FFmpeg/system libraries remains required before external binary distribution. Notices retained from pinned packages."
+  },
+  "offlinePlayer": {
+    "gate": "PASS",
+    "cacheHidden": true,
+    "wanUnavailable": true,
+    "acceptedPhysicalCameraInputs": 692,
+    "playerExitCode": 0,
+    "visionExitCode": 0,
+    "forced": false,
+    "residualOwn": false,
+    "imageVideoWrites": 0,
+    "physicalObservationLogs": 0
+  },
+  "finalChecks": {
+    "Management": "PASS local",
+    "Foundation": "PASS local",
+    "gitDiffCheck": "PASS",
+    "remoteCI": "NOT RUN; no PR because AC1 FAIL/AC2 PARTIAL"
+  },
+  "implementationCommit": "f4f110d42b06eac8232402728c91250c6206a4f7",
+  "separateConfigAggregates": {
+    "originalControls": {
+      "runs": 3,
+      "warmupPerRunSeconds": 5,
+      "measurementPerRunSeconds": 35,
+      "captureFpsEach": [
+        19.96690930576716,
+        19.965562937094447,
+        19.964207540620894
+      ],
+      "captureWeightedFps": 19.965559866892875,
+      "inferenceWeightedFps": 19.95467453373977,
+      "outputWeightedFps": 19.95467779527913,
+      "overwrittenBeforeInferenceTotal": 2
+    },
+    "dynamicFramerateOff": {
+      "runs": 3,
+      "warmupPerRunSeconds": 5,
+      "measurementPerRunSeconds": 35,
+      "captureFpsEach": [
+        19.68290442337904,
+        19.79649302267055,
+        19.796497494422095
+      ],
+      "captureWeightedFps": 19.758632723809125,
+      "inferenceWeightedFps": 19.752928156158358,
+      "outputWeightedFps": 19.752927288280176,
+      "overwrittenBeforeInferenceTotal": 0
+    },
+    "manualExposureDiagnostic": {
+      "runs": 3,
+      "warmupPerRunSeconds": 5,
+      "measurementPerRunSeconds": 35,
+      "captureFpsEach": [
+        22.00154154345133,
+        21.971955988039472,
+        21.97302491228105
+      ],
+      "captureWeightedFps": 21.98217402077383,
+      "inferenceWeightedFps": 21.978099350688876,
+      "outputWeightedFps": 21.978099807088448,
+      "overwrittenBeforeInferenceTotal": 0
+    },
+    "finalDefaultControls": {
+      "runs": 1,
+      "warmupPerRunSeconds": 5,
+      "measurementPerRunSeconds": 35,
+      "captureFpsEach": [
+        19.940556524680336
+      ],
+      "captureWeightedFps": 19.940556524680336,
+      "inferenceWeightedFps": 19.95321279017395,
+      "outputWeightedFps": 19.95321650054743,
+      "overwrittenBeforeInferenceTotal": 0
+    }
+  }
+}

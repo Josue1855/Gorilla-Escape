@@ -1,0 +1,62 @@
+{
+  "runs": [
+    {
+      "run": 1,
+      "exitCode": 0,
+      "cameraInputReceived": 795,
+      "ordered": true,
+      "stderrBytes": 1007,
+      "summary": {
+        "measurementElapsedSeconds": 35.116174413,
+        "captureFrames": 698,
+        "captureDuration": 34.953889032,
+        "captureFps": 19.940556524680336,
+        "captureReadFrames": 698,
+        "captureReadDuration": 34.953889032,
+        "captureReadFps": 19.940556524680336,
+        "inferenceFrames": 699,
+        "inferenceDuration": 34.981835123,
+        "inferenceFps": 19.95321279017395,
+        "outputFrames": 699,
+        "outputDuration": 34.981828618,
+        "outputFps": 19.95321650054743,
+        "trackingFrames": 304,
+        "trackingDuration": 15.164739327,
+        "trackingFps": 19.980561054585678,
+        "trackingGapFrames": 395,
+        "trackingGapDuration": 19.712785218,
+        "trackingGapFps": 19.987028501697136,
+        "captureReadP50Ms": 50.174531,
+        "captureReadP95Ms": 53.547268,
+        "inferenceP50Ms": 31.092922,
+        "inferenceP95Ms": 52.245931,
+        "configuration": {
+          "backend": "V4L2",
+          "device": "/dev/video0",
+          "width": 640.0,
+          "height": 480.0,
+          "fourcc": "MJPG",
+          "requestedFps": 30,
+          "reportedFps": 30.0,
+          "reportedBuffer": 1.0,
+          "numPoses": 2
+        },
+        "capturedFrames": 795,
+        "inferredFrames": 795,
+        "cameraInputEmitted": 795,
+        "overwrittenBeforeInference": 0,
+        "pendingDiscarded": 0,
+        "captureThreadJoined": true,
+        "cameraReleased": true,
+        "detectorClosed": true,
+        "hardwareDroppedFrames": null,
+        "warmupSeconds": 5.0
+      },
+      "physicalHumanCases": "NOT RUN",
+      "residualOwn": false
+    }
+  ],
+  "threshold": 30,
+  "physical": true,
+  "imagePersistence": false
+}
