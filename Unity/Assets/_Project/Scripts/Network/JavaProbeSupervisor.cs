@@ -55,6 +55,13 @@ namespace GorillaEscape.Network
         public GorillaEscape.Input.PhoneInputStore PhoneInputs { get; } = new GorillaEscape.Input.PhoneInputStore();
         public LobbyAuthorityBridge Lobby { get; } = new LobbyAuthorityBridge();
         private readonly bool lobbyEnabled;
+        readonly bool qaEnabled=Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY")=="1";
+        public QaPhoneMetricsWire[] QaPhones {get;private set;}
+        public QaHostingWire QaHosting {get;private set;}
+        public QaAdmissionWire Qa {get;private set;}
+        public QaMetricsWire QaMetrics {get;private set;}
+        int regenerateQa;
+        public void RegenerateQa(){if(!qaEnabled)throw new InvalidOperationException("QA_DISABLED");Interlocked.Exchange(ref regenerateQa,1);}
         public event Action<PhoneInputWire> PhoneInputReceived;
         public event Action<int> HttpReady;
         public IpcState State => lifecycle.State;
@@ -102,6 +109,7 @@ namespace GorillaEscape.Network
             }
             finally
             {
+                Qa=null;QaPhones=null;QaHosting=null;
                 Lobby.Reset();
                 PhoneInputs.EndSession();
                 Summarize(a);
@@ -215,9 +223,11 @@ namespace GorillaEscape.Network
                     bool phone=lobbyEnabled||Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1";
                     if(phone&&secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"phoneInputVersion\":1}";
                     if(lobbyEnabled) {
+                        if(qaEnabled&&secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"qaVersion\":1}";
                         if(secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"lobbyVersion\":1}";
                         else {var command=Lobby.TakeCommand();if(command!=null)payload="{\"lobbyCommand\":"+JsonUtility.ToJson(command)+"}";}
                     }
+                    if(qaEnabled&&secret==null&&Interlocked.Exchange(ref regenerateQa,0)==1)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaRegenerate\":true}";
                     a.result.sent++;
                     IpcFrameCodec.Write(stream, "{\"ipcVersion\":1,\"type\":\"PING\",\"instanceId\":\"" + a.result.instanceId
                         + "\",\"connectionId\":\"" + connection + "\",\"sequence\":" + sequence + ",\"payload\":" + payload + "}");
@@ -228,7 +238,8 @@ namespace GorillaEscape.Network
                             var mobile=JsonUtility.FromJson<PhonePong>(body);
                             if(mobile==null||mobile.ipcVersion!=1||mobile.type!="PONG"||mobile.instanceId!=a.result.instanceId||mobile.connectionId!=connection||mobile.sequence!=sequence||mobile.payload?.phoneInputs==null||mobile.payload.phoneInputs.Length>4)throw new InvalidDataException("PHONE_PONG");
                             if(lobbyEnabled){Lobby.Accept(mobile.payload.lobby,mobile.payload.hasLobbyResult?mobile.payload.lobbyResult:null);PhoneInputs.ObserveLobby(Lobby.Snapshot);}
-                            foreach(var input in mobile.payload.phoneInputs)if(PhoneInputs.Accept(input))PhoneInputReceived?.Invoke(input);
+                            if(qaEnabled){if(QaPhones==null)QaPhones=new QaPhoneMetricsWire[4];if(mobile.payload.qaPhones!=null)foreach(var report in mobile.payload.qaPhones)if(report.playerId>=1&&report.playerId<=4)QaPhones[report.playerId-1]=report;QaHosting=mobile.payload.qaHosting;var next=mobile.payload.qa;if(next!=null&&next.state=="AVAILABLE"&&string.IsNullOrEmpty(next.modules)&&Qa?.state=="AVAILABLE"){next.modules=Qa.modules;next.size=Qa.size;}Qa=next;QaMetrics=mobile.payload.qaMetrics;}
+                            foreach(var input in mobile.payload.phoneInputs){input.unityReceiveTimestamp=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();if(PhoneInputs.Accept(input)){input.unityAcceptTimestamp=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();PhoneInputReceived?.Invoke(input);}}
                             pong=new IpcPong{ipcVersion=mobile.ipcVersion,type=mobile.type,instanceId=mobile.instanceId,connectionId=mobile.connectionId,sequence=mobile.sequence};
                         }else pong = IpcProbeContract.Pong(body, a.result.instanceId, connection, sequence);
                     }
@@ -339,6 +350,6 @@ namespace GorillaEscape.Network
             await action;
         }
         private static async Task<T> Deadline<T>(Task<T> action, int milliseconds, CancellationToken token) { await Deadline((Task)action, milliseconds, token); return await action; }
-        public void Dispose() { lock (gate) { if (disposed) return; disposed = true; lifetime.Cancel(); if (current == null) lifetime.Dispose(); } }
+        public void Dispose() { lock (gate) { if (disposed) return; disposed = true; Qa=null;QaPhones=null;QaMetrics=null;QaHosting=null; lifetime.Cancel(); if (current == null) lifetime.Dispose(); } }
     }
 }

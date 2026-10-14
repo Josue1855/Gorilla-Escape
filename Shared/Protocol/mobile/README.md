@@ -33,3 +33,15 @@ Unity expone latest/age/freshness/capabilities/state/quality/sequence vía Phone
 `motion-v1.json`: fixture sintético con identidades ficticias. `corpus-v1.json`: 17 casos reproducibles, reloj inyectado. GorillaProtocolTest añade secuencias/aislamiento/rate/canales a esos casos. TechnicalSessionTest cubre expiración y replay con reloj monotónico determinista.
 
 El QR de laboratorio se genera como PNG y se decodifica con ZXing antes del JOIN real; admission sólo en fragment. HTTP 127.0.0.1 es **contexto seguro de localhost de laboratorio**, no onboarding de teléfono por IP privada ni solución TLS de producto. No contiene token IPC/operador/clave privada. No guardar URLs QR, SDP ni credenciales reales en evidencias.
+
+### Optional QA aggregates v1 (T062)
+
+HEARTBEAT still accepts `{}`. It may instead carry exactly `qaVersion:1`,
+`motionHz`, `orientationHz`, `emissionHz`, `rttP50`, `rttP95`: each metric is
+null (unmeasured) or finite in [0,1000000]. The controller reuses SensorCapture
+validUnique.actualMeasuredHz, its existing emission RateWindow and bounded ACK
+RTT samples; this does not synthesize sensor events or alter readiness.
+Java retains four latest aggregate slots, adds player/epoch/PC receipt time,
+and exposes them only to authenticated IPC clients that negotiate qaVersion=1.
+Unity expires presentation after 2500ms and requires matching selected epoch.
+No sensor history, URLs, credentials, SDP or images are included. RTT is not E2E.

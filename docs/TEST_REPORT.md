@@ -693,3 +693,11 @@ Combined stable-candidate runtime PASS:1800.984256s, camera capture30.224030FPS/
 Earlier Chrome-first-run BLOCKED and two subsequent QA timeouts are preserved; final PASS does not erase them. Private HOME/cache/data profile added to owned test Player to isolate concurrent reference runs; loop now records target/attempt/success, and last requested UI control for failure diagnosis. Existing deterministic PWA repeated hide/show regression increased8→20cycles; suite59/59PASS, no product runtime change. [Validation/source hashes](evidence/overnight-2026-10-13/final-lifecycle-validation.json).
 
 Physical mobile sensorHz/clock/E2E/QR<60s and cleanPC remain NOT RUN. T019/T020/F05/E0 OPEN. No ownership assignment or gameplay.
+
+
+## T062 — Main Menu y Centro de Pruebas, 2026-10-14
+
+DEC-029: fundación real Bootstrap→MainMenu→PRUEBAS, JUGAR deshabilitado; preview QA local/memoria desde captura T016 única, QR productivo, sensores/slots/readiness, indicador técnico y agregados. [Arquitectura/evidencia](PHASE0_MAIN_MENU_QA_CENTER.md) y [runbook iPhone15 sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). No gameplay ni cierre F41. **T019 OPEN / Validation; T020/F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED.** Physical iPhone/four-phone evidence NOT RUN por esta implementación. Resultados técnicos se registran en la documentación de T062; ningún mock acredita PASS físico.
+
+
+T062, validación de entrega: Linux build0 errores/0 warnings; PWA60/60+build; Java82 únicos PASS incluyendo HTTPS LAN explícito; preview2/2, cámara23/23, Unity PlayMode24/24; EditMode/Management/Foundation/diff-check en [recibo](evidence/t062-main-menu-2026-10-14/regression.json). Navegación real y preflight PHYSICAL HTTPS200/QR renderizado PASS local; RTC4 sintéticos+1 reconnect/43 inputs con respuesta técnica renderizada PASS LAB. Capture OFF30.2243 / ON30.2237 FPS; inference30.2038 /30.1742, preview4.9969;0 image/video writes y0 procesos residuales. [Método, límites, descartes y tablas](PHASE0_MAIN_MENU_QA_CENTER.md). No physical phone PASS; no cierre T019/T020/E0/F05/F41 ni Phase1.

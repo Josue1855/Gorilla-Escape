@@ -18,6 +18,15 @@ export class ControllerSession {
     this.emissionRate = new RateWindow(); this.measurement = null; this.measureTimer = null;
     this.capture = new SensorCapture({ win, doc, now, notify: () => this.updateInput(),
       onSample: snapshot => { this.emitSample(snapshot); this.updateInput(); } });
+    // Reuse acquisition/emission measurements; only bounded aggregates cross the control channel.
+    this.client.qaTelemetry = () => {
+      const metrics = this.capture.metrics(), rtt = [...(this.client.metrics?.rtt || [])].sort((a,b) => a-b);
+      return { qaVersion: 1, motionHz: metrics.channels.motion.validUnique.actualMeasuredHz,
+        orientationHz: metrics.channels.orientation.validUnique.actualMeasuredHz,
+        emissionHz: this.emissionRate.metrics().actualMeasuredHz,
+        rttP50: rtt.length ? rtt[Math.ceil(rtt.length * .5)-1] : null,
+        rttP95: rtt.length ? rtt[Math.ceil(rtt.length * .95)-1] : null };
+    };
     this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, onEmit: () => this.emissionRate.add(now()) });
   }
   snapshot() { return { state: this.state, network: this.network, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
@@ -103,7 +112,7 @@ export class ControllerSession {
   }
   async dispose() {
     if (this.disposed) return;
-    this.disposed = true; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
+    this.disposed = true; this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
     return this.client.close(false); // Owned transport cleanup only; no new lifecycle policy.
   }
 }

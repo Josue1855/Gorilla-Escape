@@ -19,6 +19,7 @@ namespace GorillaEscape.Network
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Launch()
         {
+            if(GorillaEscape.UI.MainMenuController.ProductFlow)return;
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"))
                 && string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"))) return;
             var host = new GameObject("IPC development diagnostics");

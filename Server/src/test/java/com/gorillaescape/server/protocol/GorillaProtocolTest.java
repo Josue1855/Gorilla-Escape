@@ -31,4 +31,14 @@ class GorillaProtocolTest {
  @Test void partialValuesPreserveNullAndRejectFalseAvailability()throws Exception{var n=sample();var a=(ObjectNode)n.get("payload").get("acceleration");a.put("availability","partial");((ObjectNode)a.get("values")).putNull("y");assertTrue(gate().accept(bytes(n)).get("payload").get("acceleration").get("values").get("y").isNull());a.put("availability","present");assertThrows(IOException.class,()->gate().accept(bytes(n)));}
  @Test void rateBoundAndIndependentPeers()throws Exception{var g=gate();for(int i=0;i<100;i++){var n=sample();n.put("sequence",i);g.accept(bytes(n));}var n=sample();n.put("sequence",101);assertThrows(IOException.class,()->g.accept(bytes(n)));assertNotNull(gate().accept(bytes(sample())));}
  @Test void reliableDomainIsIndependentFromMotion()throws Exception{var g=gate();var n=sample();n.put("sequence",100);g.accept(bytes(n));n.put("messageType","HEARTBEAT");n.put("sequence",1);n.set("payload",GorillaProtocol.JSON.createObjectNode());assertNotNull(g.accept(bytes(n)));}
+ @Test void qaHeartbeatIsOptionalVersionedBoundedAndDoesNotCarryRawInputs()throws Exception {
+  var n=sample();n.put("messageType","HEARTBEAT");
+  var q=GorillaProtocol.JSON.createObjectNode();q.put("qaVersion",1);
+  for(String key:new String[]{"motionHz","orientationHz","emissionHz","rttP50","rttP95"})q.putNull(key);
+  n.set("payload",q);assertNotNull(gate().accept(bytes(n)));
+  q.put("motionHz",59.8);q.put("orientationHz",0);assertEquals(0,gate().accept(bytes(n)).get("payload").get("orientationHz").intValue());
+  q.put("motionHz",-1);assertThrows(IOException.class,()->gate().accept(bytes(n)));q.put("motionHz",1000001);assertThrows(IOException.class,()->gate().accept(bytes(n)));q.putNull("motionHz");
+  q.put("qaVersion",2);assertThrows(IOException.class,()->gate().accept(bytes(n)));q.put("qaVersion",1);
+  q.put("token","never-allowed");assertThrows(IOException.class,()->gate().accept(bytes(n)));
+ }
 }

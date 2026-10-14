@@ -16,12 +16,17 @@ def main():
  else:
   with tempfile.TemporaryDirectory(prefix='gorilla-t020-prepared-') as temp:
    v=Path(temp)/'Vision';shutil.copytree(a.vision,v)
-   for name in ['worker.py','pipeline.py','camera_controls.py']:shutil.copy2(repo/'tools/spikes/camera'/name,v/name)
+   for name in ['worker.py','pipeline.py','camera_controls.py','preview.py']:shutil.copy2(repo/'tools/spikes/camera'/name,v/name)
+   initial=json.loads((v/'manifest.json').read_text())
+   if not any(f['path']=='preview.py' for f in initial['files']):initial['files'].append({'path':'preview.py','sha256':sha(v/'preview.py'),'bytes':(v/'preview.py').stat().st_size})
+   (v/'manifest.json').write_text(json.dumps(initial,indent=2)+'\n')
    refresh(v,v/'manifest.json');summary=assemble(v,a.player,a.materials,root)
    if summary['openGaps']:raise ValueError('VISION_PROVENANCE_OPEN')
  java=root/'Java';java.mkdir(exist_ok=True);runtime=java/'runtime'
- modules='java.se,jdk.crypto.ec,jdk.unsupported,jdk.management,jdk.security.auth'
+ modules='java.se,jdk.crypto.ec,jdk.unsupported,jdk.management,jdk.security.auth,jdk.httpserver'
  if not runtime.exists():subprocess.run([str(a.jdk/'bin/jlink'),'--module-path',str(a.jdk/'jmods'),'--add-modules',modules,'--strip-debug','--no-header-files','--no-man-pages','--output',str(runtime)],check=True)
+ present={line.split('@')[0] for line in subprocess.check_output([str(runtime/'bin/java'),'--list-modules'],text=True).splitlines()}
+ if not set(modules.split(',')).issubset(present):raise ValueError('REQUIRED_RUNTIME_MODULE_MISSING')
  if (runtime/'bin/javac').exists() or (runtime/'jmods').exists():raise ValueError('SDK_MUST_NOT_BE_DISTRIBUTED')
  version=subprocess.run([str(runtime/'bin/java'),'-version'],capture_output=True,text=True,check=True).stderr.strip()
  if '21.0.12.1' not in version:raise ValueError('SUPPLIER_RUNTIME_VERSION_CHANGED_REVIEW_REQUIRED')
@@ -66,6 +71,7 @@ print('PACKAGE_INTEGRITY_PASS')
 set -eu
 package_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 "$package_root/Vision/python" -I "$package_root/verify-package.py" "$package_root"
+export GORILLA_MAIN_MENU=1
 export GORILLA_IPC_JAVA="$package_root/Java/runtime/bin/java"
 export GORILLA_IPC_JAR="$package_root/Java/server.jar"
 export GORILLA_IPC_MODE=lifecycle
@@ -75,6 +81,8 @@ export GORILLA_CAMERA_BUFFERS=2
 exec "$package_root/GorillaEscape.x86_64" "$@"
 '''
  (root/'run-base.sh').write_text(launcher);(root/'run-base.sh').chmod(0o755)
+ shutil.copy2(repo/'tools/t062/run-qa.sh',root/'run-qa.sh');(root/'run-qa.sh').chmod(0o755)
+ shutil.copy2(repo/'docs/PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md',root/'IPHONE-RUNBOOK.md')
  (root/'README-PHASE0.txt').write_text('PHASE0 TECHNICAL BASE ONLY; NO TOURNAMENT/GAMEPLAY. Linux x86_64/glibc2.39 reference candidate. Requires compatible OS graphics/OpenGL/X11 and V4L2 camera capabilities; Windows/macOS NOT VALIDATED. Execute ./run-base.sh and close its window normally. Bundled JRE21/Python/Vision/Server resources; no Unity Editor/SDK/runtime download required by launcher. No private CA key or production admission tokens included. Technical launch is not Academic MVP fallback. Clean physical PC and physical mobile gates remain NOT RUN. See project T019/T020 runbooks for acceptance. Third-party source/notice materials retained; embedded server notices indexed, legal redistribution is not certified by this packaging script.\n')
  files=[]
  for path in sorted(root.rglob('*')):

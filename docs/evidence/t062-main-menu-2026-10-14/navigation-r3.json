@@ -1,0 +1,19 @@
+{
+  "classification": "LAB / built UI + physical capture transport; physical phone NOT RUN",
+  "screenshots": 0,
+  "gate": "FAIL",
+  "opened": 0,
+  "closed": 0,
+  "secretLogs": 0,
+  "renderSize": [
+    1920,
+    940
+  ],
+  "windowSize": [
+    1920,
+    940
+  ],
+  "playDisabled": true,
+  "error": "UI action was not acknowledged",
+  "stderrBytes": 0
+}

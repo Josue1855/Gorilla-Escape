@@ -71,3 +71,15 @@ startup/shutdown/duración/cadencia/ticks. Presupuestos DEC-005 5/10/50 ms P50/P
 para baseline local, nunca latencia teléfono→gameplay. Procedimiento y evidencia:
 [validación 2C](../../../docs/PHASE0_IPC_2C_VALIDATION.md). RSS sólo observación;
 no afirmar ausencia global de fugas. Sin nuevas dependencias, móvil ni gameplay.
+
+### QA extension version 1 (T062)
+
+First authenticated PING may negotiate `qaVersion:1` alongside existing
+phoneInputVersion/lobbyVersion. Subsequent `qaRegenerate:true` requests a new
+pending admission, revoking only that pending QR; connected players remain.
+PONG payload adds qaHosting (token-free origin/prepareUrl/CA fingerprint), qa
+(state, ttlMs, size, packed modules), qaMetrics (counters) and qaPhones (up to
+four current aggregate reports defined in mobile/README). All stay within the
+existing ProbeCodec maximum and authenticated loopback channel. No new endpoint,
+CameraInput image field, session owner or gameplay authority is introduced.
+QR modules are sensitive memory data: never log, export, or persist them.

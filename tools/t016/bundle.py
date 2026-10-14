@@ -44,7 +44,7 @@ def build(venv,model,output):
     (source_info/'mediapipe-modification.json').write_text(json.dumps(dict(component='mediapipe',version='0.10.33',path=str(mp_init.relative_to(root)),originalSha256=hashlib.sha256(original_init.encode()).hexdigest(),modifiedSha256=sha(mp_init),patch=str(patch_path.relative_to(root)),license='Apache-2.0',scope='No Audio Tasks eager initialization/API export in this Vision-only runtime; PoseLandmarker API unchanged'),indent=2)+'\n')
     (root/'licenses').mkdir();shutil.copy2('/usr/share/doc/python3.12/copyright',root/'licenses/Python-copyright.txt')
     shutil.copy2(model,root/'pose_landmarker_lite-v1.task')
-    for name in ['worker.py','pipeline.py','camera_controls.py']:shutil.copy2(repo/'tools/spikes/camera'/name,root/name)
+    for name in ['worker.py','pipeline.py','camera_controls.py','preview.py']:shutil.copy2(repo/'tools/spikes/camera'/name,root/name)
     shutil.copy2(repo/'Shared/Protocol/camera/corpus-v1.json',root/'corpus-v1.json')
     shutil.copy2(__file__,root/'bundle.py')
     native=[];external=set()
