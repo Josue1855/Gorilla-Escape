@@ -49,6 +49,13 @@ class PipelineTests(unittest.TestCase):
         for i in range(1,5):m.event('capture',i*1_000_000_000)
         m.event('inference',2_000_000_000,40);m.event('inference',4_000_000_000,60);m.event('output',4_000_000_000)
         clock[0]=5_000_000_000;r=m.report();self.assertEqual(4,r['captureFrames']);self.assertEqual(1,r['captureFps']);self.assertEqual(.5,r['inferenceFps']);self.assertEqual(1,r['outputFrames']);self.assertEqual(60,r['inferenceP95Ms']);self.assertEqual(4,r['measurementElapsedSeconds'])
+    def test_minimal_keeps_rates_without_telemetry_windows(self):
+        m=Metrics(clock=lambda:2_000_000_000,enabled=False)
+        m.event('capture',2_000_000_000,12);m.event('capture',3_000_000_000,18);m.observe('quality',100)
+        r=m.report();self.assertEqual(1,r['captureFps']);self.assertEqual(0,r['telemetryRetainedSamples']);self.assertEqual({},m.samples);self.assertEqual({},m.timings)
+    def test_invalid_telemetry_is_counted_without_polluting_percentiles(self):
+        m=Metrics(clock=lambda:0);m.observe('age',float('nan'));m.observe('age',2);m.event('inference',0,float('inf'))
+        r=m.report();self.assertEqual(2,r['telemetryErrors']);self.assertEqual(1,r['ageStats']['N']);self.assertEqual(2,r['ageStats']['P95'])
     def test_timing_storage_bounded(self):
         m=Metrics(clock=lambda:0)
         for i in range(5000):m.event('captureRead',i,1)

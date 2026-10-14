@@ -1,5 +1,16 @@
 # Progreso de desarrollo
 
+## T018 / #32 — checkpoint local de telemetría, 2026-10-13
+
+Base develop `bb90c04d050f35feae8ae1a99968aa9d91ed2e4a`, rama `codex/t018-telemetry-metrics`. [Reporte vigente, clocks/uncertainty/AC y A/B](PHASE0_T018_TELEMETRY_METRICS.md). Reutilización IPC/RTC/PhoneInput/CameraInput/T016/buffers; históricos cuantitativos conservados con vigencia limitada. Sólo instrumentación faltante: modo mínimo, frame window y errores/evictions/N; sin nuevo protocolo/threshold ni video/personas. AC1/AC2/AC3 PARCIAL, físico motion→result/clock telefónico NOT RUN; **T018 OPEN/Validation/needs-device-test/performance**. No cierre por PASS del harness.
+
+[Validación nueva](evidence/t018-telemetry-2026-10-13/validation.json): componentes23/23, Edit101/101, Play20/20, LinuxbuildSucceeded0errors0warnings, PWA59/buildPASS, Java78tests/0failures/0errors/2existingSKIP con JDKcompleto25/release21. Management/Foundation/diffPASS. PlayMode usa el runtime C# final; el contador Python de errores no finitos se refinó después, validado por componentes y A/B final. [Intentos de setup/corrida exploratoria preservados](evidence/t018-telemetry-2026-10-13/attempts.json). Sin nueva DEC. Checkpoint previo a integración: flujo normal PR/checks/merge; estado efectivo de publicación en el PR/Issue.
+
+Comparación definitiva A–B–B–A,5swarmup/61s porbrazo, webcam/MJPG640×480/manual10ms/buffers2/numposes2: run1 minimal captura30.224877/inferencia30.025306/Unityefectivo117.728402FPS; run2 enabled captura30.224679/inferencia28.244336/Unityefectivo110.692595FPS; run3 enabled captura30.223942/inferencia29.611282/Unityefectivo118.482209FPS; run4 minimal captura30.224199/inferencia28.134608/Unityefectivo117.560105FPS. P50/P95/N/retained/overwrites/RSS y diferencias absolutas/% porpar en el reporte y JSON finales; sin threshold nuevo ni PASS de imperceptible. HardwaredropsUNKNOWN; phoneHz/sync/motion→resultNOTRUN. Privacywrites0/normalcleanupPASS en los4brazos.
+
+T017OPEN/Validation/needs-device-test y AC intactos; F04OPEN; T019BLOCKED porT017/T018 sin iniciar; T020BLOCKED; F05OPEN; E0OPEN; Phase0INPROGRESS; Phase1NOTSTARTED. Reevaluación T019 no elimina el blocker físico de#30.
+
+
 ## Recuperación local y salida T011 — 2026-10-09
 
 Se recuperó la rama local existente sin reset/clean/recreación. [Inventario inicial](evidence/t011-offline-lifecycle-2026-10-09/recovery-inventory.json): seis archivos modificados, cinco entradas no rastreadas, índice vacío; HEAD base a41257c18dd6dc525c076e0933fec0a180c8fa44. Los tres fuentes productivos locales conservan exactamente sus hashes previos a la recuperación; sólo se ajustaron harness, assertions de QA y documentación.

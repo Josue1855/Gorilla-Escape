@@ -14,13 +14,15 @@ class CapturedFrame:
     acquisition_ns: int | None = None
 
 class Metrics:
-    def __init__(self, warmup=0, clock=time.monotonic_ns):
-        self.clock=clock; self.start=clock(); self.after=self.start+int(warmup*1e9)
-        self.counts={}; self.first={}; self.last={}; self.timings={}; self.lock=threading.Lock();self.samples={};self.sample_counts={};self.extremes={}
+    def __init__(self, warmup=0, clock=time.monotonic_ns, enabled=True):
+        self.enabled=enabled; self.clock=clock; self.start=clock(); self.after=self.start+int(warmup*1e9)
+        self.counts={}; self.first={}; self.last={}; self.timings={}; self.timing_counts={}; self.lock=threading.Lock();self.samples={};self.sample_counts={};self.extremes={};self.telemetry_errors=0
     def observe(self,name,value,stamp=None):
+        if not self.enabled:return
         stamp=self.clock() if stamp is None else stamp
         if stamp<self.after:return
         with self.lock:
+            if not math.isfinite(value):self.telemetry_errors+=1;return
             self.samples.setdefault(name,deque(maxlen=4096)).append(value)
             self.sample_counts[name]=self.sample_counts.get(name,0)+1
             low,high=self.extremes.get(name,(value,value));self.extremes[name]=(min(low,value),max(high,value))
@@ -30,15 +32,19 @@ class Metrics:
         with self.lock:
             self.counts[name]=self.counts.get(name,0)+1
             self.first.setdefault(name,stamp);self.last[name]=stamp
-            if duration is not None:self.timings.setdefault(name,deque(maxlen=4096)).append(duration)
+            if self.enabled and duration is not None:
+                if math.isfinite(duration):
+                    self.timings.setdefault(name,deque(maxlen=4096)).append(duration);self.timing_counts[name]=self.timing_counts.get(name,0)+1
+                else:self.telemetry_errors+=1
     def report(self):
         with self.lock:
-            result={'measurementElapsedSeconds':max(0,(self.clock()-self.after)/1e9)}
+            result={'measurementElapsedSeconds':max(0,(self.clock()-self.after)/1e9), 'telemetryMode':'enabled' if self.enabled else 'minimal', 'telemetryCapacityPerSeries':4096, 'telemetryErrors':self.telemetry_errors, 'telemetryRetainedSamples':sum(map(len,self.timings.values()))+sum(map(len,self.samples.values())), 'telemetryOverwrittenSamples':sum(max(0,self.timing_counts[k]-len(v)) for k,v in self.timings.items())+sum(max(0,self.sample_counts[k]-len(v)) for k,v in self.samples.items()), 'telemetryRejectedBeforeWarmup':'excluded by design; not drops'}
             for name,n in self.counts.items():
                 elapsed=(self.last[name]-self.first[name])/1e9
                 result[name+'Frames']=n;result[name+'Duration']=elapsed
                 result[name+'Fps']=(n-1)/elapsed if elapsed>0 else None
             for name,values in self.timings.items():
+                result[name+'TimingN']=self.timing_counts[name];result[name+'TimingRetained']=len(values)
                 values=sorted(values);result[name+'P50Ms']=values[math.ceil(len(values)*.5)-1];result[name+'P95Ms']=values[math.ceil(len(values)*.95)-1]
             for name,values in self.samples.items():
                 values=sorted(values);low,high=self.extremes[name]

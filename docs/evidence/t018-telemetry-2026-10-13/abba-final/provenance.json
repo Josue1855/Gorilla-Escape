@@ -1,0 +1,30 @@
+{
+  "base": "bb90c04d050f35feae8ae1a99968aa9d91ed2e4a",
+  "sourceHashes": {
+    "tools/spikes/camera/worker.py": "0b41545db4036fa8db5d5a9105c328fb099d15c962c1c85069c5993790f969e8",
+    "tools/spikes/camera/pipeline.py": "a045130db9e4c908ca40160a72809acc114856cd1134a80d191a9c16b36661eb",
+    "tools/t016/offline_player.py": "5ea6ed06ef80276c56ca3a2b2c5fcd61fa1ad2594bcc16dbea6c1bb5d11ef55a",
+    "tools/t018/compare.py": "a626edaa808ac9d6215911ed4c73aea7cd1ccd6c792269cea4b3d4c8a073de43",
+    "Unity/Assets/_Project/Scripts/CameraTracking/CameraFusionLabRunner.cs": "bbd79e14860a31dbe061c1a4435096911f65eeb42f0687a4f6f00cb12b6809da",
+    "Unity/Assets/_Project/Scripts/CameraTracking/VisionSupervisor.cs": "cdb78f3bfca6632555c595a9c940dab4a8cf41c263cf590c35f358d35c327977",
+    "Unity/Assets/_Project/Scripts/CameraTracking/FrameTimingWindow.cs": "c1a2ff3be3a5c33ff632904e232b77cd5c25d1f9b82f0da6a3e192a396e32c9a"
+  },
+  "playerSha256": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f",
+  "assemblySha256": "eb8b2884fc5a0af9d59239e2b304230a803998da1298282223ef6c7c1b65f021",
+  "platform": "Linux-7.1.5-76070105-generic-x86_64-with-glibc2.39",
+  "utcStarted": "2026-10-14T00:51:57.326314+00:00",
+  "order": [
+    "minimal",
+    "enabled",
+    "enabled",
+    "minimal"
+  ],
+  "requestedDurationSeconds": 61.0,
+  "warmupSeconds": 5.0,
+  "conditions": "same built Player/Vision; MJPG 640x480/2 poses/candidate buffers2/manual10ms/priority1; 640x360 window; WAN off/developer cache hidden; no participants or lighting changes; live host load uncontrolled",
+  "cpu": "NOT RUN: no existing CPU sampler; RSS reuses validate_ipc_2c_player.rss at 1 Hz in both arms",
+  "physicalPhones": "NOT RUN",
+  "humanTests": "NOT RUN",
+  "motionToResultEndToEnd": "NOT RUN",
+  "imperceptibility": "UNDETERMINED: specification has no numerical threshold"
+}

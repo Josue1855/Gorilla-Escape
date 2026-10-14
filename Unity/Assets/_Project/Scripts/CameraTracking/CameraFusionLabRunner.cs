@@ -11,6 +11,7 @@ namespace GorillaEscape.CameraTracking
     public sealed class CameraFusionLabRunner : MonoBehaviour {
         VisionSupervisor vision; InputFusion fusion;CancellationTokenSource cancellation;Task start,stop;
         public CameraInputStore CameraInputs {get;}=new CameraInputStore();
+        FrameTimingWindow frameTiming; double measureStart,measureEnd,previousFrame; bool timingLogged;
         bool quitting,allowQuit,previousBackground;long revision;float nextLog;
         [Serializable] sealed class Command {public long revision;public int playerId;public bool ready;}
         [Serializable] sealed class Observation {
@@ -24,8 +25,14 @@ namespace GorillaEscape.CameraTracking
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void Launch(){if(Application.isEditor||Environment.GetEnvironmentVariable("GORILLA_CAMERA_LAB")!="1"&&Environment.GetEnvironmentVariable("GORILLA_CAMERA_ENABLED")!="1")return;var host=new GameObject("Camera fusion lab diagnostics");DontDestroyOnLoad(host);host.AddComponent<CameraFusionLabRunner>();}
         void Start(){previousBackground=Application.runInBackground;Application.runInBackground=true;vision=new VisionSupervisor();cancellation=new CancellationTokenSource();Application.wantsToQuit+=WantsToQuit;start=LaunchVision();}
-        async Task LaunchVision(){try{await vision.StartPackagedAsync(Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancellation.Token);Debug.Log("CAMERA_LAB_READY");}catch(Exception){Debug.Log("CAMERA_LAB_ERROR "+vision.Error);}}
+        async Task LaunchVision(){try{await vision.StartPackagedAsync(Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancellation.Token);Debug.Log("CAMERA_LAB_READY");if(Environment.GetEnvironmentVariable("GORILLA_T018_MEASURE")=="1"){frameTiming=new FrameTimingWindow();double now=System.Diagnostics.Stopwatch.GetTimestamp()/(double)System.Diagnostics.Stopwatch.Frequency;measureStart=now+double.Parse(Environment.GetEnvironmentVariable("GORILLA_CAMERA_WARMUP")??"5",System.Globalization.CultureInfo.InvariantCulture);measureEnd=measureStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_T018_DURATION")??"61",System.Globalization.CultureInfo.InvariantCulture);previousFrame=now;}}catch(Exception){Debug.Log("CAMERA_LAB_ERROR "+vision.Error);}}
         void Update(){
+            if(frameTiming!=null&&!timingLogged){
+                double now=System.Diagnostics.Stopwatch.GetTimestamp()/(double)System.Diagnostics.Stopwatch.Frequency;
+                if(previousFrame>=measureStart&&now<=measureEnd)frameTiming.Add((now-previousFrame)*1000);
+                previousFrame=now;
+                if(now>=measureEnd){timingLogged=true;Debug.Log("T018_FRAME_TIMING "+JsonUtility.ToJson(frameTiming.Report()));}
+            }
             if(allowQuit)return;
             if(quitting){if(start!=null&&!start.IsCompleted)return;if(stop==null)stop=vision.StopAsync();if(!stop.IsCompleted)return;allowQuit=true;LogCleanup();Application.Quit(vision.CleanupComplete?0:2);return;}
             if(fusion==null){var ipc=FindFirstObjectByType<IpcProbeRunner>();if(ipc?.PhoneInputs!=null)fusion=new InputFusion(ipc.PhoneInputs,Settings());}
