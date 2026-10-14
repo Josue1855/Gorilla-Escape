@@ -139,3 +139,15 @@ Publicación mediante PR hacia develop, sin closing keyword para#32. El merge de
 |2|-1.543 / -0.6817%|-1.734 / -0.7484%|+0.047 / +0.0182%|+0.820 / +0.3185%|
 
 [Datos RSS derivados por par](evidence/t018-telemetry-2026-10-13/abba-final/rss-comparison.json), N61 lecturas de cada proceso/corrida. No atribuir diferencias de RSS exclusivamente al buffer.
+
+## Current authorized Phase0 exit — DEC-028 / 2026-10-13
+
+Supersedes earlier instructions in this historical report to keep T018 open **only for T018 exit**, under explicit PO authorization. PR #103 MERGED confirmed remotely: head `136ee366b782c6f40a74114be00f881ea0307279`, merge `3129081eeb9cf92c3326038da076c67addc4b0fd`; required management/foundation checks SUCCESS. Existing bounded telemetry, four A–B–B–A runs, errors0 and privacy evidence reused; no runtime changes.
+
+| AC | Literal status retained | Phase0 exit under DEC-028 |
+|---|---|---|
+| AC1 | PARTIAL: physical phone offset/drift/error UNKNOWN / NOT RUN | PASS FOR T018 EXIT |
+| AC2 | PARTIAL: phone physical Hz and motion→visible-result NOT RUN | PASS FOR T018 EXIT |
+| AC3 | Universal imperceptibility not demonstrated; no numerical threshold in original spec | PASS FOR T018 EXIT: bounded, no video, telemetry errors0, repeated A/B, published deltas, no consistent reproducible degradation attributable to telemetry |
+
+Physical synchronization, sensor rates, true motion→visible-result and cross-device accreditation move to T019/#33; no E2E PASS claimed. Existing measured deltas retain sign variability; no zero-impact claim. T018 closure and Project Done permitted only after DEC merge/post-merge verification. Historical states above remain dated history. E0/F05 remain OPEN; Phase1 NOT STARTED.
