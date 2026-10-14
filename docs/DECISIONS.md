@@ -433,3 +433,15 @@ T016 local continuation (2026-10-09):13 layered physical diagnostics preserve DE
 PO-authorized T016 profile evaluation: manual10ms/buffers1–3; minimum passing2 preserves original priority1. New paired capture30.224215376583782/30.225402700303786/30.225225678964854FPS, everyrun>=30.000. Original default retained. Capability-based session controls and parent restoration after owned-child kill verified. Human BRIGHT/NORMAL/LOW-LIGHT NOTRUN by user availability, so AC1 acceptance remains FAIL/unproven and DEC-025 is not ACCEPTED. AC2 PARTIAL despite supplied matching upstream Qt/FFmpeg sources/model notice. [Latest validation](PHASE0_T016_CAMERA_RUNTIME.md#product-profile-validation--latest-local-continuation). No push/PR/closure.
 
 T016 original-AC reevaluation (2026-10-13): DEC025 ACCEPTED. Independent capture/latest-slot1/separate inference, physical >=30.000, manual10ms/buffers2/originalpriority1/MJPG640×480/numposes2; capability checks/snapshot-before-apply/worker+parentrestore/cleanup/privacy verified. Headlesssameversion adopted with explicit Vision-only MediaPipe import patch/materials. No universal compatibility or human identity continuity/intrusion/occlusion certification. Human stability is outsideT016 and remains unvalidatedT017; no new physical human QA permitted. AC1/AC2/AC3PASS forLinuxreference; integration state separate. [Current acceptance/materials](PHASE0_T016_CAMERA_RUNTIME.md#po-original-ac-acceptance--2026-10-13).
+
+## DEC-026 — Academic MVP Game Set Freeze
+
+**Fecha: 2026-10-13. Estado: ACCEPTED.** Decisión explícita del Product Owner en la ejecución nocturna.
+
+Academic MVP / P0: **Gorilla Smash, Coconut Throw, Coconut Bowling, Jungle Slice**. Post-MVP / P1: **Jungle Archery**, F31/T034–T036; preservar diseño e Issues abiertos, sin iniciar implementación. E3 incluye tres juegos restantes después de Smash. F40 exige un torneo completo de cuatro disciplinas, participantes, turnos, resultados, score/GP, tabla, desempate, campeón y retorno al menú.
+
+El PDF académico permite añadir disciplinas hasta cinco después de estabilizar el núcleo Smash/Throw y el control; el PO fija el corte final en exactamente cuatro. PRODUCT VISION conserva la visión futura de cinco; ACADEMIC MVP define la entrega obligatoria. Esta enmienda prevalece sobre referencias históricas a cinco como gate académico; no elimina historial ni cambia fecha vigente (semana 9–13 noviembre; freeze 6 noviembre). No importa requisitos de otros equipos.
+
+Ruta principal vigente: teléfono → PWA → Gorilla Protocol → WebRTC local → Java → IPC → Unity/PhoneInput, conforme DEC-005/DEC-010. Unity única autoridad oficial; cámara complementaria cuando la disciplina lo requiera. Fallback de usuario obligatorio, aún no implementado: T060, calibración/prueba y torneo completo sin dispositivo adicional. No confundir herramientas de laboratorio con fallback de producto.
+
+No acredita juegos implementados, latencia física, dispositivos, cierre E0 ni inicio Phase1. [Requisitos y matriz](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md).

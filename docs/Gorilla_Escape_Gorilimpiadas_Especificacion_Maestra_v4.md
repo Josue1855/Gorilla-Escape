@@ -3945,3 +3945,13 @@ DEC-020 ACCEPTED: sólo eventos reales del navegador; separar adquisición raw, 
 ### Enmienda PO DEC-021 — salida T010 con QA física diferida
 
 DEC-021 ACCEPTED: software + Android Emulator permiten salida de implementación T010 e integración normal. AC1/AC2 literales permanecen PARTIAL; exit PASS FOR T010 EXIT under DEC-021, AC3 PASS. PASS FOR T010 EXIT != physical QA completed. Acreditación física final se transfiere a T019 conservando AC/dependencias/gates reales. DEC-020, rangos, freshness2000ms, autoridad Unity y protocolo intactos. No autoriza T011 ni Fase1. Véase DECISIONS y PHASE0_T010_SENSOR_CAPTURE.
+
+## Enmienda vigente — Academic MVP, DEC-026 (2026-10-13)
+
+**ACCEPTED por PO.** Entrega académica P0 exactamente cuatro: Gorilla Smash, Coconut Throw, Coconut Bowling y Jungle Slice. Smash/Throw son el núcleo mínimo GOR-03; Bowling/Slice completan el catálogo autorizado GOR-04. Jungle Archery/F31/T034–T036 queda P1/Post-MVP abierto, preservando diseño. E3 pasa de cuatro a **tres minijuegos restantes**.
+
+Referencias anteriores a cinco disciplinas obligatorias están **SUPERSEDED para Academic MVP** y se conservan como PRODUCT VISION futura. La enmienda académica tiene precedencia para gates de entrega. F40 exige cuatro disciplinas integradas en un torneo: participantes, turnos, resultados, score/GP, tabla acumulada, desempate visible, campeón automático y retorno al menú. Cuatro demos no satisfacen F40.
+
+Ruta principal: teléfono/PWA/Gorilla Protocol/WebRTC local/Java/IPC/Unity PhoneInput. Unity única autoridad oficial; cámara complementaria según disciplina. T060 exige fallback visible de usuario, prueba/calibración y torneo completo sin dispositivo adicional; pendiente implementación en fase correspondiente. Herramientas debug no lo satisfacen. <150ms acción→respuesta visible y <60s participante no preparado requieren evidencia física; RTT no equivale a E2E. E0 sigue OPEN, Phase1 NOT STARTED. Fecha vigente intacta; no adoptar fechas de otros equipos.
+
+[Fuente académica aplicable, cobertura real y gaps](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md).

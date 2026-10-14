@@ -661,3 +661,7 @@ T016 PO original-AC reevaluation (2026-10-13): AC1PASS physicalreference (captur
 
 
 T016 final r7 continuation (2026-10-13): Unity Student local activation/minimalbatchmodePASS; no plan change/Pro request. Components21/Edit99/Play20/Linux0errors0warnings. Fresh offline r7 capture30.223863957016217FPS, inference28.91914503137035FPS, Unityaccepted1907; normalPlayer/workerexit0, fullsnapshotrestorationPASS, noforced/residual/imagewrites/perframelogs. Source/notices/actualmanifest verified, AC1/AC2/AC3PASS; DEC025ACCEPTED. Prior r6 cleanupFAIL preserved, cause unproven; no fabricatedPASS or human tests. [Final report](PHASE0_T016_CAMERA_RUNTIME.md#student-activation-and-final-r7-validation--2026-10-13). Publication/integration state recorded separately; F04/E0OPEN, Phase0INPROGRESS, Phase1NOTSTARTED.
+
+## Academic reconciliation — 2026-10-13
+
+DEC-026: cuatro juegos P0 (Smash, Throw, Bowling, Slice), Archery P1/Post-MVP; E3 tres restantes/F40 torneo completo. [Matriz académica](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md). Fallback T060/#104 pendiente implementación; sin gameplay nuevo. E0 OPEN; Phase1 NOT STARTED. Evidencia física pendiente no alterada.
