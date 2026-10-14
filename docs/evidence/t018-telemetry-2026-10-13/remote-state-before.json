@@ -1,0 +1,119 @@
+[
+  {
+    "issue": {
+      "number": 1,
+      "state": "OPEN",
+      "title": "[E0] Base t\u00e9cnica y viabilidad"
+    },
+    "fields": {
+      "Status": "In Progress",
+      "Phase": "0",
+      "Area": "Unity/Core",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 2,
+      "state": "OPEN",
+      "title": "[E1] Vertical Slice Gorilla Smash"
+    },
+    "fields": {
+      "Status": "Backlog",
+      "Phase": "1",
+      "Area": "Unity/Core",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 28,
+      "state": "OPEN",
+      "title": "[F04] C\u00e1mara local y viabilidad de tracking"
+    },
+    "fields": {
+      "Status": "In Progress",
+      "Phase": "0",
+      "Area": "Camera/Tracking",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 29,
+      "state": "CLOSED",
+      "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput"
+    },
+    "fields": {
+      "Status": "Done",
+      "Phase": "0",
+      "Area": "Camera/Tracking",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 30,
+      "state": "OPEN",
+      "title": "[T017] Validar ROI, Player Lock y recuperaci\u00f3n de tracking"
+    },
+    "fields": {
+      "Status": "Validation",
+      "Phase": "0",
+      "Area": "Camera/Tracking",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 31,
+      "state": "OPEN",
+      "title": "[F05] Evidencia de viabilidad t\u00e9cnica end-to-end"
+    },
+    "fields": {
+      "Status": "In Progress",
+      "Phase": "0",
+      "Area": "CI/QA",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 32,
+      "state": "OPEN",
+      "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales"
+    },
+    "fields": {
+      "Status": "Validation",
+      "Phase": "0",
+      "Area": "CI/QA",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 33,
+      "state": "OPEN",
+      "title": "[T019] Ejecutar validaci\u00f3n base con cuatro tel\u00e9fonos y fallos"
+    },
+    "fields": {
+      "Status": "Validation",
+      "Phase": "0",
+      "Area": "CI/QA",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  },
+  {
+    "issue": {
+      "number": 34,
+      "state": "OPEN",
+      "title": "[T020] Validar build m\u00ednima en PC limpia y dictamen de viabilidad"
+    },
+    "fields": {
+      "Status": "Validation",
+      "Phase": "0",
+      "Area": "CI/QA",
+      "Target Release": "v1.0 \u2014 MVP"
+    }
+  }
+]

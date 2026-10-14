@@ -1,0 +1,52 @@
+[
+  {
+    "pair": 1,
+    "A": 1,
+    "B": 2,
+    "unity": {
+      "P50": {
+        "absoluteBytes": 1310720,
+        "percent": 0.5569576190061788
+      },
+      "P95": {
+        "absoluteBytes": 1282048,
+        "percent": 0.5325846520333504
+      }
+    },
+    "vision": {
+      "P50": {
+        "absoluteBytes": 815104,
+        "percent": 0.3019589396537335
+      },
+      "P95": {
+        "absoluteBytes": 827392,
+        "percent": 0.3064924818304581
+      }
+    }
+  },
+  {
+    "pair": 2,
+    "A": 4,
+    "B": 3,
+    "unity": {
+      "P50": {
+        "absoluteBytes": -1617920,
+        "percent": -0.6816809043058072
+      },
+      "P95": {
+        "absoluteBytes": -1818624,
+        "percent": -0.7484323376710943
+      }
+    },
+    "vision": {
+      "P50": {
+        "absoluteBytes": 49152,
+        "percent": 0.018207750432434073
+      },
+      "P95": {
+        "absoluteBytes": 860160,
+        "percent": 0.3185051491665782
+      }
+    }
+  }
+]

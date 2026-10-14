@@ -21,6 +21,7 @@ def main():
     p.add_argument('--profile',choices=['original','candidate'],default=os.environ.get('GORILLA_CAMERA_PROFILE','candidate'))
     p.add_argument('--buffers',type=int,choices=[1,2,3],default=os.environ.get('GORILLA_CAMERA_BUFFERS'))
     p.add_argument('--dynamic-framerate',type=int,choices=[0,1],default=None)
+    p.add_argument('--telemetry',choices=['minimal','enabled'],default=os.environ.get('GORILLA_TELEMETRY_MODE','enabled'))
     a=p.parse_args()
     if a.warmup<0 or a.duration<0:raise ValueError('CAMERA_DURATION_INVALID')
     if a.buffers not in [None,1,2,3]:raise ValueError('CAMERA_BUFFER_INVALID')
@@ -32,7 +33,7 @@ def main():
         while os.read(0,1): pass
         stop.set()
     reader=threading.Thread(target=parent,name='parent-eof',daemon=True);reader.start()
-    capture=detector=pump=timer=session=None;metrics=Metrics(a.warmup);frames=0;gaps=0;durations=[];captures=[];confidence=[];tracking=0;read_durations=[];skipped=0
+    capture=detector=pump=timer=session=None;metrics=Metrics(a.warmup,enabled=a.telemetry=='enabled');frames=0;gaps=0;durations=[];captures=[];confidence=[];tracking=0;read_durations=[];skipped=0
     try:
         if a.mode=='unavailable': raise RuntimeError('CAMERA_UNAVAILABLE')
         if a.mode=='silent': stop.wait();return
@@ -52,7 +53,7 @@ def main():
             configuration=dict(backend=capture.getBackendName(),device=a.device,width=capture.get(cv2.CAP_PROP_FRAME_WIDTH),height=capture.get(cv2.CAP_PROP_FRAME_HEIGHT),fourcc=''.join(chr((fourcc>>(8*i))&255) for i in range(4)),requestedFps=30,reportedFps=capture.get(cv2.CAP_PROP_FPS),reportedBuffer=capture.get(cv2.CAP_PROP_BUFFERSIZE),numPoses=2)
             configuration.update(profile=a.profile,controlsBefore=controls_before,controlsApplied=session.describe(),acquisitionTimestampSource='OpenCV V4L2 CAP_PROP_POS_MSEC / kernel timestamp; validated monotonic range, not optical ground truth',staleBudgetMs=100)
             previous=[];next_id=1;origin=now();mono=time.monotonic_ns();last_detector_time=-1;last_measured_ids=None
-            metrics=Metrics(a.warmup);pump=CapturePump(capture,stop,metrics,acquisition_clock=lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6));pump.start()
+            metrics=Metrics(a.warmup,enabled=a.telemetry=='enabled');pump=CapturePump(capture,stop,metrics,acquisition_clock=lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6));pump.start()
             if a.duration:
                 timer=threading.Timer(a.warmup+a.duration,stop.set);timer.daemon=True;timer.start()
         emit('CAMERA_READY')
@@ -94,7 +95,9 @@ def main():
             processing_ms=(time.monotonic_ns()-processing_started)/1e6
             frames+=1;frame['frameSequence']=captured.sequence if a.mode=='physical' else frames;emit('CAMERA_FRAME',frame)
             if a.mode=='physical':
-                metrics.event('inference',duration=processing_ms);metrics.event('output');metrics.event('tracking' if frame['subjects'] else 'trackingGap')
+                metrics.event('inference',duration=processing_ms);metrics.event('output')
+            if a.mode=='physical' and metrics.enabled:
+                metrics.event('tracking' if frame['subjects'] else 'trackingGap')
                 measured_at=time.monotonic_ns()
                 if measured_at>=metrics.after:
                     ids=frozenset(s['subjectId'] for s in subjects)
@@ -113,6 +116,7 @@ def main():
                 metrics.observe('visibleLandmarks',sum(l['visible'] for s in subjects for l in s['landmarks']))
                 metrics.observe('meanPixelValue',float(image.mean()))
                 metrics.event('usefulTracking' if any(s['confidence']>=.5 and sum(l['visible'] for l in s['landmarks'])>=6 for s in subjects) else 'qualityGap')
+            if a.mode=='physical' and not metrics.enabled:continue
             durations.append(processing_ms);read_durations.append(read_ms);captures.append(frame['captureTimestamp']);tracking+=bool(frame['subjects']);gaps+=not bool(frame['subjects']);confidence.extend(s['confidence'] for s in frame['subjects'])
             # Bound observation metrics, no lifetime growth.
             if len(durations)>4096:durations.pop(0);read_durations.pop(0);captures.pop(0)
@@ -129,7 +133,7 @@ def main():
             finally:
                 if session is not None:session.close()
         if pump is not None:
-            report=metrics.report();report.update(configuration=configuration,capturedFrames=pump.frames,inferredFrames=frames,cameraInputEmitted=frames,overwrittenBeforeInference=pump.slot.overwritten,pendingDiscarded=pump.slot.published-pump.slot.taken-pump.slot.overwritten,captureThreadJoined=not pump.thread.is_alive(),cameraReleased=pump.released,detectorClosed=detector is not None,hardwareDroppedFrames=None,warmupSeconds=a.warmup)
+            report=metrics.report();report.update(telemetryLegacyRetainedSamples=len(durations)+len(read_durations)+len(captures)+len(confidence),telemetryLegacyCapacity=20480,telemetryLegacyFrameWindowOverwrites=max(0,frames-4096) if metrics.enabled else 0);report.update(configuration=configuration,capturedFrames=pump.frames,inferredFrames=frames,cameraInputEmitted=frames,overwrittenBeforeInference=pump.slot.overwritten,pendingDiscarded=pump.slot.published-pump.slot.taken-pump.slot.overwritten,captureThreadJoined=not pump.thread.is_alive(),cameraReleased=pump.released,detectorClosed=detector is not None,hardwareDroppedFrames=None,warmupSeconds=a.warmup)
             report.update(staleSkipped=skipped,acquisitionTimestampUnavailable=pump.timestamp_unavailable,controlsRestored=session.restored,clockCorrelation='Worker latency monotonic; CameraInput UTC timestamps unchanged',humanQualityAcceptance='NOT PROVEN by presence/confidence aggregates alone')
             present=report.get('framesWithSubjectFrames',0);absent=report.get('framesWithoutSubjectFrames',0)
             report.update(framesWithSubject=present,framesWithoutSubject=absent,detectionRatio=present/(present+absent) if present+absent else None,trackingFrames=report.get('trackingFrames',0),trackingGaps=report.get('trackingGapFrames',0),ambiguousFrames=report.get('ambiguousFrames',0),subjectIdChanges=report.get('subjectIdChangesFrames',0),productEligibleFrames=report.get('productEligibleFrames',0),subjectIdChangesScope='Detected ID-set changes between nonempty measured frames, including return after a gap; ephemeral spatial IDs, not biometric identities',productThresholds=dict(minCameraConfidence=.6,roiMinX=.2,roiMaxX=.8,visibilityPresence=.5))

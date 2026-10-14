@@ -1,0 +1,51 @@
+{
+  "base": "bb90c04d050f35feae8ae1a99968aa9d91ed2e4a",
+  "priorMetrics": "docs/evidence/phase0-final-audit-2026-10-08/independent-metrics.json",
+  "scope": "read-only source audit; historical numbers remain historical. Changed producers/shared runtime make old quantitative results insufficient for current acceptance; fresh PlayMode confirms function only",
+  "files": [
+    {
+      "path": "Unity/Assets/_Project/Scripts/Network/JavaProbeSupervisor.cs",
+      "sha256AtBase": "7d048c03d2caa6fe73a57a923c475cb112162c729adfa4d80c4eab37461077fe",
+      "changedSinceHistoricalMetrics": true
+    },
+    {
+      "path": "Server/src/main/java/com/gorillaescape/server/ipc/ManagedProbe.java",
+      "sha256AtBase": "87908de7f301ca73af980f88b0ab929e1105658b85cc7555e61ef6e0dcb02eae",
+      "changedSinceHistoricalMetrics": true
+    },
+    {
+      "path": "Server/src/main/java/com/gorillaescape/server/mobile/PhoneInputHub.java",
+      "sha256AtBase": "7fa9b6b1f4cda7c45b5840854c4937ef9914273cfe23da4e29fa99ff5e1189f3",
+      "changedSinceHistoricalMetrics": true
+    },
+    {
+      "path": "PWA/src/input/mobileClient.js",
+      "sha256AtBase": "27f842352360e2ebc68f78a1adde5f1e2c563b5621d2861927ce0ffb5d5be9c7",
+      "changedSinceHistoricalMetrics": true
+    },
+    {
+      "path": "PWA/src/input/sensors/capture.js",
+      "sha256AtBase": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d",
+      "changedSinceHistoricalMetrics": false
+    },
+    {
+      "path": "Unity/Assets/_Project/Scripts/Input/PhoneInputStore.cs",
+      "sha256AtBase": "c460b0e4c6ef926642690be8f202ef66caa5265fb1ed541d92fb4d205492dfad",
+      "changedSinceHistoricalMetrics": true
+    }
+  ],
+  "reuse": [
+    "IPC framing/supervisor/bounds and historical LAB baseline",
+    "RTC selected transport and ACK receipt semantics",
+    "PhoneInput timestamps, sequence/epoch identity, bounded sensor rate windows and emission counters",
+    "CameraInput sequence/private pipe/latest-only store and mono worker timings",
+    "T016 r7 Linux runtime/model/profile/control restoration/privacy and measured capture/inference baseline"
+  ],
+  "stale": [
+    "Pre-T016 camera acquisition\u224820 FPS/default profile: superseded by r7 accepted profile",
+    "Earlier T016 candidate/native-license gaps and r6 failed cleanup: historical; r7 accepted evidence retained",
+    "Historical pre-T013/T015 RTC/mobile/IPC timing numbers: retain as scoped LAB baseline, not freshly measured current-head E2E",
+    "T010 iPhone preflight and emulator Hz: not final physical-device accreditation",
+    "Any inference of AC3 imperceptibility from bounded storage alone: unsupported; no prior A/B"
+  ]
+}

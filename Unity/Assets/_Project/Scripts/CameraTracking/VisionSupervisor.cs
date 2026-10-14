@@ -15,11 +15,12 @@ namespace GorillaEscape.CameraTracking
         readonly object gate=new object(); CameraInputWire pending;Process child;
         Task stdout,stderr; bool ready; long received;
         string controlSnapshot,controlPython,controlScript,controlDevice;bool physical;
+        readonly bool telemetryEnabled=Environment.GetEnvironmentVariable("GORILLA_TELEMETRY_MODE")!="minimal";
         readonly Queue<long> transit=new Queue<long>();long transitCount,transitMax,invalidTransit;
         public bool ControlsRestored {get;private set;}=true;
         public string RestoreFailure {get;private set;}
-        public string LatencySummary {get {lock(gate){var values=transit.ToArray();Array.Sort(values);return JsonUtility.ToJson(new Transit{N=transitCount,P50=values.Length==0?-1:values[(int)Math.Ceiling(values.Length*.5)-1],P95=values.Length==0?-1:values[(int)Math.Ceiling(values.Length*.95)-1],max=transitMax,invalid=invalidTransit,clock="same-PC UTC milliseconds: processTimestamp to pipe receive; no optical/gameplay claim"});}}}
-        [Serializable]sealed class Transit {public long N,P50,P95,max,invalid;public string clock;}
+        public string LatencySummary {get {lock(gate){var values=transit.ToArray();Array.Sort(values);return JsonUtility.ToJson(new Transit{N=transitCount,retained=values.Length,overwritten=Math.Max(0,transitCount-values.Length),enabled=telemetryEnabled,P50=values.Length==0?-1:values[(int)Math.Ceiling(values.Length*.5)-1],P95=values.Length==0?-1:values[(int)Math.Ceiling(values.Length*.95)-1],max=transitMax,invalid=invalidTransit,clock="same-PC UTC milliseconds: processTimestamp to pipe receive; no optical/gameplay claim"});}}}
+        [Serializable]sealed class Transit {public long N,P50,P95,max,invalid,overwritten;public int retained;public bool enabled;public string clock;}
         public string State {get;private set;}="STOPPED";
         public string Error {get;private set;} public int Pid {get;private set;}
         public int? ExitCode {get;private set;} public bool CleanupComplete {get;private set;}=true;
@@ -58,7 +59,7 @@ namespace GorillaEscape.CameraTracking
             if(!ready||!line.StartsWith("CAMERA_FRAME "))throw new IOException("CAMERA_PROTOCOL_INVALID");
             CameraInputWire f;try{f=JsonUtility.FromJson<CameraInputWire>(line.Substring(13));}catch{throw new IOException("CAMERA_PROTOCOL_INVALID");}
             if(!CameraInputStore.Valid(f))throw new IOException("CAMERA_CONTRACT_INVALID");
-            lock(gate){if(pending!=null)Overwritten++;pending=f;received=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();if(f.source=="physical-webcam"){long delta=received-f.processTimestamp;if(delta<0||delta>10000)invalidTransit++;else{transitCount++;transitMax=Math.Max(transitMax,delta);transit.Enqueue(delta);if(transit.Count>4096)transit.Dequeue();}}}
+            lock(gate){if(pending!=null)Overwritten++;pending=f;received=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();if(telemetryEnabled&&f.source=="physical-webcam"){long delta=received-f.processTimestamp;if(delta<0||delta>10000)invalidTransit++;else{transitCount++;transitMax=Math.Max(transitMax,delta);transit.Enqueue(delta);if(transit.Count>4096)transit.Dequeue();}}}
         }
         async Task Drain(StreamReader reader){try{var buffer=new char[1024];int n;while((n=await reader.ReadAsync(buffer,0,buffer.Length))>0)StderrBytes+=n;}catch(ObjectDisposedException){}catch(IOException){}}
         public void Poll(){if(State=="RUNNING"&&(Error!=null||child.HasExited)){Error=Error??"VISION_EXITED";State="FAILED";}}
