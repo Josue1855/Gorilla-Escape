@@ -2,7 +2,7 @@
 """Linux build -> packaged physical vision -> Unity CameraInput, isolated WAN/cache.
 Only aggregated privacy/cleanup/runtime metrics are retained; never images or pose traces.
 """
-import argparse,json,os,pathlib,re,subprocess,sys,tempfile,threading,time
+import argparse,json,os,pathlib,re,signal,subprocess,sys,tempfile,threading,time
 p=argparse.ArgumentParser();p.add_argument('--build',required=True);p.add_argument('--output',required=True);p.add_argument('--profile',choices=['original','candidate'],default='original');p.add_argument('--buffers',type=int,choices=[1,2,3],default=1);p.add_argument('--warmup',type=float,default=5);p.add_argument('--duration',type=float,default=61);a=p.parse_args()
 root=pathlib.Path(a.build).resolve();output=pathlib.Path(a.output)
 if output.exists():raise SystemExit('Preserve previous evidence')
@@ -14,7 +14,7 @@ env.update(GORILLA_CAMERA_PROFILE=a.profile,GORILLA_CAMERA_BUFFERS=str(a.buffers
 namespace=['bwrap','--unshare-net','--dev-bind','/','/','--tmpfs',str(pathlib.Path.home()/'.cache'),'--proc','/proc','--']
 probe=subprocess.run(namespace+[str(root/'Vision/python'),'-c','import socket; s=socket.socket(); s.settimeout(1); print(s.connect_ex(("1.1.1.1",443)))'],env=env,capture_output=True,text=True,timeout=10)
 result={'scope':'Built Linux Player/relative Vision; physical webcam; private pipes/Unity store','wanProbeExit':probe.returncode,'wanUnavailable':probe.stdout.strip()=='101','developerCacheHidden':True,'imagePersistence':False,'gate':'FAIL','humanTracking':'NOT RUN'}
-child=subprocess.Popen(namespace+['strace','-f','-e','trace=openat,creat,rename,unlink,connect','-o',str(trace),str(root/'GorillaEscape.x86_64'),'-screen-fullscreen','0','-screen-width','640','-screen-height','360','-logFile','-'],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+child=subprocess.Popen(namespace+['strace','-f','-e','trace=openat,creat,rename,unlink,connect','-o',str(trace),str(root/'GorillaEscape.x86_64'),'-screen-fullscreen','0','-screen-width','640','-screen-height','360','-logFile','-'],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,start_new_session=True)
 ready=threading.Event();rows=[];counts={'stderrBytes':0,'forbiddenPhysicalObservationLogs':0}
 def read():
  for line in child.stdout:
@@ -37,7 +37,7 @@ def close_player():
    queue.extend(int(v) for v in pathlib.Path('/proc/'+str(pid)+'/task/'+str(pid)+'/children').read_text().split())
   except FileNotFoundError:pass
  raise RuntimeError('OWN_PLAYER_PID_INVALID')
-t=threading.Thread(target=read);e=threading.Thread(target=errors);t.start();e.start()
+t=threading.Thread(target=read,daemon=True);e=threading.Thread(target=errors,daemon=True);t.start();e.start()
 try:
  if not ready.wait(25):raise RuntimeError('PACKAGED_CAMERA_STARTUP_FAILED')
  # Camera aggregate metrics only; no human admission/lock testing.
@@ -46,17 +46,31 @@ try:
  print('CAMERA_VALIDATION_MEASURING',flush=True)
  time.sleep(a.duration)
  close_player()
- code=child.wait(timeout=15);t.join(3);e.join(3);result['playerExitCode']=code
+ code=child.wait(timeout=20);t.join(3);e.join(3);result['playerExitCode']=code
  text=trace.read_text();writes=[line for line in text.splitlines() if ('O_WRONLY' in line or 'O_RDWR' in line or 'creat(' in line) and not '= -1' in line]
  result['privacy']={'successfulImageVideoWrites':sum(bool(re.search(r'\.(jpg|jpeg|png|bmp|webp|mp4|avi|mkv)(?:[" ])',line,re.I)) for line in writes),'physicalObservationLogs':counts['forbiddenPhysicalObservationLogs'],'aggregateOnlyEvidence':True}
  cleanup=result.get('cleanup',{});result['residualOwnVision']=pathlib.Path('/proc/'+str(cleanup.get('pid',-1))).exists()
  result['gate']='PASS' if code==0 and result['wanUnavailable'] and cleanup.get('complete') and cleanup.get('controlsRestored') and not cleanup.get('forced') and cleanup.get('exitCode')==0 and cleanup.get('accepted',0)>20 and cleanup.get('source')=='physical-webcam' and not result['residualOwnVision'] and result['privacy']['successfulImageVideoWrites']==0 and counts['forbiddenPhysicalObservationLogs']==0 else 'FAIL'
- result['profile']=a.profile;result['buffers']=a.buffers;result['captureThresholdPass']=result.get('metrics',{}).get('captureFps',0)>=30;result['qualityAcceptance']='PENDING human and lighting validation'
+ result['profile']=a.profile;result['buffers']=a.buffers;result['captureThresholdPass']=result.get('metrics',{}).get('captureFps',0)>=30;result['qualityAcceptance']='Outside T016 acceptance; no human tests authorized'
+ if not result['captureThresholdPass']:result['gate']='FAIL'
+ # This harness is now technical-only under the PO decision: no human QA or quality gate.
+ for key in list(result.get('metrics',{})):
+  if any(word in key.lower() for word in ['tracking','quality','subject','confidence','landmark','pixel','ambiguous','eligible','productthreshold','detection']):del result['metrics'][key]
+ result['humanTracking']='NOT RUN — technical camera/runtime test only';result['qualityAcceptance']='Outside T016 acceptance; no human tests authorized'
 except Exception as error:
  result['error']=str(error)
 finally:
  if child.poll() is None:
-  close_player();child.wait(timeout=15);t.join(3);e.join(3);result['errorCleanupComplete']=True
+  try:
+   close_player();child.wait(timeout=20);result['errorCleanupComplete']=True
+  except Exception as error:
+   result['cleanupError']=str(error);result['forcedHarnessCleanup']=True;result['gate']='FAIL'
+   # Own session only; never signal unrelated camera owners.
+   os.killpg(child.pid,signal.SIGTERM)
+   try:child.wait(timeout=3)
+   except subprocess.TimeoutExpired:
+    os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=3)
+ t.join(3);e.join(3)
  result['stderrBytes']=counts['stderrBytes'];trace.unlink(missing_ok=True)
  output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 if result['gate']!='PASS':sys.exit(1)

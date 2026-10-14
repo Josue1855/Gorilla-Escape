@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-13",
+  "AC1": "PASS \u2014 PHYSICAL REFERENCE PC",
+  "literalAC1": "Medir captura >=30 FPS e inferencia separada en PC oficial.",
+  "AC2": "PASS \u2014 OFFLINE DISTRIBUTION, Linux reference",
+  "AC3": "PASS",
+  "DEC025": "ACCEPTED",
+  "humanTrackingStability": "Outside T016 acceptance; unvalidated under T017",
+  "physicalT017QA": "NOT RUN",
+  "cleanPCAndOtherPlatforms": "NOT VALIDATED, T020",
+  "manifestMatchesActualFiles": true,
+  "knownApplicableSourceMaterials": "SUPPLIED; raw build reproducibility not asserted",
+  "libdecorLimit": "Upstream patch revision unexposed; supplier artifact version documented; MIT notices supplied, no corresponding-source requirement invented",
+  "finalStaging": "/home/josuegalvan/.local/share/gorilla-t016-final-2026-10-13-r7",
+  "finalOfflineEvidence": "physical-offline-r7.json",
+  "priorR6": "FAIL normal shutdown; preserved in failed-r6-shutdown.json; no FPS fabricated",
+  "studentLicense": "Local minimal batchmode PASS; no plan change/Pro requested"
+}

@@ -1,0 +1,10 @@
+{
+  "source": "https://deb.debian.org/debian/pool/main/libd/libdecor-0/libdecor-0_0.1.1.orig.tar.gz",
+  "archiveSha256": "82adece5baeb6194292b0d1a91b4b3d10da41115f352a5e6c5844b20b88a0512",
+  "license": "MIT (authentic upstream license and per-source-file headers retained)",
+  "upstreamReference": "0.1.1 is notice/source reference, NOT asserted as exact Unity build revision",
+  "distributedArtifactVersion": "Unity Linux support 6000.3.23f1 / libdecor ABI0",
+  "gorillaModifications": "NONE",
+  "unityBinaryPatchProvenance": "Unknown; not claimed to match downloaded upstream tarball",
+  "applicableSourceObligation": "No corresponding-source requirement established by upstream MIT license; exact vendor source is not represented as provided"
+}

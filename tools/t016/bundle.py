@@ -2,7 +2,7 @@
 """Reproducible Linux reference staging, copies pinned prepared inputs. No runtime install/download.
 No freezer dependency. Host ABI glibc2.39/Linux x86_64 remains an explicit platform requirement.
 """
-import argparse,hashlib,importlib.metadata,json,os,pathlib,re,shutil,subprocess,sys
+import argparse,difflib,hashlib,importlib.metadata,json,os,pathlib,re,shutil,subprocess,sys
 MODEL_SHA='59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a'
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def verify(root):
@@ -31,6 +31,17 @@ def build(venv,model,output):
     shutil.copytree('/usr/lib/python3.12',runtime/'lib/python3.12',ignore=ignore)
     # Do not copy activation, pyvenv.cfg, pip or paths back to developer caches.
     shutil.copytree(site,runtime/'lib/python3.12/dist-packages',ignore=shutil.ignore_patterns('__pycache__','*.pyc','tests','test','pip','pip-*.dist-info'))
+    # Vision never uses Audio Tasks. Its eager import initializes host audio drivers at startup.
+    # Keep original upstream notices and supply this explicit Apache-2.0 source modification.
+    mp_init=runtime/'lib/python3.12/dist-packages/mediapipe/tasks/python/__init__.py'
+    original_init=mp_init.read_text()
+    if original_init.count('from . import audio\n')!=1:raise ValueError('VISION_MEDIAPIPE_PATCH_INPUT_CHANGED')
+    patched_init=original_init.replace('from . import audio\n','# Modified by Gorilla Escape, 2026-10-09: Vision-only runtime omits eager Audio Tasks import.\n')
+    mp_init.write_text(patched_init)
+    source_info=root/'SOURCES_OR_SOURCE_INFO';source_info.mkdir()
+    patch_path=source_info/'mediapipe-0.10.33-vision-only.diff'
+    patch_path.write_text(''.join(difflib.unified_diff(original_init.splitlines(True),patched_init.splitlines(True),fromfile='original/mediapipe/tasks/python/__init__.py',tofile='modified/mediapipe/tasks/python/__init__.py')))
+    (source_info/'mediapipe-modification.json').write_text(json.dumps(dict(component='mediapipe',version='0.10.33',path=str(mp_init.relative_to(root)),originalSha256=hashlib.sha256(original_init.encode()).hexdigest(),modifiedSha256=sha(mp_init),patch=str(patch_path.relative_to(root)),license='Apache-2.0',scope='No Audio Tasks eager initialization/API export in this Vision-only runtime; PoseLandmarker API unchanged'),indent=2)+'\n')
     (root/'licenses').mkdir();shutil.copy2('/usr/share/doc/python3.12/copyright',root/'licenses/Python-copyright.txt')
     shutil.copy2(model,root/'pose_landmarker_lite-v1.task')
     for name in ['worker.py','pipeline.py','camera_controls.py']:shutil.copy2(repo/'tools/spikes/camera'/name,root/name)

@@ -18,7 +18,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--mode',choices=['replay','physical','unavailable','failure','malformed','oversized','silent'],required=True)
     for n in ['fixture','model','device']: p.add_argument('--'+n,default='')
     p.add_argument('--warmup',type=float,default=os.environ.get('GORILLA_CAMERA_WARMUP','0'));p.add_argument('--duration',type=float,default=0)
-    p.add_argument('--profile',choices=['original','candidate'],default=os.environ.get('GORILLA_CAMERA_PROFILE','original'))
+    p.add_argument('--profile',choices=['original','candidate'],default=os.environ.get('GORILLA_CAMERA_PROFILE','candidate'))
     p.add_argument('--buffers',type=int,choices=[1,2,3],default=os.environ.get('GORILLA_CAMERA_BUFFERS'))
     p.add_argument('--dynamic-framerate',type=int,choices=[0,1],default=None)
     a=p.parse_args()
@@ -43,7 +43,7 @@ def main():
             import cv2,mediapipe as mp
             session=CameraSession(a.device,a.profile,a.dynamic_framerate,snapshot_callback=lambda snapshot:emit('CAMERA_CONTROL_SNAPSHOT',snapshot))
             controls_before=session.describe(session.before)
-            buffers=a.buffers or (3 if a.profile=='candidate' else 1)
+            buffers=a.buffers or (2 if a.profile=='candidate' else 1)
             capture=cv2.VideoCapture(a.device,cv2.CAP_V4L2)
             capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'));capture.set(cv2.CAP_PROP_FRAME_WIDTH,640);capture.set(cv2.CAP_PROP_FRAME_HEIGHT,480);capture.set(cv2.CAP_PROP_FPS,30);capture.set(cv2.CAP_PROP_BUFFERSIZE,buffers)
             if not capture.isOpened():raise RuntimeError('CAMERA_UNAVAILABLE')

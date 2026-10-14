@@ -17,6 +17,7 @@ namespace GorillaEscape.CameraTracking
         string controlSnapshot,controlPython,controlScript,controlDevice;bool physical;
         readonly Queue<long> transit=new Queue<long>();long transitCount,transitMax,invalidTransit;
         public bool ControlsRestored {get;private set;}=true;
+        public string RestoreFailure {get;private set;}
         public string LatencySummary {get {lock(gate){var values=transit.ToArray();Array.Sort(values);return JsonUtility.ToJson(new Transit{N=transitCount,P50=values.Length==0?-1:values[(int)Math.Ceiling(values.Length*.5)-1],P95=values.Length==0?-1:values[(int)Math.Ceiling(values.Length*.95)-1],max=transitMax,invalid=invalidTransit,clock="same-PC UTC milliseconds: processTimestamp to pipe receive; no optical/gameplay claim"});}}}
         [Serializable]sealed class Transit {public long N,P50,P95,max,invalid;public string clock;}
         public string State {get;private set;}="STOPPED";
@@ -32,7 +33,7 @@ namespace GorillaEscape.CameraTracking
         }
         public async Task StartAsync(string python,string script,string mode,string fixture,string model,string device,CancellationToken token){
             if(child!=null)throw new InvalidOperationException("Stop prior own camera child first");
-            CleanupComplete=false;State="STARTING";Error=null;ready=false;Forced=false;ExitCode=null;Summary=null;
+            CleanupComplete=false;State="STARTING";Error=null;ready=false;Forced=false;ExitCode=null;Summary=null;RestoreFailure=null;
             controlSnapshot=null;controlPython=python;controlScript=Path.Combine(Path.GetDirectoryName(script),"camera_controls.py");controlDevice=device??"/dev/video0";physical=mode=="physical";ControlsRestored=true;
             lock(gate){transit.Clear();transitCount=transitMax=invalidTransit=0;}
             try {
@@ -74,11 +75,11 @@ namespace GorillaEscape.CameraTracking
             if(controlSnapshot==null)return;
             try{using(var helper=new Process{StartInfo=new ProcessStartInfo{FileName=controlPython,Arguments=Quote(controlScript)+" --restore-device "+Quote(controlDevice),UseShellExecute=false,RedirectStandardInput=true,RedirectStandardOutput=true,RedirectStandardError=true,CreateNoWindow=true}}){
                 helper.Start();var result=helper.StandardOutput.ReadToEndAsync();var errors=helper.StandardError.ReadToEndAsync();await helper.StandardInput.WriteLineAsync(controlSnapshot);helper.StandardInput.Close();
-                var clock=Stopwatch.StartNew();while(!helper.HasExited&&clock.ElapsedMilliseconds<3000)await Task.Delay(10);
+                var clock=Stopwatch.StartNew();while(!helper.HasExited&&clock.ElapsedMilliseconds<10000)await Task.Delay(10);
                 if(!helper.HasExited){helper.Kill();throw new IOException("CAMERA_RESTORE_TIMEOUT");}
                 ControlsRestored=helper.ExitCode==0&&(await result).Trim()=="CAMERA_RESTORED";await errors;
-                if(!ControlsRestored)throw new IOException("CAMERA_RESTORE_FAILED");controlSnapshot=null;
-            }}catch(Exception){ControlsRestored=false;Error="CAMERA_RESTORE_FAILED";CleanupComplete=false;}
+                if(!ControlsRestored)throw new IOException("CAMERA_RESTORE_HELPER_EXIT_"+helper.ExitCode);controlSnapshot=null;RestoreFailure=null;
+            }}catch(Exception e){ControlsRestored=false;RestoreFailure=e.Message;Error="CAMERA_RESTORE_FAILED";CleanupComplete=false;}
         }
         public void Dispose(){if(child!=null&&!CleanupComplete)throw new InvalidOperationException("Await StopAsync before disposal");child?.Dispose();}
     }

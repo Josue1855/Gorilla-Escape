@@ -1,0 +1,8 @@
+{
+  "scope": "local Student Plan activation/session",
+  "batchmode": "PASS",
+  "successfulExitInLog": true,
+  "noValidLicenseError": false,
+  "tokenNotFoundError": false,
+  "log": "license-student-minimal-2026-10-13-1.log"
+}

@@ -10,11 +10,10 @@ def request(number,size):return (3<<30)|(size<<16)|(ord('V')<<8)|number
 
 class CameraSession:
     def __init__(self,device,profile='original',dynamic=None,snapshot_callback=None):
-        self.fd=None;self.before=None;self.after=None;self.restored=False;self.profile=profile
+        self.fd=None;self.before=None;self.after=None;self.restored=False;self.profile=profile;self.profile_mutated=False
         self.fd=os.open(device,os.O_RDWR|os.O_NONBLOCK)
         try:
             self.before=self.snapshot()
-            if snapshot_callback is not None:snapshot_callback(self.encode(self.before))
             if profile=='candidate':
                 for cid in [AUTO,ABSOLUTE]:
                     cap=self.query(cid)
@@ -22,12 +21,15 @@ class CameraSession:
                 cap=self.query(ABSOLUTE)
                 if not cap['minimum']<=100<=cap['maximum'] or (100-cap['minimum'])%max(1,cap['step']):raise RuntimeError('CAMERA_EXPOSURE_RANGE_UNSUPPORTED')
                 menu=bytearray(struct.pack('II32sI',AUTO,1,b'',0));self.ioctl(37,menu)
-                self.set(AUTO,1);self.set(ABSOLUTE,100)
+                if snapshot_callback is not None:snapshot_callback(self.encode(self.before))
+                self.set(AUTO,1);self.profile_mutated=True;self.set(ABSOLUTE,100)
                 if dynamic is not None:
                     if self.query(PRIORITY) is None:raise RuntimeError('CAMERA_PRIORITY_UNSUPPORTED')
                     self.set(PRIORITY,dynamic)
                 if self.get(AUTO)!=1 or self.get(ABSOLUTE)!=100:raise RuntimeError('CAMERA_PROFILE_READBACK_FAILED')
+            elif snapshot_callback is not None:snapshot_callback(self.encode(self.before))
         except BaseException:
+            if not self.profile_mutated:self.before=None
             self.close();raise
     def ioctl(self,number,data):
         fcntl.ioctl(self.fd,request(number,len(data)),data,True);return data
@@ -63,13 +65,16 @@ class CameraSession:
         if self.fd is None:return
         try:
             if self.before is not None:
-                controls=self.before['controls'];current=self.snapshot()['controls']
-                if controls!=current:
-                    if ABSOLUTE in controls and current.get(ABSOLUTE)!=controls[ABSOLUTE]:
+                controls=self.before['controls'];current=self.snapshot()
+                if controls!=current['controls']:
+                    if ABSOLUTE in controls and current['controls'].get(ABSOLUTE)!=controls[ABSOLUTE]:
                         self.set(AUTO,1);self.set(ABSOLUTE,controls[ABSOLUTE])
-                    if PRIORITY in controls and current.get(PRIORITY)!=controls[PRIORITY]:self.set(PRIORITY,controls[PRIORITY])
+                    if PRIORITY in controls and current['controls'].get(PRIORITY)!=controls[PRIORITY]:self.set(PRIORITY,controls[PRIORITY])
                     if AUTO in controls:self.set(AUTO,controls[AUTO])
-                self.ioctl(5,bytearray(self.before['format']));self.ioctl(22,bytearray(self.before['parameters']))
+                # Snapshot-only sessions must not issue S_FMT on another owner's active stream.
+                if current['format']!=self.before['format']:self.ioctl(5,bytearray(self.before['format']))
+                # S_FMT may reset frame interval: compare fresh parameters after restoring format.
+                if self.snapshot()['parameters']!=self.before['parameters']:self.ioctl(22,bytearray(self.before['parameters']))
                 self.after=self.snapshot();self.restored=self.after==self.before
                 if not self.restored:raise RuntimeError('CAMERA_RESTORE_MISMATCH')
         finally:os.close(self.fd);self.fd=None

@@ -57,13 +57,16 @@ def inventory(root,loaded):
             requirement)
 
     cvnotice=site/'cv2/LICENSE-3RD-PARTY.txt'
+    cvpackage=next(p['name'] for p in original['packages'] if p['name'].startswith('opencv-'))
     ffmpeg_build=root/'SOURCES/ffmpeg-build.json'
+    if not ffmpeg_build.is_file():ffmpeg_build=root/'SOURCES_OR_SOURCE_INFO/ffmpeg/build-export.json'
     for name,version,license,pattern,upstream in [('Qt','5.15.18','LGPL-3.0',r'libQt5','https://www.qt.io/'),
         ('FFmpeg','8.0.1 (exported av_version_info recorded in SOURCES/ffmpeg-build.json)' if ffmpeg_build.is_file() else 'ABI avcodec62.11.100/avformat62.3.100/avutil60.8.100; upstream revision unresolved',
          'LGPL-2.1-or-later (exported binary license/configuration recorded)' if ffmpeg_build.is_file() else 'LGPL-2.1 per wheel notice; build-option verification pending',r'lib(avcodec|avformat|avutil|avdevice|swscale|swresample)', 'https://ffmpeg.org/')]:
         files=[relative(p,root) for p in site.rglob('*') if p.is_file() and re.match(pattern,p.name)]
+        if not files:continue
         texts=[cvnotice]+([p for p in (root/'licenses').glob('QtBase-5.15.18-LICENSE.*')] if name=='Qt' else [])
-        component(name,version,dict(upstream=upstream,wheel='opencv-contrib-python 4.13.0.92',declaredLicense=license),
+        component(name,version,dict(upstream=upstream,wheel=cvpackage+' 4.13.0.92',declaredLicense=license),
             files,texts,'bundled native subcomponent','See source-obligations.json: matching upstream releases supplied; wheel modifications/build provenance and applicable relinking/replacement fulfillment remain OPEN')
 
     for p in sorted((root/'runtime/native').glob('*')):
@@ -117,24 +120,56 @@ def inventory(root,loaded):
         ('Qt 5.15.18','LGPL-3.0 (actual wheel notice)','Exact Qt library source including wheel patches/build materials, notices and applicable LGPL combined-work/relinking conditions; preserve library replacement capability'),
         ('FFmpeg bundled avcodec62/avformat62/avutil60/swscale9/avdevice62','LGPL-2.1-or-later (wheel notice and recorded binary export)','Exact corresponding library source and modifications/build configuration, applicable LGPL linking/replacement materials and notices; exported configuration has no observed GPL/nonfree flags, build correspondence remains unverified'),
         ('Copied GPL/LGPL system libraries, including readline8 and libdb5.3','Per-package copyright files, including exceptions','Matching distro source version, patches and build materials or license-compliant offer/access mechanism; retain full per-file copyright and license notices')]]
+    if not any(c['name']=='Qt' for c in components):obligations=[o for o in obligations if not o['component'].startswith('Qt ')]
     (root/'source-obligations.json').write_text(json.dumps(obligations,indent=2)+'\n')
+    for item in native:item['component']=owners.get(item['path'],'UNRESOLVED')
     if (root/'SOURCES/upstream/source-index.json').is_file():
         source_index=json.loads((root/'SOURCES/upstream/source-index.json').read_text())
         for entry in obligations:
             entry['suppliedUpstreamSources']=[s for s in source_index if s['component'] in ['FFmpeg','QtBase'] and (s['component']=='FFmpeg')==('FFmpeg' in entry['component'])] if entry['component'] in ['Qt 5.15.18','FFmpeg bundled avcodec62/avformat62/avutil60/swscale9/avdevice62'] else []
             entry['fulfillment']='PARTIAL: matching upstream archives supplied in SOURCES/upstream; binary-exported FFmpeg configuration recorded. Exact wheel modifications/build provenance, applicable relinking materials and remaining distro sources are not verified. No source offer issued.'
         (root/'source-obligations.json').write_text(json.dumps(obligations,indent=2)+'\n')
+    # Compiler runtimes inside wheels are BUNDLED, distinct from copied Ubuntu GCC libraries.
+    # ABI numbers do not establish a matching upstream/distro source version.
+    for directory in sorted(site.glob('*.libs')):
+        compiler=[relative(p,root) for p in directory.glob('*.so*') if 'gfortran' in p.name or 'quadmath' in p.name]
+        if not compiler:continue
+        wheel=next((d for d in site.glob('*.dist-info') if d.name.split('-')[0]==directory.name[:-5]),None)
+        texts=[p for p in wheel.rglob('*') if p.is_file() and re.search(r'license|copying|notice',p.name,re.I)] if wheel else [cvnotice]
+        name=directory.name+'-GNU-compiler-runtimes'
+        component(name,'ABI '+', '.join(pathlib.Path(p).name for p in compiler),
+            dict(wheelDirectory=relative(directory,root),declaredLicense='GNU runtime licenses/exceptions: consult authentic wheel notices; supplier-specific source provenance incomplete'),
+            compiler,texts,'bundled wheel native subcomponent','Exact libgfortran/libquadmath wheel build/source and any patches remain UNVERIFIED. Ubuntu gcc-14 archives do not establish wheel-runtime correspondence.')
+        obligations.append(dict(component=name,license='GNU runtime licenses with exceptions where applicable',
+            required='Identify actual wheel GNU runtime build/source, supply matching source and applicable notices; do not use SONAME as release version',
+            fulfillment='OPEN; wheel-specific provenance not established; copied Ubuntu GCC sources cover different files only'))
+    (root/'source-obligations.json').write_text(json.dumps(obligations,indent=2)+'\n')
+    for item in native:item['component']=owners.get(item['path'],'UNRESOLVED')
     report=dict(scope='Actual Vision staging only; Unity proprietary player licensing remains outside this third-party runtime inventory',
         acceptance='AC2 PARTIAL; license/source and clean-host closure pending',components=components,native=native,
         systemAbi=original['systemAbi'],runtimeLoadedHostFiles=host_loaded,
-        qtAndFfmpeg='Both bundled, DT_NEEDED by cv2.abi3.so and runtime-loaded. Cannot delete with current OpenCV binary. No dependency swap performed.',
+        qtAndFfmpeg=('Qt NOT_DISTRIBUTED (headless); FFmpeg BUNDLED/DT_NEEDED by cv2.abi3.so.' if 'headless' in cvpackage else 'Both bundled, DT_NEEDED by cv2.abi3.so and runtime-loaded.'),
         unusedBundledNative=[p['path'] for p in native if not p['runtimeLoaded']],
         unusedMeaning='Not loaded in import+PoseLandmarker creation probe; not proof removable for all paths')
     (root/'redistribution.json').write_text(json.dumps(report,indent=2)+'\n')
-    files=[dict(path=relative(p,root),bytes=p.stat().st_size,sha256=digest(p),
-        component=owners.get(relative(p,root),'Gorilla support / generated notices / inventory'))
-        for p in sorted(root.rglob('*')) if p.is_file() and p.name!='runtime-manifest.json']
-    (root/'runtime-manifest.json').write_text(json.dumps(dict(version=2,files=files,
+    by_name={c['name']:c for c in components};files=[]
+    for p in sorted(root.rglob('*')):
+        if not p.is_file() or p.name=='runtime-manifest.json':continue
+        path=relative(p,root);owner=by_name.get(owners.get(path))
+        files.append(dict(path=path,bytes=p.stat().st_size,sha256=digest(p),
+            component=owner['name'] if owner else 'Gorilla support / third-party materials / inventory',
+            version=owner['version'] if owner else 'T016 staging',origin=owner['origin'] if owner else 'Staging build/materials scripts; third-party origins recorded in source indexes',
+            distributionClass='BUNDLED',license=(owner['license'] if len(owner['license'])<=256 else 'Full component license retained in redistribution.json and authentic noticeReference texts') if owner else 'See referenced materials for third-party content; no third-party license asserted for Gorilla-owned support',
+            noticeReference=owner['noticeRequirement'] if owner else ['THIRD_PARTY_NOTICES'],
+            sourceReference=['SOURCES_OR_SOURCE_INFO/component-source-map.json'] if owner else ['SOURCES_OR_SOURCE_INFO'],
+            sourceObligation=owner['sourceRequirement'] if owner else None))
+    classifications=[dict(path=p['path'],sha256=digest(pathlib.Path(p['path'])) if pathlib.Path(p['path']).is_file() else None,
+        component=p['package'],version=run('dpkg-query','-W','-f=${Version}',p['package'].split(': ')[0]).strip() if ': ' in p['package'] else 'Host platform',
+        origin='Actual runtime process maps; host package metadata',distributionClass='SYSTEM_PROVIDED',
+        license='Host-supplied; not redistributed by Gorilla',noticeReference=[],sourceReference=None) for p in host_loaded]
+    classifications.append(dict(path=None,sha256=None,component='Qt / full OpenCV wheel',version='Qt5.15.18 / OpenCV4.13.0.92',
+        origin='Earlier full-wheel candidate only',distributionClass='NOT_DISTRIBUTED' if 'headless' in cvpackage else 'BUNDLED',license='Earlier Qt notice; absent from headless native payload',noticeReference=[],sourceReference=None))
+    (root/'runtime-manifest.json').write_text(json.dumps(dict(version=3,files=files,dependencies=classifications,
         selfExcluded='runtime-manifest.json (avoids self-referential hash)',sourceManifestSha256=digest(root/'manifest.json')),indent=2)+'\n')
     return dict(files=len(files),nativeFiles=len(native),components=len(components),bytes=sum(p['bytes'] for p in files))
 

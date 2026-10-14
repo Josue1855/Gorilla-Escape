@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-13",
+  "path": "/home/josuegalvan/.local/share/gorilla-t016-final-2026-10-13-r5",
+  "totalBytes": 1055922575,
+  "visionBytes": 808151856,
+  "files": 3097,
+  "visionElf": 152,
+  "playerElf": 9,
+  "components": 43,
+  "manifestSha256": "1e490b6b04566b4948c546afb9c552efd3be0ac11bbdf54152a1e99996116842",
+  "sourceArchives": "Supplied with staging; no source offer or bit-identical rebuild claimed",
+  "humanTests": "NOT RUN",
+  "actualWorkerHashes": {
+    "worker.py": "f4899fcfb10b19d775d6437c60ccf7a1713aa020071375c277f37bf6ba96587a",
+    "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+    "camera_controls.py": "77debffa658026e1a9f7b380e34a15db3e47721f1967b3b7123e805a90d825eb"
+  }
+}
