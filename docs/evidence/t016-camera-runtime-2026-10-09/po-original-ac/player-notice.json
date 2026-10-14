@@ -1,0 +1,15 @@
+{
+  "version": "6000.3.23f1",
+  "engineCommit": "09d2ecc7fb28",
+  "monoCommit": "9d7c9afd266e523029fb0cab48e944e528e61e68",
+  "distributionClass": "BUNDLED",
+  "license": "Unity runtime terms + exact Player third-party notices; Mono MIT/BSD notices retained",
+  "noticeReference": [
+    "LICENSES/Unity-Player-Linux-Mono-6000.3.23f1.pdf",
+    "LICENSES/Mono-9d7c9afd-Third-Party-Notices.md"
+  ],
+  "sourceReference": [
+    "https://github.com/Unity-Technologies/mono/tree/9d7c9afd266e523029fb0cab48e944e528e61e68"
+  ],
+  "gorillaNativePatches": "NONE"
+}

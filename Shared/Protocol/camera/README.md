@@ -60,3 +60,7 @@ EOF is normal shutdown. Errors in camera do not stop Java/phones; phone disconne
 Native capture/inference can block: a host crash during such a block has no watchdog guarantee in this lab.
 Physical clock synchronization, human occlusion/identity continuity and Windows/product packaging remain deferred.
 No global memory-leak, gesture-accuracy, 30 FPS or physical-latency claim follows from this gate.
+
+## T016 local candidate — not integrated
+
+The pending T016 branch separates physical capture from VIDEO inference using one owned latest-frame slot. Capture frameSequence may skip overwritten frames; UTC read-complete timestamp semantics and ordered Unity validation are unchanged. Capture/inference/output rates are separately monotonic. CameraInput/Player Lock semantics remain v1. Physical per-frame Unity diagnostics are suppressed; only summary counts/timings are retained. Linux relative Vision staging exists; quantitative30FPS and redistribution completeness remain unmet. [Current local T016 report](../../../docs/PHASE0_T016_CAMERA_RUNTIME.md). This section does not override historical validation or certify Phase0.

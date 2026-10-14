@@ -1,0 +1,9 @@
+{
+  "privacy": "PASS static sinks + r7 runtime write/log audit",
+  "security": "PASS owned child/private pipes/bounded queues; no transport or auth change",
+  "licenseMaterials": "PASS applicable component/source inventories, zero openGaps; no definitive universal legal certification",
+  "restoration": "PASS unit format/interval regression, PlayMode normal/killed-owned-child, r7 independent full snapshot equality",
+  "reviewScope": "Local full branch diff; CI separately required",
+  "sourceArchivesModelBinariesUploaded": false,
+  "humanTests": "NOT RUN"
+}

@@ -1,0 +1,201 @@
+[
+  {
+    "sourcePackage": "libxcrypt",
+    "sourceVersion": "1:4.4.36-4build1",
+    "binaryPackage": "libcrypt1:amd64",
+    "supplier": "Ubuntu primary archive / Launchpad source publication",
+    "sourcePublication": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/16534955",
+    "dscVerifiedFiles": [
+      "libxcrypt_4.4.36.orig.tar.xz",
+      "libxcrypt_4.4.36-4build1.debian.tar.xz"
+    ],
+    "patches": "Included exact distro debian source archive (upstream/distro patches retained); Gorilla modifications NONE",
+    "files": [
+      {
+        "file": "libxcrypt/libxcrypt_4.4.36-4build1.dsc",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/libxcrypt/1:4.4.36-4build1/libxcrypt_4.4.36-4build1.dsc",
+        "sha256": "68df46e1ca34983971acc5490a3eec493c6e88cdf4868acdcafba2831e910d78",
+        "bytes": 2300
+      },
+      {
+        "file": "libxcrypt/libxcrypt_4.4.36-4build1.debian.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/libxcrypt/1:4.4.36-4build1/libxcrypt_4.4.36-4build1.debian.tar.xz",
+        "sha256": "b75925e5d2c40abab99f8078c40f2a666125067b080466a38eb670730188ca4a",
+        "bytes": 8356
+      },
+      {
+        "file": "libxcrypt/libxcrypt_4.4.36.orig.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/libxcrypt/1:4.4.36-4build1/libxcrypt_4.4.36.orig.tar.xz",
+        "sha256": "7b7abbc89f13f5194211aa6861ed954e4fa3a210a4cb64f7e13dc8cf413e7f2a",
+        "bytes": 392732
+      }
+    ]
+  },
+  {
+    "sourcePackage": "gdbm",
+    "sourceVersion": "1.23-5.1build1",
+    "binaryPackage": "libgdbm6t64:amd64",
+    "supplier": "Ubuntu primary archive / Launchpad source publication",
+    "sourcePublication": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/15997435",
+    "dscVerifiedFiles": [
+      "gdbm_1.23.orig.tar.gz",
+      "gdbm_1.23.orig.tar.gz.asc",
+      "gdbm_1.23-5.1build1.debian.tar.xz"
+    ],
+    "patches": "Included exact distro debian source archive (upstream/distro patches retained); Gorilla modifications NONE",
+    "files": [
+      {
+        "file": "gdbm/gdbm_1.23-5.1build1.dsc",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gdbm/1.23-5.1build1/gdbm_1.23-5.1build1.dsc",
+        "sha256": "70317d44b2f27b11ded9676d58e6c89de34994594797f6e2ac0707070599e457",
+        "bytes": 2608
+      },
+      {
+        "file": "gdbm/gdbm_1.23-5.1build1.debian.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gdbm/1.23-5.1build1/gdbm_1.23-5.1build1.debian.tar.xz",
+        "sha256": "2561846bb0493ab9549fc46ea6431861a84111567b1c5f6bf1956feb8a389b49",
+        "bytes": 18524
+      },
+      {
+        "file": "gdbm/gdbm_1.23.orig.tar.gz.asc",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gdbm/1.23-5.1build1/gdbm_1.23.orig.tar.gz.asc",
+        "sha256": "64ebb68cc68e8915d62cb20ea40323c00b56051f844589ee0a52169fff34cecb",
+        "bytes": 181
+      },
+      {
+        "file": "gdbm/gdbm_1.23.orig.tar.gz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gdbm/1.23-5.1build1/gdbm_1.23.orig.tar.gz",
+        "sha256": "74b1081d21fff13ae4bd7c16e5d6e504a4c26f7cde1dca0d963a484174bbcacd",
+        "bytes": 1115854
+      }
+    ]
+  },
+  {
+    "sourcePackage": "readline",
+    "sourceVersion": "8.2-4build1",
+    "binaryPackage": "libreadline8t64:amd64",
+    "supplier": "Ubuntu primary archive / Launchpad source publication",
+    "sourcePublication": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/15999242",
+    "dscVerifiedFiles": [
+      "readline_8.2.orig.tar.gz",
+      "readline_8.2-4build1.debian.tar.xz"
+    ],
+    "patches": "Included exact distro debian source archive (upstream/distro patches retained); Gorilla modifications NONE",
+    "files": [
+      {
+        "file": "readline/readline_8.2-4build1.dsc",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/readline/8.2-4build1/readline_8.2-4build1.dsc",
+        "sha256": "442c688eb851652987a0b1a7f85d236c6fa445757f188bc275ec475d0fabf22f",
+        "bytes": 2926
+      },
+      {
+        "file": "readline/readline_8.2-4build1.debian.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/readline/8.2-4build1/readline_8.2-4build1.debian.tar.xz",
+        "sha256": "d3b4bfa92d0026f5d3f5d2b21e2bf6d8ae163f9ccdebdcef20afde77901c7b70",
+        "bytes": 33816
+      },
+      {
+        "file": "readline/readline_8.2.orig.tar.gz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/readline/8.2-4build1/readline_8.2.orig.tar.gz",
+        "sha256": "3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331d7d1095007c35",
+        "bytes": 3043952
+      }
+    ]
+  },
+  {
+    "sourcePackage": "db5.3",
+    "sourceVersion": "5.3.28+dfsg2-7",
+    "binaryPackage": "libdb5.3t64:amd64",
+    "supplier": "Ubuntu primary archive / Launchpad source publication",
+    "sourcePublication": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/16535929",
+    "dscVerifiedFiles": [
+      "db5.3_5.3.28+dfsg2.orig.tar.xz",
+      "db5.3_5.3.28+dfsg2-7.debian.tar.xz"
+    ],
+    "patches": "Included exact distro debian source archive (upstream/distro patches retained); Gorilla modifications NONE",
+    "files": [
+      {
+        "file": "db5.3/db5.3_5.3.28+dfsg2-7.debian.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/db5.3/5.3.28+dfsg2-7/db5.3_5.3.28+dfsg2-7.debian.tar.xz",
+        "sha256": "9cee8969e1f440ec8aa2fbacd3a5819907829e0e7e7f1f746dccaa2c93fbf3f2",
+        "bytes": 35232
+      },
+      {
+        "file": "db5.3/db5.3_5.3.28+dfsg2.orig.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/db5.3/5.3.28+dfsg2-7/db5.3_5.3.28+dfsg2.orig.tar.xz",
+        "sha256": "ad41b507415dec8316e828b2230242af2251d2c86eefa3c7aa9ef47c5239ef33",
+        "bytes": 21287688
+      },
+      {
+        "file": "db5.3/db5.3_5.3.28+dfsg2-7.dsc",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/db5.3/5.3.28+dfsg2-7/db5.3_5.3.28+dfsg2-7.dsc",
+        "sha256": "f7313fb306b5bf7ad6a428bffb581e649318859df139e35dd47c3d1f733803b2",
+        "bytes": 2374
+      }
+    ]
+  },
+  {
+    "sourcePackage": "python3.12",
+    "sourceVersion": "3.12.3-1ubuntu0.17",
+    "binaryPackage": "python3.12-minimal:amd64",
+    "supplier": "Ubuntu primary archive / Launchpad source publication",
+    "sourcePublication": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18725624",
+    "dscVerifiedFiles": [
+      "python3.12_3.12.3.orig.tar.xz",
+      "python3.12_3.12.3-1ubuntu0.17.debian.tar.xz"
+    ],
+    "patches": "Included exact distro debian source archive (upstream/distro patches retained); Gorilla modifications NONE",
+    "files": [
+      {
+        "file": "python3.12/python3.12_3.12.3-1ubuntu0.17.dsc",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/python3.12/3.12.3-1ubuntu0.17/python3.12_3.12.3-1ubuntu0.17.dsc",
+        "sha256": "941700b999737d869b80c3b5a0adc0996a0fd760b982e18551bd2104da779384",
+        "bytes": 3916
+      },
+      {
+        "file": "python3.12/python3.12_3.12.3-1ubuntu0.17.debian.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/python3.12/3.12.3-1ubuntu0.17/python3.12_3.12.3-1ubuntu0.17.debian.tar.xz",
+        "sha256": "17b15629cb10825924cf7b85055255080ec773133ae0f8b8ce5ea2eec90dd200",
+        "bytes": 302472
+      },
+      {
+        "file": "python3.12/python3.12_3.12.3.orig.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/python3.12/3.12.3-1ubuntu0.17/python3.12_3.12.3.orig.tar.xz",
+        "sha256": "56bfef1fdfc1221ce6720e43a661e3eb41785dd914ce99698d8c7896af4bdaa1",
+        "bytes": 20625068
+      }
+    ]
+  },
+  {
+    "sourcePackage": "gcc-14",
+    "sourceVersion": "14.2.0-4ubuntu2~24.04.1",
+    "binaryPackage": "libgcc-s1:amd64",
+    "supplier": "Ubuntu primary archive / Launchpad source publication",
+    "sourcePublication": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18137225",
+    "dscVerifiedFiles": [
+      "gcc-14_14.2.0.orig.tar.gz",
+      "gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz"
+    ],
+    "patches": "Included exact distro debian source archive (upstream/distro patches retained); Gorilla modifications NONE",
+    "files": [
+      {
+        "file": "gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+        "sha256": "50950080874a6ec6780dd60c243e21d9cda9d736bb32bca98d16095d27cc01b5",
+        "bytes": 46930
+      },
+      {
+        "file": "gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+        "sha256": "cfece214c2fb790ef5f3baffb9a53e40618e7ae12d053610b251e94d77d08ade",
+        "bytes": 1950432
+      },
+      {
+        "file": "gcc-14/gcc-14_14.2.0.orig.tar.gz",
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0.orig.tar.gz",
+        "sha256": "768c314c11eeab56ccebb91eb42ec4a41122fa94f0d83400126401942622197b",
+        "bytes": 97158172
+      }
+    ]
+  }
+]

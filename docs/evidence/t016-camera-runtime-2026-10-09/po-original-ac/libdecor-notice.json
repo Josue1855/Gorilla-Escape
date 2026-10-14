@@ -1,0 +1,15 @@
+{
+  "version": "Unity6000.3.23f1 supplied artifacts / ABI0; upstream patch release unexposed",
+  "distributionClass": "BUNDLED",
+  "license": "MIT; authentic upstream permission/copyright headers retained",
+  "noticeReference": [
+    "LICENSES/libdecor-upstream-LICENSE",
+    "LICENSES/libdecor-upstream-copyrights.txt"
+  ],
+  "sourceReference": [
+    "SOURCES_OR_SOURCE_INFO/libdecor-provenance.json"
+  ],
+  "gorillaPatches": "NONE",
+  "sourceObligation": "No corresponding-source requirement under MIT; no exact upstream revision or vendor patch list asserted",
+  "limitation": "The upstream0.1.1 reference is for notices, not claimed as a byte-identical Unity source build"
+}

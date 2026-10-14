@@ -1,0 +1,267 @@
+{
+  "runs": [
+    {
+      "run": 1,
+      "exitCode": 0,
+      "cameraInputReceived": 1309,
+      "ordered": true,
+      "stderrBytes": 1007,
+      "summary": {
+        "measurementElapsedSeconds": 61.112175159,
+        "inferenceFrames": 1215,
+        "inferenceDuration": 61.009843978,
+        "inferenceFps": 19.898428201812244,
+        "outputFrames": 1215,
+        "outputDuration": 61.009844533,
+        "outputFps": 19.89842802079838,
+        "trackingGapFrames": 175,
+        "trackingGapDuration": 8.706127679,
+        "trackingGapFps": 19.98592329626688,
+        "qualityGapFrames": 1215,
+        "qualityGapDuration": 61.010137674,
+        "qualityGapFps": 19.898332412997597,
+        "captureFrames": 1218,
+        "captureDuration": 60.959396856,
+        "captureFps": 19.964108287928628,
+        "captureReadFrames": 1218,
+        "captureReadDuration": 60.959396856,
+        "captureReadFps": 19.964108287928628,
+        "trackingFrames": 1040,
+        "trackingDuration": 52.253718013,
+        "trackingFps": 19.883752573195103,
+        "inferenceP50Ms": 37.834529,
+        "inferenceP95Ms": 57.274135,
+        "captureReadP50Ms": 50.011756,
+        "captureReadP95Ms": 54.583757,
+        "inferenceDurationMsStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 22.980265,
+          "P50": 37.834529,
+          "P95": 57.274135,
+          "min": 12.366614,
+          "max": 106.09237
+        },
+        "readCompleteToOutputMsStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 23.462796,
+          "P50": 40.121101,
+          "P95": 65.438523,
+          "min": 12.691968,
+          "max": 114.928034
+        },
+        "subjectsDetectedStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 1,
+          "P95": 1,
+          "min": 0,
+          "max": 2
+        },
+        "confidenceStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 0.02815030701458454,
+          "P95": 0.14631982147693634,
+          "min": 0,
+          "max": 0.2598617672920227
+        },
+        "visibleLandmarksStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 0,
+          "P50": 0,
+          "P95": 2,
+          "min": 0,
+          "max": 4
+        },
+        "meanPixelValueStats": {
+          "N": 1215,
+          "retained": 1215,
+          "P05": 34.577733289930556,
+          "P50": 37.10616861979167,
+          "P95": 38.54186414930555,
+          "min": 30.894949001736112,
+          "max": 46.93485460069444
+        },
+        "captureReadDurationMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 45.114501,
+          "P50": 50.011756,
+          "P95": 54.583757,
+          "min": 39.968579,
+          "max": 57.398104
+        },
+        "captureIntervalMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 45.431317,
+          "P50": 50.247907,
+          "P95": 54.756789,
+          "min": 40.329422,
+          "max": 57.558581
+        },
+        "cameraDeliveryMsStats": {
+          "N": 1218,
+          "retained": 1218,
+          "P05": 30.085968,
+          "P50": 34.781017,
+          "P95": 38.09635,
+          "min": 29.693615,
+          "max": 42.588321
+        },
+        "handoverMsStats": {
+          "N": 1214,
+          "retained": 1214,
+          "P05": 0.198443,
+          "P50": 0.380043,
+          "P95": 16.256377,
+          "min": 0.120771,
+          "max": 48.327668
+        },
+        "frameAgeAtInferenceMsStats": {
+          "N": 1214,
+          "retained": 1214,
+          "P05": 30.620538,
+          "P50": 35.996065,
+          "P95": 50.430139,
+          "min": 29.839736,
+          "max": 80.109317
+        },
+        "configuration": {
+          "backend": "V4L2",
+          "device": "/dev/video0",
+          "width": 640.0,
+          "height": 480.0,
+          "fourcc": "MJPG",
+          "requestedFps": 30,
+          "reportedFps": 30.0,
+          "reportedBuffer": 1.0,
+          "numPoses": 2,
+          "profile": "original",
+          "controlsBefore": {
+            "width": 640,
+            "height": 480,
+            "fourcc": "MJPG",
+            "frameInterval": [
+              1,
+              30
+            ],
+            "controls": {
+              "0x9a0901": 3,
+              "0x9a0902": 156,
+              "0x9a0903": 1
+            },
+            "capabilities": {
+              "0x9a0901": {
+                "id": 10094849,
+                "type": 3,
+                "name": "Auto Exposure",
+                "minimum": 0,
+                "maximum": 3,
+                "step": 1,
+                "flags": 0
+              },
+              "0x9a0902": {
+                "id": 10094850,
+                "type": 1,
+                "name": "Exposure Time, Absolute",
+                "minimum": 10,
+                "maximum": 700,
+                "step": 1,
+                "flags": 4112
+              },
+              "0x9a0903": {
+                "id": 10094851,
+                "type": 2,
+                "name": "Exposure, Dynamic Framerate",
+                "minimum": 0,
+                "maximum": 1,
+                "step": 1,
+                "flags": 0
+              }
+            }
+          },
+          "controlsApplied": {
+            "width": 640,
+            "height": 480,
+            "fourcc": "MJPG",
+            "frameInterval": [
+              1,
+              30
+            ],
+            "controls": {
+              "0x9a0901": 3,
+              "0x9a0902": 156,
+              "0x9a0903": 1
+            },
+            "capabilities": {
+              "0x9a0901": {
+                "id": 10094849,
+                "type": 3,
+                "name": "Auto Exposure",
+                "minimum": 0,
+                "maximum": 3,
+                "step": 1,
+                "flags": 0
+              },
+              "0x9a0902": {
+                "id": 10094850,
+                "type": 1,
+                "name": "Exposure Time, Absolute",
+                "minimum": 10,
+                "maximum": 700,
+                "step": 1,
+                "flags": 4112
+              },
+              "0x9a0903": {
+                "id": 10094851,
+                "type": 2,
+                "name": "Exposure, Dynamic Framerate",
+                "minimum": 0,
+                "maximum": 1,
+                "step": 1,
+                "flags": 0
+              }
+            }
+          },
+          "acquisitionTimestampSource": "OpenCV V4L2 CAP_PROP_POS_MSEC / kernel timestamp; validated monotonic range, not optical ground truth",
+          "staleBudgetMs": 100
+        },
+        "capturedFrames": 1313,
+        "inferredFrames": 1309,
+        "cameraInputEmitted": 1309,
+        "overwrittenBeforeInference": 4,
+        "pendingDiscarded": 0,
+        "captureThreadJoined": true,
+        "cameraReleased": true,
+        "detectorClosed": true,
+        "hardwareDroppedFrames": null,
+        "warmupSeconds": 5.0,
+        "staleSkipped": 0,
+        "acquisitionTimestampUnavailable": 0,
+        "controlsRestored": true,
+        "clockCorrelation": "Worker latency monotonic; CameraInput UTC timestamps unchanged",
+        "humanQualityAcceptance": "NOT PROVEN by presence/confidence aggregates alone"
+      },
+      "physicalHumanCases": "NOT RUN",
+      "residualOwn": false,
+      "sourceHashes": {
+        "worker.py": "6657c184aa0d0a9f55b70977cf474759b1d39cfe727222f12b3eee9693962c6e",
+        "pipeline.py": "e2f3ac4703249c7014cf8a10cc0170cf38f8a66878ab03d843a74af5099c69c2",
+        "camera_controls.py": "e44fb902af0cf091f4770d00dde193f6831a9f7a5b84d6f7915b2efc757059be"
+      }
+    }
+  ],
+  "threshold": 30,
+  "physical": true,
+  "imagePersistence": false,
+  "profile": "original",
+  "requestedBuffers": 1,
+  "requestedDurationSeconds": 61.0,
+  "lighting": "current ambient; no human participation/controlled lighting qualification"
+}

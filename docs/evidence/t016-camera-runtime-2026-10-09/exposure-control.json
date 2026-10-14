@@ -1,0 +1,7 @@
+{
+  "before": "exposure_dynamic_framerate: 1",
+  "during": "exposure_dynamic_framerate: 0",
+  "reason": "Isolate dynamic exposure frame-rate reduction; no exposure/gain/resolution/pose-count change",
+  "restored": true,
+  "after": "exposure_dynamic_framerate: 1"
+}

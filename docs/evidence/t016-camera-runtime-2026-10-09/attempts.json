@@ -1,0 +1,27 @@
+{
+  "bundleAttempts": [
+    {
+      "gate": "FAIL",
+      "error": "VISION_PIN_MISMATCH pip",
+      "resolution": "Exclude nonruntime pip from bundle; verify18exact pinned runtime packages"
+    },
+    {
+      "gate": "FAIL",
+      "error": "VISION_NATIVE_MISSING libQt5Core",
+      "resolution": "Audit complete packaged ELF search paths before classifying native dependencies"
+    },
+    {
+      "gate": "FAIL",
+      "error": "No module named cv2",
+      "resolution": "Use Debian/Python dist-packages layout for relocated reference runtime"
+    }
+  ],
+  "playerAttempt01": {
+    "gate": "FAIL",
+    "error": "PACKAGED_CAMERA_STARTUP_FAILED",
+    "resolution": "Independent camera runner must keep updates active while unfocused; harness cleanup now closes actual owned Player before wrapper",
+    "laterOwnResiduals": 0
+  },
+  "physicalBenchmarks": "All runs retained; none meets>=30FPS",
+  "finalTechnicalBundleGate": "PASS offline physical capture/Unity/cleanup; redistribution incomplete"
+}

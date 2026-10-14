@@ -14,3 +14,5 @@
 *.sh text eol=lf
 mvnw text eol=lf
 mvnw.cmd text eol=crlf
+# Preserve the authentic upstream copyright text byte-for-byte.
+docs/evidence/t016-camera-runtime-2026-10-09/profile/authentic-notices/Python-copyright.txt whitespace=-blank-at-eol

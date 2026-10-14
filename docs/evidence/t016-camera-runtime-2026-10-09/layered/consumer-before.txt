@@ -1,0 +1,1 @@
+WirePlumber PID3947 holds device fd; direct MMAP smoke STREAMON and 3 dequeues succeeded without stopping service. No competing streaming owner observed.
