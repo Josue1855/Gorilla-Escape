@@ -92,7 +92,7 @@
     },
     {
       "key": "E3",
-      "title": "Cuatro minijuegos restantes",
+      "title": "Tres minijuegos restantes",
       "type": "Epic",
       "phase": "3",
       "area": "Unity/Core",
@@ -101,7 +101,7 @@
         "2",
         "49"
       ],
-      "objective": "Cuatro minijuegos restantes",
+      "objective": "Tres minijuegos restantes",
       "acceptance": [
         "Aceptar únicamente con evidencia de todas las features incluidas.",
         "Respetar la fase y la Definition of Done v4."
@@ -1743,13 +1743,13 @@
       ],
       "parent": "E3",
       "blocked_by": [],
-      "scope": "P0",
+      "scope": "P1",
       "status": "Backlog",
       "priority": null,
       "iteration": null,
       "story_points": null,
       "risk": null,
-      "target_release": "v1.0 — MVP",
+      "target_release": null,
       "assignees": [],
       "labels": [],
       "tests": "Unit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda."
@@ -1776,13 +1776,13 @@
         "T033",
         "T028"
       ],
-      "scope": "P0",
+      "scope": "P1",
       "status": "Backlog",
       "priority": null,
       "iteration": null,
       "story_points": null,
       "risk": null,
-      "target_release": "v1.0 — MVP",
+      "target_release": null,
       "assignees": [],
       "labels": [],
       "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
@@ -1811,13 +1811,13 @@
       "blocked_by": [
         "T034"
       ],
-      "scope": "P0",
+      "scope": "P1",
       "status": "Backlog",
       "priority": null,
       "iteration": null,
       "story_points": null,
       "risk": null,
-      "target_release": "v1.0 — MVP",
+      "target_release": null,
       "assignees": [],
       "labels": [],
       "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
@@ -1845,13 +1845,13 @@
       "blocked_by": [
         "T035"
       ],
-      "scope": "P0",
+      "scope": "P1",
       "status": "Backlog",
       "priority": null,
       "iteration": null,
       "story_points": null,
       "risk": null,
-      "target_release": "v1.0 — MVP",
+      "target_release": null,
       "assignees": [],
       "labels": [
         "needs-device-test"
@@ -2140,7 +2140,7 @@
       ],
       "objective": "Torneo completo y flujo de producto",
       "acceptance": [
-        "Cinco pruebas, GP, campeón y retorno al menú integrados."
+        "Cuatro disciplinas MVP — Gorilla Smash, Coconut Throw, Coconut Bowling y Jungle Slice —, GP, campeón y retorno al menú integrados. Participantes, turnos, resultados, score, Gorilla Points, tabla acumulada y desempate visible forman un torneo completo."
       ],
       "parent": "E4",
       "blocked_by": [],
@@ -2170,7 +2170,7 @@
       ],
       "objective": "Integrar secuencia del torneo, transiciones y final",
       "acceptance": [
-        "Cinco disciplinas en orden acordado con PO; continuidad de jugadores/GP.",
+        "Cuatro disciplinas MVP (Smash, Throw, Bowling, Slice) en orden acordado con PO; continuidad de jugadores/GP.",
         "Tabla provisional, desempate y campeón.",
         "Volver al menú y reiniciar sin estado residual."
       ],
@@ -2391,7 +2391,7 @@
     },
     {
       "key": "T048",
-      "title": "Ajustar curvas, filtros y balance de cinco disciplinas",
+      "title": "Ajustar curvas, filtros y balance de cuatro disciplinas MVP",
       "type": "Task",
       "phase": "5",
       "area": "Gameplay",
@@ -2405,7 +2405,7 @@
         "22",
         "53"
       ],
-      "objective": "Ajustar curvas, filtros y balance de cinco disciplinas",
+      "objective": "Ajustar curvas, filtros y balance de cuatro disciplinas MVP",
       "acceptance": [
         "Dificultad común sin menú Easy/Normal/Hard.",
         "Perfiles de tuning medidos; técnica importa y fuerza extrema no da ventaja ilimitada.",
@@ -2923,6 +2923,41 @@
         "needs-decision"
       ],
       "tests": "Ejecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones."
+    },
+    {
+      "key": "T060",
+      "title": "Implementar control alternativo de usuario para el torneo académico",
+      "type": "Task",
+      "phase": "4",
+      "area": "Unity/Core",
+      "sources": [
+        "ACADEMIC SRS-GOR-05",
+        "ACADEMIC RNF-GOR-05"
+      ],
+      "objective": "Completar presentación y torneo sin dispositivo adicional si falla móvil/cámara.",
+      "acceptance": [
+        "Accesible desde la compilación sin Unity Editor; no debug-only ni bypass secreto de reglas.",
+        "Permite calibrar/probar input y continuar cuando falla móvil/cámara, sin dispositivo adicional.",
+        "Completar Gorilla Smash, Coconut Throw, Coconut Bowling y Jungle Slice mediante alternativa visible.",
+        "Completar torneo con scoring, turnos y resultados oficiales de Unity y campeón; sin cambiar reglas."
+      ],
+      "parent": "F40",
+      "blocked_by": [
+        "F10",
+        "F30",
+        "F32",
+        "F33"
+      ],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Acceptance path completo de cuatro disciplinas/torneo con móvil/cámara unavailable; instrucciones visibles; Unity autoridad."
     }
   ]
 }
