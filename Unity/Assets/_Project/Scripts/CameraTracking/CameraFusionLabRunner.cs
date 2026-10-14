@@ -51,8 +51,13 @@ namespace GorillaEscape.CameraTracking
             var owner=FindFirstObjectByType<IpcProbeRunner>();for(int player=1;player<=4;player++)if(owner.PhoneInputs.TryLatest(player,out var p))fusion.ObservePhone(p);
 
             vision.Poll();if(vision.State=="FAILED"){fusion.Association.MarkLost();if(stop==null){Debug.Log("CAMERA_LAB_ERROR "+vision.Error);stop=vision.StopAsync();}}
-            if(Time.unscaledTime>=nextLog){nextLog=Time.unscaledTime+.05f;long now=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();for(int player=1;player<=4;player++){var evaluated=fusion.Evaluate(player,now);if(evaluated.Camera?.source!="physical-webcam")Debug.Log("FUSION_OBSERVED "+JsonUtility.ToJson(new Observation(evaluated)));}}
+            if(Time.unscaledTime>=nextLog){nextLog=Time.unscaledTime+.05f;long now=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();for(int player=1;player<=4;player++){var evaluated=fusion.Evaluate(player,now);if(CanLogFixtureObservation(evaluated))Debug.Log("FUSION_OBSERVED "+JsonUtility.ToJson(new Observation(evaluated)));}}
         }
+        // Eligibility may omit Camera while RawCamera still contains physical input.
+        // Diagnostics are fixture-only even before association or when input is rejected.
+        public static bool CanLogFixtureObservation(InputFusionFrame frame) =>
+            frame?.RawCamera != null && frame.RawCamera.source != "physical-webcam"
+            && frame.RawPhone?.quality?.source != "physical";
         static FusionSettings Settings(){string json=Environment.GetEnvironmentVariable("GORILLA_FUSION_SETTINGS");var s=string.IsNullOrEmpty(json)?new FusionSettings():JsonUtility.FromJson<FusionSettings>(json);s.Validate();return s;}
         bool WantsToQuit(){if(allowQuit)return true;quitting=true;cancellation.Cancel();return false;}
         void LogCleanup(){Debug.Log("CAMERA_LAB_CLEANUP "+JsonUtility.ToJson(new Cleanup{pid=vision.Pid,exitCode=vision.ExitCode??-1,complete=vision.CleanupComplete,forced=vision.Forced,controlsRestored=vision.ControlsRestored,restoreFailure=vision.RestoreFailure,state=vision.State,overwritten=vision.Overwritten,accepted=CameraInputs.Accepted,source=CameraInputs.Latest?.source}));if(vision.Summary!=null)Debug.Log("CAMERA_LAB_METRICS "+vision.Summary);Debug.Log("CAMERA_LAB_TRANSIT "+vision.LatencySummary);}

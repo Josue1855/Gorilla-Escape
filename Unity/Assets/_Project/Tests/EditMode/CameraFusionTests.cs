@@ -30,6 +30,21 @@ namespace GorillaEscape.Tests {
   }
   [Test]public void ConceptualTracesRetainEverySampleWithoutInferringIntention(){foreach(var trace in Read().conceptualTraces){var store=new PhoneInputStore();var f=Ready(store);int seq=0;foreach(var sample in trace.samples){long time=1000+sample.relativeTimestamp;var p=Phone(time,++seq);p.acceleration.x=sample.accelerationX;p.rotationRate=new PhoneValues{availability="partial",hasAlpha=true,alpha=sample.rotationAlpha};Add(f,store,p);f.ObserveCamera(Camera(sample.cameraCase,time,seq+2),time+1);var r=f.Evaluate(1,time+1);Assert.That(r.Phone.acceleration.x,Is.EqualTo(sample.accelerationX),trace.name);Assert.That(r.Phone.rotationRate.alpha,Is.EqualTo(sample.rotationAlpha));Assert.That(r.Camera.subjects[0].landmarks[0].name,Is.EqualTo("left-shoulder"));}}}
   [Test]public void RejectedFusionRetainsRawQualityAgeAndTrackingWithoutInventingUsableSignals(){var store=new PhoneInputStore();var f=Ready(store);Add(f,store,Phone());f.ObserveCamera(Camera("tracking-low-confidence",1000,3),1001);var r=f.Evaluate(1,1100);Assert.That(r.Eligible,Is.False);Assert.That(r.CameraFresh,Is.False);Assert.That(r.CameraFrameFresh,Is.True);Assert.That(r.RawCamera.subjects[0].confidence,Is.EqualTo(.2f));Assert.That(r.RawCamera.source,Is.EqualTo("synthetic"));Assert.That(r.RawCameraAge,Is.EqualTo(100));Assert.That(r.RawPhoneAge,Is.EqualTo(100));r=f.Evaluate(1,1400);Assert.That(r.Eligible,Is.False);Assert.That(r.PhoneReceiptFresh,Is.False);Assert.That(r.RawCameraAge,Is.EqualTo(400));Assert.That(r.RawPhone.quality.source,Is.EqualTo("synthetic"));}
+  [TestCase("physical-webcam",false)][TestCase("synthetic",true)][TestCase("replay",true)]
+  public void RejectedRawCameraSourceControlsFixtureLogging(string source,bool allowed){
+   var fusion=new InputFusion(new PhoneInputStore(),new FusionSettings());var camera=Camera();camera.source=source;
+   Assert.That(fusion.ObserveCamera(camera,1001),Is.True);var rejected=fusion.Evaluate(1,1001);
+   Assert.That(rejected.Eligible,Is.False);Assert.That(rejected.Camera,Is.Null);
+   Assert.That(CameraFusionLabRunner.CanLogFixtureObservation(rejected),Is.EqualTo(allowed));
+  }
+  [Test]public void PhysicalPhoneCannotEscapeThroughSyntheticCameraDiagnostic(){
+   var store=new PhoneInputStore();var fusion=Ready(store);var phone=Phone();phone.quality.source="physical";Add(fusion,store,phone);
+   Assert.That(CameraFusionLabRunner.CanLogFixtureObservation(fusion.Evaluate(1,1001)),Is.False);
+  }
+  [Test]public void AbsentRawInputNeverGeneratesFixtureObservation(){
+   var fusion=new InputFusion(new PhoneInputStore(),new FusionSettings());
+   Assert.That(CameraFusionLabRunner.CanLogFixtureObservation(fusion.Evaluate(1,1001)),Is.False);
+  }
   [Test]public void CorpusHasAllRequiredCameraAndConceptualCases(){var c=Read();Assert.That(c.cameraCases.Length,Is.EqualTo(12));Assert.That(c.fusionCases.Length,Is.EqualTo(21));Assert.That(c.conceptSequences.Length,Is.EqualTo(8));foreach(var x in c.cameraCases)Assert.That(CameraInputStore.Valid(x.frame),Is.True,x.name);}
   [Test]public void ContractRejectsNonFiniteAndMissingLandmarks(){var f=Camera();f.subjects[0].landmarks[0].x=float.NaN;Assert.That(CameraInputStore.Valid(f),Is.False);f=Camera();f.subjects[0].landmarks=new CameraLandmark[0];Assert.That(CameraInputStore.Valid(f),Is.False);f=Camera();f.subjects[0].confidence=2;Assert.That(CameraInputStore.Valid(f),Is.False);}
   [Test]public void CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory(){var s=new CameraInputStore();for(int i=1;i<=50;i++)Assert.That(s.Accept(Camera(seq:i),1001),Is.True);Assert.That(s.Frames.Count,Is.EqualTo(16));Assert.That(s.Accept(Camera(seq:50),1001),Is.False);Assert.That(s.Accept(Camera(seq:49),1001),Is.False);Assert.That(s.Accept(Camera(time:2000,seq:51),1001),Is.False);Assert.That(s.Age(1050),Is.EqualTo(50));Assert.That(s.Fresh(1050,100,20),Is.True);}

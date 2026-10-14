@@ -516,3 +516,7 @@ DEC-026: cuatro juegos P0 (Smash, Throw, Bowling, Slice), Archery P1/Post-MVP; E
 ## Phase0 technical exit amendments — 2026-10-13
 
 DEC-027 accepts deterministic T017 gate and moves physical human AC to T061/#106, Post-MVP, DEFERRED / NOT RUN. [T017 technical report](PHASE0_T017_DETERMINISTIC_VALIDATION.md). DEC-028 accepts T018 technical exit using integrated PR #103; literal AC1/AC2 PARTIAL, physical E2E/Hz/sync NOT RUN transferred to T019. Closure conditional on PR integration; F04 then reevaluated, T019 physical gates unchanged. E0 OPEN; Phase1 NOT STARTED.
+
+## Privacy correction before final soak — 2026-10-13
+
+Combined camera+IPC preflight found fixture-observation provenance check used nullable selected Camera. Fix uses raw physical source regardless of eligibility, and suppresses absent input/physical phone observations. Phase0 diagnostic correction only; no gameplay. T019/T020/E0 remain OPEN; soak only on rebuilt integrated candidate.

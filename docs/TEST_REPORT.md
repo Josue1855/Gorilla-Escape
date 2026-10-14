@@ -669,3 +669,9 @@ DEC-026: cuatro juegos P0 (Smash, Throw, Bowling, Slice), Archery P1/Post-MVP; E
 ## Phase0 technical exit amendments — 2026-10-13
 
 DEC-027 accepts deterministic T017 gate and moves physical human AC to T061/#106, Post-MVP, DEFERRED / NOT RUN. [T017 technical report](PHASE0_T017_DETERMINISTIC_VALIDATION.md). DEC-028 accepts T018 technical exit using integrated PR #103; literal AC1/AC2 PARTIAL, physical E2E/Hz/sync NOT RUN transferred to T019. Closure conditional on PR integration; F04 then reevaluated, T019 physical gates unchanged. E0 OPEN; Phase1 NOT STARTED.
+
+## Combined IPC/camera privacy regression — 2026-10-13
+
+Overnight packaging preflight detected FUSION_OBSERVED from a rejected evaluation: `Camera` was null but `RawCamera` was physical. A null eligible camera must not classify physical source as a fixture. Observation policy now requires actual nonphysical RawCamera and rejects physical RawPhone, including loss/no-association/rejected cases. Five focused regressions cover physical/synthetic/replay raw camera, physical phone and absent input. No frames/images/video retained; failed preflight aggregate evidence preserved. No tracking human test or gameplay added.
+
+Privacy correction validation: [receipt](evidence/overnight-2026-10-13/privacy-validation.json), Edit126/126, Play20/20, Linuxbuild0errors0warnings, components23/23 and Management/Foundation/diff PASS. Full physical phone/clean-PC acceptance remains NOT RUN.
