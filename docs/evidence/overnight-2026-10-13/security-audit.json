@@ -1,0 +1,28 @@
+{
+  "scope": "Current tracked tree and prepared package filenames; high-confidence credential pattern screen; not history-wide or formal penetration test",
+  "base": "1694e43f8bda7bc53f3309e38e66fa2b831cbd49",
+  "credentialPatternHits": [],
+  "privateMaterialTracked": [],
+  "packagePrivateMaterialFiles": [],
+  "absoluteReferencePathsInTrackedCodeOrMetadata": [
+    "docs/evidence/t016-camera-runtime-2026-10-09/layered/redistribution.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/layered/runtime-loaded-libraries.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/po-original-ac/acceptance.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/po-original-ac/runtime-loaded-vision-only.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/po-original-ac/staging.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/po-original-ac/validation-r7.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/po-original-ac/vision-redistribution-r7.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/po-original-ac/vision-redistribution.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/profile/final-redistribution.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/profile/redistribution.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/profile/runtime-loaded-final.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/profile/runtime-loaded.json",
+    "docs/evidence/t016-camera-runtime-2026-10-09/profile/validation.json"
+  ],
+  "absolutePathsDisposition": "Existing historical evidence/diagnostic provenance may include reference-host origins; runtime cache isolation is tested separately. Do not claim every source/debug artifact has no path string.",
+  "fixedPasswords": "Known ephemeral test fixture password temporary-test-only; not product credential. Tokens/SDP held in memory in new lab harness; no raw sensor histories/frames persisted.",
+  "physicalCaptureWrites": "See final preflight/soak syscall audit aggregate; no stored images/video",
+  "sourceArchivePolicy": "Supplier source/notice archives preserved; not runtime-captured data",
+  "review": "Manual review of new harness operator/token flow, credential-free reports, bounded clock arrays and owned-process cleanup",
+  "screenResult": "PASS"
+}
