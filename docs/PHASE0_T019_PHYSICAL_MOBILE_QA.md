@@ -53,3 +53,15 @@ Current results are **same-host LAB**; physical phone offset/drift/error **UNKNO
 5. Commit reproducible aggregate evidence through a reviewed/check-passing PR; close T019 only if original AC and physical carry-forward really pass. Then run T020 on second clean physical PC.
 
 The no-physical-device limitation does not prevent software failure validation: full Unity PlayMode20/20 and Java76 executed/2historical skips cover owned Java death, IPC loss, retry bounds, duplicate READY/PONG, stale/duplicate/reordered inputs, action cancellation/idempotency and cleanup. PWA59/59 covers permissions/capture quality/lifecycle using fixtures. These do not certify physical OS lockscreen, Wi-Fi or invalid tournament scoring in games that do not yet exist.
+
+Clock precision clarification: the ±2ms margin is integer quantization only, a conditional model assumption for these same-host LAB brackets. It does not bound browser privacy coarsening, UTC system accuracy, future slew or physical total error. Before physical interpretation, record actual clock precision/coarsening and uncertainty; unknown precision remains UNKNOWN.
+
+Stable-candidate reference camera/Unity/Java soak>=30min PASS; IPC-only>=30min +20startup/shutdown PASS. These do not accredit physical phone sensor Hz/clock/response latency/QR. Full actual metrics and prior startup failures retained in Final Exit Report. Emulator reattempt reached first/second cold-cache local loads and pagehide cleanup, then failed short-suspension browser deadline; no20emulator-cycle PASS claimed.
+
+## Final emulator/lifecycle result — 2026-10-14
+
+[Final actual emulator report](evidence/overnight-2026-10-13/android-offline-final.json): **PASS**, disposable AndroidAPI36/Chrome133.0.6943.137; cold-cache first/second local load with WAN unavailable, pagehide listeners/timers/transport cleanup, **20/20 actual emulator HOME→Chrome cycles**, zero hidden emission in each cycle, exactly one listener/channel on return, fresh callbacks before INPUT_READY, long-suspension/RTC-loss safe DISCONNECTED and no automatic reconnect. Guest networking restored, own emulator/ADB/Java/Player residuals0, no physical input observed. ADB reverse localhost is LAB/EMULATOR, not physical LAN or certificate trust.
+
+Earlier Chrome-first-run BLOCKED and two subsequent QA timeouts are preserved; final PASS does not erase them. Private HOME/cache/data profile added to owned test Player to isolate concurrent reference runs; loop now records target/attempt/success, and last requested UI control for failure diagnosis. Existing deterministic PWA repeated hide/show regression increased8→20cycles; suite59/59PASS, no product runtime change. [Validation/source hashes](evidence/overnight-2026-10-13/final-lifecycle-validation.json).
+
+Physical mobile sensorHz/clock/E2E/QR<60s and cleanPC remain NOT RUN. T019/T020/F05/E0 OPEN. No ownership assignment or gameplay.

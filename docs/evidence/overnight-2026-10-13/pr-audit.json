@@ -1,0 +1,126 @@
+{
+  "105": {
+    "baseRefName": "develop",
+    "headRefOid": "76a7f6300198ea7e52be31952cb5183743d1df3f",
+    "mergeCommit": {
+      "oid": "3cf27bd8c382ad38ba97855dd44f87e56ee2e2d7"
+    },
+    "number": 105,
+    "state": "MERGED",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:25:03Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38516331355/job/115695853330",
+        "name": "java-react-foundation",
+        "startedAt": "2026-10-14T05:23:04Z",
+        "status": "COMPLETED",
+        "workflowName": "Foundation validation"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:23:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38516331404/job/115695853649",
+        "name": "management-validation",
+        "startedAt": "2026-10-14T05:23:04Z",
+        "status": "COMPLETED",
+        "workflowName": "Management validation"
+      }
+    ]
+  },
+  "107": {
+    "baseRefName": "develop",
+    "headRefOid": "ca596ecd22fa1a490a822a84de125f05072f217a",
+    "mergeCommit": {
+      "oid": "bf857da9af07ae9b823d7f84e79663317301e462"
+    },
+    "number": 107,
+    "state": "MERGED",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:31:36Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38516921410/job/115697698739",
+        "name": "java-react-foundation",
+        "startedAt": "2026-10-14T05:29:41Z",
+        "status": "COMPLETED",
+        "workflowName": "Foundation validation"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:29:47Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38516922231/job/115697701430",
+        "name": "management-validation",
+        "startedAt": "2026-10-14T05:29:41Z",
+        "status": "COMPLETED",
+        "workflowName": "Management validation"
+      }
+    ]
+  },
+  "108": {
+    "baseRefName": "develop",
+    "headRefOid": "7512c7b4281f7ffd23a5609c9789223d39beb2c6",
+    "mergeCommit": {
+      "oid": "1694e43f8bda7bc53f3309e38e66fa2b831cbd49"
+    },
+    "number": 108,
+    "state": "MERGED",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:45:11Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38518149579/job/115701514494",
+        "name": "java-react-foundation",
+        "startedAt": "2026-10-14T05:43:21Z",
+        "status": "COMPLETED",
+        "workflowName": "Foundation validation"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:43:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38518149672/job/115701515526",
+        "name": "management-validation",
+        "startedAt": "2026-10-14T05:43:21Z",
+        "status": "COMPLETED",
+        "workflowName": "Management validation"
+      }
+    ]
+  },
+  "109": {
+    "baseRefName": "develop",
+    "headRefOid": "7239048f267ccd19206807d6758c484792f7d482",
+    "mergeCommit": {
+      "oid": "d924ddce391841689735f4e6f9a9a22826d26543"
+    },
+    "number": 109,
+    "state": "MERGED",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:55:00Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38519035857/job/115704249160",
+        "name": "java-react-foundation",
+        "startedAt": "2026-10-14T05:53:03Z",
+        "status": "COMPLETED",
+        "workflowName": "Foundation validation"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T05:53:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38519035691/job/115704248920",
+        "name": "management-validation",
+        "startedAt": "2026-10-14T05:53:03Z",
+        "status": "COMPLETED",
+        "workflowName": "Management validation"
+      }
+    ]
+  }
+}

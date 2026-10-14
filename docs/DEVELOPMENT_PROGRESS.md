@@ -1,5 +1,7 @@
 # Progreso de desarrollo
 
+> **Estado vigente — 2026-10-14:** T017/T018/F04 CLOSED/completed/Done bajo DEC-027/028; T019/T020/F05/E0 OPEN. Phase0 IN PROGRESS; Phase1 NOT STARTED. [Final Exit Report](PHASE0_FINAL_EXIT_REPORT.md). Las entradas posteriores conservan checkpoints históricos fechados; no sustituyen este estado.
+
 ## T018 / #32 — checkpoint local de telemetría, 2026-10-13
 
 Base develop `bb90c04d050f35feae8ae1a99968aa9d91ed2e4a`, rama `codex/t018-telemetry-metrics`. [Reporte vigente, clocks/uncertainty/AC y A/B](PHASE0_T018_TELEMETRY_METRICS.md). Reutilización IPC/RTC/PhoneInput/CameraInput/T016/buffers; históricos cuantitativos conservados con vigencia limitada. Sólo instrumentación faltante: modo mínimo, frame window y errores/evictions/N; sin nuevo protocolo/threshold ni video/personas. AC1/AC2/AC3 PARCIAL, físico motion→result/clock telefónico NOT RUN; **T018 OPEN/Validation/needs-device-test/performance**. No cierre por PASS del harness.
@@ -524,3 +526,15 @@ Combined camera+IPC preflight found fixture-observation provenance check used nu
 ## Physical exit gates prepared — 2026-10-13
 
 T017/T018/F04 CLOSED/completed/Project Done after PR #107; privacy correction integrated by PR #108. T019 OPEN/Validation with dependencies satisfied; physical gates NOT RUN. T020 remains blocked by T019 and clean physical PC not available. F05/E0 OPEN; Phase0 IN PROGRESS; Phase1 NOT STARTED. No ownership assignment while E0 remains open. T019 lab harness/clock interval checks/inventory and T020 reproducible relative runtime package/runbook/lifecycle tooling prepared; see current reports.
+
+## Final soak outcome — 2026-10-14
+
+Combined stable-candidate runtime PASS:1800.984256s, camera capture30.224030FPS/inference26.681604FPS, telemetry errors0, physical-observation/image-video writes0, owned residuals0, controls restored. IPC-only1801.000089s plus20/20startup/shutdown PASS. [Final Exit Report](PHASE0_FINAL_EXIT_REPORT.md) preserves prior FAIL attempts and metric scope. E0/F05/T019/T020 remain OPEN because physical phones/visible E2E/cleanPC gates NOT RUN.
+
+## Final emulator/lifecycle result — 2026-10-14
+
+[Final actual emulator report](evidence/overnight-2026-10-13/android-offline-final.json): **PASS**, disposable AndroidAPI36/Chrome133.0.6943.137; cold-cache first/second local load with WAN unavailable, pagehide listeners/timers/transport cleanup, **20/20 actual emulator HOME→Chrome cycles**, zero hidden emission in each cycle, exactly one listener/channel on return, fresh callbacks before INPUT_READY, long-suspension/RTC-loss safe DISCONNECTED and no automatic reconnect. Guest networking restored, own emulator/ADB/Java/Player residuals0, no physical input observed. ADB reverse localhost is LAB/EMULATOR, not physical LAN or certificate trust.
+
+Earlier Chrome-first-run BLOCKED and two subsequent QA timeouts are preserved; final PASS does not erase them. Private HOME/cache/data profile added to owned test Player to isolate concurrent reference runs; loop now records target/attempt/success, and last requested UI control for failure diagnosis. Existing deterministic PWA repeated hide/show regression increased8→20cycles; suite59/59PASS, no product runtime change. [Validation/source hashes](evidence/overnight-2026-10-13/final-lifecycle-validation.json).
+
+Physical mobile sensorHz/clock/E2E/QR<60s and cleanPC remain NOT RUN. T019/T020/F05/E0 OPEN. No ownership assignment or gameplay.

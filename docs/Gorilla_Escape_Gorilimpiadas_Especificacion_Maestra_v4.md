@@ -1,6 +1,8 @@
 # Gorilla Escape: Gorilimpiadas
 
-> **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
+> **Fuente operativa vigente — 2026-10-14:** [Final Exit Report](PHASE0_FINAL_EXIT_REPORT.md) y GitHub real. Academic MVP exactamente cuatro por DEC-026; T017/T018/F04 Done bajo DEC-027/028, E0/F05/T019/T020 OPEN. Phase1 NOT STARTED. Las referencias históricas a cinco como gate académico están superseded.
+
+> **Snapshot histórico — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
 
 > **Precedencia de estado:** las enmiendas vigentes al final de este documento prevalecen sobre los snapshots de implementación y transporte del texto original. WebSocket obligatorio y WT/RTC pendiente están superseded / replaced by DEC-010 Mobile Transport. El cierre Software/Lab se decide en [auditoría final](PHASE0_FINAL_AUDIT.md), separado del MVP físico.
 ## Especificación maestra v4 — producto, experiencia, implementación y viabilidad

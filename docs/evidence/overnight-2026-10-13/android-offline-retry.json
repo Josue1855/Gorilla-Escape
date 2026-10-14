@@ -1,0 +1,42 @@
+{
+  "scope": "T011 LAB/EMULATOR; ADB reverse localhost != physical LAN/TLS validation",
+  "source": "emulator",
+  "physical": "NOT RUN; deferred T019/DEC-022",
+  "gate": "FAIL",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "guestNetworkRestored": true,
+  "playerExit": 0,
+  "javaCleanup": [],
+  "ownedJavaResiduals": 0,
+  "reason": "TimeoutError",
+  "failureAt": "validate_android_3a.py:61",
+  "detail": null,
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t011/android_offline.py": "9edbcad228f1b3b8ac1d6018820c181846def930db795f4df98c93900a3e234d",
+    "PWA/src/input/sensors/capture.js": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d",
+    "PWA/src/controller/session.js": "130f1439abcbe6151a4871b02daa93df055a3e3993100d67a8cd1c015df4dc08",
+    "PWA/src/controller/presentation.js": "48ef0eafcd6f5103d77373c6a8d7dcd3cd2bd08c5af09f286444b2aaa9e396e0",
+    "PWA/dist/sw.js": "b28365bdf52c947f01ceef52a512a1f2060fd606dbb6a18087ea2df6d15d4e25",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "bc10c229b37b7d26f8c90afff6aed0f34b5dc7b026548617f3ecd48f41a9bf41"
+  }
+}
