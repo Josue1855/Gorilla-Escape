@@ -34,6 +34,33 @@ namespace GorillaEscape.Tests {
   [Test]public void ContractRejectsNonFiniteAndMissingLandmarks(){var f=Camera();f.subjects[0].landmarks[0].x=float.NaN;Assert.That(CameraInputStore.Valid(f),Is.False);f=Camera();f.subjects[0].landmarks=new CameraLandmark[0];Assert.That(CameraInputStore.Valid(f),Is.False);f=Camera();f.subjects[0].confidence=2;Assert.That(CameraInputStore.Valid(f),Is.False);}
   [Test]public void CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory(){var s=new CameraInputStore();for(int i=1;i<=50;i++)Assert.That(s.Accept(Camera(seq:i),1001),Is.True);Assert.That(s.Frames.Count,Is.EqualTo(16));Assert.That(s.Accept(Camera(seq:50),1001),Is.False);Assert.That(s.Accept(Camera(seq:49),1001),Is.False);Assert.That(s.Accept(Camera(time:2000,seq:51),1001),Is.False);Assert.That(s.Age(1050),Is.EqualTo(50));Assert.That(s.Fresh(1050,100,20),Is.True);}
   [Test]public void PlayerLockLossRecoveryNeverSelectsAnotherSubject(){var l=new PlayerLock(new FusionSettings());Assert.That(l.State,Is.EqualTo(PlayerLockState.UNASSIGNED));l.Ready(1);l.Observe(Camera(seq:1));Assert.That(l.State,Is.EqualTo(PlayerLockState.ACQUIRING));l.Observe(Camera(seq:2));Assert.That(l.State,Is.EqualTo(PlayerLockState.LOCKED));l.Observe(Camera("tracking-lost",seq:3));Assert.That(l.State,Is.EqualTo(PlayerLockState.LOST));var wrong=Camera(seq:4);wrong.subjects[0].subjectId=2;l.Observe(wrong);Assert.That(l.SubjectId,Is.EqualTo(1));Assert.That(l.State,Is.EqualTo(PlayerLockState.LOST));l.Observe(Camera(seq:5));Assert.That(l.State,Is.EqualTo(PlayerLockState.RECOVERING));l.Observe(Camera(seq:6));Assert.That(l.State,Is.EqualTo(PlayerLockState.LOCKED));}
+  [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)][TestCase(6)][TestCase(7)][TestCase(8)][TestCase(9)][TestCase(10)][TestCase(11)][TestCase(12)][TestCase(13)][TestCase(14)][TestCase(15)][TestCase(16)][TestCase(17)][TestCase(18)][TestCase(19)][TestCase(20)]
+  public void TwentyDeterministicReplacementsCannotPromoteForeignSubject(int scenario){
+   int player=1+(scenario-1)%4;var store=new PhoneInputStore();var fusion=new InputFusion(store,new FusionSettings());
+   fusion.Association.Ready(player);fusion.ObserveCamera(Camera(seq:1),1001);fusion.ObserveCamera(Camera(seq:2),1001);
+   var phone=Phone(player:player);Add(fusion,store,phone);
+   Assert.That(fusion.Evaluate(player,1001).Eligible,Is.True);
+   for(int sequence=3;sequence<=4;sequence++){
+    var foreign=Camera(seq:sequence);foreign.subjects[0].subjectId=100+scenario;
+    foreign.subjects[0].centerX=.3f+scenario*.01f;
+    Assert.That(fusion.ObserveCamera(foreign,1001),Is.True);
+    Assert.That(fusion.Association.SubjectId,Is.EqualTo(1),"unauthorized switch, scenario "+scenario);
+    Assert.That(fusion.Association.PlayerId,Is.EqualTo(player));
+    Assert.That(fusion.Association.State,Is.EqualTo(PlayerLockState.LOST));
+    Assert.That(fusion.Evaluate(player,1001).Eligible,Is.False,"safe gate during replacement");
+   }
+   fusion.ObserveCamera(Camera("tracking-lost",seq:5),1001);
+   Assert.That(fusion.Evaluate(player,1001).Eligible,Is.False);
+   fusion.ObserveCamera(Camera(seq:6),1001);
+   Assert.That(fusion.Association.State,Is.EqualTo(PlayerLockState.RECOVERING));
+   Assert.That(fusion.Evaluate(player,1001).Eligible,Is.False,"one recovery frame cannot resume");
+   fusion.ObserveCamera(Camera(seq:7),1001);
+   Assert.That(fusion.Association.State,Is.EqualTo(PlayerLockState.LOCKED));
+   var result=fusion.Evaluate(player,1001);Assert.That(result.Eligible,Is.True);
+   Assert.That(result.SubjectId,Is.EqualTo(1));Assert.That(result.Phone.playerId,Is.EqualTo(player));
+   Assert.That(result.Phone.sessionId,Is.EqualTo("lab"));Assert.That(result.Phone.deviceSessionId,Is.EqualTo("device"+player));
+   Assert.That(result.Phone.connectionEpoch,Is.EqualTo(1));
+  }
   [Test]public void SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock(){foreach(var name in new[]{"second-person-enters","tracking-low-confidence","hand-occluded"}){var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera(seq:1));l.Observe(Camera(seq:2));l.Observe(Camera(name,seq:3));Assert.That(l.State,Is.EqualTo(name=="hand-occluded"?PlayerLockState.LOCKED:PlayerLockState.LOST),name);}var p=new PlayerLock(new FusionSettings());p.Ready(1);p.Observe(Camera(seq:1));p.Observe(Camera(seq:2));var f=Camera(seq:3);f.subjects[0].ambiguous=true;p.Observe(f);Assert.That(p.State,Is.EqualTo(PlayerLockState.LOST));}
   [Test]public void SpatialJumpAndStaleFramesDoNotRefreshLock(){var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera(seq:1));l.Observe(Camera(seq:2));var f=Camera(seq:3);f.subjects[0].centerX=.75f;l.Observe(f);Assert.That(l.State,Is.EqualTo(PlayerLockState.LOST));l.Observe(Camera(seq:2));Assert.That(l.State,Is.EqualTo(PlayerLockState.LOST));}
   [TestCase(0,true)] [TestCase(-80,true)] [TestCase(80,true)] [TestCase(-150,false)] [TestCase(150,false)]

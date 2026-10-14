@@ -665,3 +665,7 @@ T016 final r7 continuation (2026-10-13): Unity Student local activation/minimalb
 ## Academic reconciliation — 2026-10-13
 
 DEC-026: cuatro juegos P0 (Smash, Throw, Bowling, Slice), Archery P1/Post-MVP; E3 tres restantes/F40 torneo completo. [Matriz académica](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md). Fallback T060/#104 pendiente implementación; sin gameplay nuevo. E0 OPEN; Phase1 NOT STARTED. Evidencia física pendiente no alterada.
+
+## Phase0 technical exit amendments — 2026-10-13
+
+DEC-027 accepts deterministic T017 gate and moves physical human AC to T061/#106, Post-MVP, DEFERRED / NOT RUN. [T017 technical report](PHASE0_T017_DETERMINISTIC_VALIDATION.md). DEC-028 accepts T018 technical exit using integrated PR #103; literal AC1/AC2 PARTIAL, physical E2E/Hz/sync NOT RUN transferred to T019. Closure conditional on PR integration; F04 then reevaluated, T019 physical gates unchanged. E0 OPEN; Phase1 NOT STARTED.

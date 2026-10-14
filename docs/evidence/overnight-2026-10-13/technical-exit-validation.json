@@ -1,0 +1,65 @@
+{
+  "dateLocal": "2026-10-13",
+  "timezone": "America/Chihuahua",
+  "utc": "2026-10-14T05:29:19.792623+00:00",
+  "base": "3cf27bd8c382ad38ba97855dd44f87e56ee2e2d7",
+  "branch": "codex/t017-deterministic-exit",
+  "classification": "LAB deterministic; camera technical reference tests only, no human QA",
+  "versions": {
+    "Unity": "6000.3.23f1",
+    "Node": "24.19.0",
+    "Java": "Temurin25.0.4.1 / release21"
+  },
+  "components": {
+    "passed": 23,
+    "total": 23
+  },
+  "PWA": {
+    "passed": 59,
+    "total": 59,
+    "build": "PASS"
+  },
+  "Management": "PASS",
+  "Foundation": "PASS",
+  "diffCheck": "PASS",
+  "physicalPhones": "NOT RUN",
+  "humanTracking": "DEFERRED / NOT RUN",
+  "sourceHashes": {
+    "Unity/Assets/_Project/Tests/EditMode/CameraFusionTests.cs": "a369ea869fda2ffbac65fd4d6c47710f24416d9111404940d538b9ec56005c86",
+    "Unity/Assets/_Project/Scripts/Input/Fusion/PlayerLock.cs": "7f7a4ee10a6a106cd27e3c6a01b71d3330ee90b7c8d22e835287925a466bf44f"
+  },
+  "editmode": {
+    "total": "121",
+    "passed": "121",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed",
+    "xmlSha256": "94d651bb57b4d8772f13108c0096b2012349dfc25b1d6190bd020da73a097b4e"
+  },
+  "playmode": {
+    "total": "20",
+    "passed": "20",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed",
+    "xmlSha256": "865b4c4c6b1dc1380fc1214a440933571ae7433ec689b424d5b739043f7d790f"
+  },
+  "t017Scenarios": {
+    "N": 20,
+    "result": "PASS",
+    "unauthorizedSwitches": 0,
+    "classification": "SYNTHETIC LAB",
+    "humanIdentity": "NOT CERTIFIED"
+  },
+  "LinuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "Java": {
+    "tests": 78,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  }
+}

@@ -445,3 +445,27 @@ El PDF académico permite añadir disciplinas hasta cinco después de estabiliza
 Ruta principal vigente: teléfono → PWA → Gorilla Protocol → WebRTC local → Java → IPC → Unity/PhoneInput, conforme DEC-005/DEC-010. Unity única autoridad oficial; cámara complementaria cuando la disciplina lo requiera. Fallback de usuario obligatorio, aún no implementado: T060, calibración/prueba y torneo completo sin dispositivo adicional. No confundir herramientas de laboratorio con fallback de producto.
 
 No acredita juegos implementados, latencia física, dispositivos, cierre E0 ni inicio Phase1. [Requisitos y matriz](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md).
+
+## DEC-027 — Deferred Physical Human Tracking Validation
+
+**Fecha: 2026-10-13. Estado: ACCEPTED.** Autorización explícita del PO en ejecución nocturna. No realizar nuevas pruebas de tracking con personas para Academic MVP.
+
+Human Physical QA queda **Post-MVP/P1**, T061/#106, Backlog/Futuro, no bloquea Academic MVP. AC históricos T017: 20 entradas de otra persona, oclusión/recuperación física y no-auto-selection físico quedan **DEFERRED / NOT RUN**, nunca PASS físico. Replay/fixtures no equivalen a humano real. No se certifica identidad humana, continuidad biométrica ni reconocimiento facial.
+
+T017 Phase0 puede cerrar tras integración y >=20 escenarios deterministas de intrusion/replacement, cero switches no autorizados, tracking perdido seguro, recovery según política explícita (dos frames elegibles del subject anterior por settings vigentes), ningún subject diferente promovido automáticamente, coherencia player/session/lock, fixtures reproducibles sin imágenes/video/personas y regressions InputFusion/PlayerLock PASS. Subject IDs son efímeros espaciales; misma etiqueta no demuestra misma persona.
+
+Se preservan AC humanos y dependencia #29 como historial satisfecho; no añadir certificación humana como gate de los cuatro juegos. No autoriza cerrar T019/T020 ni E0 sin evidencia física correspondiente. [Aceptación técnica y límites](PHASE0_T017_DETERMINISTIC_VALIDATION.md).
+
+## DEC-028 — T018 Exit with Physical E2E Accreditation Deferred to T019
+
+**Fecha: 2026-10-13. Estado: ACCEPTED.** Autorización explícita PO en ejecución nocturna; no reimplementar instrumentación integrada por PR #103 (head `136ee366b782c6f40a74114be00f881ea0307279`, merge `3129081eeb9cf92c3326038da076c67addc4b0fd`).
+
+| Gate | Literal AC status | Amended Phase0 exit |
+|---|---|---|
+| AC1 sincronización/relojes | PARTIAL; phone↔PC offset/drift/error UNKNOWN / NOT RUN | PASS FOR T018 EXIT: dominios/unidades/limitaciones y segmentos instrumentados documentados |
+| AC2 latencia/Hz/FPS | PARTIAL; physical phone Hz y true motion→visible-result NOT RUN | PASS FOR T018 EXIT: segmentos medidos sin inferir E2E, gates físicos transferidos a T019 |
+| AC3 impacto | Imperceptibilidad universal no acreditada | PASS FOR T018 EXIT: telemetry bounded, cero errores de telemetry en evidencia, sin video, A–B–B–A repetido, deltas publicados y sin degradación consistente/reproducible de signo estable atribuible a telemetry |
+
+No inventar threshold porcentual. Pares existentes: Unity effective −5.98%/+0.78%; inference −5.93%/+5.25%. No evidencia de impacto cero ni mejora universal. PR #103 satisface salida objetiva; no demuestra precisión cross-device ni FPS display. Browser performance.now monotonic y Date.now Unixms; Java UTCms; Unity UTCms/Stopwatch; Python UTCns/monotonicns; V4L2 proxy kernel conservados. ACK RTT/IPC RTT sólo segmentos.
+
+Cierre #32 sólo después de integrar esta DEC y verificar evidencia; T019 recibe acreditación física, conserva AC intactos y permanece OPEN hasta QA real. T020 PC limpia obligatorio. No permite cierre E0 ni Phase1. [Evidencia y tabla de salida](PHASE0_T018_TELEMETRY_METRICS.md).

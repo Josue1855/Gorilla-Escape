@@ -962,9 +962,9 @@
       ],
       "objective": "Validar ROI, Player Lock y recuperación de tracking",
       "acceptance": [
-        "20 entradas de otra persona: cero cambios accidentales.",
-        "Oclusión/tracking perdido pausa; retorno recuperable.",
-        "Nunca seleccionar automáticamente otro jugador."
+        ">=20 escenarios deterministas intrusion/replacement; cero switches PlayerLock no autorizados.",
+        "Tracking perdido produce gate seguro; recovery explícito de sujeto previo; nunca promover otro subject automáticamente.",
+        "Player/session/lock coherentes; fixtures/replay reproducibles sin video/imágenes/personas; regressions InputFusion/PlayerLock PASS."
       ],
       "parent": "F04",
       "blocked_by": [
@@ -2958,6 +2958,35 @@
       "assignees": [],
       "labels": [],
       "tests": "Acceptance path completo de cuatro disciplinas/torneo con móvil/cámara unavailable; instrucciones visibles; Unity autoridad."
+    },
+    {
+      "key": "T061",
+      "title": "Validar Player Lock con sujetos humanos en hardware real",
+      "type": "Task",
+      "phase": "Futuro",
+      "area": "Camera/Tracking",
+      "sources": [
+        "DEC-027",
+        "v4 T017 original"
+      ],
+      "objective": "Acreditación humana física histórica T017 diferida; no certifica biometría.",
+      "acceptance": [
+        "20 entradas humanas; cero switches accidentales.",
+        "Oclusión física y recuperación física con gate seguro.",
+        "No auto-selection de otro jugador; hardware real y evidencia agregada sin video/fotos."
+      ],
+      "parent": "F04",
+      "blocked_by": [],
+      "scope": "P1",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": null,
+      "assignees": [],
+      "labels": [],
+      "tests": "Pruebas físicas Post-MVP cuando estén autorizadas; NOT RUN. No ejecutar esta noche."
     }
   ]
 }
