@@ -520,3 +520,7 @@ DEC-027 accepts deterministic T017 gate and moves physical human AC to T061/#106
 ## Privacy correction before final soak — 2026-10-13
 
 Combined camera+IPC preflight found fixture-observation provenance check used nullable selected Camera. Fix uses raw physical source regardless of eligibility, and suppresses absent input/physical phone observations. Phase0 diagnostic correction only; no gameplay. T019/T020/E0 remain OPEN; soak only on rebuilt integrated candidate.
+
+## Physical exit gates prepared — 2026-10-13
+
+T017/T018/F04 CLOSED/completed/Project Done after PR #107; privacy correction integrated by PR #108. T019 OPEN/Validation with dependencies satisfied; physical gates NOT RUN. T020 remains blocked by T019 and clean physical PC not available. F05/E0 OPEN; Phase0 IN PROGRESS; Phase1 NOT STARTED. No ownership assignment while E0 remains open. T019 lab harness/clock interval checks/inventory and T020 reproducible relative runtime package/runbook/lifecycle tooling prepared; see current reports.

@@ -1,0 +1,21 @@
+{
+  "base": "1694e43f8bda7bc53f3309e38e66fa2b831cbd49",
+  "classification": "LAB software regression; no physical accreditation",
+  "componentTests": 23,
+  "PWA": {
+    "passed": 59,
+    "build": "PASS"
+  },
+  "Java": {
+    "tests": 78,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 2
+  },
+  "clockTests": 5,
+  "Management": "PASS",
+  "Foundation": "PASS",
+  "diffCheck": "PASS",
+  "initialUnityDirectLicensing": "exit198; supported Flatpak successful",
+  "additionalEmulatorAttempt": "BLOCKED Chrome first-run; owned residuals0"
+}
