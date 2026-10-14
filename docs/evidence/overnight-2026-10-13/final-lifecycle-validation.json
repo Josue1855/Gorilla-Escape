@@ -1,0 +1,21 @@
+{
+  "base": "d924ddce391841689735f4e6f9a9a22826d26543",
+  "classification": "LAB/EMULATOR; no physical phone/cleanPC/visible E2E accreditation",
+  "PWA": {
+    "passed": 59,
+    "total": 59,
+    "deterministicHideShowCycles": 20
+  },
+  "AndroidEmulator": {
+    "gate": "PASS",
+    "backgroundForegroundCycles": 20,
+    "pagehide": "PASS",
+    "coldCacheWANUnavailable": "PASS",
+    "guestNetworkRestored": true,
+    "ownedResiduals": 0
+  },
+  "sourceHashes": {
+    "tools/t011/android_offline.py": "4ba5fe50458b28816be06257a745d8a09999ee3043f217779a73195de849e43c",
+    "PWA/tests/lifecycle.test.js": "f013f250f7848774af7cbf66cc2970541740bf9e382199b8df5b03ff3d936e11"
+  }
+}

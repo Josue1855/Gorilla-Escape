@@ -1,5 +1,7 @@
 # T018 / #32 — telemetría, clocks y métricas
 
+> **Estado integrado — 2026-10-14:** #32 CLOSED/completed/Project Done tras PR #107 / DEC-028. Literal AC1/AC2 PARTIAL; physical clocks/Hz/visible E2E NOT RUN en #33. Las instrucciones anteriores de no cerrar son checkpoints históricos superseded sólo para T018 exit. [Estado final](PHASE0_FINAL_EXIT_REPORT.md).
+
 2026-10-13, America/Chihuahua. Base `develop` **bb90c04d050f35feae8ae1a99968aa9d91ed2e4a** (PR #102, T016 CLOSED/completed/Done). Rama `codex/t018-telemetry-metrics`. **T018 OPEN / Validation / needs-device-test / performance. Ningún AC original marcado como PASS completo.** Este incremento permite medir y reproducir el checkpoint local; no cambia los AC, no realiza pruebas con personas ni sustituye dispositivos físicos por Chrome/emulador.
 
 ## Auditoría y reutilización

@@ -1,5 +1,7 @@
 # Reporte de pruebas
 
+> **Resumen vigente — 2026-10-14:** salida técnica T017/T018 aceptada; humano tracking DEFERRED/NOT RUN; física móvil/cleanPC/visible E2E NOT RUN. Edit126/126, Play20/20, componentes23/23, PWA59/59, Java76 ejecutados/2SKIP históricos. [Final Exit Report y límites](PHASE0_FINAL_EXIT_REPORT.md). Checkpoints anteriores permanecen como historial.
+
 ## T018 / #32 — checkpoint local de telemetría, 2026-10-13
 
 Base develop `bb90c04d050f35feae8ae1a99968aa9d91ed2e4a`, rama `codex/t018-telemetry-metrics`. [Reporte vigente, clocks/uncertainty/AC y A/B](PHASE0_T018_TELEMETRY_METRICS.md). Reutilización IPC/RTC/PhoneInput/CameraInput/T016/buffers; históricos cuantitativos conservados con vigencia limitada. Sólo instrumentación faltante: modo mínimo, frame window y errores/evictions/N; sin nuevo protocolo/threshold ni video/personas. AC1/AC2/AC3 PARCIAL, físico motion→result/clock telefónico NOT RUN; **T018 OPEN/Validation/needs-device-test/performance**. No cierre por PASS del harness.
@@ -679,3 +681,15 @@ Privacy correction validation: [receipt](evidence/overnight-2026-10-13/privacy-v
 ## Physical QA readiness tooling — 2026-10-13
 
 [T019 physical matrix](PHASE0_T019_PHYSICAL_MOBILE_QA.md) and [T020 cleanPC runbook](PHASE0_T020_CLEAN_PC_RUNBOOK.md) preserve mandatory physical gates. Fresh host RTC regression20/20 connects and20/20 reconnects PASS LAB; no 1/4physical claim. Five mathematical clock tests PASS; physical sync NOT RUN. Package preflight12s passes with Unity/Java/Vision, zero physical diagnostic logs/images/video and zero own residuals. Two subsequent >=30min camera attempts failed startup (captured0), so no long camera-soak PASS. An independent IPC-only soak is running; final report will record its actual result. Additional Android emulator offline attempt BLOCKED by Chrome first-run UI, cleanup residuals0; no physical failure inferred. [QA validation](evidence/overnight-2026-10-13/qa-tool-validation.json).
+
+## Final soak outcome — 2026-10-14
+
+Combined stable-candidate runtime PASS:1800.984256s, camera capture30.224030FPS/inference26.681604FPS, telemetry errors0, physical-observation/image-video writes0, owned residuals0, controls restored. IPC-only1801.000089s plus20/20startup/shutdown PASS. [Final Exit Report](PHASE0_FINAL_EXIT_REPORT.md) preserves prior FAIL attempts and metric scope. E0/F05/T019/T020 remain OPEN because physical phones/visible E2E/cleanPC gates NOT RUN.
+
+## Final emulator/lifecycle result — 2026-10-14
+
+[Final actual emulator report](evidence/overnight-2026-10-13/android-offline-final.json): **PASS**, disposable AndroidAPI36/Chrome133.0.6943.137; cold-cache first/second local load with WAN unavailable, pagehide listeners/timers/transport cleanup, **20/20 actual emulator HOME→Chrome cycles**, zero hidden emission in each cycle, exactly one listener/channel on return, fresh callbacks before INPUT_READY, long-suspension/RTC-loss safe DISCONNECTED and no automatic reconnect. Guest networking restored, own emulator/ADB/Java/Player residuals0, no physical input observed. ADB reverse localhost is LAB/EMULATOR, not physical LAN or certificate trust.
+
+Earlier Chrome-first-run BLOCKED and two subsequent QA timeouts are preserved; final PASS does not erase them. Private HOME/cache/data profile added to owned test Player to isolate concurrent reference runs; loop now records target/attempt/success, and last requested UI control for failure diagnosis. Existing deterministic PWA repeated hide/show regression increased8→20cycles; suite59/59PASS, no product runtime change. [Validation/source hashes](evidence/overnight-2026-10-13/final-lifecycle-validation.json).
+
+Physical mobile sensorHz/clock/E2E/QR<60s and cleanPC remain NOT RUN. T019/T020/F05/E0 OPEN. No ownership assignment or gameplay.

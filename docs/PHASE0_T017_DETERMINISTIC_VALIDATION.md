@@ -1,5 +1,7 @@
 # T017 — deterministic acceptance under DEC-027
 
+> **Estado integrado — 2026-10-14:** #30 CLOSED/completed/Project Done tras PR #107 y regresión post-merge61/61. AC humanos DEFERRED/NOT RUN en #106/P1. Las frases condicionales de preparación más abajo conservan su fecha; salida actual autorizada por DEC-027.
+
 2026-10-13, America/Chihuahua. Base `3cf27bd8c382ad38ba97855dd44f87e56ee2e2d7`, branch `codex/t017-deterministic-exit`. Source tests CameraFusionTests; corpus CameraInput v1 synthetic numeric fixtures. No persons/images/video.
 
 ## Historical AC

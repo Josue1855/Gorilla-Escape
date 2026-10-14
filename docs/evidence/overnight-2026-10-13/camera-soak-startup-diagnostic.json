@@ -1,0 +1,72 @@
+{
+  "before": {
+    "width": 1920,
+    "height": 1080,
+    "fourcc": "MJPG",
+    "fps": 30.0,
+    "controls": {
+      "auto_exposure": 1,
+      "exposure_time_absolute": 100,
+      "exposure_dynamic_framerate": 1
+    }
+  },
+  "layer": "raw",
+  "warmupSeconds": 5.0,
+  "lighting": "current ambient; illuminance unmeasured",
+  "diagnosticSourceSha256": "d61ca556cb2170b2fc0e1e79a5fa6aa5992fa21ab2f3f6eb9697f1a9d912f560",
+  "requested": {
+    "width": 640,
+    "height": 480,
+    "fourcc": "MJPG",
+    "fps": 30,
+    "priority": 1,
+    "manualExposure": 100
+  },
+  "returned": {
+    "width": 640,
+    "height": 480,
+    "fourcc": "MJPG",
+    "fps": 30.0,
+    "controls": {
+      "auto_exposure": 1,
+      "exposure_time_absolute": 100,
+      "exposure_dynamic_framerate": 1
+    }
+  },
+  "measurement": {
+    "frames": 908,
+    "elapsedMonotonicSeconds": 30.007823999999346,
+    "fps": 30.22545053583425,
+    "intervalP50Ms": 32.02699999928882,
+    "intervalP95Ms": 36.03399999974499,
+    "readP50Ms": null,
+    "readP95Ms": null,
+    "command": [
+      "stdbuf",
+      "-oL",
+      "-eL",
+      "v4l2-ctl",
+      "-d",
+      "/dev/video0",
+      "--verbose",
+      "--stream-mmap=2",
+      "--stream-to=/dev/null"
+    ],
+    "timestampSource": "kernel V4L2 monotonic SOE; text only",
+    "receiptMonotonicSeconds": 30.007824029000403,
+    "sequenceGaps": 0,
+    "childExited": true
+  },
+  "afterRestore": {
+    "width": 1920,
+    "height": 1080,
+    "fourcc": "MJPG",
+    "fps": 30.0,
+    "controls": {
+      "auto_exposure": 1,
+      "exposure_time_absolute": 100,
+      "exposure_dynamic_framerate": 1
+    }
+  },
+  "restoredExactly": true
+}

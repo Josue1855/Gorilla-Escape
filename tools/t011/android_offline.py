@@ -58,6 +58,9 @@ async def exercise(run,output,report):
     # Google APIs disposable image permits adb root. Never use host firewall/sudo.
     run.adb_call('root');run.adb_call('wait-for-device',timeout=20)
     operator=secrets.token_urlsafe(32);env=os.environ.copy();env.update(GORILLA_IPC_JAVA=str(run.args.java),GORILLA_IPC_JAR=str(run.args.jar),GORILLA_IPC_MODE='lifecycle',GORILLA_PHONE_INPUT='1',GORILLA_MOBILE_LAB='1',GORILLA_MOBILE_OPERATOR=operator)
+    # Isolate the test Player profile/managed lock from other owned reference runs.
+    private_home=run.directory/'player-home';private_home.mkdir()
+    env.update(HOME=str(private_home),XDG_CACHE_HOME=str(private_home/'cache'),XDG_DATA_HOME=str(private_home/'data'))
     player=subprocess.Popen([str(REPO/'Unity/Builds/FoundationLinux/GorillaEscape.x86_64'),'-screen-fullscreen','0','-screen-width','640','-screen-height','360','-logFile','-'],env=env,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,text=True)
     state={'port':None,'counts':{},'events':[],'pids':set()}
     def drain():
@@ -106,6 +109,7 @@ async def exercise(run,output,report):
             with urllib.request.urlopen(req,timeout=5) as r:u=urllib.parse.urlsplit(json.load(r)['url'])
             return urllib.parse.urlunsplit((u.scheme,u.netloc,'/',u.query,u.fragment))
         async def click(label):
+            report['lastRequestedControl']=label
             await cdp.until('Array.from(document.querySelectorAll("button,summary")).some(e=>e.textContent==='+json.dumps(label)+')',20)
             if label not in ['CONECTAR','ACTIVAR CONTROL']:
                 await cdp.evaluate('Array.from(document.querySelectorAll("button,summary")).find(e=>e.textContent==='+json.dumps(label)+').click()');return
@@ -157,15 +161,21 @@ async def exercise(run,output,report):
 
         # Fresh one-use admission for second load; cannot reuse first admission.
         report['stage']='SECOND_LOAD';print('SECOND_LOAD',flush=True);await begin();d=await diag();report['secondLoad']={'status':'PASS','controller':d['controller']['state'],'SWControlled':await cdp.evaluate('navigator.serviceWorker.controller!==null')}
-        report['stage']='SHORT_SUSPENSION';print('SHORT_SUSPENSION',flush=True);await click('Medición técnica de sensores');await click('Medir reposo · 15 s')
-        run.adb_call('shell','input','keyevent','3');await cdp.until('document.visibilityState==="hidden"',5)
-        hidden1=await diag();await asyncio.sleep(.8);hidden2=await diag()
-        assert hidden1['controller']['state']=='CONTROL_SUSPENDED';assert hidden2['transport']['motionSubmitted']==hidden1['transport']['motionSubmitted'];assert hidden2['measurement']['status']=='INTERRUPTED'
-        assert await cdp.evaluate('qaListeners.devicemotion.size===0&&qaListeners.deviceorientation.size===0')
-        report['shortSuspension']={'status':'PASS','state':hidden2['controller']['state'],'hiddenMotionSubmittedDelta':hidden2['transport']['motionSubmitted']-hidden1['transport']['motionSubmitted'],'measurement':hidden2['measurement']['status'],'sensorsDetached':True}
-        run.adb_call('shell','am','start','-a','android.intent.action.MAIN','-c','android.intent.category.LAUNCHER','-p','com.android.chrome')
-        await cdp.until('document.visibilityState==="visible"',8);await fresh();d=await diag();assert d['controller']['state']=='INPUT_READY';report['resume']={'status':'PASS','state':d['controller']['state'],'freshVirtualCallbacks':True}
-        assert await cdp.evaluate('qaListeners.devicemotion.size===1&&qaListeners.deviceorientation.size===1');report['duplicateListeners']='PASS — one per channel after real HOME/return; repeated epochs covered by unit test'
+        report['stage']='SHORT_SUSPENSION';print('SHORT_SUSPENSION',flush=True);await click('Medición técnica de sensores')
+        cycles=[]
+        report['backgroundForegroundRepetitions']={'classification':'LAB/EMULATOR','target':20,'attempted':0,'successful':0,'cycles':cycles}
+        for cycle in range(20):
+            report['backgroundForegroundRepetitions']['attempted']+=1
+            await click('Medir reposo · 15 s')
+            run.adb_call('shell','input','keyevent','3');await cdp.until('document.visibilityState==="hidden"',5)
+            hidden1=await diag();await asyncio.sleep(.8);hidden2=await diag()
+            assert hidden1['controller']['state']=='CONTROL_SUSPENDED';assert hidden2['transport']['motionSubmitted']==hidden1['transport']['motionSubmitted'];assert hidden2['measurement']['status']=='INTERRUPTED'
+            assert await cdp.evaluate('qaListeners.devicemotion.size===0&&qaListeners.deviceorientation.size===0')
+            report['shortSuspension']={'status':'PASS','state':hidden2['controller']['state'],'hiddenMotionSubmittedDelta':hidden2['transport']['motionSubmitted']-hidden1['transport']['motionSubmitted'],'measurement':hidden2['measurement']['status'],'sensorsDetached':True}
+            run.adb_call('shell','am','start','-a','android.intent.action.MAIN','-c','android.intent.category.LAUNCHER','-p','com.android.chrome')
+            await cdp.until('document.visibilityState==="visible"',8);await fresh();d=await diag();assert d['controller']['state']=='INPUT_READY';report['resume']={'status':'PASS','state':d['controller']['state'],'freshVirtualCallbacks':True}
+            assert await cdp.evaluate('qaListeners.devicemotion.size===1&&qaListeners.deviceorientation.size===1');report['duplicateListeners']='PASS — one per channel after real HOME/return; repeated epochs covered by unit test'
+            cycles.append({'cycle':cycle+1,'gate':'PASS','hiddenMotionSubmittedDelta':0,'resumeState':d['controller']['state'],'oneListenerPerChannel':True});report['backgroundForegroundRepetitions']['successful']+=1;print('EMULATOR_SUSPENSION_CYCLE '+str(cycle+1),flush=True)
         report['stage']='LONG_SUSPENSION';print('LONG_SUSPENSION',flush=True)
         run.adb_call('shell','input','keyevent','3');await cdp.until('document.visibilityState==="hidden"',5);await asyncio.sleep(3)
         await cdp.evaluate('qaPeer.close()') # Actual owned RTC loss, no injected client state or reconnect.
@@ -181,6 +191,7 @@ async def exercise(run,output,report):
         report['unityObservedByDeclaredSource']=state['counts'];assert state['counts'].get('emulator',0)>0 and state['counts'].get('physical',0)==0
         report['gate']='PASS'
     finally:
+        report['ipcLifecycle']=[{k:e.get(k) for k in ['event','state','errorCode','cleanupError','cleanupComplete','forced']} for e in state['events']]
         if isolated:
             for command in ['iptables','ip6tables']:
                 try:

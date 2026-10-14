@@ -1,0 +1,170 @@
+{
+  "scope": "T011 LAB/EMULATOR; ADB reverse localhost != physical LAN/TLS validation",
+  "source": "emulator",
+  "physical": "NOT RUN; deferred T019/DEC-022",
+  "gate": "FAIL",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "cleanProfile": {
+    "method": "new disposable AVD/Chrome; explicit origin storage clear + HTTP cache clear before first navigation",
+    "usageBefore": 0,
+    "existingRegistrations": 0,
+    "preloaded": false
+  },
+  "wanProbeBeforeFirstLoad": "UNAVAILABLE",
+  "directPublicIpTcpExit": "1",
+  "wanIsolation": {
+    "method": "owned guest OUTPUT reject rules IPv4+IPv6, allow only loopback and PC endpoints; mobile data disabled",
+    "directPublicIpTcpExit": "1",
+    "hostNetworkModified": false
+  },
+  "stage": "SHORT_SUSPENSION",
+  "firstLoad": {
+    "status": "PASS",
+    "secureContext": true,
+    "network": "NETWORK_READY",
+    "source": "emulator",
+    "wan": "UNAVAILABLE",
+    "cacheBefore": 0
+  },
+  "assets": [
+    {
+      "path": "/assets/index-DB-vQ36e.js",
+      "status": 200
+    },
+    {
+      "path": "/assets/index-Dif6RnX5.css",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-192.png",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-512.png",
+      "status": 200
+    },
+    {
+      "path": "/index.html",
+      "status": 200
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200
+    }
+  ],
+  "localHealth": {
+    "status": 200
+  },
+  "cache": [
+    {
+      "name": "gorilla-shell-978e04518ecb6b50",
+      "paths": [
+        "/assets/index-DB-vQ36e.js",
+        "/assets/index-Dif6RnX5.css",
+        "/icons/icon-192.png",
+        "/icons/icon-512.png",
+        "/index.html",
+        "/manifest.webmanifest"
+      ]
+    }
+  ],
+  "models": "NONE",
+  "bindingProbe": true,
+  "lifecycleEvents": [
+    "beforeunload",
+    "beforeunload"
+  ],
+  "pagehideCDPBinding": null,
+  "pagehide": {
+    "pagehideSeen": true,
+    "motionListeners": 0,
+    "orientationListeners": 0,
+    "intervals": 0,
+    "timeouts": 0,
+    "connection": "closed",
+    "externalUnityInputDeltaAfterDrain": 0,
+    "status": "PASS"
+  },
+  "pagehideObserver": "one bounded aggregate in disposable QA sessionStorage, written during pagehide before context destruction; not product storage",
+  "secondLoad": {
+    "status": "PASS",
+    "controller": "INPUT_READY",
+    "SWControlled": true
+  },
+  "ipcLifecycle": [
+    {
+      "event": "START_REQUESTED",
+      "state": "STARTING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    },
+    {
+      "event": "PROCESS_STARTED",
+      "state": "STARTING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    },
+    {
+      "event": "READY_RECEIVED",
+      "state": "CONNECTING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    },
+    {
+      "event": "FIRST_PONG",
+      "state": "RUNNING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    }
+  ],
+  "guestNetworkRestored": true,
+  "playerExit": 0,
+  "javaCleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "ownedJavaResiduals": 0,
+  "reason": "TimeoutError",
+  "failureAt": "validate_android_3a.py:94",
+  "detail": null,
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t011/android_offline.py": "4362964fae87a40d6279ab62cfe37a6f2af0572b266a7148137b8c88777cde05",
+    "PWA/src/input/sensors/capture.js": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d",
+    "PWA/src/controller/session.js": "130f1439abcbe6151a4871b02daa93df055a3e3993100d67a8cd1c015df4dc08",
+    "PWA/src/controller/presentation.js": "48ef0eafcd6f5103d77373c6a8d7dcd3cd2bd08c5af09f286444b2aaa9e396e0",
+    "PWA/dist/sw.js": "b28365bdf52c947f01ceef52a512a1f2060fd606dbb6a18087ea2df6d15d4e25",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "bc10c229b37b7d26f8c90afff6aed0f34b5dc7b026548617f3ecd48f41a9bf41"
+  }
+}

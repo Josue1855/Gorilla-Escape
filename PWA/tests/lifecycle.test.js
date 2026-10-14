@@ -26,7 +26,7 @@ test('short suspension resumes only after three fresh events per channel, never 
  assert.equal(f.model.capture.channels.motion.latest,null);f.send();f.send();assert.equal(f.model.state,'PREPARING_SENSORS');f.send();assert.equal(f.model.state,'INPUT_READY');await f.model.dispose();
 });
 test('repeated hide/show keeps exactly one listener per channel and duplicate visibility notifications are inert',async()=>{
- const f=setup();await ready(f);const runningTimers=f.intervals.size;for(let i=0;i<8;i++){
+ const f=setup();await ready(f);const runningTimers=f.intervals.size;for(let i=0;i<20;i++){
   f.visible('hidden');f.visible('hidden');
   assert.equal(f.model.state,'CONTROL_SUSPENDED');
   assert.equal(f.listeners.get('win:devicemotion').size,0);assert.equal(f.listeners.get('win:deviceorientation').size,0);

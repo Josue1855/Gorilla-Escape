@@ -1,0 +1,20 @@
+{
+  "model": "Latitude 5540",
+  "CPU": "13th Gen Intel(R) Core(TM) i7-1355U",
+  "RAM": "32538856 kB",
+  "kernel": "7.1.5-76070105-generic",
+  "architecture": "x86_64",
+  "camera": "Integrated_Webcam_FHD / V4L2 /dev/video0, reference only",
+  "physicalPhonesAccessible": 0,
+  "cleanPhysicalSecondPC": "NOT AVAILABLE through current access",
+  "versions": {
+    "Unity": "6000.3.23f1",
+    "JavaBuild": "Temurin25.0.4.1, release21",
+    "JavaPackage": "UbuntuOpenJDK21.0.12.1",
+    "Node": "24.19.0",
+    "PythonVision": "3.12/MediaPipe0.10.33/OpenCV4.13.0.92",
+    "physicalAndroidOSBrowser": "UNKNOWN/NOT RUN",
+    "physicaliPhoneOSBrowser": "UNKNOWN/NOT RUN"
+  },
+  "classification": "REFERENCE PC; not only-supported hardware; no serials/PII"
+}

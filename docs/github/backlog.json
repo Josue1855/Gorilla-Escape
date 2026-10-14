@@ -2579,7 +2579,7 @@
       "objective": "Validar experiencia externa, seguridad y privacidad",
       "acceptance": [
         "Al menos 5 personas externas conectan/calibran/juegan/interpretan resultado.",
-        "Recorrido completo de 5 pruebas, campeón y retorno sin asistencia técnica constante.",
+        "Recorrido completo de cuatro disciplinas MVP (Smash, Throw, Bowling, Slice), campeón y retorno sin asistencia técnica constante.",
         "Checklist seguridad y ausencia de grabación de cámara comprobados."
       ],
       "parent": "F60",
