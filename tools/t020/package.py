@@ -83,6 +83,8 @@ exec "$package_root/GorillaEscape.x86_64" "$@"
  (root/'run-base.sh').write_text(launcher);(root/'run-base.sh').chmod(0o755)
  shutil.copy2(repo/'tools/t062/run-qa.sh',root/'run-qa.sh');(root/'run-qa.sh').chmod(0o755)
  shutil.copy2(repo/'docs/PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md',root/'IPHONE-RUNBOOK.md')
+ for name in ['PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md','PHASE0_MAIN_MENU_QA_CENTER.md']:shutil.copy2(repo/'docs'/name,root/name)
+ shutil.copytree(repo/'docs/evidence/t062-main-menu-2026-10-14',root/'evidence/t062-main-menu-2026-10-14',dirs_exist_ok=True)
  (root/'README-PHASE0.txt').write_text('PHASE0 TECHNICAL BASE ONLY; NO TOURNAMENT/GAMEPLAY. Linux x86_64/glibc2.39 reference candidate. Requires compatible OS graphics/OpenGL/X11 and V4L2 camera capabilities; Windows/macOS NOT VALIDATED. Execute ./run-base.sh and close its window normally. Bundled JRE21/Python/Vision/Server resources; no Unity Editor/SDK/runtime download required by launcher. No private CA key or production admission tokens included. Technical launch is not Academic MVP fallback. Clean physical PC and physical mobile gates remain NOT RUN. See project T019/T020 runbooks for acceptance. Third-party source/notice materials retained; embedded server notices indexed, legal redistribution is not certified by this packaging script.\n')
  files=[]
  for path in sorted(root.rglob('*')):

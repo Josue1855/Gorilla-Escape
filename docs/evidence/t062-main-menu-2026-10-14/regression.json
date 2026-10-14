@@ -47,5 +47,13 @@
     "failed": "0",
     "skipped": "0"
   },
-  "buildRunnerNote": "The final build found an interactive Editor owning the checkout lock. No user process was closed. Final compilation uses an isolated copy of Assets/Packages/ProjectSettings + Shared, with a clean Library."
+  "buildRunnerNote": "The final build found an interactive Editor owning the checkout lock. No user process was closed. Final compilation uses an isolated copy of Assets/Packages/ProjectSettings + Shared, with a clean Library.",
+  "finalPackagedPhysicalPreflight": "PASS delivery-physical-backend.json: HTTPS LAN200 verified TLS, real QR rendered, 2 navigation cycles, 0 residual owned processes",
+  "finalPackagedRtc": "PASS delivery-rtc-lab.json: 4 synthetic clients +1 reconnect,43 inputs, response rendered,0 token logs",
+  "isolatedLinuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0,
+    "cleanLibrary": true
+  }
 }

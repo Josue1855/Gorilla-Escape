@@ -32,7 +32,7 @@ El JRE jlink incluye `jdk.httpserver`, requerido por TrustOnboarding para servir
 
 La build Linux Mono/Unity6000.3.23f1 compila con0 errores/0 warnings. PWA60/60 + build; Java82 casos únicos PASS (verify portable80+2 omitidos, suite HTTPS LAN8/8 cubre los dos omitidos); preview2/2 y cámara component23/23; PlayMode final24/24, sin omitidos. EditMode145/145 y regresión focal de navegación/admisión4/4 (retirar QR al morir backend) en [recibo de regresión](evidence/t062-main-menu-2026-10-14/regression.json). Management/Foundation y diff-check PASS.
 
-Navegación desde el ejecutable: JUGAR inactivo, dos ciclos PRUEBAS/VOLVER, preview listener sólo en Tests, START/STOP/export agregados y SALIR;0 procesos residuales. Preflight modo PHYSICAL: HTTPS LAN200 con validación TLS normal y QR productivo renderizado, sin teléfono. RTC LAB: cuatro clientes Chrome sintéticos, un reconnect,43 PhoneInput aceptados, respuesta aplicada/renderizada y agregados recibidos;0 token logs. [Navegación](evidence/t062-main-menu-2026-10-14/navigation-r6.json), [preflight PHYSICAL](evidence/t062-main-menu-2026-10-14/physical-backend-r3.json), [RTC LAB](evidence/t062-main-menu-2026-10-14/rtc-lab.json).
+Navegación desde el ejecutable: JUGAR inactivo, dos ciclos PRUEBAS/VOLVER, preview listener sólo en Tests, START/STOP/export agregados y SALIR;0 procesos residuales. Preflight modo PHYSICAL: HTTPS LAN200 con validación TLS normal y QR productivo renderizado, sin teléfono. RTC LAB: cuatro clientes Chrome sintéticos, un reconnect,43 PhoneInput aceptados, respuesta aplicada/renderizada y agregados recibidos;0 token logs. [Navegación](evidence/t062-main-menu-2026-10-14/navigation-r6.json), [preflight PHYSICAL](evidence/t062-main-menu-2026-10-14/delivery-physical-backend.json), [RTC LAB](evidence/t062-main-menu-2026-10-14/delivery-rtc-lab.json).
 
 ### OFF / ON — una pareja descriptiva
 
@@ -65,3 +65,8 @@ Paquete local: `/home/josuegalvan/Documentos/GorillaEscape-Phase0-MainMenuQA-202
 Un gate físico iPhone/cuatro dispositivos, offset cross-device y respuesta óptica permanece **NOT RUN**; PC limpia T020 **NOT RUN**. El tooling habilita que el PO los ejecute. T019 OPEN/Validation; T020/F05/E0 OPEN; F41 Backlog/Phase4; Phase1 NOT STARTED.
 
 [Runbook exacto iPhone15](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). F41 reutilizará y completará la presentación académica en Phase4; esta fundación no completa sus AC.
+
+
+## Integración
+
+[PR #112](https://github.com/Josue1855/Gorilla-Escape/pull/112) → develop, asociado a T062/#111. [Recibo de binarios y código productor](evidence/t062-main-menu-2026-10-14/package.json). Build final verificada también con Library limpia en copia aislada: no se cerró el Editor interactivo que poseía el checkout. Preflight y RTC repetidos sobre ese paquete final PASS, sin screenshots. El recibo local `delivery-receipt.json` del paquete registra merge/estado final y regresión posterior; no altera los gates físicos pendientes.
