@@ -85,4 +85,15 @@ class ConnectivityTest {
         var hung=temp.resolve("hung-version");Files.writeString(hung,"#!/bin/sh\nexec sleep 20\n");hung.toFile().setExecutable(true);
         try(var supervisor=new CloudflaredSupervisor(hung,(origin,budget)->true)){assertThrows(Exception.class,()->supervisor.start(URI.create("http://127.0.0.1:9"),100));assertTrue(supervisor.cleanupComplete());}
     }
+
+    @Test void actualMissingExecutableFallbackTimingIsBounded()throws Exception{
+        var rows=new ArrayList<Map<String,Object>>();
+        for(var mode:List.of(ConnectionBootstrap.Mode.AUTO,ConnectionBootstrap.Mode.CLOUDFLARED)){
+            try(var b=new ConnectionBootstrap(mode,URI.create("https://192.168.1.2:8443/"),new CloudflaredSupervisor(null),6000)){
+                long began=System.nanoTime();b.start(URI.create("http://127.0.0.1:9"));waitReady(b);var snapshot=b.snapshot();rows.add(snapshot);
+                assertTrue((System.nanoTime()-began)/1_000_000<1000);assertEquals("CABIN",snapshot.get("resolvedMode"));assertEquals(mode==ConnectionBootstrap.Mode.AUTO?"READY":"FAILED",snapshot.get("bootstrapState"));
+            }
+        }
+        String output=System.getenv("GORILLA_BOOTSTRAP_TIMING_REPORT");if(output!=null)Files.writeString(Path.of(output),com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(rows)+"\n");
+    }
 }

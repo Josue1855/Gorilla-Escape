@@ -77,5 +77,10 @@
     "start-time": "2026-10-15 05:58:50Z",
     "end-time": "2026-10-15 05:59:49Z",
     "duration": "58.8397257"
+  },
+  "latestPlayModeAttempt": {
+    "result": "18 passed / 9 intentionally rejected by singleton; not PASS",
+    "reason": "Concurrent soak owns canonical managed Java lock",
+    "action": "Repeat full suite after soak cleanup without weakening singleton"
   }
 }
