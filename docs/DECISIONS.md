@@ -485,3 +485,5 @@ Cierre #32 sólo después de integrar esta DEC y verificar evidencia; T019 recib
 QR desde TechnicalSession/JoinQrPoc mediante extensión IPC QA v1 autenticada: TTL30s/one-use/capacity4; regeneración sólo revoca admisión pendiente. Secret sólo en QR en memoria, jamás texto/log/export. Sensores/readiness observan autoridades existentes. HEARTBEAT QA v1 opcional transporta únicamente Hz originales y percentiles ACK RTT agregados; nada de historiales raw. Clasificación física requiere confirmación del operador, nunca se infiere del source claim.
 
 [Arquitectura](PHASE0_MAIN_MENU_QA_CENTER.md), [runbook sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). T061 conserva validación humana diferida Post-MVP; subjectId efímero no implica identificación biométrica.
+
+Aclaración PO posterior a T062: la escena Bootstrap oficial también inicia Main Menu en Editor Play Mode interactivo, sin Java/Vision. Test Runner, batch, Untitled y escenas ajenas quedan excluidos; SALIR detiene Play Mode. La ejecución física conserva el standalone y sus supervisores. [Política y evidencia Editor](PHASE0_MAIN_MENU_QA_CENTER.md#unity-editor--bootstrap--play).

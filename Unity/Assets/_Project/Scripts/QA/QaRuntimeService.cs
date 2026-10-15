@@ -38,12 +38,32 @@ namespace GorillaEscape.QA {
         internal string joinClass="NOT CONFIRMED",exportMessage="";
         internal bool physicalConfirmed;
         bool qaPhoneObserved,previewRequested;
-        void Start(){priorBackground=Application.runInBackground;Application.runInBackground=true;cancel=new CancellationTokenSource();java=new JavaProbeSupervisor(enableLobby:true);if(Environment.GetEnvironmentVariable("GORILLA_MOBILE_LAB")=="1")java.HttpReady+=port=>Debug.Log("QA_LAB_HTTP_READY "+port);vision=new VisionSupervisor();fusion=new InputFusion(java.PhoneInputs,new FusionSettings());Application.wantsToQuit+=WantsToQuit;javaRun=StartJava();visionRun=StartVision();fpsStart=Time.realtimeSinceStartupAsDouble;
+        // Editor navigation deliberately has no physical services, even with inherited launcher flags.
+        public bool ServicesEnabled => !Application.isEditor;
+        public string JavaStatus => !ServicesEnabled ? "JAVA NOT RUNNING (Editor navigation only)" : "JAVA " + java?.State;
+        public string CameraStatus => !ServicesEnabled ? "CAMERA NOT RUNNING (Editor navigation only)" : null;
+        public bool CleanupComplete => (java?.CleanupComplete ?? true) && (vision?.CleanupComplete ?? true);
+        public Task ShutdownAsync()
+        {
+            quitting = true;
+            cancel?.Cancel();
+            StopAllCoroutines();
+            TestsActive = false;
+            return closing ?? (closing = Close());
+        }
+        void Start(){priorBackground=Application.runInBackground;Application.runInBackground=true;cancel=new CancellationTokenSource();java=new JavaProbeSupervisor(enableLobby:true);if(Environment.GetEnvironmentVariable("GORILLA_MOBILE_LAB")=="1")java.HttpReady+=port=>Debug.Log("QA_LAB_HTTP_READY "+port);vision=new VisionSupervisor();fusion=new InputFusion(java.PhoneInputs,new FusionSettings());Application.wantsToQuit+=WantsToQuit;if(ServicesEnabled){javaRun=StartJava();visionRun=StartVision();}
+            else {qrState="QR NOT AVAILABLE";error="Editor navigation only; use run-qa.sh for physical QA";}fpsStart=Time.realtimeSinceStartupAsDouble;
             if(Environment.GetEnvironmentVariable("GORILLA_T018_MEASURE")=="1"){frameTiming=new FrameTimingWindow();previousFrame=fpsStart;measureStart=fpsStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_CAMERA_WARMUP")??"5");measureEnd=measureStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_T018_DURATION")??"61");}
             }
         async Task StartJava(){try{await java.RunLifecycleAsync(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"),Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"),cancel.Token);}catch(Exception){error="BACKEND FAILED: "+(java.LastSummary?.errorCode??"CHECK CONFIGURATION");}}
         async Task StartVision(){try{await vision.StartPackagedAsync(Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancel.Token);Debug.Log("CAMERA_LAB_READY");}catch(Exception){error="CAMERA FAILED: "+vision.Error;}}
-        void Update(){if(quitting){if(closing==null)closing=Close();if(closing.IsCompleted){allowQuit=true;Application.Quit(java.CleanupComplete&&vision.CleanupComplete?0:2);}return;}
+        void Update(){if(quitting){if(closing==null)closing=Close();if(closing.IsCompleted){allowQuit=true;
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying=false;
+#else
+                Application.Quit(CleanupComplete?0:2);
+#endif
+            }return;}
             if(frameTiming!=null&&!timingLogged){double now=Time.realtimeSinceStartupAsDouble;if(previousFrame>=measureStart&&now<=measureEnd)frameTiming.Add((now-previousFrame)*1000);previousFrame=now;if(now>=measureEnd){timingLogged=true;var report=frameTiming.Report();report.clock="Unity Time.realtimeSinceStartupAsDouble; process-local monotonic seconds -> ms";Debug.Log("T018_FRAME_TIMING "+JsonUtility.ToJson(report));}}
             fpsFrames++;double elapsed=Time.realtimeSinceStartupAsDouble-fpsStart;if(elapsed>=1){fps=fpsFrames/elapsed;fpsFrames=0;fpsStart=Time.realtimeSinceStartupAsDouble;}
             vision.Poll();if(vision.State=="RUNNING"&&TestsActive!=previewRequested){vision.SetQaPreview(TestsActive);previewRequested=TestsActive;}if(TestsActive&&vision.PreviewPort>0&&preview==null&&(previewClosing==null||previewClosing.IsCompleted)){preview=new CameraPreviewClient();preview.Start(vision.PreviewPort);}
@@ -105,7 +125,7 @@ namespace GorillaEscape.QA {
         [Serializable]sealed class SurfaceSummary{public bool visualApplied,cameraCleanup,javaCleanup,controlsRestored,qaPhoneObserved;public long phoneAccepted,previewOverwritten;public int visualFrame,endOfFrame;public double unityUpdateFps;public string previewState;}
         [Serializable]sealed class CameraCleanup{public bool complete,forced,controlsRestored;public int pid,exitCode;public long accepted;public string source;}
         bool WantsToQuit(){if(allowQuit)return true;RequestExit();return false;}
-        async Task Close(){ClearQr();preview?.Dispose();if(previewClosing!=null)await previewClosing;java.RequestStop();if(javaRun!=null)await javaRun;if(visionRun!=null)await visionRun;await vision.StopAsync();if(preview?.Run!=null)await preview.Run;fusion.Clear();sample=null;ClearQr();if(cameraTexture!=null){Destroy(cameraTexture);cameraTexture=null;}Debug.Log("QA_SURFACE_SUMMARY "+JsonUtility.ToJson(new SurfaceSummary{visualApplied=applied>0&&presented>0,qaPhoneObserved=qaPhoneObserved,phoneAccepted=java.PhoneInputs.Accepted,visualFrame=appliedFrame,endOfFrame=presentedFrame,unityUpdateFps=fps,previewState=preview?.State,previewOverwritten=preview?.Overwritten??0,cameraCleanup=vision.CleanupComplete,javaCleanup=java.CleanupComplete,controlsRestored=vision.ControlsRestored}));if(vision.Summary!=null)Debug.Log("CAMERA_LAB_METRICS "+vision.Summary);Debug.Log("CAMERA_LAB_CLEANUP "+JsonUtility.ToJson(new CameraCleanup{complete=vision.CleanupComplete,forced=vision.Forced,controlsRestored=vision.ControlsRestored,pid=vision.Pid,exitCode=vision.ExitCode??-1,accepted=cameras.Accepted,source=cameras.Latest?.source}));cameras.Clear();java.Dispose();vision.Dispose();}
-        async void OnDestroy(){Application.wantsToQuit-=WantsToQuit;cancel?.Cancel();if(closing==null)closing=Close();await closing;cancel?.Dispose();Application.runInBackground=priorBackground;}
+        async Task Close(){if(java==null)return;ClearQr();preview?.Dispose();if(previewClosing!=null)await previewClosing;java.RequestStop();if(javaRun!=null)await javaRun;if(visionRun!=null)await visionRun;await vision.StopAsync();if(preview?.Run!=null)await preview.Run;fusion.Clear();sample=null;ClearQr();if(cameraTexture!=null){Destroy(cameraTexture);cameraTexture=null;}Debug.Log("QA_SURFACE_SUMMARY "+JsonUtility.ToJson(new SurfaceSummary{visualApplied=applied>0&&presented>0,qaPhoneObserved=qaPhoneObserved,phoneAccepted=java.PhoneInputs.Accepted,visualFrame=appliedFrame,endOfFrame=presentedFrame,unityUpdateFps=fps,previewState=preview?.State,previewOverwritten=preview?.Overwritten??0,cameraCleanup=vision.CleanupComplete,javaCleanup=java.CleanupComplete,controlsRestored=vision.ControlsRestored}));if(vision.Summary!=null)Debug.Log("CAMERA_LAB_METRICS "+vision.Summary);Debug.Log("CAMERA_LAB_CLEANUP "+JsonUtility.ToJson(new CameraCleanup{complete=vision.CleanupComplete,forced=vision.Forced,controlsRestored=vision.ControlsRestored,pid=vision.Pid,exitCode=vision.ExitCode??-1,accepted=cameras.Accepted,source=cameras.Latest?.source}));cameras.Clear();java.Dispose();vision.Dispose();}
+        async void OnDestroy(){Application.wantsToQuit-=WantsToQuit;await ShutdownAsync();cancel?.Dispose();if(java!=null)Application.runInBackground=priorBackground;}
     }
 }
