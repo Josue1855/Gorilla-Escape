@@ -59,7 +59,7 @@ class ConnectivityTest {
         var calls=new java.util.concurrent.atomic.AtomicInteger();
         try(var ingress=new PublicIngress((path,body)->{calls.incrementAndGet();return Map.of("state","REJECTED_TEST");})){var client=HttpClient.newHttpClient();assertEquals("127.0.0.1",ingress.origin().getHost());
             for(String path:List.of("/mobile/admission","/mobile/diagnostics","/mobile/end","/api/health","/actuator","/ipc","/qa/preview","/camera/preview","/prepare","/ca.key","/trust","/filesystem","/metrics","/mobile-lab/index.html","/assets/../application.properties","/%2e%2e/application.properties","/mobile/join?admission=secret")){
-                var r=client.send(HttpRequest.newBuilder(ingress.origin().resolve(path)).GET().build(),HttpResponse.BodyHandlers.ofString());assertEquals(404,r.statusCode(),path);
+                for(String method:List.of("GET","POST")){var request=HttpRequest.newBuilder(ingress.origin().resolve(path));if(method.equals("POST"))request.header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}"));else request.GET();var r=client.send(request.build(),HttpResponse.BodyHandlers.ofString());assertEquals(404,r.statusCode(),method+" "+path);}
             }
             for(String path:PublicIngress.SIGNAL){var r=client.send(HttpRequest.newBuilder(ingress.origin().resolve(path)).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build(),HttpResponse.BodyHandlers.ofString());assertEquals(200,r.statusCode());assertTrue(r.headers().firstValue("Cache-Control").orElseThrow().contains("no-store"));}
             assertEquals(3,calls.get());var large=client.send(HttpRequest.newBuilder(ingress.origin().resolve("/mobile/join")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("x".repeat(PublicIngress.MAX_BODY+1))).build(),HttpResponse.BodyHandlers.ofString());assertEquals(413,large.statusCode());assertEquals(3,calls.get());
@@ -108,5 +108,15 @@ class ConnectivityTest {
             assertEquals("CONNECTION_NOT_READY",service.qa(true).state());release.countDown();waitReady(bootstrap);
             var ready=service.qa(false);assertEquals("AVAILABLE",ready.state());assertFalse(ready.modules().isEmpty());
         }finally{release.countDown();mobile.destroy();}
+    }
+
+    @Test void actualRunningProcessDeathIsDetectedAndMalformedOutputIsBounded()throws Exception{
+        var dying=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nsleep 0.1\n");
+        try(var tunnel=new CloudflaredSupervisor(dying,(origin,budget)->true)){
+            tunnel.start(URI.create("http://127.0.0.1:9"),500);long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(1);
+            while(tunnel.state()==Tunnel.State.RUNNING&&System.nanoTime()<end)Thread.sleep(10);assertEquals(Tunnel.State.FAILED,tunnel.state());tunnel.close();assertTrue(tunnel.cleanupComplete());
+        }
+        var bad=script("printf '%s\\n' 'https://qa-test.trycloudflare.com;$(touch should-never-exist)'\necho 'Registered tunnel connection'\nexec sleep 20\n");
+        try(var tunnel=new CloudflaredSupervisor(bad,(origin,budget)->true)){assertThrows(Exception.class,()->tunnel.start(URI.create("http://127.0.0.1:9"),150));assertTrue(tunnel.cleanupComplete());}
     }
 }

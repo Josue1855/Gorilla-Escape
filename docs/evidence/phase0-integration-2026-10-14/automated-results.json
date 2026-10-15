@@ -65,22 +65,27 @@
   "PlayMode": {
     "id": "2",
     "testcasecount": "27",
-    "result": "Failed(Child)",
+    "result": "Passed",
     "total": "27",
-    "passed": "18",
-    "failed": "9",
+    "passed": "27",
+    "failed": "0",
     "inconclusive": "0",
     "skipped": "0",
     "asserts": "0",
     "engine-version": "3.5.0.0",
     "clr-version": "4.0.30319.42000",
-    "start-time": "2026-10-15 05:58:50Z",
-    "end-time": "2026-10-15 05:59:49Z",
-    "duration": "58.8397257"
+    "start-time": "2026-10-15 06:04:52Z",
+    "end-time": "2026-10-15 06:07:15Z",
+    "duration": "143.2003433"
   },
   "latestPlayModeAttempt": {
-    "result": "18 passed / 9 intentionally rejected by singleton; not PASS",
-    "reason": "Concurrent soak owns canonical managed Java lock",
-    "action": "Repeat full suite after soak cleanup without weakening singleton"
+    "result": "PASS 27/27",
+    "startedUtc": "2026-10-15 06:04:52Z",
+    "scope": "fresh full repeat after exploratory soak cleanup; includes QA mode/QR rotation IPC test"
+  },
+  "connectivityFocused": {
+    "passed": 13,
+    "failed": 0,
+    "includes": "deferred startup QR regression; GET/POST denylist; real process death; malformed stdout"
   }
 }

@@ -66,5 +66,37 @@
     "Unity/Assets/_Project/Scripts/UI/TestsMenuView.cs": "8719ed43d2eda23e8e81c204db933d4069009b9ca56c4778680ae94263908316",
     "Unity/Assets/_Project/Scripts/QA/QaRuntimeService.cs": "f0463f2e7a008a7d3fee2ffed4e4e01927a08069180e64accf0d2233db664b86",
     "Unity/Assets/_Project/Editor/ProductPlayMode.cs": "cbe9516da07e47ceebe46fcff31f708c5455230245f7c605e5e7a655a8800dee"
+  },
+  "editMode": {
+    "result": "Passed",
+    "total": "161",
+    "passed": "161",
+    "failed": "0",
+    "skipped": "0",
+    "start-time": "2026-10-15 05:58:12Z",
+    "end-time": "2026-10-15 05:58:13Z"
+  },
+  "playMode": {
+    "result": "Passed",
+    "total": "27",
+    "passed": "27",
+    "failed": "0",
+    "skipped": "0",
+    "start-time": "2026-10-15 06:04:52Z",
+    "end-time": "2026-10-15 06:07:15Z"
+  },
+  "nativeClickAutomation": {
+    "classification": "BLOCKED / not a PASS",
+    "requestedLocalXY": [
+      180,
+      568
+    ],
+    "observedLocalXY": [
+      874,
+      842
+    ],
+    "ownedWindowEvents": "received; target activation not verified",
+    "cleanup": "exit0 / owned residual0 / controls restored",
+    "evidence": "final-launcher-navigation-repeat.json"
   }
 }
