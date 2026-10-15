@@ -53,3 +53,17 @@ cd /home/josuegalvan/Documentos/GorillaEscape-Phase0-MainMenuQA-2026-10-14
 El paquete verifica integridad antes de arrancar; no necesita Editor. No ejecutar dos copias a la vez. **STOP TEST** exporta automáticamente el summary y muestra su ubicación; **Export summary only** permite repetir la exportación. La carpeta es `/home/josuegalvan/GorillaEscape-QA-Summaries`. Si falla exportación, la UI lo indica; no se informa PASS. La build exacta, hash y validaciones están en [reporte de T062](PHASE0_MAIN_MENU_QA_CENTER.md).
 
 Mantén sujeto el teléfono. Registra foreground/background, lock/unlock y pérdida/red como resultados reales por duración y versión. Esta entrega no acredita ningún PASS físico móvil ni autoriza Phase1.
+
+## Overnight integration 2026-10-14 — AUTO y rutas separadas
+
+Paquete integrado: `GorillaEscape-Phase0-Integrated-2026-10-14` (usar sólo el artefacto cuya creación/verificación consta en el reporte overnight). Desde su directorio ejecutar `./run-qa.sh`, sin variables. Main Menu → PRUEBAS → CONEXIÓN / QA: Requested AUTO, Resolved CLOUDFLARED o CABIN; cerrar panel → QR → iPhone en la **misma LAN**. JUGAR continúa deshabilitado.
+
+A. AUTO: sin binario opcional o sin WAN/HTTPS disponible debe resolver CABAÑA tras cleanup. Si el teléfono no confía en la CA local, **PREPARAR TELÉFONO**, siguiendo las instrucciones de trust de este runbook; luego escanear QR vigente. No prometer cero pasos en teléfono nuevo.
+
+B. Cabaña oficial/offline: `GORILLA_CONNECTION_MODE=CABIN ./run-qa.sh`. Confirmar Requested CABIN, Resolved CABIN. Ésta sigue siendo la ruta canónica para T019/T020 y aceptación offline. No requiere Cloudflare, cuenta, dominio ni Internet. Registrar 4 teléfonos, 20 connects, 20 reconnects, >=95%, P95 y fallos originales; LAB no los reemplaza.
+
+C. Cloudflared opcional/QA: proporcionar un binario oficial revisado vía ruta absoluta `GORILLA_CLOUDFLARED_PATH`; ejecutar `GORILLA_CONNECTION_MODE=CLOUDFLARED ./run-qa.sh`. Ausencia/fallo produce error visible, sin fallback silencioso. Quick Tunnel tiene hostname temporal y requiere WAN. Sólo PWA/signaling pasan por él; **GAMEPLAY PATH: LAN DIRECT**. Una prueba pública desde otra red puede cargar PWA pero no debe producir gameplay remoto. Si hay límite/permisos de acceso a red local del navegador, registrarlos como evidencia física pendiente.
+
+El selector QA sólo permite cambiar modo sin jugadores retenidos. Ante pérdida de túnel en AUTO se conserva la sesión/los jugadores RTC y se reemplaza el QR de futuros joins; no reutilizar un QR anterior. Medir supervivencia real de RTC bajo pérdida de WAN: no asumirla por un estado de proceso. No usar HTTP RTT de Cloudflare como motion E2E ni confirmar PHYSICAL para un emulador/replay.
+
+Editor: abrir `Assets/_Project/Scenes/Bootstrap/Bootstrap.unity` → Play, o menú Gorilla Escape → Play Gorilla Escape. Main Menu/PRUEBAS/SALIR funcionan sin Java/Vision. Servicios físicos sólo con opt-in `GORILLA_EDITOR_PHYSICAL_QA=1` y configuración explícita del launcher; para QA reproducible se prefiere el paquete. Ninguna prueba física de esta sección se realizó durante la sesión nocturna.

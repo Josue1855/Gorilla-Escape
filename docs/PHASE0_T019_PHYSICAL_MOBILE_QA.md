@@ -70,3 +70,7 @@ Physical mobile sensorHz/clock/E2E/QR<60s and cleanPC remain NOT RUN. T019/T020/
 ## T062 — Main Menu y Centro de Pruebas, 2026-10-14
 
 DEC-029: fundación real Bootstrap→MainMenu→PRUEBAS, JUGAR deshabilitado; preview QA local/memoria desde captura T016 única, QR productivo, sensores/slots/readiness, indicador técnico y agregados. [Arquitectura/evidencia](PHASE0_MAIN_MENU_QA_CENTER.md) y [runbook iPhone15 sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). No gameplay ni cierre F41. **T019 OPEN / Validation; T020/F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED.** Physical iPhone/four-phone evidence NOT RUN por esta implementación. Resultados técnicos se registran en la documentación de T062; ningún mock acredita PASS físico.
+
+### Preparación de software overnight 2026-10-14
+
+T064/#115 elimina stop-and-wait de motion (reproducción0→2000ms con ACK perdido; bounded latest-only). T065/#116 permite navegación desde Bootstrap en Editor sin procesos físicos por defecto. T063/#114 agrega AUTO/Cabaña/Cloudflared opcional, con Cabaña canónica para completar íntegramente este protocolo. Ningún AC de T019 cambia: cuatro teléfonos,20 connects,20 reconnects,>=95%,P95,fallos y medición física motion→respuesta visual siguen pendientes. [Integración y clasificación de evidencia](PHASE0_OVERNIGHT_INTEGRATION_REPORT_2026-10-14.md). LAB con clientes sintéticos y caídas de túnel no es evidencia física ni sustituye T020.

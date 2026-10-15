@@ -44,6 +44,7 @@ public final class MobileRuntime implements DisposableBean {
     private static JoinFailure failure(JoinDiagnostic d,JoinDiagnostic.Code code){d.fail(code);return new JoinFailure(code);}
 
     public MobileRuntime(){expiry.setRemoveOnCancelPolicy(true);expiry.scheduleWithFixedDelay(this::expire,1,1,TimeUnit.SECONDS);}
+    public synchronized void revokePendingAdmissions(){session.revokePendingAdmissions();qaAdmission.invalidate();}
     public synchronized TechnicalSession.Admission admission(){if(closed)throw new IllegalStateException("SESSION_CLOSED");return session.createAdmission();}
     public record Signal(int protocolVersion,String messageType,String sessionId,String admission,String offer) {}
     public record Answer(int protocolVersion,String messageType,String sessionId,int playerId,String deviceSessionId,String resumeToken,long connectionEpoch,String peerId,String answer) {}

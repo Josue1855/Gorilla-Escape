@@ -1,0 +1,3 @@
+# Raw local test/editor logs can include host/license identifiers. Commit aggregate evidence only.
+*.log
+*.xml

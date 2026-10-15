@@ -1,0 +1,15 @@
+# Phase0 overnight integration — 2026-10-14
+
+IN PROGRESS. Initial develop `59a32a236f196a5daa6291ce9c7d4934f941fd2a`; Editor PR #113 merged normally at `c35a3e31e3f1437c5bc341910233c887c1815377`. Existing dirty Editor worktree preserved; implementation isolated in the attached `phase0-integration` worktree. DEC-030 accepted by explicit PO instruction. T063/#114 (optional under F41), T064/#115 (T019 software support), T065/#116 (Editor DX) created after auditing all existing issues. Project field readback retained in evidence; no field/view recreation.
+
+Fresh evidence is collected in [integration evidence](evidence/phase0-integration-2026-10-14/). Historical PASS is not substituted for current tests. Full final audit will be appended after completion.
+
+T019 physical NOT COMPLETE; T020 clean physical PC NOT RUN; F05/E0 OPEN; final exit BLOCKED; Phase1 NOT STARTED; JUGAR disabled. No phone/human/secondary-PC tests authorized overnight. [Connectivity architecture](TRANSPARENT_CONNECTIVITY.md).
+
+## Integration checkpoints
+
+- `develop` after motion merge: `beca79863236217ebb1fd39b0e949e44f641c2c3`; PR117 required checks PASS, zero unresolved threads. Post-merge PWA69/69 rerun via its documented package script PASS. An accidental direct-root test invocation failed only because the SW test expects PWA as working directory; that attempt was superseded, not counted PASS.
+- Fresh gateway/native RTC LAB and safely isolated no-WAN LAB: CABIN and AUTO with external-tunnel stub each progress1→2→3→4 unique players. Selected candidate pairs host↔host, no configured ICE servers, remote address private; local candidate address hidden by Chrome = UNKNOWN. All4 retain epoch1 and send40 new motion samples each after simulated tunnel loss with all motion ACKs suppressed; reliable HEARTBEAT/CLIENT_STATE succeed. Reconnect retains PlayerId and reaches epoch2; capacity/reused admission denied; public-IP candidates denied. This is software/LAB evidence, not public5G physical testing.
+- Fresh Java full run94 cases:93 passed,1 explicitly skipped external Quick Tunnel; includes10 deterministic connectivity cases, real native gateway/browser RTC, explicit LAN HTTPS configuration and process lifecycle. No failures. Python25 tests PASS. Quick Tunnel was separately attempted and blocked, never promoted from skipped to PASS.
+- The later PlayMode repetition collided with the deliberately running soak's process singleton:9 attempts correctly returned ALREADY_RUNNING,18 passed. It does **not** supersede the earlier27/27 result as a PASS. A clean full repeat must run after the soak releases its owned backend. No guard bypass or second production backend is introduced to make tests green.
+- T018 fresh A–B comparison halted on first arm:physical capture opened/configured,zero frames,all owned resources and controls restored. Wireplumber holds a camera descriptor; causality is not established and that unrelated process was not stopped. Result **BLOCKED / comparison incomplete**, performance evidence must be rerun when capture is available. Existing historical T018 acceptance is not rewritten.

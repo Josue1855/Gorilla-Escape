@@ -1,0 +1,70 @@
+{
+  "editmode": {
+    "result": "Passed",
+    "total": "161",
+    "passed": "161",
+    "failed": "0",
+    "skipped": "0",
+    "start-time": "2026-10-15 05:38:43Z",
+    "end-time": "2026-10-15 05:38:43Z"
+  },
+  "PlayMode": {
+    "result": "Passed",
+    "total": "27",
+    "passed": "27",
+    "failed": "0",
+    "skipped": "0",
+    "start-time": "2026-10-15 05:44:11Z",
+    "end-time": "2026-10-15 05:46:33Z"
+  },
+  "linuxBuild": {
+    "succeeded": true,
+    "errors": 0,
+    "warnings": 0
+  },
+  "editorSmoke": {
+    "result": "PASS",
+    "batchMode": false,
+    "untitledNoMenu": true,
+    "bootstrapAutoLaunch": true,
+    "singleton": true,
+    "playDisabled": true,
+    "qaFlag": true,
+    "navigation": true,
+    "backendIdle": true,
+    "exitStopsPlay": true,
+    "stopPlayCleanup": true,
+    "secondPlay": true
+  },
+  "previousAttempts": [
+    {
+      "scope": "host direct Unity",
+      "result": "BLOCKED",
+      "reason": "No headless entitlement; rerun using documented Flatpak launcher"
+    },
+    {
+      "scope": "first PlayMode",
+      "result": "25/27",
+      "reason": "Chrome unavailable inside Flatpak; full rerun with explicit host browser launcher passed"
+    },
+    {
+      "scope": "first explicit LAN Java tests",
+      "result": "2 errors",
+      "reason": "Required lanInterface was omitted; full rerun with address and interface passed"
+    },
+    {
+      "scope": "interactive Editor layout",
+      "result": "BLOCKED before harness",
+      "reason": "Shared maximized layout restoration; isolated config + supplied layout allowed fresh smoke"
+    }
+  ],
+  "sourceHashes": {
+    "Shared/CSharp/Runtime/PhoneInputWire.cs": "8aaac990590367a9ae37013de60a1028c94c114ec8741a0c384f59fabaf5bcbc",
+    "Unity/Assets/_Project/Scripts/UI/TestsMenuController.cs": "6e2d9bb4a6b179bb11ecd8cb90cc8d0fad7c5e2176f0d6f9ae5a126d9b31e28f",
+    "Unity/Assets/_Project/Scripts/UI/MainMenuView.cs": "fea1b78ce65d7a5f79f52b388f5cabf167296242c68fba5047abe9f996469fcd",
+    "Unity/Assets/_Project/Scripts/UI/MainMenuController.cs": "f00801dc4a2e1707dddc6a620627b6169a9237e5bcb2a56d7bf0f8b10ade6c99",
+    "Unity/Assets/_Project/Scripts/UI/TestsMenuView.cs": "8719ed43d2eda23e8e81c204db933d4069009b9ca56c4778680ae94263908316",
+    "Unity/Assets/_Project/Scripts/QA/QaRuntimeService.cs": "f0463f2e7a008a7d3fee2ffed4e4e01927a08069180e64accf0d2233db664b86",
+    "Unity/Assets/_Project/Editor/ProductPlayMode.cs": "cbe9516da07e47ceebe46fcff31f708c5455230245f7c605e5e7a655a8800dee"
+  }
+}

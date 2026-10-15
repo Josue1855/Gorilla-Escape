@@ -2,6 +2,7 @@
 set -eu
 package_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 "$package_root/Vision/python" -I "$package_root/verify-package.py" "$package_root"
+export GORILLA_CONNECTION_MODE="${GORILLA_CONNECTION_MODE:-AUTO}"
 export GORILLA_MAIN_MENU=1
 export GORILLA_QA_MENU="${GORILLA_QA_MENU:-1}"
 export GORILLA_QA_OVERLAY=1

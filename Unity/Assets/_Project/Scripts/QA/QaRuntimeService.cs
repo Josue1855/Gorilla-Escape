@@ -39,7 +39,10 @@ namespace GorillaEscape.QA {
         internal bool physicalConfirmed;
         bool qaPhoneObserved,previewRequested;
         // Editor navigation deliberately has no physical services, even with inherited launcher flags.
-        public bool ServicesEnabled => !Application.isEditor;
+        public static Func<bool> EditorServicePermission {private get;set;}
+        public static bool EditorServicesAllowed(bool playing,bool batch,bool permitted,string path,string optIn)
+            => playing&&!batch&&permitted&&path==GorillaEscape.UI.MainMenuController.BootstrapScenePath&&optIn=="1";
+        public bool ServicesEnabled => !Application.isEditor||EditorServicesAllowed(Application.isPlaying,Application.isBatchMode,EditorServicePermission?.Invoke()==true,UnityEngine.SceneManagement.SceneManager.GetActiveScene().path,Environment.GetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA"));
         public string JavaStatus => !ServicesEnabled ? "JAVA NOT RUNNING (Editor navigation only)" : "JAVA " + java?.State;
         public string CameraStatus => !ServicesEnabled ? "CAMERA NOT RUNNING (Editor navigation only)" : null;
         public bool CleanupComplete => (java?.CleanupComplete ?? true) && (vision?.CleanupComplete ?? true);
@@ -72,7 +75,7 @@ namespace GorillaEscape.QA {
             if(vision.Take(out var frame,out var at)&&cameras.Accept(frame,at))fusion.ObserveCamera(frame,at);
             if(cameras.Latest!=null&&!cameras.Fresh(Now(),250,20))fusion.Association.MarkLost();
             if(TestsActive&&java.State==IpcState.RUNNING&&!generated){generated=true;PrepareQr();java.RegenerateQa();}
-            var qr=java.Qa;if(TestsActive&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){if(qrTexture==null){try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
+            var qr=java.Qa;if(TestsActive&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){{ClearQr();try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
             if(TestsActive&&(java.State==IpcState.FAILED||java.State==IpcState.STOPPED)){ClearQr();qrState="BACKEND UNAVAILABLE";}
             var lobby=java.Lobby.Snapshot;if(TestsActive&&qrVisible>0&&joinEnd==0&&lobby?.players!=null)foreach(var p in lobby.players)if(!priorPlayers.Contains(PlayerKey(p))&&p.networkReady&&p.inputReady&&p.connectionEpoch==1){joinEnd=Now();break;}
             if(TestsActive&&java.PhoneInputs.TryLatest(selected,out var pInput)){sample=pInput;fusion.ObservePhone(pInput);if(pInput.sequence!=sequence||pInput.connectionEpoch!=epoch){sequence=pInput.sequence;epoch=pInput.connectionEpoch;applied=Now();appliedFrame=Time.frameCount;presented=0;}}
@@ -113,6 +116,7 @@ namespace GorillaEscape.QA {
             if(cameraTexture!=null){Destroy(cameraTexture);cameraTexture=null;}
             ClearQr();sample=null;sequence=epoch=-1;applied=presented=qrVisible=joinEnd=0;generated=false;
         }
+        public void ChangeConnectionMode(string mode){if(java.State!=IpcState.RUNNING||(java.Lobby.Snapshot?.players?.Length??0)>0)return;java.RequestConnectionMode(mode);}
         public void RegenerateQr(){if(java.State!=IpcState.RUNNING)return;ClearQr();qrVisible=joinEnd=0;PrepareQr();java.RegenerateQa();}
         public void ResetMetrics(){baseline=java.QaMetrics??new QaMetricsWire();model.Reset();qrVisible=joinEnd=0;exportMessage="QA aggregates reset; session retained";}
         public void SelectPlayer(int player){selected=player;sample=null;sequence=epoch=-1;applied=presented=0;}

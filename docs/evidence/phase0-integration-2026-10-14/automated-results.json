@@ -1,0 +1,81 @@
+{
+  "pwa-tests.log": {
+    "sha256": "40ffa0e7a87fb96676e06f96652eff2facfc98e567ea7f129dfc15ad632a2433",
+    "summary": [
+      "\u2139 tests 69",
+      "\u2139 pass 69",
+      "\u2139 fail 0"
+    ]
+  },
+  "pwa-postmerge.log": {
+    "sha256": "a6ef871d083ecd6c1c1fd2e12a60c453d46b442e5bf84caf8ae0e9a15f766761",
+    "summary": [
+      "\u2139 tests 69",
+      "\u2139 pass 69",
+      "\u2139 fail 0"
+    ]
+  },
+  "pwa-build.log": {
+    "sha256": "62055b54d835790a1605b23aa623ffb5bd3d7d65adaff65650577a2633785197",
+    "summary": [
+      "\u2713 built in 96ms",
+      "Offline shell generated: gorilla-shell-9be45ae54dab8211"
+    ]
+  },
+  "python-tests.log": {
+    "sha256": "c30da9474e932816cade24863f4f8633bc90f8640d279bece48a448c487a4352",
+    "summary": [
+      "Ran 23 tests in 0.082s",
+      "OK",
+      "Ran 2 tests in 1.005s",
+      "OK"
+    ]
+  },
+  "clock-tests.log": {
+    "sha256": "009f2e9781174850a342f5eb7c3988191f118bf2046c90d6e2918ca46f156752",
+    "summary": [
+      "\u2139 tests 5",
+      "\u2139 pass 5",
+      "\u2139 fail 0"
+    ]
+  },
+  "java-verified-final.log": {
+    "sha256": "c474495afc1e0275c01c5a5d444a695ec1be42cacd5040e2a178b322095655f9",
+    "summary": [
+      "[INFO] Tests run: 94, Failures: 0, Errors: 0, Skipped: 1",
+      "[INFO] BUILD SUCCESS"
+    ]
+  },
+  "EditMode": {
+    "id": "2",
+    "testcasecount": "161",
+    "result": "Passed",
+    "total": "161",
+    "passed": "161",
+    "failed": "0",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-15 05:58:12Z",
+    "end-time": "2026-10-15 05:58:13Z",
+    "duration": "0.9791373"
+  },
+  "PlayMode": {
+    "id": "2",
+    "testcasecount": "27",
+    "result": "Failed(Child)",
+    "total": "27",
+    "passed": "18",
+    "failed": "9",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-15 05:58:50Z",
+    "end-time": "2026-10-15 05:59:49Z",
+    "duration": "58.8397257"
+  }
+}

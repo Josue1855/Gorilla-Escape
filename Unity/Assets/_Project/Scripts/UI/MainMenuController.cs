@@ -53,6 +53,11 @@ namespace GorillaEscape.UI
 
         void Awake()
         {
+            if(Camera.main==null&&FindFirstObjectByType<Camera>()==null){
+                var view=new GameObject("Menu Camera");view.transform.SetParent(transform);
+                var camera=view.AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;
+                camera.backgroundColor=new Color(.06f,.08f,.11f);camera.cullingMask=0;
+            }
             // Negotiation remains opt-in within the existing authenticated IPC; no new session authority.
             if (!Application.isEditor && QaVisible) Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
             Runtime = gameObject.AddComponent<QaRuntimeService>();

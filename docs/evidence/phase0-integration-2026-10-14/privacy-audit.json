@@ -1,0 +1,43 @@
+{
+  "pwa-tests.log": {
+    "sha256": "40ffa0e7a87fb96676e06f96652eff2facfc98e567ea7f129dfc15ad632a2433",
+    "lines": 81,
+    "sdpSignatureMatches": 0
+  },
+  "pwa-postmerge.log": {
+    "sha256": "8b5c5e482de6e0d27d5ea9a543bfbcaf45262c9a556544b2b427502182d2ef31",
+    "lines": 134,
+    "sdpSignatureMatches": 0
+  },
+  "python-tests.log": {
+    "sha256": "c30da9474e932816cade24863f4f8633bc90f8640d279bece48a448c487a4352",
+    "lines": 10,
+    "sdpSignatureMatches": 0
+  },
+  "clock-tests.log": {
+    "sha256": "009f2e9781174850a342f5eb7c3988191f118bf2046c90d6e2918ca46f156752",
+    "lines": 13,
+    "sdpSignatureMatches": 0
+  },
+  "java-lan-final.log": {
+    "sha256": "ad944e5781d196548c2cd9cc600a193be7f9c587aed419ccd9025f837faf9914",
+    "lines": 132,
+    "sdpSignatureMatches": 0
+  },
+  "audioWarning": {
+    "classification": "environment/configuration; disabled Audio built-in module in temporary Editor scene; unrelated to menu launch",
+    "bootstrapAudioListeners": 0,
+    "audioModuleEnabled": false,
+    "newMenuCameraAudioListener": false
+  },
+  "physical": {
+    "phones": "NOT RUN",
+    "humanTracking": "NOT RUN",
+    "cleanPhysicalPC": "NOT RUN"
+  },
+  "T018FreshAttempt": {
+    "status": "BLOCKED / no fresh performance PASS",
+    "reason": "Physical camera opened/configured but captured0 frames; T018 ABBA stopped. Wireplumber owns /dev/video0; no unrelated process stopped; cleanup and controls restored.",
+    "humanTracking": "NOT RUN"
+  }
+}

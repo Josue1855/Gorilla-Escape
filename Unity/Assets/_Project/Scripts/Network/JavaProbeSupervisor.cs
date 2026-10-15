@@ -58,6 +58,9 @@ namespace GorillaEscape.Network
         readonly bool qaEnabled=Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY")=="1";
         public QaPhoneMetricsWire[] QaPhones {get;private set;}
         public QaHostingWire QaHosting {get;private set;}
+        public QaConnectionWire QaConnection {get;private set;}
+        string requestedQaMode;
+        public void RequestConnectionMode(string mode){if(!qaEnabled||Array.IndexOf(new[]{"AUTO","CABIN","CLOUDFLARED"},mode)<0)throw new InvalidOperationException("QA_CONNECTION_MODE");Interlocked.Exchange(ref requestedQaMode,mode);}
         public QaAdmissionWire Qa {get;private set;}
         public QaMetricsWire QaMetrics {get;private set;}
         int regenerateQa;
@@ -109,7 +112,7 @@ namespace GorillaEscape.Network
             }
             finally
             {
-                Qa=null;QaPhones=null;QaHosting=null;
+                Qa=null;QaPhones=null;QaHosting=null;QaConnection=null;
                 Lobby.Reset();
                 PhoneInputs.EndSession();
                 Summarize(a);
@@ -227,6 +230,7 @@ namespace GorillaEscape.Network
                         if(secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"lobbyVersion\":1}";
                         else {var command=Lobby.TakeCommand();if(command!=null)payload="{\"lobbyCommand\":"+JsonUtility.ToJson(command)+"}";}
                     }
+                    if(qaEnabled&&secret==null){var mode=Interlocked.Exchange(ref requestedQaMode,null);if(mode!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaConnectionMode\":\""+mode+"\"}";}
                     if(qaEnabled&&secret==null&&Interlocked.Exchange(ref regenerateQa,0)==1)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaRegenerate\":true}";
                     a.result.sent++;
                     IpcFrameCodec.Write(stream, "{\"ipcVersion\":1,\"type\":\"PING\",\"instanceId\":\"" + a.result.instanceId
@@ -238,7 +242,7 @@ namespace GorillaEscape.Network
                             var mobile=JsonUtility.FromJson<PhonePong>(body);
                             if(mobile==null||mobile.ipcVersion!=1||mobile.type!="PONG"||mobile.instanceId!=a.result.instanceId||mobile.connectionId!=connection||mobile.sequence!=sequence||mobile.payload?.phoneInputs==null||mobile.payload.phoneInputs.Length>4)throw new InvalidDataException("PHONE_PONG");
                             if(lobbyEnabled){Lobby.Accept(mobile.payload.lobby,mobile.payload.hasLobbyResult?mobile.payload.lobbyResult:null);PhoneInputs.ObserveLobby(Lobby.Snapshot);}
-                            if(qaEnabled){if(QaPhones==null)QaPhones=new QaPhoneMetricsWire[4];if(mobile.payload.qaPhones!=null)foreach(var report in mobile.payload.qaPhones)if(report.playerId>=1&&report.playerId<=4)QaPhones[report.playerId-1]=report;QaHosting=mobile.payload.qaHosting;var next=mobile.payload.qa;if(next!=null&&next.state=="AVAILABLE"&&string.IsNullOrEmpty(next.modules)&&Qa?.state=="AVAILABLE"){next.modules=Qa.modules;next.size=Qa.size;}Qa=next;QaMetrics=mobile.payload.qaMetrics;}
+                            if(qaEnabled){if(QaPhones==null)QaPhones=new QaPhoneMetricsWire[4];if(mobile.payload.qaPhones!=null)foreach(var report in mobile.payload.qaPhones)if(report.playerId>=1&&report.playerId<=4)QaPhones[report.playerId-1]=report;QaConnection=mobile.payload.qaConnection;QaHosting=mobile.payload.qaHosting;var next=mobile.payload.qa;if(next!=null&&next.state=="AVAILABLE"&&string.IsNullOrEmpty(next.modules)&&Qa?.state=="AVAILABLE"){next.modules=Qa.modules;next.size=Qa.size;}Qa=next;QaMetrics=mobile.payload.qaMetrics;}
                             foreach(var input in mobile.payload.phoneInputs){input.unityReceiveTimestamp=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();if(PhoneInputs.Accept(input)){input.unityAcceptTimestamp=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();PhoneInputReceived?.Invoke(input);}}
                             pong=new IpcPong{ipcVersion=mobile.ipcVersion,type=mobile.type,instanceId=mobile.instanceId,connectionId=mobile.connectionId,sequence=mobile.sequence};
                         }else pong = IpcProbeContract.Pong(body, a.result.instanceId, connection, sequence);
