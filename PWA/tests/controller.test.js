@@ -81,3 +81,12 @@ test('disposing during connect cannot publish readiness or retain owned transpor
   const connecting = model.connect(); await model.dispose(); finish({}); await connecting;
   assert.deepEqual(events, ['CONNECTING']); assert.equal(transport.state, 'STOPPED');
 });
+test('QA telemetry reuses measured windows, preserves missing and zero, and clears callback', async () => {
+  const transport=client(), model=new ControllerSession({win:win(),url,client:transport});
+  assert.deepEqual(transport.qaTelemetry(),{qaVersion:1,motionHz:null,orientationHz:null,emissionHz:null,rttP50:null,rttP95:null});
+  model.capture.metrics=()=>({channels:{motion:{validUnique:{actualMeasuredHz:59.8}},orientation:{validUnique:{actualMeasuredHz:0}}}});
+  model.emissionRate.metrics=()=>({actualMeasuredHz:49.5});transport.metrics={rtt:[3,1,8,2]};
+  assert.deepEqual(transport.qaTelemetry(),{qaVersion:1,motionHz:59.8,orientationHz:0,emissionHz:49.5,rttP50:2,rttP95:8});
+  assert.equal(JSON.stringify(transport.qaTelemetry()).includes('UNIT_SECRET'),false);
+  await model.dispose();assert.equal(transport.qaTelemetry,null);
+});

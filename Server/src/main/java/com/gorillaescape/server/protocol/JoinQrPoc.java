@@ -23,6 +23,10 @@ public final class JoinQrPoc {
         URI validated=link(URI.create("https://lab.example.invalid/"),admission);
         return URI.create(page.toASCIIString()+"#"+validated.getRawFragment());
     }
+    public static BitMatrix modules(URI link) throws WriterException {
+        if(link.toASCIIString().length()>1024)throw new IllegalArgumentException("QR_SIZE");
+        return new MultiFormatWriter().encode(link.toASCIIString(),BarcodeFormat.QR_CODE,1,1);
+    }
     public static BitMatrix encode(URI link) throws WriterException {
         if(link.toASCIIString().length()>1024)throw new IllegalArgumentException("QR_SIZE");
         return new MultiFormatWriter().encode(link.toASCIIString(),BarcodeFormat.QR_CODE,384,384);

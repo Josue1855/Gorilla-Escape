@@ -29,10 +29,24 @@ def main():
     if threading.current_thread() is threading.main_thread():
         signal.signal(signal.SIGTERM,lambda *_:stop.set())
         signal.signal(signal.SIGINT,lambda *_:stop.set())
+    qa_enabled=os.environ.get('GORILLA_QA_OVERLAY')=='1'
+    preview_request=(0,False);request_lock=threading.Lock()
     def parent():
-        while os.read(0,1): pass
-        stop.set()
+        nonlocal preview_request
+        command=bytearray()
+        while True:
+            value=os.read(0,1)
+            if not value:stop.set();return
+            if value==b'\n':
+                parts=bytes(command).split();command.clear()
+                if qa_enabled and len(parts)==4 and parts[:2]==[b'QA_PREVIEW',b'1'] and parts[2].isdigit() and parts[3] in [b'0',b'1']:
+                    revision=int(parts[2])
+                    with request_lock:
+                        if preview_request[0]<revision:preview_request=(revision,parts[3]==b'1')
+            elif len(command)<64:command.extend(value)
+            else:stop.set();return
     reader=threading.Thread(target=parent,name='parent-eof',daemon=True);reader.start()
+    preview=None;preview_revision=0;preview_ever=False;preview_overwritten=0;preview_errors=0;next_qa_metrics=0
     capture=detector=pump=timer=session=None;metrics=Metrics(a.warmup,enabled=a.telemetry=='enabled');frames=0;gaps=0;durations=[];captures=[];confidence=[];tracking=0;read_durations=[];skipped=0
     try:
         if a.mode=='unavailable': raise RuntimeError('CAMERA_UNAVAILABLE')
@@ -53,7 +67,8 @@ def main():
             configuration=dict(backend=capture.getBackendName(),device=a.device,width=capture.get(cv2.CAP_PROP_FRAME_WIDTH),height=capture.get(cv2.CAP_PROP_FRAME_HEIGHT),fourcc=''.join(chr((fourcc>>(8*i))&255) for i in range(4)),requestedFps=30,reportedFps=capture.get(cv2.CAP_PROP_FPS),reportedBuffer=capture.get(cv2.CAP_PROP_BUFFERSIZE),numPoses=2)
             configuration.update(profile=a.profile,controlsBefore=controls_before,controlsApplied=session.describe(),acquisitionTimestampSource='OpenCV V4L2 CAP_PROP_POS_MSEC / kernel timestamp; validated monotonic range, not optical ground truth',staleBudgetMs=100)
             previous=[];next_id=1;origin=now();mono=time.monotonic_ns();last_detector_time=-1;last_measured_ids=None
-            metrics=Metrics(a.warmup,enabled=a.telemetry=='enabled');pump=CapturePump(capture,stop,metrics,acquisition_clock=lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6));pump.start()
+            metrics=Metrics(a.warmup,enabled=a.telemetry=='enabled')
+            pump=CapturePump(capture,stop,metrics,acquisition_clock=lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6),preview=preview);pump.start()
             if a.duration:
                 timer=threading.Timer(a.warmup+a.duration,stop.set);timer.daemon=True;timer.start()
         emit('CAMERA_READY')
@@ -68,6 +83,15 @@ def main():
                 case=cases[(frames//5)%len(cases)];frame=json.loads(json.dumps(case['frame']));frame['captureTimestamp']=now();frame['processTimestamp']=now();frame['source']='replay'
                 frame['captureTimeSource']='fixture';frame['quality']='fixture'
             else:
+                with request_lock:revision,requested=preview_request
+                if revision!=preview_revision:
+                    preview_revision=revision
+                    if preview is not None:
+                        pump.preview=None;preview.close();preview_overwritten+=preview.slot.overwritten;preview_errors+=preview.errors;preview=None
+                    if requested:
+                        from preview import Preview
+                        preview=Preview(stop,metrics);pump.preview=preview;preview_ever=True
+                    emit('CAMERA_PREVIEW_PORT',{'version':1,'revision':revision,'port':preview.port if preview else 0})
                 captured=pump.slot.take(stop)
                 if captured is None:break
                 image=captured.image;stamp=captured.capture_timestamp;processing_started=time.monotonic_ns();read_ms=0
@@ -96,6 +120,9 @@ def main():
             frames+=1;frame['frameSequence']=captured.sequence if a.mode=='physical' else frames;emit('CAMERA_FRAME',frame)
             if a.mode=='physical':
                 metrics.event('inference',duration=processing_ms);metrics.event('output')
+                if qa_enabled and time.monotonic()>=next_qa_metrics:
+                    next_qa_metrics=time.monotonic()+1;r=metrics.report()
+                    emit('CAMERA_QA_METRICS',{k:(r.get(k) if r.get(k) is not None else -1) for k in ['captureFps','inferenceFps'] } | {'previewFps':r.get('previewFps',-1) if preview else -1,'overwritten':preview_overwritten+(preview.slot.overwritten if preview else 0),'errors':preview_errors+(preview.errors if preview else 0)})
             if a.mode=='physical' and metrics.enabled:
                 metrics.event('tracking' if frame['subjects'] else 'trackingGap')
                 measured_at=time.monotonic_ns()
@@ -124,6 +151,7 @@ def main():
             if a.mode!='physical':stop.wait(max(0,1/30-(time.monotonic_ns()-started)/1e9))
     finally:
         if timer is not None:timer.cancel()
+        if preview is not None:preview.close()
         try:
             if pump is not None:pump.close()
             elif capture is not None:capture.release()
@@ -137,6 +165,8 @@ def main():
             report.update(staleSkipped=skipped,acquisitionTimestampUnavailable=pump.timestamp_unavailable,controlsRestored=session.restored,clockCorrelation='Worker latency monotonic; CameraInput UTC timestamps unchanged',humanQualityAcceptance='NOT PROVEN by presence/confidence aggregates alone')
             present=report.get('framesWithSubjectFrames',0);absent=report.get('framesWithoutSubjectFrames',0)
             report.update(framesWithSubject=present,framesWithoutSubject=absent,detectionRatio=present/(present+absent) if present+absent else None,trackingFrames=report.get('trackingFrames',0),trackingGaps=report.get('trackingGapFrames',0),ambiguousFrames=report.get('ambiguousFrames',0),subjectIdChanges=report.get('subjectIdChangesFrames',0),productEligibleFrames=report.get('productEligibleFrames',0),subjectIdChangesScope='Detected ID-set changes between nonempty measured frames, including return after a gap; ephemeral spatial IDs, not biometric identities',productThresholds=dict(minCameraConfidence=.6,roiMinX=.2,roiMaxX=.8,visibilityPresence=.5))
+            if preview is not None:report.update(previewEnabled=True,previewMaxBytes=65536,previewMaxWidth=320,previewMaxHeight=240,previewMaxFps=5,previewSlotCapacity=1,previewOverwritten=preview.slot.overwritten,previewErrors=preview.errors,previewThreadsJoined=all(not t.is_alive() for t in preview.threads),previewBufferCleared=preview.latest is None)
+            else:report.update(previewEnabled=False,previewWasEnabled=preview_ever,previewOverwritten=preview_overwritten,previewErrors=preview_errors,previewThreadsJoined=True,previewBufferCleared=True)
             emit('CAMERA_SUMMARY',report)
         elif frames:
             values=sorted(durations);reads=sorted(read_durations)

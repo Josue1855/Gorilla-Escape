@@ -65,3 +65,8 @@ Stable-candidate reference camera/Unity/Java soak>=30min PASS; IPC-only>=30min +
 Earlier Chrome-first-run BLOCKED and two subsequent QA timeouts are preserved; final PASS does not erase them. Private HOME/cache/data profile added to owned test Player to isolate concurrent reference runs; loop now records target/attempt/success, and last requested UI control for failure diagnosis. Existing deterministic PWA repeated hide/show regression increased8→20cycles; suite59/59PASS, no product runtime change. [Validation/source hashes](evidence/overnight-2026-10-13/final-lifecycle-validation.json).
 
 Physical mobile sensorHz/clock/E2E/QR<60s and cleanPC remain NOT RUN. T019/T020/F05/E0 OPEN. No ownership assignment or gameplay.
+
+
+## T062 — Main Menu y Centro de Pruebas, 2026-10-14
+
+DEC-029: fundación real Bootstrap→MainMenu→PRUEBAS, JUGAR deshabilitado; preview QA local/memoria desde captura T016 única, QR productivo, sensores/slots/readiness, indicador técnico y agregados. [Arquitectura/evidencia](PHASE0_MAIN_MENU_QA_CENTER.md) y [runbook iPhone15 sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). No gameplay ni cierre F41. **T019 OPEN / Validation; T020/F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED.** Physical iPhone/four-phone evidence NOT RUN por esta implementación. Resultados técnicos se registran en la documentación de T062; ningún mock acredita PASS físico.

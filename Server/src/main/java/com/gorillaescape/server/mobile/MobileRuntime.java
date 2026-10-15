@@ -21,6 +21,18 @@ public final class MobileRuntime implements DisposableBean {
     private final PeerConnectionFactory factory=new PeerConnectionFactory();
     private final ScheduledThreadPoolExecutor expiry=new ScheduledThreadPoolExecutor(1,r->{Thread t=new Thread(r,"mobile-liveness");t.setDaemon(true);return t;});
     private boolean closed;
+    private final java.util.concurrent.atomic.AtomicLong qaJoinAttempts=new java.util.concurrent.atomic.AtomicLong(),qaJoinSucceeded=new java.util.concurrent.atomic.AtomicLong(),qaReconnectAttempts=new java.util.concurrent.atomic.AtomicLong(),qaReconnectSucceeded=new java.util.concurrent.atomic.AtomicLong();
+    private final java.util.concurrent.ConcurrentHashMap<Integer,ObjectNode> qaPhones=new java.util.concurrent.ConcurrentHashMap<>();
+    private final java.util.concurrent.atomic.AtomicInteger qaPhoneCursor=new java.util.concurrent.atomic.AtomicInteger();
+    public tools.jackson.databind.node.ArrayNode qaPhones(){
+        var result=GorillaProtocol.JSON.createArrayNode();
+        // One rotating aggregate per PONG leaves bandwidth for authoritative PhoneInput.
+        for(int i=0;i<4;i++){int player=1+Math.floorMod(qaPhoneCursor.getAndIncrement(),4);var node=qaPhones.get(player);if(node!=null){result.add(node.deepCopy());break;}}
+        return result;
+    }
+    private final QaAdmission qaAdmission=new QaAdmission();
+    public synchronized QaAdmission.View qa(java.net.URI page,boolean lab,boolean regenerate){return qaAdmission.view(session,page,lab,regenerate);}
+    public synchronized Map<String,Long> qaMetrics(){return Map.of("attempted",qaJoinAttempts.get(),"succeeded",qaJoinSucceeded.get(),"reconnectAttempted",qaReconnectAttempts.get(),"reconnectSucceeded",qaReconnectSucceeded.get());}
     private final Deque<JoinDiagnostic> attempts=new ArrayDeque<>();
     public static final class JoinFailure extends IOException {
         private final JoinDiagnostic.Code code;
@@ -36,7 +48,7 @@ public final class MobileRuntime implements DisposableBean {
     public record Signal(int protocolVersion,String messageType,String sessionId,String admission,String offer) {}
     public record Answer(int protocolVersion,String messageType,String sessionId,int playerId,String deviceSessionId,String resumeToken,long connectionEpoch,String peerId,String answer) {}
     public synchronized Answer join(Signal signal)throws Exception{
-        var d=attempt();d.stage(JoinDiagnostic.Stage.VALIDATION);
+        qaJoinAttempts.incrementAndGet();var d=attempt();d.stage(JoinDiagnostic.Stage.VALIDATION);
         if(closed||peers.size()>=4)throw failure(d,JoinDiagnostic.Code.SESSION_FULL);
         if(signal==null||signal.protocolVersion()!=1||!"JOIN".equals(signal.messageType())||signal.offer()==null||signal.offer().length()>65536||!signal.offer().startsWith("v=0")||signal.offer().contains("m=audio")||signal.offer().contains("m=video"))throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);
         try{localOffer(signal.offer());}catch(Exception e){throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);}
@@ -48,6 +60,7 @@ public final class MobileRuntime implements DisposableBean {
         return connect(joined,signal.offer(),d,true);
     }
     public synchronized Answer reconnect(String sid,int player,String resume,String offer)throws Exception{
+        qaReconnectAttempts.incrementAndGet();
         if(closed||offer==null||offer.length()>65536||!offer.startsWith("v=0")||offer.contains("m=audio")||offer.contains("m=video"))throw new IOException("SIGNAL_INVALID");
         localOffer(offer);var joined=session.reconnect(sid,player,resume);
         // Retire the prior peer before allocating the resumed epoch, even at capacity.
@@ -114,7 +127,16 @@ public final class MobileRuntime implements DisposableBean {
                     if(buffer.binary||buffer.data.remaining()>GorillaProtocol.MAX_BYTES)throw new IOException("MOBILE_SIZE");byte[] bytes=new byte[buffer.data.remaining()];buffer.data.get(bytes);ObjectNode n=gate.accept(bytes,ch.getLabel());
                     String type=n.get("messageType").asString();if(type.equals("MOTION_SAMPLE")!=ch.getLabel().equals("motion"))throw new IOException("MOBILE_CHANNEL");
                     session.heartbeat(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastSeen=System.nanoTime();
-                    if(type.equals("HELLO")){helloConfirmed=true;session.networkReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());}
+                    if(type.equals("HEARTBEAT") && n.get("payload").has("qaVersion")) {
+                        var metrics=((ObjectNode)n.get("payload")).deepCopy();
+                        for(String key:List.of("motionHz","orientationHz","emissionHz","rttP50","rttP95")) {
+                            var value=metrics.get(key);metrics.put("has"+Character.toUpperCase(key.charAt(0))+key.substring(1),!value.isNull());
+                            if(value.isNull())metrics.put(key,-1);
+                        }
+                        metrics.put("playerId",joined.playerId());metrics.put("connectionEpoch",joined.epoch());metrics.put("receivedAt",System.currentTimeMillis());
+                        qaPhones.put(joined.playerId(),metrics);
+                    }
+                    if(type.equals("HELLO")){if(!helloConfirmed){if(initial)qaJoinSucceeded.incrementAndGet();else qaReconnectSucceeded.incrementAndGet();}helloConfirmed=true;session.networkReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());}
                     if(type.equals("MOTION_SAMPLE")||type.equals("TOUCH")){session.active(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastInput=n;inputs.accept(n,joined.epoch(),"ACTIVE");if(type.equals("MOTION_SAMPLE"))session.inputReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),usableMovement(n));}
                     if(type.equals("CLIENT_STATE")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),n.get("payload").get("state").asString().equals("suspended")?"SUSPENDED":"CONNECTED");}
                     if(type.equals("DISCONNECT")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
@@ -137,5 +159,5 @@ public final class MobileRuntime implements DisposableBean {
     public void unityLobbyPhase(String sid,TechnicalSession.LobbyPhase phase){session.unityPhase(sid,phase);}
     public void unityPlayerReady(String sid,int player,String device,long epoch,boolean ready){session.unityPlayerReady(sid,player,device,epoch,ready);}
     private static void send(RTCDataChannel ch,byte[] bytes){try{ch.send(new RTCDataChannelBuffer(ByteBuffer.wrap(bytes),false));}catch(Exception ignored){ch.close();}}
-    @Override public synchronized void destroy(){if(closed)return;closed=true;expiry.shutdownNow();for(var p:peers.values())p.close();peers.clear();session.close();factory.dispose();}
+    @Override public synchronized void destroy(){if(closed)return;closed=true;expiry.shutdownNow();for(var p:peers.values())p.close();peers.clear();qaAdmission.close();qaPhones.clear();session.close();factory.dispose();}
 }

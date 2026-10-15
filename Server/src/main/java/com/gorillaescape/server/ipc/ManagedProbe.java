@@ -19,6 +19,12 @@ import org.springframework.beans.factory.DisposableBean;
 public final class ManagedProbe implements DisposableBean {
     @org.springframework.beans.factory.annotation.Autowired(required=false)
     private com.gorillaescape.server.mobile.MobileRuntime mobile;
+    @org.springframework.beans.factory.annotation.Value("${gorilla.mobile.public-origin:}") private String origin;
+    @org.springframework.beans.factory.annotation.Value("${server.address}") private String address;
+    @org.springframework.beans.factory.annotation.Value("${gorilla.mobile.lab-enabled:false}") private boolean lab;
+    private java.net.URI qaPage;
+    @org.springframework.beans.factory.annotation.Value("${gorilla.trust.bootstrap-port:0}") private int bootstrapPort;
+    private final boolean qaEnabled="1".equals(System.getenv("GORILLA_QA_OVERLAY"));
     private final AtomicBoolean running = new AtomicBoolean();
     private ServerSocket listener;
     private volatile Socket client;
@@ -43,6 +49,8 @@ public final class ManagedProbe implements DisposableBean {
         worker = daemon("gorilla-ipc-accept", this::accept);
         ConfigurableApplicationContext context = event.getApplicationContext();
         int httpPort = ((WebServerApplicationContext) context).getWebServer().getPort();
+        if(qaEnabled&&mobile!=null)qaPage=lab?java.net.URI.create("http://127.0.0.1:"+httpPort+"/mobile-lab/index.html"):
+            com.gorillaescape.server.mobile.MobileOrigin.page(origin,address,httpPort);
         ParentLifetime parent = GorillaEscapeApplication.managedParent();
         if (parent == null) throw new IOException("IPC_PARENT_MISSING");
         parent.publishIfAlive(() -> {
@@ -55,7 +63,7 @@ public final class ManagedProbe implements DisposableBean {
     }
     private void accept() {
         while (running.get()) {
-            boolean lobby=false;
+            boolean lobby=false,qa=false;
             try (Socket socket = listener.accept()) {
                 client = socket;
                 socket.setSoTimeout(2000);
@@ -67,7 +75,15 @@ public final class ManagedProbe implements DisposableBean {
                     tools.jackson.databind.JsonNode lobbyCommand=null;
                     var extension=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
                     var extendedPayload=extension.get("payload");
-                    boolean negotiateLobby=false;
+                    boolean negotiateLobby=false,negotiateQa=false,regenerateQa=false;
+                    if(extendedPayload!=null&&extendedPayload.has("qaVersion")){
+                        if(!qaEnabled||connection!=null||!extendedPayload.has("lobbyVersion")||!extendedPayload.get("qaVersion").isInt()||extendedPayload.get("qaVersion").intValue()!=1)throw new IOException("IPC_QA_VERSION");
+                        ((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("qaVersion");negotiateQa=true;
+                    }
+                    if(extendedPayload!=null&&extendedPayload.has("qaRegenerate")){
+                        if(!qa||connection==null||!extendedPayload.get("qaRegenerate").isBoolean())throw new IOException("IPC_QA_AUTHORITY");
+                        regenerateQa=extendedPayload.get("qaRegenerate").booleanValue();((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("qaRegenerate");
+                    }
                     if(extendedPayload!=null&&extendedPayload.has("lobbyVersion")) {
                         if(connection!=null||mobile==null||!extendedPayload.get("lobbyVersion").isInt()||extendedPayload.get("lobbyVersion").intValue()!=1||!extendedPayload.has("phoneInputVersion"))throw new IOException("IPC_LOBBY_VERSION");
                         ((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("lobbyVersion");negotiateLobby=true;
@@ -91,6 +107,7 @@ public final class ManagedProbe implements DisposableBean {
                     connection = ping.connectionId();
                     // Extensions execute only AFTER instance/token/connection/sequence validation.
                     if(negotiateLobby)lobby=true;
+                    if(negotiateQa)qa=true;
                     String pong=ProbeCodec.pong(ping);
                     if(phone){var root=(tools.jackson.databind.node.ObjectNode)com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(pong);
                         var pongPayload=(tools.jackson.databind.node.ObjectNode)root.get("payload");
@@ -99,6 +116,9 @@ public final class ManagedProbe implements DisposableBean {
                             if(lobbyCommand!=null)pongPayload.set("lobbyResult",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.unityLobbyCommand(lobbyCommand)));
                             pongPayload.set("lobby",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.lobby()));
                         }
+                        if(qa){var trust=com.gorillaescape.server.hosting.LocalTrust.current();pongPayload.set("qaHosting",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(java.util.Map.of("origin",lab?"LAB loopback":origin,"fingerprint",trust==null?"NOT MEASURED":trust.fingerprint(),"prepareUrl",trust==null||bootstrapPort==0?"NOT MEASURED":"http://"+address+":"+bootstrapPort+"/prepare")));
+                            pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qa(qaPage,lab,regenerateQa)));
+                            pongPayload.set("qaPhones",mobile.qaPhones());pongPayload.set("qaMetrics",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qaMetrics()));}
                         int overhead=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsBytes(root).length;
                         pongPayload.set("phoneInputs",mobile.inputs.drain(Math.min(3500,ProbeCodec.MAX_FRAME-overhead-20)));
                         pong=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(root);}

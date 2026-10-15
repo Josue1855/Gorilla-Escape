@@ -1,0 +1,51 @@
+{
+  "scope": "Built Linux Player/relative Vision; physical webcam; private pipes/Unity store",
+  "wanProbeExit": 2,
+  "wanUnavailable": false,
+  "developerCacheHidden": true,
+  "imagePersistence": false,
+  "gate": "FAIL",
+  "humanTracking": "NOT RUN",
+  "javaLifecycleEnabled": true,
+  "ipcLifecycle": {
+    "started": 1,
+    "stopped": 1,
+    "errors": 0,
+    "last": {
+      "event": "STOPPED",
+      "state": "STOPPED",
+      "exitCode": 0,
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": true,
+      "forced": false
+    }
+  },
+  "cameraRuntimeErrors": 2,
+  "error": "PACKAGED_CAMERA_STARTUP_FAILED",
+  "cleanup": {
+    "pid": 394392,
+    "exitCode": 2,
+    "complete": true,
+    "forced": false,
+    "controlsRestored": true,
+    "state": "FAILED",
+    "restoreFailure": "",
+    "overwritten": 0,
+    "accepted": 0,
+    "source": ""
+  },
+  "transit": {
+    "N": 0,
+    "P50": -1,
+    "P95": -1,
+    "max": 0,
+    "invalid": 0,
+    "overwritten": 0,
+    "retained": 0,
+    "enabled": true,
+    "clock": "same-PC UTC milliseconds: processTimestamp to pipe receive; no optical/gameplay claim"
+  },
+  "errorCleanupComplete": true,
+  "stderrBytes": 57
+}

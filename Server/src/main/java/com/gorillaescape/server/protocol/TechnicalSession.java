@@ -41,6 +41,9 @@ public final class TechnicalSession {
         clients.values().removeIf(c->c.state==State.DISCONNECTED&&now-c.lastSeen>=resumeTtl);
     }
     public synchronized Admission createAdmission(){live();admissionOpen();if(admissions.size()+clients.size()>=4)throw new IllegalStateException("SESSION_FULL");String t=token();long end=Math.addExact(clock.getAsLong(),admissionTtl);admissions.put(t,end);return new Admission(session,t,end);}
+    public synchronized void revokeAdmission(String token){live();admissions.remove(token);}
+    public synchronized long admissionRemainingMs(Admission a){live();return Math.max(0,(a.expiresAtNanos()-clock.getAsLong())/1_000_000);}
+    public synchronized String admissionState(Admission a){live();if(clock.getAsLong()>=a.expiresAtNanos())return "EXPIRED";return admissions.containsKey(a.token())?"AVAILABLE":"SCANNED/JOINED";}
     public synchronized Joined join(String sessionId,String admission){live();admissionOpen();
         if(!session.equals(sessionId)||admission==null||!admissions.containsKey(admission))throw new IllegalArgumentException("ADMISSION_INVALID");
         if(clients.size()>=4)throw new IllegalStateException("SESSION_FULL");admissions.remove(admission);

@@ -65,6 +65,14 @@ public final class GorillaProtocol {
                 group(payload.get("screenOrientation"),Set.of("angle"));group(payload.get("touch"),Set.of("x","y","pressed"));
             }else if(type.equals("TOUCH")){exact(payload,Set.of("touch"));group(payload.get("touch"),Set.of("x","y","pressed"));}
             else if(type.equals("CLIENT_STATE")){exact(payload,Set.of("state"));if(!Set.of("active","suspended").contains(text(payload,"state")))throw bad("STATE");}
+            else if(type.equals("HEARTBEAT") && payload != null && payload.has("qaVersion")) {
+                exact(payload,Set.of("qaVersion","motionHz","orientationHz","emissionHz","rttP50","rttP95"));
+                if(!payload.get("qaVersion").isInt() || payload.get("qaVersion").intValue()!=1)throw bad("QA_VERSION");
+                for(String metric:List.of("motionHz","orientationHz","emissionHz","rttP50","rttP95")) {
+                    var value=payload.get(metric);
+                    if(!value.isNull() && (!value.isNumber() || !Double.isFinite(value.doubleValue()) || value.doubleValue()<0 || value.doubleValue()>1000000))throw bad("QA_METRIC");
+                }
+            }
             else exact(payload,Set.of());
             if(motion)motionSequence=sequence;else controlSequence=sequence;
             ObjectNode accepted=((ObjectNode)node).deepCopy();accepted.put("serverReceiveTimestamp",now);return accepted;

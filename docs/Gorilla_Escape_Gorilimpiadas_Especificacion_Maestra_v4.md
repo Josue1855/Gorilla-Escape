@@ -3957,3 +3957,10 @@ Referencias anteriores a cinco disciplinas obligatorias están **SUPERSEDED para
 Ruta principal: teléfono/PWA/Gorilla Protocol/WebRTC local/Java/IPC/Unity PhoneInput. Unity única autoridad oficial; cámara complementaria según disciplina. T060 exige fallback visible de usuario, prueba/calibración y torneo completo sin dispositivo adicional; pendiente implementación en fase correspondiente. Herramientas debug no lo satisfacen. <150ms acción→respuesta visible y <60s participante no preparado requieren evidencia física; RTT no equivale a E2E. E0 sigue OPEN, Phase1 NOT STARTED. Fecha vigente intacta; no adoptar fechas de otros equipos.
 
 [Fuente académica aplicable, cobertura real y gaps](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md).
+
+
+## Enmienda PO — Main Menu y Centro de Pruebas Phase0 (DEC-029, 2026-10-14)
+
+El Main Menu real puede comenzar en Phase0 como fundación reutilizable de producto: Bootstrap técnico → MainMenu → PRUEBAS → Centro de Pruebas. JUGAR permanece visible/deshabilitado «En desarrollo»; SALIR usa el lifecycle oficial. `GORILLA_QA_MENU=0` puede ocultar PRUEBAS en la entrega académica sin borrar tooling. No completa F41 ni inicia Phase1/gameplay.
+
+El boundary de respuesta visible técnica Phase0 termina en PhoneInput real aceptado → indicador técnico renderizado por Unity. No acredita resultado deportivo, score, scanout/photon ni cierre físico T019. Preview QA exclusivamente desde captura PC T016 única, loopback127.0.0.1/memoria, sin segunda webcam, disco, video, screenshots, Java/RTC/PWA/teléfono. T019/T020/F05/E0 OPEN y Final Exit BLOCKED hasta sus gates reales. [DEC/implementación](PHASE0_MAIN_MENU_QA_CENTER.md).

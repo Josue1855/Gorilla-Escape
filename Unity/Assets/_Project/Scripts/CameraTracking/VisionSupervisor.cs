@@ -25,6 +25,18 @@ namespace GorillaEscape.CameraTracking
         public string Error {get;private set;} public int Pid {get;private set;}
         public int? ExitCode {get;private set;} public bool CleanupComplete {get;private set;}=true;
         public bool Forced {get;private set;} public long Overwritten {get;private set;} public long StderrBytes {get;private set;}
+        public int PreviewPort {get;private set;}
+        public QaCameraMetrics QaMetrics {get;private set;}
+        [Serializable] public sealed class QaCameraMetrics {public double captureFps=-1,inferenceFps=-1,previewFps=-1;public long overwritten,errors;}
+        long previewRevision;
+        public bool PreviewControlPending {get;private set;}
+        public void SetQaPreview(bool active){
+            if(Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY")!="1"||State!="RUNNING")return;
+            PreviewPort=0;previewRevision++;PreviewControlPending=true;
+            try{child.StandardInput.WriteLine("QA_PREVIEW 1 "+previewRevision+" "+(active?"1":"0"));child.StandardInput.Flush();}
+            catch(Exception){Error="PREVIEW_CONTROL_FAILED";State="FAILED";PreviewControlPending=false;}
+        }
+        [Serializable] sealed class PreviewEndpoint {public int version,port;public long revision;}
         public string Summary {get;private set;}
         public bool Take(out CameraInputWire frame,out long timestamp){lock(gate){frame=pending;timestamp=received;pending=null;return frame!=null;}}
         static string Quote(string value){if(value==null||value.IndexOfAny(new[]{'"','\n','\r'})>=0)throw new ArgumentException("Invalid adapter path");return "\""+value+"\"";}
@@ -53,6 +65,8 @@ namespace GorillaEscape.CameraTracking
             }catch(Exception e){Error=e is IOException?e.Message:"CAMERA_PROTOCOL_INVALID";State="FAILED";try{child?.StandardInput.Close();}catch{}}
         }
         void Handle(string line){
+            if(line.StartsWith("CAMERA_PREVIEW_PORT ")){if(Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY")!="1")throw new IOException("PREVIEW_UNEXPECTED");var endpoint=JsonUtility.FromJson<PreviewEndpoint>(line.Substring(20));if(endpoint.version!=1||endpoint.port<0||endpoint.port>65535)throw new IOException("PREVIEW_PORT");if(endpoint.revision==previewRevision){PreviewPort=endpoint.port;PreviewControlPending=false;}return;}
+            if(line.StartsWith("CAMERA_QA_METRICS ")){if(Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY")!="1")throw new IOException("QA_UNEXPECTED");QaMetrics=JsonUtility.FromJson<QaCameraMetrics>(line.Substring(18));return;}
             if(line.StartsWith("CAMERA_CONTROL_SNAPSHOT ")){if(!physical||ready||controlSnapshot!=null||line.Length>4096)throw new IOException("CAMERA_CONTROL_SNAPSHOT_INVALID");controlSnapshot=line.Substring(24);ControlsRestored=false;return;}
             if(line=="CAMERA_READY"){if(ready)throw new IOException("CAMERA_READY_DUPLICATE");ready=true;return;}
             if(line.StartsWith("CAMERA_SUMMARY ")){Summary=line.Substring(15);return;}

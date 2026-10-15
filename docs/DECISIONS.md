@@ -469,3 +469,19 @@ Se preservan AC humanos y dependencia #29 como historial satisfecho; no añadir 
 No inventar threshold porcentual. Pares existentes: Unity effective −5.98%/+0.78%; inference −5.93%/+5.25%. No evidencia de impacto cero ni mejora universal. PR #103 satisface salida objetiva; no demuestra precisión cross-device ni FPS display. Browser performance.now monotonic y Date.now Unixms; Java UTCms; Unity UTCms/Stopwatch; Python UTCns/monotonicns; V4L2 proxy kernel conservados. ACK RTT/IPC RTT sólo segmentos.
 
 Cierre #32 sólo después de integrar esta DEC y verificar evidencia; T019 recibe acreditación física, conserva AC intactos y permanece OPEN hasta QA real. T020 PC limpia obligatorio. No permite cierre E0 ni Phase1. [Evidencia y tabla de salida](PHASE0_T018_TELEMETRY_METRICS.md).
+
+## DEC-029 — Main Menu QA Center and Phase0 Visible Response Boundary
+
+**Fecha: 2026-10-14. Estado: ACCEPTED.** Autorización explícita PO. T062/#111 bajo F05/#31 soporta T019/#33; reutiliza el trabajo local de QA Surface y lo integra en el menú real.
+
+1. El Main Menu real puede comenzar durante Phase0. Bootstrap mantiene configuración e inicialización técnica; la navegación usa MainMenuView/Controller y TestsMenuView/Controller.
+2. No inicia gameplay ni Phase1. JUGAR visible/deshabilitado con «En desarrollo», PRUEBAS activo y SALIR invoca el lifecycle existente.
+3. El Centro de Pruebas vive detrás de PRUEBAS. Main Menu permanece limpio y utilizable aunque Java/cámara/red fallen.
+4. Preview QA es local-only/memory-only: única captura T016 → slot1 → JPEG máximo320×240/5FPS → TCP efímero127.0.0.1 → slot1 Unity → Texture2D. Codificación y retención de imagen sólo con consumidor activo en Tests; volver libera textura/socket/buffers. No Java/PWA/teléfono, segunda captura, disco, logs raw, screenshots o video. CameraInput conserva sólo landmarks/estado.
+5. Boundary Phase0 autorizado: physical phone event → PWA → WebRTC → Java → IPC → Unity PhoneInput accepted → technical visual response rendered by Unity. Marcas apply/end-of-frame no acreditan scanout/photon ni offset cross-device.
+6. No equivale a sport/gameplay result, score o aceptación física T019. T019/T020/F05/E0 permanecen OPEN, Final Exit Audit BLOCKED. F41/#68 conserva AC y estado; reutilización futura no es cierre de presentación académica.
+7. `GORILLA_QA_MENU=0` oculta PRUEBAS sin borrar tooling; default Phase0 visible. No crea dependencia de QA para la UX académica final.
+
+QR desde TechnicalSession/JoinQrPoc mediante extensión IPC QA v1 autenticada: TTL30s/one-use/capacity4; regeneración sólo revoca admisión pendiente. Secret sólo en QR en memoria, jamás texto/log/export. Sensores/readiness observan autoridades existentes. HEARTBEAT QA v1 opcional transporta únicamente Hz originales y percentiles ACK RTT agregados; nada de historiales raw. Clasificación física requiere confirmación del operador, nunca se infiere del source claim.
+
+[Arquitectura](PHASE0_MAIN_MENU_QA_CENTER.md), [runbook sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). T061 conserva validación humana diferida Post-MVP; subjectId efímero no implica identificación biométrica.

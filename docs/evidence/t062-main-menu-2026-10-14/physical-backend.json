@@ -1,0 +1,15 @@
+{
+  "classification": "LAB / built UI + physical capture transport; physical phone NOT RUN",
+  "screenshots": 0,
+  "gate": "FAIL",
+  "opened": 0,
+  "closed": 0,
+  "secretLogs": 0,
+  "backendMode": "PHYSICAL HTTPS LAN / no physical phone",
+  "renderSize": [
+    1920,
+    940
+  ],
+  "error": "Expected observable signal did not arrive",
+  "stderrBytes": 0
+}

@@ -1074,7 +1074,8 @@
         "T011",
         "T015",
         "T017",
-        "T018"
+        "T018",
+        "T062"
       ],
       "scope": "P0",
       "status": "Backlog",
@@ -2987,6 +2988,37 @@
       "assignees": [],
       "labels": [],
       "tests": "Pruebas físicas Post-MVP cuando estén autorizadas; NOT RUN. No ejecutar esta noche."
+    },
+    {
+      "key": "T062",
+      "title": "Implementar Main Menu y Centro de Pruebas para Phase0 QA",
+      "type": "Task",
+      "phase": "0",
+      "area": "CI/QA",
+      "sources": [
+        "DEC-029",
+        "PO Main Menu / Phase0 QA Center"
+      ],
+      "objective": "Construir Main Menu real y Centro de Pruebas Phase0 reutilizable, sin gameplay; cámara/QR/PhoneInput en build sin Editor para T019.",
+      "acceptance": [
+        "Bootstrap→MainMenu→PRUEBAS→VOLVER y SALIR limpio; JUGAR deshabilitado; QA flag y fallos técnicos no bloquean navegación.",
+        "Preview memory-only loopback desde la única captura T016; apagado fuera de QA; bounded/latest-only/cierre limpio.",
+        "QR real one-use/TTL/regeneración sin resetear jugadores; cuatro slots/readiness de autoridad vigente.",
+        "Sensores reales/unknown explícito/visual técnico con timestamps defendibles, sin score ni gameplay.",
+        "Tests, performance OFF/ON y runbook físico; T019 OPEN/Validation y Final Exit BLOCKED."
+      ],
+      "parent": "F05",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Component/Unity EditMode/PlayMode/build/Java/PWA/management/foundation/privacy/performance."
     }
   ]
 }

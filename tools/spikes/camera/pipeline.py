@@ -72,8 +72,8 @@ class LatestFrameSlot:
         with self.condition:self.closed=True;self.error=error if error is not None else self.error;self.pending=None;self.condition.notify_all()
 
 class CapturePump:
-    def __init__(self, capture, stop, metrics, clock=time.monotonic_ns, acquisition_clock=None):
-        self.capture=capture;self.stop=stop;self.metrics=metrics;self.clock=clock
+    def __init__(self, capture, stop, metrics, clock=time.monotonic_ns, acquisition_clock=None, preview=None):
+        self.preview=preview;self.capture=capture;self.stop=stop;self.metrics=metrics;self.clock=clock
         self.slot=LatestFrameSlot();self.frames=0;self.released=False
         self.thread=threading.Thread(target=self.run,name='camera-capture',daemon=True)
         self.acquisition_clock=acquisition_clock;self.previous_acquisition=None;self.timestamp_unavailable=0;self.previous_read=None
@@ -98,6 +98,7 @@ class CapturePump:
                 # Producer relinquishes a detached owned buffer; never mutates the pending/inferred image.
                 frame=CapturedFrame(self.frames,image.copy(),utc,stamp,acquired)
                 self.slot.publish(frame)
+                if self.preview is not None:self.preview.publish(frame)
         except Exception:
             self.slot.close('CAMERA_READ_FAILED');self.stop.set()
         finally:
