@@ -56,7 +56,7 @@ Mantén sujeto el teléfono. Registra foreground/background, lock/unlock y pérd
 
 ## Overnight integration 2026-10-14 — AUTO y rutas separadas
 
-Paquete integrado: `GorillaEscape-Phase0-Integrated-2026-10-14` (usar sólo el artefacto cuya creación/verificación consta en el reporte overnight). Desde su directorio ejecutar `./run-qa.sh`, sin variables. Main Menu → PRUEBAS → CONEXIÓN / QA: Requested AUTO, Resolved CLOUDFLARED o CABIN; cerrar panel → QR → iPhone en la **misma LAN**. JUGAR continúa deshabilitado.
+Paquete integrado final: `GorillaEscape-Phase0-Integrated-2026-10-15` (usar sólo el artefacto cuya creación/verificación consta en el reporte overnight). Desde su directorio ejecutar `./run-qa.sh`, sin variables. Main Menu → PRUEBAS → CONEXIÓN / QA: Requested AUTO, Resolved CLOUDFLARED o CABIN; cerrar panel → QR → iPhone en la **misma LAN**. JUGAR continúa deshabilitado.
 
 A. AUTO: sin binario opcional o sin WAN/HTTPS disponible debe resolver CABAÑA tras cleanup. Si el teléfono no confía en la CA local, **PREPARAR TELÉFONO**, siguiendo las instrucciones de trust de este runbook; luego escanear QR vigente. No prometer cero pasos en teléfono nuevo.
 

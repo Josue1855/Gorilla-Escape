@@ -39,5 +39,17 @@
     "status": "BLOCKED / no fresh performance PASS",
     "reason": "Physical camera opened/configured but captured0 frames; T018 ABBA stopped. Wireplumber owns /dev/video0; no unrelated process stopped; cleanup and controls restored.",
     "humanTracking": "NOT RUN"
-  }
+  },
+  "finalSoftwareSuites": {
+    "Java": "97 cases / 96 passed / 1 external skip",
+    "PWA": "69/69 + build",
+    "UnityEdit": "161/161",
+    "UnityPlay": "27/27 clean repeat",
+    "LinuxBuild": "0 errors / 0 warnings",
+    "Python": "25/25",
+    "NativeRTC": "standard and restricted gateway PASS",
+    "NoWAN": "virtual LAN-only native RTC PASS",
+    "MotionWallClock": "9 runs / 1725 sends / max gap22.05ms / pending<=64 / errors0"
+  },
+  "nativeClickProof": "BLOCKED; reliable pointer automation unavailable; owned processes cleaned"
 }

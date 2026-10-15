@@ -87,5 +87,44 @@
     "passed": 13,
     "failed": 0,
     "includes": "deferred startup QR regression; GET/POST denylist; real process death; malformed stdout"
+  },
+  "java-frozen-final.log": {
+    "sha256": "f8b27f97d24ecd61b7547de90377cba445304e0a43782667a212745ceda81640",
+    "summary": [
+      "[INFO] Tests run: 97, Failures: 0, Errors: 0, Skipped: 1",
+      "[INFO] BUILD SUCCESS"
+    ]
+  },
+  "pwa-frozen-final.log": {
+    "sha256": "f9b003052e5f0fe73da02389ed8809dfcd30a91611ebed0eb57d2689c9151ff8",
+    "summary": [
+      "\u2139 tests 69",
+      "\u2139 pass 69",
+      "\u2139 fail 0"
+    ]
+  },
+  "pwa-build-final.log": {
+    "sha256": "7247e3726b0d1474200b7a741b904063799bdca04ad45a801f1a6b6998bbd9cc",
+    "summary": [
+      "\u2713 built in 159ms",
+      "Offline shell generated: gorilla-shell-9be45ae54dab8211"
+    ]
+  },
+  "python-frozen-final.log": {
+    "sha256": "3bd6f4b9a31cee9a775a3c1d5e557b3ba781ed324f4746594126793ceaa73f45",
+    "summary": [
+      "Ran 23 tests in 0.154s",
+      "OK",
+      "Ran 2 tests in 1.005s",
+      "OK"
+    ]
+  },
+  "clock-final.log": {
+    "sha256": "6552d6e58dc9d888e54e4e4a1c6cc4af40df9cb55b7b1e4a404b46d3055e718e",
+    "summary": [
+      "\u2139 tests 5",
+      "\u2139 pass 5",
+      "\u2139 fail 0"
+    ]
   }
 }
