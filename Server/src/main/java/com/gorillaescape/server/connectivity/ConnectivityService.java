@@ -18,7 +18,7 @@ import org.springframework.boot.web.server.context.WebServerApplicationContext;
 public final class ConnectivityService implements DisposableBean {
     private final MobileRuntime mobile;
     private final String origin,address;private final boolean lab;
-    private volatile ConnectionBootstrap bootstrap;private PublicIngress ingress;private long qrRevision=-1,observedRevision=-1;private boolean qrIssued;
+    private volatile ConnectionBootstrap bootstrap;private PublicIngress ingress;private long qrRevision=-1,observedRevision=-1;private boolean qrIssued,pendingQrRequest;
     public ConnectivityService(MobileRuntime mobile,@Value("${gorilla.mobile.public-origin:}")String origin,@Value("${server.address}")String address,@Value("${gorilla.mobile.lab-enabled:false}")boolean lab){this.mobile=mobile;this.origin=origin;this.address=address;this.lab=lab;}
     @EventListener @Order(-100)
     public void ready(ApplicationReadyEvent event)throws Exception{
@@ -42,9 +42,10 @@ public final class ConnectivityService implements DisposableBean {
         return bootstrap.request(requested,!mobile.lobby().players().isEmpty(),ingress==null?URI.create("http://127.0.0.1:9"):ingress.origin());
     }
     public synchronized com.gorillaescape.server.protocol.QaAdmission.View qa(boolean regenerate){
+        if(regenerate)pendingQrRequest=true;
         snapshot();if(bootstrap==null||!bootstrap.ready())return new com.gorillaescape.server.protocol.QaAdmission.View("CONNECTION_NOT_READY",0,0,"");
-        boolean rotated=qrIssued&&qrRevision!=bootstrap.revision();if(regenerate)qrIssued=true;qrRevision=bootstrap.revision();URI page=bootstrap.page();
-        return mobile.qa(page,"http".equals(page.getScheme()),regenerate||rotated);
+        boolean rotated=qrIssued&&qrRevision!=bootstrap.revision();boolean issue=regenerate||pendingQrRequest||rotated;if(issue)qrIssued=true;pendingQrRequest=false;qrRevision=bootstrap.revision();URI page=bootstrap.page();
+        return mobile.qa(page,"http".equals(page.getScheme()),issue);
     }
     public synchronized URI page(){snapshot();if(bootstrap==null||!bootstrap.ready())throw new IllegalStateException("CONNECTION_NOT_READY");return bootstrap.page();}
     @Override public void destroy(){if(bootstrap!=null)bootstrap.close();if(ingress!=null)ingress.close();}

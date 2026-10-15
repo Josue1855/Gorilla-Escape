@@ -96,4 +96,17 @@ class ConnectivityTest {
         }
         String output=System.getenv("GORILLA_BOOTSTRAP_TIMING_REPORT");if(output!=null)Files.writeString(Path.of(output),com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(rows)+"\n");
     }
+
+    @Test void qrRequestWhileBootstrapIsStartingIsFulfilledWhenReady()throws Exception{
+        var release=new CountDownLatch(1);
+        var fake=new Fake(){@Override public URI start(URI ingress,long budget)throws Exception{release.await(1,TimeUnit.SECONDS);return super.start(ingress,budget);}};
+        var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
+        try(var bootstrap=new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),fake,1000)){
+            var service=new ConnectivityService(mobile,"","127.0.0.1",true);
+            var field=ConnectivityService.class.getDeclaredField("bootstrap");field.setAccessible(true);field.set(service,bootstrap);
+            bootstrap.start(URI.create("http://127.0.0.1:9"));
+            assertEquals("CONNECTION_NOT_READY",service.qa(true).state());release.countDown();waitReady(bootstrap);
+            var ready=service.qa(false);assertEquals("AVAILABLE",ready.state());assertFalse(ready.modules().isEmpty());
+        }finally{release.countDown();mobile.destroy();}
+    }
 }

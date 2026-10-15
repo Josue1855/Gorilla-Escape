@@ -1,0 +1,6 @@
+{
+  "scope": "deterministic startup/QR request race",
+  "before": "FAIL: expected AVAILABLE, got ORIGIN_CHANGED after request during STARTING",
+  "fix": "one bounded pendingQrRequest flag retained until bootstrap READY; issue once with resolved origin",
+  "after": "PASS: all12 ConnectivityTest cases, including delayed-start request fulfillment"
+}
