@@ -57,12 +57,12 @@ test('classifier conservative boundaries and bounded metrics with interval stati
  assert.equal(r.metrics().count,6);assert.equal(r.metrics().windowCount,4);assert.equal(r.values.length,4);
  assert.deepEqual(r.metrics().intervalMs,{min:20,median:20,p95:20});assert.equal(r.add(99),false);
 });
-test('latest-only transport retains one in flight and one pending, counts overwrite separately',async()=>{
- const c=new MobileClient({source:'replay'});c.state='RUNNING';let resolve;const sent=[];
- c.send=async (type,payload)=>{sent.push(payload);await new Promise(r=>{resolve=r;});};
+test('latest-only coalesces a synchronous burst without ACK flow control',async()=>{
+ const c=new MobileClient({source:'replay'});c.state='RUNNING';const sent=[];
+ c.sendMotion=(payload)=>sent.push(payload);
  c.motion({sample:1});c.motion({sample:2});c.motion({sample:3});c.motion({sample:4});
- assert.equal(sent.length,1);assert.deepEqual(c.latest.payload,{sample:4});assert.equal(c.metrics.overwritten,2);assert.equal(c.metrics.motionSubmitted,4);
- resolve();await new Promise(setImmediate);assert.deepEqual(sent,[{sample:1},{sample:4}]);resolve();await new Promise(setImmediate);await c.close(false);
+ assert.equal(sent.length,0);assert.deepEqual(c.latest.payload,{sample:4});assert.equal(c.metrics.overwritten,3);assert.equal(c.metrics.motionSubmitted,4);
+ await Promise.resolve();assert.deepEqual(sent,[{sample:4}]);assert.equal(c.latest,null);await c.close(false);
 });
 test('permission without events never INPUT_READY; sufficient valid finite events required, loss visible',async()=>{
  const f=fixture();await f.capture.start();assert.equal(f.capture.inputState(),'PREPARING_SENSORS');

@@ -26,8 +26,8 @@ export function sanitizeCandidate(candidate){
 export class MobileClient {
  constructor({source='synthetic',fetcher=fetch}={}){
   if(!['synthetic','replay','emulator','physical'].includes(source))throw Error('evidence source');
-  this.source=source;this.fetcher=(...args)=>fetcher(...args);this.sequence=0;this.pending=new Map();this.latest=null;this.state='STOPPED';
-  this.metrics={sent:0,received:0,errors:0,overwritten:0,motionSubmitted:0,motionSent:0,motionAck:0,motionErrors:0,rtt:[]};
+  this.source=source;this.fetcher=(...args)=>fetcher(...args);this.sequence=0;this.pending=new Map();this.motionTelemetry=new Map();this.latest=null;this.flushScheduled=false;this.state='STOPPED';
+  this.metrics={sent:0,received:0,errors:0,overwritten:0,motionSubmitted:0,motionSent:0,motionAck:0,motionErrors:0,motionAckMiss:0,motionPendingTelemetry:0,motionBufferedDrop:0,rtt:[]};
  }
  diagnosticEvent(event,value){
   if(this.trace.events.length<96)this.trace.events.push({ms:Math.round((performance.now()-this.started)*100)/100,event,value});
@@ -48,6 +48,8 @@ export class MobileClient {
   }finally{clearTimeout(timer);}
  }
  async connect(joinUrl,resume=null){
+  if(this.pc)await this.close(false);
+  const generation=this.generation=(this.generation||0)+1;
   this.started=performance.now();this.trace={stage:'START',code:null,postExecuted:false,httpStatus:null,rejectionCode:null,remoteDescription:'NOT RUN',candidates:[],events:[]};
   this.state='CONNECTING';let code='JOIN_E01_OFFER';let rejectIce;
   const iceFailed=new Promise((_,reject)=>{rejectIce=reject;});iceFailed.catch(()=>{});
@@ -62,7 +64,7 @@ export class MobileClient {
    }
    this.pc.addEventListener('icecandidate',e=>{if(e.candidate&&this.trace.candidates.length<32){const safe=sanitizeCandidate(e.candidate.candidate);if(safe)this.trace.candidates.push(safe);}});
    for(const [label,options] of [['control',{ordered:true}],['motion',{ordered:false,maxRetransmits:0}]]){
-    const ch=this.pc.createDataChannel(label,options);this.channels[label]=ch;ch.onmessage=e=>this.receive(e.data);
+    const ch=this.pc.createDataChannel(label,options);this.channels[label]=ch;ch.onmessage=e=>{if(this.generation===generation)this.receive(e.data);};
     const observe=()=>this.diagnosticEvent(label,ch.readyState);observe();ch.addEventListener('open',observe);ch.addEventListener('close',observe);ch.addEventListener('error',observe);
     ch.onclose=()=>{if(this.state==='RUNNING')this.state='DISCONNECTED';};
    }
@@ -95,20 +97,51 @@ export class MobileClient {
  envelope(type,payload,clientTimestamp=Date.now()){const groups=type==='MOTION_SAMPLE'?Object.values(payload):[];const status=groups.length?(groups.every(g=>g.availability==='unavailable')?'unavailable':groups.every(g=>g.availability==='present')?'available':'degraded'):'available';return {protocolVersion:1,messageType:type,sessionId:this.identity.sessionId,playerId:this.identity.playerId,deviceSessionId:this.identity.deviceSessionId,sequence:++this.sequence,clientTimestamp,serverReceiveTimestamp:null,capabilities:['acceleration','accelerationIncludingGravity','rotationRate','orientation','screenOrientation','touch'],quality:{source:this.source,status},payload};}
  send(type,payload,clientTimestamp=Date.now()){
   if(this.state!=='RUNNING')return Promise.reject(Error('client not running'));
+  if(type==='MOTION_SAMPLE'){this.sendMotion(payload,clientTimestamp);return Promise.resolve();}
   const message=this.envelope(type,payload,clientTimestamp),channel=this.channels[type==='MOTION_SAMPLE'?'motion':'control'];
   const text=JSON.stringify(message);if(new TextEncoder().encode(text).length>2048||channel.bufferedAmount>8192||this.pending.size>=8)return Promise.reject(Error('bounded send'));
   this.metrics.sent++;
   return new Promise((resolve,reject)=>{const started=performance.now();const timer=setTimeout(()=>{this.pending.delete(message.sequence);reject(Error('ACK deadline'));},2000);this.pending.set(message.sequence,{resolve,reject,timer,started,type});try{channel.send(text);if(type==='MOTION_SAMPLE')this.metrics.motionSent++;}catch(error){clearTimeout(timer);this.pending.delete(message.sequence);reject(error);}});
  }
+ // Motion ACKs are observational only. At most 64 timestamps, no per-sample Promise/timer.
+ expireMotion(now=performance.now()){
+  for(const [sequence,entry] of this.motionTelemetry){
+   if(now-entry.started<2000&&this.motionTelemetry.size<64)break;
+   this.motionTelemetry.delete(sequence);this.metrics.motionAckMiss++;
+  }
+  this.metrics.motionPendingTelemetry=this.motionTelemetry.size;
+ }
+ sendMotion(payload,clientTimestamp){
+  const channel=this.channels?.motion;
+  if(this.state!=='RUNNING'||channel?.readyState!=='open'){this.metrics.motionErrors++;return;}
+  if(channel.bufferedAmount>8192){this.metrics.motionBufferedDrop++;return;}
+  const message=this.envelope('MOTION_SAMPLE',payload,clientTimestamp),text=JSON.stringify(message);
+  if(new TextEncoder().encode(text).length>2048){this.metrics.motionErrors++;return;}
+  const started=performance.now();this.expireMotion(started);
+  this.motionTelemetry.set(message.sequence,{started});
+  try{channel.send(text);this.metrics.sent++;this.metrics.motionSent++;}
+  catch{this.motionTelemetry.delete(message.sequence);this.metrics.errors++;this.metrics.motionErrors++;}
+  this.metrics.motionPendingTelemetry=this.motionTelemetry.size;
+ }
  receive(text){let n;try{n=JSON.parse(text);}catch{this.metrics.errors++;return;}
   if(n.messageType==='ERROR'){this.metrics.errors++;return;}
-  const p=this.pending.get(n.sequence);if(!p)return;clearTimeout(p.timer);this.pending.delete(n.sequence);this.metrics.received++;if(p.type==='MOTION_SAMPLE')this.metrics.motionAck++;
+  if(n.messageType!=='ACK'||!this.identity||n.sessionId!==this.identity.sessionId||n.playerId!==this.identity.playerId||n.deviceSessionId!==this.identity.deviceSessionId)return;
+  const motion=this.motionTelemetry.get(n.sequence);
+  if(motion){this.motionTelemetry.delete(n.sequence);this.metrics.motionPendingTelemetry=this.motionTelemetry.size;
+   if(performance.now()-motion.started>=2000){this.metrics.motionAckMiss++;return;}
+   this.metrics.motionAck++;this.metrics.received++;if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-motion.started);return;
+  }
+  const p=this.pending.get(n.sequence);if(!p)return;clearTimeout(p.timer);this.pending.delete(n.sequence);this.metrics.received++;
   if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-p.started);p.resolve(n);
  }
- motion(payload,clientTimestamp=Date.now()){this.metrics.motionSubmitted++;if(this.latest)this.metrics.overwritten++;this.latest={payload,clientTimestamp};if(!this.inFlight)this.flush();}
- flush(){if(!this.latest||this.state!=='RUNNING')return;const sample=this.latest;this.latest=null;this.inFlight=true;this.send('MOTION_SAMPLE',sample.payload,sample.clientTimestamp).catch(()=>{this.metrics.errors++;this.metrics.motionErrors++;}).finally(()=>{this.inFlight=false;this.flush();});}
+ motion(payload,clientTimestamp=Date.now()){
+  this.metrics.motionSubmitted++;if(this.state!=='RUNNING')return;
+  if(this.latest)this.metrics.overwritten++;this.latest={payload,clientTimestamp};
+  if(!this.flushScheduled){this.flushScheduled=true;queueMicrotask(()=>{this.flushScheduled=false;this.flush();});}
+ }
+ flush(){if(!this.latest||this.state!=='RUNNING')return;const sample=this.latest;this.latest=null;this.sendMotion(sample.payload,sample.clientTimestamp);}
  async close(notify=true){
-  clearInterval(this.heartbeat);this.latest=null;const identity=this.identity;this.state='STOPPING';
+  this.generation=(this.generation||0)+1;clearInterval(this.heartbeat);this.latest=null;this.motionTelemetry.clear();this.metrics.motionPendingTelemetry=0;const identity=this.identity;this.state='STOPPING';
   for(const p of this.pending.values()){clearTimeout(p.timer);p.reject(Error('client closed'));}this.pending.clear();
   Object.values(this.channels||{}).forEach(ch=>ch.close());this.pc?.close();this.state='STOPPED';
   if(notify&&identity)await this.signal('/mobile/disconnect',{peerId:identity.peerId,resumeToken:identity.resumeToken});

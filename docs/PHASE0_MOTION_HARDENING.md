@@ -1,0 +1,13 @@
+# T064 — Motion latest-only hardening
+
+2026-10-14. Phase0 technical support for T019/#33; physical acceptance remains OPEN. Task #115.
+
+Historical adapter at `59a32a2` reproduced using a controlled timeout clock: first send at0 ms, second sample submitted at20 ms, still only one send at1999 ms, next send at2000 ms. This holds both when motion is lost and when its ACK is lost. [Measured reproduction](evidence/phase0-integration-2026-10-14/motion-stall.json). Reproduce from the repository root with `node tools/t064/reproduce.mjs 59a32a2 /tmp/motion-stall-new.json`.
+
+Physical events still feed SensorCapture → normalization/latest values → existing 50Hz real-event emission budget → motion DataChannel (`ordered=false`, `maxRetransmits=0`) → Java → PhoneInput. A synchronous burst coalesces in one microtask to its latest sample. No timers manufacture input. Browser task dispatch bounds scheduling; channel buffer pressure above8192 bytes drops that latest sample rather than retaining history. Emission does not wait for any ACK.
+
+Motion telemetry retains at most64 sequence/send-monotonic-time pairs. Expiry at2 seconds is observational, evaluated on subsequent activity, with eviction when full; there is no per-motion Promise or timer. Counters include submitted/sent/ack/errors, overwritten, ackMiss, pendingTelemetry and bufferedDrop. RTT samples stay bounded4096 and mean ACK RTT, not physical E2E. Reliable control retains its existing bounded promises and2000ms ACK deadline. Epoch/reconnect callbacks are generation-isolated; close clears pending motion/telemetry. Existing Java identity/epoch/out-of-order/duplicate rules are unchanged.
+
+Nine focused tests cover delivery/ACK, packet loss, delivered motion/lost ACK, burst replacement, reliable control, buffer pressure, closed motion, duplicate/out-of-order/foreign-identity ACK and stopped input. Three runs each at50/60/120Hz with100% ACK loss submit6900 samples total without an ACK stall and never retain more than64 telemetry observations. Full PWA suite69/69 passes. Synthetic sources are software evidence; real sensor cadence, four phones, network failures and motion-to-Unity-visible-response latency must still be measured in T019.
+
+The previous sensor test explicitly expected stop-and-wait; its replacement asserts new observable burst/latest-only behavior. Historical failing-test output remains in local session evidence; no old PASS is reused. Integration soak and broader regression are reported separately in the overnight integration report.
