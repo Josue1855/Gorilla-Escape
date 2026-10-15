@@ -10,6 +10,24 @@ using UnityEngine.TestTools;
 
 public class MainMenuNavigationTests
 {
+    [UnityTest] public IEnumerator PhoneFlowWorksWithQaHiddenAndDoesNotStartEditorServices()
+    {
+        var previous=Environment.GetEnvironmentVariable("GORILLA_QA_MENU");
+        Environment.SetEnvironmentVariable("GORILLA_QA_MENU","0");
+        var host=new GameObject("Product phone flow fixture");
+        try{
+            var menu=host.AddComponent<MainMenuController>();yield return null;
+            Assert.False(menu.PlayEnabled);menu.OpenPhone();
+            Assert.True(menu.InPhone);Assert.True(menu.Runtime.PhoneActive);
+            Assert.False(menu.InTests);Assert.False(menu.Runtime.TestsActive);
+            Assert.False(menu.Runtime.ServicesEnabled);Assert.True(menu.Runtime.PhoneFailed);
+            menu.OpenTests();Assert.False(menu.InTests);
+            menu.Back();Assert.False(menu.InPhone);Assert.False(menu.Runtime.PhoneActive);
+            Assert.True(menu.Runtime.CleanupComplete);
+        }finally{UnityEngine.Object.Destroy(host);Environment.SetEnvironmentVariable("GORILLA_QA_MENU",previous);}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator ProductBootstrapRemainsOptInInsideTestRunner()
     {
         var previous=UnityEngine.SceneManagement.SceneManager.GetActiveScene();

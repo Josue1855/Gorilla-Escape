@@ -74,10 +74,10 @@ namespace GorillaEscape.QA {
             var bytes=preview?.Take();if(bytes!=null){try{if(cameraTexture==null)cameraTexture=new Texture2D(2,2,TextureFormat.RGB24,false);if(!CameraPreviewClient.ValidJpeg(bytes)||!cameraTexture.LoadImage(bytes)||cameraTexture.width>320||cameraTexture.height>240){Destroy(cameraTexture);cameraTexture=null;error="PREVIEW INVALID";}}finally{Array.Clear(bytes,0,bytes.Length);}}
             if(vision.Take(out var frame,out var at)&&cameras.Accept(frame,at))fusion.ObserveCamera(frame,at);
             if(cameras.Latest!=null&&!cameras.Fresh(Now(),250,20))fusion.Association.MarkLost();
-            if(TestsActive&&java.State==IpcState.RUNNING&&!generated){generated=true;PrepareQr();java.RegenerateQa();}
-            var qr=java.Qa;if(TestsActive&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){{ClearQr();try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
-            if(TestsActive&&(java.State==IpcState.FAILED||java.State==IpcState.STOPPED)){ClearQr();qrState="BACKEND UNAVAILABLE";}
-            var lobby=java.Lobby.Snapshot;if(TestsActive&&qrVisible>0&&joinEnd==0&&lobby?.players!=null)foreach(var p in lobby.players)if(!priorPlayers.Contains(PlayerKey(p))&&p.networkReady&&p.inputReady&&p.connectionEpoch==1){joinEnd=Now();break;}
+            if((TestsActive||PhoneActive)&&java.State==IpcState.RUNNING&&!generated){generated=true;PrepareQr();java.RegenerateQa();}
+            var qr=java.Qa;if((TestsActive||PhoneActive)&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){{ClearQr();try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
+            if((TestsActive||PhoneActive)&&(java.State==IpcState.FAILED||java.State==IpcState.STOPPED)){ClearQr();qrState="BACKEND UNAVAILABLE";}
+            var lobby=java.Lobby.Snapshot;if((TestsActive||PhoneActive)&&qrVisible>0&&joinEnd==0&&lobby?.players!=null)foreach(var p in lobby.players)if(!priorPlayers.Contains(PlayerKey(p))&&p.networkReady&&p.inputReady&&p.connectionEpoch==1){joinEnd=Now();break;}
             if(TestsActive&&java.PhoneInputs.TryLatest(selected,out var pInput)){sample=pInput;fusion.ObservePhone(pInput);if(pInput.sequence!=sequence||pInput.connectionEpoch!=epoch){sequence=pInput.sequence;epoch=pInput.connectionEpoch;applied=Now();appliedFrame=Time.frameCount;presented=0;}}
             else {sample=null;applied=presented=0;}
         }
@@ -107,6 +107,20 @@ namespace GorillaEscape.QA {
         public void SetDeviceState(string state){model.DeviceState=state;if(joinEnd==0)joinClass=state;}
         public bool MeasuringFrames => frameTiming!=null&&!timingLogged;
         public bool TestsActive {get; private set;}
+        public bool PhoneActive {get; private set;}
+        public bool PhoneReady => joinEnd>0;
+        public bool PhoneFailed => qrState=="CONFIG_REQUIRED"||!ServicesEnabled||java?.State==IpcState.FAILED||java?.State==IpcState.STOPPED||qrState=="CONNECTION_NOT_READY"&&java?.QaConnection?.bootstrapState=="FAILED";
+        public void EnterPhone(){PhoneActive=true;generated=false;ClearQr();qrVisible=joinEnd=0;}
+        public void LeavePhone(){PhoneActive=false;ClearQr();generated=false;}
+        public async void RetryPhone(){
+            generated=false;ClearQr();qrVisible=joinEnd=0;
+            if(!ServicesEnabled||quitting)return;
+            if(java.State==IpcState.RUNNING){java.RequestConnectionMode("AUTO");return;}
+            if(javaRun!=null&&!javaRun.IsCompleted)return;
+            java.Dispose();java=new JavaProbeSupervisor(enableLobby:true);
+            fusion=new InputFusion(java.PhoneInputs,new FusionSettings());error="";qrState="STARTING";
+            javaRun=StartJava();await javaRun;
+        }
         internal int renderedFrame;
         Task previewClosing;
         public void EnterTests(){TestsActive=true;generated=false;StartCoroutine(Presentation());Debug.Log("QA_CENTER_OPEN");}

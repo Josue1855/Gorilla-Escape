@@ -15,12 +15,15 @@ public final class QaAdmission implements AutoCloseable {
         if(!"AVAILABLE".equals(state))return new View(state,ttl,0,"");
         if(!regenerate)return new View(state,ttl,0,"");
         try{var link=lab?JoinQrPoc.labLink(page,current):JoinQrPoc.link(page,current);
+            return raster(link,state,ttl);
+        }catch(Exception e){session.revokeAdmission(current.token());current=null;state="CONFIG_REQUIRED";return new View(state,0,0,"");}
+    }
+    public static View raster(URI link,String state,long ttl)throws Exception {
             var bits=JoinQrPoc.modules(link);int size=bits.getWidth();
             if(size>89)throw new IllegalArgumentException("QR_BOUND");
             byte[] packed=new byte[(size*size+7)/8];
             for(int y=0;y<size;y++)for(int x=0;x<size;x++)if(bits.get(x,y)){int i=y*size+x;packed[i/8]|=(byte)(1<<(7-i%8));}
             return new View(state,ttl,size,Base64.getEncoder().encodeToString(packed));
-        }catch(Exception e){session.revokeAdmission(current.token());current=null;state="CONFIG_REQUIRED";return new View(state,0,0,"");}
     }
     public synchronized void invalidate(){current=null;state="ORIGIN_CHANGED";}
     @Override public synchronized void close(){current=null;}

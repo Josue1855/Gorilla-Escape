@@ -716,3 +716,17 @@ Later overnight checkpoint: fresh Java94cases=93pass/1external skip; gateway/RTC
 ### Final protected integration soak — 2026-10-15
 
 Four real RTC clients, Unity/Java IPC and replay Vision: 1800.21s PASS, 100%motionACK loss on one client, bounded telemetry/errors0; normal exit/owned residual0, frozen runtime hashes preserved. Earlier host-suspend FAIL, native-click/whole-stack-noWAN automation limits, blocked public HTTPS and fresh T018 zero-frame comparison are retained explicitly. See [final integration report](PHASE0_OVERNIGHT_INTEGRATION_REPORT_2026-10-14.md). Physical T019/T020 NOT RUN; F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED; JUGAR disabled.
+
+## T063 transparent AUTO — 2026-10-15
+
+PWA69/69/build PASS; Java verify100 total,0 failures/errors,2 opt-in skips; final
+connectivity18/18. Unity EditMode161/161 and navigation PlayMode7/7; Linux build
+0 errors/0 warnings. Real RTC1–4 clients survive bootstrap loss with stable
+identity/epoch; isolated no-WAN LAN regression PASS. Final packaged four-client
+10-second integration smoke PASS, owned residuals0, Java/camera cleanup true.
+Package includes verified cloudflared2026.10.0. External HTTPS gate BLOCKED:
+registered tunnel but no public200 within the bounded budget; repeated failed
+attempts retained, cleanup true. This is not a physical join PASS or T063 closure.
+Remaining: iPhone Safari AUTO, Android Chrome AUTO; one-time offline preparation,
+WAN removal during active controls, forced modes as separate QA. No T019/T020/
+F05/E0 closure or Phase1. [Detailed evidence](evidence/t063-transparent-auto-2026-10-15/validation.json).

@@ -1,0 +1,1 @@
+{"classification":"EXTERNAL NETWORK LAB / no physical phone","gate":"BLOCKED","reason":"IOException","supervisor":{"healthAttempts":53,"registered":true,"probeFailure":"HttpConnectTimeoutException","cleanupComplete":true,"lastHttpsStatus":0,"failure":"TUNNEL_HTTPS_UNAVAILABLE","binarySha":"PASS"}}

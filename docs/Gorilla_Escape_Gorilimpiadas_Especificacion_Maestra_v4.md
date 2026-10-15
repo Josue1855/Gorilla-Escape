@@ -3970,3 +3970,16 @@ Corrección PO de la misma fundación: Unity Editor Play Mode sobre la ruta ofic
 ## Enmienda PO 2026-10-14 — Bootstrap transparente (DEC-030)
 
 CABAÑA = bootstrap local/offline canónico. CLOUDFLARED = bootstrap HTTPS/PWA/signaling opcional de conveniencia. AUTO = resolver transparente, acotado y con cleanup antes del fallback. Ambos convergen en la misma TechnicalSession, Gorilla Protocol, WebRTC LAN DIRECT, Java, IPC y autoridad Unity. Cloudflared no lleva gameplay; remote multiplayer sigue Post-MVP. GOR-07, SRS-GOR-02 y aceptación offline no cambian. Un teléfono nuevo en Cabaña requiere PREPARAR TELÉFONO; no se promete trust automático ni RNF-GOR-02 sin medir. T063 bajo F41 es opcional y soporta F05/T019/T062; no agrega gate académico a E0. [Arquitectura y límites](TRANSPARENT_CONNECTIVITY.md).
+
+### Enmienda PO — T063 AUTO transparente, 2026-10-15
+
+El usuario conecta su teléfono mediante QR sin elegir tecnología. AUTO prepara
+la ruta local primero y verifica la comodidad HTTPS pública en segundo plano;
+únicamente una ruta pública realmente READY se prefiere al emitir un nuevo QR.
+Cada admission conserva su origen. El binario opcional viene empaquetado y su
+SHA se verifica antes de ejecutarlo; no se descarga al jugar. Cualquier fallo
+opcional conserva Cabin funcional. La preparación única de un teléfono nuevo
+sin Internet se explica de forma humana, con arquitectura sólo en Detalles/QA.
+Cloudflared sirve exclusivamente PWA/HTTPS/signaling; gameplay sigue por RTC
+LAN directo → Java → IPC → Unity. T019/T020/F05/E0 no se cierran; JUGAR sigue
+deshabilitado y Phase1 no comienza. Gates/evidencia: PHASE0_T063_TRANSPARENT_AUTO.md.

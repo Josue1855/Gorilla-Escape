@@ -25,6 +25,7 @@ namespace GorillaEscape.UI
                 && Environment.GetEnvironmentVariable("GORILLA_CAMERA_LAB") != "1";
         bool AutomatedMeasurement => Environment.GetEnvironmentVariable("GORILLA_QA_AUTOMATED_MEASUREMENT")=="1"&&Runtime!=null&&Runtime.MeasuringFrames;
         public bool InTests { get; private set; }
+        public bool InPhone { get; private set; }
         public bool PlayEnabled => false; // E0 is still open; no gameplay scene exists.
         public QaRuntimeService Runtime { get; private set; }
         int reportedWidth,reportedHeight;
@@ -59,7 +60,7 @@ namespace GorillaEscape.UI
                 camera.backgroundColor=new Color(.06f,.08f,.11f);camera.cullingMask=0;
             }
             // Negotiation remains opt-in within the existing authenticated IPC; no new session authority.
-            if (!Application.isEditor && QaVisible) Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
+            if (!Application.isEditor || Environment.GetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA")=="1") Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
             Runtime = gameObject.AddComponent<QaRuntimeService>();
             mainView = new MainMenuView(this);
             tests = new TestsMenuController(this, Runtime);
@@ -67,11 +68,58 @@ namespace GorillaEscape.UI
         void Start()
         {
             if (Environment.GetEnvironmentVariable("GORILLA_QA_AUTOSTART_TESTS") == "1") OpenTests();
+            else if(Environment.GetEnvironmentVariable("GORILLA_QA_AUTOSTART_PHONE")=="1")OpenPhone();
         }
-        public void OpenTests() { if (!QaVisible || InTests) return; InTests = true; tests.Enter(); }
-        public void Back() { if (AutomatedMeasurement || !InTests) return; tests.Leave(); InTests = false; }
+        public void OpenDiagnostic(){if(InPhone){Runtime.LeavePhone();InPhone=false;}if(!InTests){InTests=true;tests.Enter();}}
+        public void OpenPhone(){if(InTests||InPhone)return;InPhone=true;Runtime.EnterPhone();}
+        public void OpenTests() { if (!QaVisible || InTests) return; if(InPhone){Runtime.LeavePhone();InPhone=false;} InTests = true; tests.Enter(); }
+        public void Back() { if(InPhone){Runtime.LeavePhone();InPhone=false;return;} if (AutomatedMeasurement || !InTests) return; tests.Leave(); InTests = false; }
         public void Exit() { Runtime.RequestExit(); }
-        void Update() { if (!AutomatedMeasurement && InTests && UnityEngine.Input.GetKeyDown(KeyCode.Escape)) Back(); }
+        void Update() { if (!AutomatedMeasurement && (InTests||InPhone) && UnityEngine.Input.GetKeyDown(KeyCode.Escape)) Back(); }
+        bool preparePhone,prepareDetails;
+        Texture2D prepareTexture;
+        void DrawPhone(float width,float height)
+        {
+            GUI.Box(new Rect(0,0,width,height),"");
+            var title=new GUIStyle(GUI.skin.label){fontSize=32,alignment=TextAnchor.MiddleCenter};
+            var body=new GUIStyle(GUI.skin.label){fontSize=22,alignment=TextAnchor.MiddleCenter,wordWrap=true};
+            var action=new GUIStyle(GUI.skin.button){fontSize=22};
+            float x=(width-600)/2;
+            GUI.Label(new Rect(x,55,600,55),"CONECTAR TELÉFONO",title);
+            if(GUI.Button(new Rect(40,35,160,45),"VOLVER",action)){preparePhone=false;Back();}
+            if(preparePhone){
+                GUI.Label(new Rect(x,120,600,55),"PREPARAR TELÉFONO",title);
+                GUI.Label(new Rect(x,180,600,90),"Este teléfono necesita una preparación única para conectarse sin Internet.",body);
+                var raster=Runtime.java?.QaHosting?.prepare;
+                if(prepareTexture==null&&raster?.size>0)prepareTexture=QaRuntimeService.DecodeQr(raster);
+                if(prepareTexture!=null)GUI.DrawTexture(new Rect((width-280)/2,280,280,280),prepareTexture,ScaleMode.ScaleToFit);
+                GUI.Label(new Rect(x,570,600,70),"Escanea para preparar tu teléfono. Después vuelve y pide un nuevo QR.",body);
+                if(GUI.Button(new Rect(x,665,285,48),"YA ESTÁ PREPARADO",action)){preparePhone=false;Runtime.RegenerateQr();}
+                if(GUI.Button(new Rect(x+300,665,285,48),"DETALLES",action))prepareDetails=!prepareDetails;
+                if(prepareDetails)GUI.Label(new Rect(x,735,600,120),"Compara este código con el teléfono antes de aceptar:\n"+(Runtime.java?.QaHosting?.fingerprint??""),new GUIStyle(body){fontSize=16});
+                return;
+            }
+            if(Runtime.PhoneReady){GUI.Label(new Rect(x,180,600,80),"CONTROL LISTO",title);return;}
+            if(Runtime.PhoneFailed){
+                GUI.Label(new Rect(x,180,600,90),"No pudimos preparar la conexión del teléfono.",body);
+                if(GUI.Button(new Rect(x,300,280,55),"REINTENTAR",action))Runtime.RetryPhone();
+                if(GUI.Button(new Rect(x+300,300,280,55),"DIAGNÓSTICO",action))OpenDiagnostic();
+                return;
+            }
+            if(Runtime.qrTexture==null){
+                GUI.Label(new Rect(x,180,600,70),"Preparando conexión...",body);
+                if(Runtime.qrState=="EXPIRED"||Runtime.qrState=="SCANNED/JOINED")
+                    if(GUI.Button(new Rect(x+150,300,300,55),"NUEVO QR",action))Runtime.RegenerateQr();
+                return;
+            }
+            GUI.DrawTexture(new Rect((width-320)/2,150,320,320),Runtime.qrTexture,ScaleMode.ScaleToFit);
+            if(Event.current.type==EventType.Repaint&&Runtime.qrVisible==0)Runtime.qrVisible=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            GUI.Label(new Rect(x,485,600,50),"Escanea con tu teléfono",body);
+            if(GUI.Button(new Rect(x+150,550,300,48),"NUEVO QR",action))Runtime.RegenerateQr();
+            if(Runtime.java?.QaConnection?.admissionMode=="CABIN"&&GUI.Button(new Rect(x+150,615,300,48),"PREPARAR TELÉFONO",action))preparePhone=!preparePhone;
+
+        }
+        void OnDestroy(){if(prepareTexture!=null)Destroy(prepareTexture);}
         void OnGUI()
         {
             if(Event.current.type==EventType.Repaint&&(reportedWidth!=Screen.width||reportedHeight!=Screen.height)) {
@@ -89,7 +137,8 @@ namespace GorillaEscape.UI
                 // Uniform scaling retains camera geometry. Narrow windows scroll instead of squeezing type.
                 float scale = Mathf.Max(.75f, Mathf.Min(Screen.width / 1280f, Screen.height / 940f));
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1));
-                if (InTests) tests.Draw(Screen.width / scale, Screen.height / scale);
+                if(InPhone)DrawPhone(Screen.width/scale,Screen.height/scale);
+                else if (InTests) tests.Draw(Screen.width / scale, Screen.height / scale);
                 else {
                     float width=Screen.width/scale,height=Screen.height/scale;
                     mainScroll=GUI.BeginScrollView(new Rect(0,0,width,height),mainScroll,new Rect(0,0,Mathf.Max(1280,width),Mathf.Max(940,height)));

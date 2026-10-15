@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:43Z" duration="5.5335622">
+  <test-suite type="TestSuite" id="1041" name="Gorilla Escape" fullname="Gorilla Escape" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:43Z" duration="5.533562" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1039" name="GorillaEscape.PlayModeTests.dll" fullname="/home/josuegalvan/.cache/gorilla-t063-validation/Unity/Library/ScriptAssemblies/GorillaEscape.PlayModeTests.dll" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:43Z" duration="5.526312" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestFixture" id="1029" name="MainMenuNavigationTests" fullname="MainMenuNavigationTests" classname="MainMenuNavigationTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:43Z" duration="5.524981" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1036" name="AutomatedFrameMeasurementCannotChangePreviewRoute" fullname="MainMenuNavigationTests.AutomatedFrameMeasurementCannotChangePreviewRoute" methodname="AutomatedFrameMeasurementCannotChangePreviewRoute" classname="MainMenuNavigationTests" runstate="Runnable" seed="1019436437" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:38Z" duration="0.028622" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_CENTER_OPEN
+QA_CENTER_CLOSED
+QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":0,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1033" name="DestroyBeforeFirstFrameDoesNotRequireBackendInitialization" fullname="MainMenuNavigationTests.DestroyBeforeFirstFrameDoesNotRequireBackendInitialization" methodname="DestroyBeforeFirstFrameDoesNotRequireBackendInitialization" classname="MainMenuNavigationTests" runstate="Runnable" seed="1571392625" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:38Z" duration="0.001208" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1034" name="NavigationStaysAvailableWhenTechnicalServicesFail" fullname="MainMenuNavigationTests.NavigationStaysAvailableWhenTechnicalServicesFail" methodname="NavigationStaysAvailableWhenTechnicalServicesFail" classname="MainMenuNavigationTests" runstate="Runnable" seed="150089647" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:38Z" duration="0.002267" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_CENTER_OPEN
+QA_CENTER_CLOSED
+QA_CENTER_OPEN
+QA_CENTER_CLOSED
+QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":0,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1032" name="NonProductSceneDoesNotAutoLaunchAndEditorBackendStaysIdle" fullname="MainMenuNavigationTests.NonProductSceneDoesNotAutoLaunchAndEditorBackendStaysIdle" methodname="NonProductSceneDoesNotAutoLaunchAndEditorBackendStaysIdle" classname="MainMenuNavigationTests" runstate="Runnable" seed="844942657" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:38Z" duration="0.011073" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_CENTER_OPEN
+QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":0,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1030" name="PhoneFlowWorksWithQaHiddenAndDoesNotStartEditorServices" fullname="MainMenuNavigationTests.PhoneFlowWorksWithQaHiddenAndDoesNotStartEditorServices" methodname="PhoneFlowWorksWithQaHiddenAndDoesNotStartEditorServices" classname="MainMenuNavigationTests" runstate="Runnable" seed="189477077" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:38Z" duration="0.002241" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":0,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1035" name="PreviewControlCreatesAndClosesOnlyItsLoopbackListener" fullname="MainMenuNavigationTests.PreviewControlCreatesAndClosesOnlyItsLoopbackListener" methodname="PreviewControlCreatesAndClosesOnlyItsLoopbackListener" classname="MainMenuNavigationTests" runstate="Runnable" seed="1727744734" result="Passed" start-time="2026-10-15 23:46:38Z" end-time="2026-10-15 23:46:43Z" duration="5.465714" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1031" name="ProductBootstrapRemainsOptInInsideTestRunner" fullname="MainMenuNavigationTests.ProductBootstrapRemainsOptInInsideTestRunner" methodname="ProductBootstrapRemainsOptInInsideTestRunner" classname="MainMenuNavigationTests" runstate="Runnable" seed="653946559" result="Passed" start-time="2026-10-15 23:46:43Z" end-time="2026-10-15 23:46:43Z" duration="0.004693" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Gorilla Escape foundation ready; gameplay and hardware adapters pending.
+Saving results to: /home/josuegalvan/.cache/gorilla-t063-validation/navigation-r2.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

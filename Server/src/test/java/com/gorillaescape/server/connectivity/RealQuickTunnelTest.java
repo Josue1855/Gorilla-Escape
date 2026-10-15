@@ -13,7 +13,8 @@ import com.gorillaescape.server.protocol.GorillaProtocol;
 class RealQuickTunnelTest {
     @Test @Timeout(60) void publicHttpsBootstrapOnly()throws Exception{
         var result=new LinkedHashMap<String,Object>();result.put("classification","EXTERNAL NETWORK LAB / no physical phone");
-        try(var ingress=new PublicIngress((path,body)->{throw new IllegalArgumentException("INVALID_TEST_ADMISSION");});var tunnel=new CloudflaredSupervisor(Path.of(System.getenv("GORILLA_REAL_TUNNEL")))){
+        var tunnel=new CloudflaredSupervisor(Path.of(System.getenv("GORILLA_REAL_TUNNEL")));
+        try(var ingress=new PublicIngress((path,body)->{throw new IllegalArgumentException("INVALID_TEST_ADMISSION");});tunnel){
             long start=System.nanoTime();var origin=tunnel.start(ingress.origin(),15000);ingress.publicOrigin(origin);result.put("tunnelStartupMs",(System.nanoTime()-start)/1_000_000);result.put("version",tunnel.version());
             var client=HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
             var response=client.send(HttpRequest.newBuilder(origin.resolve("/")).timeout(Duration.ofSeconds(10)).GET().build(),HttpResponse.BodyHandlers.ofString());
@@ -24,6 +25,6 @@ class RealQuickTunnelTest {
             var join=client.send(HttpRequest.newBuilder(origin.resolve("/mobile/join")).timeout(Duration.ofSeconds(5)).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build(),HttpResponse.BodyHandlers.ofString());assertEquals(400,join.statusCode());result.put("invalidAdmissionStatus",join.statusCode());assertTrue(join.headers().firstValue("Cache-Control").orElseThrow().contains("no-store"));
             tunnel.close();assertTrue(tunnel.cleanupComplete());result.put("cleanupComplete",true);result.put("gate","PASS");
         }catch(Exception e){result.put("gate","BLOCKED");result.put("reason",e.getClass().getSimpleName());throw e;}
-        finally{String output=System.getenv("GORILLA_REAL_TUNNEL_REPORT");if(output!=null)Files.writeString(Path.of(output),GorillaProtocol.JSON.writeValueAsString(result)+"\n");}
+        finally{result.put("supervisor",tunnel.diagnostics());String output=System.getenv("GORILLA_REAL_TUNNEL_REPORT");if(output!=null)Files.writeString(Path.of(output),GorillaProtocol.JSON.writeValueAsString(result)+"\n");}
     }
 }
