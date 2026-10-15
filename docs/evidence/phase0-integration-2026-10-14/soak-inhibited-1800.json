@@ -1,0 +1,6989 @@
+{
+  "classification": "LAB / real Unity Java RTC; replay Vision; synthetic motion",
+  "physical": "NOT RUN",
+  "requestedSeconds": 1800,
+  "cpuTickHz": 100,
+  "gate": "PASS",
+  "resources": [
+    {
+      "elapsedSeconds": 0.014703879000000598,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 264580,
+          "threads": 70,
+          "fds": 43,
+          "cpuTicks": 3131
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17388,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 65
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 30.114954332999993,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 268192,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 5835
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17480,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 115
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 60.18710903499999,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 268572,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 8736
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17580,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 166
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 90.29764231600001,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269172,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 11618
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17672,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 218
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 120.369811113,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269244,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 14409
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17728,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 270
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 150.49229555399998,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269624,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 17116
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17756,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 323
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 180.584598646,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269444,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 19876
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17780,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 377
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 210.723289857,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269852,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 22754
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17808,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 432
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 240.81210502499997,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269388,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 25816
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17832,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 488
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 270.954631851,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269436,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 28790
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 543
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 301.111239857,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269884,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 31477
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 598
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 331.235730386,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269640,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 34382
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 655
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 361.305237023,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269728,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 37266
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 712
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 391.39642968500004,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270332,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 40025
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 765
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 421.484933752,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270220,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 42923
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 822
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 451.60180317000004,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 269936,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 45986
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 879
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 481.697666566,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270268,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 49127
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 937
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 511.861670503,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270556,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 52384
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 996
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 541.945105156,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270612,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 55638
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1055
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 572.062131387,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270260,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 58267
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1108
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 602.170816221,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270412,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 60544
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1163
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 632.249251413,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271136,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 63314
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1217
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 662.354893399,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271084,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 66210
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1273
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 692.507882363,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270772,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 69127
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1331
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 722.6745763929999,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270888,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 71888
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1389
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 752.795572481,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271144,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 74109
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1444
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 782.86243012,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270812,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 77076
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1501
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 812.965764784,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 270884,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 79868
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1557
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 843.132741668,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271152,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 82876
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1617
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 873.24970502,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271300,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 85777
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1673
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 903.333995365,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271416,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 88765
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1730
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 933.424603161,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271128,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 91615
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1788
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 963.536820157,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271800,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 94385
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1844
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 993.61998941,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271472,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 97213
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1902
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1023.7081898920001,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271992,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 99989
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 1959
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1053.811278713,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271368,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 102853
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2017
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1083.9109865280002,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271348,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 105711
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2073
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1114.007978367,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271784,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 109130
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2134
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1144.117466983,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271912,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 112079
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2190
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1174.2009017080002,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272156,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 114415
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2246
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1204.2939427229999,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272288,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 117081
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2302
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1234.4288122730002,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272324,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 119841
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2358
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1264.5632773,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272564,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 122683
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2414
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1294.652934591,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272364,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 125440
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2470
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1324.767707715,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272264,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 128255
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2526
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1354.8888596989998,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 271792,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 130991
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2582
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1384.9784283640001,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272640,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 133827
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2638
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1415.046814685,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272224,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 136509
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2694
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1445.206425282,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272820,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 139233
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2750
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1475.31589439,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272304,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 142112
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2807
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1505.406681146,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272444,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 144781
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2860
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1535.53251224,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272576,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 147396
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2916
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1565.644406259,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272444,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 150114
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 2974
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1595.7475473519999,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272792,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 152915
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3031
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1625.8743819180002,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272868,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 155673
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3089
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1656.055687925,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 273148,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 158546
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3145
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1686.263109203,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 273052,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 161404
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3204
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1716.386801101,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 273080,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 164102
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3258
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1746.608447878,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 273040,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 166873
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3314
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1776.832734046,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272876,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 169579
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3369
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1800.205890639,
+      "processes": [
+        {
+          "pid": 298008,
+          "component": "GorillaEscape.x",
+          "rssKiB": 272812,
+          "threads": 71,
+          "fds": 43,
+          "cpuTicks": 171724
+        },
+        {
+          "pid": 298088,
+          "component": "python3.12",
+          "rssKiB": 17856,
+          "threads": 2,
+          "fds": 3,
+          "cpuTicks": 3414
+        }
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "elapsedSeconds": 0.014661222999995517,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 56,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 56,
+          "latest": false,
+          "metrics": {
+            "sent": 58,
+            "received": 2,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 56,
+            "motionSent": 56,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 56,
+            "motionBufferedDrop": 0,
+            "rttSamples": 2
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 36,
+          "simulatedDrops": 5,
+          "pending": 0,
+          "telemetry": 5,
+          "latest": false,
+          "metrics": {
+            "sent": 37,
+            "received": 32,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 36,
+            "motionSent": 36,
+            "motionAck": 31,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 5,
+            "motionBufferedDrop": 0,
+            "rttSamples": 32
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 19,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 20,
+            "received": 19,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 19,
+            "motionSent": 19,
+            "motionAck": 18,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 19
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 0,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 1,
+            "received": 1,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 0,
+            "motionSent": 0,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 30.114946730000003,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 1558,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 1590,
+            "received": 32,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 1558,
+            "motionSent": 1558,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 1494,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 32
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 1539,
+          "simulatedDrops": 219,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 1570,
+            "received": 1351,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 1539,
+            "motionSent": 1539,
+            "motionAck": 1320,
+            "motionErrors": 0,
+            "motionAckMiss": 205,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1351
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 1521,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 1552,
+            "received": 1552,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 1521,
+            "motionSent": 1521,
+            "motionAck": 1521,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1552
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 1502,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 1533,
+            "received": 1533,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 1502,
+            "motionSent": 1502,
+            "motionAck": 1502,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1533
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 60.187102505,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 3062,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 3124,
+            "received": 62,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 3062,
+            "motionSent": 3062,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 2998,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 62
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 3042,
+          "simulatedDrops": 434,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 3103,
+            "received": 2669,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 3042,
+            "motionSent": 3042,
+            "motionAck": 2608,
+            "motionErrors": 0,
+            "motionAckMiss": 420,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 2669
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 3024,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 3085,
+            "received": 3085,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 3024,
+            "motionSent": 3024,
+            "motionAck": 3024,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 3085
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 3006,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 3067,
+            "received": 3067,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 3006,
+            "motionSent": 3006,
+            "motionAck": 3006,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 3067
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 90.29763681999998,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 4567,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 4659,
+            "received": 92,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 4567,
+            "motionSent": 4567,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 4503,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 92
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 4548,
+          "simulatedDrops": 649,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 4639,
+            "received": 3990,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 4548,
+            "motionSent": 4548,
+            "motionAck": 3899,
+            "motionErrors": 0,
+            "motionAckMiss": 635,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 3990
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 4530,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 4621,
+            "received": 4621,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 4530,
+            "motionSent": 4530,
+            "motionAck": 4530,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 4511,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 4602,
+            "received": 4602,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 4511,
+            "motionSent": 4511,
+            "motionAck": 4511,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 120.36980536099998,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 6072,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 6194,
+            "received": 122,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 6072,
+            "motionSent": 6072,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 6008,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 122
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 6052,
+          "simulatedDrops": 864,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 6174,
+            "received": 5310,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 6052,
+            "motionSent": 6052,
+            "motionAck": 5188,
+            "motionErrors": 0,
+            "motionAckMiss": 850,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 6034,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 6155,
+            "received": 6155,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 6034,
+            "motionSent": 6034,
+            "motionAck": 6034,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 6016,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 6137,
+            "received": 6137,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 6016,
+            "motionSent": 6016,
+            "motionAck": 6016,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 150.49227769200002,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 7575,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 7727,
+            "received": 152,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 7575,
+            "motionSent": 7575,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 7511,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 152
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 7555,
+          "simulatedDrops": 1079,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 7707,
+            "received": 6628,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 7555,
+            "motionSent": 7555,
+            "motionAck": 6476,
+            "motionErrors": 0,
+            "motionAckMiss": 1065,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 7537,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 7688,
+            "received": 7688,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 7537,
+            "motionSent": 7537,
+            "motionAck": 7537,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 7519,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 7670,
+            "received": 7670,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 7519,
+            "motionSent": 7519,
+            "motionAck": 7519,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 180.5845928,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 9081,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 9263,
+            "received": 182,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 9081,
+            "motionSent": 9081,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 9017,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 182
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 9061,
+          "simulatedDrops": 1294,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 9243,
+            "received": 7949,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 9061,
+            "motionSent": 9061,
+            "motionAck": 7767,
+            "motionErrors": 0,
+            "motionAckMiss": 1280,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 9044,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 9225,
+            "received": 9224,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 9044,
+            "motionSent": 9044,
+            "motionAck": 9043,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 9025,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 9206,
+            "received": 9206,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 9025,
+            "motionSent": 9025,
+            "motionAck": 9025,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 210.723283854,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 10586,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 10798,
+            "received": 212,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 10586,
+            "motionSent": 10586,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 10522,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 212
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 10567,
+          "simulatedDrops": 1509,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 10779,
+            "received": 9270,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 10567,
+            "motionSent": 10567,
+            "motionAck": 9058,
+            "motionErrors": 0,
+            "motionAckMiss": 1495,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 10549,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 10760,
+            "received": 10760,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 10549,
+            "motionSent": 10549,
+            "motionAck": 10549,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 10530,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 10741,
+            "received": 10741,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 10530,
+            "motionSent": 10530,
+            "motionAck": 10530,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 240.812099042,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 12093,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 12335,
+            "received": 242,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 12093,
+            "motionSent": 12093,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 12029,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 242
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 12073,
+          "simulatedDrops": 1724,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 12315,
+            "received": 10591,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 12073,
+            "motionSent": 12073,
+            "motionAck": 10349,
+            "motionErrors": 0,
+            "motionAckMiss": 1710,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 12055,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 12297,
+            "received": 12297,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 12055,
+            "motionSent": 12055,
+            "motionAck": 12055,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 12037,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 12278,
+            "received": 12277,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 12037,
+            "motionSent": 12037,
+            "motionAck": 12036,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 270.95462075300003,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 13598,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 13870,
+            "received": 272,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 13598,
+            "motionSent": 13598,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 13534,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 272
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 13579,
+          "simulatedDrops": 1939,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 13851,
+            "received": 11912,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 13579,
+            "motionSent": 13579,
+            "motionAck": 11640,
+            "motionErrors": 0,
+            "motionAckMiss": 1925,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 13561,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 13833,
+            "received": 13833,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 13561,
+            "motionSent": 13561,
+            "motionAck": 13561,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 13542,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 13813,
+            "received": 13813,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 13542,
+            "motionSent": 13542,
+            "motionAck": 13542,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 301.111231345,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 15105,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 15408,
+            "received": 303,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 15105,
+            "motionSent": 15105,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 15041,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 303
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 15086,
+          "simulatedDrops": 2155,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 15388,
+            "received": 13233,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 15086,
+            "motionSent": 15086,
+            "motionAck": 12931,
+            "motionErrors": 0,
+            "motionAckMiss": 2140,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 15068,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 15370,
+            "received": 15370,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 15068,
+            "motionSent": 15068,
+            "motionAck": 15068,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 15049,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 15350,
+            "received": 15350,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 15049,
+            "motionSent": 15049,
+            "motionAck": 15049,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 331.235726116,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 16612,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 16945,
+            "received": 333,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 16612,
+            "motionSent": 16612,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 16548,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 333
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 16593,
+          "simulatedDrops": 2370,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 16925,
+            "received": 14555,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 16593,
+            "motionSent": 16593,
+            "motionAck": 14223,
+            "motionErrors": 0,
+            "motionAckMiss": 2356,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 16575,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 16907,
+            "received": 16907,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 16575,
+            "motionSent": 16575,
+            "motionAck": 16575,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 16556,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 16888,
+            "received": 16888,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 16556,
+            "motionSent": 16556,
+            "motionAck": 16556,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 361.30523538700004,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 18118,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 18481,
+            "received": 363,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 18118,
+            "motionSent": 18118,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 18054,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 363
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 18098,
+          "simulatedDrops": 2585,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 18460,
+            "received": 15875,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 18098,
+            "motionSent": 18098,
+            "motionAck": 15513,
+            "motionErrors": 0,
+            "motionAckMiss": 2571,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 18081,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 18443,
+            "received": 18442,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 18081,
+            "motionSent": 18081,
+            "motionAck": 18080,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 18062,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 18424,
+            "received": 18424,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 18062,
+            "motionSent": 18062,
+            "motionAck": 18062,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 391.396427291,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 19623,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 20016,
+            "received": 393,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 19623,
+            "motionSent": 19623,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 19559,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 393
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 19603,
+          "simulatedDrops": 2800,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 19996,
+            "received": 17196,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 19603,
+            "motionSent": 19603,
+            "motionAck": 16803,
+            "motionErrors": 0,
+            "motionAckMiss": 2786,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 19585,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 19977,
+            "received": 19977,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 19585,
+            "motionSent": 19585,
+            "motionAck": 19585,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 19567,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 19959,
+            "received": 19959,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 19567,
+            "motionSent": 19567,
+            "motionAck": 19567,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 421.484931677,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 21127,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 21550,
+            "received": 423,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 21127,
+            "motionSent": 21127,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 21063,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 423
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 21107,
+          "simulatedDrops": 3015,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 21530,
+            "received": 18515,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 21107,
+            "motionSent": 21107,
+            "motionAck": 18092,
+            "motionErrors": 0,
+            "motionAckMiss": 3000,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 21089,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 21511,
+            "received": 21511,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 21089,
+            "motionSent": 21089,
+            "motionAck": 21089,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 21071,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 21493,
+            "received": 21493,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 21071,
+            "motionSent": 21071,
+            "motionAck": 21071,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 451.60179940300003,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 22631,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 23084,
+            "received": 453,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 22631,
+            "motionSent": 22631,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 22567,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 453
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 22611,
+          "simulatedDrops": 3230,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 23064,
+            "received": 19834,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 22611,
+            "motionSent": 22611,
+            "motionAck": 19381,
+            "motionErrors": 0,
+            "motionAckMiss": 3215,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 22594,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 23046,
+            "received": 23045,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 22594,
+            "motionSent": 22594,
+            "motionAck": 22593,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 22575,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 23027,
+            "received": 23027,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 22575,
+            "motionSent": 22575,
+            "motionAck": 22575,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 481.69766513999997,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 24138,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 24621,
+            "received": 483,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 24138,
+            "motionSent": 24138,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 24074,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 483
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 24118,
+          "simulatedDrops": 3445,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 24601,
+            "received": 21156,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 24118,
+            "motionSent": 24118,
+            "motionAck": 20673,
+            "motionErrors": 0,
+            "motionAckMiss": 3431,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 24100,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 24583,
+            "received": 24583,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 24100,
+            "motionSent": 24100,
+            "motionAck": 24100,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 24082,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 24564,
+            "received": 24564,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 24082,
+            "motionSent": 24082,
+            "motionAck": 24082,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 511.861666558,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 25642,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 26155,
+            "received": 513,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 25642,
+            "motionSent": 25642,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 25578,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 513
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 25622,
+          "simulatedDrops": 3660,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 26135,
+            "received": 22475,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 25622,
+            "motionSent": 25622,
+            "motionAck": 21962,
+            "motionErrors": 0,
+            "motionAckMiss": 3646,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 25605,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 26118,
+            "received": 26117,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 25605,
+            "motionSent": 25605,
+            "motionAck": 25604,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 25586,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 26098,
+            "received": 26098,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 25586,
+            "motionSent": 25586,
+            "motionAck": 25586,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 541.9451024560001,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 27150,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 27694,
+            "received": 544,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 27150,
+            "motionSent": 27150,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 27086,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 544
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 27131,
+          "simulatedDrops": 3875,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 27674,
+            "received": 23798,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 27131,
+            "motionSent": 27131,
+            "motionAck": 23255,
+            "motionErrors": 0,
+            "motionAckMiss": 3861,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 27113,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 27656,
+            "received": 27656,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 27113,
+            "motionSent": 27113,
+            "motionAck": 27113,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 27094,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 27636,
+            "received": 27636,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 27094,
+            "motionSent": 27094,
+            "motionAck": 27094,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 572.062128743,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 28655,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 29229,
+            "received": 574,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 28655,
+            "motionSent": 28655,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 28591,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 574
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 28636,
+          "simulatedDrops": 4090,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 29209,
+            "received": 25119,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 28636,
+            "motionSent": 28636,
+            "motionAck": 24546,
+            "motionErrors": 0,
+            "motionAckMiss": 4076,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 28618,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 29191,
+            "received": 29191,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 28618,
+            "motionSent": 28618,
+            "motionAck": 28618,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 28599,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 29171,
+            "received": 29171,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 28599,
+            "motionSent": 28599,
+            "motionAck": 28599,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 602.170811771,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 30160,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 30764,
+            "received": 604,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 30160,
+            "motionSent": 30160,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 30096,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 604
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 30141,
+          "simulatedDrops": 4305,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 30744,
+            "received": 26439,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 30141,
+            "motionSent": 30141,
+            "motionAck": 25836,
+            "motionErrors": 0,
+            "motionAckMiss": 4291,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 30123,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 30726,
+            "received": 30726,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 30123,
+            "motionSent": 30123,
+            "motionAck": 30123,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 30105,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 30708,
+            "received": 30707,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 30105,
+            "motionSent": 30105,
+            "motionAck": 30104,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 632.2492410640001,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 31665,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 32299,
+            "received": 634,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 31665,
+            "motionSent": 31665,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 31601,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 634
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 31646,
+          "simulatedDrops": 4520,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 32279,
+            "received": 27759,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 31646,
+            "motionSent": 31646,
+            "motionAck": 27126,
+            "motionErrors": 0,
+            "motionAckMiss": 4506,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 31628,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 32261,
+            "received": 32261,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 31628,
+            "motionSent": 31628,
+            "motionAck": 31628,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 31609,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 32242,
+            "received": 32242,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 31609,
+            "motionSent": 31609,
+            "motionAck": 31609,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 662.3548883980001,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 33168,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 33832,
+            "received": 664,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 33168,
+            "motionSent": 33168,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 33104,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 664
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 33149,
+          "simulatedDrops": 4735,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 33812,
+            "received": 29077,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 33149,
+            "motionSent": 33149,
+            "motionAck": 28414,
+            "motionErrors": 0,
+            "motionAckMiss": 4721,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 33131,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 33794,
+            "received": 33794,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 33131,
+            "motionSent": 33131,
+            "motionAck": 33131,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 33113,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 33776,
+            "received": 33775,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 33113,
+            "motionSent": 33113,
+            "motionAck": 33112,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 692.507880307,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 34677,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 35371,
+            "received": 694,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 34677,
+            "motionSent": 34677,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 34613,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 694
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 34658,
+          "simulatedDrops": 4951,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 35352,
+            "received": 30401,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 34658,
+            "motionSent": 34658,
+            "motionAck": 29707,
+            "motionErrors": 0,
+            "motionAckMiss": 4936,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 34640,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 35333,
+            "received": 35333,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 34640,
+            "motionSent": 34640,
+            "motionAck": 34640,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 34622,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 35315,
+            "received": 35314,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 34622,
+            "motionSent": 34622,
+            "motionAck": 34621,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 722.674570536,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 36185,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 36909,
+            "received": 724,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 36185,
+            "motionSent": 36185,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 36121,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 724
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 36166,
+          "simulatedDrops": 5166,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 36890,
+            "received": 31724,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 36166,
+            "motionSent": 36166,
+            "motionAck": 31000,
+            "motionErrors": 0,
+            "motionAckMiss": 5152,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 36148,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 36871,
+            "received": 36871,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 36148,
+            "motionSent": 36148,
+            "motionAck": 36148,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 36129,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 36852,
+            "received": 36852,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 36129,
+            "motionSent": 36129,
+            "motionAck": 36129,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 752.79556714,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 37692,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 38446,
+            "received": 754,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 37692,
+            "motionSent": 37692,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 37628,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 754
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 37672,
+          "simulatedDrops": 5381,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 38426,
+            "received": 33045,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 37672,
+            "motionSent": 37672,
+            "motionAck": 32291,
+            "motionErrors": 0,
+            "motionAckMiss": 5367,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 37655,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 38409,
+            "received": 38408,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 37655,
+            "motionSent": 37655,
+            "motionAck": 37654,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 37636,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 38389,
+            "received": 38389,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 37636,
+            "motionSent": 37636,
+            "motionAck": 37636,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 782.8624272210001,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 39197,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 39981,
+            "received": 784,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 39197,
+            "motionSent": 39197,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 39133,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 784
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 39177,
+          "simulatedDrops": 5596,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 39961,
+            "received": 34365,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 39177,
+            "motionSent": 39177,
+            "motionAck": 33581,
+            "motionErrors": 0,
+            "motionAckMiss": 5582,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 39159,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 39943,
+            "received": 39943,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 39159,
+            "motionSent": 39159,
+            "motionAck": 39159,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 39141,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 39924,
+            "received": 39923,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 39141,
+            "motionSent": 39141,
+            "motionAck": 39140,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 812.965762033,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 40699,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 41513,
+            "received": 814,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 40699,
+            "motionSent": 40699,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 40635,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 814
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 40680,
+          "simulatedDrops": 5811,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 41494,
+            "received": 35683,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 40680,
+            "motionSent": 40680,
+            "motionAck": 34869,
+            "motionErrors": 0,
+            "motionAckMiss": 5797,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 40662,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 41476,
+            "received": 41476,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 40662,
+            "motionSent": 40662,
+            "motionAck": 40662,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 40644,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 41457,
+            "received": 41456,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 40644,
+            "motionSent": 40644,
+            "motionAck": 40643,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 843.132735309,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 42206,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 43051,
+            "received": 845,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 42206,
+            "motionSent": 42206,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 42142,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 845
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 42186,
+          "simulatedDrops": 6026,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 43030,
+            "received": 37004,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 42186,
+            "motionSent": 42186,
+            "motionAck": 36160,
+            "motionErrors": 0,
+            "motionAckMiss": 6012,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 42168,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 43012,
+            "received": 43012,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 42168,
+            "motionSent": 42168,
+            "motionAck": 42168,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 42150,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 42994,
+            "received": 42994,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 42150,
+            "motionSent": 42150,
+            "motionAck": 42150,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 873.249702618,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 43714,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 44589,
+            "received": 875,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 43714,
+            "motionSent": 43714,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 43650,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 875
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 43695,
+          "simulatedDrops": 6242,
+          "pending": 0,
+          "telemetry": 16,
+          "latest": false,
+          "metrics": {
+            "sent": 44569,
+            "received": 38326,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 43695,
+            "motionSent": 43695,
+            "motionAck": 37452,
+            "motionErrors": 0,
+            "motionAckMiss": 6227,
+            "motionPendingTelemetry": 16,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 43677,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 44551,
+            "received": 44551,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 43677,
+            "motionSent": 43677,
+            "motionAck": 43677,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 43658,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 44532,
+            "received": 44532,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 43658,
+            "motionSent": 43658,
+            "motionAck": 43658,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 903.333992677,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 45219,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 46124,
+            "received": 905,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 45219,
+            "motionSent": 45219,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 45155,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 905
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 45199,
+          "simulatedDrops": 6457,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 46103,
+            "received": 39646,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 45199,
+            "motionSent": 45199,
+            "motionAck": 38742,
+            "motionErrors": 0,
+            "motionAckMiss": 6442,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 45181,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 46085,
+            "received": 46085,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 45181,
+            "motionSent": 45181,
+            "motionAck": 45181,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 45163,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 46067,
+            "received": 46067,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 45163,
+            "motionSent": 45163,
+            "motionAck": 45163,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 933.424599038,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 46724,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 47659,
+            "received": 935,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 46724,
+            "motionSent": 46724,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 46660,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 935
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 46705,
+          "simulatedDrops": 6672,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 47640,
+            "received": 40968,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 46705,
+            "motionSent": 46705,
+            "motionAck": 40033,
+            "motionErrors": 0,
+            "motionAckMiss": 6657,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 46687,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 47621,
+            "received": 47621,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 46687,
+            "motionSent": 46687,
+            "motionAck": 46687,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 46668,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 47602,
+            "received": 47602,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 46668,
+            "motionSent": 46668,
+            "motionAck": 46668,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 963.5368167600001,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 48228,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 49193,
+            "received": 965,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 48228,
+            "motionSent": 48228,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 48164,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 965
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 48209,
+          "simulatedDrops": 6887,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 49174,
+            "received": 42287,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 48209,
+            "motionSent": 48209,
+            "motionAck": 41322,
+            "motionErrors": 0,
+            "motionAckMiss": 6872,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 48191,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 49155,
+            "received": 49155,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 48191,
+            "motionSent": 48191,
+            "motionAck": 48191,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 48172,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 49136,
+            "received": 49136,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 48172,
+            "motionSent": 48172,
+            "motionAck": 48172,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 993.619987627,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 49734,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 50729,
+            "received": 995,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 49734,
+            "motionSent": 49734,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 49670,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 995
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 49714,
+          "simulatedDrops": 7102,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 50709,
+            "received": 43607,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 49714,
+            "motionSent": 49714,
+            "motionAck": 42612,
+            "motionErrors": 0,
+            "motionAckMiss": 7087,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 49696,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 50690,
+            "received": 50690,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 49696,
+            "motionSent": 49696,
+            "motionAck": 49696,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 49678,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 50672,
+            "received": 50672,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 49678,
+            "motionSent": 49678,
+            "motionAck": 49678,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1023.7081881409999,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 51237,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 52262,
+            "received": 1025,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 51237,
+            "motionSent": 51237,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 51173,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1025
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 51217,
+          "simulatedDrops": 7316,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 52242,
+            "received": 44926,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 51217,
+            "motionSent": 51217,
+            "motionAck": 43901,
+            "motionErrors": 0,
+            "motionAckMiss": 7302,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 51200,
+          "simulatedDrops": 0,
+          "pending": 1,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 52225,
+            "received": 52223,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 51200,
+            "motionSent": 51200,
+            "motionAck": 51199,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 51181,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 52205,
+            "received": 52205,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 51181,
+            "motionSent": 51181,
+            "motionAck": 51181,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1053.8112755450002,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 52743,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 53798,
+            "received": 1055,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 52743,
+            "motionSent": 52743,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 52679,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1055
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 52723,
+          "simulatedDrops": 7531,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 53778,
+            "received": 46247,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 52723,
+            "motionSent": 52723,
+            "motionAck": 45192,
+            "motionErrors": 0,
+            "motionAckMiss": 7517,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 52705,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 53760,
+            "received": 53760,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 52705,
+            "motionSent": 52705,
+            "motionAck": 52705,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 52687,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 53741,
+            "received": 53741,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 52687,
+            "motionSent": 52687,
+            "motionAck": 52687,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1083.910962167,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 54248,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 55333,
+            "received": 1085,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 54248,
+            "motionSent": 54248,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 54184,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1085
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 54228,
+          "simulatedDrops": 7746,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 55313,
+            "received": 47567,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 54228,
+            "motionSent": 54228,
+            "motionAck": 46482,
+            "motionErrors": 0,
+            "motionAckMiss": 7732,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 54210,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 55295,
+            "received": 55295,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 54210,
+            "motionSent": 54210,
+            "motionAck": 54210,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 54192,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 55276,
+            "received": 55276,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 54192,
+            "motionSent": 54192,
+            "motionAck": 54192,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1114.007966446,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 55752,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 56868,
+            "received": 1116,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 55752,
+            "motionSent": 55752,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 55688,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1116
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 55732,
+          "simulatedDrops": 7961,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 56847,
+            "received": 48886,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 55732,
+            "motionSent": 55732,
+            "motionAck": 47771,
+            "motionErrors": 0,
+            "motionAckMiss": 7947,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 55714,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 56829,
+            "received": 56829,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 55714,
+            "motionSent": 55714,
+            "motionAck": 55714,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 55696,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 56810,
+            "received": 56810,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 55696,
+            "motionSent": 55696,
+            "motionAck": 55696,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1144.117457319,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 57258,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 58404,
+            "received": 1146,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 57258,
+            "motionSent": 57258,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 57194,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1146
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 57238,
+          "simulatedDrops": 8176,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 58383,
+            "received": 50207,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 57238,
+            "motionSent": 57238,
+            "motionAck": 49062,
+            "motionErrors": 0,
+            "motionAckMiss": 8162,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 57220,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 58365,
+            "received": 58365,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 57220,
+            "motionSent": 57220,
+            "motionAck": 57220,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 57202,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 58347,
+            "received": 58347,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 57202,
+            "motionSent": 57202,
+            "motionAck": 57202,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1174.200899611,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 58763,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 59939,
+            "received": 1176,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 58763,
+            "motionSent": 58763,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 58699,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1176
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 58743,
+          "simulatedDrops": 8391,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 59918,
+            "received": 51527,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 58743,
+            "motionSent": 58743,
+            "motionAck": 50352,
+            "motionErrors": 0,
+            "motionAckMiss": 8377,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 58725,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 59900,
+            "received": 59900,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 58725,
+            "motionSent": 58725,
+            "motionAck": 58725,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 58707,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 59882,
+            "received": 59882,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 58707,
+            "motionSent": 58707,
+            "motionAck": 58707,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1204.293934011,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 60266,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 61472,
+            "received": 1206,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 60266,
+            "motionSent": 60266,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 60202,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1206
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 60247,
+          "simulatedDrops": 8606,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 61452,
+            "received": 52846,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 60247,
+            "motionSent": 60247,
+            "motionAck": 51641,
+            "motionErrors": 0,
+            "motionAckMiss": 8592,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 60229,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 61434,
+            "received": 61434,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 60229,
+            "motionSent": 60229,
+            "motionAck": 60229,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 60210,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 61415,
+            "received": 61415,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 60210,
+            "motionSent": 60210,
+            "motionAck": 60210,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1234.428806382,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 61773,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 63009,
+            "received": 1236,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 61773,
+            "motionSent": 61773,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 61709,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1236
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 61753,
+          "simulatedDrops": 8821,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 62989,
+            "received": 54168,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 61753,
+            "motionSent": 61753,
+            "motionAck": 52932,
+            "motionErrors": 0,
+            "motionAckMiss": 8807,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 61735,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 62970,
+            "received": 62970,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 61735,
+            "motionSent": 61735,
+            "motionAck": 61735,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 61717,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 62952,
+            "received": 62952,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 61717,
+            "motionSent": 61717,
+            "motionAck": 61717,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1264.563267916,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 63278,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 64544,
+            "received": 1266,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 63278,
+            "motionSent": 63278,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 63214,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1266
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 63259,
+          "simulatedDrops": 9037,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 64525,
+            "received": 55488,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 63259,
+            "motionSent": 63259,
+            "motionAck": 54222,
+            "motionErrors": 0,
+            "motionAckMiss": 9022,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 63241,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 64506,
+            "received": 64506,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 63241,
+            "motionSent": 63241,
+            "motionAck": 63241,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 63222,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 64487,
+            "received": 64487,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 63222,
+            "motionSent": 63222,
+            "motionAck": 63222,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1294.652930933,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 64785,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 66081,
+            "received": 1296,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 64785,
+            "motionSent": 64785,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 64721,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1296
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 64766,
+          "simulatedDrops": 9252,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 66062,
+            "received": 56810,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 64766,
+            "motionSent": 64766,
+            "motionAck": 55514,
+            "motionErrors": 0,
+            "motionAckMiss": 9238,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 64748,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 66043,
+            "received": 66043,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 64748,
+            "motionSent": 64748,
+            "motionAck": 64748,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 64729,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 66024,
+            "received": 66024,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 64729,
+            "motionSent": 64729,
+            "motionAck": 64729,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1324.7677042690002,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 66290,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 67616,
+            "received": 1326,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 66290,
+            "motionSent": 66290,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 66226,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1326
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 66271,
+          "simulatedDrops": 9467,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 67597,
+            "received": 58130,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 66271,
+            "motionSent": 66271,
+            "motionAck": 56804,
+            "motionErrors": 0,
+            "motionAckMiss": 9453,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 66253,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 67579,
+            "received": 67579,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 66253,
+            "motionSent": 66253,
+            "motionAck": 66253,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 66234,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 67559,
+            "received": 67559,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 66234,
+            "motionSent": 66234,
+            "motionAck": 66234,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1354.88885607,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 67796,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 69152,
+            "received": 1356,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 67796,
+            "motionSent": 67796,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 67732,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1356
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 67777,
+          "simulatedDrops": 9682,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 69133,
+            "received": 59451,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 67777,
+            "motionSent": 67777,
+            "motionAck": 58095,
+            "motionErrors": 0,
+            "motionAckMiss": 9668,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 67759,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 69115,
+            "received": 69115,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 67759,
+            "motionSent": 67759,
+            "motionAck": 67759,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 67740,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 69095,
+            "received": 69095,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 67740,
+            "motionSent": 67740,
+            "motionAck": 67740,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1384.978425207,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 69301,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 70688,
+            "received": 1387,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 69301,
+            "motionSent": 69301,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 69237,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1387
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 69282,
+          "simulatedDrops": 9897,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 70668,
+            "received": 60770,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 69282,
+            "motionSent": 69282,
+            "motionAck": 59384,
+            "motionErrors": 0,
+            "motionAckMiss": 9883,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 69264,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 70650,
+            "received": 70650,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 69264,
+            "motionSent": 69264,
+            "motionAck": 69264,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 69245,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 70630,
+            "received": 70630,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 69245,
+            "motionSent": 69245,
+            "motionAck": 69245,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1415.0468104459999,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 70805,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 72222,
+            "received": 1417,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 70805,
+            "motionSent": 70805,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 70741,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1417
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 70786,
+          "simulatedDrops": 10112,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 72202,
+            "received": 62090,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 70786,
+            "motionSent": 70786,
+            "motionAck": 60674,
+            "motionErrors": 0,
+            "motionAckMiss": 10098,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 70768,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 72184,
+            "received": 72184,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 70768,
+            "motionSent": 70768,
+            "motionAck": 70768,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 70749,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 72164,
+            "received": 72164,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 70749,
+            "motionSent": 70749,
+            "motionAck": 70749,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1445.206414754,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 72310,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 73757,
+            "received": 1447,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 72310,
+            "motionSent": 72310,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 72246,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1447
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 72290,
+          "simulatedDrops": 10327,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 73736,
+            "received": 63409,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 72290,
+            "motionSent": 72290,
+            "motionAck": 61963,
+            "motionErrors": 0,
+            "motionAckMiss": 10312,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 72272,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 73718,
+            "received": 73718,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 72272,
+            "motionSent": 72272,
+            "motionAck": 72272,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 72254,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 73700,
+            "received": 73700,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 72254,
+            "motionSent": 72254,
+            "motionAck": 72254,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1475.315891323,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 73818,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 75295,
+            "received": 1477,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 73818,
+            "motionSent": 73818,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 73754,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1477
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 73798,
+          "simulatedDrops": 10542,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 75274,
+            "received": 64732,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 73798,
+            "motionSent": 73798,
+            "motionAck": 63256,
+            "motionErrors": 0,
+            "motionAckMiss": 10528,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 73780,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 75256,
+            "received": 75256,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 73780,
+            "motionSent": 73780,
+            "motionAck": 73780,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 73762,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 75238,
+            "received": 75238,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 73762,
+            "motionSent": 73762,
+            "motionAck": 73762,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1505.406674655,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 75322,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 76829,
+            "received": 1507,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 75322,
+            "motionSent": 75322,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 75258,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1507
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 75302,
+          "simulatedDrops": 10757,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 76809,
+            "received": 66052,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 75302,
+            "motionSent": 75302,
+            "motionAck": 64545,
+            "motionErrors": 0,
+            "motionAckMiss": 10743,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 75285,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 76791,
+            "received": 76791,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 75285,
+            "motionSent": 75285,
+            "motionAck": 75285,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 75266,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 76772,
+            "received": 76772,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 75266,
+            "motionSent": 75266,
+            "motionAck": 75266,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1535.532508852,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 76828,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 78365,
+            "received": 1537,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 76828,
+            "motionSent": 76828,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 76764,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1537
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 76809,
+          "simulatedDrops": 10972,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 78346,
+            "received": 67374,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 76809,
+            "motionSent": 76809,
+            "motionAck": 65837,
+            "motionErrors": 0,
+            "motionAckMiss": 10958,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 76791,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 78327,
+            "received": 78327,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 76791,
+            "motionSent": 76791,
+            "motionAck": 76791,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 76772,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 78308,
+            "received": 78308,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 76772,
+            "motionSent": 76772,
+            "motionAck": 76772,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1565.644402274,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 78334,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 79901,
+            "received": 1567,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 78334,
+            "motionSent": 78334,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 78270,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1567
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 78315,
+          "simulatedDrops": 11187,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 79882,
+            "received": 68694,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 78315,
+            "motionSent": 78315,
+            "motionAck": 67127,
+            "motionErrors": 0,
+            "motionAckMiss": 11173,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 78297,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 79863,
+            "received": 79863,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 78297,
+            "motionSent": 78297,
+            "motionAck": 78297,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 78278,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 79844,
+            "received": 79844,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 78278,
+            "motionSent": 78278,
+            "motionAck": 78278,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1595.747539989,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 79839,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 81436,
+            "received": 1597,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 79839,
+            "motionSent": 79839,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 79775,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1597
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 79819,
+          "simulatedDrops": 11402,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 81416,
+            "received": 70014,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 79819,
+            "motionSent": 79819,
+            "motionAck": 68417,
+            "motionErrors": 0,
+            "motionAckMiss": 11388,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 79801,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 81398,
+            "received": 81398,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 79801,
+            "motionSent": 79801,
+            "motionAck": 79801,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 79783,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 81379,
+            "received": 81378,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 79783,
+            "motionSent": 79783,
+            "motionAck": 79782,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1625.87437819,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 81345,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 82972,
+            "received": 1627,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 81345,
+            "motionSent": 81345,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 81281,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1627
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 81326,
+          "simulatedDrops": 11618,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 82953,
+            "received": 71335,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 81326,
+            "motionSent": 81326,
+            "motionAck": 69708,
+            "motionErrors": 0,
+            "motionAckMiss": 11603,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 81308,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 82935,
+            "received": 82935,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 81308,
+            "motionSent": 81308,
+            "motionAck": 81308,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 81289,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 82915,
+            "received": 82915,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 81289,
+            "motionSent": 81289,
+            "motionAck": 81289,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1656.055683483,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 82853,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 84511,
+            "received": 1658,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 82853,
+            "motionSent": 82853,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 82789,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1658
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 82834,
+          "simulatedDrops": 11833,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 84491,
+            "received": 72658,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 82834,
+            "motionSent": 82834,
+            "motionAck": 71001,
+            "motionErrors": 0,
+            "motionAckMiss": 11819,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 82816,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 84473,
+            "received": 84473,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 82816,
+            "motionSent": 82816,
+            "motionAck": 82816,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 82797,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 84453,
+            "received": 84453,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 82797,
+            "motionSent": 82797,
+            "motionAck": 82797,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1686.263106483,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 84364,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 86052,
+            "received": 1688,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 84364,
+            "motionSent": 84364,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 84300,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1688
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 84344,
+          "simulatedDrops": 12049,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 86031,
+            "received": 73982,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 84344,
+            "motionSent": 84344,
+            "motionAck": 72295,
+            "motionErrors": 0,
+            "motionAckMiss": 12034,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 84327,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 86014,
+            "received": 86013,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 84327,
+            "motionSent": 84327,
+            "motionAck": 84326,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 84308,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 85995,
+            "received": 85995,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 84308,
+            "motionSent": 84308,
+            "motionAck": 84308,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1716.38679144,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 85871,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 87589,
+            "received": 1718,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 85871,
+            "motionSent": 85871,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 85807,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1718
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 85851,
+          "simulatedDrops": 12264,
+          "pending": 0,
+          "telemetry": 14,
+          "latest": false,
+          "metrics": {
+            "sent": 87569,
+            "received": 75305,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 85851,
+            "motionSent": 85851,
+            "motionAck": 73587,
+            "motionErrors": 0,
+            "motionAckMiss": 12250,
+            "motionPendingTelemetry": 14,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 85834,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 1,
+          "latest": false,
+          "metrics": {
+            "sent": 87551,
+            "received": 87550,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 85834,
+            "motionSent": 85834,
+            "motionAck": 85833,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 1,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 85815,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 87532,
+            "received": 87532,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 85815,
+            "motionSent": 85815,
+            "motionAck": 85815,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1746.608440862,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 87380,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 89128,
+            "received": 1748,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 87380,
+            "motionSent": 87380,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 87316,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1748
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 87361,
+          "simulatedDrops": 12480,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 89109,
+            "received": 76629,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 87361,
+            "motionSent": 87361,
+            "motionAck": 74881,
+            "motionErrors": 0,
+            "motionAckMiss": 12465,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 87343,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 89090,
+            "received": 89090,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 87343,
+            "motionSent": 87343,
+            "motionAck": 87343,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 87324,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 89071,
+            "received": 89071,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 87324,
+            "motionSent": 87324,
+            "motionAck": 87324,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1776.8327302389998,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 88891,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 90669,
+            "received": 1778,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 88891,
+            "motionSent": 88891,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 88827,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1778
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 88872,
+          "simulatedDrops": 12696,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 90650,
+            "received": 77954,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 88872,
+            "motionSent": 88872,
+            "motionAck": 76176,
+            "motionErrors": 0,
+            "motionAckMiss": 12681,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 88854,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 90632,
+            "received": 90632,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 88854,
+            "motionSent": 88854,
+            "motionAck": 88854,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 88835,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 90612,
+            "received": 90612,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 88835,
+            "motionSent": 88835,
+            "motionAck": 88835,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 1800.20588864,
+      "clients": [
+        {
+          "state": "RUNNING",
+          "produced": 90061,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 64,
+          "latest": false,
+          "metrics": {
+            "sent": 91863,
+            "received": 1802,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 90061,
+            "motionSent": 90061,
+            "motionAck": 0,
+            "motionErrors": 0,
+            "motionAckMiss": 89997,
+            "motionPendingTelemetry": 64,
+            "motionBufferedDrop": 0,
+            "rttSamples": 1802
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 90041,
+          "simulatedDrops": 12863,
+          "pending": 0,
+          "telemetry": 15,
+          "latest": false,
+          "metrics": {
+            "sent": 91842,
+            "received": 78979,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 90041,
+            "motionSent": 90041,
+            "motionAck": 77178,
+            "motionErrors": 0,
+            "motionAckMiss": 12848,
+            "motionPendingTelemetry": 15,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 90023,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 91824,
+            "received": 91824,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 90023,
+            "motionSent": 90023,
+            "motionAck": 90023,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        },
+        {
+          "state": "RUNNING",
+          "produced": 90005,
+          "simulatedDrops": 0,
+          "pending": 0,
+          "telemetry": 0,
+          "latest": false,
+          "metrics": {
+            "sent": 91806,
+            "received": 91806,
+            "errors": 0,
+            "overwritten": 0,
+            "motionSubmitted": 90005,
+            "motionSent": 90005,
+            "motionAck": 90005,
+            "motionErrors": 0,
+            "motionAckMiss": 0,
+            "motionPendingTelemetry": 0,
+            "motionBufferedDrop": 0,
+            "rttSamples": 4096
+          }
+        }
+      ]
+    }
+  ],
+  "secretLogMatches": 0,
+  "browser": "155.0.8059.79",
+  "utcStart": "2026-10-15T12:31:21.862Z",
+  "durationSeconds": 1800.2080852350002,
+  "utcEnd": "2026-10-15T13:01:22.071Z",
+  "peersAfterClose": 0,
+  "exit": {
+    "code": 0,
+    "signal": null
+  },
+  "surface": {
+    "visualApplied": true,
+    "cameraCleanup": true,
+    "javaCleanup": true,
+    "controlsRestored": true,
+    "qaPhoneObserved": true,
+    "phoneAccepted": 164105,
+    "previewOverwritten": 0,
+    "visualFrame": 163549,
+    "endOfFrame": 163549,
+    "unityUpdateFps": 83.91211649086713,
+    "previewState": ""
+  },
+  "residualOwned": []
+}

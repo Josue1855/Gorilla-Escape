@@ -1,8 +1,8 @@
 # Phase0 overnight integration — 2026-10-14
 
-Run started2026-10-14 America/Chihuahua and continues2026-10-15. Final frozen soak is IN PROGRESS; physical/external limitations are explicit. Initial develop `59a32a236f196a5daa6291ce9c7d4934f941fd2a`; Editor PR #113 merged normally at `c35a3e31e3f1437c5bc341910233c887c1815377`. Existing dirty Editor worktree preserved; implementation isolated in the attached `phase0-integration` worktree. DEC-030 accepted by explicit PO instruction. T063/#114 (optional under F41), T064/#115 (T019 software support), T065/#116 (Editor DX) created after auditing all existing issues. Project field readback retained in evidence; no field/view recreation.
+Run started2026-10-14 America/Chihuahua and completed software integration2026-10-15. The protected frozen30min soak passed; physical/external limitations remain explicit. Initial develop `59a32a236f196a5daa6291ce9c7d4934f941fd2a`; Editor PR #113 merged normally at `c35a3e31e3f1437c5bc341910233c887c1815377`. Existing dirty Editor worktree preserved; implementation isolated in the attached `phase0-integration` worktree. DEC-030 accepted by explicit PO instruction. T063/#114 (optional under F41), T064/#115 (T019 software support), T065/#116 (Editor DX) created after auditing all existing issues. Project field readback retained in evidence; no field/view recreation.
 
-Fresh evidence is collected in [integration evidence](evidence/phase0-integration-2026-10-14/). Historical PASS is not substituted for current tests. Full final audit will be appended after completion.
+Fresh evidence is collected in [integration evidence](evidence/phase0-integration-2026-10-14/). Historical PASS is not substituted for current tests. Final aggregate audit is recorded below.
 
 T019 physical NOT COMPLETE; T020 clean physical PC NOT RUN; F05/E0 OPEN; final exit BLOCKED; Phase1 NOT STARTED; JUGAR disabled. No phone/human/secondary-PC tests authorized overnight. [Connectivity architecture](TRANSPARENT_CONNECTIVITY.md).
 
@@ -31,10 +31,25 @@ Cadence precision: the6900-sample unit stress uses virtual sample timestamps for
 | Classification | Evidence and practical limit |
 |---|---|
 | FRESH | PWA69/69/build; UnityEdit161/161, clean finalPlay27/27 and Linuxbuild0errors/0warnings; Java97cases=96pass/1external skip; Python25; clock/management/foundation/diff;13 connectivity/security tests; standard mobileRTC lab; gateway1/2/4 and isolated no-WAN lab; decoded existingQR; wall-clock motion stress9runs/1725sends, maxinterval22.05ms, telemetrymax64, errors0 |
-| FRESH, IN PROGRESS | Separate30min frozen-runtime soak; completion/cleanup are required before final acceptance of this row |
+| FRESH | Protected frozen-runtime soak: four real RTC clients,1800s+, normal closure and no owned residual; Vision replay and synthetic motion, not physical acceptance |
 | RETAINED BUT STILL VALID | Historical decisions and accepted T016/T017/T018/T062 scope; offline requirement and original T019/T020 AC; initial interactiveEditor smoke for unchanged entry/scene/test-isolation code, plus finalPlayMode verification of the QA mode/QR bridge |
 | STALE — MUST RERUN | A fresh performance/imperceptibility comparison under the final UI workload: new T018 physical-camera arm captured0frames and cannot replace prior measurements |
 | SUPERSEDED | Old stop-and-wait motion implementation; wrong-root PWA invocation; host-direct unlicensed Unity launch; initial sandbox Chrome failure; concurrent singleton-collision PlayMode attempt; exploratory1054s soak stopped for runtime freeze |
 | NOT RUN / BLOCKED | T019 physical phones/trueE2E/cross-device clocks; T020 clean physical PC; reliable native-click automation in this compositor; public QuickTunnel HTTPS (registered once but DNS failed; final implementation correctly did not reportREADY); real5G negative test; bundledCloudflared dependency/license policy; new human tests |
 
 A zero-error software suite does not clear the blocked physical/external rows. ACKRTT is not E2E. A host↔host LAB pair with local address hidden is not a measured physical network path. VM/replay/fixtures/public HTTPS never satisfy T019/T020. Final Exit remains BLOCKED, T019/T020/F05/E0 OPEN, Phase1 NOT STARTED and JUGAR disabled.
+
+A supplementary whole-stack61s replay test inside the virtual-LAN/no-WAN namespace connected four clients and maintained their RTC/motion checks for61.05s. Its native-window shutdown did not finish; the harness forced **only its owned Player**, reported no surface summary and zero residual owned processes. Overall gate remains **FAIL / partial functional evidence**, not PASS. No physical acceptance or clean-PC result follows from it. The separate in-process gateway/nativeRTC no-WAN suite passed with normal cleanup; the primary frozen30min host run has its own outcome and cleanup check. This limitation is retained rather than averaged away.
+
+### Host suspend interrupted the first frozen run
+
+At2026-10-15 00:43:53 America/Chihuahua, systemd-logind requested suspend and NetworkManager explicitly deactivated Wi-Fi. The last healthy sample was1747.52s; after resume the next sample at1777.65active seconds had all4clients DISCONNECTED. This is corroborated by the local system journal; no host network change was performed by this task. The resulting overallFAIL is retained, with exit0/Java+Vision cleanuptrue/controls restored/owned residual0/secret log matches0. It is not a30min PASS. A second frozen-runtime1800s run uses a temporary `systemd-inhibit` sleep+idle lease bounded by an outer2200s timeout; the lease releases on process exit and changes no persistent energy/network setting. Its actual result is recorded below; the earlier environment-interrupted FAIL remains preserved.
+
+
+## Final protected soak and integration receipt
+
+Frozen runtime measured **1800.21s / PASS**, 2026-10-15T12:31:21.862Z → 2026-10-15T13:01:22.071Z. Four Chrome/nativeRTC clients remained RUNNING with zero client errors. Client0 suppressed100%motion ACKs, client1 injected packet loss. Final sent counts: 90061, 90041, 90023, 90005. Latest-only motion did not wait for ACK; telemetry never exceeded64 and reliable control stayed bounded. No physical sensorHz or motion E2E is inferred.
+
+Normal exit0, forced=False, peers after close0, owned residual[], secret log matches0. Java/camera cleanup and controls restored; Unity observed technical phone input and visual application. Closing Unity updateFPS=83.91211649086713 is a loop aggregate, not display/phone latency. Frozen executable/JAR/Vision hashes match the start; no runtime refreshed during this run. Resource peaks: `{"GorillaEscape.x":{"maxRssKiB":273148,"maxThreads":71,"maxFds":43},"python3.12":{"maxRssKiB":17856,"maxThreads":2,"maxFds":3}}`. The process-tree sampler captured Unity/Vision RSS/threads/FDs; Java runs outside that sampled ancestry, so its soak CPU/RSS/FD peak is UNKNOWN (separate Java pressure tests are not substituted). Full counters/resource samples are in `soak-inhibited-1800.json`; compact receipt in `soak-final-summary.json`.
+
+PR118 integrates the final candidate through required checks and normal merge; post-merge automated verification and real Project fields/states are read back separately in the delivery receipt. T064/T065 can close only after that verification; optional T063 remains OPEN / Validation because public HTTPS and native whole-stack automation are incomplete. T019/T020/F05/E0 remain OPEN, Final Exit BLOCKED, Phase1 NOT STARTED, JUGAR disabled.

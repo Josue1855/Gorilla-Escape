@@ -1,3 +1,6 @@
 # Raw local test/editor logs can include host/license identifiers. Commit aggregate evidence only.
 *.log
 *.xml
+
+# Post-merge local receipt includes the final self-referential merge SHA; delivered separately.
+*.local.json

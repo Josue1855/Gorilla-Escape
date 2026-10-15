@@ -711,3 +711,8 @@ Corrección Editor de T062 (2026-10-14): Bootstrap oficial → Play → Main Men
 Quick Tunnel external lab: official2026.10.0/hash revisado, registro3933ms pero DNS público falló; BLOCKED, noHTTPS PASS. T018 comparación nueva detenida: cámara abrió/configuró pero0capturedFrames, cleanup/controlsRestored true; comparación incompleta, noPASS actual de rendimiento. AudioListener warning: configuración de escena temporal con paqueteAudio deshabilitado, Bootstrap sinAudioListener; no módulo habilitado para silenciarlo. Hardware humano/teléfonos/PC limpia NOT RUN. Estados finales y soak se incorporan al reporte al terminar.
 
 Later overnight checkpoint: fresh Java94cases=93pass/1external skip; gateway/RTC and virtual-LAN/no-WAN labs PASS. PlayMode repeat during the30min soak encountered the intended singleton (9ALREADY_RUNNING,18pass); clean repetition is pending after owned soak shutdown. T018 comparison remains incomplete due zero camera frames. These attempts are retained honestly, not relabeled PASS.
+
+
+### Final protected integration soak — 2026-10-15
+
+Four real RTC clients, Unity/Java IPC and replay Vision: 1800.21s PASS, 100%motionACK loss on one client, bounded telemetry/errors0; normal exit/owned residual0, frozen runtime hashes preserved. Earlier host-suspend FAIL, native-click/whole-stack-noWAN automation limits, blocked public HTTPS and fresh T018 zero-frame comparison are retained explicitly. See [final integration report](PHASE0_OVERNIGHT_INTEGRATION_REPORT_2026-10-14.md). Physical T019/T020 NOT RUN; F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED; JUGAR disabled.

@@ -4,7 +4,7 @@ DEC-029; T062/#111 soporta T019/#33. Superficie técnica, sin gameplay/score. **
 
 ## Inicio A–O
 
-A. Abre `/home/josuegalvan/Documentos/GorillaEscape-Phase0-MainMenuQA-2026-10-14` y ejecuta `./run-qa.sh` desde Terminal. El paquete incluye Player, Java21, Python y Vision. No abras otra build simultáneamente. Tamaño recomendado 1280×940. El launcher comprueba hashes antes de arrancar.
+A. Abre `/home/josuegalvan/Documentos/GorillaEscape-Phase0-Integrated-2026-10-15` y ejecuta `./run-qa.sh` desde Terminal. El paquete incluye Player, Java21, Python y Vision. No abras otra build simultáneamente. Tamaño recomendado 1280×940. El launcher comprueba hashes antes de arrancar.
 
 B. Debe aparecer **Main Menu**, con **JUGAR** deshabilitado («En desarrollo»), **PRUEBAS** y **SALIR**. Pulsa **PRUEBAS**. Espera **CAMERA READY**. Debe verse tu webcam, sin deformación. Tracking puede decir LOST si no encuentra landmarks válidos; eso no es fallo de captura. No abrir la webcam en otra aplicación. Si aparece CAMERA FAILED, cierra esta build y vuelve a intentar; no cambies exposición/control del pipeline ni mates procesos ajenos. ROI amarillo, hombros/brazos/manos verdes; rojo marca ambigüedad. Los subjectId son etiquetas efímeras, no identidades. Preview y landmarks son latest independientes, no corresponden necesariamente al mismo frame.
 
@@ -46,7 +46,7 @@ El preview usa sólo 127.0.0.1 y nunca está disponible en teléfono. Ambos laun
 ## Comando exacto en esta PC
 
 ```sh
-cd /home/josuegalvan/Documentos/GorillaEscape-Phase0-MainMenuQA-2026-10-14
+cd /home/josuegalvan/Documentos/GorillaEscape-Phase0-Integrated-2026-10-15
 ./run-qa.sh
 ```
 

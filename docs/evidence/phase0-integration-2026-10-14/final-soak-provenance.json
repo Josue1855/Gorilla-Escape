@@ -10,5 +10,6 @@
   "gitHead": "5baadb676c85df6bd538b953cc71263655236f04",
   "physicalPhones": "NOT RUN",
   "vision": "replay; no human tracking",
-  "packageRuntimeMutationDuringRun": "PROHIBITED"
+  "packageRuntimeMutationDuringRun": "PROHIBITED",
+  "additionalConcurrentLoad": "A bounded61s whole-stack replay/RTC LAB in a separate virtual-LAN/no-WAN namespace; private managed lock and HOME, no production guard bypass or physical claim."
 }
