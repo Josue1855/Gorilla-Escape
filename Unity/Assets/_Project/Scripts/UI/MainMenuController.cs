@@ -1,12 +1,21 @@
 using System;
 using GorillaEscape.QA;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GorillaEscape.UI
 {
     /// <summary>Product navigation. Technical owners survive the transition between these two views.</summary>
     public sealed class MainMenuController : MonoBehaviour
     {
+        public const string BootstrapScenePath = "Assets/_Project/Scenes/Bootstrap/Bootstrap.unity";
+#if UNITY_EDITOR
+        // Editor assembly supplies test-runner isolation without a player dependency on UnityEditor.
+        public static Func<bool> EditorLaunchPermission { private get; set; }
+#endif
+        public static bool ShouldAutoLaunch(bool editor, bool playing, bool batch, bool testRun, string scenePath, bool productFlow)
+            => playing && (editor ? !batch && !testRun && scenePath == BootstrapScenePath : productFlow);
+
         public static bool QaVisible => Environment.GetEnvironmentVariable("GORILLA_QA_MENU") != "0";
         public static bool ProductFlow => Environment.GetEnvironmentVariable("GORILLA_MAIN_MENU") == "1"
             || Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY") == "1"
@@ -26,7 +35,17 @@ namespace GorillaEscape.UI
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Launch()
         {
-            if (Application.isEditor || !ProductFlow) return;
+            TryLaunchForCurrentScene();
+        }
+
+        public static void TryLaunchForCurrentScene()
+        {
+#if UNITY_EDITOR
+            if (EditorLaunchPermission?.Invoke() != true) return;
+#endif
+            if (!ShouldAutoLaunch(Application.isEditor, Application.isPlaying, Application.isBatchMode,
+                false, SceneManager.GetActiveScene().path, ProductFlow)) return;
+            if (FindFirstObjectByType<MainMenuController>(FindObjectsInactive.Include) != null) return;
             var host = new GameObject("MainMenu");
             DontDestroyOnLoad(host);
             host.AddComponent<MainMenuController>();
@@ -35,7 +54,7 @@ namespace GorillaEscape.UI
         void Awake()
         {
             // Negotiation remains opt-in within the existing authenticated IPC; no new session authority.
-            if (QaVisible) Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
+            if (!Application.isEditor && QaVisible) Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
             Runtime = gameObject.AddComponent<QaRuntimeService>();
             mainView = new MainMenuView(this);
             tests = new TestsMenuController(this, Runtime);

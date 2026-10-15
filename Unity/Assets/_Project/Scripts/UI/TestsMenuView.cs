@@ -17,7 +17,7 @@ namespace GorillaEscape.UI {
             GUI.color=new Color(.06f,.08f,.11f);GUI.DrawTexture(new Rect(0,0,1280,940),Texture2D.whiteTexture);GUI.color=Color.white;
             Label(20,12,1230,"GORILLA ESCAPE  /  CENTRO DE PRUEBAS",title);
             Label(20,46,720,"Reference device: iPhone 15 • Source: "+(s.physicalConfirmed&&s.sample?.quality?.source=="physical"?"PHYSICAL (operator confirmed)":LiveQaModel.Classification(s.sample?.quality?.source)));
-            string cameraState=s.vision.State=="RUNNING"&&s.preview?.State=="READY"&&s.cameraTexture!=null?"CAMERA READY":s.vision.State=="FAILED"||s.preview?.State=="FAILED"||s.error=="PREVIEW INVALID"?"CAMERA FAILED":"CAMERA STARTING";
+            string cameraState=s.CameraStatus??(s.vision.State=="RUNNING"&&s.preview?.State=="READY"&&s.cameraTexture!=null?"CAMERA READY":s.vision.State=="FAILED"||s.preview?.State=="FAILED"||s.error=="PREVIEW INVALID"?"CAMERA FAILED":"CAMERA STARTING");
             Label(20,77,720,cameraState+" • "+(s.cameras.Fresh(Now(),250,20)?s.cameras.Latest.trackingState:"LOST")+" • frame age "+(s.cameras.Latest==null?LiveQaModel.Unknown:(Now()-s.cameras.Latest.captureTimestamp)+" ms")+" • "+s.error);
             Rect imageArea=new Rect(20,110,720,410);GUI.DrawTexture(imageArea,Texture2D.blackTexture);var picture=LiveQaModel.Letterbox(imageArea,s.cameraTexture?.width??4,s.cameraTexture?.height??3);
             if(s.cameraTexture!=null)GUI.DrawTexture(picture,s.cameraTexture,ScaleMode.StretchToFill,false);
@@ -51,12 +51,12 @@ namespace GorillaEscape.UI {
         static void Line(Vector2 a,Vector2 b){var matrix=GUI.matrix;GUIUtility.RotateAroundPivot(Mathf.Atan2(b.y-a.y,b.x-a.x)*Mathf.Rad2Deg,a);GUI.DrawTexture(new Rect(a.x,a.y,Vector2.Distance(a,b),2),Texture2D.whiteTexture);GUI.matrix=matrix;}
         void DrawRight(){float x=770;Label(x,76,490,"CONECTAR TELÉFONO",title);
             GUI.Label(new Rect(1025,80,240,55),s.QrLifecycle+"\nTTL "+(s.java.Qa==null?LiveQaModel.Unknown:Math.Ceiling(s.java.Qa.ttlMs/1000d)+" s"),new GUIStyle(small){wordWrap=true});
-            if(s.qrTexture!=null){GUI.DrawTexture(new Rect(x,110,240,240),s.qrTexture,ScaleMode.ScaleToFit,false);if(s.qrVisible==0&&Event.current.type==EventType.Repaint)s.qrVisible=Now();}else Label(x,160,460,s.qrState=="STARTING"?"Waiting for secure LAN backend…":"Regenerate when ready");
+            if(s.qrTexture!=null){GUI.DrawTexture(new Rect(x,110,240,240),s.qrTexture,ScaleMode.ScaleToFit,false);if(s.qrVisible==0&&Event.current.type==EventType.Repaint)s.qrVisible=Now();}else Label(x,160,460,!s.ServicesEnabled?"QR NOT AVAILABLE":s.qrState=="STARTING"?"Waiting for secure LAN backend…":"Regenerate when ready");
             Label(1025,115,240,"DEVICE STATE (confirm)",small);if(GUI.Button(new Rect(1025,145,230,30),"Prepared"))controller.SetDeviceState("Prepared");if(GUI.Button(new Rect(1025,182,230,30),"Unprepared"))controller.SetDeviceState("Unprepared");Label(1025,221,230,s.model.DeviceState,small);
             GUI.enabled=s.java.State==IpcState.RUNNING;if(GUI.Button(new Rect(1025,257,230,34),"GENERAR NUEVO QR"))controller.RegenerateQr();GUI.enabled=true;
             Label(1025,301,230,"Platform/browser: NOT MEASURED",small);
             s.physicalConfirmed=GUI.Toggle(new Rect(1025,325,230,24),s.physicalConfirmed,"I confirm a physical phone");
-            Label(x,49,490,s.java.QaHosting?.origin??"Secure LAN origin: WAITING",small);
+            Label(x,49,490,s.java.QaHosting?.origin??(!s.ServicesEnabled?s.JavaStatus:"Secure LAN origin: WAITING"),small);
             var lobby=s.java.Lobby.Snapshot;Label(x,358,490,"Lobby "+(lobby?.phase??"WAITING")+" • players "+(lobby?.players?.Length.ToString()??LiveQaModel.Unknown)+" • IPC "+s.java.State);
             for(int i=1;i<=4;i++){var p=lobby?.players==null?null:Array.Find(lobby.players,v=>v.playerId==i);float y=389+(i-1)*38;if(GUI.Button(new Rect(x,y,80,32),"Player "+i))controller.SelectPlayer(i);Label(x+90,y,395,LiveQaModel.Slot(p)+"  N:"+(p?.networkReady.ToString()??"—")+" I:"+(p?.inputReady.ToString()??"—")+" P:"+(p?.playerReady.ToString()??"—")+" epoch "+(p?.connectionEpoch.ToString()??"—"),small);}
             var chosen=s.java.Lobby.Snapshot?.players==null?null:Array.Find(s.java.Lobby.Snapshot.players,v=>v.playerId==s.selected);

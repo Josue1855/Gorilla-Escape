@@ -1,0 +1,135 @@
+{
+  "dateLocal": "2026-10-14",
+  "scope": "Editor Bootstrap Main Menu correction; no gameplay/Phase1",
+  "base": "59a32a236f196a5daa6291ce9c7d4934f941fd2a",
+  "policy": {
+    "editor": "interactive Play + exact official Bootstrap path + no Test Runner",
+    "batch": "no Editor menu autostart",
+    "standalone": "existing ProductFlow and lifecycle retained",
+    "servicesInEditor": "never launched; inherited legacy flags also suppressed",
+    "editorPhysicalQa": "not enabled; standalone run-qa.sh remains the validated path"
+  },
+  "validation": {
+    "editMode": {
+      "passed": 155,
+      "failed": 0
+    },
+    "status": "PASS",
+    "playMode": {
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    "nonBatchTestRunnerBootstrapFixture": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "interactiveEditor": {
+      "result": "PASS",
+      "batchMode": false,
+      "untitledNoMenu": true,
+      "bootstrapAutoLaunch": true,
+      "singleton": true,
+      "playDisabled": true,
+      "qaFlag": true,
+      "navigation": true,
+      "backendIdle": true,
+      "exitStopsPlay": true,
+      "stopPlayCleanup": true,
+      "secondPlay": true,
+      "backendFlagsInherited": true,
+      "javaLaunches": 0,
+      "visionPid": 0,
+      "qaViewObservedForFrames": 20
+    },
+    "linuxBuild": {
+      "result": "PASS",
+      "errors": 0,
+      "warnings": 0,
+      "harnessExcluded": true,
+      "runtimeSha256": "e8400a0d081610083cc2d6c91a445eb0807ab6deda5052a6a2f42dde55ff0adc"
+    },
+    "editorLogNote": "Unity emitted an internal JobTempAlloc shutdown diagnostic in the isolated interactive Editor; no product Jobs/native containers or physical adapter processes were created.",
+    "javaPwa": "Not rerun locally: no Java/PWA/protocol changes. Existing Unity real Java/RTC/camera process tests passed.",
+    "standaloneStartup": {
+      "classification": "LAB / built UI + physical capture transport; physical phone NOT RUN",
+      "screenshots": 0,
+      "gate": "PASS",
+      "opened": 1,
+      "closed": 0,
+      "secretLogs": 0,
+      "backendMode": "PHYSICAL HTTPS LAN / no physical phone",
+      "renderSize": [
+        1280,
+        818
+      ],
+      "cameraStarted": true,
+      "httpsLanStatus": 200,
+      "windowSize": [
+        1280,
+        818
+      ],
+      "loopbackOnly": true,
+      "scope": "Editor correction Linux standalone regression: startup \u2192 automatic Tests \u2192 physical capture preview + HTTPS \u2192 official window close; no pointer navigation claim",
+      "previewEncodedFrames": 18,
+      "previewErrors": 0,
+      "exitCode": 0,
+      "cleanup": {
+        "visualApplied": false,
+        "cameraCleanup": true,
+        "javaCleanup": true,
+        "controlsRestored": true,
+        "qaPhoneObserved": false,
+        "phoneAccepted": 0,
+        "previewOverwritten": 0,
+        "visualFrame": 0,
+        "endOfFrame": 0,
+        "unityUpdateFps": 119.85047957540174,
+        "previewState": "STOPPED"
+      },
+      "residualOwnedProcesses": 0,
+      "stderrBytes": 0
+    },
+    "management": "PASS",
+    "foundation": "PASS",
+    "diffCheck": "PASS",
+    "originalPackageIntegrity": "PASS; original delivery unchanged"
+  },
+  "audioListener": {
+    "classification": "harmless restored temporary/default Editor scene with Audio disabled",
+    "observedScene": "Temp/__Backupscenes/0.backup",
+    "trackedBootstrapContainsListener": false,
+    "packagesAdded": [],
+    "userUnsavedSceneModified": false
+  },
+  "standalonePackage": "Original accepted package unchanged; correction build validated separately",
+  "states": {
+    "T062": "CLOSED (standalone delivery preserved; Editor correction follow-up)",
+    "T019": "OPEN / Validation",
+    "Phase1": "NOT STARTED"
+  },
+  "privacy": {
+    "screenshots": 0,
+    "imageVideoWrites": 0,
+    "rawSensorHistoryPersisted": false,
+    "physicalPhoneGate": "NOT RUN"
+  },
+  "exploratoryAttempts": [
+    {
+      "result": "harness compile error",
+      "cause": "Disposable Editor harness used OpenSceneMode instead of NewSceneMode for NewScene",
+      "resolution": "Corrected harness enum; no product source change for this error"
+    }
+  ],
+  "localEvidenceDirectory": "/home/josuegalvan/.cache/gorilla-editor-menu-2026-10-14",
+  "sourceSha256": {
+    "Unity/Assets/_Project/Editor/ProductPlayMode.cs": "64130166383f2fa450e3154d95fe4bd25a86a5589daf1bccea9f59d8007cd9c7",
+    "Unity/Assets/_Project/Scripts/UI/MainMenuController.cs": "7dfad1777b4e29a01ae18545a3b8bc0be21d409c98a2c288e8ab25363990e173",
+    "Unity/Assets/_Project/Scripts/QA/QaRuntimeService.cs": "4f2ba52ad2c61024a1248328f4609d2373fefbdc48bbdf4ed0c323d2f4634d2a",
+    "Unity/Assets/_Project/Scripts/Network/IpcProbeRunner.cs": "213e224752a5597a3d8ad986e6a68cb2a856e7d13cc7f2970d6aaa4a0a479e07",
+    "Unity/Assets/_Project/Scripts/UI/TestsMenuView.cs": "d4282270fdec88d249b6e05c2538a621ca61c80f2b36ef21689893e94e9f7f4e"
+  }
+}

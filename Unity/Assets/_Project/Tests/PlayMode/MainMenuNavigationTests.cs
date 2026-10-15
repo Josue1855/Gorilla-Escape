@@ -10,6 +10,59 @@ using UnityEngine.TestTools;
 
 public class MainMenuNavigationTests
 {
+    [UnityTest] public IEnumerator ProductBootstrapRemainsOptInInsideTestRunner()
+    {
+        var previous=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(MainMenuController.BootstrapScenePath,UnityEngine.SceneManagement.LoadSceneMode.Additive);
+        var bootstrap=UnityEngine.SceneManagement.SceneManager.GetSceneByPath(MainMenuController.BootstrapScenePath);
+        try
+        {
+            UnityEngine.SceneManagement.SceneManager.SetActiveScene(bootstrap);
+            MainMenuController.TryLaunchForCurrentScene();
+            Assert.IsNull(UnityEngine.Object.FindFirstObjectByType<MainMenuController>(),"Even the product scene must not auto-launch inside a test run");
+        }
+        finally { UnityEngine.SceneManagement.SceneManager.SetActiveScene(previous); }
+        yield return UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(bootstrap);
+    }
+
+    [UnityTest] public IEnumerator NonProductSceneDoesNotAutoLaunchAndEditorBackendStaysIdle()
+    {
+        MainMenuController.TryLaunchForCurrentScene();
+        Assert.IsNull(UnityEngine.Object.FindFirstObjectByType<MainMenuController>());
+        var host=new GameObject("Explicit editor navigation fixture");
+        var menu=host.AddComponent<MainMenuController>();
+        bool previousBackground=Application.runInBackground;
+        try
+        {
+            yield return null;
+            Assert.False(menu.Runtime.ServicesEnabled);
+            Assert.That(menu.Runtime.JavaStatus,Does.StartWith("JAVA NOT RUNNING"));
+            Assert.That(menu.Runtime.CameraStatus,Does.StartWith("CAMERA NOT RUNNING"));
+            Assert.True(menu.Runtime.CleanupComplete);
+            menu.OpenTests();Assert.True(menu.InTests);
+            var closing=menu.Runtime.ShutdownAsync();
+            while(!closing.IsCompleted)yield return null;
+            Assert.False(closing.IsFaulted);
+            Assert.True(menu.Runtime.CleanupComplete);
+            Assert.False(menu.Runtime.TestsActive);
+            Assert.AreSame(closing,menu.Runtime.ShutdownAsync());
+            // Prevent Update requesting Stop Play Mode inside the test runner.
+            menu.Runtime.enabled=false;
+        }
+        finally { UnityEngine.Object.Destroy(host); }
+        yield return null;
+        Assert.AreEqual(previousBackground,Application.runInBackground);
+    }
+
+    [UnityTest] public IEnumerator DestroyBeforeFirstFrameDoesNotRequireBackendInitialization()
+    {
+        var host=new GameObject("Short-lived editor navigation fixture");
+        host.AddComponent<MainMenuController>();
+        UnityEngine.Object.DestroyImmediate(host);
+        yield return null;
+        LogAssert.NoUnexpectedReceived();
+    }
+
     [UnityTest] public IEnumerator NavigationStaysAvailableWhenTechnicalServicesFail()
     {
         var names=new[]{"GORILLA_QA_MENU","GORILLA_QA_OVERLAY","GORILLA_IPC_JAVA","GORILLA_IPC_JAR"};
