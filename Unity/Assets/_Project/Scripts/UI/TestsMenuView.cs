@@ -7,7 +7,7 @@ using UnityEngine;
 namespace GorillaEscape.UI {
     public sealed class TestsMenuView {
         readonly QaRuntimeService s; readonly TestsMenuController controller;
-        GUIStyle title,text,small;
+        GUIStyle title,text,small;bool connectionPanel;
         public TestsMenuView(QaRuntimeService runtime,TestsMenuController controller){s=runtime;this.controller=controller;}
         static long Now()=>DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         static string Rate(bool? present,float? value)=>present==true&&value.HasValue?Number(value.Value):LiveQaModel.Unknown;
@@ -37,8 +37,22 @@ namespace GorillaEscape.UI {
             Label(20,100,720,"Prepare: "+(s.java.QaHosting?.prepareUrl??"WAITING"),small);
             Label(20,526,720,"CA SHA256: "+(s.java.QaHosting?.fingerprint??"NOT MEASURED"),small);
             DrawRight();
+            if(GUI.Button(new Rect(320,12,190,28),"CONEXIÓN / QA"))connectionPanel=!connectionPanel;
+            if(connectionPanel)DrawConnection();
             if(GUI.Button(new Rect(20,904,180,32),"← VOLVER"))controller.Back();
             Label(220,905,1030,"Phase0 · Respuesta técnica Unity · T019 físico pendiente · Sin gameplay",small);
+        }
+        void DrawConnection(){
+            var box=new Rect(260,160,760,600);GUI.Box(box,"");
+            var n=s.java.QaConnection;float x=280,y=185;
+            Label(x,y,710,"CONECTIVIDAD — QA",title);y+=38;
+            string[] rows={"Requested Mode: "+(n?.requestedMode??Environment.GetEnvironmentVariable("GORILLA_CONNECTION_MODE")??"AUTO"),"Resolved Mode: "+(n?.resolvedMode??"NOT RUN"),"Bootstrap State: "+(n?.bootstrapState??"NOT RUN"),"Tunnel State: "+(n?.tunnelState??"STOPPED"),"Public Origin: "+(n?.publicOrigin??"NOT RUN"),"LAN Origin: "+(n?.lanOrigin??"NOT RUN"),"Fallback Reason: "+(n?.fallbackReason??"NONE"),"Tunnel Startup ms: "+(n?.tunnelStartupMs.ToString()??"NOT RUN")+" / Fallback ms: "+(n?.fallbackMs.ToString()??"NOT RUN"),"WAN availability: "+(n?.wanAvailability??"NOT MEASURED"),"GAMEPLAY PATH: LAN DIRECT","CLOUDFLARED DOES NOT CARRY GAMEPLAY"};
+            foreach(var row in rows){Label(x,y,710,row,small);y+=27;}
+            if(n?.resolvedMode=="CABIN")Label(x,y,710,"PREPARAR TELÉFONO si es la primera conexión; ver guía de preparación",small);y+=35;
+            bool before=GUI.enabled;GUI.enabled=s.java.State==IpcState.RUNNING&&(s.java.Lobby.Snapshot?.players?.Length??0)==0&&n?.bootstrapState!="STARTING";
+            int i=0;foreach(string mode in new[]{"AUTO","CABIN","CLOUDFLARED"}){if(GUI.Button(new Rect(x+i*230,y,220,32),mode=="CABIN"?"CABAÑA":mode))s.ChangeConnectionMode(mode);i++;}GUI.enabled=before;y+=40;
+            Label(x,y,710,"Selector disponible sin jugadores. Pruebas oficiales offline: CABAÑA.",small);
+            if(GUI.Button(new Rect(780,700,200,32),"CERRAR"))connectionPanel=false;
         }
         static string Stamp(long n)=>n<=0?LiveQaModel.Unknown:n.ToString();
         static string Delta(long a,long b)=>a<=0||b<a?LiveQaModel.Unknown:(b-a).ToString();

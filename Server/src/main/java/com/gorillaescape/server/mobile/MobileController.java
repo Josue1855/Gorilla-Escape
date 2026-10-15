@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/mobile")
 @ConditionalOnProperty(name="gorilla.mobile.rtc-enabled",havingValue="true")
 public final class MobileController {
+    @org.springframework.beans.factory.annotation.Autowired(required=false) private com.gorillaescape.server.connectivity.ConnectivityService connectivity;
     private final MobileRuntime runtime;private final String operator, origin, address;private final boolean lab;
     public MobileController(MobileRuntime runtime,
         @org.springframework.beans.factory.annotation.Value("${gorilla.mobile.public-origin:}") String origin,
@@ -33,7 +34,8 @@ public final class MobileController {
         operator(r,supplied);
         URI page=lab?URI.create("http://127.0.0.1:"+r.getLocalPort()+"/mobile-lab/index.html"):
             MobileOrigin.page(origin,address,r.getLocalPort());
-        var admission=runtime.admission();URI uri=lab?JoinQrPoc.labLink(page,admission):JoinQrPoc.link(page,admission);
+        if(connectivity!=null)try{page=connectivity.page();}catch(IllegalStateException e){throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"CONNECTION_NOT_READY");}
+        var admission=runtime.admission();URI uri="http".equals(page.getScheme())?JoinQrPoc.labLink(page,admission):JoinQrPoc.link(page,admission);
         var bits=JoinQrPoc.encode(uri);var image=new BufferedImage(bits.getWidth(),bits.getHeight(),BufferedImage.TYPE_INT_RGB);
         for(int y=0;y<bits.getHeight();y++)for(int x=0;x<bits.getWidth();x++)image.setRGB(x,y,bits.get(x,y)?0:0xffffff);
         var bytes=new ByteArrayOutputStream();ImageIO.write(image,"PNG",bytes);

@@ -87,3 +87,7 @@ Un gate físico iPhone/cuatro dispositivos, offset cross-device y respuesta ópt
 
 
 CI detectó un fallo intermitente del finder genérico en el test de un raster QR generado. La unidad ahora declara PURE_BARCODE (raster perfecto conocido), recorre64 admisiones nuevas y conserva la verificación one-use; no omite ni reintenta fallos. Assertions de contenido no imprimen tokens. No se cambia el QR productivo ni se acredita lectura con cámara/iPhone; ese gate sigue físico pendiente. El run fallido y la corrección se registran en regression.json.
+
+### Transparent bootstrap integration (DEC-030; run2026-10-14→15)
+
+MainMenu remains JUGAR-disabled/PRUEBAS/SALIR. Centro de Pruebas adds CONEXIÓN / QA with AUTO/CABAÑA/CLOUDFLARED, Requested/Resolved/state/origin/fallback/timing, WAN observation and explicit LAN DIRECT gameplay boundary. UI and Java both reject mode changes while any player slot is retained. A slow bootstrap retains one pending QR request; changing origin invalidates pending admissions and replaces the raster without resetting players. Normal Editor services stay off; opt-in is `GORILLA_EDITOR_PHYSICAL_QA=1` with exact Bootstrap and non-test/non-batch guards. [Architecture and limitations](TRANSPARENT_CONNECTIVITY.md), [current integration audit](PHASE0_OVERNIGHT_INTEGRATION_REPORT_2026-10-14.md). Native pointer automation in this desktop could not reliably activate target coordinates; those attempts remain blocked independently of passing Editor/PlayMode navigation. No new physical acceptance.

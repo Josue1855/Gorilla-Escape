@@ -15,4 +15,12 @@ public class ProductEntryPolicyTests
     [TestCase(false, true, false, false, MainMenuController.BootstrapScenePath, false, false)]
     public void EntryIsExplicit(bool editor, bool playing, bool batch, bool tests, string path, bool product, bool expected)
         => Assert.AreEqual(expected, MainMenuController.ShouldAutoLaunch(editor, playing, batch, tests, path, product));
+    [TestCase(true,false,true,MainMenuController.BootstrapScenePath,"1",true)]
+    [TestCase(true,false,false,MainMenuController.BootstrapScenePath,"1",false)]
+    [TestCase(true,true,true,MainMenuController.BootstrapScenePath,"1",false)]
+    [TestCase(false,false,true,MainMenuController.BootstrapScenePath,"1",false)]
+    [TestCase(true,false,true,"Assets/Fixture.unity","1",false)]
+    [TestCase(true,false,true,MainMenuController.BootstrapScenePath,null,false)]
+    public void PhysicalEditorServicesRequireExplicitProductOptIn(bool playing,bool batch,bool permitted,string path,string flag,bool expected)
+        => Assert.AreEqual(expected,GorillaEscape.QA.QaRuntimeService.EditorServicesAllowed(playing,batch,permitted,path,flag));
 }

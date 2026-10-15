@@ -487,3 +487,22 @@ QR desde TechnicalSession/JoinQrPoc mediante extensión IPC QA v1 autenticada: T
 [Arquitectura](PHASE0_MAIN_MENU_QA_CENTER.md), [runbook sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). T061 conserva validación humana diferida Post-MVP; subjectId efímero no implica identificación biométrica.
 
 Aclaración PO posterior a T062: la escena Bootstrap oficial también inicia Main Menu en Editor Play Mode interactivo, sin Java/Vision. Test Runner, batch, Untitled y escenas ajenas quedan excluidos; SALIR detiene Play Mode. La ejecución física conserva el standalone y sus supervisores. [Política y evidencia Editor](PHASE0_MAIN_MENU_QA_CENTER.md#unity-editor--bootstrap--play).
+
+## DEC-030 — Transparent Dual Connectivity: Cabin + Cloudflared
+
+**Fecha: 2026-10-14. Estado: ACCEPTED.** Instrucción explícita del Product Owner en overnight integration.
+
+1. Cabaña es la ruta canónica local/offline.
+2. Cloudflared es bootstrap opcional de conveniencia, nunca reemplaza capacidad offline.
+3. Cloudflared transporta únicamente PWA/HTTPS/signaling, **nunca gameplay**.
+4. Motion/control mantienen WebRTC DataChannel LAN DIRECT, host ICE, sin STUN/TURN público obligatorio ni relay.
+5. Unity conserva autoridad oficial; Java conserva sesión/transporte.
+6. No se habilita multiplayer remoto ni se inicia Phase1.
+7. AUTO puede resolver la ruta en un intento acotado, con fallback a Cabaña después de cleanup.
+8. UI normal no exige conocer rutas; QA muestra RequestedMode/ResolvedMode/state/fallback/origins/timing.
+9. Cloudflared no es gate del Academic MVP; Cabaña sigue siendo aceptación válida y canónica T019/T020/offline.
+10. Se preservan GOR-07, SRS-GOR-02 y requisitos offline; no se reescribe historia ni evidencia física.
+11. Quick Tunnel sólo temporal para desarrollo/QA, WAN requerida, sin promesa de estabilidad; sin cuenta/dominio/Access obligatorio.
+12. La entrada pública es un gateway dedicado loopback con allowlist, sin exponer Spring/IPC/preview/trust/diagnostics.
+13. TechnicalSession/JoinQrPoc se reutilizan; admission sigue en fragment. Cambiar origin revoca QR pendientes y preserva jugadores/época/estado Unity.
+14. T019 físico y T020 PC limpia siguen obligatorios; F05/E0 OPEN y JUGAR disabled. Diseño y límites en [Transparent Connectivity](TRANSPARENT_CONNECTIVITY.md).

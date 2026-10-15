@@ -15,9 +15,11 @@ public class LiveQaIpcTests {
    try{
     var clock=System.Diagnostics.Stopwatch.StartNew();while(s.State!=IpcState.RUNNING&&!run.IsCompleted&&clock.Elapsed.TotalSeconds<20)yield return null;Assert.AreEqual(IpcState.RUNNING,s.State,run.Exception?.ToString());
     s.RegenerateQa();clock.Restart();while(string.IsNullOrEmpty(s.Qa?.modules)&&!run.IsCompleted&&clock.Elapsed.TotalSeconds<5)yield return null;
-    Assert.AreEqual("AVAILABLE",s.Qa.state);Assert.That(s.Qa.ttlMs,Is.InRange(1,30000));Assert.That(s.Qa.size,Is.InRange(21,89));var first=s.Qa.modules;Assert.IsNotEmpty(first);
+    Assert.NotNull(s.QaConnection);Assert.AreEqual("LAN DIRECT",s.QaConnection.webRtcPath);Assert.AreEqual("READY",s.QaConnection.bootstrapState);Assert.AreEqual("AVAILABLE",s.Qa.state);Assert.That(s.Qa.ttlMs,Is.InRange(1,30000));Assert.That(s.Qa.size,Is.InRange(21,89));var first=s.Qa.modules;Assert.IsNotEmpty(first);
     s.RegenerateQa();clock.Restart();while(s.Qa.modules==first&&!run.IsCompleted&&clock.Elapsed.TotalSeconds<5)yield return null;Assert.AreNotEqual(first,s.Qa.modules);Assert.AreEqual(0,s.Lobby.Snapshot.players.Length);
-    s.RequestStop();clock.Restart();while(!run.IsCompleted&&clock.Elapsed.TotalSeconds<15)yield return null;Assert.IsTrue(run.IsCompleted);Assert.IsFalse(run.IsFaulted,run.Exception?.ToString());Assert.IsTrue(s.CleanupComplete);Assert.IsNull(s.Qa,"A retired backend cannot retain a presentable admission");Assert.IsNull(s.QaPhones);Assert.IsFalse(Directory.Exists("/proc/"+s.LastSummary.pid));
+    var beforeMode=s.Qa.modules;s.RequestConnectionMode("CABIN");clock.Restart();while((s.Qa.modules==beforeMode||s.QaConnection?.requestedMode!="CABIN"||s.QaConnection?.bootstrapState!="READY")&&!run.IsCompleted&&clock.Elapsed.TotalSeconds<5)yield return null;
+    Assert.AreNotEqual(beforeMode,s.Qa.modules);Assert.AreEqual("CABIN",s.QaConnection.requestedMode);Assert.AreEqual("CABIN",s.QaConnection.resolvedMode);Assert.AreEqual("READY",s.QaConnection.bootstrapState);Assert.AreEqual(1,s.Launches);
+    s.RequestStop();clock.Restart();while(!run.IsCompleted&&clock.Elapsed.TotalSeconds<15)yield return null;Assert.IsTrue(run.IsCompleted);Assert.IsFalse(run.IsFaulted,run.Exception?.ToString());Assert.IsTrue(s.CleanupComplete);Assert.IsNull(s.Qa,"A retired backend cannot retain a presentable admission");Assert.IsNull(s.QaPhones);Assert.IsNull(s.QaConnection);Assert.IsFalse(Directory.Exists("/proc/"+s.LastSummary.pid));
    }finally{s.RequestStop();if(!run.IsCompleted)run.Wait(15000);for(int i=0;i<names.Length;i++)Environment.SetEnvironmentVariable(names[i],old[i]);}
   }
  }

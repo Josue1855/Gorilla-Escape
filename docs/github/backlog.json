@@ -3019,6 +3019,94 @@
       "assignees": [],
       "labels": [],
       "tests": "Component/Unity EditMode/PlayMode/build/Java/PWA/management/foundation/privacy/performance."
+    },
+    {
+      "key": "T063",
+      "title": "Conectividad transparente AUTO, Cabaña y Cloudflared",
+      "type": "Task",
+      "phase": "0",
+      "area": "Network",
+      "sources": [
+        "DEC-030",
+        "PO overnight integration 2026-10-14"
+      ],
+      "objective": "Mejorar ease-of-join opcional de Phase0; supports F05/T019/T062 sin nuevo gate académico.",
+      "acceptance": [
+        "Cabaña conserva capacidad offline y aceptación T019/T020 sin Cloudflare.",
+        "AUTO bounded, cleanup y fallback; forced Cloudflared falla controladamente.",
+        "Gateway loopback allowlist, signaling/session/fragment QR compartidos y gameplay LAN DIRECT.",
+        "Supervisor bounded, seguridad, pruebas de pérdida/1–4 peers, documentación y QA selector."
+      ],
+      "parent": "F41",
+      "blocked_by": [],
+      "scope": "P1",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Deterministic supervisor/ingress; native RTC LAB; optional external network; no physical PASS."
+    },
+    {
+      "key": "T064",
+      "title": "Eliminar stop-and-wait ACK del canal motion",
+      "type": "Task",
+      "phase": "0",
+      "area": "Mobile/PWA",
+      "sources": [
+        "DEC-030",
+        "PO overnight integration 2026-10-14"
+      ],
+      "objective": "Eliminar stall de motion como soporte técnico T019 sin alterar control fiable.",
+      "acceptance": [
+        "Reproducción determinista antes del fix del ACK stall2000ms.",
+        "Motion latest-only nonblocking, buffer bounded y ACK sólo telemetría bounded.",
+        "Loss/burst/50-60-120Hz/lifecycle y control sin regresiones."
+      ],
+      "parent": "F05",
+      "blocked_by": [],
+      "scope": "P0",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "PWA full + deterministic stress + RTC LAB; T019 physical remains OPEN."
+    },
+    {
+      "key": "T065",
+      "title": "Flujo de producto Bootstrap en Editor Play Mode",
+      "type": "Task",
+      "phase": "0",
+      "area": "Unity/Core",
+      "sources": [
+        "DEC-030",
+        "PO overnight integration 2026-10-14"
+      ],
+      "objective": "Reutilizar PR113; desarrollo interactivo en Bootstrap sin arranque de hardware implícito.",
+      "acceptance": [
+        "Bootstrap real interactivo→MainMenu/PRUEBAS/SALIR; JUGAR disabled.",
+        "No autolaunch en fixtures/batch/EditMode/otras escenas.",
+        "Backend physical sólo opt-in y fuera del Test Runner."
+      ],
+      "parent": "F41",
+      "blocked_by": [],
+      "scope": "P1",
+      "status": "Backlog",
+      "priority": null,
+      "iteration": null,
+      "story_points": null,
+      "risk": null,
+      "target_release": "v1.0 — MVP",
+      "assignees": [],
+      "labels": [],
+      "tests": "Unity EditMode/PlayMode, interactive Editor smoke, Linux regression."
     }
   ]
 }

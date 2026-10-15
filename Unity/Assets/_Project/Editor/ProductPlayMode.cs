@@ -14,6 +14,7 @@ namespace GorillaEscape.Editor
 
         static ProductPlayMode()
         {
+            GorillaEscape.QA.QaRuntimeService.EditorServicePermission = () => !SessionState.GetBool(TestRunKey, false);
             MainMenuController.EditorLaunchPermission = () => !SessionState.GetBool(TestRunKey, false);
             TestRunnerApi.RegisterTestCallback(Callbacks);
             AssemblyReloadEvents.beforeAssemblyReload += () => TestRunnerApi.UnregisterTestCallback(Callbacks);

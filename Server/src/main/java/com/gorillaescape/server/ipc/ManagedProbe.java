@@ -23,6 +23,7 @@ public final class ManagedProbe implements DisposableBean {
     @org.springframework.beans.factory.annotation.Value("${server.address}") private String address;
     @org.springframework.beans.factory.annotation.Value("${gorilla.mobile.lab-enabled:false}") private boolean lab;
     private java.net.URI qaPage;
+    @org.springframework.beans.factory.annotation.Autowired(required=false) private com.gorillaescape.server.connectivity.ConnectivityService connectivity;
     @org.springframework.beans.factory.annotation.Value("${gorilla.trust.bootstrap-port:0}") private int bootstrapPort;
     private final boolean qaEnabled="1".equals(System.getenv("GORILLA_QA_OVERLAY"));
     private final AtomicBoolean running = new AtomicBoolean();
@@ -76,6 +77,11 @@ public final class ManagedProbe implements DisposableBean {
                     var extension=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
                     var extendedPayload=extension.get("payload");
                     boolean negotiateLobby=false,negotiateQa=false,regenerateQa=false;
+                    String requestedMode=null;
+                    if(extendedPayload!=null&&extendedPayload.has("qaConnectionMode")){
+                        if(!qa||connection==null||!extendedPayload.get("qaConnectionMode").isTextual())throw new IOException("IPC_QA_AUTHORITY");
+                        requestedMode=extendedPayload.get("qaConnectionMode").asString();((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("qaConnectionMode");
+                    }
                     if(extendedPayload!=null&&extendedPayload.has("qaVersion")){
                         if(!qaEnabled||connection!=null||!extendedPayload.has("lobbyVersion")||!extendedPayload.get("qaVersion").isInt()||extendedPayload.get("qaVersion").intValue()!=1)throw new IOException("IPC_QA_VERSION");
                         ((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("qaVersion");negotiateQa=true;
@@ -108,6 +114,7 @@ public final class ManagedProbe implements DisposableBean {
                     // Extensions execute only AFTER instance/token/connection/sequence validation.
                     if(negotiateLobby)lobby=true;
                     if(negotiateQa)qa=true;
+                    if(requestedMode!=null&&connectivity!=null)connectivity.request(requestedMode);
                     String pong=ProbeCodec.pong(ping);
                     if(phone){var root=(tools.jackson.databind.node.ObjectNode)com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(pong);
                         var pongPayload=(tools.jackson.databind.node.ObjectNode)root.get("payload");
@@ -117,7 +124,8 @@ public final class ManagedProbe implements DisposableBean {
                             pongPayload.set("lobby",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.lobby()));
                         }
                         if(qa){var trust=com.gorillaescape.server.hosting.LocalTrust.current();pongPayload.set("qaHosting",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(java.util.Map.of("origin",lab?"LAB loopback":origin,"fingerprint",trust==null?"NOT MEASURED":trust.fingerprint(),"prepareUrl",trust==null||bootstrapPort==0?"NOT MEASURED":"http://"+address+":"+bootstrapPort+"/prepare")));
-                            pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qa(qaPage,lab,regenerateQa)));
+                            pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity==null?mobile.qa(qaPage,lab,regenerateQa):connectivity.qa(regenerateQa)));
+                            if(connectivity!=null)pongPayload.set("qaConnection",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity.snapshot()));
                             pongPayload.set("qaPhones",mobile.qaPhones());pongPayload.set("qaMetrics",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qaMetrics()));}
                         int overhead=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsBytes(root).length;
                         pongPayload.set("phoneInputs",mobile.inputs.drain(Math.min(3500,ProbeCodec.MAX_FRAME-overhead-20)));

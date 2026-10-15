@@ -1,0 +1,11 @@
+{
+  "scope": "Exploratory soak; package files were refreshed while it ran, so it is superseded by the frozen final run",
+  "durationRequestedSeconds": 1800,
+  "player": "/home/josuegalvan/Documentos/GorillaEscape-Phase0-Integrated-2026-10-14",
+  "assemblySha256": "66b68bbb1a1015715b4b9e40ea394c540daa667883b1287dca0910b6248b5b72",
+  "javaJarAtStartSha256": "97c1c513c5b8aea666ffe3a19fe237d57f1c4f794e214129fd8091a54e365615",
+  "afterStartChanges": "PublicIngress SDP parsing and QA mode guards. No final release attestation is made for this exploratory artifact.",
+  "cpuTickHz": 100,
+  "imagesPersisted": 0,
+  "physicalPhones": "NOT RUN"
+}
