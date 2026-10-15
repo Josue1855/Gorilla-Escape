@@ -70,3 +70,6 @@ Un gate físico iPhone/cuatro dispositivos, offset cross-device y respuesta ópt
 ## Integración
 
 [PR #112](https://github.com/Josue1855/Gorilla-Escape/pull/112) → develop, asociado a T062/#111. [Recibo de binarios y código productor](evidence/t062-main-menu-2026-10-14/package.json). Build final verificada también con Library limpia en copia aislada: no se cerró el Editor interactivo que poseía el checkout. Preflight y RTC repetidos sobre ese paquete final PASS, sin screenshots. El recibo local `delivery-receipt.json` del paquete registra merge/estado final y regresión posterior; no altera los gates físicos pendientes.
+
+
+CI detectó un fallo intermitente del finder genérico en el test de un raster QR generado. La unidad ahora declara PURE_BARCODE (raster perfecto conocido), recorre64 admisiones nuevas y conserva la verificación one-use; no omite ni reintenta fallos. Assertions de contenido no imprimen tokens. No se cambia el QR productivo ni se acredita lectura con cámara/iPhone; ese gate sigue físico pendiente. El run fallido y la corrección se registran en regression.json.

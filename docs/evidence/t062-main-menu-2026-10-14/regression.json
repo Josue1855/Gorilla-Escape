@@ -55,5 +55,13 @@
     "errors": 0,
     "warnings": 0,
     "cleanLibrary": true
+  },
+  "ciQrFinding": {
+    "run": "https://github.com/Josue1855/Gorilla-Escape/actions/runs/38657176926",
+    "failure": "JoinQrPocTest QR finder NotFound with random generated content; prior run of the same production sources passed",
+    "fix": "Use PURE_BARCODE for the known generated raster; exercise64 fresh one-use admissions in the round-trip unit; boolean content assertions redact admission on failure",
+    "focusedTests": 5,
+    "passed": 5,
+    "cameraScanning": "NOT RUN; raster decoding is not physical iPhone scanning"
   }
 }
