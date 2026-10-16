@@ -109,13 +109,23 @@ namespace GorillaEscape.QA {
         public bool TestsActive {get; private set;}
         public bool PhoneActive {get; private set;}
         public bool PhoneReady => joinEnd>0;
+        public string FirewallState => java?.QaConnection?.firewallState??"CHECKING";
+        public bool NetworkPermissionRequired => FirewallState=="NEEDS_PERMISSION"||FirewallState=="INSPECTION_REQUIRED";
+        public bool NetworkFailed => FirewallState=="CANCELLED"||FirewallState=="FAILED"||FirewallState=="HELPER_UNAVAILABLE";
+        // Absence of JOIN is observable; remote trust is not. Never infer it from identity/history.
+        public bool CanOfferPhoneRecovery => PhoneActive&&!PhoneReady&&java?.QaConnection?.admissionMode=="CABIN"
+            &&java?.QaConnection?.resolvedMode!="CLOUDFLARED"&&java?.Qa?.state!="SCANNED/JOINED"&&qrVisible>0&&Now()-qrVisible>=30000;
+        public void InstallNetwork(bool recovery=false){if(ServicesEnabled&&java?.State==IpcState.RUNNING)java.RequestNetworkAction(recovery?"RECOVERY_INSTALL":"INSTALL");}
+        public void ConfigurePhone(){if(ServicesEnabled&&CanOfferPhoneRecovery)java.RequestNetworkAction("RECOVERY");}
+        public void EndPhoneRecovery(){if(ServicesEnabled&&java?.State==IpcState.RUNNING)java.RequestNetworkAction("END_RECOVERY");}
+
         public bool PhoneFailed => qrState=="CONFIG_REQUIRED"||!ServicesEnabled||java?.State==IpcState.FAILED||java?.State==IpcState.STOPPED||qrState=="CONNECTION_NOT_READY"&&java?.QaConnection?.bootstrapState=="FAILED";
-        public void EnterPhone(){PhoneActive=true;generated=false;ClearQr();qrVisible=joinEnd=0;}
-        public void LeavePhone(){PhoneActive=false;ClearQr();generated=false;}
+        public void EnterPhone(){if(ServicesEnabled&&java?.State==IpcState.RUNNING)java.RequestNetworkAction("CHECK");PhoneActive=true;generated=false;ClearQr();qrVisible=joinEnd=0;}
+        public void LeavePhone(){EndPhoneRecovery();PhoneActive=false;ClearQr();generated=false;}
         public async void RetryPhone(){
-            generated=false;ClearQr();qrVisible=joinEnd=0;
+            EndPhoneRecovery();generated=false;ClearQr();qrVisible=joinEnd=0;
             if(!ServicesEnabled||quitting)return;
-            if(java.State==IpcState.RUNNING){java.RequestConnectionMode("AUTO");return;}
+            if(java.State==IpcState.RUNNING){java.RequestNetworkAction("CHECK");return;}
             if(javaRun!=null&&!javaRun.IsCompleted)return;
             java.Dispose();java=new JavaProbeSupervisor(enableLobby:true);
             fusion=new InputFusion(java.PhoneInputs,new FusionSettings());error="";qrState="STARTING";

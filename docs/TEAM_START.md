@@ -4,6 +4,33 @@
 
 Fecha: 2026-10-06. Alcance: arranque de Fase 0; no completa Spike 0 ni implementa juego. Arquitectura aprobada en DEC-002 y v4 enmendada.
 
+## Arranque del equipo autorizado 2026-10-16
+
+El PO autorizó integrar conexión/firewall y que los compañeros comiencen el resto
+del desarrollo. La base compartida es `develop`: actualizarla y crear una rama
+pequeña por tarea; proponer PR hacia `develop`, sin trabajar directamente sobre
+esa rama protegida ni crear ramas permanentes por persona.
+
+- **Unity/juegos:** implementar los juegos del alcance aprobado usando input
+  normalizado y autoridad Unity. No duplicar sesiones ni transportar reglas de
+  juego al teléfono. Coordinar escenas/prefabs y entregar sus `.meta`.
+- **PWA:** continuar el controlador React existente sobre el mismo Gorilla
+  Protocol/WebRTC y backend Java; conservar sensores y ciclo de vida.
+- **Flutter:** crear el cliente cuando se tome su tarea autorizada; todavía no
+  existe un proyecto Flutter en esta base. Reutilizar protocolo, identidad y
+  semántica existentes, sin otro backend ni autoridad de juego.
+
+La conexión normal ofrece un único QR JOIN; AUTO espera la oportunidad pública
+acotada y conserva el fallback local. Certificados son recuperación explícita;
+la elevación pertenece sólo al helper de firewall y nunca al juego. [Contrato y
+límites](PHASE0_PHONE_CONNECTION_FINAL.md).
+
+Esta autorización supersede el bloqueo de **inicio de implementación** de los
+checkpoints históricos. No cierra ni acredita T019, T020, F05 o E0, no cambia
+sus dependencias/criterios y no declara listas las plataformas sin pruebas.
+Las validaciones físicas continúan en paralelo; no se habilita una entrega
+jugable sólo por integrar esta base. No se asignan personas automáticamente.
+
 ## Stack fijado
 
 | Componente | Versión / herramienta | Estado |

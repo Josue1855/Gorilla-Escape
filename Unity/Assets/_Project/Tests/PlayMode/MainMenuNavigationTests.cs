@@ -72,6 +72,31 @@ public class MainMenuNavigationTests
         Assert.AreEqual(previousBackground,Application.runInBackground);
     }
 
+    [UnityTest] public IEnumerator InheritedPhysicalQaFlagNeverOverridesTestRunner()
+    {
+        string before=Environment.GetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA");
+        GameObject host=null;
+        try
+        {
+            Environment.SetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA","1");
+#if UNITY_EDITOR
+            Assert.True(UnityEditor.SessionState.GetBool("GorillaEscape.Product.TestRun",false));
+#endif
+            host=new GameObject("Inherited physical flags inside tests");var menu=host.AddComponent<MainMenuController>();
+            yield return null;
+            Assert.False(menu.Runtime.ServicesEnabled);Assert.True(menu.Runtime.CleanupComplete);
+            menu.OpenPhone();menu.Runtime.InstallNetwork();menu.Runtime.ConfigurePhone();
+            yield return null;
+            Assert.That(menu.Runtime.JavaStatus,Does.StartWith("JAVA NOT RUNNING"));
+#if UNITY_EDITOR
+            Assert.True(UnityEditor.SessionState.GetBool("GorillaEscape.Product.TestRun",false));
+#endif
+            Assert.True(menu.Runtime.CleanupComplete);
+        }
+        finally{if(host!=null)UnityEngine.Object.Destroy(host);Environment.SetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA",before);}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator DestroyBeforeFirstFrameDoesNotRequireBackendInitialization()
     {
         var host=new GameObject("Short-lived editor navigation fixture");

@@ -63,7 +63,7 @@ namespace GorillaEscape.UI {
             GUI.color=Color.white;
         }
         static void Line(Vector2 a,Vector2 b){var matrix=GUI.matrix;GUIUtility.RotateAroundPivot(Mathf.Atan2(b.y-a.y,b.x-a.x)*Mathf.Rad2Deg,a);GUI.DrawTexture(new Rect(a.x,a.y,Vector2.Distance(a,b),2),Texture2D.whiteTexture);GUI.matrix=matrix;}
-        void DrawRight(){float x=770;Label(x,76,490,"CONECTAR TELÉFONO",title);
+        void DrawRight(){float x=770;Label(x,76,490,"TELÉFONO • "+s.FirewallState,title);
             GUI.Label(new Rect(1025,80,240,55),s.QrLifecycle+"\nTTL "+(s.java.Qa==null?LiveQaModel.Unknown:Math.Ceiling(s.java.Qa.ttlMs/1000d)+" s"),new GUIStyle(small){wordWrap=true});
             if(s.qrTexture!=null){GUI.DrawTexture(new Rect(x,110,240,240),s.qrTexture,ScaleMode.ScaleToFit,false);if(s.qrVisible==0&&Event.current.type==EventType.Repaint)s.qrVisible=Now();}else Label(x,160,460,!s.ServicesEnabled?"QR NOT AVAILABLE":s.qrState=="STARTING"?"Waiting for secure LAN backend…":"Regenerate when ready");
             Label(1025,115,240,"DEVICE STATE (confirm)",small);if(GUI.Button(new Rect(1025,145,230,30),"Prepared"))controller.SetDeviceState("Prepared");if(GUI.Button(new Rect(1025,182,230,30),"Unprepared"))controller.SetDeviceState("Unprepared");Label(1025,221,230,s.model.DeviceState,small);

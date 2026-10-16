@@ -19,7 +19,7 @@ namespace GorillaEscape.Contracts
         public bool hasMotionHz,hasOrientationHz,hasEmissionHz,hasRttP50,hasRttP95;
         public float motionHz,orientationHz,emissionHz,rttP50,rttP95;
     }
-    [Serializable] public sealed class QaConnectionWire {public string admissionMode,requestedMode,resolvedMode,bootstrapState,tunnelState,publicOrigin,lanOrigin,fallbackReason,wanAvailability,webRtcPath;public long tunnelStartupMs,fallbackMs;}
+    [Serializable] public sealed class QaConnectionWire {public bool recoveryRequested;public string firewallState;public string admissionMode,requestedMode,resolvedMode,bootstrapState,tunnelState,publicOrigin,lanOrigin,fallbackReason,wanAvailability,webRtcPath;public long tunnelStartupMs,fallbackMs;}
     [Serializable] public sealed class QaHostingWire {public QaAdmissionWire prepare;public string origin,fingerprint,prepareUrl;}
     [Serializable] public sealed class QaAdmissionWire {public string state,modules;public long ttlMs;public int size;}
     [Serializable] public sealed class QaMetricsWire {public long attempted,succeeded,reconnectAttempted,reconnectSucceeded;}

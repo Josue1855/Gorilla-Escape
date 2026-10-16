@@ -27,7 +27,7 @@ class LocalTrustProcessTest {
         var command=new ProcessBuilder(Path.of(System.getProperty("java.home"),"bin/java").toString(),"-Djava.net.preferIPv4Stack=true","-cp",System.getProperty("java.class.path"),"com.gorillaescape.server.GorillaEscapeApplication","--gorilla.ipc.managed=true","--logging.config=classpath:ipc-logback.xml");
         var env=command.environment();env.remove("GORILLA_MOBILE_CONFIG");env.remove("GORILLA_MOBILE_LAB");
         env.put("GORILLA_LOCAL_TRUST_DIR",trust.toString());env.put("GORILLA_LAN_INTERFACE",lan.name());env.put("GORILLA_LAN_ADDRESS",lan.address());env.put("GORILLA_HTTPS_PORT",Integer.toString(https));env.put("GORILLA_TRUST_BOOTSTRAP_PORT",Integer.toString(bootstrap));
-        env.put("GORILLA_MOBILE_OPERATOR",operator);env.put("GORILLA_IPC_INSTANCE",UUID.randomUUID().toString());env.put("GORILLA_IPC_TOKEN","A".repeat(43));env.put("GORILLA_IPC_LOCK_DIR",directory.resolve("lock").toString());
+        env.put("GORILLA_QA_OVERLAY","1");env.put("GORILLA_MOBILE_OPERATOR",operator);env.put("GORILLA_IPC_INSTANCE",UUID.randomUUID().toString());env.put("GORILLA_IPC_TOKEN","A".repeat(43));env.put("GORILLA_IPC_LOCK_DIR",directory.resolve("lock").toString());
         var process=command.start();
         // Drain stderr, retaining only exception classes/codes and missing native-library names.
         // Never publish raw Spring logs, environment values, paths or certificate-store passwords.
@@ -54,6 +54,18 @@ class LocalTrustProcessTest {
         try {
             var ready=reader.submit(()->{try(var lines=new BufferedReader(new InputStreamReader(process.getInputStream()))){String line;while((line=lines.readLine())!=null)if(line.startsWith("GORILLA_IPC_READY "))return GorillaProtocol.JSON.readTree(line.substring(18));}throw new IOException("READY_MISSING; diagnostics="+diagnostic);});
             var message=ready.get(20,TimeUnit.SECONDS);assertEquals(https,message.get("httpPort").intValue());
+            // Real authenticated Java -> IPC hosting contract, including the optional PREPARE raster.
+            try(var socket=new Socket("127.0.0.1",message.get("ipcPort").intValue())){
+                socket.setSoTimeout(2000);
+                var ping=GorillaProtocol.JSON.createObjectNode();ping.put("ipcVersion",1);ping.put("type","PING");ping.put("sequence",1);
+                ping.put("instanceId",env.get("GORILLA_IPC_INSTANCE"));ping.put("connectionId",UUID.randomUUID().toString());
+                var payload=ping.putObject("payload");payload.put("launchToken",env.get("GORILLA_IPC_TOKEN"));payload.put("phoneInputVersion",1);payload.put("lobbyVersion",1);payload.put("qaVersion",1);
+                com.gorillaescape.server.ipc.ProbeCodec.write(socket.getOutputStream(),GorillaProtocol.JSON.writeValueAsString(ping));
+                var response=GorillaProtocol.JSON.readTree(com.gorillaescape.server.ipc.ProbeCodec.read(socket.getInputStream()));
+                var hosting=response.get("payload").get("qaHosting");assertEquals("PREPARE",hosting.get("prepare").get("state").asString());
+                assertTrue(hosting.get("prepare").get("size").intValue()>=21);assertFalse(hosting.has("prepareModules"));assertFalse(hosting.has("prepareSize"));
+                assertTrue(GorillaProtocol.JSON.writeValueAsBytes(response).length<=4096);
+            }
             var roots=KeyStore.getInstance("PKCS12");roots.load(null);roots.setCertificateEntry("installation",material.root());
             var factory=TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());factory.init(roots);var ssl=SSLContext.getInstance("TLS");ssl.init(null,factory.getTrustManagers(),null);
             var client=HttpClient.newBuilder().sslContext(ssl).connectTimeout(Duration.ofSeconds(2)).build();
@@ -67,12 +79,13 @@ class LocalTrustProcessTest {
                 wrong.setSoTimeout(3000);var parameters=wrong.getSSLParameters();parameters.setEndpointIdentificationAlgorithm("HTTPS");wrong.setSSLParameters(parameters);assertThrows(SSLHandshakeException.class,wrong::startHandshake);
             }
             var admissionRequest=HttpRequest.newBuilder(URI.create(origin+"/mobile/admission")).timeout(Duration.ofSeconds(5)).header("X-Gorilla-Operator",operator).POST(HttpRequest.BodyPublishers.noBody()).build();
-            var admission=client.send(admissionRequest,HttpResponse.BodyHandlers.ofString());assertEquals(200,admission.statusCode());
-            var qr=tools.jackson.databind.json.JsonMapper.builder().build().readTree(admission.body());var url=URI.create(qr.get("url").asString());assertEquals(lan.address(),url.getHost());assertEquals(https,url.getPort());assertEquals("https",url.getScheme());assertFalse(url.toString().contains(operator));assertFalse(url.toString().contains("127.0.0.1"));
+            // A physical configuration without the packaged preflight helper must fail closed.
+            // This TLS/security fixture never prompts Polkit or changes the host firewall.
+            var admission=client.send(admissionRequest,HttpResponse.BodyHandlers.ofString());assertEquals(503,admission.statusCode());
             assertEquals(403,client.send(HttpRequest.newBuilder(URI.create(origin+"/mobile/admission")).timeout(Duration.ofSeconds(5)).POST(HttpRequest.BodyPublishers.noBody()).build(),HttpResponse.BodyHandlers.discarding()).statusCode());
             var plain=HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(2)).build();String initial="http://"+lan.address()+":"+bootstrap;
-            assertEquals(200,plain.send(HttpRequest.newBuilder(URI.create(initial+"/gorilla-root.cer")).timeout(Duration.ofSeconds(3)).build(),HttpResponse.BodyHandlers.discarding()).statusCode());
-            for(String path:List.of("/mobile/join","/root.p12","/password","/"))assertEquals(404,plain.send(HttpRequest.newBuilder(URI.create(initial+path)).timeout(Duration.ofSeconds(3)).build(),HttpResponse.BodyHandlers.discarding()).statusCode());
+            // Recovery is no longer opened preventively, even when a port is configured.
+            assertThrows(IOException.class,()->plain.send(HttpRequest.newBuilder(URI.create(initial+"/gorilla-root.cer")).timeout(Duration.ofSeconds(3)).build(),HttpResponse.BodyHandlers.discarding()));
             process.getOutputStream().close();assertTrue(process.waitFor(12,TimeUnit.SECONDS));assertEquals(0,process.exitValue());
             try(var s=new ServerSocket(bootstrap,1,InetAddress.getByName(lan.address()))){assertTrue(s.isBound());}
         }finally {

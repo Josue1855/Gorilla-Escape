@@ -22,6 +22,7 @@ public final class ManagedProbe implements DisposableBean {
     @org.springframework.beans.factory.annotation.Value("${gorilla.mobile.public-origin:}") private String origin;
     @org.springframework.beans.factory.annotation.Value("${server.address}") private String address;
     @org.springframework.beans.factory.annotation.Value("${gorilla.mobile.lab-enabled:false}") private boolean lab;
+    @org.springframework.beans.factory.annotation.Autowired(required=false) private com.gorillaescape.server.hosting.TrustOnboarding onboarding;
     private java.net.URI qaPage;
     private com.gorillaescape.server.protocol.QaAdmission.View prepareRaster=new com.gorillaescape.server.protocol.QaAdmission.View("UNAVAILABLE",0,0,"");
     @org.springframework.beans.factory.annotation.Autowired(required=false) private com.gorillaescape.server.connectivity.ConnectivityService connectivity;
@@ -81,7 +82,13 @@ public final class ManagedProbe implements DisposableBean {
                     var extension=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
                     var extendedPayload=extension.get("payload");
                     boolean negotiateLobby=false,negotiateQa=false,regenerateQa=false;
-                    String requestedMode=null;
+                    String requestedMode=null,networkAction=null;
+                    if(extendedPayload!=null&&extendedPayload.has("qaNetworkAction")){
+                        if(!qa||connection==null||!extendedPayload.get("qaNetworkAction").isTextual())throw new IOException("IPC_QA_AUTHORITY");
+                        networkAction=extendedPayload.get("qaNetworkAction").asString();
+                        if(!java.util.Set.of("INSTALL","RECOVERY","RECOVERY_INSTALL","END_RECOVERY","CHECK").contains(networkAction))throw new IOException("IPC_QA_AUTHORITY");
+                        ((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("qaNetworkAction");
+                    }
                     if(extendedPayload!=null&&extendedPayload.has("qaConnectionMode")){
                         if(!qa||connection==null||!extendedPayload.get("qaConnectionMode").isTextual())throw new IOException("IPC_QA_AUTHORITY");
                         requestedMode=extendedPayload.get("qaConnectionMode").asString();((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("qaConnectionMode");
@@ -119,6 +126,14 @@ public final class ManagedProbe implements DisposableBean {
                     if(negotiateLobby)lobby=true;
                     if(negotiateQa)qa=true;
                     if(requestedMode!=null&&connectivity!=null)connectivity.request(requestedMode);
+                    if(networkAction!=null&&connectivity!=null){
+                        if(networkAction.equals("CHECK"))connectivity.checkFirewall();
+                        if(networkAction.equals("INSTALL"))connectivity.installFirewall(false);
+                        if(networkAction.equals("RECOVERY_INSTALL"))connectivity.installFirewall(true);
+                        if(networkAction.equals("RECOVERY"))connectivity.recovery(true);
+                        if(networkAction.equals("END_RECOVERY"))connectivity.recovery(false);
+                    }
+                    if(onboarding!=null&&connectivity!=null)try{onboarding.recovery(connectivity.recoveryReady());}catch(Exception recoveryFailure){throw new IOException("RECOVERY_UNAVAILABLE");}
                     String pong=ProbeCodec.pong(ping);
                     if(phone){var root=(tools.jackson.databind.node.ObjectNode)com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(pong);
                         var pongPayload=(tools.jackson.databind.node.ObjectNode)root.get("payload");

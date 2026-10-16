@@ -24,6 +24,11 @@ class BootstrapRtcLabTest {
      try(var out=new PrintWriter(node.getOutputStream(),true);var in=new BufferedReader(new InputStreamReader(node.getInputStream()))){
       out.println(GorillaProtocol.JSON.writeValueAsString(Map.of("mode",mode.name(),"urls",urls,"ingress",ingress.origin().toASCIIString())));
       String established=pool.submit(in::readLine).get(25,TimeUnit.SECONDS);assertNotNull(established);var first=tools.jackson.databind.json.JsonMapper.builder().build().readTree(established);assertEquals("ESTABLISHED",first.get("event").asString(),established);assertEquals(4,runtime.mobile.peerCount());
+      long statsDeadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(3);
+      while(runtime.mobile.joinDiagnostics().stream().filter(d->((Map<?,?>)d.get("selectedPair")).get("state").equals("SELECTED")).count()<4&&System.nanoTime()<statsDeadline)Thread.sleep(10);
+      assertEquals(4,runtime.mobile.joinDiagnostics().stream().filter(d->((Map<?,?>)d.get("selectedPair")).get("state").equals("SELECTED")).count());
+      report.put(mode.name()+"SelectedPairs",runtime.mobile.joinDiagnostics().stream().map(d->d.get("selectedPair")).toList());
+
       fake.state=Tunnel.State.FAILED;b.poll();assertEquals("CABIN",b.snapshot().get("resolvedMode"));assertEquals(4,runtime.mobile.peerCount());
       out.println("{\"action\":\"CONTINUE_AFTER_LOSS\"}");String completed=pool.submit(in::readLine).get(25,TimeUnit.SECONDS);assertNotNull(completed);var finalResult=tools.jackson.databind.json.JsonMapper.builder().build().readTree(completed);assertEquals("PASS",finalResult.get("gate").asString(),completed);assertTrue(node.waitFor(5,TimeUnit.SECONDS));assertEquals(0,node.exitValue());assertEquals(0,runtime.mobile.peerCount());report.put(mode.name(),finalResult);
      }finally{if(node.isAlive()){node.destroy();if(!node.waitFor(1,TimeUnit.SECONDS))node.destroyForcibly().waitFor(1,TimeUnit.SECONDS);}}

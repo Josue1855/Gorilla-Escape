@@ -601,3 +601,44 @@ F05/E0 remain OPEN, JUGAR disabled, Phase1 NOT STARTED. See the
 [T063 DNS follow-up](PHASE0_T063_TRANSPARENT_AUTO.md#dnsreadiness-correction--2026-10-15).
 
 DNS follow-up full regression: explicit JDK21 verify/package103 total,0 failures/errors,2 opt-in skips PASS; PWA/Unity code and their existing results unchanged.
+
+## PO final phone connection candidate — 2026-10-16
+
+Isolated branch codex/phone-connect-final starts at remote develop b1db2f3,
+including merged PR #120. Original dirty editor checkout preserved. DEC-031
+supersedes immediate Cabin admissions and preventive CA UI: AUTO waits bounded
+verified public readiness, then falls back locally; one frozen JOIN QR, explicit
+trust recovery only. Closed-operation Polkit/UFW preflight scopes rules to the
+selected interface/subnet/destination and real configured RTC allocator; ownership,
+rollback, cancellation and subsequent non-elevated receipt checks are covered.
+
+Java21 full verify111 total (110 PASS, one opt-in external test separated),
+PWA69/69 + production build, Unity EditMode162/162, full PlayMode29/29,
+Linux build0 errors/0 warnings, Python Vision23/23 + preview2/2 + firewall10/10,
+Management/Foundation/shell/diff checks PASS. Native four-client RTC verifies
+selected host/UDP pairs within the allocated range and preserves players/epochs
+after bootstrap loss. External public HTTPS200 observed6986ms; an intermittent
+later15s readiness failure is retained separately as BLOCKED, not hidden by a
+larger deadline. Full tests preserve the non-rotating QR policy.
+
+Final package verified and opened for the explicitly accepted human iPhone15 /
+Polkit trial. At this checkpoint physical results remain IN PROGRESS. Protected
+UFW files require first elevated inspection without a prior trusted receipt,
+even when equivalent rules could already exist; that stronger no-first-prompt
+case remains a documented limitation. [Decision and limits](PHASE0_PHONE_CONNECTION_FINAL.md),
+[software evidence](evidence/phone-connection-final-2026-10-16/validation.json).
+T063 remains CLOSED Software/Lab absent actual regression; T019/T020/F05/E0 OPEN,
+Phase1 NOT STARTED, no remote project closure or publish/merge performed.
+
+
+## PO integration / team handoff authorization — 2026-10-16
+
+PO requested integration of codex/phone-connect-final into develop through the
+normal PR/checks flow, and explicitly authorized teammates to begin game/PWA/
+Flutter development in task branches. This supersedes the earlier prohibition
+of starting remaining implementation; it does not close or weaken physical
+T019/T020/F05/E0 gates. No implementation assignment or project acceptance is
+invented. README/TEAM_START distinguish this work authorization from QA closure.
+Pre-publication review adds LAB no-elevation and exact UFW ownership regressions.
+Physical iPhone final JOIN/cleanup remains unconfirmed; software results are
+recorded in the updated validation evidence. T063 Software/Lab remains closed.

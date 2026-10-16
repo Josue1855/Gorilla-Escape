@@ -34,3 +34,8 @@ jobs:
           pulseaudio --start --exit-idle-time=-1
       - run: Server/mvnw -B -f Server/pom.xml verify
       - run: python3 tools/validate_foundation.py
+      - name: Validate closed firewall helper without elevation
+        run: |
+          python3 -m unittest discover -s tools/connectivity -v
+          bash -n tools/setup-firewall.sh
+          sh -n tools/t062/run-qa.sh

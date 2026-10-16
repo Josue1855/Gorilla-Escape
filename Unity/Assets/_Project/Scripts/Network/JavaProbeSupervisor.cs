@@ -59,6 +59,8 @@ namespace GorillaEscape.Network
         public QaPhoneMetricsWire[] QaPhones {get;private set;}
         public QaHostingWire QaHosting {get;private set;}
         public QaConnectionWire QaConnection {get;private set;}
+        string requestedNetworkAction;
+        public void RequestNetworkAction(string action){if(!qaEnabled||Array.IndexOf(new[]{"INSTALL","RECOVERY","RECOVERY_INSTALL","END_RECOVERY","CHECK"},action)<0)throw new InvalidOperationException("NETWORK_ACTION");Interlocked.Exchange(ref requestedNetworkAction,action);}
         string requestedQaMode;
         public void RequestConnectionMode(string mode){if(!qaEnabled||Array.IndexOf(new[]{"AUTO","CABIN","CLOUDFLARED"},mode)<0)throw new InvalidOperationException("QA_CONNECTION_MODE");Interlocked.Exchange(ref requestedQaMode,mode);}
         public QaAdmissionWire Qa {get;private set;}
@@ -230,6 +232,7 @@ namespace GorillaEscape.Network
                         if(secret!=null)payload=payload.Substring(0,payload.Length-1)+",\"lobbyVersion\":1}";
                         else {var command=Lobby.TakeCommand();if(command!=null)payload="{\"lobbyCommand\":"+JsonUtility.ToJson(command)+"}";}
                     }
+                    if(qaEnabled&&secret==null){var action=Interlocked.Exchange(ref requestedNetworkAction,null);if(action!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaNetworkAction\":\""+action+"\"}";}
                     if(qaEnabled&&secret==null){var mode=Interlocked.Exchange(ref requestedQaMode,null);if(mode!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaConnectionMode\":\""+mode+"\"}";}
                     if(qaEnabled&&secret==null&&Interlocked.Exchange(ref regenerateQa,0)==1)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaRegenerate\":true}";
                     a.result.sent++;

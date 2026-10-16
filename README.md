@@ -1,8 +1,8 @@
 # Gorilla Escape: Gorilimpiadas
 
-**Estado operativo vigente:** Software/Lab complete; **Project Phase0 still OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34. [Project/Issues y aceptación](docs/PHASE0_PROJECT_RECONCILIATION.md). Las declaraciones READY anteriores son checkpoint técnico histórico, no autorización operativa.
+**Base del equipo:** `develop`. El PO autoriza iniciar el desarrollo de juegos, PWA y cliente Flutter en ramas de tarea desde esta base, mientras se completa la validación física pendiente. [Cómo empezar y límites](docs/TEAM_START.md#arranque-del-equipo-autorizado-2026-10-16).
 
-**Estado vigente:** Fase0 **COMPLETED — SOFTWARE/LAB**; Fase1 **READY TO START**, no iniciada. [Audit y deuda física abierta](docs/PHASE0_FINAL_AUDIT.md). 3A product/physical onboarding DEFERRED / IN PROGRESS; #94 OPEN/DRAFT, candidato nuevo sólo local.
+**Aceptación pendiente:** Fase 0/E0, F05, T019 y T020 siguen abiertos. Esta autorización de desarrollo paralelo no declara aprobadas las pruebas físicas ni una entrega jugable. El inicio de implementación está autorizado; el cierre y la publicación conservan sus gates.
 
 Party game físico local para 1–4 personas. La PC arbitra cinco pruebas; los teléfonos sirven de controles y una webcam aporta contexto corporal. El gameplay previsto funciona sin Internet.
 

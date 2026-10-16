@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+[ "$(/usr/bin/id -u)" != 0 ] || { echo "Ejecuta Gorilla Escape como usuario normal." >&2; exit 1; }
 package_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 "$package_root/Vision/python" -I "$package_root/verify-package.py" "$package_root"
 export GORILLA_PACKAGE_ROOT="$package_root"

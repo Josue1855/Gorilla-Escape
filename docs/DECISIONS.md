@@ -517,3 +517,27 @@ verified cloudflared 2026.10.0, never download at runtime; missing/invalid optio
 binary falls back locally. Technical details remain in QA/Detalles. This explicit
 PO instruction supersedes the earlier wait-before-QR and unbundled-discovery
 policies of DEC-030. See PHASE0_T063_TRANSPARENT_AUTO.md for gates and evidence.
+
+## DEC-031 — One JOIN QR and controlled PC elevation
+
+**2026-10-16, ACCEPTED by explicit final PO instruction.** Supersedes DEC-030's
+2026-10-15 immediate Cabin QR policy and preventive phone preparation UI.
+AUTO prepares local and public routes concurrently, waits for bounded verified
+public readiness before the first QR, and falls back locally. A shown admission
+never changes origin silently. The normal phone flow is scan → connect → ready;
+CA trust is explicit recovery only. Only a minimal closed-operation firewall
+helper may receive OS graphical elevation, after preflight requires it. Preserve
+Unity authority, authenticated loopback IPC, supervised children and LAN DIRECT
+RTC. No silent trust detection, TLS bypass, broad firewall permissions or Phase1.
+Implementation, protected UFW inspection limitation and physical gates:
+[final phone connection decision](PHASE0_PHONE_CONNECTION_FINAL.md).
+
+### DEC-031 — autorización de integración y trabajo paralelo del equipo
+
+**2026-10-16, instrucción explícita posterior del PO:** integrar en `develop`
+los cambios locales de conexión/firewall mediante PR y permitir que los
+compañeros inicien juegos, mejoras PWA y cliente Flutter desde esa base.
+Esta autorización sustituye la prohibición de iniciar implementación del resto;
+la deuda física de T019/T020 y los criterios de cierre de F05/E0 permanecen
+abiertos. No modifica resultados históricos, dependencias, autoridades,
+protecciones de ramas ni aceptación de una entrega. [Arranque del equipo](TEAM_START.md#arranque-del-equipo-autorizado-2026-10-16).
