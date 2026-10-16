@@ -23,6 +23,7 @@ public final class ManagedProbe implements DisposableBean {
     @org.springframework.beans.factory.annotation.Value("${server.address}") private String address;
     @org.springframework.beans.factory.annotation.Value("${gorilla.mobile.lab-enabled:false}") private boolean lab;
     private java.net.URI qaPage;
+    private com.gorillaescape.server.protocol.QaAdmission.View prepareRaster=new com.gorillaescape.server.protocol.QaAdmission.View("UNAVAILABLE",0,0,"");
     @org.springframework.beans.factory.annotation.Autowired(required=false) private com.gorillaescape.server.connectivity.ConnectivityService connectivity;
     @org.springframework.beans.factory.annotation.Value("${gorilla.trust.bootstrap-port:0}") private int bootstrapPort;
     private final boolean qaEnabled="1".equals(System.getenv("GORILLA_QA_OVERLAY"));
@@ -52,6 +53,9 @@ public final class ManagedProbe implements DisposableBean {
         int httpPort = ((WebServerApplicationContext) context).getWebServer().getPort();
         if(qaEnabled&&mobile!=null)qaPage=lab?java.net.URI.create("http://127.0.0.1:"+httpPort+"/mobile-lab/index.html"):
             com.gorillaescape.server.mobile.MobileOrigin.page(origin,address,httpPort);
+        if(qaEnabled&&mobile!=null&&!lab&&bootstrapPort>0)try{
+            prepareRaster=com.gorillaescape.server.protocol.QaAdmission.raster(java.net.URI.create("http://"+address+":"+bootstrapPort+"/prepare"),"PREPARE",0);
+        }catch(Exception unavailable){/* Optional onboarding QR; technical state remains private. */}
         ParentLifetime parent = GorillaEscapeApplication.managedParent();
         if (parent == null) throw new IOException("IPC_PARENT_MISSING");
         parent.publishIfAlive(() -> {
@@ -123,7 +127,7 @@ public final class ManagedProbe implements DisposableBean {
                             if(lobbyCommand!=null)pongPayload.set("lobbyResult",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.unityLobbyCommand(lobbyCommand)));
                             pongPayload.set("lobby",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.lobby()));
                         }
-                        if(qa){var trust=com.gorillaescape.server.hosting.LocalTrust.current();pongPayload.set("qaHosting",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(java.util.Map.of("origin",lab?"LAB loopback":origin,"fingerprint",trust==null?"NOT MEASURED":trust.fingerprint(),"prepareUrl",trust==null||bootstrapPort==0?"NOT MEASURED":"http://"+address+":"+bootstrapPort+"/prepare")));
+                        if(qa){var trust=com.gorillaescape.server.hosting.LocalTrust.current();pongPayload.set("qaHosting",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(java.util.Map.of("prepare",prepareRaster,"origin",lab?"LAB loopback":origin,"fingerprint",trust==null?"NOT MEASURED":trust.fingerprint(),"prepareUrl",trust==null||bootstrapPort==0?"NOT MEASURED":"http://"+address+":"+bootstrapPort+"/prepare")));
                             pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity==null?mobile.qa(qaPage,lab,regenerateQa):connectivity.qa(regenerateQa)));
                             if(connectivity!=null)pongPayload.set("qaConnection",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity.snapshot()));
                             pongPayload.set("qaPhones",mobile.qaPhones());pongPayload.set("qaMetrics",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qaMetrics()));}

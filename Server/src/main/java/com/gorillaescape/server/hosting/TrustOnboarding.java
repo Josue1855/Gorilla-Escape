@@ -22,13 +22,13 @@ public final class TrustOnboarding implements DisposableBean {
                            @Value("${gorilla.mobile.public-origin}") String origin,
                            @Value("${gorilla.trust.bootstrap-port:0}") int port) throws Exception {
         var material=LocalTrust.current();certificate=material.root().getEncoded();
-        instructions="<!doctype html><html lang='es'><meta charset='utf-8'><meta name='viewport' content='width=device-width'><title>Gorilla Escape — PREPARE DEVICE</title>"
-            +"<h1>PREPARE DEVICE</h1><p>Preparación única para esta PC. Descarga únicamente el certificado público. Nunca aceptes una advertencia TLS.</p>"
-            +"<p>Compara este SHA-256 con el mostrado en la PC por un canal que controles:</p><code>"+material.fingerprint()+"</code>"
-            +"<p><a href='/gorilla-root.cer'>Descargar CA pública</a></p>"
+        instructions="<!doctype html><html lang='es'><meta charset='utf-8'><meta name='viewport' content='width=device-width'><title>Gorilla Escape — Preparar teléfono</title>"
+            +"<h1>PREPARAR TELÉFONO</h1><p>Este teléfono necesita una preparación única para conectarse sin Internet. Sigue los pasos para tu teléfono.</p>"
+            +"<details><summary>Detalles de seguridad</summary><p>Compara este código con Detalles en la PC antes de instalar. Si no coincide, no continúes.</p><code>"+material.fingerprint()+"</code></details>"
+            +"<p><a href='/gorilla-root.cer'>PREPARAR</a></p>"
             +"<p>iPhone: Ajustes → General → VPN y gestión de dispositivos → instalar perfil. Después General → Información → Ajustes de confianza de certificados → activar confianza SSL de esta CA.</p>"
             +"<p>Android: instala la CA como certificado CA en los ajustes de seguridad del dispositivo. La ruta depende del fabricante; debe comprobarse la confianza real de Chrome.</p>"
-            +"<p>Tras confiar, abre <a href='"+origin+"/prepare'>HTTPS de Gorilla Escape</a>. JOIN GAME es un flujo distinto: escanea el QR vigente en la PC.</p>"
+            +"<p>Tras confiar, abre <a href='"+origin+"/prepare'>Gorilla Escape</a>. Después vuelve a Conectar teléfono en la PC y escanea el nuevo QR.</p>"
             +"<p>La descarga HTTP inicial no está autenticada: si el fingerprint no coincide con la PC, NO instales el perfil. Retira la CA desde Ajustes cuando dejes de confiar en esta instalación.</p></html>";
         workers=new ThreadPoolExecutor(1,2,30,TimeUnit.SECONDS,new ArrayBlockingQueue<>(8),r->{var t=new Thread(r,"trust-bootstrap");t.setDaemon(true);return t;},new ThreadPoolExecutor.AbortPolicy());
         if(port!=0) {

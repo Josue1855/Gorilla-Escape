@@ -6,6 +6,7 @@ public interface Tunnel extends AutoCloseable {
     URI start(URI ingress, long timeoutMs) throws Exception;
     State state();
     String version();
+    default String failureReason(){return "TUNNEL_UNAVAILABLE_OR_START_FAILED";}
     boolean cleanupComplete();
     void close();
 }

@@ -506,3 +506,14 @@ Aclaración PO posterior a T062: la escena Bootstrap oficial también inicia Mai
 12. La entrada pública es un gateway dedicado loopback con allowlist, sin exponer Spring/IPC/preview/trust/diagnostics.
 13. TechnicalSession/JoinQrPoc se reutilizan; admission sigue en fragment. Cambiar origin revoca QR pendientes y preserva jugadores/época/estado Unity.
 14. T019 físico y T020 PC limpia siguen obligatorios; F05/E0 OPEN y JUGAR disabled. Diseño y límites en [Transparent Connectivity](TRANSPARENT_CONNECTIVITY.md).
+
+### DEC-030 clarification — transparent AUTO completion (PO, 2026-10-15)
+
+AUTO is the only normal product policy. Cabin is usable during background public
+readiness; a shown admission never changes its origin automatically. Prefer a
+public origin only after live process + valid hostname + registration + public
+HTTPS 200, with bounded retry and official automatic protocol selection. Bundle
+verified cloudflared 2026.10.0, never download at runtime; missing/invalid optional
+binary falls back locally. Technical details remain in QA/Detalles. This explicit
+PO instruction supersedes the earlier wait-before-QR and unbundled-discovery
+policies of DEC-030. See PHASE0_T063_TRANSPARENT_AUTO.md for gates and evidence.

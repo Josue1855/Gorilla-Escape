@@ -18,34 +18,45 @@ import org.springframework.boot.web.server.context.WebServerApplicationContext;
 public final class ConnectivityService implements DisposableBean {
     private final MobileRuntime mobile;
     private final String origin,address;private final boolean lab;
-    private volatile ConnectionBootstrap bootstrap;private PublicIngress ingress;private long qrRevision=-1,observedRevision=-1;private boolean qrIssued,pendingQrRequest;
+    private volatile ConnectionBootstrap bootstrap;private PublicIngress ingress;private Map<String,String> preflight=Map.of();
+    private boolean pendingQrRequest;private URI admissionPage;
     public ConnectivityService(MobileRuntime mobile,@Value("${gorilla.mobile.public-origin:}")String origin,@Value("${server.address}")String address,@Value("${gorilla.mobile.lab-enabled:false}")boolean lab){this.mobile=mobile;this.origin=origin;this.address=address;this.lab=lab;}
     @EventListener @Order(-100)
     public void ready(ApplicationReadyEvent event)throws Exception{
         int port=((WebServerApplicationContext)event.getApplicationContext()).getWebServer().getPort();
         URI cabin=lab?URI.create("http://127.0.0.1:"+port+"/mobile-lab/index.html"):MobileOrigin.page(origin,address,port);
         ConnectionBootstrap.Mode mode;try{mode=ConnectionBootstrap.Mode.valueOf(System.getenv().getOrDefault("GORILLA_CONNECTION_MODE","AUTO"));}catch(IllegalArgumentException e){throw new IllegalArgumentException("CONNECTION_MODE_INVALID");}
-        long timeout;try{timeout=Long.parseLong(System.getenv().getOrDefault("GORILLA_TUNNEL_STARTUP_MS","6000"));}catch(NumberFormatException e){throw new IllegalArgumentException("BOOTSTRAP_BUDGET");}
-        var binary=CloudflaredSupervisor.discover(System.getenv("GORILLA_CLOUDFLARED_PATH"),System.getenv("PATH"));
+        long timeout;try{timeout=Long.parseLong(System.getenv().getOrDefault("GORILLA_TUNNEL_STARTUP_MS","15000"));}catch(NumberFormatException e){throw new IllegalArgumentException("BOOTSTRAP_BUDGET");}
+        String packaged=System.getenv("GORILLA_PACKAGE_ROOT");
+        String supplied=System.getenv("GORILLA_CLOUDFLARED_PATH");
+        if(supplied==null&&packaged!=null)supplied=java.nio.file.Path.of(packaged,"Tools","cloudflared").toString();
+        var binary=CloudflaredSupervisor.discover(supplied,null);
         // Missing optional executable requires neither a listener nor a download.
-        if(binary!=null&&mode!=ConnectionBootstrap.Mode.CABIN)ingress=PublicIngress.forRuntime(mobile);
-        bootstrap=new ConnectionBootstrap(mode,cabin,new CloudflaredSupervisor(binary),timeout);bootstrap.start(ingress==null?URI.create("http://127.0.0.1:9"):ingress.origin());
+        if(binary!=null&&mode!=ConnectionBootstrap.Mode.CABIN)try{ingress=PublicIngress.forRuntime(mobile);}catch(Exception optional){/* Cabin stays usable. */}
+        bootstrap=new ConnectionBootstrap(mode,cabin,new CloudflaredSupervisor(binary),timeout);bootstrap.start(ingress==null?null:ingress.origin());
     }
-    public synchronized Map<String,Object> snapshot(){if(bootstrap==null)return Map.of("bootstrapState","STOPPED");var result=bootstrap.snapshot();
-        if(observedRevision!=bootstrap.revision()){if(observedRevision>=0)mobile.revokePendingAdmissions();observedRevision=bootstrap.revision();}
-        if(ingress!=null){if(bootstrap.ready()&&"CLOUDFLARED".equals(result.get("resolvedMode")))ingress.publicOrigin(bootstrap.page().resolve("/"));else if(!"STARTING".equals(result.get("bootstrapState"))){ingress.close();ingress=null;}}
+    public synchronized Map<String,Object> snapshot(){if(bootstrap==null)return Map.of("bootstrapState","STOPPED");var result=new java.util.LinkedHashMap<String,Object>(bootstrap.snapshot());
+        result.put("admissionMode",admissionPage==null?"NONE":admissionPage.getHost().endsWith(".trycloudflare.com")?"CLOUDFLARED":"CABIN");
+        if(ingress!=null){if(bootstrap.ready()&&"CLOUDFLARED".equals(result.get("resolvedMode")))ingress.publicOrigin(URI.create("https://"+bootstrap.page().getHost()));else if(!"STARTING".equals(result.get("bootstrapState"))){ingress.close();ingress=null;}}
+        var preflight=new java.util.LinkedHashMap<String,String>(bootstrap.preflight());
+        preflight.put("localTrust",lab?"LAB_NOT_REQUIRED":com.gorillaescape.server.hosting.LocalTrust.current()!=null?"PASS":"UNAVAILABLE");
+        preflight.put("publicIngress",ingress!=null?"BOUND":"UNAVAILABLE");this.preflight=Map.copyOf(preflight);
         return result;}
+    public synchronized Map<String,String> preflight(){snapshot();return preflight;}
     public synchronized boolean request(String mode){
         ConnectionBootstrap.Mode requested;try{requested=ConnectionBootstrap.Mode.valueOf(mode);}catch(Exception e){return false;}
         if(bootstrap==null||!mobile.lobby().players().isEmpty())return false;
         if(ingress==null&&requested!=ConnectionBootstrap.Mode.CABIN)try{ingress=PublicIngress.forRuntime(mobile);}catch(Exception e){return false;}
-        return bootstrap.request(requested,!mobile.lobby().players().isEmpty(),ingress==null?URI.create("http://127.0.0.1:9"):ingress.origin());
+        return bootstrap.request(requested,!mobile.lobby().players().isEmpty(),ingress==null?null:ingress.origin());
     }
     public synchronized com.gorillaescape.server.protocol.QaAdmission.View qa(boolean regenerate){
         if(regenerate)pendingQrRequest=true;
         snapshot();if(bootstrap==null||!bootstrap.ready())return new com.gorillaescape.server.protocol.QaAdmission.View("CONNECTION_NOT_READY",0,0,"");
-        boolean rotated=qrIssued&&qrRevision!=bootstrap.revision();boolean issue=regenerate||pendingQrRequest||rotated;if(issue)qrIssued=true;pendingQrRequest=false;qrRevision=bootstrap.revision();URI page=bootstrap.page();
-        return mobile.qa(page,"http".equals(page.getScheme()),issue);
+        boolean issue=regenerate||pendingQrRequest;
+        if(issue||admissionPage==null)admissionPage=bootstrap.page();
+        pendingQrRequest=false;
+        // Freeze the chosen origin for this admission, including late readiness and WAN loss.
+        return mobile.qa(admissionPage,"http".equals(admissionPage.getScheme()),issue);
     }
     public synchronized URI page(){snapshot();if(bootstrap==null||!bootstrap.ready())throw new IllegalStateException("CONNECTION_NOT_READY");return bootstrap.page();}
     @Override public void destroy(){if(bootstrap!=null)bootstrap.close();if(ingress!=null)ingress.close();}

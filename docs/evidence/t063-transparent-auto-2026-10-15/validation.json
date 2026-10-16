@@ -1,0 +1,110 @@
+{
+  "baseline": "4c9bea4663a7c8a2544390db30dc0a83a43ce4d8",
+  "scope": "Software/Lab; T063 OPEN pending real public HTTPS 200; no physical phone PASS",
+  "tests": {
+    "pwa": {
+      "passed": 69,
+      "failed": 0,
+      "build": "PASS"
+    },
+    "javaFullVerify": {
+      "total": 100,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "note": "explicit physical LAN/interface configured; opt-in real tunnel and RTC lab skipped here; separate reports retained"
+    },
+    "javaConnectivityFinal": {
+      "passed": 18,
+      "failed": 0
+    },
+    "rtcLab": "PASS: CABIN/AUTO, 1/2/3/4 real RTC clients, identity/epoch retained after fake external tunnel loss",
+    "rtcNoWan": "PASS: private namespace, no default route, ENETUNREACH; real RTC still works",
+    "unityEditMode": {
+      "total": "161",
+      "passed": "161",
+      "failed": "0",
+      "skipped": "0",
+      "result": "Passed"
+    },
+    "unityNavigationPlayMode": {
+      "total": "7",
+      "passed": "7",
+      "failed": "0",
+      "skipped": "0",
+      "result": "Passed"
+    },
+    "unityLinuxBuild": {
+      "result": "PASS",
+      "errors": 0,
+      "warnings": 0,
+      "logSha256": "18ac04e1d4b8f438052e0bb740ec2b9314cade4fb895040d20ed3f8972e92bcd"
+    },
+    "packageRtc": "PASS: package-rtc-final-player.json; final Player and JAR, 4 real RTC clients, 10s smoke",
+    "buildTimeHashRejection": "PASS: invalid input rejected before creating package output",
+    "restrictedIngressFailure": "PASS: no tunnel execution or alternate loopback target; AUTO keeps Cabin"
+  },
+  "publicHttps": {
+    "classification": "EXTERNAL NETWORK LAB / no physical phone",
+    "gate": "BLOCKED",
+    "reason": "IOException",
+    "supervisor": {
+      "cleanupComplete": true,
+      "lastHttpsStatus": 0,
+      "failure": "TUNNEL_HTTPS_UNAVAILABLE",
+      "binarySha": "PASS",
+      "healthAttempts": 49,
+      "registered": true,
+      "probeFailure": "ConnectException"
+    }
+  },
+  "physical": {
+    "iPhoneSafariAUTO": "NOT RUN",
+    "AndroidChromeAUTO": "NOT RUN",
+    "forcedModes": "NOT RUN"
+  },
+  "constraints": {
+    "T019": "OPEN",
+    "T020": "OPEN",
+    "F05": "OPEN",
+    "E0": "OPEN",
+    "Phase1": "NOT STARTED",
+    "JUGAR": "DISABLED"
+  },
+  "workflow": "Configured gstack skill files were not found in this environment; proportional repository build/tests/diff review performed.",
+  "package": {
+    "path": "/home/josuegalvan/Documentos/GorillaEscape-T063-2026-10-15",
+    "cloudflaredVersion": "2026.10.0",
+    "cloudflaredSha256": "d33ff2d14475178d2012c2c56beba87389ac5ded27649519f198a7d3134a99db",
+    "jarSha256": "3008a7c3629656143600e34d7a215cd525babf88d17863c9695de93b387324e3",
+    "playerSha256": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f",
+    "integrity": "PASS",
+    "cloudflaredGate": "SHA PASS / readiness BLOCKED / process cleanup PASS",
+    "runtimeManifestSha256": "e938b4f87a63986fd551b0e9b38f43df7d0b453c9ede0d0c378cfd557e63d956"
+  },
+  "priorAttempts": [
+    "RTC launch used explicit /usr/bin/node (18) incompatible with Playwright; corrected to existing Node24, rerun PASS.",
+    "One real-tunnel attempt collided with another Maven build; compilation failure, no runtime result. Subsequent serialized attempt retained.",
+    "Initial navigation PlayMode had 6/7: preview prerequisite missing. Configured existing camera bundle/worker and reran 7/7.",
+    "Multiple real Quick Tunnel attempts: registration without HTTPS200; BLOCKED. No pass inferred."
+  ],
+  "sourceHashes": {
+    "Server/src/main/java/com/gorillaescape/server/connectivity/CloudflaredSupervisor.java": "5fdb9c287937440f9ae41436a91802752c79502d562d0c2568bd8520bb29be3c",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/ConnectionBootstrap.java": "834a06305c50c65a5cb32403a1361672077be30da33db54b4bbf673366bd88c5",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/ConnectivityService.java": "61a2cfc664b4ea3a5b53052235afa5ebfc198c7ad38cb9abf76ebb1d48d6ebbe",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/Tunnel.java": "13062b0921dcb78e3c7300dc1b5f923670b3cb8fa66c796addac6922b10320df",
+    "Server/src/main/java/com/gorillaescape/server/hosting/TrustOnboarding.java": "55c4968df61024e5eb87e69df59fb0669339af544f547de09d4538cbca13dd92",
+    "Server/src/main/java/com/gorillaescape/server/ipc/ManagedProbe.java": "275bc3525886b08fb4cc851ce8c79dd40579b29a616125837a2ae83a00f3611e",
+    "Server/src/main/java/com/gorillaescape/server/protocol/QaAdmission.java": "d88b6dc6cbac440b885b030ab5d0e2f4057b641f4ae0f1490dc3cf3cb2b50973",
+    "Server/src/test/java/com/gorillaescape/server/connectivity/ConnectivityTest.java": "eb2e04de106bed894361225e65111c5fff7fd91ef759bd4f6b0b2cbcd5e62a04",
+    "Server/src/test/java/com/gorillaescape/server/connectivity/RealQuickTunnelTest.java": "82deeab22ee1a27f1a7892c45e252500c7a05749e9e8320fa085cf50a1e68a1f",
+    "Shared/CSharp/Runtime/PhoneInputWire.cs": "1fa7ff42c90ff6cb196b2963c5dd215eca1c5cb333a2754475b45d9324db5ab6",
+    "Unity/Assets/_Project/Scripts/QA/QaRuntimeService.cs": "a8d57c3501ee2b1cd8c45472800a0a1a05ec000346cb1c0ac267c6ba93d505b2",
+    "Unity/Assets/_Project/Scripts/UI/MainMenuController.cs": "68bb19b96b3da1de597fa677e108df51b445e7653a43e1d309c19cdd83e84f63",
+    "Unity/Assets/_Project/Scripts/UI/MainMenuView.cs": "71ed378460101a9194a64a254dfb885119f55ad2eff977df5b679defdba41361",
+    "Unity/Assets/_Project/Tests/PlayMode/MainMenuNavigationTests.cs": "1b6bff7de35910c3d05b39d3fd7e795a8024f98cf7cb8ec1fa9e6b775ac408aa",
+    "tools/t020/package.py": "59cc0e8ab5808aa29a4c4083e2d7976ed708edd36541bbd863cdaef5155bdaaa",
+    "tools/t062/run-qa.sh": "dc6add6e30f5a3c87813ce2bd99c47fd21716e4caa0e9dc30ddb4cf5468e6eed"
+  },
+  "evidenceBoundary": "Current source hashes and final artifact hashes. Full Java suite preceded the last two targeted regressions; connectivity18 and final packaged smoke cover those changes. Remote CI will rerun the full final commit. Unity editor test guard behavior is unchanged by the final standalone QA-hidden negotiation fix."
+}

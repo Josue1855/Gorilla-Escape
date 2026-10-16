@@ -559,3 +559,26 @@ Motion histórico0/2000ms reproducido; latest-only bounded sin ACK flow-control,
 ### Final protected integration soak — 2026-10-15
 
 Four real RTC clients, Unity/Java IPC and replay Vision: 1800.21s PASS, 100%motionACK loss on one client, bounded telemetry/errors0; normal exit/owned residual0, frozen runtime hashes preserved. Earlier host-suspend FAIL, native-click/whole-stack-noWAN automation limits, blocked public HTTPS and fresh T018 zero-frame comparison are retained explicitly. See [final integration report](PHASE0_OVERNIGHT_INTEGRATION_REPORT_2026-10-14.md). Physical T019/T020 NOT RUN; F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED; JUGAR disabled.
+
+## T063 transparent AUTO follow-up — 2026-10-15
+
+Baseline merged #118 / 4c9bea4. Normal Main Menu now exposes CONECTAR TELÉFONO,
+without a transport selector. AUTO issues usable Cabin QR during bounded public
+readiness; freezes each admission; preserves active players after tunnel loss.
+Official pinned cloudflared is packaged, SHA checked before execution, with
+license/notice/provenance and no runtime download. Public readiness retries and
+uses official automatic protocol. Human error/retry/diagnostic and one-time phone
+preparation surfaces added; technical values stay in QA/Detalles.
+
+Software evidence: PWA69/69 + build; Java verify100 total/0 failures/0 errors/2
+opt-in skips, final connectivity18/18; Unity EditMode161/161, navigation PlayMode7/7,
+Linux build0 errors/0 warnings. Real native/browser RTC1–4 clients with external
+bootstrap loss PASS, including isolated no-WAN LAN. Final packaged Player/JRE/
+RTC4-client smoke10s PASS, no owned residuals, camera/Java cleanup complete.
+
+Public Quick Tunnel: exact SHA PASS, registered connection observed, repeated
+public HTTPS GET did NOT return200 within15s; cleanup PASS. Gate BLOCKED, T063
+OPEN. Physical iPhone/Android AUTO and forced modes remain NOT RUN. No changes
+to T019/T020/F05/E0, no Phase1, no enabled JUGAR. Full report and reproducible
+limits: [T063](PHASE0_T063_TRANSPARENT_AUTO.md),
+[evidence](evidence/t063-transparent-auto-2026-10-15/validation.json).

@@ -37,8 +37,9 @@ namespace GorillaEscape.UI
             float y=Mathf.Max(410,height*.48f);
             GUI.enabled=false;GUI.Button(new Rect(84,y,370,66),"JUGAR",button);GUI.enabled=true;
             GUI.Label(new Rect(475,y+21,220,30),"En desarrollo",caption);
-            if(MainMenuController.QaVisible && GUI.Button(new Rect(84,y+84,370,66),"PRUEBAS",button))controller.OpenTests();
-            if(GUI.Button(new Rect(84,y+168,370,60),"SALIR",button))controller.Exit();
+            if(GUI.Button(new Rect(84,y+84,370,66),"CONECTAR TELÉFONO",button))controller.OpenPhone();
+            if(MainMenuController.QaVisible && GUI.Button(new Rect(84,y+168,370,60),"PRUEBAS",button))controller.OpenTests();
+            if(GUI.Button(new Rect(84,y+244,370,60),"SALIR",button))controller.Exit();
             GUI.Label(new Rect(84,height-65,900,34),"GORILLA ESCAPE  /  Base técnica Phase0",caption);
             GUI.Label(new Rect(width-290,55,260,40),"01  /  ISLAND FOUNDATION",caption);
         }
