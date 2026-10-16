@@ -4,7 +4,7 @@
 
 | Prioridad | Riesgo comprobado o pendiente | Impacto / mitigación |
 |---|---|---|
-| P0 | Backend no localizado | No validar REST/BD; obtener repo y baseline antes de fijar stack |
+| P0 | Backend creado pero sin implementación | No validar REST/BD; acordar stack y ejecutar tareas del repositorio nuevo |
 | P0 | Dos PWA con diferente stack y sólo una conectada al runtime | Sustituir cliente técnico por demo rompería input; aprobar adaptador/fuente de entrega |
 | P0 | QA física final y PC limpia sin cerrar | No prometer torneo/cero configuración universal; ejecutar T019/T020 |
 | P0 | Permiso S4 sólo lectura y owner Project indefinido | No se pueden publicar issues propias; mantenedor/owner ejecuta plan |

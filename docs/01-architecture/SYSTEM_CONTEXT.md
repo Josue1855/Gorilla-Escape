@@ -16,13 +16,13 @@ flowchart LR
 
 El Spring Boot de Java local aloja la PWA compilada, admite teléfonos y administra WebRTC. No tiene esquema SQL/JPA encontrado. Cloudflared es bootstrap HTTPS opcional; no convierte el input en juego remoto ni transporta la física. La cámara PC tiene supervisión propia; no se agrega un servidor de inferencia nuevo en esta tarea.
 
-TO-BE: conexiones discontinuas PROPUESTO, integración entre proyectos PLANIFICADO, backend/BD DESCONOCIDO. No se reemplaza el servicio técnico por el backend de persistencia.
+TO-BE: conexiones discontinuas PROPUESTO, integración entre proyectos PLANIFICADO, backend localizado con implementación PLANIFICADO y BD DESCONOCIDO. No se reemplaza el servicio técnico por el backend de persistencia.
 
 ```mermaid
 flowchart LR
   UI["Proyecto PWA UI/UX"] -.->|"Integrar cliente técnico existente"| Java["Servicio Java local / WebRTC"]
   Java <-->|"IPC existente"| Unity["Proyecto Unity: reglas y resultados"]
-  UI -.->|"REST consultas / operaciones permitidas"| Backend["Proyecto PWA Backend por identificar"]
+  UI -.->|"REST consultas / operaciones permitidas"| Backend["Proyecto PWA Backend: base documental"]
   Unity -.->|"Adaptador autorizado de resultados"| Backend
   Backend -.->|"Transacciones propuestas"| DB[("BD: motor sin confirmar")]
 ```

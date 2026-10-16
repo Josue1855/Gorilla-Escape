@@ -14,6 +14,8 @@ Los registros históricos [DECISIONS.md](../DECISIONS.md) conservan fechas y con
 | A-06 | PROPUESTO | Publicador autorizado de resultados Unity → backend; PWA no puede declarar puntuación oficial. Credencial del adaptador pendiente |
 | A-07 | PROPUESTO | UUID de negocio, transactionId estable, hash canónico y transacción atómica para resultados/intentos; ver diseño BD |
 | A-08 | PROPUESTO | IndexedDB para operaciones permitidas, reintento limitado y acuse durable; no guardar tokens RTC ni telemetría masiva |
-| A-09 | DESCONOCIDO | Motor, ORM, versión, hosting y repositorio del backend; no se adopta PostgreSQL/JPA por inferencia |
+| A-09 | DESCONOCIDO | Motor, ORM, versión y hosting del backend; no se adopta PostgreSQL/JPA por inferencia |
 
 DEC-010 aparece dos veces en la historia; la sección titulada «Mobile Transport» identifica la decisión de transporte. Las condiciones antiguas que impedían iniciar Fase 1 fueron enmendadas por autorización posterior de trabajo paralelo, sin cerrar aceptación física. Las propuestas A-06 a A-08 necesitan aprobación de ambos productores/consumidores antes de programarse.
+
+A-10 — IMPLEMENTADO Y VERIFICADO, S7: por instrucción posterior del PO se creó el repositorio privado oficial del backend y se vinculó al Project #1. Esta autorización permite únicamente esa asociación del Project existente; no cambia sus campos/vistas/issues ni implementa el backend.

@@ -18,7 +18,9 @@ Este es el registro vigente. Los resultados de tests se conservan en [evidencia]
 | PWA UI/UX: build de producción | IMPLEMENTADO Y VERIFICADO | S4/S5: npm ci y npm run build terminan correctamente; no valida instalación PWA |
 | PWA UI/UX: SW/manifest/cache | IMPLEMENTADO SIN VERIFICAR | S4: archivos presentes, pero build no entrega sw.js ni iconos; véase brechas |
 | UI/UX independiente ↔ runtime Java | PLANIFICADO | S3; no cliente RTC ni importación del adaptador actual en S4 |
-| PWA Backend, BD real, JPA y motor | DESCONOCIDO | Repositorio sin identificar; S1 Server/pom.xml no incluye persistencia |
+| Repositorio backend y enlace al Project | IMPLEMENTADO Y VERIFICADO | S7: [repositorio privado](https://github.com/Josue1855/Gorilla-Escape-Backend), main `e76371097f4bcd881fa081211ec8d0d78e308c0b`; API confirma asociación al Project #1 |
+| PWA Backend: API y persistencia | PLANIFICADO | S7 sólo contiene README y dos documentos; no aplicación, endpoints, BD, tests ni CI |
+| Backend: versiones, BD real, JPA y motor | DESCONOCIDO | Decisiones pendientes; no se fijan versiones sin manifiestos |
 | Cola durable/idempotencia de negocio | PROPUESTO | Diseño documental; no IndexedDB encontrado en ninguno de los dos clientes |
 | Cuatro minijuegos Unity | PLANIFICADO | S3; inventario S1 sin escenas/clases de minijuegos y PlayEnabled=false |
 

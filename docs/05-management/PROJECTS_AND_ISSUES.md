@@ -10,9 +10,13 @@ S4 no tiene issues, PR ni milestones en las listas accesibles al auditar; sus et
 
 Permiso real S4: lectura sí, push/triage/admin no. Propietario previsto del Project nuevo aún no confirmado: se propone Josue1855, o Quintana-117 si el equipo decide y otorga acceso. No se deduce propiedad de un Project a partir de ser PO.
 
+## Actualización posterior S7: repositorio backend agregado
+
+La instrucción posterior explícita del PO autorizó crear Gorilla-Escape-Backend y vincularlo al Project #1. Ambas operaciones fueron ejecutadas y verificadas por consulta posterior. El Project ahora tiene dos repositorios enlazados y conserva 95 items/21 campos/10 vistas; no se cambiaron issues ni estados. Esto no crea el Project independiente de PWA UI/UX ni resuelve sus permisos de escritura. Fuente/commit del nuevo backend: [S7](../00-product/SOURCE_INVENTORY.md#s7--creación-posterior-autorizada-del-backend).
+
 ## Configuración PROPUESTA
 
-Título: **Gorilla Escape — PWA UI/UX**. Seguimiento independiente; Unity mantiene Project #1. Backend tendrá su seguimiento cuando se identifique su repo/owner. No se crea otro Project Unity.
+Título: **Gorilla Escape — PWA UI/UX**. Seguimiento independiente; Unity mantiene Project #1. El backend S7 tiene repositorio propio bajo Josue1855 y quedó vinculado al Project #1 por nueva instrucción explícita del PO; el seguimiento independiente detallado sigue por acordar. No se crea otro Project Unity.
 
 | Campo | Tipo / valores candidatos |
 |---|---|

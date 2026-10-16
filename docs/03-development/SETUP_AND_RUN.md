@@ -19,4 +19,4 @@ La distribución relativa Linux está descrita en [T020](../PHASE0_T020_CLEAN_PC
 
 PWA independiente S4: rama `main`, `npm ci`, `npm run dev` o `npm run build`. S5 ejecutó instalación reproducible con scripts de instalación desactivados en copia temporal y build PASS. No tiene script test; su build no empaqueta el SW. No prometer HTTPS móvil desde un servidor HTTP local por la mera existencia de Vite.
 
-Backend separado: preparación BLOQUEADO hasta conocer repositorio, manifiesto, motor, script de arranque y entorno de datos ficticios. No ofrecer comandos Spring/JPA inventados.
+Backend separado S7: repositorio creado con documentación, sin manifiesto ni script de arranque. Preparación ejecutable BLOQUEADO hasta implementar stack/motor y entorno de datos ficticios aprobados. No ofrecer comandos Spring/JPA inventados.

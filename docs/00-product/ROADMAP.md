@@ -4,7 +4,7 @@
 
 | Orden | Resultado esperado | Dependencia / gate |
 |---|---|---|
-| P0 | Confirmar repositorio backend y propietarios de los Projects independientes | PO/equipo backend; no fecha conocida |
+| P0 | Acordar stack/backend a partir del repositorio nuevo y propietarios de los Projects independientes | PO/equipo backend; no fecha conocida |
 | P0 | Completar T019 y después T020 sin detener el desarrollo paralelo autorizado | QA física, hardware y evidencia auténtica |
 | P0 | Acordar interfaz entre UI/UX y cliente técnico existente | Unity/Red + UI/UX; no duplicar lifecycle |
 | P0 | Vertical slice High Striker y controles por disciplina | Framework mínimo, calibración, reglas y tests de scoring |

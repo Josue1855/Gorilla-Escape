@@ -11,6 +11,12 @@
 | S5 | Ejecución de auditoría 2026-10-16 en copia temporal S4: npm ci --ignore-scripts, npm run build, inventario dist y git status | Ambos comandos exit 0; build 27 módulos, sin SW/iconos; sin prueba de navegador. Herramientas Node/npm del entorno, no baseline backend |
 | S6 | Consultas autenticadas gh REST/GraphQL 2026-10-16: repos/permissions/branches, issues/PR/milestones/labels, Projects/fields/views e introspección CreateProjectV2ViewInput | Observaciones remotas puntuales. Ninguna mutación del Project histórico ni recursos PWA creados. Conteos de este instante, no garantía futura |
 
+## S7 — Creación posterior autorizada del backend
+
+El PO indicó «haz el repositorio tú del backend, y agrégalo al proyecto». Se creó [Josue1855/Gorilla-Escape-Backend](https://github.com/Josue1855/Gorilla-Escape-Backend), privado, rama main, commit inicial `e76371097f4bcd881fa081211ec8d0d78e308c0b`. REST confirmó URL/visibilidad/default_branch y permisos admin/push/read; consulta del commit confirmó exclusivamente tres Markdown: README.md, docs/ARCHITECTURE.md y docs/DEVELOPMENT_PLAN.md. La asociación mediante `gh project link` se verificó con GraphQL repositories: Project #1 ahora enlaza Unity y backend; sigue con 95 items, 21 campos y 10 vistas. No se crearon issues ni se modificaron campos/vistas/estados.
+
+La búsqueda S6 anterior que no localizaba backend permanece como evidencia histórica; S7 resuelve la URL sin inventar implementación. API/BD siguen PLANIFICADO y motor/ORM/versiones DESCONOCIDO. El checkout backend nuevo tiene un commit inicial documental, no un PR funcional ni una aplicación probada.
+
 ## Rutas significativas de S1
 
 Todas las siguientes rutas remiten a S1, no al checkout original con cambios locales.
@@ -26,7 +32,7 @@ Todas las siguientes rutas remiten a S1, no al checkout original con cambios loc
 | Captura y offline técnico | PWA/src/controller/session.js, PWA/src/input/mobileClient.js, input/sensors/capture.js y PWA/tools/build-service-worker.js | PWA/tests/sensors.test.js, lifecycle.test.js, offline.test.js, motion-flow.test.js; S2 |
 | CameraInput y empaquetado | VisionSupervisor, Input/Fusion, tools/t020/package.py | CameraPipelineTests, CameraBundleProcessTests; docs/PHASE0_T016_CAMERA_RUNTIME.md y T020 |
 | Sin gameplay | Árbol Unity/Assets/_Project: sólo Bootstrap.unity rastreada; PlayEnabled=false y ausencia de clases/escenas de los cuatro juegos | Inspección fuente, no prueba de un juego |
-| Sin BD en servicio técnico | Server/pom.xml y controllers actuales | Sin dependencias JPA/driver y sin esquema/repositorio de dominio encontrado; no demuestra ausencia en repo backend desconocido |
+| Sin BD en servicio técnico | Server/pom.xml y controllers actuales | Sin dependencias JPA/driver y sin esquema/repositorio de dominio encontrado; en S7 se confirmó que el backend nuevo contiene únicamente documentación |
 
 Rutas S4 decisivas: [App.jsx](https://github.com/Quintana-117/Dise-o_pwa/blob/ffbec2260dbad3f36743cffc2309cb206f7dba9a/src/App.jsx), [AvatarList.jsx](https://github.com/Quintana-117/Dise-o_pwa/blob/ffbec2260dbad3f36743cffc2309cb206f7dba9a/src/AvatarList.jsx), [sw.js](https://github.com/Quintana-117/Dise-o_pwa/blob/ffbec2260dbad3f36743cffc2309cb206f7dba9a/sw.js), [manifest](https://github.com/Quintana-117/Dise-o_pwa/blob/ffbec2260dbad3f36743cffc2309cb206f7dba9a/manifest.json), [package-lock](https://github.com/Quintana-117/Dise-o_pwa/blob/ffbec2260dbad3f36743cffc2309cb206f7dba9a/package-lock.json), [index](https://github.com/Quintana-117/Dise-o_pwa/blob/ffbec2260dbad3f36743cffc2309cb206f7dba9a/index.html). No se incorporó su código al monorepo.
 
@@ -36,7 +42,7 @@ Snapshot anterior a crear el PR documental #122: repositorio principal con 95 is
 
 Project #1: 95 items, 21 campos y 10 vistas consultadas. Product Backlog, Current Sprint, Sprint Board, My Work, PO Review, Blocked, Bugs, By Area, Roadmap y Releases. Vista 1 de referencia es lectura histórica, no plantilla que se ejecute contra el mismo ID. S4: cero issues/PR/milestones accesibles tras consulta explícita state=all; labels genéricas + accessibility. Projects visibles: Josue1855 sólo #1; Quintana-117 ninguno; S4 sin Projects enlazados.
 
-Búsqueda adicional de metadatos de repositorios visibles de ambos propietarios con nombre gorilla/pwa/backend sólo devolvió los dos repositorios confirmados. No prueba inexistencia de un backend privado u hospedado en otra cuenta. No se inspeccionaron repositorios de prototipos descartados ni se preparó documentación de migración.
+Antes de crear S7, búsqueda adicional de metadatos de repositorios visibles de ambos propietarios con nombre gorilla/pwa/backend sólo devolvió los dos repositorios confirmados. No prueba inexistencia de un backend privado u hospedado en otra cuenta. No se inspeccionaron repositorios de prototipos descartados ni se preparó documentación de migración.
 
 ## Inventario histórico conservado
 

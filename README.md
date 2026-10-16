@@ -6,7 +6,7 @@
 
 Party game físico local previsto para 1–4 personas humanas. El alcance actual contempla Coconut Bowling, Gorilla Smash/High Striker, Coconut Throw/Shot Put y Jungle Slice; los teléfonos sirven de controles y la webcam PC aporta contexto. Los minijuegos aún no están implementados.
 
-**Documentación vigente:** [índice único](docs/README.md), [estado verificable](docs/00-product/DEVELOPMENT_STATUS.md) y [organización de los tres proyectos](docs/00-product/REPOSITORIES.md). La PWA UI/UX independiente contiene una demo aún sin integrar; el repositorio del backend persistente no está identificado.
+**Documentación vigente:** [índice único](docs/README.md), [estado verificable](docs/00-product/DEVELOPMENT_STATUS.md) y [organización de los tres proyectos](docs/00-product/REPOSITORIES.md). La PWA UI/UX independiente contiene una demo aún sin integrar; el [repositorio del backend](https://github.com/Josue1855/Gorilla-Escape-Backend) ya está creado, con base documental y API/BD pendientes de implementación.
 
 ## Arranque del equipo
 

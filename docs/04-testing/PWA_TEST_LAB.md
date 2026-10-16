@@ -2,14 +2,14 @@
 
 Última revisión: 2026-10-16. Fuentes: S1, S2 y S3; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
 
-Estado del flujo real PWA UI/UX → backend → BD: **BLOQUEADO** por backend no identificado y falta de integración. Todos los resultados de ejecución del laboratorio: **PENDIENTE DE EJECUCIÓN**. Los códigos siguientes trazan el encargo PO S3; no reemplazan una rúbrica académica externa que no fue proporcionada.
+Estado del flujo real PWA UI/UX → backend → BD: **BLOQUEADO** por backend sin implementación y falta de integración. Todos los resultados de ejecución del laboratorio: **PENDIENTE DE EJECUCIÓN**. Los códigos siguientes trazan el encargo PO S3; no reemplazan una rúbrica académica externa que no fue proporcionada.
 
 | ID / entregable | Procedimiento requerido y esperado | Evidencia disponible / faltante |
 |---|---|---|
-| LAB-01 Repositorio final | README con commits, diagrama AS-IS/TO-BE y enlaces de los tres proyectos | S1/S4 y esta documentación; falta URL backend y README cruzado en S4 |
+| LAB-01 Repositorio final | README con commits, diagrama AS-IS/TO-BE y enlaces de los tres proyectos | S1/S4/S7 y esta documentación; tres repositorios enlazados desde backend; falta README cruzado en S4 |
 | LAB-02 Scripts reproducibles | Confirmar motor; preparar esquema/datos ficticios y limpieza idempotente en entorno aislado; segunda ejecución coherente | No scripts oficiales BD confirmados; nombres propuestos `scripts/lab/prepare`, `seed`, `cleanup` con extensión según motor |
 | LAB-03 BD antes/después | Guardar SELECT de conteos/filas/constraints antes y tras POST; IDs coincidentes | Falta BD real, esquema y consultas ejecutadas |
-| LAB-04 Logs GET/POST y JVM | Capturar requestId, método/ruta/HTTP, duración con unidad y memoria JVM antes/durante/después en ambiente declarado | Sin logs/métricas backend; no mezclar HTTP 201 con filas insertadas o SQLSTATE |
+| LAB-04 Logs GET/POST y JVM | Capturar requestId, método/ruta/HTTP, duración con unidad y memoria JVM antes/durante/después en ambiente declarado | Sin aplicación ni logs/métricas backend; no mezclar HTTP 201 con filas insertadas o SQLSTATE |
 | LAB-05 GET renderizado | Preparar registros; GET de participantes reales; comparar filas de BD, respuesta y lista de UI | S4 tiene sólo demo JSONPlaceholder; falta GET del dominio y captura |
 | LAB-06 Network | Capturar método/URL sanitizada/status, timings, payload, tamaño y headers de GET y POST | Faltan capturas auténticas y mediciones |
 | LAB-07 Application | Manifest/SW activo/scope y recursos cacheados; IndexedDB/cola sólo cuando exista; reconexión confirma operación | Código fuente SW/manifest; S5 detecta dist incompleto; no IndexedDB ni prueba de cola |

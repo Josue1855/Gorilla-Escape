@@ -1,6 +1,6 @@
 # Documentación de Gorilla Escape: Gorilimpiadas
 
-Última revisión: 2026-10-16. Índice único de la documentación vigente. El código y la evidencia fechada prevalecen sobre descripciones históricas. Sólo se auditaron los dos repositorios confirmados; backend desconocido.
+Última revisión: 2026-10-16. Índice único de la documentación vigente. El código y la evidencia fechada prevalecen sobre descripciones históricas. Se auditaron Unity/UI y se creó/verificó el tercer repositorio oficial del backend; su runtime y BD siguen sin implementar.
 
 Comenzar por [estado verificable](00-product/DEVELOPMENT_STATUS.md), [informe de auditoría](00-product/AUDIT_REPORT.md) y [siguientes acciones](05-management/NEXT_STEPS.md). Las etiquetas, límites de verificación y decisiones están centralizados; los documentos especializados contienen su detalle único.
 

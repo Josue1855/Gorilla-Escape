@@ -6,9 +6,9 @@
 |---|---|---|
 | Unity y conectividad técnica | [https://github.com/Josue1855/Gorilla-Escape](https://github.com/Josue1855/Gorilla-Escape), `develop` `7a750826c5565cbafdec983c5988c4cd5657d72a` | Lectura/escritura/admin del repositorio confirmados por API; cambios documentales en rama de tarea |
 | PWA UI/UX | [https://github.com/Quintana-117/Dise-o_pwa](https://github.com/Quintana-117/Dise-o_pwa), `main` `ffbec2260dbad3f36743cffc2309cb206f7dba9a` | `pull=true`, `push=false`, `triage=false`, `admin=false`; inspección y build en copia temporal, sin modificaciones remotas |
-| PWA Backend | URL y branch DESCONOCIDO | NO VERIFICADO: el PO respondió que no conoce el enlace; no hay checkout, esquema ni endpoints inspeccionables |
+| PWA Backend | [Josue1855/Gorilla-Escape-Backend](https://github.com/Josue1855/Gorilla-Escape-Backend), `main` `e76371097f4bcd881fa081211ec8d0d78e308c0b` | Privado, lectura/escritura/admin confirmados. Tres Markdown iniciales; no código, esquema, endpoints ni tests aún |
 
-El `Server/` del monorepo es un servicio Spring Boot de conectividad, no evidencia de un backend empresarial persistente. `PWA/` ya contiene el cliente técnico conectado a ese servicio; el repositorio UI/UX separado aún no lo integra. Ninguna referencia a proyectos académicos de terceros confirma el repositorio backend oficial.
+El `Server/` del monorepo es un servicio Spring Boot de conectividad, no evidencia de un backend empresarial persistente. `PWA/` ya contiene el cliente técnico conectado a ese servicio; el repositorio UI/UX separado aún no lo integra. El nuevo backend es creación propia del equipo; no se reutilizó ningún repositorio académico externo.
 
 El checkout original tenía cambios locales en código y configuración. Se conservó intacto. Se reutilizó el worktree limpio adjunto, se actualizó `origin/develop` y se creó `docs/architecture-project-sync`. No se publican sus rutas privadas ni datos de credenciales.
 
