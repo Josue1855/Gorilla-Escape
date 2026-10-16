@@ -14,6 +14,7 @@ public class GorillaEscapeApplication {
     private static volatile ParentLifetime parent;
     public static ParentLifetime managedParent() { return parent; }
     public static void main(String[] args) throws Exception {
+        com.gorillaescape.server.connectivity.DnsRetryPolicy.configure();
         if (!Arrays.asList(args).contains("--gorilla.ipc.managed=true")) {
             start(args);
             return;

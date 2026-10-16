@@ -582,3 +582,22 @@ OPEN. Physical iPhone/Android AUTO and forced modes remain NOT RUN. No changes
 to T019/T020/F05/E0, no Phase1, no enabled JUGAR. Full report and reproducible
 limits: [T063](PHASE0_T063_TRANSPARENT_AUTO.md),
 [evidence](evidence/t063-transparent-auto-2026-10-15/validation.json).
+
+## T063 public HTTPS gate recovered — 2026-10-15
+
+Controlled diagnosis isolated early NXDOMAIN/negative DNS caching. The game
+entrypoint now sets a1-second negative DNS cache before resolution, retaining
+positive cache/TLS/deadline. Reference-PC DNS correction is scoped to its current
+Wi-Fi profile, privately backed up; firewall unchanged. It is not a runtime
+network-setting change for distributed players. AUTO Cabin fallback is intact.
+
+JDK21 targeted20/20 (DNS recovery regression, connectivity18 and real Quick
+Tunnel) PASS. Real public PWA HTTPS200 passed repeatedly around6–7s with private
+routes404, invalid admission400 and clean shutdown. Actual packaged JRE21/JAR
+AUTO→CLOUDFLARED/PWA200 also PASS, no owned residuals. Historical BLOCKED reports
+are preserved. This supplies the missing public software gate for T063; normal
+PR integration is required. Physical iPhone/Android remains NOT RUN, T019/T020/
+F05/E0 remain OPEN, JUGAR disabled, Phase1 NOT STARTED. See the
+[T063 DNS follow-up](PHASE0_T063_TRANSPARENT_AUTO.md#dnsreadiness-correction--2026-10-15).
+
+DNS follow-up full regression: explicit JDK21 verify/package103 total,0 failures/errors,2 opt-in skips PASS; PWA/Unity code and their existing results unchanged.

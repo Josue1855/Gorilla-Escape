@@ -1,0 +1,61 @@
+{
+  "classification": "developer PC network diagnosis; no physical phone",
+  "firewallChanged": false,
+  "firewallDefaultOutgoing": "ACCEPT (read from config; privileged rules not inspected)",
+  "diagnosis": {
+    "originalDns": "normal resolution failed while independent DoH resolved and HTTPS with verified hostname/SNI returned200",
+    "java": "negative lookup cached10s despite system DNS recovering; same JVM finally returned200 at10698ms",
+    "appCorrection": "process-local negative DNS cache1s set at entrypoint before InetAddress; positive cache and TLS validation unchanged"
+  },
+  "networkCorrection": {
+    "scope": "current Wi-Fi profile only",
+    "resolvers": [
+      "1.1.1.1",
+      "1.0.0.1"
+    ],
+    "previousConfiguration": "backed up privately outside Git; rollback script prepared",
+    "originalDnsWithAppFix": "BLOCKED within15s; retained separate report",
+    "publicDnsWithAppFix": "two real PWA HTTPS200 passes, startup6297ms and6826ms"
+  },
+  "safeDataPolicy": "temporary hostname, admission/resume, Wi-Fi identity and DNS profile UUID are not retained in repository evidence",
+  "beforeDnsObservation": [
+    {
+      "systemDnsResolved": false,
+      "publicDnsStatus": 3,
+      "normalHttps": {
+        "exit": 6,
+        "status": "000"
+      },
+      "independentDnsHttps": null
+    },
+    {
+      "systemDnsResolved": false,
+      "publicDnsStatus": 3,
+      "normalHttps": {
+        "exit": 6,
+        "status": "000"
+      },
+      "independentDnsHttps": null
+    },
+    {
+      "systemDnsResolved": false,
+      "publicDnsStatus": 3,
+      "normalHttps": {
+        "exit": 6,
+        "status": "000"
+      },
+      "independentDnsHttps": null
+    }
+  ],
+  "javaCacheObservation": {
+    "defaultNegativeTtlSeconds": 10,
+    "firstAttempt": "ms=278 ConnectException ConnectException UnresolvedAddressException ",
+    "lastAttempt": "ms=10698 HTTP=200"
+  },
+  "validation": {
+    "jdk21Targeted": "20/20: DNS recovery + connectivity18 + real HTTPS",
+    "packagedJre21": "PASS: actual server main, AUTO resolves CLOUDFLARED, real PWA HTTPS200, private endpoints404, fragment-only admission and zero residual owned processes",
+    "jdk21Version": "21.0.12.1 Ubuntu packaged reference runtime",
+    "fullJava21": "103 tests total, zero failures/errors, two explicit opt-in skips; verify/package PASS (native LAN tests configured)"
+  }
+}
