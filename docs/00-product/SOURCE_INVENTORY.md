@@ -132,3 +132,7 @@ Antes de crear S7, búsqueda adicional de metadatos de repositorios visibles de 
 | [tools/spikes/webtransport/DEPENDENCIES.md](../../tools/spikes/webtransport/DEPENDENCIES.md) | 15 | `966679cba31d` |
 | [tools/spikes/webtransport/README.md](../../tools/spikes/webtransport/README.md) | 58 | `4c6784e2ac7e` |
 | [tools/t063/README.md](../../tools/t063/README.md) | 12 | `22198be06cda` |
+
+## S8 — Flujo obligatorio de ramas confirmado por el PO
+
+El 2026-10-16 el PO confirmó: tareas en ramas desde develop, integración por PR a develop y promoción a main únicamente cuando la entrega esté validada. Backend: API confirmó default_branch=develop; main y develop apuntan a `e76371097f4bcd881fa081211ec8d0d78e308c0b` tras crear la rama de integración. Se preparó el [PR backend #1](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/1), desde codex/docs-development-workflow hacia develop, con README/CONTRIBUTING/plan actualizados en `67ca1c4`. No se hicieron nuevos commits en main ni merge de PR. La configuración y documentación del repositorio UI/UX siguen requiriendo al mantenedor porque no hay Write.

@@ -13,3 +13,5 @@ El `Server/` del monorepo es un servicio Spring Boot de conectividad, no evidenc
 El checkout original tenía cambios locales en código y configuración. Se conservó intacto. Se reutilizó el worktree limpio adjunto, se actualizó `origin/develop` y se creó `docs/architecture-project-sync`. No se publican sus rutas privadas ni datos de credenciales.
 
 Project histórico confirmado: [Gorilla Escape — Product Development](https://github.com/users/Josue1855/projects/1). Véase [auditoría de gestión](../05-management/PROJECTS_AND_ISSUES.md).
+
+Actualización S8: el backend ya tiene develop como rama por defecto e integración, creada desde la base documental inicial. El trabajo futuro parte de develop en ramas de tarea y vuelve mediante PR a develop; main sólo recibe promociones de entrega aprobadas. [Política obligatoria](../03-development/GIT_WORKFLOW.md#regla-obligatoria-confirmada-por-el-po).

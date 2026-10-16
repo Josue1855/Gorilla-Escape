@@ -4,7 +4,7 @@
 
 ## P0
 
-1. Equipo backend/PO: usar Gorilla-Escape-Backend recién creado (S7), acordar responsables/colaboradores y flujo desde main, stack, motor y esquema. Crear el repositorio no acepta el laboratorio.
+1. Equipo backend/PO: usar Gorilla-Escape-Backend recién creado (S7), acordar responsables/colaboradores y tareas desde develop con PR hacia develop, stack, motor y esquema. Crear el repositorio no acepta el laboratorio.
 2. UI/UX/Red/Unity: acordar fuente de entrega y adaptador sobre cliente técnico S1, preservando lifecycle/Shared/IPC. Decidir cómo resolver las diferencias de versiones sin upgrades por inercia.
 3. Mantenedor UI/UX: confirmar owner del Project y ejecutar plan de gestión con Write autorizado. No tocar Project Unity #1 ni duplicar issues.
 4. UI/UX: abrir tarea para SW/manifest/iconos de dist y prueba offline real; no vender la demo como integración.

@@ -19,3 +19,5 @@ Los registros históricos [DECISIONS.md](../DECISIONS.md) conservan fechas y con
 DEC-010 aparece dos veces en la historia; la sección titulada «Mobile Transport» identifica la decisión de transporte. Las condiciones antiguas que impedían iniciar Fase 1 fueron enmendadas por autorización posterior de trabajo paralelo, sin cerrar aceptación física. Las propuestas A-06 a A-08 necesitan aprobación de ambos productores/consumidores antes de programarse.
 
 A-10 — IMPLEMENTADO Y VERIFICADO, S7: por instrucción posterior del PO se creó el repositorio privado oficial del backend y se vinculó al Project #1. Esta autorización permite únicamente esa asociación del Project existente; no cambia sus campos/vistas/issues ni implementa el backend.
+
+A-11 — PLANIFICADO como política obligatoria confirmada por el PO el 2026-10-16: develop es la base de integración de todos los proyectos; trabajo en ramas de tarea y PR hacia develop. main queda reservada para promoción de una entrega validada y aprobada. La configuración del backend se prepara en esta actualización; la adopción en UI/UX requiere al mantenedor por falta de Write.
