@@ -97,7 +97,7 @@ class ConnectivityTest {
         String output=System.getenv("GORILLA_BOOTSTRAP_TIMING_REPORT");if(output!=null)Files.writeString(Path.of(output),com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(rows)+"\n");
     }
 
-    @Test void autoQrIsImmediateAndFrozenAcrossLateReadiness()throws Exception{
+    @Test void autoWaitsForPublicReadyThenIssuesOnlyPublicQr()throws Exception{
         var release=new CountDownLatch(1);
         var fake=new Fake(){@Override public URI start(URI ingress,long budget)throws Exception{release.await(1,TimeUnit.SECONDS);return super.start(ingress,budget);}};
         var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
@@ -105,16 +105,36 @@ class ConnectivityTest {
             var service=new ConnectivityService(mobile,"","127.0.0.1",true);
             var field=ConnectivityService.class.getDeclaredField("bootstrap");field.setAccessible(true);field.set(service,bootstrap);
             bootstrap.start(URI.create("http://127.0.0.1:9"));
-            long began=System.nanoTime();var first=service.qa(true);
-            assertEquals("AVAILABLE",first.state());assertFalse(first.modules().isEmpty());
-            assertTrue(TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-began)<500);
-            var pageField=ConnectivityService.class.getDeclaredField("admissionPage");pageField.setAccessible(true);
-            URI frozen=(URI)pageField.get(service);assertEquals("192.168.1.2",frozen.getHost());
+            var first=service.qa(true);assertEquals("CONNECTION_NOT_READY",first.state());assertTrue(first.modules().isEmpty());assertFalse(bootstrap.ready());
             release.countDown();waitReady(bootstrap);
-            assertEquals("AVAILABLE",service.qa(false).state());assertEquals(frozen,pageField.get(service));
-            assertTrue(service.qa(false).modules().isEmpty(),"No replacement raster without a request");
-            assertEquals("AVAILABLE",service.qa(true).state());assertEquals("honest-tunnel.trycloudflare.com",((URI)pageField.get(service)).getHost());
+            assertEquals("AVAILABLE",service.qa(false).state());
+            var pageField=ConnectivityService.class.getDeclaredField("admissionPage");pageField.setAccessible(true);
+            assertEquals("honest-tunnel.trycloudflare.com",((URI)pageField.get(service)).getHost());
+            assertTrue(service.qa(false).modules().isEmpty(),"No second raster without explicit request");
         }finally{release.countDown();mobile.destroy();}
+    }
+    @Test void replacementRequestAlsoWaitsAcrossSubsequentPolls()throws Exception{
+        var release=new CountDownLatch(1);var fake=new Fake(){public URI start(URI ingress,long budget)throws Exception{release.await(1,TimeUnit.SECONDS);return super.start(ingress,budget);}};
+        var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
+        try(var b=new ConnectionBootstrap(ConnectionBootstrap.Mode.CABIN,URI.create("https://192.168.1.2:8443/"),fake,1000)){
+            var service=new ConnectivityService(mobile,"","127.0.0.1",true);var field=ConnectivityService.class.getDeclaredField("bootstrap");field.setAccessible(true);field.set(service,b);
+            b.start(null);waitReady(b);assertEquals("AVAILABLE",service.qa(true).state());
+            b.request(ConnectionBootstrap.Mode.AUTO,false,URI.create("http://127.0.0.1:9"));
+            assertEquals("CONNECTION_NOT_READY",service.qa(true).state());assertEquals("CONNECTION_NOT_READY",service.qa(false).state());
+            release.countDown();waitReady(b);assertEquals("AVAILABLE",service.qa(false).state());assertEquals("CLOUDFLARED",service.snapshot().get("admissionMode"));
+        }finally{release.countDown();mobile.destroy();}
+    }
+
+    @Test void admissionCannotChangeDuringLaterResolution()throws Exception{
+        var fake=new Fake();var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
+        try(var b=new ConnectionBootstrap(ConnectionBootstrap.Mode.CABIN,URI.create("https://192.168.1.2:8443/"),fake,1000)){
+            var service=new ConnectivityService(mobile,"","127.0.0.1",true);var field=ConnectivityService.class.getDeclaredField("bootstrap");field.setAccessible(true);field.set(service,b);
+            b.start(null);waitReady(b);assertEquals("AVAILABLE",service.qa(true).state());
+            assertTrue(b.request(ConnectionBootstrap.Mode.AUTO,false,URI.create("http://127.0.0.1:9")));waitReady(b);
+            assertEquals("AVAILABLE",service.qa(false).state());assertTrue(service.qa(false).modules().isEmpty());
+            assertEquals("CABIN",service.snapshot().get("admissionMode"));
+            assertEquals("AVAILABLE",service.qa(true).state());assertEquals("CLOUDFLARED",service.snapshot().get("admissionMode"));
+        }finally{mobile.destroy();}
     }
 
     @Test void actualRunningProcessDeathIsDetectedAndMalformedOutputIsBounded()throws Exception{

@@ -112,13 +112,20 @@ public final class MobileRuntime implements DisposableBean {
     }
     public synchronized int peerCount(){return peers.size();}
     private synchronized void expire(){if(closed)return;for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(System.nanoTime()-p.lastSeen>5_000_000_000L){it.remove();p.close();}}}
+    // A real allocator bound, not an assumed ephemeral OS range. Four peers + resumes.
+    public static final int RTC_MIN_PORT=50000, RTC_MAX_PORT=50031;
+    public static PortAllocatorConfig rtcPorts(){
+        var ports=new PortAllocatorConfig().setDisableStun(true).setDisableRelay(true).setDisableTcp(true);
+        ports.minPort=RTC_MIN_PORT;ports.maxPort=RTC_MAX_PORT;return ports;
+    }
     private final class Peer {
         final TechnicalSession.Joined joined;final GorillaProtocol.Gate gate;final CountDownLatch gathered=new CountDownLatch(1);
         final List<RTCDataChannel> channels=new ArrayList<>();final RTCPeerConnection pc;
+        volatile boolean statsPending;volatile long lastStats;
         volatile long lastSeen=System.nanoTime();volatile boolean stopped;volatile ObjectNode lastInput;
         final JoinDiagnostic diagnostic;final boolean initial;boolean helloConfirmed;
         Peer(TechnicalSession.Joined joined,JoinDiagnostic diagnostic,boolean initial){this.joined=joined;this.diagnostic=diagnostic;this.initial=initial;gate=new GorillaProtocol.Gate(new GorillaProtocol.Identity(joined.sessionId(),joined.playerId(),joined.sessionDeviceId()),System::currentTimeMillis,2000,250,120);
-            var c=new RTCConfiguration();c.iceServers.clear();c.portAllocatorConfig=new PortAllocatorConfig().setDisableStun(true).setDisableRelay(true).setDisableTcp(true);
+            var c=new RTCConfiguration();c.iceServers.clear();c.portAllocatorConfig=rtcPorts();
             pc=factory.createPeerConnection(c,new PeerConnectionObserver(){public void onIceCandidate(RTCIceCandidate candidate){diagnostic.candidate(candidate.sdp);}public void onIceGatheringChange(RTCIceGatheringState s){diagnostic.event("iceGatheringState",s.name());if(s==RTCIceGatheringState.COMPLETE)gathered.countDown();}public void onIceConnectionChange(RTCIceConnectionState s){diagnostic.event("iceConnectionState",s.name());}public void onConnectionChange(RTCPeerConnectionState s){diagnostic.event("connectionState",s.name());}public void onDataChannel(RTCDataChannel channel){attach(channel);}});
         }
         synchronized void attach(RTCDataChannel ch){if(stopped||channels.size()>=2||channels.stream().anyMatch(c->c.getLabel().equals(ch.getLabel()))||!Set.of("control","motion").contains(ch.getLabel())||ch.getLabel().equals("control")&&(!ch.isOrdered()||!ch.isReliable())||ch.getLabel().equals("motion")&&(ch.isOrdered()||ch.getMaxRetransmits()!=0)){ch.close();ch.dispose();return;}channels.add(ch);
@@ -136,6 +143,10 @@ public final class MobileRuntime implements DisposableBean {
                         }
                         metrics.put("playerId",joined.playerId());metrics.put("connectionEpoch",joined.epoch());metrics.put("receivedAt",System.currentTimeMillis());
                         qaPhones.put(joined.playerId(),metrics);
+                    }
+                    if((type.equals("HELLO")||type.equals("HEARTBEAT"))&&!statsPending&&System.nanoTime()-lastStats>1_000_000_000L){
+                        statsPending=true;lastStats=System.nanoTime();
+                        try{pc.getStats(report->{try{diagnostic.selectedPair(report.getStats());}catch(RuntimeException unavailable){}finally{statsPending=false;}});}catch(RuntimeException unavailable){statsPending=false;}
                     }
                     if(type.equals("HELLO")){if(!helloConfirmed){if(initial)qaJoinSucceeded.incrementAndGet();else qaReconnectSucceeded.incrementAndGet();}helloConfirmed=true;session.networkReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());}
                     if(type.equals("MOTION_SAMPLE")||type.equals("TOUCH")){session.active(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastInput=n;inputs.accept(n,joined.epoch(),"ACTIVE");if(type.equals("MOTION_SAMPLE"))session.inputReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),usableMovement(n));}

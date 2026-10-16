@@ -19,6 +19,8 @@ public final class ConnectivityService implements DisposableBean {
     private final MobileRuntime mobile;
     private final String origin,address;private final boolean lab;
     private volatile ConnectionBootstrap bootstrap;private PublicIngress ingress;private Map<String,String> preflight=Map.of();
+    private FirewallPreflight firewall;
+    private boolean recoveryRequested;
     private boolean pendingQrRequest;private URI admissionPage;
     public ConnectivityService(MobileRuntime mobile,@Value("${gorilla.mobile.public-origin:}")String origin,@Value("${server.address}")String address,@Value("${gorilla.mobile.lab-enabled:false}")boolean lab){this.mobile=mobile;this.origin=origin;this.address=address;this.lab=lab;}
     @EventListener @Order(-100)
@@ -33,9 +35,13 @@ public final class ConnectivityService implements DisposableBean {
         var binary=CloudflaredSupervisor.discover(supplied,null);
         // Missing optional executable requires neither a listener nor a download.
         if(binary!=null&&mode!=ConnectionBootstrap.Mode.CABIN)try{ingress=PublicIngress.forRuntime(mobile);}catch(Exception optional){/* Cabin stays usable. */}
+        firewall=new FirewallPreflight(lab,address,System.getenv("GORILLA_PACKAGE_ROOT"));
         bootstrap=new ConnectionBootstrap(mode,cabin,new CloudflaredSupervisor(binary),timeout);bootstrap.start(ingress==null?null:ingress.origin());
     }
     public synchronized Map<String,Object> snapshot(){if(bootstrap==null)return Map.of("bootstrapState","STOPPED");var result=new java.util.LinkedHashMap<String,Object>(bootstrap.snapshot());
+        if(firewall!=null)firewall.poll();
+        result.put("firewallState",firewall==null?"NOT_REQUIRED":firewall.state());
+        result.put("recoveryRequested",recoveryRequested);
         result.put("admissionMode",admissionPage==null?"NONE":admissionPage.getHost().endsWith(".trycloudflare.com")?"CLOUDFLARED":"CABIN");
         if(ingress!=null){if(bootstrap.ready()&&"CLOUDFLARED".equals(result.get("resolvedMode")))ingress.publicOrigin(URI.create("https://"+bootstrap.page().getHost()));else if(!"STARTING".equals(result.get("bootstrapState"))){ingress.close();ingress=null;}}
         var preflight=new java.util.LinkedHashMap<String,String>(bootstrap.preflight());
@@ -51,13 +57,18 @@ public final class ConnectivityService implements DisposableBean {
     }
     public synchronized com.gorillaescape.server.protocol.QaAdmission.View qa(boolean regenerate){
         if(regenerate)pendingQrRequest=true;
-        snapshot();if(bootstrap==null||!bootstrap.ready())return new com.gorillaescape.server.protocol.QaAdmission.View("CONNECTION_NOT_READY",0,0,"");
+        snapshot();if(firewall!=null&&!firewall.ready())return new com.gorillaescape.server.protocol.QaAdmission.View("FIREWALL_NOT_READY",0,0,"");
+        if(bootstrap==null||!bootstrap.ready()&&(admissionPage==null||regenerate||pendingQrRequest))return new com.gorillaescape.server.protocol.QaAdmission.View("CONNECTION_NOT_READY",0,0,"");
         boolean issue=regenerate||pendingQrRequest;
         if(issue||admissionPage==null)admissionPage=bootstrap.page();
         pendingQrRequest=false;
         // Freeze the chosen origin for this admission, including late readiness and WAN loss.
         return mobile.qa(admissionPage,"http".equals(admissionPage.getScheme()),issue);
     }
-    public synchronized URI page(){snapshot();if(bootstrap==null||!bootstrap.ready())throw new IllegalStateException("CONNECTION_NOT_READY");return bootstrap.page();}
-    @Override public void destroy(){if(bootstrap!=null)bootstrap.close();if(ingress!=null)ingress.close();}
+    public synchronized void checkFirewall(){if(firewall!=null)firewall.check();}
+    public synchronized void installFirewall(boolean recovery){if(firewall!=null)firewall.install(recovery);}
+    public synchronized void recovery(boolean enabled){recoveryRequested=enabled;if(firewall!=null){if(enabled)firewall.requireRecovery();else firewall.endRecovery();}}
+    public synchronized boolean recoveryReady(){return recoveryRequested&&(firewall==null||firewall.ready());}
+    public synchronized URI page(){snapshot();if(bootstrap==null||!bootstrap.ready()||firewall!=null&&!firewall.ready())throw new IllegalStateException("CONNECTION_NOT_READY");return bootstrap.page();}
+    @Override public void destroy(){if(firewall!=null)firewall.close();if(bootstrap!=null)bootstrap.close();if(ingress!=null)ingress.close();}
 }

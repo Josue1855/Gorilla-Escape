@@ -1,5 +1,7 @@
 # Main Menu → Centro de Pruebas — iPhone 15, sin Editor
 
+**Current candidate:** use the [final phone connection decision](PHASE0_PHONE_CONNECTION_FINAL.md): one JOIN QR, OS permission only when preflight requires it, trust recovery only after failed local JOIN. Historical instructions below are not the normal product UX.
+
 DEC-029; T062/#111 soporta T019/#33. Superficie técnica, sin gameplay/score. **T019 OPEN / Validation; Final Exit Audit BLOCKED.** Una prueba con un iPhone no acredita cuatro teléfonos ni los gates completos.
 
 ## Inicio A–O

@@ -15,22 +15,28 @@ import org.springframework.web.bind.annotation.*;
 @ConditionalOnProperty(name="gorilla.trust.enabled",havingValue="true")
 public final class TrustOnboarding implements DisposableBean {
     private HttpServer bootstrap;
+    private final String address,origin;private final int port;
     private final ThreadPoolExecutor workers;
     private final byte[] certificate;
     private final String instructions;
     public TrustOnboarding(@Value("${server.address}") String address,
                            @Value("${gorilla.mobile.public-origin}") String origin,
                            @Value("${gorilla.trust.bootstrap-port:0}") int port) throws Exception {
+        this.address=address;this.origin=origin;this.port=port;
         var material=LocalTrust.current();certificate=material.root().getEncoded();
         instructions="<!doctype html><html lang='es'><meta charset='utf-8'><meta name='viewport' content='width=device-width'><title>Gorilla Escape — Preparar teléfono</title>"
             +"<h1>PREPARAR TELÉFONO</h1><p>Este teléfono necesita una preparación única para conectarse sin Internet. Sigue los pasos para tu teléfono.</p>"
-            +"<details><summary>Detalles de seguridad</summary><p>Compara este código con Detalles en la PC antes de instalar. Si no coincide, no continúes.</p><code>"+material.fingerprint()+"</code></details>"
+            +"<section><h2>Verificar antes de instalar</h2><p>Compara este código con Detalles en la PC antes de instalar. Si no coincide, no continúes.</p><code>"+material.fingerprint()+"</code></section>"
             +"<p><a href='/gorilla-root.cer'>PREPARAR</a></p>"
             +"<p>iPhone: Ajustes → General → VPN y gestión de dispositivos → instalar perfil. Después General → Información → Ajustes de confianza de certificados → activar confianza SSL de esta CA.</p>"
             +"<p>Android: instala la CA como certificado CA en los ajustes de seguridad del dispositivo. La ruta depende del fabricante; debe comprobarse la confianza real de Chrome.</p>"
-            +"<p>Tras confiar, abre <a href='"+origin+"/prepare'>Gorilla Escape</a>. Después vuelve a Conectar teléfono en la PC y escanea el nuevo QR.</p>"
+            +"<p>Nunca ignores una advertencia TLS. Tras confiar, abre <a href='"+origin+"/prepare'>Gorilla Escape</a>. Después vuelve a Conectar teléfono en la PC y escanea el nuevo QR.</p>"
             +"<p>La descarga HTTP inicial no está autenticada: si el fingerprint no coincide con la PC, NO instales el perfil. Retira la CA desde Ajustes cuando dejes de confiar en esta instalación.</p></html>";
         workers=new ThreadPoolExecutor(1,2,30,TimeUnit.SECONDS,new ArrayBlockingQueue<>(8),r->{var t=new Thread(r,"trust-bootstrap");t.setDaemon(true);return t;},new ThreadPoolExecutor.AbortPolicy());
+    }
+    public synchronized void recovery(boolean enabled)throws Exception {
+        if(!enabled){if(bootstrap!=null){bootstrap.stop(0);bootstrap=null;}return;}
+        if(bootstrap!=null)return;
         if(port!=0) {
             if(port<1024||port>65535||port==URI.create(origin).getPort())throw new IllegalArgumentException("TRUST_BOOTSTRAP_PORT_INVALID");
             bootstrap=HttpServer.create(new InetSocketAddress(address,port),8);bootstrap.setExecutor(workers);
@@ -49,5 +55,5 @@ public final class TrustOnboarding implements DisposableBean {
     }
     @GetMapping(value="/prepare",produces="text/html;charset=UTF-8") public String prepare(){return instructions;}
     @GetMapping("/gorilla-root.cer") public ResponseEntity<byte[]> certificate(){return ResponseEntity.ok().header("Cache-Control","no-store").header("Content-Disposition","attachment; filename=gorilla-root.cer").contentType(MediaType.parseMediaType("application/x-x509-ca-cert")).body(certificate);}
-    @Override public void destroy(){if(bootstrap!=null)bootstrap.stop(0);workers.shutdownNow();}
+    @Override public synchronized void destroy(){if(bootstrap!=null)bootstrap.stop(0);workers.shutdownNow();}
 }

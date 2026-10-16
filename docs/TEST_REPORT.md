@@ -744,3 +744,33 @@ DNS reconfiguration. [Evidence](evidence/t063-dns-readiness-2026-10-15/diagnosis
 Physical phone joins and all T019/T020/F05/E0 obligations remain pending.
 
 DNS follow-up full regression: explicit JDK21 verify/package103 total,0 failures/errors,2 opt-in skips PASS; PWA/Unity code and their existing results unchanged.
+
+## Phone connection final PO candidate — 2026-10-16
+
+Software validation: Java21 full verify111 total /110 passed /1 opt-in external
+skip, PWA69/69 + build, Unity EditMode162/162 and full PlayMode29/29 (navigation8),
+Linux0 errors/0 warnings, Vision23 + preview2 + firewall10 tests passed. Management,
+Foundation, shell syntax and diff checks pass. Count growth: Java +8 (resolver2,
+preflight4, nested hosting contract1, explicit recovery1); Unity EditMode +1 nested
+Java fixture, navigation +1 inherited physical-QA Test Runner guard. No suite
+reduction. The previous reference cited navigation only; this run includes all
+29 PlayMode tests. One old expectation of automatic QR replacement now asserts
+preservation until explicit regeneration, consistent with the final PO decision.
+
+Native/browser RTC selected pairs verified host/UDP with bounded Java ports;
+existing identities/epochs survive external bootstrap loss. Real public HTTPS200
+passed at6986ms; a later transient readiness timeout remains BLOCKED separately.
+Final runtime package integrity verified. Physical iPhone/Polkit trial in progress,
+not claimed PASS by software evidence. Protected initial UFW inspection limitation
+and individual gates: [decision](PHASE0_PHONE_CONNECTION_FINAL.md) and
+[evidence](evidence/phone-connection-final-2026-10-16/validation.json).
+
+
+Pre-publication review: Java21 full verify112 total /111 passed /1 separate
+external opt-in skip PASS; PWA69/69 + production build PASS; firewall Python11/11,
+Vision23/23 and preview2/2 PASS. The +1 Java case forbids physical helper actions
+in explicit LAB, and the +1 Python case preserves a foreign replacement when
+an ownership comment appears on a different UFW tuple. Unity sources are unchanged
+from the162/162 EditMode,29/29 full PlayMode and0-error/0-warning Linux build above.
+Required CI additionally runs the closed helper tests without elevation. Physical
+final iPhone JOIN/cleanup is unconfirmed; no acceptance gate is closed by publishing.
