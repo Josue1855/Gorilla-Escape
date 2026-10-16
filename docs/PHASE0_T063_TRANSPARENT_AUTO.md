@@ -79,3 +79,39 @@ preparation on a new phone and preserve active controls during WAN loss.
 T063/#114 remains OPEN until its public HTTPS gate passes and the normal
 integration checks complete. T019, T020, F05, E0 remain OPEN. Phase1 is NOT
 STARTED. No public STUN/TURN, remote multiplayer or cloud gameplay is added.
+
+## DNS/readiness correction — 2026-10-15
+
+The previous BLOCKED network observations are retained as historical evidence.
+The controlled comparison isolated two contributors: the active network's DNS
+kept missing a newly issued name after an independent HTTPS DNS query could
+resolve it, and Java cached a negative lookup for10s. In the same-JVM diagnostic,
+normal system DNS/HTTPS recovered earlier but Java could not GET200 until10698ms.
+
+`DnsRetryPolicy` sets `networkaddress.cache.negative.ttl=1` at the application
+entrypoint, before InetAddress initialization. This is a Java security property,
+not a `-Dnetworkaddress...` system property. The change is confined to the game's
+JVM; positive DNS caching, TLS trust/hostname verification, the15s deadline and
+Cloudflare protocol selection are unchanged. A forked-JVM regression first
+caches a missing hostname, publishes it in an isolated hosts fixture, and proves
+recovery inside3s. It requires no external DNS or network configuration.
+
+On the reference developer PC, DNS was corrected only on the current Wi-Fi
+profile to1.1.1.1/1.0.0.1. The original configuration and rollback are kept
+privately outside Git. Testing the original DNS again with the Java fix still
+failed within15s; the corrected DNS plus Java policy passed repeatedly. No
+firewall rule was changed, no port opened and no TLS check bypassed. The package
+does not change a player's network settings; AUTO still uses Cabin when an
+external network cannot provide usable public bootstrap.
+
+Real PWA HTTPS200 now passes (6297ms,6826ms; explicit JDK21 run6537ms), including
+private-route404s, invalid-admission400 and owned-process cleanup. The actual
+packaged JRE21/server entrypoint also resolves AUTO→CLOUDFLARED and returns the
+real PWA through HTTPS200 with zero owned residual processes. These are software/
+external-network gates; iPhone Safari/Android Chrome physical joins remain NOT
+RUN under T019. This follow-up supplies the previously missing T063 public gate;
+normal PR integration is still required before task closure.
+
+Evidence: [DNS diagnosis](evidence/t063-dns-readiness-2026-10-15/diagnosis.json),
+[packaged public bootstrap](evidence/t063-dns-readiness-2026-10-15/package-public.json).
+Java's property contract: [OpenJDK/Oracle Java21 networking properties](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/doc-files/net-properties.html).

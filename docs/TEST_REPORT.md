@@ -730,3 +730,17 @@ attempts retained, cleanup true. This is not a physical join PASS or T063 closur
 Remaining: iPhone Safari AUTO, Android Chrome AUTO; one-time offline preparation,
 WAN removal during active controls, forced modes as separate QA. No T019/T020/
 F05/E0 closure or Phase1. [Detailed evidence](evidence/t063-transparent-auto-2026-10-15/validation.json).
+
+## T063 DNS/readiness follow-up — 2026-10-15
+
+JDK21 targeted20/20 PASS: connectivity18, forked-JVM negative-cache recovery,
+and real external Quick Tunnel/PWA gate. Public HTTPS200 observed at6297ms,
+6826ms and6537ms (last on explicit JDK21), private routes404, invalid admission400,
+cleanup true. Actual packaged JRE21/server main/AUTO also returns public PWA200,
+fragment-only admission and zero owned residuals. No TLS bypass or firewall
+change. Reference Wi-Fi DNS correction was necessary in the controlled
+comparison; private backup/rollback retained outside Git. No distributed runtime
+DNS reconfiguration. [Evidence](evidence/t063-dns-readiness-2026-10-15/diagnosis.json).
+Physical phone joins and all T019/T020/F05/E0 obligations remain pending.
+
+DNS follow-up full regression: explicit JDK21 verify/package103 total,0 failures/errors,2 opt-in skips PASS; PWA/Unity code and their existing results unchanged.

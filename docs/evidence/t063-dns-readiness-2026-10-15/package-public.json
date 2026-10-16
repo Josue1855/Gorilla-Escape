@@ -1,0 +1,19 @@
+{
+  "scope": "packaged JRE + real server JAR AUTO/PublicIngress/PWA; no physical phone",
+  "gate": "PASS",
+  "publicHttpsStatus": 200,
+  "resolvedMode": "CLOUDFLARED",
+  "qrAdmissionFragmentOnly": true,
+  "forbidden": {
+    "/mobile/admission": 404,
+    "/mobile/diagnostics": 404,
+    "/mobile/end": 404,
+    "/ipc": 404,
+    "/qa/preview": 404,
+    "/prepare": 404,
+    "/ca.key": 404
+  },
+  "residualOwned": [],
+  "cleanup": true,
+  "jarSha256": "3b60d41f7f1428dfa9a59dd5c47ba80146d52ac1d72f0b34c32818814a678609"
+}

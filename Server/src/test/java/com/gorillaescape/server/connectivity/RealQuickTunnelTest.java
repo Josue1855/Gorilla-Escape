@@ -12,6 +12,7 @@ import com.gorillaescape.server.protocol.GorillaProtocol;
 @EnabledIfEnvironmentVariable(named="GORILLA_REAL_TUNNEL",matches=".+")
 class RealQuickTunnelTest {
     @Test @Timeout(60) void publicHttpsBootstrapOnly()throws Exception{
+        DnsRetryPolicy.configure();
         var result=new LinkedHashMap<String,Object>();result.put("classification","EXTERNAL NETWORK LAB / no physical phone");
         var tunnel=new CloudflaredSupervisor(Path.of(System.getenv("GORILLA_REAL_TUNNEL")));
         try(var ingress=new PublicIngress((path,body)->{throw new IllegalArgumentException("INVALID_TEST_ADMISSION");});tunnel){
