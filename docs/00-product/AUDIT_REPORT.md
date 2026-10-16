@@ -85,4 +85,6 @@ Validaciones locales ejecutadas en este encargo:
 
 La primera ejecución del comprobador temporal Mermaid falló por una propiedad navigator de sólo lectura en Node 24; se corrigió únicamente la herramienta temporal y los cinco diagramas pasaron. No fue fallo de diagramas ni cambio del producto. Ningún comando de producto requerido por esta tarea quedó sin ejecutar; las operaciones remotas PWA se omitieron por los permisos/owner ya documentados.
 
-Rama documental `docs/architecture-project-sync`, basada en develop S1. Commit/PR se registrarán tras recibir confirmación de GitHub; sin merge automático. Las validaciones anteriores son locales, no un reporte anticipado de CI.
+Rama documental `docs/architecture-project-sync`, basada en develop S1. Commit inicial `4147cb9`, publicado en origin. [PR documental #122](https://github.com/Josue1855/Gorilla-Escape/pull/122) creado hacia develop y confirmado por respuesta GitHub; permanece para revisión, sin merge automático. Este informe se completa en un commit documental posterior, identificado en el historial del PR para evitar un SHA autorreferencial. Las validaciones anteriores son locales; el resultado de CI del HEAD publicado debe consultarse en el PR.
+
+El Project histórico conserva 95 items/21 campos/10 vistas tras la publicación, verificación final en lectura. Recursos remotos nuevos de esta tarea: rama y PR documental del monorepo; ningún Project/issue PWA creado. El estado Git final se comprueba limpio en esta rama y el checkout original conserva sus modificaciones.
