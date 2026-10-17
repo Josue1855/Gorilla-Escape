@@ -15,7 +15,7 @@
 
 El PO indicó «haz el repositorio tú del backend, y agrégalo al proyecto». Se creó [Josue1855/Gorilla-Escape-Backend](https://github.com/Josue1855/Gorilla-Escape-Backend), privado, rama main, commit inicial `e76371097f4bcd881fa081211ec8d0d78e308c0b`. REST confirmó URL/visibilidad/default_branch y permisos admin/push/read; consulta del commit confirmó exclusivamente tres Markdown: README.md, docs/ARCHITECTURE.md y docs/DEVELOPMENT_PLAN.md. La asociación mediante `gh project link` se verificó con GraphQL repositories: Project #1 ahora enlaza Unity y backend; sigue con 95 items, 21 campos y 10 vistas. No se crearon issues ni se modificaron campos/vistas/estados.
 
-La búsqueda S6 anterior que no localizaba backend permanece como evidencia histórica; S7 resuelve la URL sin inventar implementación. API/BD siguen PLANIFICADO y motor/ORM/versiones DESCONOCIDO. El checkout backend nuevo tiene un commit inicial documental, no un PR funcional ni una aplicación probada.
+La búsqueda S6 anterior que no localizaba backend permanece como evidencia histórica; S7 resuelve la URL sin inventar implementación. En ese snapshot S7, API/BD seguían PLANIFICADO y motor/ORM/versiones DESCONOCIDO. El checkout tenía sólo un commit documental. S9, al final de este inventario, registra el incremento funcional y las pruebas posteriores.
 
 ## Rutas significativas de S1
 

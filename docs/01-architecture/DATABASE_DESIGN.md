@@ -16,7 +16,7 @@
 | results | id UUID PK, match_id, session_id, session_player_id, score numérico finito, unit, rank nullable, transaction_id UUID UNIQUE, payload_hash, recorded_at; FK compuesta(match_id,session_id) y FK compuesta(session_player_id,session_id); UNIQUE(match_id,session_player_id) para un resultado final por participante |
 | attempts | id UUID PK, result_id FK, ordinal entero >0, valid boolean, metric y unit según disciplina/rulesVersion, value nullable, foul_code nullable; UNIQUE(result_id,ordinal), inválido sin valor puntuable; almacenar sólo cuando aporta auditoría de reglas |
 
-Las FKs compuestas impiden registrar un participante de otra sesión. No basta validar en frontend. Reglas por disciplina y número de intentos se validan en backend dentro de la misma transacción; decidir si hacen falta constraints/triggers tras elegir motor. Los récords se derivan de resultados por rulesVersion/unidad, evitando otra autoridad de puntuación. Correcciones de resultados deberían generar revisión auditada, no sobrescritura silenciosa; su modelo queda pendiente.
+Las FKs compuestas impiden registrar un participante de otra sesión. No basta validar en frontend. Reglas por disciplina y número de intentos se validan en backend dentro de la misma transacción; decidir si hacen falta constraints/triggers al concretar el esquema de competición sobre el motor aprobado. Los récords se derivan de resultados por rulesVersion/unidad, evitando otra autoridad de puntuación. Correcciones de resultados deberían generar revisión auditada, no sobrescritura silenciosa; su modelo queda pendiente.
 
 ```mermaid
 erDiagram
