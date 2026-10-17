@@ -17,6 +17,6 @@ Java requiere JDK 21; Node 24 según manifest; abrir Unity/ con Editor 6000.3.23
 
 La distribución relativa Linux está descrita en [T020](../PHASE0_T020_CLEAN_PC_RUNBOOK.md); la preparación no sustituye ejecución en PC limpia. No ejecutar el juego como root ni abrir firewall amplio por conveniencia.
 
-PWA independiente S4: rama `main`, `npm ci`, `npm run dev` o `npm run build`. S5 ejecutó instalación reproducible con scripts de instalación desactivados en copia temporal y build PASS. No tiene script test; su build no empaqueta el SW. No prometer HTTPS móvil desde un servidor HTTP local por la mera existencia de Vite.
+PWA de laboratorio S10: rama de tarea desde develop en el fork, `npm ci`, `npm test`, `npm run build`, `npm run lab`; abrir http://127.0.0.1:4173/lab.html. Node24. El build genera SW de assets compilados y manifest público. S4 upstream sigue sólo con main y sin esta integración; no trabajar sobre main ni prometer HTTPS móvil desde HTTP local.
 
-Backend separado S7: repositorio creado con documentación, sin manifiesto ni script de arranque. Preparación ejecutable BLOQUEADO hasta implementar stack/motor y entorno de datos ficticios aprobados. No ofrecer comandos Spring/JPA inventados.
+Backend S9: rama feature/players-sqlite-increment del PR #14; con JDK21 ejecutar `./mvnw verify` y `java -jar target/backend-0.1.0-SNAPSHOT.jar --gorilla.storage.directory=/ruta/aislada/laboratorio`. En Windows usar mvnw.cmd. Escucha127.0.0.1:8090 por defecto. Los datos SQLite quedan fuera del JAR; el usuario final no instalará SQL por separado. Primera descarga requiere red; ejecución del JAR es local. [Dossier y scripts SQL](https://github.com/Josue1855/Gorilla-Escape-Backend/tree/3635186/docs/laboratorio). El instalador con JRE sigue pendiente.

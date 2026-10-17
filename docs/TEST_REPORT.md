@@ -1,5 +1,7 @@
 # Reporte de pruebas
 
+> Actualización posterior: backend de jugadores y laboratorio PWA del fork implementados y probados en ramas para revisión. [Estado vigente](00-product/DEVELOPMENT_STATUS.md), [evidencias](04-testing/PWA_TEST_LAB.md) y [decisiones](00-product/ARCHITECTURE_DECISIONS.md). Los checkpoints fechados siguientes conservan su contexto histórico; no describen la ausencia actual de SQLite.
+
 > Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
 
 > **Resumen vigente — 2026-10-14:** salida técnica T017/T018 aceptada; humano tracking DEFERRED/NOT RUN; física móvil/cleanPC/visible E2E NOT RUN. Edit126/126, Play20/20, componentes23/23, PWA59/59, Java76 ejecutados/2SKIP históricos. [Final Exit Report y límites](PHASE0_FINAL_EXIT_REPORT.md). Checkpoints anteriores permanecen como historial.

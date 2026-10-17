@@ -11,3 +11,7 @@ Para Bowling hace falta intención de apuntado/potencia/efecto; Smash golpe y ve
 Proponer contratos de intención con freshness/epoch/secuencia sin enviar histories ilimitadas. Validar permisos por gesto, sensor no disponible, orientación de pantalla, pausa y desconexión. T060/#104 mantiene el control alternativo de usuario sin implementar; no confundir herramientas de QA con fallback de torneo accesible.
 
 Arte/UX deberá aprobar siluetas humanas, tamaños/contraste, controles por dedo y etiquetas coherentes. Los recursos nuevos procederán exclusivamente del equipo y se registrarán con autoría/licencia y revisiones.
+
+## Propuesta UI/UX para revisión
+
+El [Design System Unity/PWA](../01-architecture/UI_UX_DESIGN_SYSTEM.md) define dirección artística, pantallas, estados, componentes y backlog UX-01..12 como propuesta. No aprueba tokens, reglas, cola idempotente ni clases existentes. La revisión y trazabilidad se enlazan desde ese documento; no se duplican issues ni se cambia el transporte por este registro.
