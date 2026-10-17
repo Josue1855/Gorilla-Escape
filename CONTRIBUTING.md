@@ -11,4 +11,4 @@ El repositorio público se puede clonar sin invitación. Para publicar una rama 
 
 Java/React compilan y sus pruebas de base están disponibles. Unity requiere licencia/importación/build para aceptar sus cambios; los validadores de metadatos no sustituyen al editor. La cámara y los teléfonos requieren hardware real y no se marcan aprobados mediante mocks.
 
-Todo proyecto propio permanece en este monorepo. Preservar .meta, lockfiles y configuración; no publicar outputs de build ni assets comerciales sin derechos. La estructura y las dependencias están en docs/MONOREPO_PLAN.md.
+La organización vigente distingue Unity, PWA UI/UX y PWA Backend; consultar [colaboración entre proyectos](docs/03-development/CONTRIBUTING.md) e [índice único](docs/README.md). El monorepo conserva el runtime técnico existente. Preservar .meta, lockfiles y configuración; no publicar outputs de build ni assets comerciales sin derechos. La estructura y las dependencias están en docs/MONOREPO_PLAN.md.

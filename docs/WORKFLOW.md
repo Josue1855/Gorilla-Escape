@@ -1,5 +1,7 @@
 # Gorilla Escape — Ramas, integración y trabajo en equipo
 
+> Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
+
 **Fecha:** 2026-10-05.
 **Estado:** flujo main/develop activado con remoto público y protecciones. Base de trabajo del equipo: develop, con Java/React y fuentes Unity. Repositorio publicado con una base inicial común.
 **Fuente principal:** [Especificación v4](Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md), secciones 4, 39, 50 y 51. [Organización del código](MONOREPO_PLAN.md).

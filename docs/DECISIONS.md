@@ -1,5 +1,7 @@
 # Gorilla Escape — Decision Log
 
+> Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
+
 > **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
 
 Este documento registra únicamente decisiones que cambian o aclaran decisiones relevantes del proyecto. La [especificación maestra v4](Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md) sigue siendo la fuente principal de verdad.

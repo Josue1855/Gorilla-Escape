@@ -1,5 +1,7 @@
 # FINAL PHASE 0 AUDIT — 2026-10-08
 
+> Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
+
 **PHASE 0 FINAL AUDIT: PASS — SOFTWARE/LAB**
 
 **Fase 0 — Base/Spike: COMPLETED — SOFTWARE/LAB**
