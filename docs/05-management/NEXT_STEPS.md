@@ -1,26 +1,13 @@
 # Próximos pasos operativos
 
-Última revisión: 2026-10-16. Fuentes: S1, S2 y S3; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
+Última sincronización: 2026-10-16. Fuentes S9/S10 y evidencia fechada; [inventario](../00-product/SOURCE_INVENTORY.md). Trabajo documentado en ramas/PR, no integrado automáticamente.
 
-## P0
+1. Revisar [PR backend #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14), [PR PWA del fork #1](https://github.com/Josue1855/Dise-o_pwa/pull/1) y sincronización documental; integrar únicamente tras revisión. main no recibe trabajo de tarea.
+2. Mantenedor upstream UI/UX: habilitar develop y revisar incorporación desde el fork. No se necesita asumir Write para abrir un PR entre forks cuando exista la base correcta.
+3. Completar tres capturas literales DevTools Network/Application/Console siguiendo [laboratorio](../04-testing/PWA_TEST_LAB.md); SQL, GET/POST/UI y offline emulado ya ejecutados. Garantizar acceso del docente al backend privado o paquete de evidencias.
+4. Ejecutar T019 final y T020 en PC separada; escenarios físicos WAN/LAN/backend siguen pendientes. No sustituirlos por emulación Chrome.
+5. Acordar frontend de entrega y adaptador técnico preservando sensores/lifecycle/Shared/IPC. El laboratorio no reemplaza el mando conectado.
+6. Unity/PO: framework y cuatro disciplinas en tareas independientes, decisiones de reglas y scoring. Backend: publicación autorizada, mapeo RTC/UUID, sesiones/resultados, idempotencia y outbox antes de automatizar reintentos.
+7. Completar empaquetado autocontenido/JRE, supervisión auditada, backup/restore, retención, licencias y aceptación final Windows/Linux. No añadir instalaciones SQL manuales para el usuario.
 
-1. Equipo backend/PO: usar Gorilla-Escape-Backend recién creado (S7), acordar responsables/colaboradores y tareas desde develop con PR hacia develop, stack, motor y esquema. Crear el repositorio no acepta el laboratorio.
-2. UI/UX/Red/Unity: acordar fuente de entrega y adaptador sobre cliente técnico S1, preservando lifecycle/Shared/IPC. Decidir cómo resolver las diferencias de versiones sin upgrades por inercia.
-3. Mantenedor UI/UX: confirmar owner del Project y ejecutar plan de gestión con Write autorizado. No tocar Project Unity #1 ni duplicar issues.
-4. UI/UX: abrir tarea para SW/manifest/iconos de dist y prueba offline real; no vender la demo como integración.
-5. QA/PO: ejecutar T019 final (iPhone/cuatro teléfonos, permisos/firewall, sensores/latencias/cleanup), luego T020 en otra PC. Desarrollo paralelo de juegos/clientes sigue autorizado.
-
-## P1
-
-6. Unity/PO: cerrar decisiones de reglas por minijuego y crear framework/vertical slice en tareas independientes; no hay juegos implementados que aceptar.
-7. Backend/Unity/UI/UX: aprobar REST/BD/autoridad de publicación, mapeo de identidad y transactionId; ejecutar GET/POST/SQL e idempotencia.
-8. QA: ejecutar LAB-01..10 con escenarios WAN caída y backend inaccesible; registrar observaciones, capturas, logs/memoria y fallos auténticos.
-9. UI/UX: analizar avisos de dependencias y accesibilidad sin mezclar upgrades con documentación.
-
-## P2
-
-10. Acordar retención, cola/outbox y reconciliación; completar cuatro disciplinas y aceptación del torneo; publicar sólo con gates satisfechos.
-
-Preguntas abiertas: ¿Quién mantiene el backend nuevo y qué colaboradores deben tener acceso? ¿Quién será owner del Project UI/UX y qué cuentas tienen Write? ¿Cuál frontend será empaquetado con Java? ¿Qué credencial autoriza al publicador Unity? ¿Qué reglas/curvas/empates se aprueban? ¿Qué navegadores/PC son objetivo? ¿Qué política de retención y fechas de Sprint se acuerdan? No se sustituyen respuestas por supuestos.
-
-Esta lista es operativa, no un reporte de tareas ejecutadas. Los recursos remotos nuevos y las verificaciones de este encargo se registran en [informe de auditoría](../00-product/AUDIT_REPORT.md).
+El stack SQLite/JDBC para jugadores ya fue aprobado e implementado; no se repite como bloqueo abierto. Preguntas aún abiertas: propietario del Project UI/UX, credencial del publicador, frontend empaquetado, reglas faltantes, equipos/navegadores objetivo y retención. Sin fechas/assignments inventados.

@@ -37,6 +37,10 @@ Cada fila siguiente aporta objetivo, alcance, dependencias, aceptación, evidenc
 | QA-02 Ejecutar LAB-01..10 y escenarios A/B | API-02, OFF-01; OFF-02/03 si aprobados | Cada requisito con ambiente/pasos/esperado/observado/evidencia auténtica; GET/POST/BD/logs/JVM y DevTools | QA + tres equipos, P1 |
 | DOC-01 README propio y referencias cruzadas | Baselines confirmados | Setup/versiones/estado real; demo delimitada, diagramas/enlaces válidos y evidencia fechada | UI/UX, P1 |
 
-Trabajo paralelo Unity propuesto: framework mínimo, reglas High Striker/Shot Put/Bowling/Slice y salida autoritativa; usar issues reales existentes como base antes de crear duplicados. Trabajo backend propuesto: descubrir repo, confirmar motor, DTO/roles/constraints/transacciones, scripts aislados e integración de recibos. Los Projects respectivos conservarán tareas propias con enlaces cruzados, no copias con estados independientes.
+Trabajo paralelo Unity propuesto: framework mínimo, reglas High Striker/Shot Put/Bowling/Slice y salida autoritativa; usar issues reales existentes como base antes de crear duplicados. Backend S9: repositorio, motor SQLite/JDBC, jugadores GET/POST y scripts ya implementados. Sigue propuesto el modelo de competición, roles/publicador e integración de recibos. Los Projects respectivos conservarán tareas propias con enlaces cruzados, no copias con estados independientes.
 
 Definition of Done propuesta: PR revisado e integrado por flujo normal, pruebas requeridas y evidencia ligada al SHA; cierre de una tarea técnica no cierra automáticamente aceptación de producto ni gates físicos.
+
+## Avance posterior S9/S10
+
+API-01/02 para jugadores y empaquetado shell ya implementados/probados en el fork (PR #1), no incorporados al upstream. OFF-02 sólo cubre snapshot/borrador; OFF-03 idempotente sigue propuesto. La tabla anterior es backlog de producto, no estados remotos Done. Backend se sigue en Project #2, issues #3/#4/#10 parciales y #13 en revisión. Ver [laboratorio](../04-testing/PWA_TEST_LAB.md).

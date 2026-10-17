@@ -6,7 +6,7 @@
 
 Party game físico local previsto para 1–4 personas humanas. El alcance actual contempla Coconut Bowling, Gorilla Smash/High Striker, Coconut Throw/Shot Put y Jungle Slice; los teléfonos sirven de controles y la webcam PC aporta contexto. Los minijuegos aún no están implementados.
 
-**Documentación vigente:** [índice único](docs/README.md), [estado verificable](docs/00-product/DEVELOPMENT_STATUS.md) y [organización de los tres proyectos](docs/00-product/REPOSITORIES.md). La PWA UI/UX independiente contiene una demo aún sin integrar; el [repositorio del backend](https://github.com/Josue1855/Gorilla-Escape-Backend) ya está creado, con base documental y API/BD pendientes de implementación.
+**Documentación vigente:** [índice único](docs/README.md), [estado verificable](docs/00-product/DEVELOPMENT_STATUS.md) y [organización de los tres proyectos](docs/00-product/REPOSITORIES.md). El [backend de jugadores](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14) ya implementa Spring Boot/SQLite/JDBC y GET/POST. La [PWA del fork de laboratorio](https://github.com/Josue1855/Dise-o_pwa/pull/1) verifica registro, listado y offline emulado; ambos PR siguen pendientes de revisión hacia develop. El upstream UI/UX y el transporte técnico se mantienen separados.
 
 ## Arranque del equipo
 
@@ -19,7 +19,7 @@ Party game físico local previsto para 1–4 personas humanas. El alcance actual
 | PWA/ | React 19.3.0 + Vite 8.3.2, Node 24 para desarrollo | Shell, health y caché de interfaz; build/tests PASS |
 | Shared/ | Fixtures JSON y DTOs C# independientes del motor | Contrato v1 compartido entre consumidores |
 
-El Product Owner aprobó cambiar ASP.NET Core por Java y añadir React: [DEC-002](docs/DECISIONS.md). Modular Monolith y Unity autoritativa se conservan. WebRTC DataChannel es el transporte móvil seleccionado por DEC-010; Java administra transporte/sesión técnica y el IPC permanece en 127.0.0.1. PhoneInput, CameraInput, Player Lock, alineación y Fusion infrastructure están implementados/validados Software/Lab. Los eventos móviles de laboratorio son sintéticos/replay; no validan sensores físicos. No hay minijuegos ni build jugable. El runtime técnico auditado no tiene cuentas ni base de datos; no requiere servicios cloud obligatorios. [Estado consolidado y deuda física](docs/00-product/DEVELOPMENT_STATUS.md).
+El Product Owner aprobó cambiar ASP.NET Core por Java y añadir React: [DEC-002](docs/DECISIONS.md). Modular Monolith y Unity autoritativa se conservan. WebRTC DataChannel es el transporte móvil seleccionado por DEC-010; Java administra transporte/sesión técnica y el IPC permanece en 127.0.0.1. PhoneInput, CameraInput, Player Lock, alineación y Fusion infrastructure están implementados/validados Software/Lab. Los eventos móviles de laboratorio son sintéticos/replay; no validan sensores físicos. No hay minijuegos ni build jugable. El servicio técnico de este monorepo no tiene cuentas ni base de datos; SQLite pertenece al backend independiente de jugadores y su integración al empaquetado del juego sigue pendiente; no requiere servicios cloud obligatorios. [Estado consolidado y deuda física](docs/00-product/DEVELOPMENT_STATUS.md).
 
 Consulta también [CONTRIBUTING.md](CONTRIBUTING.md) para empezar una tarea y entregar un PR.
 

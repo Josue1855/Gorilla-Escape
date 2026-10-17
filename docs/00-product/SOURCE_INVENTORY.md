@@ -136,3 +136,19 @@ Antes de crear S7, búsqueda adicional de metadatos de repositorios visibles de 
 ## S8 — Flujo obligatorio de ramas confirmado por el PO
 
 El 2026-10-16 el PO confirmó: tareas en ramas desde develop, integración por PR a develop y promoción a main únicamente cuando la entrega esté validada. Backend: API confirmó default_branch=develop; main y develop apuntan a `e76371097f4bcd881fa081211ec8d0d78e308c0b` tras crear la rama de integración. Se preparó el [PR backend #1](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/1), desde codex/docs-development-workflow hacia develop, con README/CONTRIBUTING/plan actualizados en `67ca1c4`. No se hicieron nuevos commits en main ni merge de PR. La configuración y documentación del repositorio UI/UX siguen requiriendo al mantenedor porque no hay Write.
+
+## S9 — Backend de jugadores aprobado e implementado
+
+El PO aprobó «Sí, apruebo SQLite para este incremento». [ADR acotado](https://github.com/Josue1855/Gorilla-Escape-Backend/blob/36351860624412b0b454a80dc19a7f63704164e0/docs/adr/ADR-001-PLAYERS-APPROVAL.md). PR [#14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14) abierto hacia develop, rama feature/players-sqlite-increment; revisión funcional/evidencias `36351860624412b0b454a80dc19a7f63704164e0`. [CI Linux/Windows PASS](https://github.com/Josue1855/Gorilla-Escape-Backend/actions/runs/38989509375): 17 tests por plataforma, build y harness adicional Linux PASS. Spring Boot4.1.1, Java21, SQLite JDBC3.53.2.1 (core3.53.2), Flyway12.4.0, sin JPA. GET/POST /api/players y migración V1 reales. La aprobación es acotada: PR #12 de arquitectura permanece abierto, sin merge presumido.
+
+[Dossier](https://github.com/Josue1855/Gorilla-Escape-Backend/tree/36351860624412b0b454a80dc19a7f63704164e0/docs/laboratorio) con SQL, logs y capturas auténticas; tres capturas literales de DevTools pendientes. main/develop backend siguen en la base documental e763710; implementación en rama de tarea. S7/S8 se conservan como snapshots históricos, no estado de la implementación actual. Backend privado; evaluador necesita acceso o paquete de evidencias autorizado.
+
+## S10 — Fork PWA de laboratorio y evidencia navegador
+
+[PR #1 del fork](https://github.com/Josue1855/Dise-o_pwa/pull/1), rama codex/pwa-database-lab → develop, revisión funcional `69084f53aeabfa2aab4dfd7edaadd64f4c98775b`. [CI PASS](https://github.com/Josue1855/Dise-o_pwa/actions/runs/38989521358): siete tests, build y auditoría npm sin vulnerabilidades reportadas. React18.3.1, Vite6.4.4, plugin4.7.0. Pantalla /lab.html → proxy loopback4173 → backend8090 → SQLite. SW generado, Cache Storage shell y snapshot/borrador IndexedDB. Chrome real: GET2, POST201/SQL3, offline/recarga, reconexión sin envío automático, POST manual201/SQL4; API inaccesible simulada y validación sin escrituras. No hay Background Sync ni POST idempotente. No acredita teléfono, LAN/WAN físicos, instalador o gameplay.
+
+Upstream Quintana-117/Dise-o_pwa conserva main ffbec226 y permisos READ; no se cambió. develop del fork se creó sobre ese baseline y los cambios se proponen por PR sin tocar main. S4/S5 describen únicamente el upstream histórico; su falta de SW/IndexedDB ya está corregida y probada en el fork, pendiente de revisión del mantenedor.
+
+## Sincronización documental posterior
+
+El PR Unity #122 fue integrado por revisión externa el 2026-10-17T00:22:32Z; origin/develop observado `db408d7`. Esta actualización crea una nueva rama desde esa base y no modifica el checkout original con cambios locales. Los resultados citados pertenecen a sus commits; las validaciones documentales posteriores se registran por separado.

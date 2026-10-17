@@ -1,18 +1,15 @@
-# PWA UI/UX y cliente técnico
+# PWA UI/UX, laboratorio y cliente técnico
 
-Última revisión: 2026-10-16. Fuentes: S1, S2, S3, S4 y S5; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
+Última sincronización: 2026-10-16. Fuentes S9/S10 y evidencia fechada; [inventario](../00-product/SOURCE_INVENTORY.md). Trabajo documentado en ramas/PR, no integrado automáticamente.
 
-Hay dos bases distintas:
-
-| Base | Versiones verificadas | Función observada |
+| Base | Versiones y función | Evidencia / límite |
 |---|---|---|
-| S1 `PWA/` monorepo | React/ReactDOM 19.3.0, Vite 8.3.2, plugin 6.1.2, Node >=24 <25 | Gorilla Core: admisión, permisos por gesto, sensores, RTC, lifecycle, shell offline; evidencia S2 |
-| S4 UI/UX independiente | package.json rangos React ^18.3.1, Vite ^5.4.2, plugin ^4.3.1; lock resuelve React/DOM 18.3.1, Vite 5.4.21, plugin 4.7.0 | App.jsx D-pad/háptica/energía local; AvatarList.jsx GET JSONPlaceholder; sin transporte al juego |
+| S1 PWA/ monorepo | React19.3.0/Vite8.3.2; cliente Gorilla Core, sensores, RTC y lifecycle | S2 Software/Lab; físico final pendiente |
+| S4 upstream UI/UX | React18.3.1, demo App/AvatarList y JSONPlaceholder | Sólo main y READ; no se modificó; S5 detectó dist incompleto |
+| S10 fork de laboratorio | React18.3.1/Vite6.4.4/plugin4.7.0; /lab.html consume backend real | [PR #1](https://github.com/Josue1855/Dise-o_pwa/pull/1), siete tests/build/audit PASS; integración al upstream pendiente |
 
-No se actualizan versiones por esta auditoría. `navigator.onLine` informa conectividad de navegador, no disponibilidad de Java o backend. Avatares/energía/acciones de la demo no representan identidades técnicas ni reglas aprobadas. Las etiquetas de «gorila atleta» deben reconciliarse con humanos participantes.
+El laboratorio tiene Service Worker generado desde assets compilados, manifest público e icono SVG. Cache Storage sólo contiene shell; API/POST quedan fuera. IndexedDB conserva snapshot y borrador. La primera visita requiere red; recarga offline del shell y consulta local se verificó en Chrome. No hay competidores de rescate ni sincronización ficticia en /lab.html.
 
-S4 tiene registro `/sw.js` en index.html, manifest e instrucciones cache-first. La build Vite ejecutada S5 produce HTML/assets/manifest procesado, **sin dist/sw.js ni iconos**. El SW fuente precachea `/src/*.jsx`, rutas ausentes del dist. Por ello build PASS no equivale a PWA offline instalable. Revisar empaquetado, precache de assets emitidos y alcance antes de prometer offline. No se reparó código.
+POST sólo por acción explícita. La reconexión no envía el borrador y un intento incierto queda protegido tras recargar. No hay Background Sync ni idempotencia backend. navigator.onLine indica conectividad, no disponibilidad de REST. [Evidencias y tres capturas DevTools pendientes](https://github.com/Josue1855/Gorilla-Escape-Backend/tree/3635186/docs/laboratorio).
 
-No se encontró IndexedDB, POST persistente, cola transaccional, cliente RTC ni tests automatizados en S4; `npm test` no está definido. El monorepo genera un SW de shell desde assets compilados y evita cachear APIs; tampoco aporta una cola durable de negocio.
-
-PLANIFICADO: acordar en qué repositorio vive la UI de entrega y cómo incorporar el adaptador técnico sin duplicar eventos/timers/identidades. Criterios: [integración](../03-development/INTEGRATION_PLAN.md) y [laboratorio](../04-testing/PWA_TEST_LAB.md).
+/index.html conserva la demo de mando: botones/energía cambian estado local y AvatarList usa JSONPlaceholder. Eso no acredita transporte al juego ni identidad persistente. La integración visual con el cliente técnico sigue planificada, con un propietario de sensores/timers/canales y teardown. No sustituir el runtime del monorepo por el laboratorio. [Plan](../03-development/INTEGRATION_PLAN.md).

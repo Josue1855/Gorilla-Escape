@@ -1,5 +1,7 @@
 # Base de trabajo del equipo
 
+> Actualización posterior: backend de jugadores y laboratorio PWA del fork implementados y probados en ramas para revisión. [Estado vigente](00-product/DEVELOPMENT_STATUS.md), [evidencias](04-testing/PWA_TEST_LAB.md) y [decisiones](00-product/ARCHITECTURE_DECISIONS.md). Los checkpoints fechados siguientes conservan su contexto histórico; no describen la ausencia actual de SQLite.
+
 > Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
 
 > **Estado de capacidades:** esta guía conserva procedimientos y antecedentes de arranque. Para implementación validada, transporte DEC-010, cierre Software/Lab y deuda física, consultar [auditoría final](PHASE0_FINAL_AUDIT.md). Referencias antiguas a red/cámara pendientes no describen el candidato local vigente.
