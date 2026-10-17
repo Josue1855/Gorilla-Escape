@@ -152,3 +152,7 @@ Upstream Quintana-117/Dise-o_pwa conserva main ffbec226 y permisos READ; no se c
 ## Sincronización documental posterior
 
 El PR Unity #122 fue integrado por revisión externa el 2026-10-17T00:22:32Z; origin/develop observado `db408d7`. Esta actualización crea una nueva rama desde esa base y no modifica el checkout original con cambios locales. Los resultados citados pertenecen a sus commits; las validaciones documentales posteriores se registran por separado.
+
+## S11 — Propuesta UI/UX del PO
+
+Documento adjunto «Gorilla Escape: Gorilimpiadas — UI/UX Design System», fecha original2026-10-16, recibido en este chat. SHA-256 del texto original: `08f85ca3c67ce0c66f99eff74429f0eb84a045d9eb6bb2c953cbf45e3d63cafe`. Se incorpora como [propuesta para revisión](../01-architecture/UI_UX_DESIGN_SYSTEM.md), con correcciones explícitas a SQLite/jugadores y al perfil offline S9/S10. La [revisión documental](../04-testing/UI_UX_DESIGN_REVIEW.md) añade criterios medibles y enlaces a trabajo existente; no es aprobación visual ni nueva implementación. No se incluyen activos de fuentes descartadas.

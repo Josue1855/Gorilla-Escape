@@ -23,6 +23,7 @@ Comenzar por [estado verificable](00-product/DEVELOPMENT_STATUS.md), [informe de
 - [Offline LAN y transacciones](01-architecture/OFFLINE_STRATEGY.md)
 - [Backend de jugadores: implementación y límites](01-architecture/PWA_BACKEND.md)
 - [PWA UI/UX y cliente técnico](01-architecture/PWA_UI_UX.md)
+- [UI/UX Design System — propuesta para revisión](01-architecture/UI_UX_DESIGN_SYSTEM.md)
 - [Arquitectura actual y objetivo](01-architecture/SYSTEM_CONTEXT.md)
 - [Unity y autoridad del juego](01-architecture/UNITY.md)
 
@@ -49,6 +50,7 @@ Comenzar por [estado verificable](00-product/DEVELOPMENT_STATUS.md), [informe de
 - [Laboratorio PWA, REST y BD](04-testing/PWA_TEST_LAB.md)
 - [Resultados de auditoría y discrepancias](04-testing/RESULTS_AND_GAPS.md)
 - [Matriz de casos requeridos](04-testing/TEST_CASE_MATRIX.md)
+- [Revisión de la propuesta UI/UX](04-testing/UI_UX_DESIGN_REVIEW.md)
 - [Estrategia de pruebas y aceptación](04-testing/TEST_STRATEGY.md)
 
 ## Gestión independiente

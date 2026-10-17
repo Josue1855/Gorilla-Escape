@@ -13,3 +13,7 @@ El laboratorio tiene Service Worker generado desde assets compilados, manifest p
 POST sólo por acción explícita. La reconexión no envía el borrador y un intento incierto queda protegido tras recargar. No hay Background Sync ni idempotencia backend. navigator.onLine indica conectividad, no disponibilidad de REST. [Evidencias y tres capturas DevTools pendientes](https://github.com/Josue1855/Gorilla-Escape-Backend/tree/3635186/docs/laboratorio).
 
 /index.html conserva la demo de mando: botones/energía cambian estado local y AvatarList usa JSONPlaceholder. Eso no acredita transporte al juego ni identidad persistente. La integración visual con el cliente técnico sigue planificada, con un propietario de sensores/timers/canales y teardown. No sustituir el runtime del monorepo por el laboratorio. [Plan](../03-development/INTEGRATION_PLAN.md).
+
+## Propuesta UI/UX para revisión
+
+El [Design System Unity/PWA](UI_UX_DESIGN_SYSTEM.md) define dirección artística, pantallas, estados, componentes y backlog UX-01..12 como propuesta. No aprueba tokens, reglas, cola idempotente ni clases existentes. La revisión y trazabilidad se enlazan desde ese documento; no se duplican issues ni se cambia el transporte por este registro.

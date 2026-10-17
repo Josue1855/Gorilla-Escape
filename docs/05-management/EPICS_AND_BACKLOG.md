@@ -44,3 +44,7 @@ Definition of Done propuesta: PR revisado e integrado por flujo normal, pruebas 
 ## Avance posterior S9/S10
 
 API-01/02 para jugadores y empaquetado shell ya implementados/probados en el fork (PR #1), no incorporados al upstream. OFF-02 sólo cubre snapshot/borrador; OFF-03 idempotente sigue propuesto. La tabla anterior es backlog de producto, no estados remotos Done. Backend se sigue en Project #2, issues #3/#4/#10 parciales y #13 en revisión. Ver [laboratorio](../04-testing/PWA_TEST_LAB.md).
+
+## Propuesta UI/UX para revisión
+
+El [Design System Unity/PWA](../01-architecture/UI_UX_DESIGN_SYSTEM.md) define dirección artística, pantallas, estados, componentes y backlog UX-01..12 como propuesta. No aprueba tokens, reglas, cola idempotente ni clases existentes. La revisión y trazabilidad se enlazan desde ese documento; no se duplican issues ni se cambia el transporte por este registro.

@@ -12,3 +12,7 @@ S9/S10 ya implementan un incremento de jugadores y su laboratorio en ramas para 
 6. Conservar el laboratorio GET/render/POST/SQLite y offline emulado ya ejecutado; completar tres capturas literales de DevTools, integración upstream y escenarios físicos WAN/LAN. Replays idempotentes siguen pendientes. Ver [evidencias](../04-testing/PWA_TEST_LAB.md).
 
 Gates: contrato revisado por ambos lados, build de cada consumidor, pruebas de lifecycle sin listeners duplicados, rechazo de resultado no autorizado y de participante ajeno, reintentos concurrentes sin duplicación, resultados de Unity coincidentes con consulta. Dependencias/entregables externos se enlazan por URLs reales tras crearlos; no se simulan números de issues.
+
+## Propuesta UI/UX para revisión
+
+El [Design System Unity/PWA](../01-architecture/UI_UX_DESIGN_SYSTEM.md) define dirección artística, pantallas, estados, componentes y backlog UX-01..12 como propuesta. No aprueba tokens, reglas, cola idempotente ni clases existentes. La revisión y trazabilidad se enlazan desde ese documento; no se duplican issues ni se cambia el transporte por este registro.
