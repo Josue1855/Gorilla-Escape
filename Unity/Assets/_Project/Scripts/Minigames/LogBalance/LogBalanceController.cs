@@ -113,7 +113,7 @@ namespace GorillaEscape.Minigames.LogBalance
             GUI.Box(new Rect(20,20,width-40,145),"");
             GUI.Label(new Rect(40,30,800,40),"DESAFÍO DEL TRONCO",title);
             GUI.Label(new Rect(40,75,width-310,60),"Eres el náufrago: cruza el río y supera la prueba de los gorilas.\nAvanzas automáticamente. Inclina el teléfono para corregir el equilibrio.",body);
-            GUI.Label(new Rect(40,135,width-300,24),"Modelos: gashtan · Aditya Graphical · katarzynaszemla · Anskar — CC BY 4.0 (adaptados)",new GUIStyle(body){fontSize=13});
+            GUI.Label(new Rect(40,135,width-300,24),"Modelos: gashtan · Aditya Graphical · katarzynaszemla · Anskar · planeta-elefante — CC BY 4.0 (adaptados)",new GUIStyle(body){fontSize=13});
             if(GUI.Button(new Rect(width-220,45,170,50),"VOLVER",button)&&menu!=null)menu.CloseLogBalance();
             if(GUI.Button(new Rect(width-220,105,170,35),showCredits?"CERRAR CRÉDITOS":"CRÉDITOS",button))
             {showCredits=!showCredits;if(showCredits)PauseAttempt();}

@@ -265,6 +265,33 @@
       ],
       "skins": 0,
       "animations": []
+    },
+    {
+      "name": "gorilla_low_ploy",
+      "sha256": "3b68f7b0f60964d3862f7a947ef591d181007cc646b6152135ba20f7f3d86efd",
+      "credits": {
+        "author": "planeta-elefante (https://sketchfab.com/planeta-elefante)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/gorilla-low-ploy-308eb9ba7e74488ca32f57b53275869c",
+        "title": "Gorilla (Low_Ploy)"
+      },
+      "materials": [
+        {
+          "name": "Gorilla_Silver",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "gorilla_low_ploy_0.png"
+        }
+      ],
+      "models": [
+        "gorilla_low_ploy.fbx"
+      ],
+      "skins": 1,
+      "animations": []
     }
   ]
 }

@@ -57,7 +57,7 @@ Capturas del ejecutable con los modelos suministrados: [caminata](../evidence/lo
 
 Cambios principales: `LogBalanceStage.cs`, `LogBalanceController.cs`, nuevo `LogBalanceCharacter.cs`, preparación de assets en `LogBalanceAssetSetup.cs` y `tools/art/prepare_log_balance.py`, pruebas `LogBalanceArtTests.cs`, módulo integrado de animación, originales/derivados/prefabs/materiales/texturas/metadatos, créditos y documentación. Las reglas de equilibrio y el transporte de teléfono no cambiaron.
 
-Pendientes: refinar la calidad de poses/contacto si se desea una animación final, sustituir los gorilas NPC provisionales por modelos propios y validar sensación con teléfono físico. No se incorporaron ragdoll, obstáculos ni nuevos mapas. Los gates físicos de la base siguen independientes.
+Pendientes: refinar la calidad de poses/contacto si se desea una animación final, validar sensación con teléfono físico. No se incorporaron ragdoll, obstáculos ni nuevos mapas. Los gates físicos de la base siguen independientes.
 
 ## Pasto adicional proporcionado
 
@@ -82,3 +82,13 @@ Los parámetros están en `LogBalanceSettings.asset → Visuals`: activar sombra
 Validación de esta iteración: 183/183 EditMode y 3/3 pruebas de flujo PlayMode aprobadas, incluida la restauración de ajustes al salir. Build Linux Succeeded con 0 errores y 0 advertencias. Las reglas de balance, la calibración y el transporte móvil no se modificaron.
 
 Revisión gráfica del ejecutable final: [sombras y ambiente](../evidence/log-balance-lighting-2026-10-20/shadows.png) y [salpicadura al caer](../evidence/log-balance-lighting-2026-10-20/splash.png). Se comprobó la corriente en movimiento y la visibilidad de la caída con el panel en su nueva posición. Esta revisión usó controles de teclado.
+
+## Gorilas espectadores proporcionados
+
+`gorilla_low_ploy.glb` reemplaza los cuatro espectadores geométricos provisionales. Se conserva el original, su textura y el rig de 82 huesos; el GLB no incluye clips de animación. El derivado se normaliza a 2,5 m de alto y usa materiales mates. Autor: planeta-elefante, licencia CC BY 4.0, acreditado en el juego y en ATTRIBUTION.md.
+
+`LogBalanceSpectator` anima el esqueleto sin desplazar al NPC: respiración y balanceo discreto, cabeza en movimiento, atención al humano, inclinación cuando peligra el equilibrio, sobresalto al caer y celebración alternando los brazos al ganar. Cada espectador tiene una fase y escala ligeramente distintas; gira para seguir al náufrago. Son espectadores y no intervienen en reglas, control o puntuación. Las poses se reconstruyen desde el reposo para evitar deriva al repetir intentos.
+
+Preparación incremental: `blender -b --python tools/art/prepare_log_balance.py -- /ruta/al/repositorio --asset gorilla_low_ploy`; luego ejecutar `LogBalanceAssetSetup.CreatePrefabs` con `--log-balance-source gorilla_low_ploy`, o usar el menú de reconstrucción de arte.
+
+Validación: EditMode 185/185 y flujos PlayMode 4/4 PASS; se verifica deformación real de la malla del gorila, reacciones diferentes y retorno al reposo sin deriva. Build Linux final sin errores ni advertencias. Revisión gráfica con teclado: [espectadores](../evidence/log-balance-gorilla-2026-10-20/spectators.png) y [celebración al completar el cruce](../evidence/log-balance-gorilla-2026-10-20/victory.png). SHA-256 del GLB original idéntico al suministrado.

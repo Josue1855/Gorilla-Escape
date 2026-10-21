@@ -67,7 +67,7 @@ namespace GorillaEscape.Editor
                     importer.isReadable=source.name=="trunk";
                     importer.importCameras=false;importer.importLights=false;importer.importBlendShapes=false;
                     importer.importAnimation=source.name=="Vagabundo";
-                    importer.animationType=source.name=="Vagabundo"?ModelImporterAnimationType.Generic:ModelImporterAnimationType.None;
+                    importer.animationType=(source.name=="Vagabundo"||source.name=="gorilla_low_ploy")?ModelImporterAnimationType.Generic:ModelImporterAnimationType.None;
                     importer.materialImportMode=ModelImporterMaterialImportMode.ImportStandard;
                     importer.materialLocation=ModelImporterMaterialLocation.InPrefab;
                     importer.SaveAndReimport();
@@ -96,7 +96,7 @@ namespace GorillaEscape.Editor
                         }
                         var renderers=model.GetComponentsInChildren<Renderer>();
                         var bounds=GeometryBounds(renderers);
-                        float height=source.name=="Vagabundo"?2.35f:(source.name=="low_poly_trees"||source.name=="low_poly_grass_pack")?1:bounds.size.y;
+                        float height=source.name=="gorilla_low_ploy"?2.5f:source.name=="Vagabundo"?2.35f:(source.name=="low_poly_trees"||source.name=="low_poly_grass_pack")?1:bounds.size.y;
                         model.transform.localScale*=height/Mathf.Max(.001f,bounds.size.y);
                         bounds=GeometryBounds(renderers);
                         model.transform.position-=new Vector3(bounds.center.x,bounds.min.y,bounds.center.z);
@@ -104,6 +104,11 @@ namespace GorillaEscape.Editor
                         {
                             var character=prefab.AddComponent<LogBalanceCharacter>();character.BindRig();
                             if(!character.HasRig)throw new InvalidOperationException("Castaway bones missing.");
+                        }
+                        if(source.name=="gorilla_low_ploy")
+                        {
+                            var spectator=prefab.AddComponent<LogBalanceSpectator>();spectator.BindRig();
+                            if(!spectator.HasRig)throw new InvalidOperationException("Gorilla spectator bones missing.");
                         }
                         PrefabUtility.SaveAsPrefabAsset(prefab,Root+"/Prefabs/"+Path.GetFileNameWithoutExtension(file)+".prefab");
                         Debug.Log("LOG_BALANCE_ART "+file+" bounds="+bounds.size+" renderers="+renderers.Length);

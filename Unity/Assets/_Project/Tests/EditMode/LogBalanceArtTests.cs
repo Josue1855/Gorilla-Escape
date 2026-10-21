@@ -7,12 +7,12 @@ public sealed class LogBalanceArtTests
 {
     [Test] public void SuppliedModelsAndTexturesAreAvailableWithoutRuntimeGlbLoader()
     {
-        foreach(string name in new[]{"trunk","Vagabundo","Tree_00","Tree_02","Tree_12","Grass_00","Grass_01","Grass_02","Grass_03"})
+        foreach(string name in new[]{"trunk","Vagabundo","gorilla_low_ploy","Tree_00","Tree_02","Tree_12","Grass_00","Grass_01","Grass_02","Grass_03"})
         {
             var prefab=Resources.Load<GameObject>("LogBalance/Prefabs/"+name);Assert.NotNull(prefab,name);
             var renderers=prefab.GetComponentsInChildren<Renderer>();Assert.That(renderers.Length,Is.GreaterThan(0));
             foreach(var renderer in renderers)foreach(var material in renderer.sharedMaterials)
-            {Assert.NotNull(material);Assert.That(material.GetFloat("_Metallic"),Is.Zero);if(name=="Vagabundo"||name.StartsWith("Tree_"))Assert.NotNull(material.mainTexture,name+": albedo missing");}
+            {Assert.NotNull(material);Assert.That(material.GetFloat("_Metallic"),Is.Zero);if(name=="gorilla_low_ploy"||name=="Vagabundo"||name.StartsWith("Tree_"))Assert.NotNull(material.mainTexture,name+": albedo missing");}
         }
     }
     [Test] public void CastawayRetainsWeightedSkeletonAndProceduralWalkingDeformsMesh()
@@ -48,5 +48,24 @@ public sealed class LogBalanceArtTests
             Assert.That(Quaternion.Angle(win,bone.localRotation),Is.LessThan(.01f));
         }
         finally{UnityEngine.Object.DestroyImmediate(human);}
+    }
+    [Test] public void GorillaReactionsDeformSkinAndReturnToIdleWithoutDrift()
+    {
+        var npc=UnityEngine.Object.Instantiate(Resources.Load<GameObject>("LogBalance/Prefabs/gorilla_low_ploy"));
+        var idle=new Mesh();var reaction=new Mesh();
+        try{
+            var driver=npc.GetComponent<LogBalanceSpectator>();driver.BindRig();Assert.True(driver.HasRig);
+            var skin=npc.GetComponentInChildren<SkinnedMeshRenderer>();Assert.NotNull(skin);Assert.That(skin.bones.Length,Is.GreaterThan(50));
+            driver.Pose(0,0,0,false,0,false);skin.BakeMesh(idle);
+            driver.Pose(0,0,0,false,0,true);skin.BakeMesh(reaction);
+            var a=idle.vertices;var b=reaction.vertices;
+            Assert.True(a.Where((v,i)=>(v-b[i]).sqrMagnitude>.000001f).Any(),"Celebration must deform the supplied weighted mesh.");
+            var head=npc.GetComponentsInChildren<Transform>().First(t=>t.name=="Head_M_040");var win=head.localRotation;
+            driver.Pose(0,0,0,true,.2f,false);Assert.That(Quaternion.Angle(win,head.localRotation),Is.GreaterThan(5));
+            for(int i=0;i<100;i++)driver.Pose(0,0,0,false,0,false);
+            skin.BakeMesh(reaction);b=reaction.vertices;
+            Assert.False(a.Where((v,i)=>(v-b[i]).sqrMagnitude>.000001f).Any(),"Reset must restore the same idle pose.");
+            Assert.That(npc.transform.position,Is.EqualTo(Vector3.zero));
+        }finally{UnityEngine.Object.DestroyImmediate(npc);UnityEngine.Object.DestroyImmediate(idle);UnityEngine.Object.DestroyImmediate(reaction);}
     }
 }

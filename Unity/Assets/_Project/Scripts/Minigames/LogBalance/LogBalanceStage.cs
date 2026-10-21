@@ -15,6 +15,7 @@ namespace GorillaEscape.Minigames.LogBalance
         readonly List<Vector3> logSurface=new List<Vector3>();
         Quaternion logRotation=Quaternion.identity;
         readonly LogBalanceCharacter character;
+        readonly List<LogBalanceSpectator> spectators=new List<LogBalanceSpectator>();
         readonly float length;
         readonly LogBalanceAtmosphere atmosphere;
         readonly float[] deck=new float[65];
@@ -189,26 +190,14 @@ namespace GorillaEscape.Minigames.LogBalance
         {
             foreach(int side in new[]{-1,1})foreach(int bank in new[]{-1,1})
             {
-                var npc=new GameObject("Gorilla spectator — NPC").transform;npc.SetParent(root.transform);
-                npc.localPosition=new Vector3(side*3.2f,.15f,bank*(length/2+2));var fur=new Color(.19f,.16f,.13f);
-                Part(npc,"Broad torso",new Vector3(0,1.05f,0),new Vector3(.95f,1.4f,.6f),fur);
-                Part(npc,"Head",new Vector3(0,1.95f,.15f),Vector3.one*.65f,fur);
-                Part(npc,"Muzzle",new Vector3(0,1.8f,.4f),new Vector3(.4f,.3f,.3f),new Color(.38f,.31f,.24f));
-                foreach(int arm in new[]{-1,1})Part(npc,"Long arm",new Vector3(arm*.65f,.9f,0),new Vector3(.3f,1.3f,.3f),fur);
+                var npc=Asset("gorilla_low_ploy","Gorilla spectator — NPC",root.transform);
+                npc.transform.localPosition=new Vector3(side*3.2f,.15f,bank*(length/2+2));
+                npc.transform.localRotation=Quaternion.LookRotation(new Vector3(-side*3.2f,0,-bank*(length/2+2)));
+                npc.transform.localScale=Vector3.one*(.92f+spectators.Count*.045f);
+                var spectator=npc.GetComponent<LogBalanceSpectator>();
+                if(spectator==null||!spectator.HasRig)throw new System.InvalidOperationException("Gorilla spectator rig unavailable.");
+                spectators.Add(spectator);
             }
-        }
-        void Part(Transform parent,string name,Vector3 position,Vector3 scale,Color color)
-        {
-            // Faceted octagonal forms keep even provisional NPCs within the low-poly direction.
-            var vertices=new List<Vector3>();
-            for(int i=0;i<8;i++)
-            {
-                float a=i*Mathf.PI/4,b=(i+1)*Mathf.PI/4;
-                var p=new Vector3(Mathf.Cos(a)*.5f,-.3f,Mathf.Sin(a)*.5f);var q=new Vector3(Mathf.Cos(b)*.5f,-.3f,Mathf.Sin(b)*.5f);
-                var r=p+Vector3.up*.6f;var s=q+Vector3.up*.6f;
-                vertices.AddRange(new[]{p,r,q,q,r,s,Vector3.up*.5f,s,r,Vector3.down*.5f,p,q});
-            }
-            var obj=Facets(name,vertices,color,parent);obj.localPosition=position;obj.localScale=scale;
         }
         Transform Shape(string name,PrimitiveType type,Vector3 position,Vector3 scale,Color color)
         {
@@ -228,6 +217,12 @@ namespace GorillaEscape.Minigames.LogBalance
             human.localRotation=Quaternion.Euler(fell?Mathf.Min(65,fallSeconds*85):0,0,-balance*22-(fell?side*28:0));
             character.Pose(elapsed,balance,walking,fell,fallSeconds,won);
             if(!fell)human.localPosition+=Vector3.up*character.SupportOffset;
+            for(int i=0;i<spectators.Count;i++)
+            {
+                var npc=spectators[i];var direction=human.position-npc.transform.position;direction.y=0;
+                if(direction.sqrMagnitude>.01f)npc.transform.rotation=Quaternion.LookRotation(direction);
+                npc.Pose(Time.unscaledTime,i*1.73f,balance,fell,fallSeconds,won);
+            }
             atmosphere.Present(Time.unscaledTime,balance,fell,fallSeconds,human.localPosition);
         }
         public void Dispose()

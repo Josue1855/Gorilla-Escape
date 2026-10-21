@@ -12,7 +12,12 @@ https://sketchfab.com/3d-models/castaway-6a481c17d68a4a138f726ccb76caedff
 Low Poly Grass Pack — Anskar
 https://sketchfab.com/3d-models/low-poly-grass-pack-2ffb4d5302c14d038eaf6488b8c7ede2
 
-Los cuatro GLB incluyen licencia CC BY 4.0:
+Los cinco GLB incluyen licencia CC BY 4.0:
 https://creativecommons.org/licenses/by/4.0/
 
 Adaptaciones: conversión a FBX, pivotes, escala, materiales mates, distribución del ambiente y poses procedurales sobre el esqueleto original. Los autores originales no avalan estas adaptaciones.
+
+Gorilla (Low_Ploy) — planeta-elefante
+https://sketchfab.com/3d-models/gorilla-low-ploy-308eb9ba7e74488ca32f57b53275869c
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Adaptación: conversión, materiales mates, escala y gestos procedurales sobre el rig original.

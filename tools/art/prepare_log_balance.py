@@ -1,6 +1,6 @@
 """Run with Blender 4.x: blender -b --python tools/art/prepare_log_balance.py -- <repo>.
 Derives FBX and original embedded textures from the supplied GLBs; never edits the sources.
-Runtime pose/animation is authored in Unity over the existing Castaway rig.
+Runtime pose/animation is authored in Unity over the existing Castaway and gorilla rigs.
 """
 import bpy,json,struct,sys,hashlib,math
 from pathlib import Path
@@ -13,7 +13,7 @@ selected=sys.argv[sys.argv.index('--asset')+1] if '--asset' in sys.argv else Non
 manifest_path=out/'asset-manifest.json'
 manifest=json.loads(manifest_path.read_text()) if selected and manifest_path.exists() else {'source':'User-supplied GLB files; embedded Sketchfab attribution retained','assets':[]}
 if selected:manifest['assets']=[a for a in manifest['assets'] if a['name']!=selected]
-for name in ([selected] if selected else ['trunk','low_poly_trees','Vagabundo','low_poly_grass_pack']):
+for name in ([selected] if selected else ['trunk','low_poly_trees','Vagabundo','low_poly_grass_pack','gorilla_low_ploy']):
  path=sources/(name+'.glb');data=path.read_bytes();size,kind=struct.unpack_from('<II',data,12)
  gltf=json.loads(data[20:20+size]);offset=20+size;bin_size,bin_type=struct.unpack_from('<II',data,offset);binary=data[offset+8:offset+8+bin_size]
  images=[]
@@ -48,8 +48,8 @@ for name in ([selected] if selected else ['trunk','low_poly_trees','Vagabundo','
   normalizer=bpy.data.objects.new(name+'_Normalized',None);bpy.context.collection.objects.link(normalizer)
   top=[o for o in bpy.context.scene.objects if o.parent is None and o!=normalizer]
   for o in top:o.parent=normalizer
-  if name=='Vagabundo':
-   scale=2.35/(hi.z-lo.z);normalizer.scale=(scale,)*3;normalizer.location=-center*scale
+  if name in {'Vagabundo','gorilla_low_ploy'}:
+   scale=(2.35 if name=='Vagabundo' else 2.5)/(hi.z-lo.z);normalizer.scale=(scale,)*3;normalizer.location=-center*scale
   else:
    # Original trunk runs on Y. Export upright metadata so Unity can scale length on local Z.
    scale=18/(hi.y-lo.y);normalizer.scale=(scale,)*3;normalizer.location=-Vector(((lo.x+hi.x)/2,(lo.y+hi.y)/2,(lo.z+hi.z)/2))*scale
