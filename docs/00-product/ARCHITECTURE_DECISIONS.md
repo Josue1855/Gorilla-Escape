@@ -6,7 +6,7 @@ Los registros históricos [DECISIONS.md](../DECISIONS.md) conservan fechas y con
 
 | ID de auditoría | Estado | Decisión y procedencia |
 |---|---|---|
-| A-01 | PLANIFICADO | Tres proyectos coordinados (Unity/UI/UX/backend), seguimiento independiente; encargo PO S3. La separación física del backend aún no está confirmada |
+| A-01 | PLANIFICADO | Tres proyectos coordinados (Unity/UI/UX/backend), seguimiento independiente; encargo PO S3. El repositorio backend ya está creado (A-10); su aplicación y la integración siguen pendientes |
 | A-02 | IMPLEMENTADO Y VERIFICADO | Unity autoridad; Java transporte/sesión técnica; Shared contratos puros; IPC loopback supervisado. DEC-005, S1/S2 |
 | A-03 | IMPLEMENTADO Y VERIFICADO | WebRTC DataChannel para input; REST de señalización separado. DEC-010 de transporte, S1/S2 |
 | A-04 | IMPLEMENTADO Y VERIFICADO | Un QR JOIN normal, origen congelado y recuperación explícita; firewall acotado. DEC-031, PR #121, S2; alcance Software/Lab |
