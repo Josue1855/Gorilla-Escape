@@ -4,6 +4,7 @@ import hashlib
 import os
 from pathlib import Path
 import secrets
+import shutil
 import sys
 
 repo = Path(__file__).resolve().parents[1]
@@ -23,9 +24,24 @@ if mode != 'CABIN' and hashlib.sha256(binary.read_bytes()).hexdigest() != 'd33ff
 vision = player.parent / 'Vision'
 if not vision.exists():
     vision.symlink_to(runtime / 'Vision', target_is_directory=True)
+java = player.parent / 'Java'
+java.mkdir(exist_ok=True)
+if not (java / 'runtime').exists():
+    (java / 'runtime').symlink_to(runtime / 'Java/runtime', target_is_directory=True)
+shutil.copy2(jar, java / 'server.jar')
+if not (player.parent / 'Tools').exists():
+    (player.parent / 'Tools').symlink_to(runtime / 'Tools', target_is_directory=True)
+helpers = player.parent / 'tools'
+helpers.mkdir(exist_ok=True)
+shutil.copy2(repo / 'tools/setup-firewall.sh', helpers / 'setup-firewall.sh')
+shutil.copytree(repo / 'tools/connectivity', helpers / 'connectivity', dirs_exist_ok=True,
+                ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+if '--prepare-only' in sys.argv[1:]:
+    print(f'Ejecutable preparado: {player}')
+    sys.exit(0)
 env = os.environ.copy()
 env.update(
-    GORILLA_PACKAGE_ROOT=str(repo), GORILLA_CONNECTION_MODE=mode,
+    GORILLA_PACKAGE_ROOT=str(player.parent), GORILLA_CONNECTION_MODE=mode,
     GORILLA_CLOUDFLARED_PATH=str(binary), GORILLA_MAIN_MENU='1',
     GORILLA_QA_MENU='1', GORILLA_QA_OVERLAY='1', GORILLA_PHONE_INPUT='1',
     GORILLA_IPC_JAVA=str(runtime / 'Java/runtime/bin/java'), GORILLA_IPC_JAR=str(jar),

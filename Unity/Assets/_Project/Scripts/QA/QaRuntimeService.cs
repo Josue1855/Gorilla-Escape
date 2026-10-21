@@ -54,10 +54,33 @@ namespace GorillaEscape.QA {
             TestsActive = false;
             return closing ?? (closing = Close());
         }
-        void Start(){priorBackground=Application.runInBackground;Application.runInBackground=true;cancel=new CancellationTokenSource();java=new JavaProbeSupervisor(enableLobby:true);if(Environment.GetEnvironmentVariable("GORILLA_MOBILE_LAB")=="1")java.HttpReady+=port=>Debug.Log("QA_LAB_HTTP_READY "+port);vision=new VisionSupervisor();fusion=new InputFusion(java.PhoneInputs,new FusionSettings());Application.wantsToQuit+=WantsToQuit;if(ServicesEnabled){javaRun=StartJava();visionRun=StartVision();}
+        void Start(){if(!Application.isEditor)ConfigurePackagedRuntime(Path.GetFullPath(Path.Combine(Application.dataPath,"..")));priorBackground=Application.runInBackground;Application.runInBackground=true;cancel=new CancellationTokenSource();java=new JavaProbeSupervisor(enableLobby:true);if(Environment.GetEnvironmentVariable("GORILLA_MOBILE_LAB")=="1")java.HttpReady+=port=>Debug.Log("QA_LAB_HTTP_READY "+port);vision=new VisionSupervisor();fusion=new InputFusion(java.PhoneInputs,new FusionSettings());Application.wantsToQuit+=WantsToQuit;if(ServicesEnabled){javaRun=StartJava();visionRun=StartVision();}
             else {qrState="QR NOT AVAILABLE";error="Editor navigation only; use run-qa.sh for physical QA";}fpsStart=Time.realtimeSinceStartupAsDouble;
             if(Environment.GetEnvironmentVariable("GORILLA_T018_MEASURE")=="1"){frameTiming=new FrameTimingWindow();previousFrame=fpsStart;measureStart=fpsStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_CAMERA_WARMUP")??"5");measureEnd=measureStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_T018_DURATION")??"61");}
             }
+        // Direct Player launches use the same package layout as the distribution launcher.
+        public static void ConfigurePackagedRuntime(string root, Func<string,string> read=null, Action<string,string> write=null)
+        {
+            read=read??Environment.GetEnvironmentVariable;
+            write=write??Environment.SetEnvironmentVariable;
+            void Default(string name,string value){if(string.IsNullOrEmpty(read(name)))write(name,value);}
+            Default("GORILLA_PACKAGE_ROOT",root);
+            Default("GORILLA_CONNECTION_MODE","CLOUDFLARED");
+            Default("GORILLA_CLOUDFLARED_PATH",Path.Combine(root,"Tools","cloudflared"));
+            Default("GORILLA_IPC_JAVA",Path.Combine(root,"Java","runtime","bin",Application.platform==RuntimePlatform.WindowsPlayer?"java.exe":"java"));
+            Default("GORILLA_IPC_JAR",Path.Combine(root,"Java","server.jar"));
+            Default("GORILLA_PHONE_INPUT","1");
+            Default("GORILLA_IPC_MODE","lifecycle");
+            Default("GORILLA_LOCAL_TRUST_DIR",Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".gorilla-escape","live-qa-trust"));
+            Default("GORILLA_TRUST_BOOTSTRAP_PORT","8081");
+            Default("GORILLA_HTTPS_PORT","8443");
+            if(string.IsNullOrEmpty(read("GORILLA_MOBILE_OPERATOR"))){
+                var secret=new byte[32];
+                using(var random=System.Security.Cryptography.RandomNumberGenerator.Create())random.GetBytes(secret);
+                write("GORILLA_MOBILE_OPERATOR",Convert.ToBase64String(secret).TrimEnd('=').Replace('+','-').Replace('/','_'));
+                Array.Clear(secret,0,secret.Length);
+            }
+        }
         async Task StartJava(){try{await java.RunLifecycleAsync(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"),Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"),cancel.Token);}catch(Exception){error="BACKEND FAILED: "+(java.LastSummary?.errorCode??"CHECK CONFIGURATION");}}
         async Task StartVision(){try{await vision.StartPackagedAsync(Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancel.Token);Debug.Log("CAMERA_LAB_READY");}catch(Exception){error="CAMERA FAILED: "+vision.Error;}}
         void Update(){if(quitting){if(closing==null)closing=Close();if(closing.IsCompleted){allowQuit=true;

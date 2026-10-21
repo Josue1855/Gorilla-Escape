@@ -23,4 +23,25 @@ public class ProductEntryPolicyTests
     [TestCase(true,false,true,MainMenuController.BootstrapScenePath,null,false)]
     public void PhysicalEditorServicesRequireExplicitProductOptIn(bool playing,bool batch,bool permitted,string path,string flag,bool expected)
         => Assert.AreEqual(expected,GorillaEscape.QA.QaRuntimeService.EditorServicesAllowed(playing,batch,permitted,path,flag));
+    [Test]
+    public void DirectPlayerUsesBundledServicesAndPreservesExplicitOfflineMode()
+    {
+        var values=new System.Collections.Generic.Dictionary<string,string>();
+        string Read(string name)=>values.TryGetValue(name,out var value)?value:null;
+        void Write(string name,string value)=>values[name]=value;
+        string root=System.IO.Path.GetFullPath("packaged-game");
+        GorillaEscape.QA.QaRuntimeService.ConfigurePackagedRuntime(root,Read,Write);
+        Assert.AreEqual("CLOUDFLARED",values["GORILLA_CONNECTION_MODE"]);
+        Assert.AreEqual(System.IO.Path.Combine(root,"Java","server.jar"),values["GORILLA_IPC_JAR"]);
+        Assert.AreEqual(System.IO.Path.Combine(root,"Tools","cloudflared"),values["GORILLA_CLOUDFLARED_PATH"]);
+        Assert.AreEqual(root,values["GORILLA_PACKAGE_ROOT"]);
+        string credential=values["GORILLA_MOBILE_OPERATOR"];
+        Assert.That(credential,Does.Match("^[A-Za-z0-9_-]{43}$"));
+        values["GORILLA_CONNECTION_MODE"]="CABIN";
+        values["GORILLA_IPC_JAR"]="custom.jar";
+        GorillaEscape.QA.QaRuntimeService.ConfigurePackagedRuntime(root,Read,Write);
+        Assert.AreEqual("CABIN",values["GORILLA_CONNECTION_MODE"]);
+        Assert.AreEqual("custom.jar",values["GORILLA_IPC_JAR"]);
+        Assert.AreEqual(credential,values["GORILLA_MOBILE_OPERATOR"]);
+    }
 }

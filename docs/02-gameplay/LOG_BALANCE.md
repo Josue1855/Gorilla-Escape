@@ -62,3 +62,11 @@ Consultar [validación de esta iteración](LOG_BALANCE_VALIDATION.md). Una prueb
 En Linux, ejecutar `./run-game.sh` desde la raíz. Requiere el Player Development actual en `Unity/Builds/FoundationLinux`, el JAR construido y un paquete integrado con Java, Vision y `Tools/cloudflared`. Configurar `GORILLA_RUNTIME_ROOT` a ese paquete, o crear el enlace local `~/.gorilla-escape/runtime`. El lanzador verifica el binario fijado y entrega su ruta al supervisor existente.
 
 Cloudflare comienza durante el arranque de los servicios, antes de abrir CONECTAR TELÉFONO. El modo predeterminado del lanzador es CLOUDFLARED: un fallo se muestra y no cambia silenciosamente a conexión local. Para uso sin Internet se puede elegir `GORILLA_CONNECTION_MODE=CABIN ./run-game.sh`; AUTO permite la recuperación local existente. El QR se entrega después de comprobar HTTPS público. El túnel se cierra con el juego; los datos del control siguen por WebRTC en la misma LAN.
+
+### Apertura directa del ejecutable
+
+El Player configura sus servicios al arrancar: busca `Java/runtime/bin/java`, `Java/server.jar`, `Vision`, `Tools/cloudflared` y `tools/setup-firewall.sh` junto al ejecutable. Inicia Java y el túnel supervisado sin abrir el panel del teléfono ni ejecutar un script. CLOUDFLARED es el valor predeterminado; una configuración explícita CABIN/AUTO sigue teniendo prioridad. La credencial local se genera en memoria y no se guarda en archivos. La navegación del Editor conserva su aislamiento.
+
+Para preparar la carpeta Development local una sola vez después del build/JAR: `./run-game.sh --prepare-only` con el runtime configurado arriba. Después abrir directamente `Unity/Builds/FoundationLinux/GorillaEscape.x86_64`. Los enlaces de runtimes son una comodidad local y no sustituyen al empaquetado de distribución mediante `tools/t020/package.py`.
+
+Validación del arranque directo: 184/184 EditMode, 3/3 flujos PlayMode y build Linux sin errores ni advertencias. Al ejecutar el Player sin lanzador ni variables GORILLA externas se observó Java RUNNING, cámara lista y el proceso cloudflared iniciado automáticamente. La comprobación pública HTTPS en esta red no se confirmó dentro del presupuesto del supervisor; iniciar el proceso no acredita una conexión física móvil ni disponibilidad WAN.
