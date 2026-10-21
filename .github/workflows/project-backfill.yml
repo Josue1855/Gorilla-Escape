@@ -1,0 +1,45 @@
+name: Backfill Gorilla Escape Project 1
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'true adds existing open issues and PRs to Project #1; false only reports candidates'
+        type: boolean
+        default: false
+        required: true
+permissions:
+  contents: read
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Add all existing open issues and pull requests from three repositories
+        env:
+          GH_TOKEN: ${{ secrets.GORILLA_PROJECT_TOKEN }}
+          FALLBACK_TOKEN: ${{ github.token }}
+          APPLY: ${{ inputs.apply }}
+        shell: bash
+        run: |
+          if [ "$APPLY" != "true" ]; then GH_TOKEN="$FALLBACK_TOKEN"; export GH_TOKEN; fi
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::GORILLA_PROJECT_TOKEN is required for write mode"
+            exit 1
+          fi
+          count=0
+          for repo in Josue1855/Gorilla-Escape Josue1855/Gorilla-Escape-Backend Josue1855/Dise-o_pwa; do
+            echo "### $repo" >> "$GITHUB_STEP_SUMMARY"
+            for kind in issue pr; do
+              while IFS= read -r url; do
+                test -n "$url" || continue
+                count=$((count + 1))
+                if [ "$APPLY" = "true" ]; then
+                  echo "Adding $url"
+                  gh project item-add 1 --owner Josue1855 --url "$url"
+                else
+                  echo "Candidate: $url"
+                fi
+              done < <(gh "$kind" list --repo "$repo" --state open --limit 500 --json url --jq '.[].url')
+            done
+          done
+          echo "Processed $count open issues/PRs. Apply requested: $APPLY." >> "$GITHUB_STEP_SUMMARY"
