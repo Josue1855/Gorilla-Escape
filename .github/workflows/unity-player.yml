@@ -1,5 +1,18 @@
 name: Unity Windows candidate build (licensed)
 on:
+  pull_request:
+    paths:
+      - 'Unity/**'
+      - 'Shared/CSharp/**'
+      - 'tools/windows/**'
+      - '.github/workflows/unity-player.yml'
+  push:
+    branches: [develop, main]
+    paths:
+      - 'Unity/**'
+      - 'Shared/CSharp/**'
+      - 'tools/windows/**'
+      - '.github/workflows/unity-player.yml'
   workflow_dispatch:
     inputs:
       package_candidate:
@@ -76,7 +89,7 @@ jobs:
   windows-candidate:
     name: Bundle Unity + host + SQLite backend + Java 21
     needs: unity-build
-    if: ${{ inputs.package_candidate != false }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.package_candidate == true }}
     runs-on: windows-latest
     timeout-minutes: 50
     steps:
