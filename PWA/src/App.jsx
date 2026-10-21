@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import ReadyControl from './controller/ReadyControl.jsx';
 import HealthProbe from './connection/HealthProbe.jsx';
 import { ControllerSession } from './controller/session.js';
 import { screens } from './controller/presentation.js';
@@ -29,6 +30,7 @@ function Controller() {
     catch { setCopyStatus('Copia el diagnóstico que aparece abajo.'); }
   }
   const canRetryPermission = state === 'ERROR' && view?.network === 'NETWORK_READY';
+  if (state === 'INPUT_READY') return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic}/>;
   return <main className="controller-shell">
     <header className="brand"><GorillaMark/><div><p className="eyebrow">GORILIMPIADAS</p><h1>GORILLA<br/>ESCAPE</h1></div></header>
     <p className="edition">GORILLA CORE · TU TELÉFONO, TU CONTROL</p>

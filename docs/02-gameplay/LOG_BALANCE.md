@@ -82,3 +82,13 @@ Validación de esta iteración: 184/184 EditMode y 4/4 flujos PlayMode, incluida
 El Play normal del Editor en Bootstrap también prepara automáticamente los servicios físicos si existe el runtime local completo. No se activan en batch, Test Runner ni otras escenas. Si faltan recursos o Java falla, CONECTAR TELÉFONO muestra el problema; no permanece en «Preparando conexión…» por servicios apagados.
 
 Validación de la corrección del QR: 185/185 EditMode en el editor y build Linux sin errores ni advertencias. Prueba real de arranque sin teléfono: Java RUNNING, firewall READY y QR AVAILABLE después de recuperar la conexión local. La prueba externa de Cloudflare quedó BLOCKED por HttpConnectTimeoutException/TUNNEL_HTTPS_UNAVAILABLE, con hash válido y túnel registrado; no se declara HTTPS público ni iPhone físico aprobado. El botón REINTENTAR también vuelve a iniciar el modo de conexión si el bootstrap falló.
+
+## Teléfono → regreso al tronco
+
+Al elegir CONECTAR TELÉFONO dentro del prototipo se conserva el destino. Cuando el jugador tiene Network Ready, Input Ready y una muestra de la misma sesión/dispositivo/epoch recibida en los últimos 350 ms, se cierra el QR y se vuelve automáticamente al tronco con su slot seleccionado. El intento espera CALIBRAR y COMENZAR: no calibra una postura accidental al cerrar el QR. Desde la conexión general del menú, CONTROL LISTO ofrece IR AL TRONCO. La conexión y los servicios se conservan durante el cambio de pantalla.
+
+En Safari, INPUT_READY cambia la preparación por un mando visual del Desafío del Tronco. El náufrago y el indicador responden a la inclinación local respecto de la postura inicial; no representan el balance calculado por Unity ni inventan progreso o resultados. El jugador mira la PC para calibrar, comenzar y ver el resultado. Si los datos dejan de estar listos, la interfaz vuelve al estado real de pausa/error correspondiente. El diagnóstico sigue disponible bajo Ayuda y conexión.
+
+La [vista previa del mando](../evidence/phone-controller-2026-10-20/controller-preview.png) usa el componente real renderizado con una inclinación de ejemplo a 393 × 852. Es una comprobación visual del diseño, no evidencia de una partida o sensores físicos.
+
+Validación de la integración: 185/185 EditMode, 5/5 pruebas de flujo PlayMode y 70/70 pruebas PWA; build web, empaquetado JAR y build Linux final correctos. La prueba de flujo cubre que red sin sensores o sin muestra fresca no finaliza la preparación, retorno al tronco, selección del slot conectado y calibración obligatoria. La vista móvil se revisó con el componente real en navegador a 393 × 852; la nueva interfaz y el retorno requieren repetir el recorrido en el iPhone físico.

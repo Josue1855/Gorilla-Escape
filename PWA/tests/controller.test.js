@@ -90,3 +90,19 @@ test('QA telemetry reuses measured windows, preserves missing and zero, and clea
   assert.equal(JSON.stringify(transport.qaTelemetry()).includes('UNIT_SECRET'),false);
   await model.dispose();assert.equal(transport.qaTelemetry,null);
 });
+
+test('ready control preview follows local tilt without inventing game balance or sensor values', async () => {
+  let at = 0;
+  const model = new ControllerSession({ win: win(), url, client: client(), now: () => at });
+  model.network = 'NETWORK_READY'; model.capture.state = 'RUNNING';
+  model.capture.inputState = () => 'INPUT_READY';
+  const sample = gamma => model.capture.onSample({ channels: {
+    motion: { validSequence: 0 }, orientation: { validSequence: 0, latest: { angles: { gamma } } },
+  } });
+  sample(10); assert.equal(model.snapshot().controlTilt, 0);
+  at = 60; sample(40); assert.equal(model.snapshot().controlTilt, 1);
+  at = 120; sample(-60); assert.equal(model.snapshot().controlTilt, -1);
+  at = 180; sample(null); assert.equal(model.snapshot().controlTilt, -1);
+  assert.equal('gameBalance' in model.snapshot(), false);
+  await model.dispose();
+});

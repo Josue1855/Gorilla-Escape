@@ -137,7 +137,20 @@ namespace GorillaEscape.QA {
         public bool MeasuringFrames => frameTiming!=null&&!timingLogged;
         public bool TestsActive {get; private set;}
         public bool PhoneActive {get; private set;}
-        public bool PhoneReady => joinEnd>0;
+        public int ReadyPhonePlayer {
+            get {
+                var lobby=java?.Lobby.Snapshot;if(lobby?.players==null)return 0;
+                for(int pass=0;pass<2;pass++)foreach(var p in lobby.players){
+                    if(pass==0&&priorPlayers.Contains(PlayerKey(p)))continue;
+                    if(!p.networkReady||!p.inputReady||p.connectionState=="DISCONNECTED")continue;
+                    if(java.PhoneInputs.TryLatest(p.playerId,out var input)&&input.sessionId==lobby.sessionId
+                        &&input.deviceSessionId==p.deviceSessionId&&input.connectionEpoch==p.connectionEpoch
+                        &&Now()-input.serverReceiveTimestamp>=0&&Now()-input.serverReceiveTimestamp<=350)return p.playerId;
+                }
+                return 0;
+            }
+        }
+        public bool PhoneReady => ReadyPhonePlayer>0;
         public string FirewallState => java?.QaConnection?.firewallState??"CHECKING";
         public bool NetworkPermissionRequired => FirewallState=="NEEDS_PERMISSION"||FirewallState=="INSPECTION_REQUIRED";
         public bool NetworkFailed => FirewallState=="CANCELLED"||FirewallState=="FAILED"||FirewallState=="HELPER_UNAVAILABLE";

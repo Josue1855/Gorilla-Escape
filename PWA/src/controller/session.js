@@ -8,6 +8,7 @@ export class ControllerSession {
     const fragment = new URLSearchParams(new URL(url).hash.slice(1));
     this.hasAdmission = Boolean(fragment.get('sessionId') && fragment.get('admission'));
     this.state = this.hasAdmission ? 'CONNECT' : 'NO_ADMISSION';
+    this.controlTilt = 0; this.controlNeutral = null; this.lastControlPublish = -Infinity;
     this.network = 'NOT_CONNECTED'; this.attempted = false; this.disposed = false;
     this.capabilities = permissionCapabilities(win); this.permissions = null;
     this.pagehide = () => {
@@ -17,7 +18,15 @@ export class ControllerSession {
     this.win.addEventListener('pagehide', this.pagehide);
     this.emissionRate = new RateWindow(); this.measurement = null; this.measureTimer = null;
     this.capture = new SensorCapture({ win, doc, now, notify: () => this.updateInput(),
-      onSample: snapshot => { this.emitSample(snapshot); this.updateInput(); } });
+      onSample: snapshot => {
+        this.emitSample(snapshot); this.updateInput();
+        const gamma = snapshot.channels?.orientation?.latest?.angles?.gamma;
+        if (this.state === 'INPUT_READY' && Number.isFinite(gamma)) {
+          this.controlNeutral ??= gamma;
+          this.controlTilt = Math.max(-1, Math.min(1, (gamma - this.controlNeutral) / 30));
+          if (this.now() - this.lastControlPublish >= 60) { this.lastControlPublish = this.now(); this.publish(); }
+        }
+      } });
     // Reuse acquisition/emission measurements; only bounded aggregates cross the control channel.
     this.client.qaTelemetry = () => {
       const metrics = this.capture.metrics(), rtt = [...(this.client.metrics?.rtt || [])].sort((a,b) => a-b);
@@ -29,7 +38,7 @@ export class ControllerSession {
     };
     this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, onEmit: () => this.emissionRate.add(now()) });
   }
-  snapshot() { return { state: this.state, network: this.network, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
+  snapshot() { return { state: this.state, network: this.network, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
   publish() { if (!this.disposed) this.notify(this.snapshot()); }
   async connect() {
     if (this.disposed || this.attempted || !this.hasAdmission) return;

@@ -144,7 +144,7 @@ namespace GorillaEscape.Minigames.LogBalance
                 GUI.Label(new Rect(40,165,500,40),$"Jugador {player} · {(keyboard?"TECLADO DE DESARROLLO":"TELÉFONO")}",body);
                 for(int i=1;i<=4;i++)if(GUI.Button(new Rect(40+(i-1)*60,210,50,40),i.ToString(),button))SelectPlayer(i);
                 if(KeyboardAvailable&&GUI.Button(new Rect(40,265,310,44),keyboard?"USAR TELÉFONO":"PROBAR CON TECLADO",button))SelectKeyboard(!keyboard);
-                if(!keyboard&&GUI.Button(new Rect(40,320,310,44),"CONECTAR TELÉFONO",button)&&menu!=null){menu.CloseLogBalance();menu.OpenPhone();}
+                if(!keyboard&&GUI.Button(new Rect(40,320,310,44),"CONECTAR TELÉFONO",button)&&menu!=null){menu.OpenPhoneForLogBalance();}
                 GUI.Label(new Rect(x,y+120,540,63),notice,body);
                 if(!keyboard&&GUI.Button(new Rect(x,y+185,260,45),"CALIBRAR (C)",button))Calibrate();
                 if(GUI.Button(new Rect(x+(keyboard?0:280),y+185,keyboard?540:260,45),"COMENZAR (ESPACIO)",button))BeginAttempt();

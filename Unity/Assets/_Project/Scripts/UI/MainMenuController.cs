@@ -79,12 +79,22 @@ namespace GorillaEscape.UI
             else if(Environment.GetEnvironmentVariable("GORILLA_QA_AUTOSTART_PHONE")=="1")OpenPhone();
         }
         public void OpenDiagnostic(){if(InPhone){Runtime.LeavePhone();InPhone=false;}if(!InTests){InTests=true;tests.Enter();}}
+        public void OpenPhoneForLogBalance(){returnToLogBalance=true;CloseLogBalance();OpenPhone();}
         public void OpenPhone(){if(InTests||InPhone)return;preparePhone=prepareDetails=false;if(prepareTexture!=null){Destroy(prepareTexture);prepareTexture=null;}InPhone=true;Runtime.EnterPhone();}
         public void OpenTests() { if (!QaVisible || InTests) return; if(InPhone){Runtime.LeavePhone();InPhone=false;} InTests = true; tests.Enter(); }
-        public void Back() { if(InPhone){Runtime.LeavePhone();InPhone=false;return;} if (AutomatedMeasurement || !InTests) return; tests.Leave(); InTests = false; }
+        public void Back() { if(InPhone){Runtime.LeavePhone();InPhone=false;returnToLogBalance=false;return;} if (AutomatedMeasurement || !InTests) return; tests.Leave(); InTests = false; }
         public void Exit() { Runtime.RequestExit(); }
-        void Update() { if (!AutomatedMeasurement && (InTests||InPhone) && UnityEngine.Input.GetKeyDown(KeyCode.Escape)) Back(); }
-        bool preparePhone,prepareDetails;
+        public bool CompletePhoneConnection()
+        {
+            if(!InPhone||!Runtime.PhoneReady)return false;
+            int player=Runtime.ReadyPhonePlayer;
+            bool returnToGame=returnToLogBalance;returnToLogBalance=false;
+            Back();
+            if(returnToGame){OpenLogBalance();LogBalance.SelectKeyboard(false);LogBalance.SelectPlayer(player);}
+            return true;
+        }
+        void Update() { if(InPhone&&returnToLogBalance&&Runtime.PhoneReady){CompletePhoneConnection();return;} if (!AutomatedMeasurement && (InTests||InPhone) && UnityEngine.Input.GetKeyDown(KeyCode.Escape)) Back(); }
+        bool preparePhone,prepareDetails,returnToLogBalance;
         Texture2D prepareTexture;
         void DrawPhone(float width,float height)
         {
@@ -130,7 +140,11 @@ namespace GorillaEscape.UI
                 if(prepareDetails)GUI.Label(new Rect(x,735,600,120),"Compara este código con el teléfono antes de aceptar:\n"+(Runtime.java?.QaHosting?.fingerprint??""),new GUIStyle(body){fontSize=16});
                 return;
             }
-            if(Runtime.PhoneReady){GUI.Label(new Rect(x,180,600,80),"CONTROL LISTO",title);return;}
+            if(Runtime.PhoneReady){
+                GUI.Label(new Rect(x,180,600,80),"CONTROL LISTO",title);
+                if(GUI.Button(new Rect(x+150,300,300,55),"IR AL TRONCO",action)){returnToLogBalance=true;CompletePhoneConnection();}
+                return;
+            }
             if(Runtime.PhoneFailed){
                 GUI.Label(new Rect(x,180,600,90),"No pudimos conectar este teléfono.",body);
                 if(GUI.Button(new Rect(x,300,280,55),"REINTENTAR",action))Runtime.RetryPhone();

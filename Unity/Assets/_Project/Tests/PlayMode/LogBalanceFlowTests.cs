@@ -7,6 +7,32 @@ using UnityEngine.TestTools;
 
 public sealed class LogBalanceFlowTests
 {
+    [UnityTest] public IEnumerator PhoneOnboardingReturnsToTrunkAndSelectsReadyPlayer()
+    {
+        var host=new GameObject("Phone onboarding return test");var menu=host.AddComponent<MainMenuController>();yield return null;
+        try{
+            menu.OpenLogBalance();menu.OpenPhoneForLogBalance();Assert.True(menu.InPhone);Assert.IsNull(menu.LogBalance);
+            var field=typeof(GorillaEscape.QA.QaRuntimeService).GetField("java",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var java=(GorillaEscape.Network.JavaProbeSupervisor)field.GetValue(menu.Runtime);
+            string session=System.Guid.NewGuid().ToString(),device=System.Guid.NewGuid().ToString();
+            var player=new GorillaEscape.Contracts.LobbyPlayerWire{playerId=2,deviceSessionId=device,connectionEpoch=1,connectionState="ACTIVE",networkReady=true,inputReady=false};
+            var lobby=new GorillaEscape.Contracts.LobbySnapshotWire{lobbyVersion=1,sessionId=session,phase="OPEN",players=new[]{player}};
+            java.Lobby.Accept(lobby,null);Assert.False(menu.CompletePhoneConnection(),"Network alone must not finish onboarding");
+            player.inputReady=true;java.Lobby.Accept(lobby,null);
+            Assert.False(menu.CompletePhoneConnection(),"Fresh phone input is required");
+            java.PhoneInputs.Accept(new GorillaEscape.Contracts.PhoneInputWire{
+                playerId=2,sessionId=session,deviceSessionId=device,sequence=1,connectionEpoch=1,
+                serverReceiveTimestamp=System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),messageType="MOTION_SAMPLE",connectionState="ACTIVE",
+                quality=new GorillaEscape.Contracts.PhoneQuality{source="synthetic",status="available"},
+                orientation=new GorillaEscape.Contracts.PhoneValues{hasGamma=true,gamma=10,availability="partial"},
+                screenOrientation=new GorillaEscape.Contracts.PhoneValues{hasAngle=true,angle=0,availability="present"}});
+            Assert.True(menu.CompletePhoneConnection());Assert.False(menu.InPhone);Assert.NotNull(menu.LogBalance);
+            Assert.AreEqual(2,menu.LogBalance.Player);Assert.False(menu.LogBalance.Keyboard);
+            Assert.False(menu.LogBalance.BeginAttempt(),"Returning to the game must still require calibration");
+            Assert.True(menu.LogBalance.Calibrate());Assert.True(menu.LogBalance.BeginAttempt());
+            menu.CloseLogBalance();
+        }finally{Object.Destroy(host);}yield return null;
+    }
     [UnityTest] public IEnumerator TrunkRollsAndResetsWithAttemptTime()
     {
         var host=new GameObject("Rolling log test");var stage=new LogBalanceStage(host.transform,18);
@@ -75,7 +101,10 @@ public sealed class LogBalanceFlowTests
             lobby(1);sample(10,1,1);menu.OpenLogBalance();var game=menu.LogBalance;
             game.SendMessage("OnApplicationFocus",true);
             Assert.True(game.Calibrate());Assert.True(game.BeginAttempt());game.Attempt.Tick(1,0);game.Attempt.Tick(1,0);game.Attempt.Tick(1,0);
-            sample(35,2,1);yield return null;yield return null;
+            // Feed a short live stream while frames finish the countdown, then stop to test freshness loss.
+            for(int frame=0;frame<8&&game.Attempt.FilteredTilt<=0;frame++){
+                sample(35,2+frame,1);yield return null;
+            }
             Assert.That(game.Attempt.FilteredTilt,Is.GreaterThan(0));
             yield return new WaitForSecondsRealtime(.45f);Assert.True(game.Paused);
             float distance=game.Attempt.Distance;yield return null;Assert.That(game.Attempt.Distance,Is.EqualTo(distance));
