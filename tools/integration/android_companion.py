@@ -158,4 +158,5 @@ async def run():
  (OUT/'android-results.json').write_text(json.dumps(report,indent=2)+'\n')
  print(json.dumps({'gate':report['gate'],'cases':report['cases'],'reason':report.get('reason')}))
  return report['gate']
-raise SystemExit(0 if asyncio.run(run())=='PASS' else 1)
+if __name__ == '__main__':
+ raise SystemExit(0 if asyncio.run(run())=='PASS' else 1)

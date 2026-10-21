@@ -1,0 +1,25 @@
+{
+  "scope": "Flutter native emulator; no physical iPhone or LAN/TLS claim",
+  "gate": "PASS",
+  "cases": {
+    "nativeRtcHello": "PASS",
+    "nativeSensorsUnityAutoReturnContext": "PASS",
+    "nativeBackgroundResume": "PASS",
+    "nativeMotionAck": "PASS"
+  },
+  "motionAck": 767,
+  "surface": {
+    "visualApplied": false,
+    "cameraCleanup": true,
+    "javaCleanup": true,
+    "controlsRestored": true,
+    "qaPhoneObserved": false,
+    "phoneAccepted": 705,
+    "previewOverwritten": 0,
+    "visualFrame": 0,
+    "endOfFrame": 0,
+    "unityUpdateFps": 5.49147033069237,
+    "previewState": ""
+  },
+  "ownedJavaResiduals": 0
+}

@@ -8,6 +8,10 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Conectamos este control con Gorilla Escape en tu PC para jugar en la misma red.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Usamos el movimiento del teléfono para controlar tu equilibrio en Gorilla Escape.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Gorilla Escape</string>
 	<key>CFBundleExecutable</key>

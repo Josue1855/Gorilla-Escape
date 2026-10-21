@@ -1,38 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import 'control/page.dart';
+import 'control/protocol.dart';
+export 'control/protocol.dart' show controllerLink;
 
 void main() => runApp(const GorillaCompanion());
-
-// The admission remains in memory; it is never persisted, logged or put in a query.
-Uri? controllerLink(String text) {
-  try {
-    if (text.length > 1024) return null;
-    final uri = Uri.tryParse(text.trim());
-    if (uri == null ||
-        uri.scheme != 'https' ||
-        uri.host.isEmpty ||
-        uri.userInfo.isNotEmpty ||
-        uri.query.isNotEmpty ||
-        uri.path != '/') {
-      return null;
-    }
-    final fields = Uri(query: uri.fragment).queryParametersAll;
-    if (fields.length != 3 ||
-        fields.values.any((v) => v.length != 1) ||
-        fields['v']?.single != '1' ||
-        !RegExp(r'^[a-f0-9-]{36}$')
-            .hasMatch(fields['sessionId']?.single ?? '') ||
-        !RegExp(r'^[A-Za-z0-9_-]{43}$')
-            .hasMatch(fields['admission']?.single ?? '')) {
-      return null;
-    }
-    return uri;
-  } on FormatException {
-    return null;
-  }
-}
 
 class GorillaCompanion extends StatelessWidget {
   const GorillaCompanion({super.key});
@@ -94,25 +68,16 @@ class _IslandHomeState extends State<IslandHome> {
       message = null;
     });
     try {
-      final launched = await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
-      if (mounted) {
-        setState(
-          () => message = launched
-              ? 'Continúa en tu navegador: conecta y permite el movimiento. La PC indica cuándo calibrar.'
-              : 'No se pudo abrir el navegador. Inténtalo de nuevo.',
-        );
-      }
-      if (launched) {
-        link.clear();
-        await HapticFeedback.selectionClick();
-      }
+      link.clear();
+      await HapticFeedback.selectionClick();
+      if (!mounted) return;
+      await Navigator.of(
+        context,
+      ).push<void>(MaterialPageRoute(builder: (_) => ControlPage(link: uri!)));
     } catch (_) {
       if (mounted) {
         setState(
-          () => message = 'No se pudo abrir el navegador. Revisa tu conexión e inténtalo de nuevo.',
+          () => message = 'No se pudo iniciar el control. Inténtalo de nuevo.',
         );
       }
     } finally {
