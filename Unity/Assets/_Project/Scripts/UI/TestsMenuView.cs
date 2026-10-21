@@ -8,6 +8,7 @@ namespace GorillaEscape.UI {
     public sealed class TestsMenuView {
         readonly QaRuntimeService s; readonly TestsMenuController controller;
         GUIStyle title,text,small;
+        bool showPrepareTab;
         public TestsMenuView(QaRuntimeService runtime,TestsMenuController controller){s=runtime;this.controller=controller;}
         static long Now()=>DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         static string Rate(bool? present,float? value)=>present==true&&value.HasValue?Number(value.Value):LiveQaModel.Unknown;
@@ -49,14 +50,34 @@ namespace GorillaEscape.UI {
             GUI.color=Color.white;
         }
         static void Line(Vector2 a,Vector2 b){var matrix=GUI.matrix;GUIUtility.RotateAroundPivot(Mathf.Atan2(b.y-a.y,b.x-a.x)*Mathf.Rad2Deg,a);GUI.DrawTexture(new Rect(a.x,a.y,Vector2.Distance(a,b),2),Texture2D.whiteTexture);GUI.matrix=matrix;}
-        void DrawRight(){float x=770;Label(x,76,490,"CONECTAR TELÉFONO",title);
-            GUI.Label(new Rect(1025,80,240,55),s.QrLifecycle+"\nTTL "+(s.java.Qa==null?LiveQaModel.Unknown:Math.Ceiling(s.java.Qa.ttlMs/1000d)+" s"),new GUIStyle(small){wordWrap=true});
-            if(s.qrTexture!=null){GUI.DrawTexture(new Rect(x,110,240,240),s.qrTexture,ScaleMode.ScaleToFit,false);if(s.qrVisible==0&&Event.current.type==EventType.Repaint)s.qrVisible=Now();}else Label(x,160,460,!s.ServicesEnabled?"QR NOT AVAILABLE":s.qrState=="STARTING"?"Waiting for secure LAN backend…":"Regenerate when ready");
-            Label(1025,115,240,"DEVICE STATE (confirm)",small);if(GUI.Button(new Rect(1025,145,230,30),"Prepared"))controller.SetDeviceState("Prepared");if(GUI.Button(new Rect(1025,182,230,30),"Unprepared"))controller.SetDeviceState("Unprepared");Label(1025,221,230,s.model.DeviceState,small);
-            GUI.enabled=s.java.State==IpcState.RUNNING;if(GUI.Button(new Rect(1025,257,230,34),"GENERAR NUEVO QR"))controller.RegenerateQr();GUI.enabled=true;
-            Label(1025,301,230,"Platform/browser: NOT MEASURED",small);
-            s.physicalConfirmed=GUI.Toggle(new Rect(1025,325,230,24),s.physicalConfirmed,"I confirm a physical phone");
+        void DrawRight(){float x=770;Label(x,76,240,"CONECTAR TELÉFONO",title);
             Label(x,49,490,s.java.QaHosting?.origin??(!s.ServicesEnabled?s.JavaStatus:"Secure LAN origin: WAITING"),small);
+            if(GUI.Button(new Rect(x,105,120,26),showPrepareTab?"<b>Paso 1: Preparar</b>":"Paso 1: Preparar"))showPrepareTab=true;
+            if(GUI.Button(new Rect(x+126,105,120,26),!showPrepareTab?"<b>Paso 2: Unirse</b>":"Paso 2: Unirse"))showPrepareTab=false;
+            if(showPrepareTab){
+                if(s.prepareQrTexture!=null)GUI.DrawTexture(new Rect(x,136,215,215),s.prepareQrTexture,ScaleMode.ScaleToFit,false);
+                else Label(x,180,240,"Waiting for prepare URL…");
+                Label(1000,105,270,"PASO 1: PREPARAR DISPOSITIVO",new GUIStyle(text){fontStyle=FontStyle.Bold});
+                Label(1000,132,270,"1. Escanea este QR con Safari de tu iPhone.",small);
+                Label(1000,154,270,"2. Toca 'Descargar Certificado CA'.",small);
+                Label(1000,176,270,"3. Ajustes > Perfil descargado > Instalar.",small);
+                Label(1000,198,270,"4. General > Información > Confianza de",small);
+                Label(1000,215,270,"   certificados > Activar Gorilla Escape.",small);
+                Label(1000,240,270,"5. Tras activar, pasa al Paso 2 para jugar.",small);
+                if(GUI.Button(new Rect(1000,268,260,32),"Ir al Paso 2: Unirse a Partida →"))showPrepareTab=false;
+            }else{
+                GUI.Label(new Rect(1025,80,240,55),s.QrLifecycle+"\nTTL "+(s.java.Qa==null?LiveQaModel.Unknown:Math.Ceiling(s.java.Qa.ttlMs/1000d)+" s"),new GUIStyle(small){wordWrap=true});
+                if(s.qrTexture!=null){GUI.DrawTexture(new Rect(x,136,215,215),s.qrTexture,ScaleMode.ScaleToFit,false);if(s.qrVisible==0&&Event.current.type==EventType.Repaint)s.qrVisible=Now();}
+                else Label(x,180,240,!s.ServicesEnabled?"QR NOT AVAILABLE":s.qrState=="STARTING"?"Waiting for secure LAN backend…":"Regenerate when ready");
+                Label(1025,122,240,"DEVICE STATE (confirm)",small);
+                if(GUI.Button(new Rect(1025,145,112,28),"Prepared")){controller.SetDeviceState("Prepared");showPrepareTab=false;}
+                if(GUI.Button(new Rect(1025+118,145,112,28),"Unprepared")){controller.SetDeviceState("Unprepared");showPrepareTab=true;}
+                Label(1025,178,230,s.model.DeviceState,small);
+                GUI.enabled=s.java.State==IpcState.RUNNING;if(GUI.Button(new Rect(1025,204,230,34),"GENERAR NUEVO QR"))controller.RegenerateQr();GUI.enabled=true;
+                Label(1025,246,230,"Platform/browser: NOT MEASURED",small);
+                s.physicalConfirmed=GUI.Toggle(new Rect(1025,270,230,24),s.physicalConfirmed,"I confirm a physical phone");
+                if(GUI.Button(new Rect(1025,302,230,26),"← Volver al Paso 1 (Preparar)"))showPrepareTab=true;
+            }
             var lobby=s.java.Lobby.Snapshot;Label(x,358,490,"Lobby "+(lobby?.phase??"WAITING")+" • players "+(lobby?.players?.Length.ToString()??LiveQaModel.Unknown)+" • IPC "+s.java.State);
             for(int i=1;i<=4;i++){var p=lobby?.players==null?null:Array.Find(lobby.players,v=>v.playerId==i);float y=389+(i-1)*38;if(GUI.Button(new Rect(x,y,80,32),"Player "+i))controller.SelectPlayer(i);Label(x+90,y,395,LiveQaModel.Slot(p)+"  N:"+(p?.networkReady.ToString()??"—")+" I:"+(p?.inputReady.ToString()??"—")+" P:"+(p?.playerReady.ToString()??"—")+" epoch "+(p?.connectionEpoch.ToString()??"—"),small);}
             var chosen=s.java.Lobby.Snapshot?.players==null?null:Array.Find(s.java.Lobby.Snapshot.players,v=>v.playerId==s.selected);

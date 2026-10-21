@@ -36,6 +36,9 @@ public final class ManagedProbe implements DisposableBean {
     private int maximumPendingDeadlines;
     private String instance;
     private String token;
+    private String cachedPrepareUrl = null;
+    private String cachedPrepareModules = "";
+    private int cachedPrepareSize = 0;
     public ManagedProbe() { deadlines.setRemoveOnCancelPolicy(true); }
     @EventListener
     public void ready(ApplicationReadyEvent event) throws IOException {
@@ -116,7 +119,23 @@ public final class ManagedProbe implements DisposableBean {
                             if(lobbyCommand!=null)pongPayload.set("lobbyResult",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.unityLobbyCommand(lobbyCommand)));
                             pongPayload.set("lobby",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.lobby()));
                         }
-                        if(qa){var trust=com.gorillaescape.server.hosting.LocalTrust.current();pongPayload.set("qaHosting",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(java.util.Map.of("origin",lab?"LAB loopback":origin,"fingerprint",trust==null?"NOT MEASURED":trust.fingerprint(),"prepareUrl",trust==null||bootstrapPort==0?"NOT MEASURED":"http://"+address+":"+bootstrapPort+"/prepare")));
+                        if(qa){
+                            var trust=com.gorillaescape.server.hosting.LocalTrust.current();
+                            String prepUrl=trust==null||bootstrapPort==0?"NOT MEASURED":"http://"+address+":"+bootstrapPort+"/prepare";
+                            if(!prepUrl.equals(cachedPrepareUrl)){
+                                cachedPrepareUrl=prepUrl;
+                                if(!"NOT MEASURED".equals(prepUrl)){
+                                    try{var enc=com.gorillaescape.server.protocol.JoinQrPoc.pack(java.net.URI.create(prepUrl));cachedPrepareModules=enc.modules();cachedPrepareSize=enc.size();}
+                                    catch(Exception e){cachedPrepareModules="";cachedPrepareSize=0;}
+                                }else{cachedPrepareModules="";cachedPrepareSize=0;}
+                            }
+                            var hostingMap=new java.util.HashMap<String,Object>();
+                            hostingMap.put("origin",lab?"LAB loopback":origin);
+                            hostingMap.put("fingerprint",trust==null?"NOT MEASURED":trust.fingerprint());
+                            hostingMap.put("prepareUrl",prepUrl);
+                            hostingMap.put("prepareModules",cachedPrepareModules);
+                            hostingMap.put("prepareSize",cachedPrepareSize);
+                            pongPayload.set("qaHosting",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(hostingMap));
                             pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qa(qaPage,lab,regenerateQa)));
                             pongPayload.set("qaPhones",mobile.qaPhones());pongPayload.set("qaMetrics",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qaMetrics()));}
                         int overhead=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsBytes(root).length;

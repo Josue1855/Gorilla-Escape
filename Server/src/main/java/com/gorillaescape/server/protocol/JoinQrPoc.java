@@ -31,4 +31,12 @@ public final class JoinQrPoc {
         if(link.toASCIIString().length()>1024)throw new IllegalArgumentException("QR_SIZE");
         return new MultiFormatWriter().encode(link.toASCIIString(),BarcodeFormat.QR_CODE,384,384);
     }
+    public record EncodedModules(int size, String modules) {}
+    public static EncodedModules pack(URI link) throws WriterException {
+        var bits=modules(link);int size=bits.getWidth();
+        if(size>89)throw new IllegalArgumentException("QR_BOUND");
+        byte[] packed=new byte[(size*size+7)/8];
+        for(int y=0;y<size;y++)for(int x=0;x<size;x++)if(bits.get(x,y)){int i=y*size+x;packed[i/8]|=(byte)(1<<(7-i%8));}
+        return new EncodedModules(size, java.util.Base64.getEncoder().encodeToString(packed));
+    }
 }

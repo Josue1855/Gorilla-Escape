@@ -19,7 +19,7 @@ namespace GorillaEscape.QA {
         internal readonly LiveQaModel model=new LiveQaModel();
         CancellationTokenSource cancel;
         Task javaRun,visionRun,closing;
-        internal Texture2D cameraTexture,qrTexture;
+        internal Texture2D cameraTexture,qrTexture,prepareQrTexture;
         FrameTimingWindow frameTiming;
         double measureStart,measureEnd,previousFrame;
         bool timingLogged;
@@ -38,10 +38,17 @@ namespace GorillaEscape.QA {
         internal string joinClass="NOT CONFIRMED",exportMessage="";
         internal bool physicalConfirmed;
         bool qaPhoneObserved,previewRequested;
-        // Editor navigation deliberately has no physical services, even with inherited launcher flags.
-        public bool ServicesEnabled => !Application.isEditor;
-        public string JavaStatus => !ServicesEnabled ? "JAVA NOT RUNNING (Editor navigation only)" : "JAVA " + java?.State;
-        public string CameraStatus => !ServicesEnabled ? "CAMERA NOT RUNNING (Editor navigation only)" : null;
+#if UNITY_EDITOR
+        public static Func<bool> IsTestRunning { private get; set; }
+#endif
+        public static bool ForceServicesInEditor { get; set; } = true;
+        public bool ServicesEnabled => (!Application.isEditor || ForceServicesInEditor)
+#if UNITY_EDITOR
+            && !(IsTestRunning?.Invoke() ?? false)
+#endif
+            ;
+        public string JavaStatus => !ServicesEnabled ? "JAVA NOT RUNNING (Services disabled or test mode)" : "JAVA " + java?.State;
+        public string CameraStatus => !ServicesEnabled ? "CAMERA NOT RUNNING (Services disabled or test mode)" : (vision != null && vision.State != "RUNNING" && vision.State != "STARTING" ? "CAMERA " + vision.State : null);
         public bool CleanupComplete => (java?.CleanupComplete ?? true) && (vision?.CleanupComplete ?? true);
         public Task ShutdownAsync()
         {
@@ -51,12 +58,16 @@ namespace GorillaEscape.QA {
             TestsActive = false;
             return closing ?? (closing = Close());
         }
-        void Start(){priorBackground=Application.runInBackground;Application.runInBackground=true;cancel=new CancellationTokenSource();java=new JavaProbeSupervisor(enableLobby:true);if(Environment.GetEnvironmentVariable("GORILLA_MOBILE_LAB")=="1")java.HttpReady+=port=>Debug.Log("QA_LAB_HTTP_READY "+port);vision=new VisionSupervisor();fusion=new InputFusion(java.PhoneInputs,new FusionSettings());Application.wantsToQuit+=WantsToQuit;if(ServicesEnabled){javaRun=StartJava();visionRun=StartVision();}
+        void Start(){Debug.Log($"[QaRuntimeService] Start: ServicesEnabled={ServicesEnabled}, ForceServicesInEditor={ForceServicesInEditor}");priorBackground=Application.runInBackground;Application.runInBackground=true;cancel=new CancellationTokenSource();java=new JavaProbeSupervisor(enableLobby:true);if(Environment.GetEnvironmentVariable("GORILLA_MOBILE_LAB")=="1")java.HttpReady+=port=>Debug.Log("QA_LAB_HTTP_READY "+port);vision=new VisionSupervisor();fusion=new InputFusion(java.PhoneInputs,new FusionSettings());Application.wantsToQuit+=WantsToQuit;if(ServicesEnabled){javaRun=StartJava();visionRun=StartVision();}
             else {qrState="QR NOT AVAILABLE";error="Editor navigation only; use run-qa.sh for physical QA";}fpsStart=Time.realtimeSinceStartupAsDouble;
             if(Environment.GetEnvironmentVariable("GORILLA_T018_MEASURE")=="1"){frameTiming=new FrameTimingWindow();previousFrame=fpsStart;measureStart=fpsStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_CAMERA_WARMUP")??"5");measureEnd=measureStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_T018_DURATION")??"61");}
             }
-        async Task StartJava(){try{await java.RunLifecycleAsync(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"),Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"),cancel.Token);}catch(Exception){error="BACKEND FAILED: "+(java.LastSummary?.errorCode??"CHECK CONFIGURATION");}}
-        async Task StartVision(){try{await vision.StartPackagedAsync(Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancel.Token);Debug.Log("CAMERA_LAB_READY");}catch(Exception){error="CAMERA FAILED: "+vision.Error;}}
+        async Task StartJava(){try{string javaPath=ResolveJavaPath();string jarPath=ResolveJarPath();ConfigureJavaEnvironment();await java.RunLifecycleAsync(javaPath,jarPath,cancel.Token);}catch(Exception){error="BACKEND FAILED: "+(java.LastSummary?.errorCode??"CHECK CONFIGURATION");}}
+        async Task StartVision(){try{if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_CAMERA_ENABLED")))Environment.SetEnvironmentVariable("GORILLA_CAMERA_ENABLED","1");if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_CAMERA_PROFILE")))Environment.SetEnvironmentVariable("GORILLA_CAMERA_PROFILE","candidate");if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_CAMERA_BUFFERS")))Environment.SetEnvironmentVariable("GORILLA_CAMERA_BUFFERS","2");await vision.StartPackagedAsync(ResolveProductDirectory(),cancel.Token);Debug.Log("CAMERA_LAB_READY");}catch(Exception){error="CAMERA FAILED: "+vision.Error;}}
+        static string ResolveJavaPath(){string env=Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA");if(!string.IsNullOrEmpty(env)&&File.Exists(env))return env;string[] candidates={Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".local","share","java","current","bin","java"),Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"Documentos","GorillaEscape-Phase0-2026-10-13","Java","runtime","bin","java"),"/usr/bin/java"};foreach(var c in candidates)if(File.Exists(c))return c;return env??"java";}
+        static string ResolveJarPath(){string env=Environment.GetEnvironmentVariable("GORILLA_IPC_JAR");if(!string.IsNullOrEmpty(env)&&File.Exists(env))return env;string repoJar=Path.GetFullPath(Path.Combine(Application.dataPath,"../../Server/target/local-server-0.1.0-SNAPSHOT.jar"));if(File.Exists(repoJar))return repoJar;string candidate=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"Documentos","GorillaEscape-Phase0-2026-10-13","Java","server.jar");if(File.Exists(candidate))return candidate;return env??"";}
+        static void ConfigureJavaEnvironment(){if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY")))Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY","1");if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")))Environment.SetEnvironmentVariable("GORILLA_PHONE_INPUT","1");if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_LOCAL_TRUST_DIR"))){string trustDir=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".gorilla-escape","live-qa-trust");try{Directory.CreateDirectory(trustDir);}catch{}Environment.SetEnvironmentVariable("GORILLA_LOCAL_TRUST_DIR",trustDir);}if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_TRUST_BOOTSTRAP_PORT")))Environment.SetEnvironmentVariable("GORILLA_TRUST_BOOTSTRAP_PORT","8081");if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_HTTPS_PORT")))Environment.SetEnvironmentVariable("GORILLA_HTTPS_PORT","8443");if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_MOBILE_OPERATOR"))){byte[] random=new byte[32];using(var rng=System.Security.Cryptography.RandomNumberGenerator.Create())rng.GetBytes(random);string token=Convert.ToBase64String(random).TrimEnd('=').Replace('+','-').Replace('/','_');Environment.SetEnvironmentVariable("GORILLA_MOBILE_OPERATOR",token);}}
+        static string ResolveProductDirectory(){string unityRoot=Path.GetFullPath(Path.Combine(Application.dataPath,".."));if(Directory.Exists(Path.Combine(unityRoot,"Vision"))&&File.Exists(Path.Combine(unityRoot,"Vision","manifest.json")))return unityRoot;string repoRoot=Path.GetFullPath(Path.Combine(Application.dataPath,"../.."));if(Directory.Exists(Path.Combine(repoRoot,"Vision"))&&File.Exists(Path.Combine(repoRoot,"Vision","manifest.json")))return repoRoot;string candidate=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"Documentos","GorillaEscape-Phase0-2026-10-13");if(Directory.Exists(Path.Combine(candidate,"Vision"))&&File.Exists(Path.Combine(candidate,"Vision","manifest.json")))return candidate;return unityRoot;}
         void Update(){if(quitting){if(closing==null)closing=Close();if(closing.IsCompleted){allowQuit=true;
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying=false;
@@ -72,17 +83,19 @@ namespace GorillaEscape.QA {
             if(vision.Take(out var frame,out var at)&&cameras.Accept(frame,at))fusion.ObserveCamera(frame,at);
             if(cameras.Latest!=null&&!cameras.Fresh(Now(),250,20))fusion.Association.MarkLost();
             if(TestsActive&&java.State==IpcState.RUNNING&&!generated){generated=true;PrepareQr();java.RegenerateQa();}
-            var qr=java.Qa;if(TestsActive&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){if(qrTexture==null){try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
+            var qr=java.Qa;if(TestsActive&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){if(qrTexture==null){try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE"&&qrTexture!=null){Destroy(qrTexture);qrTexture=null;}}
+            var hosting=java.QaHosting;if(TestsActive&&hosting!=null&&!string.IsNullOrEmpty(hosting.prepareModules)&&prepareQrTexture==null){try{prepareQrTexture=DecodeQrRaw(hosting.prepareModules,hosting.prepareSize);}catch(Exception){}}
             if(TestsActive&&(java.State==IpcState.FAILED||java.State==IpcState.STOPPED)){ClearQr();qrState="BACKEND UNAVAILABLE";}
             var lobby=java.Lobby.Snapshot;if(TestsActive&&qrVisible>0&&joinEnd==0&&lobby?.players!=null)foreach(var p in lobby.players)if(!priorPlayers.Contains(PlayerKey(p))&&p.networkReady&&p.inputReady&&p.connectionEpoch==1){joinEnd=Now();break;}
             if(TestsActive&&java.PhoneInputs.TryLatest(selected,out var pInput)){sample=pInput;fusion.ObservePhone(pInput);if(pInput.sequence!=sequence||pInput.connectionEpoch!=epoch){sequence=pInput.sequence;epoch=pInput.connectionEpoch;applied=Now();appliedFrame=Time.frameCount;presented=0;}}
             else {sample=null;applied=presented=0;}
         }
         IEnumerator Presentation(){while(true){yield return new WaitForEndOfFrame();if(TestsActive&&applied>0&&presented==0&&appliedFrame<=renderedFrame){presented=Now();presentedFrame=Time.frameCount;}}}
-        public static Texture2D DecodeQr(QaAdmissionWire q){if(q.size<21||q.size>89)throw new InvalidDataException("QR_BOUND");var data=Convert.FromBase64String(q.modules);if(data.Length!=(q.size*q.size+7)/8)throw new InvalidDataException("QR_BOUND");var texture=new Texture2D(q.size,q.size,TextureFormat.RGB24,false){filterMode=FilterMode.Point};var pixels=new Color32[q.size*q.size];for(int y=0;y<q.size;y++)for(int x=0;x<q.size;x++){int i=y*q.size+x;pixels[(q.size-1-y)*q.size+x]=(data[i/8]&(1<<(7-i%8)))!=0?new Color32(0,0,0,255):new Color32(255,255,255,255);}texture.SetPixels32(pixels);texture.Apply();Array.Clear(data,0,data.Length);Array.Clear(pixels,0,pixels.Length);return texture;}
+        public static Texture2D DecodeQr(QaAdmissionWire q)=>DecodeQrRaw(q.modules,q.size);
+        public static Texture2D DecodeQrRaw(string modules,int size){if(size<21||size>89)throw new InvalidDataException("QR_BOUND");var data=Convert.FromBase64String(modules);if(data.Length!=(size*size+7)/8)throw new InvalidDataException("QR_BOUND");var texture=new Texture2D(size,size,TextureFormat.RGB24,false){filterMode=FilterMode.Point};var pixels=new Color32[size*size];for(int y=0;y<size;y++)for(int x=0;x<size;x++){int i=y*size+x;pixels[(size-1-y)*size+x]=(data[i/8]&(1<<(7-i%8)))!=0?new Color32(0,0,0,255):new Color32(255,255,255,255);}texture.SetPixels32(pixels);texture.Apply();Array.Clear(data,0,data.Length);Array.Clear(pixels,0,pixels.Length);return texture;}
         static string PlayerKey(LobbyPlayerWire player)=>player.playerId+"|"+player.deviceSessionId;
         void PrepareQr(){priorPlayers.Clear();var lobby=java.Lobby.Snapshot;if(lobby!=null)foreach(var p in lobby.players)priorPlayers.Add(PlayerKey(p));}
-        void ClearQr(){if(qrTexture!=null){Destroy(qrTexture);qrTexture=null;}}
+        void ClearQr(){if(qrTexture!=null){Destroy(qrTexture);qrTexture=null;}if(prepareQrTexture!=null){Destroy(prepareQrTexture);prepareQrTexture=null;}}
         static long Now()=>DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         static long Stamp(long n)=>n;
         internal string QrLifecycle {

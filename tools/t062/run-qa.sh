@@ -2,6 +2,7 @@
 set -eu
 package_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 "$package_root/Vision/python" -I "$package_root/verify-package.py" "$package_root"
+if [ -x "$package_root/tools/setup-firewall.sh" ]; then "$package_root/tools/setup-firewall.sh" || true; elif [ -x "$package_root/setup-firewall.sh" ]; then "$package_root/setup-firewall.sh" || true; fi
 export GORILLA_MAIN_MENU=1
 export GORILLA_QA_MENU="${GORILLA_QA_MENU:-1}"
 export GORILLA_QA_OVERLAY=1

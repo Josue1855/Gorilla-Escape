@@ -15,6 +15,16 @@ namespace GorillaEscape.CameraTracking
         {
             var env=environment??Environment.GetEnvironmentVariable;
             var root=Path.Combine(Path.GetFullPath(productDirectory),"Vision");
+            if(!Directory.Exists(root))
+            {
+                var repoRoot=Path.Combine(Path.GetFullPath(productDirectory),"..","Vision");
+                if(Directory.Exists(repoRoot))root=Path.GetFullPath(repoRoot);
+                else
+                {
+                    var candidate=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"Documentos","GorillaEscape-Phase0-2026-10-13","Vision");
+                    if(Directory.Exists(candidate))root=candidate;
+                }
+            }
             bool lab=env("GORILLA_CAMERA_LAB")=="1";
             string Pick(string name,string fallback) => lab&&!string.IsNullOrEmpty(env(name))?env(name):fallback;
             var paths=new CameraRuntimePaths {

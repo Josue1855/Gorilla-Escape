@@ -53,11 +53,28 @@ namespace GorillaEscape.UI
 
         void Awake()
         {
+            EnsureFallbackCamera();
             // Negotiation remains opt-in within the existing authenticated IPC; no new session authority.
-            if (!Application.isEditor && QaVisible) Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
+            if (QaVisible) Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
             Runtime = gameObject.AddComponent<QaRuntimeService>();
             mainView = new MainMenuView(this);
             tests = new TestsMenuController(this, Runtime);
+        }
+
+        static void EnsureFallbackCamera()
+        {
+            if (Camera.main == null && FindFirstObjectByType<Camera>() == null)
+            {
+                var camObj = new GameObject("Bootstrap Camera");
+                camObj.hideFlags = HideFlags.DontSave;
+                camObj.tag = "MainCamera";
+                var cam = camObj.AddComponent<Camera>();
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = new Color(0.08f, 0.12f, 0.08f, 1f);
+                cam.cullingMask = 0;
+                cam.depth = -100;
+                DontDestroyOnLoad(camObj);
+            }
         }
         void Start()
         {
