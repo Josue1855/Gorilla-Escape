@@ -26,6 +26,10 @@ jobs:
             echo "::error::GORILLA_PROJECT_TOKEN is required for write mode"
             exit 1
           fi
+          existing=''
+          if [ "$APPLY" = "true" ]; then
+            existing="$(gh project item-list 1 --owner Josue1855 --limit 5000 --format json --jq '.items[] | .content.url // empty')"
+          fi
           count=0
           for repo in Josue1855/Gorilla-Escape Josue1855/Gorilla-Escape-Backend Josue1855/Dise-o_pwa; do
             echo "### $repo" >> "$GITHUB_STEP_SUMMARY"
@@ -34,8 +38,21 @@ jobs:
                 test -n "$url" || continue
                 count=$((count + 1))
                 if [ "$APPLY" = "true" ]; then
-                  echo "Adding $url"
-                  gh project item-add 1 --owner Josue1855 --url "$url"
+                  if printf '%s\\n' "$existing" | grep -Fqx "$url"; then
+                    echo "Existing item unchanged: $url"
+                  else
+                    gh project item-add 1 --owner Josue1855 --url "$url"
+                    existing="$existing"
+                else
+                  echo "Candidate: $url"
+                fi
+              done < <(gh "$kind" list --repo "$repo" --state open --limit 500 --json url --jq '.[].url')
+            done
+          done
+          echo "Processed $count open issues/PRs. Apply requested: $APPLY." >> "$GITHUB_STEP_SUMMARY"
+\\n'"$url"
+                    echo "New item added: $url"
+                  fi
                 else
                   echo "Candidate: $url"
                 fi
