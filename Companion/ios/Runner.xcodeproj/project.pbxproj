@@ -16,6 +16,10 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		10E83F3A80AB48DAE5762841 /* Icon-App-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1353FD1B81EAB9AB1FE09823 /* Icon-App-60x60@2x.png */; };
+		7D7ED98C76D502BE9E3DFA87 /* Icon-App-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E857EFA196E6FB4B5F28948A /* Icon-App-60x60@3x.png */; };
+		077E5D500BEFBED5E310C1CF /* Icon-App-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF82614D2B75638E687D6D8 /* Icon-App-76x76@2x.png */; };
+		77C984AC6CC8632821EA132C /* Icon-App-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AA492583DDF82495C8D7D9 /* Icon-App-83.5x83.5@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +63,10 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1353FD1B81EAB9AB1FE09823 /* Icon-App-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-App-60x60@2x.png"; path = "Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png"; sourceTree = "<group>"; };
+		E857EFA196E6FB4B5F28948A /* Icon-App-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-App-60x60@3x.png"; path = "Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png"; sourceTree = "<group>"; };
+		FFF82614D2B75638E687D6D8 /* Icon-App-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-App-76x76@2x.png"; path = "Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png"; sourceTree = "<group>"; };
+		77AA492583DDF82495C8D7D9 /* Icon-App-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-App-83.5x83.5@2x.png"; path = "Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +124,10 @@
 			isa = PBXGroup;
 			children = (
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
+				1353FD1B81EAB9AB1FE09823 /* Icon-App-60x60@2x.png */,
+				E857EFA196E6FB4B5F28948A /* Icon-App-60x60@3x.png */,
+				FFF82614D2B75638E687D6D8 /* Icon-App-76x76@2x.png */,
+				77AA492583DDF82495C8D7D9 /* Icon-App-83.5x83.5@2x.png */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
 				97C147021CF9000F007C117D /* Info.plist */,
@@ -227,6 +239,10 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				10E83F3A80AB48DAE5762841 /* Icon-App-60x60@2x.png in Resources */,
+				7D7ED98C76D502BE9E3DFA87 /* Icon-App-60x60@3x.png in Resources */,
+				077E5D500BEFBED5E310C1CF /* Icon-App-76x76@2x.png in Resources */,
+				77C984AC6CC8632821EA132C /* Icon-App-83.5x83.5@2x.png in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
