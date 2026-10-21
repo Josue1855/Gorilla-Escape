@@ -56,3 +56,9 @@ La lógica usa pasos de 10 ms, zona muerta reescalada, suavizado exponencial y p
 ## Alcance de validación
 
 Consultar [validación de esta iteración](LOG_BALANCE_VALIDATION.md). Una prueba sintética de orientación acredita el adaptador, no la sensación con un teléfono físico. El arte low poly y la animación procedural del humano están integrados; no hay animaciones de NPC, competición simultánea, viento, obstáculos, mapas múltiples ni cinemáticas. T019/T020 y aceptación de hardware mantienen su estado propio.
+
+## Arranque del Player con Cloudflare
+
+En Linux, ejecutar `./run-game.sh` desde la raíz. Requiere el Player Development actual en `Unity/Builds/FoundationLinux`, el JAR construido y un paquete integrado con Java, Vision y `Tools/cloudflared`. Configurar `GORILLA_RUNTIME_ROOT` a ese paquete, o crear el enlace local `~/.gorilla-escape/runtime`. El lanzador verifica el binario fijado y entrega su ruta al supervisor existente.
+
+Cloudflare comienza durante el arranque de los servicios, antes de abrir CONECTAR TELÉFONO. El modo predeterminado del lanzador es CLOUDFLARED: un fallo se muestra y no cambia silenciosamente a conexión local. Para uso sin Internet se puede elegir `GORILLA_CONNECTION_MODE=CABIN ./run-game.sh`; AUTO permite la recuperación local existente. El QR se entrega después de comprobar HTTPS público. El túnel se cierra con el juego; los datos del control siguen por WebRTC en la misma LAN.
