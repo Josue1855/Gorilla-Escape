@@ -74,7 +74,7 @@ def main():
     with open(os.environ.get("GITHUB_STEP_SUMMARY", os.devnull), "a", encoding="utf-8") as f:
         f.write("### Cross-repository static integration\n")
         for component in ("unity", "backend", "frontend"):
-            f.write(f"- {component}: \`{report[component + '_commit']}\`\n")
+            f.write(f"- {component}: `{report[component + '_commit']}`\n")
         f.write("- Maven/React build and OpenAPI shape verified. **Not end-to-end**.\n")
     print(json.dumps(report, indent=2))
 
