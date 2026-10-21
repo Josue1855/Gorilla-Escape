@@ -121,7 +121,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $root = Join-Path $PWD 'package'
-          foreach ($sub in @('Runtime','Host','Backend','Unity')) {
+          foreach ($sub in @('Host','Backend','Unity')) {
             New-Item -ItemType Directory -Force -Path (Join-Path $root $sub) | Out-Null
           }
           & "$env:JAVA_HOME\bin\jlink.exe" --module-path "$env:JAVA_HOME\jmods" --add-modules ALL-MODULE-PATH --strip-debug --no-header-files --no-man-pages --output "$root\Runtime"
