@@ -2,6 +2,8 @@
 
 Última revisión: 2026-10-16. Fuentes: S1, S2 y S3; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
 
+Actualización de desarrollo 2026-10-20, rama `feature/gameplay-desafio-del-tronco`: se añade [Desafío del Tronco](../02-gameplay/LOG_BALANCE.md), quinto prototipo autorizado con náufrago humano y gorilas NPC. Su [validación](../02-gameplay/LOG_BALANCE_VALIDATION.md) se registra por separado; no cambia la aceptación pendiente de hardware ni convierte las cuatro disciplinas anteriores en implementadas.
+
 Este es el registro vigente. Los resultados de tests se conservan en [evidencia](../04-testing/EVIDENCE_INDEX.md); no fueron reejecutados por esta auditoría salvo el build de la PWA independiente y las validaciones documentales.
 
 | Componente / alcance | Estado | Evidencia y límite |

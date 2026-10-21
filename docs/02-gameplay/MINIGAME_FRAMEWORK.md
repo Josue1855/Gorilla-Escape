@@ -2,7 +2,7 @@
 
 Última revisión: 2026-10-16. Fuentes: S1, S2 y S3; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
 
-Estado real S1: foundation/input/sesiones técnicas disponibles, sin implementación de los cuatro juegos. Estado de sus requisitos S3: PLANIFICADO. Interfaces descritas aquí: PROPUESTO; no son clases existentes.
+Estado de la auditoría S1: foundation/input/sesiones técnicas disponibles, sin implementación de las cuatro disciplinas originales. Actualización 2026-10-20: [Desafío del Tronco](LOG_BALANCE.md) añade un quinto prototipo independiente autorizado por el PO; no implementa las interfaces propuestas del torneo. Estado de sus requisitos S3: PLANIFICADO. Interfaces descritas aquí: PROPUESTO; no son clases existentes.
 
 Flujo común propuesto: preparar partida → asociar humanos/slots → explicar controles/calibrar → listo → intento/acción → resolver física/reglas Unity → feedback → siguiente turno → resultado final inmutable → publicación diferida autorizada. Estados desconectado/pausa/abortado deben preservar autoridad y evitar adjudicar intentos sin acción válida.
 

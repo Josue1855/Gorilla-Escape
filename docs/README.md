@@ -35,7 +35,7 @@ El inicio de juegos y clientes está autorizado. La aceptación física de Fase 
 - [Arquitectura actual y objetivo](01-architecture/SYSTEM_CONTEXT.md)
 - [Unity y autoridad del juego](01-architecture/UNITY.md)
 
-## Gameplay planificado
+## Gameplay
 
 - [Coconut Bowling](02-gameplay/COCONUT_BOWLING.md)
 - [Coconut Throw / Shot Put](02-gameplay/COCONUT_THROW.md)
@@ -43,6 +43,7 @@ El inicio de juegos y clientes está autorizado. La aceptación física de Fase 
 - [Entradas, humanos y gorilas](02-gameplay/INPUT_AND_CHARACTERS.md)
 - [Jungle Slice](02-gameplay/JUNGLE_SLICE.md)
 - [Marco común de minijuegos](02-gameplay/MINIGAME_FRAMEWORK.md)
+- [Desafío del Tronco: prototipo, controles y configuración](02-gameplay/LOG_BALANCE.md)
 
 ## Desarrollo e integración
 

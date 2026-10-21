@@ -49,6 +49,8 @@ Seguir [preparación y ejecución](03-development/SETUP_AND_RUN.md) para restaur
 
 ## Empezar un juego en Unity
 
+Esta rama incorpora un quinto prototipo autorizado, [Desafío del Tronco](02-gameplay/LOG_BALANCE.md), con entrada independiente en el menú, teclado de desarrollo y control por inclinación. Consultar su guía para configuración y alcance de pruebas.
+
 1. Abrir `Unity/` en Unity Hub con el editor fijado y esperar la importación del paquete local `Shared/CSharp`.
 2. Usar **Gorilla Escape → Open Bootstrap** y **Play Gorilla Escape**. `Create Foundation Scene` se reserva para crear la foundation si falta; no regenerar escenas compartidas para iniciar una tarea.
 3. Leer [Unity y autoridad](01-architecture/UNITY.md), [entradas y personajes](02-gameplay/INPUT_AND_CHARACTERS.md), [framework propuesto](02-gameplay/MINIGAME_FRAMEWORK.md) y la ficha de la disciplina.
