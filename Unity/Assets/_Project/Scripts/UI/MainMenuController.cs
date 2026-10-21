@@ -95,6 +95,15 @@ namespace GorillaEscape.UI
             float x=(width-600)/2;
             GUI.Label(new Rect(x,55,600,55),"CONECTAR TELÉFONO",title);
             if(GUI.Button(new Rect(40,35,160,45),"VOLVER",action)){preparePhone=false;if(prepareTexture!=null){Destroy(prepareTexture);prepareTexture=null;}Back();}
+            if(!Runtime.ServicesEnabled){
+                GUI.Label(new Rect(x,180,600,140),"Los servicios del teléfono no están activos. Detén Play y usa Gorilla Escape → Play Tests with Phone. Si faltan recursos, prepara el build local.",body);return;
+            }
+            if(Runtime.PhoneBackendFailed||Runtime.PhoneTunnelFailed){
+                GUI.Label(new Rect(x,180,600,90),Runtime.PhoneTunnelFailed?"Cloudflare no pudo publicar la conexión. Reintenta o revisa el diagnóstico.":"No se pudo iniciar el servicio de conexión.",body);
+                if(GUI.Button(new Rect(x,300,280,55),"REINTENTAR",action))Runtime.RetryPhone();
+                if(GUI.Button(new Rect(x+300,300,280,55),"DETALLES",action))OpenDiagnostic();
+                return;
+            }
             if(Runtime.FirewallState=="CHECKING"||Runtime.FirewallState=="AUTHORIZING"){
                 GUI.Label(new Rect(x,180,600,70),"Preparando conexión…",body);return;
             }

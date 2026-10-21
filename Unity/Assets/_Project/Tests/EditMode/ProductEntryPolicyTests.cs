@@ -31,7 +31,7 @@ public class ProductEntryPolicyTests
         void Write(string name,string value)=>values[name]=value;
         string root=System.IO.Path.GetFullPath("packaged-game");
         GorillaEscape.QA.QaRuntimeService.ConfigurePackagedRuntime(root,Read,Write);
-        Assert.AreEqual("CLOUDFLARED",values["GORILLA_CONNECTION_MODE"]);
+        Assert.AreEqual("AUTO",values["GORILLA_CONNECTION_MODE"]);
         Assert.AreEqual(System.IO.Path.Combine(root,"Java","server.jar"),values["GORILLA_IPC_JAR"]);
         Assert.AreEqual(System.IO.Path.Combine(root,"Tools","cloudflared"),values["GORILLA_CLOUDFLARED_PATH"]);
         Assert.AreEqual(root,values["GORILLA_PACKAGE_ROOT"]);

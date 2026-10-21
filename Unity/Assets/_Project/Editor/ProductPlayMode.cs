@@ -19,7 +19,7 @@ namespace GorillaEscape.Editor
 
         static ProductPlayMode()
         {
-            GorillaEscape.QA.QaRuntimeService.EditorServicePermission = () => !SessionState.GetBool(TestRunKey, false);
+            GorillaEscape.QA.QaRuntimeService.EditorServicePermission = PrepareHumanPlayServices;
             MainMenuController.EditorLaunchPermission = () => !SessionState.GetBool(TestRunKey, false);
             TestRunnerApi.RegisterTestCallback(Callbacks);
             EditorApplication.playModeStateChanged += state => {
@@ -29,6 +29,24 @@ namespace GorillaEscape.Editor
                 }
             };
             AssemblyReloadEvents.beforeAssemblyReload += () => TestRunnerApi.UnregisterTestCallback(Callbacks);
+        }
+
+        static bool PrepareHumanPlayServices()
+        {
+            if(Application.isBatchMode||SessionState.GetBool(TestRunKey,false)||!EditorApplication.isPlaying
+                ||UnityEngine.SceneManagement.SceneManager.GetActiveScene().path!=MainMenuController.BootstrapScenePath)return false;
+            string root=Path.GetFullPath(Path.Combine(Application.dataPath,"../Builds/FoundationLinux"));
+            foreach(string file in new[]{"Java/server.jar","Java/runtime/bin/java","Vision/python","Tools/cloudflared","tools/setup-firewall.sh"})
+                if(!File.Exists(Path.Combine(root,file)))return false;
+            if(!SessionState.GetBool(PhysicalSession,false))
+            {
+                foreach(string name in PhysicalVariables)SessionState.SetString(PhysicalSession+name,Environment.GetEnvironmentVariable(name)??"<unset>");
+                SessionState.SetBool(PhysicalSession,true);
+                Environment.SetEnvironmentVariable("GORILLA_PACKAGE_ROOT",root);
+                GorillaEscape.QA.QaRuntimeService.ConfigurePackagedRuntime(root);
+                Environment.SetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA","1");
+            }
+            return true;
         }
 
         [MenuItem("Gorilla Escape/Open Bootstrap", priority = 0)]

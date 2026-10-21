@@ -13,7 +13,7 @@ player = repo / 'Unity/Builds/FoundationLinux/GorillaEscape.x86_64'
 jar = repo / 'Server/target/local-server-0.1.0-SNAPSHOT.jar'
 binary = runtime / 'Tools/cloudflared'
 required = [player, jar, runtime / 'Java/runtime/bin/java', runtime / 'Vision/python']
-mode = os.environ.get('GORILLA_CONNECTION_MODE', 'CLOUDFLARED')
+mode = os.environ.get('GORILLA_CONNECTION_MODE', 'AUTO')
 if mode != 'CABIN':
     required.append(binary)
 for item in required:

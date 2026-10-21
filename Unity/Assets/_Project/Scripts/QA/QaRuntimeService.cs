@@ -38,6 +38,7 @@ namespace GorillaEscape.QA {
         internal string joinClass="NOT CONFIRMED",exportMessage="";
         internal bool physicalConfirmed;
         bool qaPhoneObserved,previewRequested;
+        string lastConnectionState;
         // Editor navigation deliberately has no physical services, even with inherited launcher flags.
         public static Func<bool> EditorServicePermission {private get;set;}
         public static bool EditorServicesAllowed(bool playing,bool batch,bool permitted,string path,string optIn)
@@ -65,7 +66,7 @@ namespace GorillaEscape.QA {
             write=write??Environment.SetEnvironmentVariable;
             void Default(string name,string value){if(string.IsNullOrEmpty(read(name)))write(name,value);}
             Default("GORILLA_PACKAGE_ROOT",root);
-            Default("GORILLA_CONNECTION_MODE","CLOUDFLARED");
+            Default("GORILLA_CONNECTION_MODE","AUTO");
             Default("GORILLA_CLOUDFLARED_PATH",Path.Combine(root,"Tools","cloudflared"));
             Default("GORILLA_IPC_JAVA",Path.Combine(root,"Java","runtime","bin",Application.platform==RuntimePlatform.WindowsPlayer?"java.exe":"java"));
             Default("GORILLA_IPC_JAR",Path.Combine(root,"Java","server.jar"));
@@ -93,6 +94,11 @@ namespace GorillaEscape.QA {
             if(frameTiming!=null&&!timingLogged){double now=Time.realtimeSinceStartupAsDouble;if(previousFrame>=measureStart&&now<=measureEnd)frameTiming.Add((now-previousFrame)*1000);previousFrame=now;if(now>=measureEnd){timingLogged=true;var report=frameTiming.Report();report.clock="Unity Time.realtimeSinceStartupAsDouble; process-local monotonic seconds -> ms";Debug.Log("T018_FRAME_TIMING "+JsonUtility.ToJson(report));}}
             fpsFrames++;double elapsed=Time.realtimeSinceStartupAsDouble-fpsStart;if(elapsed>=1){fps=fpsFrames/elapsed;fpsFrames=0;fpsStart=Time.realtimeSinceStartupAsDouble;}
             vision.Poll();if(vision.State=="RUNNING"&&TestsActive!=previewRequested){vision.SetQaPreview(TestsActive);previewRequested=TestsActive;}if(TestsActive&&vision.PreviewPort>0&&preview==null&&(previewClosing==null||previewClosing.IsCompleted)){preview=new CameraPreviewClient();preview.Start(vision.PreviewPort);}
+            if(Debug.isDebugBuild&&(PhoneActive||TestsActive)){
+                var connection=java?.QaConnection;
+                string state="services="+ServicesEnabled+" backend="+java?.State+" firewall="+connection?.firewallState+" bootstrap="+connection?.bootstrapState+" tunnel="+connection?.tunnelState+" reason="+connection?.fallbackReason+" qr="+qrState;
+                if(state!=lastConnectionState){lastConnectionState=state;Debug.Log("PHONE_CONNECTION "+state);}
+            }
             if(PhoneMetrics!=null)qaPhoneObserved=true;
             var bytes=preview?.Take();if(bytes!=null){try{if(cameraTexture==null)cameraTexture=new Texture2D(2,2,TextureFormat.RGB24,false);if(!CameraPreviewClient.ValidJpeg(bytes)||!cameraTexture.LoadImage(bytes)||cameraTexture.width>320||cameraTexture.height>240){Destroy(cameraTexture);cameraTexture=null;error="PREVIEW INVALID";}}finally{Array.Clear(bytes,0,bytes.Length);}}
             if(vision.Take(out var frame,out var at)&&cameras.Accept(frame,at))fusion.ObserveCamera(frame,at);
@@ -142,13 +148,15 @@ namespace GorillaEscape.QA {
         public void ConfigurePhone(){if(ServicesEnabled&&CanOfferPhoneRecovery)java.RequestNetworkAction("RECOVERY");}
         public void EndPhoneRecovery(){if(ServicesEnabled&&java?.State==IpcState.RUNNING)java.RequestNetworkAction("END_RECOVERY");}
 
+        public bool PhoneTunnelFailed => java?.QaConnection?.bootstrapState=="FAILED";
+        public bool PhoneBackendFailed => java?.State==IpcState.FAILED||java?.State==IpcState.STOPPED;
         public bool PhoneFailed => qrState=="CONFIG_REQUIRED"||!ServicesEnabled||java?.State==IpcState.FAILED||java?.State==IpcState.STOPPED||qrState=="CONNECTION_NOT_READY"&&java?.QaConnection?.bootstrapState=="FAILED";
         public void EnterPhone(){if(ServicesEnabled&&java?.State==IpcState.RUNNING)java.RequestNetworkAction("CHECK");PhoneActive=true;generated=false;ClearQr();qrVisible=joinEnd=0;}
         public void LeavePhone(){EndPhoneRecovery();PhoneActive=false;ClearQr();generated=false;}
         public async void RetryPhone(){
             EndPhoneRecovery();generated=false;ClearQr();qrVisible=joinEnd=0;
             if(!ServicesEnabled||quitting)return;
-            if(java.State==IpcState.RUNNING){java.RequestNetworkAction("CHECK");return;}
+            if(java.State==IpcState.RUNNING){java.RequestNetworkAction("CHECK");if(PhoneTunnelFailed)java.RequestConnectionMode(java.QaConnection.requestedMode??"AUTO");return;}
             if(javaRun!=null&&!javaRun.IsCompleted)return;
             java.Dispose();java=new JavaProbeSupervisor(enableLobby:true);
             fusion=new InputFusion(java.PhoneInputs,new FusionSettings());error="";qrState="STARTING";
