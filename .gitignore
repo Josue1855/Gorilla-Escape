@@ -21,6 +21,21 @@ __pycache__/
 /Unity/Builds/
 /Unity/*.csproj
 /Unity/*.sln
+
+# Prototipo alpha aislado de Josue
+/Prototypes/JosueAlpha/Unity/[Ll]ibrary/
+/Prototypes/JosueAlpha/Unity/[Tt]emp/
+/Prototypes/JosueAlpha/Unity/[Oo]bj/
+/Prototypes/JosueAlpha/Unity/[Ll]ogs/
+/Prototypes/JosueAlpha/Unity/[Uu]ser[Ss]ettings/
+/Prototypes/JosueAlpha/Unity/[Bb]uild/
+/Prototypes/JosueAlpha/Unity/[Bb]uilds/
+/Prototypes/JosueAlpha/Unity/Assets/_Recovery/
+/Prototypes/JosueAlpha/Unity/*.csproj
+/Prototypes/JosueAlpha/Unity/*.sln*
+/Prototypes/JosueAlpha/CameraTracker/.venv/
+/Prototypes/JosueAlpha/CameraTracker/vendor/
+/Prototypes/JosueAlpha/MotionRelay/cloudflared.exe
 # Regenerated defaults for unused systems, or local editor/UI state.
 /Unity/ProjectSettings/PackageManagerSettings.asset
 /Unity/ProjectSettings/Packages/com.unity.ai.assistant/

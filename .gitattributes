@@ -1,4 +1,7 @@
 * text=auto
+
+# Unity serializes empty material properties with a trailing space.
+Prototypes/JosueAlpha/Unity/Assets/**/*.mat whitespace=-trailing-space
 *.cs text eol=lf
 *.java text eol=lf
 *.js text eol=lf
