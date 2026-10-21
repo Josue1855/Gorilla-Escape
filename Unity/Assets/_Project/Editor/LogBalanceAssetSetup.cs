@@ -33,12 +33,16 @@ namespace GorillaEscape.Editor
         [MenuItem("Gorilla Escape/Log Balance/Rebuild Art Prefabs")]
         public static void CreatePrefabs()
         {
+            var args=Environment.GetCommandLineArgs();
+            int sourceArg=Array.IndexOf(args,"--log-balance-source");
+            string selected=sourceArg>=0&&sourceArg+1<args.Length?args[sourceArg+1]:null;
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             foreach(string folder in new[]{"Materials","Prefabs"})
                 if(!AssetDatabase.IsValidFolder(Root+"/"+folder))AssetDatabase.CreateFolder(Root,folder);
             var manifest=JsonUtility.FromJson<Manifest>(File.ReadAllText(Root+"/asset-manifest.json"));
             foreach(var source in manifest.assets)
             {
+                if(selected!=null&&source.name!=selected)continue;
                 var surfaces=new Dictionary<string,Material>();
                 foreach(var surface in source.materials)
                 {
@@ -92,7 +96,7 @@ namespace GorillaEscape.Editor
                         }
                         var renderers=model.GetComponentsInChildren<Renderer>();
                         var bounds=GeometryBounds(renderers);
-                        float height=source.name=="Vagabundo"?2.35f:source.name=="low_poly_trees"?1:bounds.size.y;
+                        float height=source.name=="Vagabundo"?2.35f:(source.name=="low_poly_trees"||source.name=="low_poly_grass_pack")?1:bounds.size.y;
                         model.transform.localScale*=height/Mathf.Max(.001f,bounds.size.y);
                         bounds=GeometryBounds(renderers);
                         model.transform.position-=new Vector3(bounds.center.x,bounds.min.y,bounds.center.z);

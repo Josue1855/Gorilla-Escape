@@ -58,3 +58,17 @@ Capturas del ejecutable con los modelos suministrados: [caminata](../evidence/lo
 Cambios principales: `LogBalanceStage.cs`, `LogBalanceController.cs`, nuevo `LogBalanceCharacter.cs`, preparación de assets en `LogBalanceAssetSetup.cs` y `tools/art/prepare_log_balance.py`, pruebas `LogBalanceArtTests.cs`, módulo integrado de animación, originales/derivados/prefabs/materiales/texturas/metadatos, créditos y documentación. Las reglas de equilibrio y el transporte de teléfono no cambiaron.
 
 Pendientes: refinar la calidad de poses/contacto si se desea una animación final, sustituir los gorilas NPC provisionales por modelos propios y validar sensación con teléfono físico. No se incorporaron ragdoll, obstáculos ni nuevos mapas. Los gates físicos de la base siguen independientes.
+
+## Pasto adicional proporcionado
+
+`low_poly_grass_pack.glb` se conserva en Sources y aporta cuatro variantes (`Grass_00` a `Grass_03`). La licencia y autor Anskar proceden del GLB y figuran en los créditos. Los pequeños grupos se distribuyen de forma reproducible, con variación de escala y giro, junto a la vegetación existente. Se preservan huecos entre grupos, el acceso al tronco, la meta y el espacio de los espectadores; no modifica el orden ni la distribución de los árboles.
+
+Para preparar sólo este recurso sin regenerar los FBX anteriores:
+
+```sh
+blender -b --python tools/art/prepare_log_balance.py -- /ruta/absoluta/al/repositorio --asset low_poly_grass_pack
+```
+
+El comando de editor `LogBalanceAssetSetup.CreatePrefabs` acepta `--log-balance-source low_poly_grass_pack` en batch; el menú normal sigue preparando todos los recursos del manifiesto.
+
+Validación de la incorporación del pasto: EditMode 183/183 PASS, flujo PlayMode 2/2 PASS, build Linux Succeeded con 0 errores/advertencias, validadores foundation/gestión PASS y revisión gráfica del ejecutable. [Captura con pasto](../evidence/log-balance-low-poly-2026-10-20/grass.png). Las reglas y controles del juego permanecen sin cambios.

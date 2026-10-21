@@ -7,12 +7,12 @@ public sealed class LogBalanceArtTests
 {
     [Test] public void SuppliedModelsAndTexturesAreAvailableWithoutRuntimeGlbLoader()
     {
-        foreach(string name in new[]{"trunk","Vagabundo","Tree_00","Tree_02","Tree_12"})
+        foreach(string name in new[]{"trunk","Vagabundo","Tree_00","Tree_02","Tree_12","Grass_00","Grass_01","Grass_02","Grass_03"})
         {
             var prefab=Resources.Load<GameObject>("LogBalance/Prefabs/"+name);Assert.NotNull(prefab,name);
             var renderers=prefab.GetComponentsInChildren<Renderer>();Assert.That(renderers.Length,Is.GreaterThan(0));
             foreach(var renderer in renderers)foreach(var material in renderer.sharedMaterials)
-            {Assert.NotNull(material);Assert.That(material.GetFloat("_Metallic"),Is.Zero);if(name!="trunk")Assert.NotNull(material.mainTexture,name+": albedo missing");}
+            {Assert.NotNull(material);Assert.That(material.GetFloat("_Metallic"),Is.Zero);if(name=="Vagabundo"||name.StartsWith("Tree_"))Assert.NotNull(material.mainTexture,name+": albedo missing");}
         }
     }
     [Test] public void CastawayRetainsWeightedSkeletonAndProceduralWalkingDeformsMesh()

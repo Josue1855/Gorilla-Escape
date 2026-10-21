@@ -40,7 +40,7 @@ namespace GorillaEscape.Minigames.LogBalance
             human=new GameObject("Human castaway — controlled").transform;human.SetParent(root.transform,false);
             figure.transform.SetParent(human,false);character=figure.GetComponent<LogBalanceCharacter>();
             if(character==null||!character.HasRig)throw new System.InvalidOperationException("Castaway rig unavailable.");
-            PopulateJungle();CreateSpectators();Present(0,0,false,0,0,false,false);
+            PopulateJungle();PopulateGrass();CreateSpectators();Present(0,0,false,0,0,false,false);
         }
         void SampleDeck(GameObject log)
         {
@@ -149,6 +149,30 @@ namespace GorillaEscape.Minigames.LogBalance
                         leaves.AddRange(new[]{-across,tip,across,across,tip,-across});
                     }
                     Facets("Low-poly jungle undergrowth",leaves,i%2==0?new Color(.13f,.3f,.1f):new Color(.3f,.43f,.12f)).localPosition=new Vector3(x,.2f,z);
+                }
+            }
+        }
+        void PopulateGrass()
+        {
+            // Small separated patches, independent of the tree seed, keep open ground and both landings clear.
+            var rng=new System.Random(9123);
+            foreach(int side in new[]{-1,1})for(int patch=0;patch<8;patch++)
+            {
+                float x=-21+(float)rng.NextDouble()*42;
+                float z=side*(length/2+1.8f+(float)rng.NextDouble()*12);
+                if(Mathf.Abs(x)<3&&Mathf.Abs(z)<length/2+7)continue;
+                if(Mathf.Abs(Mathf.Abs(x)-3.2f)<1.4f&&Mathf.Abs(z)<length/2+3.5f)continue;
+                int count=2+rng.Next(2);
+                for(int tuft=0;tuft<count;tuft++)
+                {
+                    float px=x+((float)rng.NextDouble()-.5f)*1.1f,pz=z+((float)rng.NextDouble()-.5f)*.8f;
+                    float edge=length/2+.15f+(Mathf.Abs(px)<2?0:Mathf.Sin(px*.7f)*.65f);
+                    float ground=Mathf.Lerp(.1f,.3f,(Mathf.Abs(pz)-edge)/(45-edge));
+                    var grass=Asset("Grass_"+rng.Next(4).ToString("00"),"Supplied low-poly grass patch",root.transform);
+                    float height=.3f+(float)rng.NextDouble()*.3f;
+                    grass.transform.localScale=new Vector3(height*(.85f+(float)rng.NextDouble()*.35f),height,height);
+                    grass.transform.localPosition=new Vector3(px,ground-.015f,pz);
+                    grass.transform.localRotation=Quaternion.Euler(0,(float)rng.NextDouble()*360,0);
                 }
             }
         }

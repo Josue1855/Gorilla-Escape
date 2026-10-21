@@ -9,8 +9,11 @@ root=Path(sys.argv[sys.argv.index('--')+1]).resolve()
 sources=root/'Unity/Assets/_Project/Art/LogBalance/Sources'
 out=root/'Unity/Assets/_Project/Resources/LogBalance'
 (out/'Models').mkdir(parents=True,exist_ok=True);(out/'Textures').mkdir(exist_ok=True)
-manifest={'source':'User-supplied GLB files; embedded Sketchfab attribution retained','assets':[]}
-for name in ['trunk','low_poly_trees','Vagabundo']:
+selected=sys.argv[sys.argv.index('--asset')+1] if '--asset' in sys.argv else None
+manifest_path=out/'asset-manifest.json'
+manifest=json.loads(manifest_path.read_text()) if selected and manifest_path.exists() else {'source':'User-supplied GLB files; embedded Sketchfab attribution retained','assets':[]}
+if selected:manifest['assets']=[a for a in manifest['assets'] if a['name']!=selected]
+for name in ([selected] if selected else ['trunk','low_poly_trees','Vagabundo','low_poly_grass_pack']):
  path=sources/(name+'.glb');data=path.read_bytes();size,kind=struct.unpack_from('<II',data,12)
  gltf=json.loads(data[20:20+size]);offset=20+size;bin_size,bin_type=struct.unpack_from('<II',data,offset);binary=data[offset+8:offset+8+bin_size]
  images=[]
@@ -23,7 +26,8 @@ for name in ['trunk','low_poly_trees','Vagabundo']:
   materials.append({'name':m['name'],'color':p.get('baseColorFactor',[1,1,1,1]),'texture':images[idx] if idx is not None else ''})
  bpy.ops.wm.read_factory_settings(use_empty=True);bpy.ops.import_scene.gltf(filepath=str(path));bpy.context.scene.frame_set(0);bpy.context.view_layer.update()
  meshes=[o for o in bpy.context.scene.objects if o.type=='MESH' and any(m.type=='ARMATURE' for m in o.modifiers)] if name=='Vagabundo' else [o for o in bpy.context.scene.objects if o.type=='MESH']
- if name=='low_poly_trees':
+ if name in {'low_poly_trees','low_poly_grass_pack'}:
+  prefix='Grass' if name=='low_poly_grass_pack' else 'Tree'
   # The pack is laid out for inspection. Export each variety separately, grounded and centered.
   for index,mesh in enumerate(meshes):
    bpy.ops.object.select_all(action='DESELECT');mesh.select_set(True);bpy.context.view_layer.objects.active=mesh
@@ -33,9 +37,9 @@ for name in ['trunk','low_poly_trees','Vagabundo']:
    # Pack uses Blender Z-up after import; each model's pivot is now at its own trunk base.
    center=Vector(((lo.x+hi.x)/2,(lo.y+hi.y)/2,lo.z));height=max(.01,hi.z-lo.z)
    for v in mesh.data.vertices:v.co=(v.co-center)*(1/height)
-   filename=f'Tree_{index:02d}.fbx'
+   filename=f'{prefix}_{index:02d}.fbx'
    bpy.ops.export_scene.fbx(filepath=str(out/'Models'/filename),use_selection=True,object_types={'MESH'},axis_forward='-Z',axis_up='Y',add_leaf_bones=False,bake_anim=False,use_mesh_modifiers=True)
-  model_files=[f'Tree_{i:02d}.fbx' for i in range(len(meshes))]
+  model_files=[f'{prefix}_{i:02d}.fbx' for i in range(len(meshes))]
  else:
   # Keep the source hierarchy, bone weights and authored action. A parent normalizes world units.
   pts=[o.matrix_world@Vector(v) for o in meshes for v in o.bound_box]

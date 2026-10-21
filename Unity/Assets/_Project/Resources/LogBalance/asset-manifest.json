@@ -235,6 +235,36 @@
       "animations": [
         "Take 001"
       ]
+    },
+    {
+      "name": "low_poly_grass_pack",
+      "sha256": "ec4717052e0288f91466460d65c2c8627c54afdd56942b266c88ce1e70fde5c8",
+      "credits": {
+        "author": "Anskar (https://sketchfab.com/Anskar)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/low-poly-grass-pack-2ffb4d5302c14d038eaf6488b8c7ede2",
+        "title": "Low Poly Grass Pack"
+      },
+      "materials": [
+        {
+          "name": "Grass",
+          "color": [
+            0.0257092,
+            0.399547,
+            0.135453,
+            1.0
+          ],
+          "texture": ""
+        }
+      ],
+      "models": [
+        "Grass_00.fbx",
+        "Grass_01.fbx",
+        "Grass_02.fbx",
+        "Grass_03.fbx"
+      ],
+      "skins": 0,
+      "animations": []
     }
   ]
 }
