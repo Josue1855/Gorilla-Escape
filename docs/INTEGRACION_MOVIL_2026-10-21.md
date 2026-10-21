@@ -59,3 +59,7 @@ No debe haber otra sesión del servidor del juego activa durante esa prueba. El 
 - Flutter abre el control web: no implementa un segundo controlador nativo de sensores. La cámara virtual prueba permisos y navegación; una lectura óptica de QR en cámara física sigue pendiente.
 - La prueba gráfica de Unity corrió en una pantalla virtual con renderizado por software y emuladores simultáneos; su frecuencia observada fue baja. No certifica rendimiento ni una partida física completa calibrada. Las pruebas de reglas y flujo son independientes de esa medición.
 - El torneo completo continúa fuera de la disponibilidad del prototipo del tronco. No se declara que todo el juego esté “perfecto”.
+
+## Actualización: instalación física iOS con XCross
+
+Después de este reporte se compiló la Companion en modo release/AOT con XCross 2.0.5 y Swift 6.4.1 en Linux. La instalación por USB en el iPhone 15 se confirmó consultando el registro de aplicaciones: Gorilla Escape, versión 1.0.0, compilación 1. No se hicieron merges. Esto verifica compilación, firma e instalación; no reemplaza la prueba de cámara, sensores y partida completa en el teléfono. El lanzamiento automático fue rechazado por el servicio de procesos de iOS; abrir desde el icono y comprobar cualquier aviso del sistema sigue pendiente.

@@ -23,4 +23,4 @@ flutter run -d emulator-5554
 flutter build apk --debug
 ```
 
-APK de desarrollo: `build/app/outputs/flutter-apk/app-debug.apk` (no versionado). Android verificado en API 36. El proyecto iOS incluye permiso de cámara y destino mínimo 15.5; compilar y firmar requiere macOS/Xcode y sigue pendiente. La aplicación es un acompañante con apertura del control web: no constituye un controlador de sensores nativo independiente.
+APK de desarrollo: `build/app/outputs/flutter-apk/app-debug.apk` (no versionado). Android verificado en API 36. El proyecto iOS incluye permiso de cámara y destino mínimo 15.5. Se compiló y firmó desde Linux con XCross 2.0.5 y se instaló por USB en un iPhone 15. Para repetirlo, usar `xcross flutter run --release --usb` con el Swift 6.4.1 del SDK de XCross en PATH y una sesión de firma configurada. La partida física completa y sus permisos de movimiento siguen pendientes de validación. La aplicación es un acompañante con apertura del control web: no constituye un controlador de sensores nativo independiente.
