@@ -153,6 +153,19 @@ jobs:
           } | ConvertTo-Json | Set-Content "$root/BUILD_INFO.json" -Encoding utf8
           Compress-Archive -Path "$root/*" -DestinationPath 'GorillaEscape-Windows64-candidate.zip' -Force
           (Get-FileHash 'GorillaEscape-Windows64-candidate.zip' -Algorithm SHA256).Hash | Set-Content 'GorillaEscape-Windows64-candidate.sha256' -Encoding ascii
+      - name: Run Windows Player + Java + PWA + SQLite smoke
+        shell: pwsh
+        run: |
+          & .\tools\windows\Test-WindowsCandidateSmoke.ps1 -PackageRoot ./package
+          if ($LASTEXITCODE -ne 0) { throw 'Windows product smoke failed' }
+      - name: Preserve Windows runtime smoke evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-runtime-smoke
+          path: candidate-smoke-evidence/
+          if-no-files-found: warn
+          retention-days: 14
       - name: Save candidate and checksum
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
