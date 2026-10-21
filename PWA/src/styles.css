@@ -53,3 +53,16 @@ button:disabled { cursor: wait; opacity: .7; }
 .tilt-instruction { display: flex; justify-content: space-between; align-items:center; gap:.5rem; font-size:.78rem; letter-spacing:.08em; font-weight:800; margin-top:1.4rem; }.tilt-instruction span { color:#ffcb86; font-size:1.6rem; }.control-caption { font-size:.78rem; color:#b9cdbb; }.control-help { text-align:left; margin-top:1.5rem; color:#b9cdbb; font-size:.8rem; border-top:1px solid #7fa58b55; }.control-help summary { text-align:center; }
 @media (max-height:700px) { .control-top { margin-bottom:1rem; }.island-controller h1 { font-size:2.5rem; }.river-control { min-height:175px; height:25svh; margin-top:.6rem; }.control-instruction { font-size:.8rem; }.tilt-instruction { margin:.6rem 0; }.control-help { margin-top:.5rem; } }
 .connection-recovery { margin-top: 1rem; padding-top: .5rem; border-top: 1px solid var(--core-muted); }.connection-recovery p { font-size: .9rem; }.prepare-link { display: block; padding: 1rem 0; color: var(--core-orange); text-underline-offset: .2rem; min-height: 48px; }
+
+.island-controller[data-game="lobby"] .river-control { opacity: .45; }
+.island-controller[data-phase="Paused"] .river-control { filter: saturate(.35); }
+.island-controller[data-phase="Won"] .control-instruction { color: #eac478; }
+.island-controller[data-phase="Fell"] .control-instruction { color: #f3b29c; }
+.control-instruction { transition: color 180ms ease; }
+.river-control { transition: opacity 200ms ease, filter 200ms ease; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+.profile-setup { margin: 20px 0; text-align: left; }
+.profile-setup label { display: block; margin-top: 16px; }
+.profile-setup input { box-sizing: border-box; display: block; width: 100%; margin: 10px 0; padding: 14px; font: inherit; border: 1px solid #718a7c; background: #102b25; color: #f4e6c9; border-radius: 10px; }

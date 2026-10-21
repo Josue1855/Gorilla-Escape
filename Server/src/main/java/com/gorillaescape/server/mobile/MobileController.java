@@ -50,6 +50,7 @@ public final class MobileController {
     @PostMapping("/reconnect")public MobileRuntime.Answer reconnect(@RequestBody Resume r){try{return runtime.reconnect(r.sessionId(),r.playerId(),r.resumeToken(),r.offer());}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"RESUME_REJECTED");}}
     public record Leave(String peerId,String resumeToken){}
     @PostMapping("/disconnect")public Map<String,String> disconnect(@RequestBody Leave r){try{runtime.disconnect(r.peerId(),r.resumeToken());return Map.of("state","DISCONNECTED");}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"DISCONNECT_REJECTED");}}
+    @PostMapping("/profile")public Map<String,Object> profile(@RequestBody MobileRuntime.ProfileRequest request){try{return runtime.createProfile(request);}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"PROFILE_NOT_CONFIRMED");}}
     @GetMapping("/diagnostics")public Map<String,Object> diagnostics(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied){operator(r,supplied);return Map.of("peers",runtime.peerCount(),"inputs",runtime.inputs.metrics(),"joinAttempts",runtime.joinDiagnostics());}
     @PostMapping("/end")public Map<String,String> end(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied){operator(r,supplied);runtime.destroy();return Map.of("state","CLOSED");}
 }

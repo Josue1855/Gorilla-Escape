@@ -16,6 +16,8 @@ function Controller() {
   const [view, setView] = useState(null);
   const [diagnostic, setDiagnostic] = useState(null);
   const [copyStatus, setCopyStatus] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [profileStatus, setProfileStatus] = useState(null);
   useEffect(() => {
     const session = new ControllerSession({ notify: setView });
     model.current = session; setView(session.snapshot());
@@ -45,6 +47,13 @@ function Controller() {
         {['UNREACHABLE', 'INSECURE'].includes(view?.connectionCheck) && <p role="status">Este navegador no pudo verificar la conexión. Comprueba la misma Wi-Fi y que el juego siga abierto. Si usas conexión local, revisa la confianza del certificado; la PC ofrece Configurar este teléfono.</p>}
         {!view?.publicTunnel && <a className="prepare-link" href="/prepare" target="_blank" rel="noreferrer">Ver preparación de este teléfono</a>}
       </div>}
+      {state === 'PERMISSION_REQUIRED' && <details className="profile-setup"><summary>Tu nombre en la isla (opcional)</summary>
+        <label>Nombre del náufrago<input value={displayName} maxLength={40} autoComplete="off" onChange={e => setDisplayName(e.target.value)} disabled={Boolean(profileStatus)}/></label>
+        <button className="secondary" disabled={!displayName.trim() || Boolean(profileStatus)} onClick={async () => {
+          setProfileStatus('SAVING'); setProfileStatus(await model.current.createProfile(displayName)); setDisplayName('');
+        }}>Guardar nombre</button>
+        <p role="status">{profileStatus === 'SAVED' ? 'Nombre guardado en esta PC.' : profileStatus === 'SAVING' ? 'Guardando…' : profileStatus ? 'No pudimos confirmar el guardado. Puedes jugar sin nombre; no repetiremos la operación.' : 'Puedes continuar sin registrar un nombre.'}</p>
+      </details>}
       <aside className="safety" aria-label="Seguridad"><strong>Sujeta firmemente tu teléfono.</strong><span>No lo sueltes ni lo lances durante el juego.</span></aside>
       {(label || canRetryPermission) && <button className="primary" onClick={() => {
         setDiagnostic(null); setCopyStatus('');

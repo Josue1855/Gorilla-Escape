@@ -14,7 +14,7 @@ public final class PublicIngress implements AutoCloseable {
     public static final int MAX_BODY=73728;
     // Signaling SDP has its own bounds; mobile sample JSON intentionally caps strings at512.
     private static final tools.jackson.databind.json.JsonMapper SIGNAL_JSON=tools.jackson.databind.json.JsonMapper.builder(tools.jackson.core.json.JsonFactory.builder().streamReadConstraints(tools.jackson.core.StreamReadConstraints.builder().maxNestingDepth(8).maxStringLength(65536).maxNumberLength(32).build()).build()).enable(tools.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION).enable(tools.jackson.databind.DeserializationFeature.FAIL_ON_TRAILING_TOKENS).build();
-    public static final Set<String> SIGNAL=Set.of("/mobile/join","/mobile/reconnect","/mobile/disconnect");
+    public static final Set<String> SIGNAL=Set.of("/mobile/join","/mobile/reconnect","/mobile/disconnect","/mobile/profile");
     private static final Set<String> STATIC=Set.of("/","/index.html","/manifest.webmanifest","/sw.js","/icons/icon-192.png","/icons/icon-512.png");
     @FunctionalInterface public interface Signaling { Object apply(String path,byte[] body)throws Exception; }
     private final HttpServer server;
@@ -34,6 +34,7 @@ public final class PublicIngress implements AutoCloseable {
         case "/mobile/join" -> runtime.join(SIGNAL_JSON.readValue(body,MobileRuntime.Signal.class));
         case "/mobile/reconnect" -> {var r=SIGNAL_JSON.readValue(body,MobileController.Resume.class);yield runtime.reconnect(r.sessionId(),r.playerId(),r.resumeToken(),r.offer());}
         case "/mobile/disconnect" -> {var r=SIGNAL_JSON.readValue(body,MobileController.Leave.class);runtime.disconnect(r.peerId(),r.resumeToken());yield Map.of("state","DISCONNECTED");}
+        case "/mobile/profile" -> runtime.createProfile(SIGNAL_JSON.readValue(body,MobileRuntime.ProfileRequest.class));
         default -> throw new IOException("ROUTE_DENIED");
     });}
     public URI origin(){return URI.create("http://127.0.0.1:"+server.getAddress().getPort());}

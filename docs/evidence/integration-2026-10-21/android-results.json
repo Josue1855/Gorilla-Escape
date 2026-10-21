@@ -1,0 +1,144 @@
+{
+  "scope": "Android API36 virtual sensors; actual PWA/RTC/Java/Unity; localhost via ADB reverse. Not physical LAN/TLS/iPhone acceptance.",
+  "cases": {
+    "pwaAuthorizedPlayerPersistence": "PASS",
+    "sensorReady": "PASS",
+    "unityAutoReturnAndGameContext": "PASS",
+    "backgroundForeground": "PASS",
+    "actualRtcMotionAck": "PASS",
+    "noAdmission": "PASS"
+  },
+  "gate": "PASS",
+  "stage": "COMPLETE",
+  "webAccessibilityTouchFallback": true,
+  "controllerState": "INPUT_READY",
+  "transport": {
+    "motionSubmitted": 693,
+    "motionSent": 693,
+    "motionAck": 692,
+    "motionErrors": 0,
+    "overwritten": 0,
+    "errors": 0
+  },
+  "sensors": {
+    "captureRevision": "t010-2-coarsened-clock",
+    "state": "RUNNING",
+    "measurementClock": "monotonic callback receipt",
+    "channels": {
+      "motion": {
+        "permission": "not-required-by-api",
+        "captured": 887,
+        "rawCallbacks": 887,
+        "validSamples": 887,
+        "rawAcquisition": {
+          "count": 887,
+          "windowCount": 887,
+          "capacity": 4096,
+          "durationMs": 18334.099999997765,
+          "actualMeasuredHz": 48.32525185311022,
+          "tier": 30,
+          "intervalMs": {
+            "min": 0.6999999992549419,
+            "median": 16.800000000745058,
+            "p95": 48.099999997764826
+          }
+        },
+        "validUnique": {
+          "count": 887,
+          "windowCount": 887,
+          "capacity": 4096,
+          "durationMs": 18334.099999997765,
+          "actualMeasuredHz": 48.32525185311022,
+          "tier": 30,
+          "intervalMs": {
+            "min": 0.6999999992549419,
+            "median": 16.800000000745058,
+            "p95": 48.099999997764826
+          }
+        },
+        "duplicateOrOutOfOrder": 0,
+        "timingRejected": 0,
+        "invalidFields": 0,
+        "missingFields": 0,
+        "missingAxes": {},
+        "invalidAxes": {},
+        "ageMs": 173.90000000223517,
+        "availability": {
+          "acceleration": "present",
+          "accelerationIncludingGravity": "present",
+          "rotationRate": "present"
+        }
+      },
+      "orientation": {
+        "permission": "not-required-by-api",
+        "captured": 55,
+        "rawCallbacks": 55,
+        "validSamples": 55,
+        "rawAcquisition": {
+          "count": 55,
+          "windowCount": 55,
+          "capacity": 4096,
+          "durationMs": 17816.800000000745,
+          "actualMeasuredHz": 3.0308472901978885,
+          "tier": "degraded-below-20",
+          "intervalMs": {
+            "min": 8.100000001490116,
+            "median": 46.899999998509884,
+            "p95": 1739.199999999255
+          }
+        },
+        "validUnique": {
+          "count": 55,
+          "windowCount": 55,
+          "capacity": 4096,
+          "durationMs": 17816.800000000745,
+          "actualMeasuredHz": 3.0308472901978885,
+          "tier": "degraded-below-20",
+          "intervalMs": {
+            "min": 8.100000001490116,
+            "median": 46.899999998509884,
+            "p95": 1739.199999999255
+          }
+        },
+        "duplicateOrOutOfOrder": 0,
+        "timingRejected": 0,
+        "invalidFields": 1,
+        "missingFields": 0,
+        "missingAxes": {},
+        "invalidAxes": {},
+        "ageMs": 703.6999999992549,
+        "availability": {
+          "orientation": "present"
+        }
+      }
+    }
+  },
+  "gameContext": {
+    "version": 1,
+    "gameId": "log-balance",
+    "phase": "Ready",
+    "playerId": 1
+  },
+  "ownedJavaResiduals": 0,
+  "cleanup": [
+    {
+      "event": "STOPPED",
+      "cleanupComplete": true,
+      "forced": false,
+      "exitCode": 0
+    }
+  ],
+  "surface": {
+    "visualApplied": false,
+    "cameraCleanup": true,
+    "javaCleanup": true,
+    "controlsRestored": true,
+    "qaPhoneObserved": false,
+    "phoneAccepted": 483,
+    "previewOverwritten": 0,
+    "visualFrame": 0,
+    "endOfFrame": 0,
+    "unityUpdateFps": 2.6085793549012686,
+    "previewState": ""
+  }
+}

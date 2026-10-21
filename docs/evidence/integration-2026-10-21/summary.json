@@ -1,0 +1,46 @@
+{
+  "branch": "feature/gameplay-desafio-del-tronco",
+  "mergePerformed": false,
+  "flutter": {
+    "unitWidgetTests": 2,
+    "analyze": "PASS",
+    "apk": "debug",
+    "emulators": [
+      {
+        "api": 36,
+        "display": "1080x2400",
+        "cameraDeniedRecovery": "PASS",
+        "invalidLink": "PASS"
+      },
+      {
+        "api": 36,
+        "display": "720x1280",
+        "portraitActionVisible": "PASS",
+        "landscapeActionReachableByScroll": "PASS",
+        "cameraPermissionAllowed": "PASS"
+      }
+    ],
+    "appErrorLogLines": 0,
+    "emulatorSystemUiStartupAnr": "Observed during cold boot; recovered using Wait. Not an app crash or a startup performance certification."
+  },
+  "pwaTests": 79,
+  "javaFullSuite": {
+    "total": 115,
+    "failures": 0,
+    "skipped": 4
+  },
+  "additionalProfileTests": 3,
+  "playersBackendTests": 17,
+  "unity": {
+    "editMode": 186,
+    "playMode": 5,
+    "build": "PASS",
+    "graphicalPerformance": "Not certified: software rendering with simultaneous emulators."
+  },
+  "artifactSha256": {
+    "unityExecutable": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f",
+    "technicalServer": "c02a3d0d884bfc5ff086d252584946b3d42201382007c098da730fb1aba27da3",
+    "playersBackend": "ee57b46291bc880a7204fd584a101a65ec6c46cd46bf51ec9f2a084c965d3b56",
+    "androidApk": "18523452ec34b889d3e57aeef7c36d32ad992f21d15dd9a5a1ebb3399ec1fa20"
+  }
+}

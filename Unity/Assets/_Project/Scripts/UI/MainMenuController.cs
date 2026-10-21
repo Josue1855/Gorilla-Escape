@@ -77,6 +77,7 @@ namespace GorillaEscape.UI
         {
             if (Environment.GetEnvironmentVariable("GORILLA_QA_AUTOSTART_TESTS") == "1") OpenTests();
             else if(Environment.GetEnvironmentVariable("GORILLA_QA_AUTOSTART_PHONE")=="1")OpenPhone();
+            else if(Debug.isDebugBuild&&Environment.GetEnvironmentVariable("GORILLA_QA_AUTOSTART_LOG_BALANCE")=="1"){OpenLogBalance();OpenPhoneForLogBalance();}
         }
         public void OpenDiagnostic(){if(InPhone){Runtime.LeavePhone();InPhone=false;}if(!InTests){InTests=true;tests.Enter();}}
         public void OpenPhoneForLogBalance(){returnToLogBalance=true;CloseLogBalance();OpenPhone();}

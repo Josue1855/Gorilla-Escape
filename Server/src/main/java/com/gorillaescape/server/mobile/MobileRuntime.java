@@ -15,6 +15,36 @@ import org.springframework.beans.factory.DisposableBean;
 @Component
 @ConditionalOnProperty(name="gorilla.mobile.rtc-enabled",havingValue="true")
 public final class MobileRuntime implements DisposableBean {
+    @org.springframework.beans.factory.annotation.Autowired(required=false) private PlayersBackend playersBackend;
+    public record ProfileRequest(String peerId,String resumeToken,String displayName){}
+    public Map<String,Object> createProfile(ProfileRequest request)throws Exception {
+        Peer peer;
+        synchronized(this){
+            peer=peers.get(request.peerId());
+            if(peer==null||peer.stopped||!peer.helloConfirmed||request.resumeToken()==null
+                ||!java.security.MessageDigest.isEqual(peer.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8),request.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8)))throw new IOException("PROFILE_AUTHORITY");
+        }
+        synchronized(peer.profileLock){
+            if(peer.stopped)throw new IOException("PROFILE_AUTHORITY");
+            if(peer.profile!=null)return peer.profile;
+            if(peer.profileAttempted)throw new IOException("PROFILE_NOT_CONFIRMED");
+            if(playersBackend==null)throw new IOException("PLAYERS_UNAVAILABLE");
+            String name=request.displayName();
+            if(name==null||name.isBlank()||name.length()>40)throw new IOException("PROFILE_NAME");
+            peer.profileAttempted=true; // An uncertain write must never be replayed automatically.
+            peer.profile=playersBackend.create(name);
+            return peer.profile;
+        }
+    }
+    private volatile tools.jackson.databind.JsonNode gameContext;
+    private volatile long gameContextAt;
+    public void presentGame(tools.jackson.databind.JsonNode context)throws IOException {
+        GamePresentation.validate(context);
+        gameContext=context.deepCopy();gameContextAt=System.nanoTime();
+    }
+    private tools.jackson.databind.JsonNode currentGame(){
+        return System.nanoTime()-gameContextAt<3_000_000_000L?gameContext:null;
+    }
     public final PhoneInputHub inputs=new PhoneInputHub();
     private final TechnicalSession session=new TechnicalSession(System::nanoTime,30_000_000_000L,5_000_000_000L,30_000_000_000L);
     private final Map<String,Peer> peers=new HashMap<>();
@@ -123,7 +153,7 @@ public final class MobileRuntime implements DisposableBean {
         final List<RTCDataChannel> channels=new ArrayList<>();final RTCPeerConnection pc;
         volatile boolean statsPending;volatile long lastStats;
         volatile long lastSeen=System.nanoTime();volatile boolean stopped;volatile ObjectNode lastInput;
-        final JoinDiagnostic diagnostic;final boolean initial;boolean helloConfirmed;
+        final JoinDiagnostic diagnostic;final boolean initial;final Object profileLock=new Object();Map<String,Object> profile;boolean profileAttempted;volatile boolean helloConfirmed;
         Peer(TechnicalSession.Joined joined,JoinDiagnostic diagnostic,boolean initial){this.joined=joined;this.diagnostic=diagnostic;this.initial=initial;gate=new GorillaProtocol.Gate(new GorillaProtocol.Identity(joined.sessionId(),joined.playerId(),joined.sessionDeviceId()),System::currentTimeMillis,2000,250,120);
             var c=new RTCConfiguration();c.iceServers.clear();c.portAllocatorConfig=rtcPorts();
             pc=factory.createPeerConnection(c,new PeerConnectionObserver(){public void onIceCandidate(RTCIceCandidate candidate){diagnostic.candidate(candidate.sdp);}public void onIceGatheringChange(RTCIceGatheringState s){diagnostic.event("iceGatheringState",s.name());if(s==RTCIceGatheringState.COMPLETE)gathered.countDown();}public void onIceConnectionChange(RTCIceConnectionState s){diagnostic.event("iceConnectionState",s.name());}public void onConnectionChange(RTCPeerConnectionState s){diagnostic.event("connectionState",s.name());}public void onDataChannel(RTCDataChannel channel){attach(channel);}});
@@ -152,7 +182,9 @@ public final class MobileRuntime implements DisposableBean {
                     if(type.equals("MOTION_SAMPLE")||type.equals("TOUCH")){session.active(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastInput=n;inputs.accept(n,joined.epoch(),"ACTIVE");if(type.equals("MOTION_SAMPLE"))session.inputReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),usableMovement(n));}
                     if(type.equals("CLIENT_STATE")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),n.get("payload").get("state").asString().equals("suspended")?"SUSPENDED":"CONNECTED");}
                     if(type.equals("DISCONNECT")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
-                    if(ch.getBufferedAmount()<8192){var ack=n.deepCopy();ack.put("messageType","ACK");ack.set("payload",GorillaProtocol.JSON.createObjectNode());send(ch,GorillaProtocol.JSON.writeValueAsBytes(ack));}
+                    if(ch.getBufferedAmount()<8192){var ack=n.deepCopy();ack.put("messageType","ACK");var ackPayload=GorillaProtocol.JSON.createObjectNode();
+                    if(type.equals("HEARTBEAT")){var game=currentGame();if(game!=null)ackPayload.set("gameContext",game);}
+                    ack.set("payload",ackPayload);send(ch,GorillaProtocol.JSON.writeValueAsBytes(ack));}
                 }catch(Exception e){inputs.reject();error=e.getMessage();}
                 if(error!=null&&ch.getBufferedAmount()<8192){var reply=GorillaProtocol.JSON.createObjectNode();reply.put("protocolVersion",1);reply.put("messageType","ERROR");reply.put("sessionId",joined.sessionId());reply.put("playerId",joined.playerId());reply.put("deviceSessionId",joined.sessionDeviceId());reply.putNull("sequence");reply.putNull("clientTimestamp");reply.put("serverReceiveTimestamp",System.currentTimeMillis());reply.set("capabilities",GorillaProtocol.JSON.createArrayNode());reply.putNull("quality");var payload=GorillaProtocol.JSON.createObjectNode();payload.put("code","INVALID_INPUT");reply.set("payload",payload);send(ch,GorillaProtocol.JSON.writeValueAsBytes(reply));}
             }}});

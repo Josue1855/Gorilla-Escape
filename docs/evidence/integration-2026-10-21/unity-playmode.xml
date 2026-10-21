@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-21 05:03:27Z" end-time="2026-10-21 05:03:28Z" duration="1.2349952">
+  <test-suite type="TestSuite" id="1048" name="Gorilla Escape" fullname="Gorilla Escape" runstate="Runnable" testcasecount="34" result="Passed" start-time="2026-10-21 05:03:27Z" end-time="2026-10-21 05:03:28Z" duration="1.234995" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1046" name="GorillaEscape.PlayModeTests.dll" fullname="/home/josuegalvan/.codex/gorilla-integration-20261021/Unity/Library/ScriptAssemblies/GorillaEscape.PlayModeTests.dll" runstate="Runnable" testcasecount="34" result="Passed" start-time="2026-10-21 05:03:27Z" end-time="2026-10-21 05:03:28Z" duration="1.203053" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestFixture" id="1029" name="LogBalanceFlowTests" fullname="LogBalanceFlowTests" classname="LogBalanceFlowTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-21 05:03:27Z" end-time="2026-10-21 05:03:28Z" duration="1.198007" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1034" name="LeavingPrototypeRestoresLightingAndShadowPreferences" fullname="LogBalanceFlowTests.LeavingPrototypeRestoresLightingAndShadowPreferences" methodname="LeavingPrototypeRestoresLightingAndShadowPreferences" classname="LogBalanceFlowTests" runstate="Runnable" seed="1424952830" result="Passed" start-time="2026-10-21 05:03:27Z" end-time="2026-10-21 05:03:27Z" duration="0.357416" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":0,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1030" name="PhoneOnboardingReturnsToTrunkAndSelectsReadyPlayer" fullname="LogBalanceFlowTests.PhoneOnboardingReturnsToTrunkAndSelectsReadyPlayer" methodname="PhoneOnboardingReturnsToTrunkAndSelectsReadyPlayer" classname="LogBalanceFlowTests" runstate="Runnable" seed="2096337834" result="Passed" start-time="2026-10-21 05:03:27Z" end-time="2026-10-21 05:03:28Z" duration="0.135986" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":1,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1033" name="PhoneReplayUsesAdmittedIdentityAndPausesOnLoss" fullname="LogBalanceFlowTests.PhoneReplayUsesAdmittedIdentityAndPausesOnLoss" methodname="PhoneReplayUsesAdmittedIdentityAndPausesOnLoss" classname="LogBalanceFlowTests" runstate="Runnable" seed="490235550" result="Passed" start-time="2026-10-21 05:03:28Z" end-time="2026-10-21 05:03:28Z" duration="0.545063" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":3,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1032" name="PrototypeKeepsServicesAndMenuOwnershipAndCanRestart" fullname="LogBalanceFlowTests.PrototypeKeepsServicesAndMenuOwnershipAndCanRestart" methodname="PrototypeKeepsServicesAndMenuOwnershipAndCanRestart" classname="LogBalanceFlowTests" runstate="Runnable" seed="1345922329" result="Passed" start-time="2026-10-21 05:03:28Z" end-time="2026-10-21 05:03:28Z" duration="0.073267" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[QA_SURFACE_SUMMARY {"visualApplied":false,"cameraCleanup":true,"javaCleanup":true,"controlsRestored":true,"qaPhoneObserved":false,"phoneAccepted":0,"previewOverwritten":0,"visualFrame":0,"endOfFrame":0,"unityUpdateFps":-1.0,"previewState":""}
+CAMERA_LAB_CLEANUP {"complete":true,"forced":false,"controlsRestored":true,"pid":0,"exitCode":-1,"accepted":0,"source":""}
+]]></output>
+        </test-case>
+        <test-case id="1031" name="TrunkRollsAndResetsWithAttemptTime" fullname="LogBalanceFlowTests.TrunkRollsAndResetsWithAttemptTime" methodname="TrunkRollsAndResetsWithAttemptTime" classname="LogBalanceFlowTests" runstate="Runnable" seed="387545033" result="Passed" start-time="2026-10-21 05:03:28Z" end-time="2026-10-21 05:03:28Z" duration="0.054788" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: /home/josuegalvan/Documentos/Repos/Gorilla Escape/docs/evidence/integration-2026-10-21/unity-playmode.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

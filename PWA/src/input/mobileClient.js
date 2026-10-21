@@ -136,6 +136,7 @@ export class MobileClient {
    this.metrics.motionAck++;this.metrics.received++;if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-motion.started);return;
   }
   const p=this.pending.get(n.sequence);if(!p)return;clearTimeout(p.timer);this.pending.delete(n.sequence);this.metrics.received++;
+  if(p.type==='HEARTBEAT'){this.gameContext=n.payload?.gameContext||null;this.gameContextExpires=performance.now()+2500;}
   if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-p.started);p.resolve(n);
  }
  motion(payload,clientTimestamp=Date.now()){

@@ -39,7 +39,7 @@ export class ControllerSession {
     };
     this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, onEmit: () => this.emissionRate.add(now()) });
   }
-  snapshot() { return { state: this.state, network: this.network, connectionCheck: this.connectionCheck, publicTunnel: this.publicTunnel, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
+  snapshot() { return { gameContext: this.client.gameContextExpires >= performance.now() ? this.client.gameContext || null : null, playerId: this.client.identity?.playerId || null, state: this.state, network: this.network, connectionCheck: this.connectionCheck, publicTunnel: this.publicTunnel, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
   publish() { if (!this.disposed) this.notify(this.snapshot()); }
   async connect() {
     if (this.disposed || this.attempted || !this.hasAdmission) return;
@@ -55,10 +55,27 @@ export class ControllerSession {
           this.win.clearInterval(this.monitor); this.publish();
           void this.client.close(false).catch(() => {});
         }
+        else this.publish();
       }, 500);
     } catch {
       if (!this.disposed) { this.state = 'ERROR'; this.network = 'NOT_CONNECTED'; this.publish(); }
     }
+  }
+  async createProfile(displayName) {
+    if (this.disposed || this.network !== 'NETWORK_READY' || this.profileAttempted) return 'UNAVAILABLE';
+    const name = displayName.normalize('NFC').trim();
+    if (!name || name.length > 40) return 'INVALID';
+    this.profileAttempted = true;
+    const abort = new AbortController(); const timer = this.win.setTimeout(() => abort.abort(), 6500);
+    try {
+      const { peerId, resumeToken } = this.client.identity;
+      const response = await this.client.fetcher('/mobile/profile', { method: 'POST', cache: 'no-store', signal: abort.signal,
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ peerId, resumeToken, displayName: name }) });
+      if (!response.ok) return 'UNCONFIRMED';
+      const result = await response.json();
+      return typeof result.id === 'string' ? 'SAVED' : 'UNCONFIRMED';
+    } catch { return 'UNCONFIRMED'; }
+    finally { this.win.clearTimeout(timer); }
   }
   async checkConnection() {
     if (this.disposed || this.connectionCheck === 'CHECKING') return;

@@ -44,4 +44,14 @@ public class ProductEntryPolicyTests
         Assert.AreEqual("custom.jar",values["GORILLA_IPC_JAR"]);
         Assert.AreEqual(credential,values["GORILLA_MOBILE_OPERATOR"]);
     }
+    [Test]
+    public void ExplicitEmulatorLabDoesNotEnableLanTrust()
+    {
+        var values=new System.Collections.Generic.Dictionary<string,string>{{"GORILLA_MOBILE_LAB","1"}};
+        string Read(string name)=>values.TryGetValue(name,out var value)?value:null;
+        void Write(string name,string value)=>values[name]=value;
+        GorillaEscape.QA.QaRuntimeService.ConfigurePackagedRuntime(System.IO.Path.GetFullPath("lab-package"),Read,Write);
+        Assert.False(values.ContainsKey("GORILLA_LOCAL_TRUST_DIR"));
+        Assert.AreEqual("1",values["GORILLA_MOBILE_LAB"]);
+    }
 }

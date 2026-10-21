@@ -87,6 +87,7 @@ namespace GorillaEscape.Minigames.LogBalance
             if(!available){PauseAttempt();if(!keyboard)notice=PlayerAdmitted()?tilt.Status:"Conecta el teléfono del jugador seleccionado.";}
             if(!paused&&focused&&available)model.Tick(Mathf.Min(.1f,Time.unscaledDeltaTime),input);
             if(model.State==LogBalanceState.Fell)fallenTime+=Time.unscaledDeltaTime;
+            menu?.Runtime?.java?.PresentPhoneGame("log-balance",paused?"Paused":model.State.ToString(),player);
             stage.Present(model.Progress,model.Balance,model.State==LogBalanceState.Fell,fallenTime,model.Elapsed,
                 model.State==LogBalanceState.Crossing&&!paused&&focused,model.State==LogBalanceState.Won);
         }
@@ -160,6 +161,6 @@ namespace GorillaEscape.Minigames.LogBalance
         public static bool IsGameplayKey(KeyCode key) => key==KeyCode.Space||key==KeyCode.R||key==KeyCode.C
             ||key==KeyCode.Escape||key==KeyCode.A||key==KeyCode.D||key==KeyCode.LeftArrow||key==KeyCode.RightArrow;
         static void Fill(Rect rect,Color value){GUI.color=value;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=Color.white;}
-        void OnDestroy(){stage?.Dispose();}
+        void OnDestroy(){menu?.Runtime?.java?.PresentPhoneGame("lobby","Ready",0);stage?.Dispose();}
     }
 }

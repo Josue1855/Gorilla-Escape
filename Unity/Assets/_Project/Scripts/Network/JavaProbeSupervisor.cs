@@ -67,6 +67,15 @@ namespace GorillaEscape.Network
         public QaMetricsWire QaMetrics {get;private set;}
         int regenerateQa;
         public void RegenerateQa(){if(!qaEnabled)throw new InvalidOperationException("QA_DISABLED");Interlocked.Exchange(ref regenerateQa,1);}
+        // Written on Unity's main thread; read by the authenticated IPC worker.
+        string gameContext = "{\"version\":1,\"gameId\":\"lobby\",\"phase\":\"Ready\",\"playerId\":0}";
+        public void PresentPhoneGame(string gameId, string phase, int playerId)
+        {
+            if(gameId!="lobby"&&gameId!="log-balance")return;
+            if(phase!="Ready"&&phase!="Countdown"&&phase!="Crossing"&&phase!="Paused"&&phase!="Won"&&phase!="Fell")return;
+            if(playerId<0||playerId>4)return;
+            Interlocked.Exchange(ref gameContext,"{\"version\":1,\"gameId\":\""+gameId+"\",\"phase\":\""+phase+"\",\"playerId\":"+playerId+"}");
+        }
         public event Action<PhoneInputWire> PhoneInputReceived;
         public event Action<int> HttpReady;
         public IpcState State => lifecycle.State;
@@ -234,6 +243,7 @@ namespace GorillaEscape.Network
                     }
                     if(qaEnabled&&secret==null){var action=Interlocked.Exchange(ref requestedNetworkAction,null);if(action!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaNetworkAction\":\""+action+"\"}";}
                     if(qaEnabled&&secret==null){var mode=Interlocked.Exchange(ref requestedQaMode,null);if(mode!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaConnectionMode\":\""+mode+"\"}";}
+                    if(phone&&secret==null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"gameContext\":"+Interlocked.CompareExchange(ref gameContext,null,null)+"}";
                     if(qaEnabled&&secret==null&&Interlocked.Exchange(ref regenerateQa,0)==1)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaRegenerate\":true}";
                     a.result.sent++;
                     IpcFrameCodec.Write(stream, "{\"ipcVersion\":1,\"type\":\"PING\",\"instanceId\":\"" + a.result.instanceId

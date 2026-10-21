@@ -38,3 +38,5 @@ Consulta también [CONTRIBUTING.md](CONTRIBUTING.md) para empezar una tarea y en
 Fase 0 (base/Spike) → Fase 1 (Gorilla Smash) → Fase 2 (sistemas reutilizables) → Fase 3 (otros minijuegos) → Fase 4 (torneo) → Fase 5 (polish) → Fase 6 (QA/release). Sólo se trabaja el alcance solicitado; no se inicia automáticamente otra fase.
 
 CI ejecuta validación documental y build/tests Java/React. No se presenta como validación Unity. main/develop requieren PR y los checks management-validation y java-react-foundation. Ningún PR o Issue se cierra automáticamente por este arranque.
+
+La integración del control móvil, Flutter y el backend de jugadores se documenta en [el reporte del 21 de octubre](docs/INTEGRACION_MOVIL_2026-10-21.md). El acompañante Flutter vive en [Companion](Companion/README.md); el control de partida sigue servido por la PWA existente.

@@ -127,3 +127,21 @@ test('public tunnel connection check uses only its allowed landing page', async 
   const model=new ControllerSession({win:win(),url:'https://test-controller.trycloudflare.com/#sessionId=test&admission=UNIT_SECRET',client:transport});
   await model.checkConnection();assert.equal(path,'/');assert.equal(model.snapshot().connectionCheck,'READY');assert.equal(model.snapshot().publicTunnel,true);await model.dispose();
 });
+test('optional player registration posts once and never retries an uncertain write', async () => {
+ const transport=client(); transport.identity={peerId:'test-peer',resumeToken:'PRIVATE_RESUME'};
+ let calls=0;
+ transport.fetcher=async(path,options)=>{calls++;assert.equal(path,'/mobile/profile');assert.equal(options.method,'POST');throw new TypeError('network');};
+ const model=new ControllerSession({win:win(),url,client:transport});await model.connect();
+ assert.equal(await model.createProfile('Náufrago'),'UNCONFIRMED');
+ assert.equal(await model.createProfile('Náufrago'),'UNAVAILABLE');assert.equal(calls,1);
+ assert.equal(JSON.stringify(model.diagnostic()).includes('PRIVATE_RESUME'),false);
+ await model.dispose();
+});
+test('game presentation expires when authenticated heartbeat context stops arriving', async () => {
+ const transport=client();transport.gameContext={version:1,gameId:'log-balance',phase:'Crossing',playerId:1};
+ transport.gameContextExpires=performance.now()+1000;
+ const model=new ControllerSession({win:win(),url,client:transport});
+ assert.equal(model.snapshot().gameContext.phase,'Crossing');
+ transport.gameContextExpires=performance.now()-1;
+ assert.equal(model.snapshot().gameContext,null);await model.dispose();
+});

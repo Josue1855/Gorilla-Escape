@@ -1,0 +1,1227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="186" result="Passed" total="186" passed="186" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:15Z" duration="3.2862357">
+  <test-suite type="TestSuite" id="1000" name="Gorilla Escape" fullname="Gorilla Escape" runstate="Runnable" testcasecount="186" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:15Z" duration="3.286236" total="186" passed="186" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1216" name="GorillaEscape.EditModeTests.dll" fullname="/home/josuegalvan/.codex/gorilla-integration-20261021/Unity/Library/ScriptAssemblies/GorillaEscape.EditModeTests.dll" runstate="Runnable" testcasecount="186" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:15Z" duration="3.205882" total="186" passed="186" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1001" name="CameraRuntimePathsTests" fullname="CameraRuntimePathsTests" classname="CameraRuntimePathsTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.189859" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1002" name="DefaultsAreBuildRelativePhysical" fullname="CameraRuntimePathsTests.DefaultsAreBuildRelativePhysical" methodname="DefaultsAreBuildRelativePhysical" classname="CameraRuntimePathsTests" runstate="Runnable" seed="1948178244" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.095996" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1003" name="DeveloperOverridesRequireLabFlag" fullname="CameraRuntimePathsTests.DeveloperOverridesRequireLabFlag" methodname="DeveloperOverridesRequireLabFlag" classname="CameraRuntimePathsTests" runstate="Runnable" seed="1365681283" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.006323" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1004" name="ExplicitLabOverridesPreserveReplay" fullname="CameraRuntimePathsTests.ExplicitLabOverridesPreserveReplay" methodname="ExplicitLabOverridesPreserveReplay" classname="CameraRuntimePathsTests" runstate="Runnable" seed="710619587" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.002417" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1009" name="MissingBundleFailsExplicitly" fullname="CameraRuntimePathsTests.MissingBundleFailsExplicitly" classname="CameraRuntimePathsTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.031366" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1005" name="MissingBundleFailsExplicitly(&quot;python&quot;,&quot;CAMERA_RUNTIME_MISSING&quot;)" fullname="CameraRuntimePathsTests.MissingBundleFailsExplicitly(&quot;python&quot;,&quot;CAMERA_RUNTIME_MISSING&quot;)" methodname="MissingBundleFailsExplicitly" classname="CameraRuntimePathsTests" runstate="Runnable" seed="191930872" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.012899" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1006" name="MissingBundleFailsExplicitly(&quot;worker.py&quot;,&quot;CAMERA_WORKER_MISSING&quot;)" fullname="CameraRuntimePathsTests.MissingBundleFailsExplicitly(&quot;worker.py&quot;,&quot;CAMERA_WORKER_MISSING&quot;)" methodname="MissingBundleFailsExplicitly" classname="CameraRuntimePathsTests" runstate="Runnable" seed="39110476" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.002251" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1007" name="MissingBundleFailsExplicitly(&quot;pose_landmarker_lite-v1.task&quot;,&quot;CAMERA_MODEL_MISSING&quot;)" fullname="CameraRuntimePathsTests.MissingBundleFailsExplicitly(&quot;pose_landmarker_lite-v1.task&quot;,&quot;CAMERA_MODEL_MISSING&quot;)" methodname="MissingBundleFailsExplicitly" classname="CameraRuntimePathsTests" runstate="Runnable" seed="1587445390" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.001778" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1008" name="MissingBundleFailsExplicitly(&quot;manifest.json&quot;,&quot;CAMERA_MANIFEST_MISSING&quot;)" fullname="CameraRuntimePathsTests.MissingBundleFailsExplicitly(&quot;manifest.json&quot;,&quot;CAMERA_MANIFEST_MISSING&quot;)" methodname="MissingBundleFailsExplicitly" classname="CameraRuntimePathsTests" runstate="Runnable" seed="296937141" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.004919" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1010" name="FoundationSceneTests" fullname="FoundationSceneTests" classname="FoundationSceneTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.063518" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1011" name="SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild" fullname="FoundationSceneTests.SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild" methodname="SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild" classname="FoundationSceneTests" runstate="Runnable" seed="1865946270" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.061665" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestSuite" id="1217" name="GorillaEscape" fullname="GorillaEscape" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:14Z" duration="2.443610" total="93" passed="93" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1218" name="Tests" fullname="GorillaEscape.Tests" runstate="Runnable" testcasecount="93" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:14Z" duration="2.441738" total="93" passed="93" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1114" name="CameraFusionTests" fullname="GorillaEscape.Tests.CameraFusionTests" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" testcasecount="66" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:14Z" duration="1.907576" total="66" passed="66" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1144" name="AbsentRawInputNeverGeneratesFixtureObservation" fullname="GorillaEscape.Tests.CameraFusionTests.AbsentRawInputNeverGeneratesFixtureObservation" methodname="AbsentRawInputNeverGeneratesFixtureObservation" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="777339570" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.019748" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1147" name="CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory" fullname="GorillaEscape.Tests.CameraFusionTests.CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory" methodname="CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="948140623" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.246581" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1179" name="CameraFreshPhoneStaleAndPhoneFreshCameraStale" fullname="GorillaEscape.Tests.CameraFusionTests.CameraFreshPhoneStaleAndPhoneFreshCameraStale" methodname="CameraFreshPhoneStaleAndPhoneFreshCameraStale" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="321821780" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.025610" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1184" name="ConceptSequencesRouteSignalsWithoutSportsSemantics" fullname="GorillaEscape.Tests.CameraFusionTests.ConceptSequencesRouteSignalsWithoutSportsSemantics" methodname="ConceptSequencesRouteSignalsWithoutSportsSemantics" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1885305250" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.041986" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1137" name="ConceptualTracesRetainEverySampleWithoutInferringIntention" fullname="GorillaEscape.Tests.CameraFusionTests.ConceptualTracesRetainEverySampleWithoutInferringIntention" methodname="ConceptualTracesRetainEverySampleWithoutInferringIntention" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="223227229" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.162981" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1146" name="ContractRejectsNonFiniteAndMissingLandmarks" fullname="GorillaEscape.Tests.CameraFusionTests.ContractRejectsNonFiniteAndMissingLandmarks" methodname="ContractRejectsNonFiniteAndMissingLandmarks" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="163320077" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.008818" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1145" name="CorpusHasAllRequiredCameraAndConceptualCases" fullname="GorillaEscape.Tests.CameraFusionTests.CorpusHasAllRequiredCameraAndConceptualCases" methodname="CorpusHasAllRequiredCameraAndConceptualCases" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1903273703" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.011374" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1182" name="DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne" fullname="GorillaEscape.Tests.CameraFusionTests.DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne" methodname="DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1306453855" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.003153" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1177" name="EarlyLateBothDirectionsPreserveDelta" fullname="GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.046821" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1172" name="EarlyLateBothDirectionsPreserveDelta(0,True)" fullname="GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(0,True)" methodname="EarlyLateBothDirectionsPreserveDelta" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="221186350" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.008526" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1173" name="EarlyLateBothDirectionsPreserveDelta(-80,True)" fullname="GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(-80,True)" methodname="EarlyLateBothDirectionsPreserveDelta" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1089711238" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.003863" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1174" name="EarlyLateBothDirectionsPreserveDelta(80,True)" fullname="GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(80,True)" methodname="EarlyLateBothDirectionsPreserveDelta" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1637645138" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.003330" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1175" name="EarlyLateBothDirectionsPreserveDelta(-150,False)" fullname="GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(-150,False)" methodname="EarlyLateBothDirectionsPreserveDelta" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1989880992" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.003316" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1176" name="EarlyLateBothDirectionsPreserveDelta(150,False)" fullname="GorillaEscape.Tests.CameraFusionTests.EarlyLateBothDirectionsPreserveDelta(150,False)" methodname="EarlyLateBothDirectionsPreserveDelta" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="885566482" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.025238" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1183" name="PhoneBufferRejectsDuplicateReorderedAndBoundsReplay" fullname="GorillaEscape.Tests.CameraFusionTests.PhoneBufferRejectsDuplicateReorderedAndBoundsReplay" methodname="PhoneBufferRejectsDuplicateReorderedAndBoundsReplay" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1930514952" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.006219" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1180" name="PhoneDisconnectReconnectEpochAndPartialSignals" fullname="GorillaEscape.Tests.CameraFusionTests.PhoneDisconnectReconnectEpochAndPartialSignals" methodname="PhoneDisconnectReconnectEpochAndPartialSignals" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="2079084982" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.006962" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1143" name="PhysicalPhoneCannotEscapeThroughSyntheticCameraDiagnostic" fullname="GorillaEscape.Tests.CameraFusionTests.PhysicalPhoneCannotEscapeThroughSyntheticCameraDiagnostic" methodname="PhysicalPhoneCannotEscapeThroughSyntheticCameraDiagnostic" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1374654659" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:12Z" duration="0.004641" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1181" name="PlayerIsolationAndInvalidPlayerNeverBecomeEligible" fullname="GorillaEscape.Tests.CameraFusionTests.PlayerIsolationAndInvalidPlayerNeverBecomeEligible" methodname="PlayerIsolationAndInvalidPlayerNeverBecomeEligible" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1990395942" result="Passed" start-time="2026-10-21 11:56:12Z" end-time="2026-10-21 11:56:13Z" duration="0.005393" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1148" name="PlayerLockLossRecoveryNeverSelectsAnotherSubject" fullname="GorillaEscape.Tests.CameraFusionTests.PlayerLockLossRecoveryNeverSelectsAnotherSubject" methodname="PlayerLockLossRecoveryNeverSelectsAnotherSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1039845273" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.027711" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1138" name="RejectedFusionRetainsRawQualityAgeAndTrackingWithoutInventingUsableSignals" fullname="GorillaEscape.Tests.CameraFusionTests.RejectedFusionRetainsRawQualityAgeAndTrackingWithoutInventingUsableSignals" methodname="RejectedFusionRetainsRawQualityAgeAndTrackingWithoutInventingUsableSignals" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="519978878" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.004556" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1142" name="RejectedRawCameraSourceControlsFixtureLogging" fullname="GorillaEscape.Tests.CameraFusionTests.RejectedRawCameraSourceControlsFixtureLogging" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.008787" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1139" name="RejectedRawCameraSourceControlsFixtureLogging(&quot;physical-webcam&quot;,False)" fullname="GorillaEscape.Tests.CameraFusionTests.RejectedRawCameraSourceControlsFixtureLogging(&quot;physical-webcam&quot;,False)" methodname="RejectedRawCameraSourceControlsFixtureLogging" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="288792068" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.002408" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1140" name="RejectedRawCameraSourceControlsFixtureLogging(&quot;synthetic&quot;,True)" fullname="GorillaEscape.Tests.CameraFusionTests.RejectedRawCameraSourceControlsFixtureLogging(&quot;synthetic&quot;,True)" methodname="RejectedRawCameraSourceControlsFixtureLogging" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1268800528" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.001729" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1141" name="RejectedRawCameraSourceControlsFixtureLogging(&quot;replay&quot;,True)" fullname="GorillaEscape.Tests.CameraFusionTests.RejectedRawCameraSourceControlsFixtureLogging(&quot;replay&quot;,True)" methodname="RejectedRawCameraSourceControlsFixtureLogging" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="918729839" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.002775" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1170" name="SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock" fullname="GorillaEscape.Tests.CameraFusionTests.SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock" methodname="SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="887129434" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.050629" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1136" name="SharedFusionScenarios" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.443041" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1115" name="SharedFusionScenarios(&quot;phone-camera-aligned&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;phone-camera-aligned&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1635769549" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.008471" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1116" name="SharedFusionScenarios(&quot;phone-early&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;phone-early&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="2041102794" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.039252" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1117" name="SharedFusionScenarios(&quot;phone-late&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;phone-late&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1261117890" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.008313" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1118" name="SharedFusionScenarios(&quot;camera-early&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;camera-early&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1203702023" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.006252" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1119" name="SharedFusionScenarios(&quot;camera-late&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;camera-late&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="704538974" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.005175" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1120" name="SharedFusionScenarios(&quot;phone-stale&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;phone-stale&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1459631779" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.040482" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1121" name="SharedFusionScenarios(&quot;camera-stale&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;camera-stale&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="308838986" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.012405" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1122" name="SharedFusionScenarios(&quot;both-stale&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;both-stale&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="2105058026" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.005251" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1123" name="SharedFusionScenarios(&quot;camera-lost&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;camera-lost&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1604335276" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.013517" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1124" name="SharedFusionScenarios(&quot;camera-recovered&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;camera-recovered&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="933937608" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.118861" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1125" name="SharedFusionScenarios(&quot;phone-lost&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;phone-lost&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="455387875" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.007919" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1126" name="SharedFusionScenarios(&quot;phone-recovered&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;phone-recovered&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1514246974" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.011936" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1127" name="SharedFusionScenarios(&quot;low-confidence&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;low-confidence&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="801679707" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.020944" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1128" name="SharedFusionScenarios(&quot;partial-capabilities&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;partial-capabilities&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="803629834" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.039560" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1129" name="SharedFusionScenarios(&quot;duplicate-phone&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;duplicate-phone&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="643457757" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.015980" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1130" name="SharedFusionScenarios(&quot;reordered-phone&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;reordered-phone&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="760915933" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.004962" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1131" name="SharedFusionScenarios(&quot;duplicate-camera&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;duplicate-camera&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="2052783013" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.012505" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1132" name="SharedFusionScenarios(&quot;player-mismatch&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;player-mismatch&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="2066017421" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.027421" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1133" name="SharedFusionScenarios(&quot;wrong-player&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;wrong-player&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="131498651" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.004698" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1134" name="SharedFusionScenarios(&quot;second-subject&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;second-subject&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1687193199" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.004874" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1135" name="SharedFusionScenarios(&quot;recovery-after-loss&quot;)" fullname="GorillaEscape.Tests.CameraFusionTests.SharedFusionScenarios(&quot;recovery-after-loss&quot;)" methodname="SharedFusionScenarios" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="23674832" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.025696" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1171" name="SpatialJumpAndStaleFramesDoNotRefreshLock" fullname="GorillaEscape.Tests.CameraFusionTests.SpatialJumpAndStaleFramesDoNotRefreshLock" methodname="SpatialJumpAndStaleFramesDoNotRefreshLock" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="911949237" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.149601" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1178" name="StaleLostRecoveredAndFutureSamplesAreExplicit" fullname="GorillaEscape.Tests.CameraFusionTests.StaleLostRecoveredAndFutureSamplesAreExplicit" methodname="StaleLostRecoveredAndFutureSamplesAreExplicit" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="524729404" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.017955" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1169" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:14Z" duration="0.584811" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1149" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(1)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(1)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1258048840" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.040284" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1150" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(2)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(2)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1812205712" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.012327" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1151" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(3)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(3)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="351764800" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.043273" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1152" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(4)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(4)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="5819692" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.013527" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1153" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(5)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(5)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1237658941" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.040675" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1154" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(6)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(6)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="993563822" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.008532" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1155" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(7)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(7)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="57257439" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.036609" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1156" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(8)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(8)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="746182893" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.011001" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1157" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(9)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(9)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="7629034" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.023239" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1158" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(10)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(10)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1791314288" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:13Z" duration="0.030748" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1159" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(11)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(11)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="988570721" result="Passed" start-time="2026-10-21 11:56:13Z" end-time="2026-10-21 11:56:14Z" duration="0.011674" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1160" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(12)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(12)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="542780393" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.051938" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1161" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(13)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(13)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1347077162" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.011499" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1162" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(14)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(14)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="517340227" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.069288" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1163" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(15)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(15)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="700789750" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.011713" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1164" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(16)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(16)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1152278387" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.035146" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1165" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(17)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(17)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="184452602" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.012649" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1166" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(18)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(18)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1292986964" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.053808" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1167" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(19)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(19)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1555081871" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.013126" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1168" name="TwentyDeterministicReplacementsCannotPromoteForeignSubject(20)" fullname="GorillaEscape.Tests.CameraFusionTests.TwentyDeterministicReplacementsCannotPromoteForeignSubject(20)" methodname="TwentyDeterministicReplacementsCannotPromoteForeignSubject" classname="GorillaEscape.Tests.CameraFusionTests" runstate="Runnable" seed="1021768928" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.044309" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestFixture" id="1185" name="FrameTimingWindowTests" fullname="GorillaEscape.Tests.FrameTimingWindowTests" classname="GorillaEscape.Tests.FrameTimingWindowTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.019081" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1186" name="PercentilesUseReciprocalIntervalsAndRejectInvalidValues" fullname="GorillaEscape.Tests.FrameTimingWindowTests.PercentilesUseReciprocalIntervalsAndRejectInvalidValues" methodname="PercentilesUseReciprocalIntervalsAndRejectInvalidValues" classname="GorillaEscape.Tests.FrameTimingWindowTests" runstate="Runnable" seed="1346038230" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.006730" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1187" name="RingRetainsLatestWindowAndReportsEvictionsSeparately" fullname="GorillaEscape.Tests.FrameTimingWindowTests.RingRetainsLatestWindowAndReportsEvictionsSeparately" methodname="RingRetainsLatestWindowAndReportsEvictionsSeparately" classname="GorillaEscape.Tests.FrameTimingWindowTests" runstate="Runnable" seed="2021106226" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.009706" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1188" name="OfficialActionLedgerTests" fullname="GorillaEscape.Tests.OfficialActionLedgerTests" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.506554" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1189" name="CandidateRequiresExplicitUnityAuthority" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.CandidateRequiresExplicitUnityAuthority" methodname="CandidateRequiresExplicitUnityAuthority" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1422903445" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.008959" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1206" name="CapacityRetainsEveryResultAndHighWaterRejectsReplay" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.CapacityRetainsEveryResultAndHighWaterRejectsReplay" methodname="CapacityRetainsEveryResultAndHighWaterRejectsReplay" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1365964075" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.008687" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1210" name="ConcurrentConfirmsProduceOneNewResult" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ConcurrentConfirmsProduceOneNewResult" methodname="ConcurrentConfirmsProduceOneNewResult" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1314243393" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.399237" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1192" name="ConfirmedResultSurvivesDisconnectAndReconnect" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ConfirmedResultSurvivesDisconnectAndReconnect" methodname="ConfirmedResultSurvivesDisconnectAndReconnect" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="209543521" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001577" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1208" name="ConfirmWinsThenDisconnectPreservesResult" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ConfirmWinsThenDisconnectPreservesResult" methodname="ConfirmWinsThenDisconnectPreservesResult" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="65816008" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000587" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1191" name="DisconnectCancelsCandidateAndCannotResurrect" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.DisconnectCancelsCandidateAndCannotResurrect" methodname="DisconnectCancelsCandidateAndCannotResurrect" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="499821491" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000978" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1190" name="DuplicateCandidateAndSemanticAliasRejected" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.DuplicateCandidateAndSemanticAliasRejected" methodname="DuplicateCandidateAndSemanticAliasRejected" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="574526432" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000587" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1193" name="DuplicateConfirmIsIdempotentAndConflictRejected" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.DuplicateConfirmIsIdempotentAndConflictRejected" methodname="DuplicateConfirmIsIdempotentAndConflictRejected" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1781662456" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000752" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1198" name="ExplicitCancellationIsTerminal" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ExplicitCancellationIsTerminal" methodname="ExplicitCancellationIsTerminal" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="67858651" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001357" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1197" name="FourPlayersAreIsolated" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.FourPlayersAreIsolated" methodname="FourPlayersAreIsolated" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="554680737" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.006066" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1207" name="InvalidKeysAndResultsRejected" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.InvalidKeysAndResultsRejected" methodname="InvalidKeysAndResultsRejected" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="628367798" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.002123" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1196" name="LateSequenceAndUnknownIdentityRejected" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.LateSequenceAndUnknownIdentityRejected" methodname="LateSequenceAndUnknownIdentityRejected" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="28012071" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000840" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1204" name="LobbyInvalidationCancelsWithoutAnotherInput" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.LobbyInvalidationCancelsWithoutAnotherInput" methodname="LobbyInvalidationCancelsWithoutAnotherInput" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="330457566" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001320" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1194" name="OldEpochRejectedNewEpochSameSequenceIndependent" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.OldEpochRejectedNewEpochSameSequenceIndependent" methodname="OldEpochRejectedNewEpochSameSequenceIndependent" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="371576057" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001003" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1195" name="OldInputCannotReplaceCurrentEpoch" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.OldInputCannotReplaceCurrentEpoch" methodname="OldInputCannotReplaceCurrentEpoch" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="2035103195" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000523" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1209" name="RaceConfirmDisconnectHasExactlyOneTerminalState" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.RaceConfirmDisconnectHasExactlyOneTerminalState" methodname="RaceConfirmDisconnectHasExactlyOneTerminalState" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="234088677" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.056492" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1202" name="ServerInvalidationCancels" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ServerInvalidationCancels" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.004277" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1199" name="ServerInvalidationCancels(&quot;SUSPENDED&quot;)" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ServerInvalidationCancels(&quot;SUSPENDED&quot;)" methodname="ServerInvalidationCancels" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1754477686" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001675" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1200" name="ServerInvalidationCancels(&quot;CONNECTED&quot;)" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ServerInvalidationCancels(&quot;CONNECTED&quot;)" methodname="ServerInvalidationCancels" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1189425751" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000312" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1201" name="ServerInvalidationCancels(&quot;DISCONNECTED&quot;)" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.ServerInvalidationCancels(&quot;DISCONNECTED&quot;)" methodname="ServerInvalidationCancels" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="935563551" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000257" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1205" name="SessionEndPreservesConfirmedAndResetCleans" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.SessionEndPreservesConfirmedAndResetCleans" methodname="SessionEndPreservesConfirmedAndResetCleans" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1509247943" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001697" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1203" name="StaleInputCannotConfirm" fullname="GorillaEscape.Tests.OfficialActionLedgerTests.StaleInputCannotConfirm" methodname="StaleInputCannotConfirm" classname="GorillaEscape.Tests.OfficialActionLedgerTests" runstate="Runnable" seed="1127395111" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000648" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1211" name="PhoneInputStoreTests" fullname="GorillaEscape.Tests.PhoneInputStoreTests" classname="GorillaEscape.Tests.PhoneInputStoreTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.005837" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1213" name="DuplicateOldAndNewEpoch" fullname="GorillaEscape.Tests.PhoneInputStoreTests.DuplicateOldAndNewEpoch" methodname="DuplicateOldAndNewEpoch" classname="GorillaEscape.Tests.PhoneInputStoreTests" runstate="Runnable" seed="1308907081" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000731" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1215" name="FourPlayersAndClear" fullname="GorillaEscape.Tests.PhoneInputStoreTests.FourPlayersAndClear" methodname="FourPlayersAndClear" classname="GorillaEscape.Tests.PhoneInputStoreTests" runstate="Runnable" seed="146115831" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000473" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1212" name="LatestFreshnessAndMissingAxis" fullname="GorillaEscape.Tests.PhoneInputStoreTests.LatestFreshnessAndMissingAxis" methodname="LatestFreshnessAndMissingAxis" classname="GorillaEscape.Tests.PhoneInputStoreTests" runstate="Runnable" seed="481499101" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000977" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1214" name="RawPhoneInputPreservesPartialAndDisconnect" fullname="GorillaEscape.Tests.PhoneInputStoreTests.RawPhoneInputPreservesPartialAndDisconnect" methodname="RawPhoneInputPreservesPartialAndDisconnect" classname="GorillaEscape.Tests.PhoneInputStoreTests" runstate="Runnable" seed="1570700611" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001552" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1012" name="IpcFrameCodecTests" fullname="IpcFrameCodecTests" classname="IpcFrameCodecTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.019261" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1013" name="CommonFixtureRoundTripsWithBigEndianLength" fullname="IpcFrameCodecTests.CommonFixtureRoundTripsWithBigEndianLength" methodname="CommonFixtureRoundTripsWithBigEndianLength" classname="IpcFrameCodecTests" runstate="Runnable" seed="719013817" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.009238" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1018" name="ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8" fullname="IpcFrameCodecTests.ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8" methodname="ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8" classname="IpcFrameCodecTests" runstate="Runnable" seed="678931709" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.005695" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1017" name="RejectsFrameSizeBeforeBodyAllocation" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.002490" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1014" name="RejectsFrameSizeBeforeBodyAllocation(0)" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(0)" methodname="RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" seed="945100951" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000904" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1015" name="RejectsFrameSizeBeforeBodyAllocation(4097)" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(4097)" methodname="RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" seed="1702772146" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000202" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1016" name="RejectsFrameSizeBeforeBodyAllocation(-1)" fullname="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(-1)" methodname="RejectsFrameSizeBeforeBodyAllocation" classname="IpcFrameCodecTests" runstate="Runnable" seed="1400821736" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000160" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1019" name="IpcLifecycleTests" fullname="IpcLifecycleTests" classname="IpcLifecycleTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.030503" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1027" name="ActiveAttemptRejectsAnotherStart" fullname="IpcLifecycleTests.ActiveAttemptRejectsAnotherStart" methodname="ActiveAttemptRejectsAnotherStart" classname="IpcLifecycleTests" runstate="Runnable" seed="1283391873" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001663" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1024" name="FailureMustPassThroughStopping" fullname="IpcLifecycleTests.FailureMustPassThroughStopping" classname="IpcLifecycleTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.020474" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1021" name="FailureMustPassThroughStopping(STARTING)" fullname="IpcLifecycleTests.FailureMustPassThroughStopping(STARTING)" methodname="FailureMustPassThroughStopping" classname="IpcLifecycleTests" runstate="Runnable" seed="1701751930" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001890" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1022" name="FailureMustPassThroughStopping(CONNECTING)" fullname="IpcLifecycleTests.FailureMustPassThroughStopping(CONNECTING)" methodname="FailureMustPassThroughStopping" classname="IpcLifecycleTests" runstate="Runnable" seed="537524856" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000585" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1023" name="FailureMustPassThroughStopping(RUNNING)" fullname="IpcLifecycleTests.FailureMustPassThroughStopping(RUNNING)" methodname="FailureMustPassThroughStopping" classname="IpcLifecycleTests" runstate="Runnable" seed="1602367065" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.014995" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="1025" name="IncompleteCleanupBlocksRecovery" fullname="IpcLifecycleTests.IncompleteCleanupBlocksRecovery" methodname="IncompleteCleanupBlocksRecovery" classname="IpcLifecycleTests" runstate="Runnable" seed="869175802" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000786" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1028" name="LaunchBudgetAllowsExactlyThreeAttempts" fullname="IpcLifecycleTests.LaunchBudgetAllowsExactlyThreeAttempts" methodname="LaunchBudgetAllowsExactlyThreeAttempts" classname="IpcLifecycleTests" runstate="Runnable" seed="2100358592" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001371" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1026" name="OldGenerationCannotChangeNewAttempt" fullname="IpcLifecycleTests.OldGenerationCannotChangeNewAttempt" methodname="OldGenerationCannotChangeNewAttempt" classname="IpcLifecycleTests" runstate="Runnable" seed="1903122386" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001081" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1020" name="SuccessfulLifecycleRequiresHandshakeAndCleanup" fullname="IpcLifecycleTests.SuccessfulLifecycleRequiresHandshakeAndCleanup" methodname="SuccessfulLifecycleRequiresHandshakeAndCleanup" classname="IpcLifecycleTests" runstate="Runnable" seed="1192639586" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000714" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1029" name="IpcProbeContractTests" fullname="IpcProbeContractTests" classname="IpcProbeContractTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.035210" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1032" name="ConcatenatedFramesAndBoundedOutput" fullname="IpcProbeContractTests.ConcatenatedFramesAndBoundedOutput" methodname="ConcatenatedFramesAndBoundedOutput" classname="IpcProbeContractTests" runstate="Runnable" seed="2021369165" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001259" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1033" name="InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded" fullname="IpcProbeContractTests.InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded" methodname="InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded" classname="IpcProbeContractTests" runstate="Runnable" seed="497152522" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.003596" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1031" name="ReadyExactSchemaAndDuplicates" fullname="IpcProbeContractTests.ReadyExactSchemaAndDuplicates" methodname="ReadyExactSchemaAndDuplicates" classname="IpcProbeContractTests" runstate="Runnable" seed="2116361464" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.013883" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1030" name="SharedCorpus" fullname="IpcProbeContractTests.SharedCorpus" methodname="SharedCorpus" classname="IpcProbeContractTests" runstate="Runnable" seed="1925360173" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.013745" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1034" name="LiveQaTests" fullname="LiveQaTests" classname="LiveQaTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.036534" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1040" name="AuthoritativeNetwork" fullname="LiveQaTests.AuthoritativeNetwork" methodname="AuthoritativeNetwork" classname="LiveQaTests" runstate="Runnable" seed="1314818839" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000681" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1048" name="DisconnectedOverridesPreviousReady" fullname="LiveQaTests.DisconnectedOverridesPreviousReady" methodname="DisconnectedOverridesPreviousReady" classname="LiveQaTests" runstate="Runnable" seed="168766861" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000640" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1043" name="LetterboxCoordinates" fullname="LiveQaTests.LetterboxCoordinates" methodname="LetterboxCoordinates" classname="LiveQaTests" runstate="Runnable" seed="1495095299" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.002436" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1049" name="MissingReadinessIsExplicit" fullname="LiveQaTests.MissingReadinessIsExplicit" methodname="MissingReadinessIsExplicit" classname="LiveQaTests" runstate="Runnable" seed="629227153" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000486" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1045" name="PreviewBoundsAndDisabled" fullname="LiveQaTests.PreviewBoundsAndDisabled" methodname="PreviewBoundsAndDisabled" classname="LiveQaTests" runstate="Runnable" seed="1007361146" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.006584" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1046" name="QrRejectsOversizedOrTruncatedModules" fullname="LiveQaTests.QrRejectsOversizedOrTruncatedModules" methodname="QrRejectsOversizedOrTruncatedModules" classname="LiveQaTests" runstate="Runnable" seed="293626070" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.005787" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1047" name="ReadinessUsesAuthoritativeLobbyEvenWithPartialAxes" fullname="LiveQaTests.ReadinessUsesAuthoritativeLobbyEvenWithPartialAxes" methodname="ReadinessUsesAuthoritativeLobbyEvenWithPartialAxes" classname="LiveQaTests" runstate="Runnable" seed="1422680420" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000457" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1044" name="ResetAndDeviceClassification" fullname="LiveQaTests.ResetAndDeviceClassification" methodname="ResetAndDeviceClassification" classname="LiveQaTests" runstate="Runnable" seed="419093320" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001069" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1042" name="SensorsAndVisibleMapping" fullname="LiveQaTests.SensorsAndVisibleMapping" methodname="SensorsAndVisibleMapping" classname="LiveQaTests" runstate="Runnable" seed="566788562" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.002674" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1039" name="Slots" fullname="LiveQaTests.Slots" classname="LiveQaTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.004355" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1035" name="Slots(null,&quot;EMPTY&quot;)" fullname="LiveQaTests.Slots(null,&quot;EMPTY&quot;)" methodname="Slots" classname="LiveQaTests" runstate="Runnable" seed="1741353881" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000670" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1036" name="Slots(&quot;CONNECTED&quot;,&quot;CONNECTING&quot;)" fullname="LiveQaTests.Slots(&quot;CONNECTED&quot;,&quot;CONNECTING&quot;)" methodname="Slots" classname="LiveQaTests" runstate="Runnable" seed="975006482" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000402" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1037" name="Slots(&quot;ACTIVE&quot;,&quot;ACTIVE&quot;)" fullname="LiveQaTests.Slots(&quot;ACTIVE&quot;,&quot;ACTIVE&quot;)" methodname="Slots" classname="LiveQaTests" runstate="Runnable" seed="1570333423" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000174" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1038" name="Slots(&quot;DISCONNECTED&quot;,&quot;DISCONNECTED&quot;)" fullname="LiveQaTests.Slots(&quot;DISCONNECTED&quot;,&quot;DISCONNECTED&quot;)" methodname="Slots" classname="LiveQaTests" runstate="Runnable" seed="2032105011" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000155" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="1041" name="UnknownAndActualZero" fullname="LiveQaTests.UnknownAndActualZero" methodname="UnknownAndActualZero" classname="LiveQaTests" runstate="Runnable" seed="41106974" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000521" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1055" name="VisibleResponseRequiresLiveAcceptedMovement" fullname="LiveQaTests.VisibleResponseRequiresLiveAcceptedMovement" classname="LiveQaTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.004482" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1050" name="VisibleResponseRequiresLiveAcceptedMovement(&quot;ACTIVE&quot;,True,True)" fullname="LiveQaTests.VisibleResponseRequiresLiveAcceptedMovement(&quot;ACTIVE&quot;,True,True)" methodname="VisibleResponseRequiresLiveAcceptedMovement" classname="LiveQaTests" runstate="Runnable" seed="1175263966" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001323" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1051" name="VisibleResponseRequiresLiveAcceptedMovement(&quot;SUSPENDED&quot;,True,False)" fullname="LiveQaTests.VisibleResponseRequiresLiveAcceptedMovement(&quot;SUSPENDED&quot;,True,False)" methodname="VisibleResponseRequiresLiveAcceptedMovement" classname="LiveQaTests" runstate="Runnable" seed="2143679285" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000422" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1052" name="VisibleResponseRequiresLiveAcceptedMovement(&quot;CONNECTED&quot;,True,False)" fullname="LiveQaTests.VisibleResponseRequiresLiveAcceptedMovement(&quot;CONNECTED&quot;,True,False)" methodname="VisibleResponseRequiresLiveAcceptedMovement" classname="LiveQaTests" runstate="Runnable" seed="866692502" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000199" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1053" name="VisibleResponseRequiresLiveAcceptedMovement(&quot;DISCONNECTED&quot;,True,False)" fullname="LiveQaTests.VisibleResponseRequiresLiveAcceptedMovement(&quot;DISCONNECTED&quot;,True,False)" methodname="VisibleResponseRequiresLiveAcceptedMovement" classname="LiveQaTests" runstate="Runnable" seed="1353868926" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000179" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1054" name="VisibleResponseRequiresLiveAcceptedMovement(&quot;ACTIVE&quot;,False,False)" fullname="LiveQaTests.VisibleResponseRequiresLiveAcceptedMovement(&quot;ACTIVE&quot;,False,False)" methodname="VisibleResponseRequiresLiveAcceptedMovement" classname="LiveQaTests" runstate="Runnable" seed="1825222839" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000176" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1056" name="LobbyAuthorityBridgeTests" fullname="LobbyAuthorityBridgeTests" classname="LobbyAuthorityBridgeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.020163" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1057" name="ActualFirstPongJsonDeserializesWithoutCommandReceipt" fullname="LobbyAuthorityBridgeTests.ActualFirstPongJsonDeserializesWithoutCommandReceipt" methodname="ActualFirstPongJsonDeserializesWithoutCommandReceipt" classname="LobbyAuthorityBridgeTests" runstate="Runnable" seed="561652769" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.004239" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1059" name="CommandCarriesOwnedIdentityAndWaitsForReceipt" fullname="LobbyAuthorityBridgeTests.CommandCarriesOwnedIdentityAndWaitsForReceipt" methodname="CommandCarriesOwnedIdentityAndWaitsForReceipt" classname="LobbyAuthorityBridgeTests" runstate="Runnable" seed="1040089556" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.005207" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1062" name="ImpossibleReadyAndUnsolicitedReceiptRejected" fullname="LobbyAuthorityBridgeTests.ImpossibleReadyAndUnsolicitedReceiptRejected" methodname="ImpossibleReadyAndUnsolicitedReceiptRejected" classname="LobbyAuthorityBridgeTests" runstate="Runnable" seed="1207543698" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001197" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1058" name="NetworkReadyNeverBecomesPlayerReady" fullname="LobbyAuthorityBridgeTests.NetworkReadyNeverBecomesPlayerReady" methodname="NetworkReadyNeverBecomesPlayerReady" classname="LobbyAuthorityBridgeTests" runstate="Runnable" seed="734372460" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.000468" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1060" name="OnePendingCommandBoundAndCleanupCancels" fullname="LobbyAuthorityBridgeTests.OnePendingCommandBoundAndCleanupCancels" methodname="OnePendingCommandBoundAndCleanupCancels" classname="LobbyAuthorityBridgeTests" runstate="Runnable" seed="946512768" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.002876" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1063" name="ReceiptCannotInventSuccess" fullname="LobbyAuthorityBridgeTests.ReceiptCannotInventSuccess" methodname="ReceiptCannotInventSuccess" classname="LobbyAuthorityBridgeTests" runstate="Runnable" seed="1047312917" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001102" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1061" name="SnapshotsAreCopiedAndIdentityMustBeUnique" fullname="LobbyAuthorityBridgeTests.SnapshotsAreCopiedAndIdentityMustBeUnique" methodname="SnapshotsAreCopiedAndIdentityMustBeUnique" classname="LobbyAuthorityBridgeTests" runstate="Runnable" seed="165561060" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:14Z" duration="0.001525" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1064" name="LogBalanceArtTests" fullname="LogBalanceArtTests" classname="LogBalanceArtTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:15Z" duration="0.244521" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1066" name="CastawayRetainsWeightedSkeletonAndProceduralWalkingDeformsMesh" fullname="LogBalanceArtTests.CastawayRetainsWeightedSkeletonAndProceduralWalkingDeformsMesh" methodname="CastawayRetainsWeightedSkeletonAndProceduralWalkingDeformsMesh" classname="LogBalanceArtTests" runstate="Runnable" seed="329233647" result="Passed" start-time="2026-10-21 11:56:14Z" end-time="2026-10-21 11:56:15Z" duration="0.063967" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1067" name="FallAndCelebrationPoseAreDistinctAndDoNotAccumulateDrift" fullname="LogBalanceArtTests.FallAndCelebrationPoseAreDistinctAndDoNotAccumulateDrift" methodname="FallAndCelebrationPoseAreDistinctAndDoNotAccumulateDrift" classname="LogBalanceArtTests" runstate="Runnable" seed="608002037" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.011649" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1068" name="GorillaReactionsDeformSkinAndReturnToIdleWithoutDrift" fullname="LogBalanceArtTests.GorillaReactionsDeformSkinAndReturnToIdleWithoutDrift" methodname="GorillaReactionsDeformSkinAndReturnToIdleWithoutDrift" classname="LogBalanceArtTests" runstate="Runnable" seed="877622442" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.031516" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1065" name="SuppliedModelsAndTexturesAreAvailableWithoutRuntimeGlbLoader" fullname="LogBalanceArtTests.SuppliedModelsAndTexturesAreAvailableWithoutRuntimeGlbLoader" methodname="SuppliedModelsAndTexturesAreAvailableWithoutRuntimeGlbLoader" classname="LogBalanceArtTests" runstate="Runnable" seed="599148054" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.132574" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1069" name="LogBalanceTests" fullname="LogBalanceTests" classname="LogBalanceTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.056370" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1076" name="BalanceIsClampedAndFallRequiresSustainedThreshold" fullname="LogBalanceTests.BalanceIsClampedAndFallRequiresSustainedThreshold" methodname="BalanceIsClampedAndFallRequiresSustainedThreshold" classname="LogBalanceTests" runstate="Runnable" seed="642233391" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.006439" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1081" name="CountdownDoesNotAdvanceOrApplyTilt" fullname="LogBalanceTests.CountdownDoesNotAdvanceOrApplyTilt" methodname="CountdownDoesNotAdvanceOrApplyTilt" classname="LogBalanceTests" runstate="Runnable" seed="2145880994" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000914" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1074" name="DeadZoneRejectsSmallNoise" fullname="LogBalanceTests.DeadZoneRejectsSmallNoise" methodname="DeadZoneRejectsSmallNoise" classname="LogBalanceTests" runstate="Runnable" seed="279444628" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000686" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1082" name="DefaultDisturbanceEventuallyRequiresCorrection" fullname="LogBalanceTests.DefaultDisturbanceEventuallyRequiresCorrection" methodname="DefaultDisturbanceEventuallyRequiresCorrection" classname="LogBalanceTests" runstate="Runnable" seed="482493678" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001956" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1079" name="FallCannotLaterBecomeVictory" fullname="LogBalanceTests.FallCannotLaterBecomeVictory" methodname="FallCannotLaterBecomeVictory" classname="LogBalanceTests" runstate="Runnable" seed="926064975" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001266" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1083" name="FeedbackCanWinDefaultRulesAtDifferentFrameRates" fullname="LogBalanceTests.FeedbackCanWinDefaultRulesAtDifferentFrameRates" methodname="FeedbackCanWinDefaultRulesAtDifferentFrameRates" classname="LogBalanceTests" runstate="Runnable" seed="56111824" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.004634" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1078" name="GoalProducesImmutableResultAndTerminalTicksCannotFall" fullname="LogBalanceTests.GoalProducesImmutableResultAndTerminalTicksCannotFall" methodname="GoalProducesImmutableResultAndTerminalTicksCannotFall" classname="LogBalanceTests" runstate="Runnable" seed="801110166" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.002111" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1084" name="InvalidRulesAndNonFiniteInputsFailExplicitly" fullname="LogBalanceTests.InvalidRulesAndNonFiniteInputsFailExplicitly" methodname="InvalidRulesAndNonFiniteInputsFailExplicitly" classname="LogBalanceTests" runstate="Runnable" seed="1428018487" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001427" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1088" name="MissingAndNonFiniteOrientationCannotCalibrate" fullname="LogBalanceTests.MissingAndNonFiniteOrientationCannotCalibrate" methodname="MissingAndNonFiniteOrientationCannotCalibrate" classname="LogBalanceTests" runstate="Runnable" seed="428704873" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.002187" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1070" name="NeutralRemainsBalancedWithoutDisturbance" fullname="LogBalanceTests.NeutralRemainsBalancedWithoutDisturbance" methodname="NeutralRemainsBalancedWithoutDisturbance" classname="LogBalanceTests" runstate="Runnable" seed="160175768" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000903" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1085" name="PhoneUsesNeutralAndExistingPlayerStore" fullname="LogBalanceTests.PhoneUsesNeutralAndExistingPlayerStore" methodname="PhoneUsesNeutralAndExistingPlayerStore" classname="LogBalanceTests" runstate="Runnable" seed="1207333976" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001448" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1087" name="ReconnectInvalidatesCalibrationAndRequiresExplicitNeutral" fullname="LogBalanceTests.ReconnectInvalidatesCalibrationAndRequiresExplicitNeutral" methodname="ReconnectInvalidatesCalibrationAndRequiresExplicitNeutral" classname="LogBalanceTests" runstate="Runnable" seed="694862950" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000873" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1077" name="RecoveringInsideLimitClearsFallDwell" fullname="LogBalanceTests.RecoveringInsideLimitClearsFallDwell" methodname="RecoveringInsideLimitClearsFallDwell" classname="LogBalanceTests" runstate="Runnable" seed="28924048" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000697" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1080" name="ResetClearsAttemptAndAllowsDifferentPlayer" fullname="LogBalanceTests.ResetClearsAttemptAndAllowsDifferentPlayer" methodname="ResetClearsAttemptAndAllowsDifferentPlayer" classname="LogBalanceTests" runstate="Runnable" seed="120693626" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.002690" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1075" name="SmoothingReducesStepAndConverges" fullname="LogBalanceTests.SmoothingReducesStepAndConverges" methodname="SmoothingReducesStepAndConverges" classname="LogBalanceTests" runstate="Runnable" seed="705202874" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.003008" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1086" name="StaleDisconnectedAndLandscapeSamplesNeverDriveAttempt" fullname="LogBalanceTests.StaleDisconnectedAndLandscapeSamplesNeverDriveAttempt" methodname="StaleDisconnectedAndLandscapeSamplesNeverDriveAttempt" classname="LogBalanceTests" runstate="Runnable" seed="629379393" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000882" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1073" name="TiltMovesInRequestedDirection" fullname="LogBalanceTests.TiltMovesInRequestedDirection" classname="LogBalanceTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.005030" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1071" name="TiltMovesInRequestedDirection(-1,-1)" fullname="LogBalanceTests.TiltMovesInRequestedDirection(-1,-1)" methodname="TiltMovesInRequestedDirection" classname="LogBalanceTests" runstate="Runnable" seed="1389852438" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001038" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1072" name="TiltMovesInRequestedDirection(1,1)" fullname="LogBalanceTests.TiltMovesInRequestedDirection(1,1)" methodname="TiltMovesInRequestedDirection" classname="LogBalanceTests" runstate="Runnable" seed="1676249922" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000219" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1089" name="ProductEntryPolicyTests" fullname="ProductEntryPolicyTests" classname="ProductEntryPolicyTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.040888" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1108" name="DirectPlayerUsesBundledServicesAndPreservesExplicitOfflineMode" fullname="ProductEntryPolicyTests.DirectPlayerUsesBundledServicesAndPreservesExplicitOfflineMode" methodname="DirectPlayerUsesBundledServicesAndPreservesExplicitOfflineMode" classname="ProductEntryPolicyTests" runstate="Runnable" seed="438852043" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.022811" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1100" name="EntryIsExplicit" fullname="ProductEntryPolicyTests.EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.007266" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1090" name="EntryIsExplicit(True,True,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,False,True)" fullname="ProductEntryPolicyTests.EntryIsExplicit(True,True,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,False,True)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="139694268" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001382" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1091" name="EntryIsExplicit(True,True,False,False,&quot;&quot;,True,False)" fullname="ProductEntryPolicyTests.EntryIsExplicit(True,True,False,False,&quot;&quot;,True,False)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="946511239" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000369" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1092" name="EntryIsExplicit(True,True,False,False,&quot;Assets/Minigame/Bootstrap.unity&quot;,True,False)" fullname="ProductEntryPolicyTests.EntryIsExplicit(True,True,False,False,&quot;Assets/Minigame/Bootstrap.unity&quot;,True,False)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="2109181516" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000233" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1093" name="EntryIsExplicit(True,True,False,False,&quot;Assets/Temp/TestScene.unity&quot;,True,False)" fullname="ProductEntryPolicyTests.EntryIsExplicit(True,True,False,False,&quot;Assets/Temp/TestScene.unity&quot;,True,False)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="2078019452" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000201" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1094" name="EntryIsExplicit(True,True,True,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,True,False)" fullname="ProductEntryPolicyTests.EntryIsExplicit(True,True,True,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,True,False)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="445221147" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000208" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1095" name="EntryIsExplicit(True,True,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,True,False)" fullname="ProductEntryPolicyTests.EntryIsExplicit(True,True,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,True,False)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="1307297743" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000212" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1096" name="EntryIsExplicit(True,False,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,True,False)" fullname="ProductEntryPolicyTests.EntryIsExplicit(True,False,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,True,False)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="1119466149" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000191" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1097" name="EntryIsExplicit(False,True,False,False,&quot;&quot;,True,True)" fullname="ProductEntryPolicyTests.EntryIsExplicit(False,True,False,False,&quot;&quot;,True,True)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="995876765" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000211" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1098" name="EntryIsExplicit(False,True,True,False,&quot;&quot;,True,True)" fullname="ProductEntryPolicyTests.EntryIsExplicit(False,True,True,False,&quot;&quot;,True,True)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="2052099544" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000249" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1099" name="EntryIsExplicit(False,True,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,False,False)" fullname="ProductEntryPolicyTests.EntryIsExplicit(False,True,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,False,False)" methodname="EntryIsExplicit" classname="ProductEntryPolicyTests" runstate="Runnable" seed="1255037331" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000258" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="1109" name="ExplicitEmulatorLabDoesNotEnableLanTrust" fullname="ProductEntryPolicyTests.ExplicitEmulatorLabDoesNotEnableLanTrust" methodname="ExplicitEmulatorLabDoesNotEnableLanTrust" classname="ProductEntryPolicyTests" runstate="Runnable" seed="135395909" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001420" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1107" name="PhysicalEditorServicesRequireExplicitProductOptIn" fullname="ProductEntryPolicyTests.PhysicalEditorServicesRequireExplicitProductOptIn" classname="ProductEntryPolicyTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.003941" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1101" name="PhysicalEditorServicesRequireExplicitProductOptIn(True,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,True)" fullname="ProductEntryPolicyTests.PhysicalEditorServicesRequireExplicitProductOptIn(True,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,True)" methodname="PhysicalEditorServicesRequireExplicitProductOptIn" classname="ProductEntryPolicyTests" runstate="Runnable" seed="1743870981" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000981" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1102" name="PhysicalEditorServicesRequireExplicitProductOptIn(True,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,False)" fullname="ProductEntryPolicyTests.PhysicalEditorServicesRequireExplicitProductOptIn(True,False,False,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,False)" methodname="PhysicalEditorServicesRequireExplicitProductOptIn" classname="ProductEntryPolicyTests" runstate="Runnable" seed="661773625" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000272" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1103" name="PhysicalEditorServicesRequireExplicitProductOptIn(True,True,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,False)" fullname="ProductEntryPolicyTests.PhysicalEditorServicesRequireExplicitProductOptIn(True,True,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,False)" methodname="PhysicalEditorServicesRequireExplicitProductOptIn" classname="ProductEntryPolicyTests" runstate="Runnable" seed="1450828662" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000187" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1104" name="PhysicalEditorServicesRequireExplicitProductOptIn(False,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,False)" fullname="ProductEntryPolicyTests.PhysicalEditorServicesRequireExplicitProductOptIn(False,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,&quot;1&quot;,False)" methodname="PhysicalEditorServicesRequireExplicitProductOptIn" classname="ProductEntryPolicyTests" runstate="Runnable" seed="2141780158" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000173" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1105" name="PhysicalEditorServicesRequireExplicitProductOptIn(True,False,True,&quot;Assets/Fixture.unity&quot;,&quot;1&quot;,False)" fullname="ProductEntryPolicyTests.PhysicalEditorServicesRequireExplicitProductOptIn(True,False,True,&quot;Assets/Fixture.unity&quot;,&quot;1&quot;,False)" methodname="PhysicalEditorServicesRequireExplicitProductOptIn" classname="ProductEntryPolicyTests" runstate="Runnable" seed="674956661" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000181" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1106" name="PhysicalEditorServicesRequireExplicitProductOptIn(True,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,null,False)" fullname="ProductEntryPolicyTests.PhysicalEditorServicesRequireExplicitProductOptIn(True,False,True,&quot;Assets/_Project/Scenes/Bootstrap/Bootstrap.unity&quot;,null,False)" methodname="PhysicalEditorServicesRequireExplicitProductOptIn" classname="ProductEntryPolicyTests" runstate="Runnable" seed="591661162" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.000188" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1110" name="ProtocolContractTests" fullname="ProtocolContractTests" classname="ProtocolContractTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.003358" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1111" name="UnityReadsTheSameWireFixtureAsJavaAndReact" fullname="ProtocolContractTests.UnityReadsTheSameWireFixtureAsJavaAndReact" methodname="UnityReadsTheSameWireFixtureAsJavaAndReact" classname="ProtocolContractTests" runstate="Runnable" seed="199430764" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.001885" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1112" name="QaHostingContractTests" fullname="QaHostingContractTests" classname="QaHostingContractTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.011973" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1113" name="JavaIpcFixtureUsesTheExistingNestedPrepareContract" fullname="QaHostingContractTests.JavaIpcFixtureUsesTheExistingNestedPrepareContract" methodname="JavaIpcFixtureUsesTheExistingNestedPrepareContract" classname="QaHostingContractTests" runstate="Runnable" seed="378357162" result="Passed" start-time="2026-10-21 11:56:15Z" end-time="2026-10-21 11:56:15Z" duration="0.010150" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: /home/josuegalvan/Documentos/Repos/Gorilla Escape/docs/evidence/integration-2026-10-21/unity-editmode.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

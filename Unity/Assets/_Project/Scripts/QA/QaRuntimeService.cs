@@ -72,7 +72,7 @@ namespace GorillaEscape.QA {
             Default("GORILLA_IPC_JAR",Path.Combine(root,"Java","server.jar"));
             Default("GORILLA_PHONE_INPUT","1");
             Default("GORILLA_IPC_MODE","lifecycle");
-            Default("GORILLA_LOCAL_TRUST_DIR",Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".gorilla-escape","live-qa-trust"));
+            if(read("GORILLA_MOBILE_LAB")!="1")Default("GORILLA_LOCAL_TRUST_DIR",Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".gorilla-escape","live-qa-trust"));
             Default("GORILLA_TRUST_BOOTSTRAP_PORT","8081");
             Default("GORILLA_HTTPS_PORT","8443");
             if(string.IsNullOrEmpty(read("GORILLA_MOBILE_OPERATOR"))){
