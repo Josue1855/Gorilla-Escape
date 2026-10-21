@@ -1,0 +1,35 @@
+name: Preview or configure Gorilla Escape branch rulesets
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Explicitly apply rulesets in all three repositories (requires admin token)'
+        type: boolean
+        default: false
+        required: true
+permissions:
+  contents: read
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Preview or apply protected-branch rulesets
+        env:
+          GORILLA_ADMIN_TOKEN: ${{ secrets.GORILLA_ADMIN_TOKEN }}
+          APPLY: ${{ inputs.apply }}
+        shell: bash
+        run: |
+          if [ "$APPLY" = "true" ]; then
+            python3 tools/github/configure_branch_rulesets.py --apply
+          else
+            python3 tools/github/configure_branch_rulesets.py
+          fi
+      - name: Preserve requested rule definitions
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: requested-branch-rulesets
+          path: ruleset-preview.json
+          if-no-files-found: warn

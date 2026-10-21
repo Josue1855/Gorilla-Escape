@@ -1,0 +1,59 @@
+name: Cross-repository integration
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 11 * * 1'
+  pull_request:
+    paths:
+      - '.github/workflows/cross-repository.yml'
+      - 'tools/github/cross_repo_contract.py'
+      - 'Shared/Protocol/**'
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: source
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Josue1855/Gorilla-Escape-Backend
+          ref: develop
+          path: source/external/backend
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Josue1855/Dise-o_pwa
+          ref: develop
+          path: source/external/pwa
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: source/external/pwa/package-lock.json
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build PWA
+        working-directory: source/external/pwa
+        run: |
+          npm ci
+          npm run build
+      - name: Verify Backend tests and SQLite migrations
+        working-directory: source/external/backend
+        run: ./mvnw -B -ntp verify
+      - name: Compare source versions and OpenAPI contract
+        working-directory: source
+        run: python3 tools/github/cross_repo_contract.py
+      - name: Preserve source-compatibility report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cross-repository-evidence
+          path: source/cross-repo-evidence.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,25 @@
+name: Java and web dependency audit
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+  schedule:
+    - cron: '45 11 * * 1'
+permissions:
+  contents: read
+jobs:
+  web-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: PWA/package-lock.json
+      - run: npm --prefix PWA ci
+      - name: Audit production dependencies (high/critical)
+        run: npm --prefix PWA audit --omit=dev --audit-level=high
+      - name: Evidence boundary
+        run: echo 'Dependency audit only. Static Java analysis, secrets scanning and Unity/editor validation require independent checks.' >> "$GITHUB_STEP_SUMMARY"
