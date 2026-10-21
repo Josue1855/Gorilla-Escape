@@ -1,0 +1,145 @@
+name: Main Windows and Linux release
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  FRONTEND_SHA: ffbec2260dbad3f36743cffc2309cb206f7dba9a
+  BACKEND_SHA: e76371097f4bcd881fa081211ec8d0d78e308c0b
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: StandaloneWindows64
+            label: Windows-x64
+            executable: GorillaEscape.exe
+          - platform: StandaloneLinux64
+            label: Linux-x64
+            executable: GorillaEscape.x86_64
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Require Unity CI enabled
+        env:
+          ENABLED: ${{ vars.UNITY_CI_ENABLED }}
+        run: test "$ENABLED" = true
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0
+      - name: Confirm release tag is reachable from main
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor HEAD origin/main
+      - name: Verify Unity editor version
+        run: grep -Fx 'm_EditorVersion: 6000.3.23f1' Unity/ProjectSettings/ProjectVersion.txt
+      - name: Check out approved PWA frontend commit
+        uses: actions/checkout@v4
+        with:
+          repository: Josue1855/Dise-o_pwa
+          ref: ${{ env.FRONTEND_SHA }}
+          path: _approved/frontend
+          persist-credentials: false
+      - name: Check out approved backend commit
+        uses: actions/checkout@v4
+        with:
+          repository: Josue1855/Gorilla-Escape-Backend
+          ref: ${{ env.BACKEND_SHA }}
+          path: _approved/backend
+          persist-credentials: false
+      - name: Enforce approved dependency SHAs
+        run: |
+          test "$(git -C _approved/frontend rev-parse HEAD)" = "$FRONTEND_SHA"
+          test "$(git -C _approved/backend rev-parse HEAD)" = "$BACKEND_SHA"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate approved frontend
+        run: |
+          npm --prefix _approved/frontend ci
+          npm --prefix _approved/frontend run build
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Validate approved backend
+        run: |
+          chmod +x _approved/backend/mvnw
+          ./_approved/backend/mvnw -B -ntp -f _approved/backend/pom.xml verify
+      - name: Build Unity player
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: Unity
+          unityVersion: 6000.3.23f1
+          targetPlatform: ${{ matrix.platform }}
+          buildName: GorillaEscape
+      - name: Package player and provenance
+        shell: bash
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          LABEL: ${{ matrix.label }}
+          EXECUTABLE: ${{ matrix.executable }}
+        run: |
+          set -euo pipefail
+          player="$(find build -type f -name "$EXECUTABLE" -print -quit)"
+          test -n "$player"
+          mkdir -p dist/player
+          cp -a "$(dirname "$player")/." dist/player/
+          cat > dist/BUILD_INFO.json <<EOF
+          {
+            "unityCommit": "$GITHUB_SHA",
+            "frontendCommit": "$FRONTEND_SHA",
+            "backendCommit": "$BACKEND_SHA",
+            "unityEditor": "6000.3.23f1",
+            "platform": "$PLATFORM",
+            "status": "Unity Player build; end-to-end local runtime QA not yet certified"
+          }
+          EOF
+          tar -czf "GorillaEscape-${LABEL}.tar.gz" -C dist .
+          sha256sum "GorillaEscape-${LABEL}.tar.gz" > "GorillaEscape-${LABEL}.tar.gz.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GorillaEscape-${{ matrix.label }}
+          path: |
+            GorillaEscape-${{ matrix.label }}.tar.gz
+            GorillaEscape-${{ matrix.label }}.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 30
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: GorillaEscape-*
+          merge-multiple: true
+          path: release-assets
+      - name: Require both platforms and checksums
+        run: |
+          test -s release-assets/GorillaEscape-Windows-x64.tar.gz
+          test -s release-assets/GorillaEscape-Linux-x64.tar.gz
+          (cd release-assets && sha256sum -c GorillaEscape-Windows-x64.tar.gz.sha256 && sha256sum -c GorillaEscape-Linux-x64.tar.gz.sha256)
+      - name: Publish tagged GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" release-assets/* --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" --notes "Windows and Linux Unity Player builds from approved main. Frontend/backend SHAs are recorded in BUILD_INFO.json. Full local-runtime QA remains required." --prerelease
