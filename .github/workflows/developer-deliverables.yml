@@ -1,5 +1,8 @@
 name: Gorilla Escape development deliverables
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/developer-deliverables.yml'
   workflow_dispatch:
   push:
     tags:
