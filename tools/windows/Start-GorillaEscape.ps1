@@ -9,7 +9,7 @@ foreach ($file in @($java, $jar, $backendJar, $unity)) {
         throw "Missing mandatory bundle component: $file"
     }
 }
-# Required by JavaProbeSupervisor: full absolute paths to exact packaged Java/JAR.
+# Product menu owns the lifecycle of the Java host (not the legacy IPC probe).\n$env:GORILLA_MAIN_MENU = '1'\n# Required by JavaProbeSupervisor: full absolute paths to exact packaged Java/JAR.
 $env:GORILLA_IPC_JAVA = (Resolve-Path -LiteralPath $java).Path
 $env:GORILLA_IPC_JAR = (Resolve-Path -LiteralPath $jar).Path
 
