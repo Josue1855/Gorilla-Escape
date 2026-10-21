@@ -5,5 +5,6 @@ namespace GorillaEscape.Minigames.LogBalance
     public sealed class LogBalanceSettings : ScriptableObject
     {
         public LogBalanceRules rules = new LogBalanceRules();
+        public LogBalanceVisuals visuals = new LogBalanceVisuals();
     }
 }

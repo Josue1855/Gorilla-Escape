@@ -13,10 +13,11 @@ namespace GorillaEscape.Minigames.LogBalance
         readonly Transform human;
         readonly LogBalanceCharacter character;
         readonly float length;
+        readonly LogBalanceAtmosphere atmosphere;
         readonly float[] deck=new float[65];
         public GameObject Root=>root;
         public LogBalanceCharacter Character=>character;
-        public LogBalanceStage(Transform parent,float length)
+        public LogBalanceStage(Transform parent,float length,LogBalanceVisuals visuals=null)
         {
             this.length=length;
             root=new GameObject("Log Balance — low-poly jungle");root.transform.SetParent(parent,false);
@@ -29,6 +30,7 @@ namespace GorillaEscape.Minigames.LogBalance
             var sun=new GameObject("Jungle daylight");sun.transform.SetParent(root.transform);
             var light=sun.AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.15f;light.color=new Color(1,.94f,.79f);
             sun.transform.rotation=Quaternion.Euler(48,-25,0);
+            atmosphere=new LogBalanceAtmosphere(root.transform,cam,light,length,visuals??new LogBalanceVisuals());
             Shape("River",PrimitiveType.Cube,new Vector3(0,-1.05f,0),new Vector3(80,.15f,80),new Color(.12f,.42f,.39f));
             foreach(int sign in new[]{-1,1})CreateBank(sign);
             var log=Asset("trunk","Supplied crossing trunk",root.transform);
@@ -173,6 +175,7 @@ namespace GorillaEscape.Minigames.LogBalance
                     grass.transform.localScale=new Vector3(height*(.85f+(float)rng.NextDouble()*.35f),height,height);
                     grass.transform.localPosition=new Vector3(px,ground-.015f,pz);
                     grass.transform.localRotation=Quaternion.Euler(0,(float)rng.NextDouble()*360,0);
+                    foreach(var renderer in grass.GetComponentsInChildren<Renderer>())renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
             }
         }
@@ -216,9 +219,11 @@ namespace GorillaEscape.Minigames.LogBalance
             human.localRotation=Quaternion.Euler(fell?Mathf.Min(65,fallSeconds*85):0,0,-balance*22-(fell?side*28:0));
             character.Pose(elapsed,balance,walking,fell,fallSeconds,won);
             if(!fell)human.localPosition+=Vector3.up*character.SupportOffset;
+            atmosphere.Present(Time.unscaledTime,balance,fell,fallSeconds,human.localPosition);
         }
         public void Dispose()
         {
+            atmosphere?.Dispose();
             if(root!=null)root.SetActive(false);
             foreach(var camera in hidden)if(camera!=null)camera.enabled=true;
             foreach(var material in materials)Object.Destroy(material);foreach(var mesh in meshes)Object.Destroy(mesh);

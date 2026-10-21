@@ -15,6 +15,9 @@ namespace GorillaEscape.Editor
                 var settings=ScriptableObject.CreateInstance<LogBalanceSettings>();
                 AssetDatabase.CreateAsset(settings,path);AssetDatabase.SaveAssets();
             }
+            var current=AssetDatabase.LoadAssetAtPath<LogBalanceSettings>(path);
+            if(current.visuals==null)current.visuals=new LogBalanceVisuals();
+            EditorUtility.SetDirty(current);AssetDatabase.SaveAssets();
             const string materialPath="Assets/_Project/Resources/LogBalanceStage.mat";
             if(AssetDatabase.LoadAssetAtPath<Material>(materialPath)==null)
             {

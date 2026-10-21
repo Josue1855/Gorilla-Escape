@@ -30,7 +30,7 @@ namespace GorillaEscape.Minigames.LogBalance
             if(settings==null)settings=Resources.Load<LogBalanceSettings>("LogBalanceSettings");
             rules=(settings!=null?settings.rules:new LogBalanceRules()).Copy();rules.Validate();
             creditsText=Resources.Load<TextAsset>("LogBalance/CREDITS")?.text??"Créditos en Art/LogBalance/ATTRIBUTION.md";
-            model=new LogBalanceModel(rules);stage=new LogBalanceStage(transform,rules.length);
+            model=new LogBalanceModel(rules);stage=new LogBalanceStage(transform,rules.length,settings!=null?settings.visuals:null);
         }
         public void Attach(MainMenuController owner) {menu=owner;}
         public void SelectKeyboard(bool value)
@@ -122,10 +122,13 @@ namespace GorillaEscape.Minigames.LogBalance
                 var panel=new Rect(width/2-430,190,860,570);Fill(panel,new Color(.06f,.1f,.07f,.98f));
                 GUI.Label(new Rect(panel.x+25,panel.y+20,panel.width-50,panel.height-40),creditsText,new GUIStyle(body){fontSize=17});return;
             }
-            float x=width/2-270,y=height-300;
+            float x=width-600,y=height-300;
             GUI.Box(new Rect(x-25,y-10,590,285),"");
             GUI.Label(new Rect(x,y,540,32),"IZQUIERDA  ←                 CENTRO                 →  DERECHA",body);
-            Color bar=Mathf.Abs(model.Balance)>=rules.fallThreshold?new Color(.9f,.25f,.15f):new Color(.2f,.7f,.45f);
+            float danger=Mathf.InverseLerp(rules.fallThreshold*.55f,rules.fallThreshold,Mathf.Abs(model.Balance));
+            Color bar=Color.Lerp(new Color(.2f,.7f,.45f),new Color(.95f,.25f,.12f),danger);
+            if(model.State==LogBalanceState.Crossing&&!paused&&danger>0)
+            {Fill(new Rect(0,0,7,height),new Color(.9f,.2f,.1f,danger*.7f));Fill(new Rect(width-7,0,7,height),new Color(.9f,.2f,.1f,danger*.7f));}
             Fill(new Rect(x,y+40,540,24),new Color(.25f,.28f,.3f));
             float safe=rules.fallThreshold/rules.balanceClamp;
             Fill(new Rect(x+270*(1-safe),y+40,540*safe,24),bar);

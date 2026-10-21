@@ -28,3 +28,13 @@ MonoBehaviour:
     fallThreshold: 0.85
     fallGraceSeconds: 0.65
     freshnessMilliseconds: 350
+  visuals:
+    shadows: 1
+    haze: 1
+    flowingRiver: 1
+    splash: 1
+    shadowStrength: 0.72
+    sunlight: 1.15
+    shadowDistance: 55
+    riverSpeed: 1.2
+    cameraRoll: 0.8

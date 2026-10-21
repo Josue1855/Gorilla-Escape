@@ -72,3 +72,13 @@ blender -b --python tools/art/prepare_log_balance.py -- /ruta/absoluta/al/reposi
 El comando de editor `LogBalanceAssetSetup.CreatePrefabs` acepta `--log-balance-source low_poly_grass_pack` en batch; el menú normal sigue preparando todos los recursos del manifiesto.
 
 Validación de la incorporación del pasto: EditMode 183/183 PASS, flujo PlayMode 2/2 PASS, build Linux Succeeded con 0 errores/advertencias, validadores foundation/gestión PASS y revisión gráfica del ejecutable. [Captura con pasto](../evidence/log-balance-low-poly-2026-10-20/grass.png). Las reglas y controles del juego permanecen sin cambios.
+
+## Sombras y respuesta visual
+
+La prueba incorpora luz de sol cálida, sombras suaves en árboles/personaje/tronco y ambiente de tres tonos. La neblina lineal suaviza el fondo sin postprocesado. El río tiene pequeñas bandas low poly que se desplazan y la caída genera gotas geométricas y un anillo de agua. El panel de equilibrio queda en la esquina inferior derecha para no tapar la caída y la salpicadura. El balance inclina ligeramente la cámara y cambia gradualmente el indicador hacia rojo; no añade fuerzas, viento, obstáculos ni penalizaciones nuevas.
+
+Los parámetros están en `LogBalanceSettings.asset → Visuals`: activar sombras/neblina/corriente/salpicadura, intensidad de luz, fuerza/distancia de sombras, velocidad de corriente y máximo giro de cámara (0 para desactivarlo). La calidad de sombras se limita al minijuego y se restaura al salir, igual que la iluminación y neblina originales. No se cambia el nivel de calidad general ni se instala postprocesado.
+
+Validación de esta iteración: 183/183 EditMode y 3/3 pruebas de flujo PlayMode aprobadas, incluida la restauración de ajustes al salir. Build Linux Succeeded con 0 errores y 0 advertencias. Las reglas de balance, la calibración y el transporte móvil no se modificaron.
+
+Revisión gráfica del ejecutable final: [sombras y ambiente](../evidence/log-balance-lighting-2026-10-20/shadows.png) y [salpicadura al caer](../evidence/log-balance-lighting-2026-10-20/splash.png). Se comprobó la corriente en movimiento y la visibilidad de la caída con el panel en su nueva posición. Esta revisión usó controles de teclado.

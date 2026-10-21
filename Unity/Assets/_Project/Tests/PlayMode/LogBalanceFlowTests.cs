@@ -72,4 +72,27 @@ public sealed class LogBalanceFlowTests
         finally {Object.Destroy(host);}
         yield return null;
     }
+    [UnityTest] public IEnumerator LeavingPrototypeRestoresLightingAndShadowPreferences()
+    {
+        var mode=UnityEngine.RenderSettings.ambientMode;var fog=UnityEngine.RenderSettings.fog;
+        var sky=UnityEngine.RenderSettings.ambientSkyColor;var sun=UnityEngine.RenderSettings.sun;
+        var shadows=QualitySettings.shadows;var distance=QualitySettings.shadowDistance;
+        var resolution=QualitySettings.shadowResolution;int cascades=QualitySettings.shadowCascades;
+        var host=new GameObject("Log Balance lighting fixture");var menu=host.AddComponent<MainMenuController>();
+        yield return null;
+        try
+        {
+            menu.OpenLogBalance();
+            Assert.That(UnityEngine.RenderSettings.ambientMode,Is.EqualTo(UnityEngine.Rendering.AmbientMode.Trilight));
+            Assert.That(UnityEngine.RenderSettings.sun.shadows,Is.EqualTo(LightShadows.Soft));
+            Assert.NotNull(GameObject.Find("Low-poly current highlight"));
+            menu.CloseLogBalance();yield return null;
+            Assert.That(UnityEngine.RenderSettings.ambientMode,Is.EqualTo(mode));Assert.That(UnityEngine.RenderSettings.fog,Is.EqualTo(fog));
+            Assert.That(UnityEngine.RenderSettings.ambientSkyColor,Is.EqualTo(sky));Assert.AreSame(sun,UnityEngine.RenderSettings.sun);
+            Assert.That(QualitySettings.shadows,Is.EqualTo(shadows));Assert.That(QualitySettings.shadowDistance,Is.EqualTo(distance));
+            Assert.That(QualitySettings.shadowResolution,Is.EqualTo(resolution));Assert.That(QualitySettings.shadowCascades,Is.EqualTo(cascades));
+        }
+        finally{Object.Destroy(host);}
+        yield return null;
+    }
 }
