@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace GorillaEscape.UI
 {
-    /// <summary>Product navigation. Technical owners survive the transition between these two views.</summary>
+    /// <summary>Product navigation. Technical owners survive view transitions.</summary>
     public sealed class MainMenuController : MonoBehaviour
     {
         public const string BootstrapScenePath = "Assets/_Project/Scenes/Bootstrap/Bootstrap.unity";
@@ -26,7 +26,15 @@ namespace GorillaEscape.UI
         bool AutomatedMeasurement => Environment.GetEnvironmentVariable("GORILLA_QA_AUTOMATED_MEASUREMENT")=="1"&&Runtime!=null&&Runtime.MeasuringFrames;
         public bool InTests { get; private set; }
         public bool InPhone { get; private set; }
-        public bool PlayEnabled => false; // E0 is still open; no gameplay scene exists.
+        public bool PlayEnabled => false; // Full tournament remains unavailable; Log Balance has a separate prototype entry.
+        public GorillaEscape.Minigames.LogBalance.LogBalanceController LogBalance { get; private set; }
+        public void OpenLogBalance()
+        {
+            if(InPhone||InTests||LogBalance!=null)return;
+            var host=new GameObject("Desafío del Tronco");host.transform.SetParent(transform,false);
+            LogBalance=host.AddComponent<GorillaEscape.Minigames.LogBalance.LogBalanceController>();LogBalance.Attach(this);
+        }
+        public void CloseLogBalance(){if(LogBalance==null)return;LogBalance.gameObject.SetActive(false);Destroy(LogBalance.gameObject);LogBalance=null;}
         public QaRuntimeService Runtime { get; private set; }
         int reportedWidth,reportedHeight;
         Vector2 mainScroll;
@@ -142,6 +150,7 @@ namespace GorillaEscape.UI
         void OnDestroy(){if(prepareTexture!=null)Destroy(prepareTexture);}
         void OnGUI()
         {
+            if(LogBalance!=null)return;
             if(Event.current.type==EventType.Repaint&&(reportedWidth!=Screen.width||reportedHeight!=Screen.height)) {
                 reportedWidth=Screen.width;reportedHeight=Screen.height;
                 Debug.Log("MAIN_MENU_LAYOUT "+reportedWidth+" "+reportedHeight);

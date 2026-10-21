@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b53cd9b8dad68c3690e200672b851a9, type: 3}
+  m_Name: LogBalanceSettings
+  m_EditorClassIdentifier: GorillaEscape.Runtime::GorillaEscape.Minigames.LogBalance.LogBalanceSettings
+  rules:
+    countdownSeconds: 3
+    length: 18
+    forwardSpeed: 0.75
+    maxSeconds: 30
+    tiltDegrees: 25
+    deadZone: 0.08
+    smoothingSeconds: 0.18
+    controlForce: 0.9
+    disturbance: 0.09
+    instability: 0.35
+    difficulty: 1
+    balanceClamp: 1
+    fallThreshold: 0.85
+    fallGraceSeconds: 0.65
+    freshnessMilliseconds: 350
