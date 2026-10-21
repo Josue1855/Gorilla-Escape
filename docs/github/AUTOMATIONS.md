@@ -20,7 +20,7 @@ No se sobrescriben flujos ni ramas de desarrolladores existentes.
 | issue-triage | issue nuevo/editado/reabierto | Etiqueta sólo títulos con `[bug]`, `[task]`, `[feature]`, `[docs]` |
 | Dependabot | Semanal | PRs de actualización Maven, npm y Actions contra develop |
 
-Versionado: `vX.Y.Z` para snapshot principal, `backend-vX.Y.Z`
+El empaquetado principal compila el JAR con `-DskipTests` para no repetir la suite\nWebRTC dependiente de audio nativo del runner; los tests siguen siendo requisito\nen el workflow **Foundation validation** y deben estar verdes en el commit\nrevisado antes de crear un tag. No considerar el artefacto como certificado\nsi Foundation falla.\n\nVersionado: `vX.Y.Z` para snapshot principal, `backend-vX.Y.Z`
 para backend, `pwa-vX.Y.Z` para frontend. Crear tags únicamente a partir de
 commits revisados y validados. Nunca publicar un snapshot como ejecutable jugable.
 
