@@ -12,7 +12,8 @@ namespace GorillaEscape.Minigames.LogBalance
         LogBalanceStage stage;
         MainMenuController menu;
         LogBalanceModel model;
-        bool keyboard,paused,focused=true;
+        bool keyboard,paused,focused=true,showCredits;
+        string creditsText;
         int player=1;
         float fallenTime;
         string notice="Sostén el teléfono vertical y calibra su posición cómoda.";
@@ -28,6 +29,7 @@ namespace GorillaEscape.Minigames.LogBalance
         {
             if(settings==null)settings=Resources.Load<LogBalanceSettings>("LogBalanceSettings");
             rules=(settings!=null?settings.rules:new LogBalanceRules()).Copy();rules.Validate();
+            creditsText=Resources.Load<TextAsset>("LogBalance/CREDITS")?.text??"Créditos en Art/LogBalance/ATTRIBUTION.md";
             model=new LogBalanceModel(rules);stage=new LogBalanceStage(transform,rules.length);
         }
         public void Attach(MainMenuController owner) {menu=owner;}
@@ -85,7 +87,8 @@ namespace GorillaEscape.Minigames.LogBalance
             if(!available){PauseAttempt();if(!keyboard)notice=PlayerAdmitted()?tilt.Status:"Conecta el teléfono del jugador seleccionado.";}
             if(!paused&&focused&&available)model.Tick(Mathf.Min(.1f,Time.unscaledDeltaTime),input);
             if(model.State==LogBalanceState.Fell)fallenTime+=Time.unscaledDeltaTime;
-            stage.Present(model.Progress,model.Balance,model.State==LogBalanceState.Fell,fallenTime);
+            stage.Present(model.Progress,model.Balance,model.State==LogBalanceState.Fell,fallenTime,model.Elapsed,
+                model.State==LogBalanceState.Crossing&&!paused&&focused,model.State==LogBalanceState.Won);
         }
         void OnGUI()
         {
@@ -107,10 +110,18 @@ namespace GorillaEscape.Minigames.LogBalance
             var title=new GUIStyle(GUI.skin.label){fontSize=30,fontStyle=FontStyle.Bold};
             var body=new GUIStyle(GUI.skin.label){fontSize=19,wordWrap=true};
             var button=new GUIStyle(GUI.skin.button){fontSize=18};
-            GUI.Box(new Rect(20,20,width-40,125),"");
+            GUI.Box(new Rect(20,20,width-40,145),"");
             GUI.Label(new Rect(40,30,800,40),"DESAFÍO DEL TRONCO",title);
             GUI.Label(new Rect(40,75,width-310,60),"Eres el náufrago: cruza el río y supera la prueba de los gorilas.\nAvanzas automáticamente. Inclina el teléfono para corregir el equilibrio.",body);
+            GUI.Label(new Rect(40,135,width-300,24),"Modelos: gashtan · Aditya Graphical · katarzynaszemla — CC BY 4.0 (adaptados)",new GUIStyle(body){fontSize=13});
             if(GUI.Button(new Rect(width-220,45,170,50),"VOLVER",button)&&menu!=null)menu.CloseLogBalance();
+            if(GUI.Button(new Rect(width-220,105,170,35),showCredits?"CERRAR CRÉDITOS":"CRÉDITOS",button))
+            {showCredits=!showCredits;if(showCredits)PauseAttempt();}
+            if(showCredits)
+            {
+                var panel=new Rect(width/2-430,190,860,570);Fill(panel,new Color(.06f,.1f,.07f,.98f));
+                GUI.Label(new Rect(panel.x+25,panel.y+20,panel.width-50,panel.height-40),creditsText,new GUIStyle(body){fontSize=17});return;
+            }
             float x=width/2-270,y=height-300;
             GUI.Box(new Rect(x-25,y-10,590,285),"");
             GUI.Label(new Rect(x,y,540,32),"IZQUIERDA  ←                 CENTRO                 →  DERECHA",body);

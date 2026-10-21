@@ -4,7 +4,7 @@ Iteración de desarrollo: 2026-10-20, rama `feature/gameplay-desafio-del-tronco`
 
 ## Historia y objetivo
 
-El personaje controlable es un humano náufrago llegado accidentalmente a la isla de los gorilas. Para escapar debe superar las pruebas que le imponen. En esta prueba cruza un tronco sobre un río; los gorilas son espectadores NPC. La geometría provisional diferencia la figura humana con camisa, brazos extendidos y piernas de los gorilas de torso ancho y brazos largos. No se incorporaron assets externos.
+El personaje controlable es un humano náufrago llegado accidentalmente a la isla de los gorilas. Para escapar debe superar las pruebas que le imponen. En esta prueba cruza un tronco sobre un río; los gorilas son espectadores NPC. El personaje usa el modelo Vagabundo/Castaway suministrado por el PO; el tronco y el ambiente reutilizan sus GLB trunk y low_poly_trees. Los gorilas siguen como NPC facetados. Consultar [arte y animación](LOG_BALANCE_ART.md) para el rig, derivados y créditos.
 
 Cuenta regresiva de tres segundos, avance automático y equilibrio lateral. Inclinar a la izquierda mueve el balance a la izquierda; inclinar a la derecha lo mueve a la derecha. Corregir hacia el centro evita la caída. El recorrido predeterminado es de 18 m a 0,75 m/s: unos 24 segundos de cruce, además de la cuenta regresiva.
 
@@ -48,10 +48,11 @@ La lógica usa pasos de 10 ms, zona muerta reescalada, suavizado exponencial y p
 - `LogBalanceTilt.cs`: adaptación del input validado, calibración y freshness.
 - `LogBalanceSettings.cs`: configuración ScriptableObject.
 - `LogBalanceController.cs`: intento, selección de control/slot, pausa, UI y reinicio.
-- `LogBalanceStage.cs`: humano, tronco, río, orillas, meta, espectadores, cámara y limpieza.
+- `LogBalanceStage.cs`: selva low poly con modelos suministrados, superficie de apoyo del tronco, espectadores, cámara y limpieza.
+- `LogBalanceCharacter.cs`: poses del rig original para caminata, equilibrio, caída y victoria.
 - `LogBalanceSetup.cs`: creación idempotente de la configuración y recursos del escenario.
 - `LogBalanceTests.cs` y `LogBalanceFlowTests.cs`: reglas, sensores sintéticos y navegación/flujo.
 
 ## Alcance de validación
 
-Consultar [validación de esta iteración](LOG_BALANCE_VALIDATION.md). Una prueba sintética de orientación acredita el adaptador, no la sensación con un teléfono físico. El arte es provisional; no hay animaciones de NPC, competición simultánea, viento, obstáculos, mapas múltiples ni cinemáticas. T019/T020 y aceptación de hardware mantienen su estado propio.
+Consultar [validación de esta iteración](LOG_BALANCE_VALIDATION.md). Una prueba sintética de orientación acredita el adaptador, no la sensación con un teléfono físico. El arte low poly y la animación procedural del humano están integrados; no hay animaciones de NPC, competición simultánea, viento, obstáculos, mapas múltiples ni cinemáticas. T019/T020 y aceptación de hardware mantienen su estado propio.

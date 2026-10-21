@@ -1,0 +1,15 @@
+MODELOS DE DESAFÍO DEL TRONCO
+
+trunk — gashtan
+https://sketchfab.com/3d-models/trunk-22e47e88a70f4f6e98dd35d3d146b657
+
+Low poly trees — Aditya Graphical
+https://sketchfab.com/3d-models/low-poly-trees-51cae4a194344e8bbfbd0a4cff205f76
+
+Castaway — katarzynaszemla
+https://sketchfab.com/3d-models/castaway-6a481c17d68a4a138f726ccb76caedff
+
+Los tres GLB incluyen licencia CC BY 4.0:
+https://creativecommons.org/licenses/by/4.0/
+
+Adaptaciones: conversión a FBX, pivotes, escala, materiales mates, distribución del ambiente y poses procedurales sobre el esqueleto original. Los autores originales no avalan estas adaptaciones.

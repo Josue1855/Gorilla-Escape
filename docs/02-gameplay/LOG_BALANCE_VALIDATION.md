@@ -2,6 +2,8 @@
 
 Fecha local: 2026-10-20. Rama exclusiva: `feature/gameplay-desafio-del-tronco`. Base: `1039cfe` (develop tras PR #124). No se integró a develop/main ni se abrió un PR para esta iteración.
 
+Actualización posterior de arte: las capturas y descripciones geométricas de este informe corresponden a la primera iteración. El escenario con los GLB suministrados y el rig del náufrago se registra en [arte y animación](LOG_BALANCE_ART.md).
+
 ## Reutilización y alcance
 
 Se inspeccionaron `Unity/Assets/_Project`, Shared, captura PWA y recepción Java antes de implementar. Se reutilizan Bootstrap, menú, `QaRuntimeService` y su supervisor Java, admisión de `LobbyAuthorityBridge`, `PhoneInputStore` y `PhoneInputWire`. El tilt consume gamma disponible, identifica sesión/dispositivo/epoch, comprueba freshness y guarda una posición neutra explícita. El quaternion del adaptador general sigue declarado ausente; no se inventa una orientación nueva.

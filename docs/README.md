@@ -44,6 +44,7 @@ El inicio de juegos y clientes está autorizado. La aceptación física de Fase 
 - [Jungle Slice](02-gameplay/JUNGLE_SLICE.md)
 - [Marco común de minijuegos](02-gameplay/MINIGAME_FRAMEWORK.md)
 - [Desafío del Tronco: prototipo, controles y configuración](02-gameplay/LOG_BALANCE.md)
+- [Arte low poly y animación del náufrago](02-gameplay/LOG_BALANCE_ART.md)
 
 ## Desarrollo e integración
 

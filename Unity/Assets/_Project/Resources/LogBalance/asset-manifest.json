@@ -1,0 +1,240 @@
+{
+  "source": "User-supplied GLB files; embedded Sketchfab attribution retained",
+  "assets": [
+    {
+      "name": "trunk",
+      "sha256": "15f9218b63f05b4226bde8bb8a2d117656c7897180f8664645d06e419af69d18",
+      "credits": {
+        "author": "gashtan (https://sketchfab.com/gashtan)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/trunk-22e47e88a70f4f6e98dd35d3d146b657",
+        "title": "trunk"
+      },
+      "materials": [
+        {
+          "name": "Color_C18",
+          "color": [
+            0.20996847096663532,
+            0.13790105063887761,
+            0.06916946558833732,
+            1.0
+          ],
+          "texture": ""
+        },
+        {
+          "name": "Color_C09",
+          "color": [
+            0.3806290697569303,
+            0.29255045763159687,
+            0.20684616520443885,
+            1.0
+          ],
+          "texture": ""
+        },
+        {
+          "name": "Color_C14",
+          "color": [
+            0.6,
+            0.478431,
+            0.356863,
+            1.0
+          ],
+          "texture": ""
+        }
+      ],
+      "models": [
+        "trunk.fbx"
+      ],
+      "skins": 0,
+      "animations": []
+    },
+    {
+      "name": "low_poly_trees",
+      "sha256": "a2089a13d4673ea95e270627fc9f90d816cfb98bd6845bc8c0c38c0f0e26873d",
+      "credits": {
+        "author": "Aditya Graphical (https://sketchfab.com/Adityakm)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/low-poly-trees-51cae4a194344e8bbfbd0a4cff205f76",
+        "title": "Low poly trees"
+      },
+      "materials": [
+        {
+          "name": "1_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_0.png"
+        },
+        {
+          "name": "2_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_1.png"
+        },
+        {
+          "name": "3_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_2.png"
+        },
+        {
+          "name": "4_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_3.png"
+        },
+        {
+          "name": "5_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_4.png"
+        },
+        {
+          "name": "6_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_5.png"
+        },
+        {
+          "name": "7_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_6.png"
+        },
+        {
+          "name": "10_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_7.png"
+        },
+        {
+          "name": "11_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_8.png"
+        },
+        {
+          "name": "12_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_9.png"
+        },
+        {
+          "name": "8_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_10.png"
+        },
+        {
+          "name": "9_tree",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_11.png"
+        },
+        {
+          "name": "Rock_1",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "low_poly_trees_12.png"
+        }
+      ],
+      "models": [
+        "Tree_00.fbx",
+        "Tree_01.fbx",
+        "Tree_02.fbx",
+        "Tree_03.fbx",
+        "Tree_04.fbx",
+        "Tree_05.fbx",
+        "Tree_06.fbx",
+        "Tree_07.fbx",
+        "Tree_08.fbx",
+        "Tree_09.fbx",
+        "Tree_10.fbx",
+        "Tree_11.fbx",
+        "Tree_12.fbx"
+      ],
+      "skins": 0,
+      "animations": []
+    },
+    {
+      "name": "Vagabundo",
+      "sha256": "df7b86ff54653220ffee8a0295231d857e466547c69864546e9174327187436d",
+      "credits": {
+        "author": "katarzynaszemla (https://sketchfab.com/katarzynaszemla)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/castaway-6a481c17d68a4a138f726ccb76caedff",
+        "title": "Castaway"
+      },
+      "materials": [
+        {
+          "name": "01_-_Default",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "texture": "Vagabundo_0.png"
+        }
+      ],
+      "models": [
+        "Vagabundo.fbx"
+      ],
+      "skins": 1,
+      "animations": [
+        "Take 001"
+      ]
+    }
+  ]
+}
