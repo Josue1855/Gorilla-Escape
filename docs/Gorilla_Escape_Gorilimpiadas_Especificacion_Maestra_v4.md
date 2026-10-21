@@ -125,7 +125,7 @@ La narrativa funciona como marco de cohesión y motivación, no como campaña ci
 
 ## Sinopsis funcional del MVP
 
-El anfitrión crea una Gorilimpiada y los participantes ingresan mediante un código QR. Después de elegir nombre, color o avatar, cada persona calibra su control y aprende las reglas de seguridad. Una ceremonia breve presenta el torneo y conduce a cinco pruebas: Gorilla Smash, Coconut Throw, Jungle Archery, Coconut Bowling y Jungle Slice.
+El anfitrión crea una Gorilimpiada y los participantes ingresan mediante un código QR. Después de elegir nombre, color o avatar, cada persona calibra su control y aprende las reglas de seguridad. Una ceremonia breve presenta el torneo y conduce a las disciplinas definidas: Gorilla Smash, Coconut Throw, Coconut Bowling y Jungle Slice. La quinta disciplina sigue pendiente de una decisión formal y no será un segundo Gorilla Smash.
 
 En cada disciplina, el juego explica el objetivo, concede los intentos definidos, traduce el movimiento físico en una acción visible y muestra por qué el resultado fue bueno o mejorable. Al terminar cada prueba se actualiza la tabla. Después de la quinta disciplina, una ceremonia final muestra la clasificación, corona al campeón y permite regresar al menú.
 
@@ -291,7 +291,7 @@ El nombre **Gorilla Escape** funciona como marca de plataforma y **Gorilimpiadas
 - 5 minijuegos:
   1. Gorilla Smash.
   2. Coconut Throw.
-  3. Jungle Archery.
+  3. Quinta disciplina pendiente de decisión (sin duplicar Gorilla Smash).
   4. Coconut Bowling.
   5. Jungle Slice.
 - Teléfono como control mediante PWA.
@@ -1363,66 +1363,13 @@ Bonus visuales:
 
 ---
 
-# 19. Mecánica definitiva — Jungle Archery
+# 19. Disciplina pendiente de decisión — reemplazo de Jungle Archery
 
-## Objetivo
+La mecánica de arquería deja de estar en el alcance activo. Los issues #53–#56 ahora describen una ampliación del **Gorilla Smash ya definido en §17**, con mazo, medidor vertical y campana. No son un nuevo minijuego independiente.
 
-Apuntar utilizando orientación del teléfono y disparar manteniendo estabilidad.
+La quinta disciplina conserva su lugar en la planificación, pero su nombre, mecánica, scoring y entorno están **pendientes de decisión formal**. Antes de implementarla, actualizar catálogo, backlog y documentación con una decisión de producto aprobada.
 
-## Flechas
-
-**5 por jugador.**
-
-## Control
-
-```text
-Orientar teléfono → mover mira
-Mantener botón → tensar
-Mantener estable
-Soltar → disparar
-```
-
-## Variables
-
-```text
-Yaw
-Pitch
-Stability
-HoldTime
-ReleaseTiming
-```
-
-## Stability
-
-Se calcula mediante variación angular durante una ventana previa al disparo.
-
-Conceptualmente:
-
-```text
-menor variación angular = mayor Stability
-```
-
-## Zonas
-
-| Zona | Puntos |
-|---|---:|
-| Bullseye | 100 |
-| Interior | 75 |
-| Media | 50 |
-| Exterior | 25 |
-| Fallo | 0 |
-
-## Técnica
-
-Una estabilidad alta:
-
-- reduce dispersión.
-
-Una estabilidad baja:
-
-- incrementa dispersión.
-
-No se debe mover artificialmente el proyectil después del disparo.
+La ampliación Gorilla Smash conserva los 3 intentos y la fórmula de puntuación de §17. Definir y validar el umbral de la campana y las reglas de alternativa táctil.
 
 ---
 
@@ -1793,11 +1740,9 @@ El slow motion no debe romper la sincronización de input ni hacer lenta la sesi
 - seguimiento de trayectoria;
 - resultado al aterrizar.
 
-## Jungle Archery
+## Quinta disciplina pendiente de decisión
 
-- mira clara;
-- zoom breve al impacto;
-- bullseye destacado.
+- puesta en cámara pendiente de aprobación de la nueva mecánica.
 
 ## Coconut Bowling
 
@@ -1908,7 +1853,7 @@ Taunts
 ```text
 Gorilla Smash      Arena de piedra / tótems
 Coconut Throw      Estadio tropical
-Jungle Archery     Bosque / ruinas
+Quinta disciplina   Entorno pendiente
 Coconut Bowling    Pista de bambú
 Jungle Slice       Mercado / zona frutal
 ```
@@ -3357,7 +3302,7 @@ Results
 
 ```text
 Coconut Throw
-Jungle Archery
+Quinta disciplina (pendiente de decisión)
 Coconut Bowling
 Jungle Slice
 ```
