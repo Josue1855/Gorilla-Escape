@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       apply:
-        description: 'true adds existing open issues and PRs to Project #1; false only reports candidates'
+        description: 'true adds existing open issues/PRs; false lists candidates'
         type: boolean
         default: false
         required: true
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Add all existing open issues and pull requests from three repositories
+      - name: Inventory and add missing items (never modify existing field values)
         env:
           GH_TOKEN: ${{ secrets.GORILLA_PROJECT_TOKEN }}
           FALLBACK_TOKEN: ${{ github.token }}
@@ -31,6 +31,7 @@ jobs:
             existing="$(gh project item-list 1 --owner Josue1855 --limit 5000 --format json --jq '.items[] | .content.url // empty')"
           fi
           count=0
+          added=0
           for repo in Josue1855/Gorilla-Escape Josue1855/Gorilla-Escape-Backend Josue1855/Dise-o_pwa; do
             echo "### $repo" >> "$GITHUB_STEP_SUMMARY"
             for kind in issue pr; do
@@ -38,19 +39,12 @@ jobs:
                 test -n "$url" || continue
                 count=$((count + 1))
                 if [ "$APPLY" = "true" ]; then
-                  if printf '%s\\n' "$existing" | grep -Fqx "$url"; then
-                    echo "Existing item unchanged: $url"
+                  if printf '%s\n' "$existing" | grep -Fqx "$url"; then
+                    echo "Existing item preserved: $url"
                   else
                     gh project item-add 1 --owner Josue1855 --url "$url"
-                    existing="$existing"
-                else
-                  echo "Candidate: $url"
-                fi
-              done < <(gh "$kind" list --repo "$repo" --state open --limit 500 --json url --jq '.[].url')
-            done
-          done
-          echo "Processed $count open issues/PRs. Apply requested: $APPLY." >> "$GITHUB_STEP_SUMMARY"
-\\n'"$url"
+                    existing="$(printf '%s\n%s' "$existing" "$url")"
+                    added=$((added + 1))
                     echo "New item added: $url"
                   fi
                 else
@@ -59,4 +53,4 @@ jobs:
               done < <(gh "$kind" list --repo "$repo" --state open --limit 500 --json url --jq '.[].url')
             done
           done
-          echo "Processed $count open issues/PRs. Apply requested: $APPLY." >> "$GITHUB_STEP_SUMMARY"
+          echo "Examined $count open issues/PRs; new items added: $added; apply: $APPLY." >> "$GITHUB_STEP_SUMMARY"
