@@ -1,11 +1,16 @@
-name: Unity 6000.3.23f1 test and Windows player
+name: Unity Windows candidate build (licensed)
 on:
   workflow_dispatch:
+    inputs:
+      package_candidate:
+        description: 'Build candidate package after Unity tests (requires Unity license)'
+        type: boolean
+        default: true
 permissions:
   contents: read
 jobs:
   unity-tests:
-    name: Unity EditMode and PlayMode (licensed)
+    name: Unity EditMode/PlayMode (licensed)
     if: vars.UNITY_CI_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -16,7 +21,7 @@ jobs:
       - name: Confirm pinned editor
         shell: bash
         run: grep -Fx 'm_EditorVersion: 6000.3.23f1' Unity/ProjectSettings/ProjectVersion.txt
-      - name: Run EditMode and PlayMode tests
+      - name: Run Unity EditMode and PlayMode tests
         id: testRunner
         uses: game-ci/unity-test-runner@v4
         env:
@@ -28,7 +33,7 @@ jobs:
           projectPath: Unity
           unityVersion: 6000.3.23f1
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-      - name: Preserve Unity test evidence
+      - name: Upload Unity test reports
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -36,8 +41,9 @@ jobs:
           path: ${{ steps.testRunner.outputs.artifactsPath }}
           if-no-files-found: warn
           retention-days: 30
+
   unity-build:
-    name: Build Windows desktop Player (Mono)
+    name: Build Windows64 Unity Player (licensed)
     needs: unity-tests
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -56,17 +62,102 @@ jobs:
           unityVersion: 6000.3.23f1
           targetPlatform: StandaloneWindows64
           buildName: GorillaEscape
-      - name: Package Player
+      - name: Validate Unity Windows output
         shell: bash
         run: |
-          test -d build
-          tar -czf GorillaEscape-Windows64-UnityPlayer.tar.gz build
-          sha256sum GorillaEscape-Windows64-UnityPlayer.tar.gz > GorillaEscape-Windows64-UnityPlayer.sha256
-      - name: Publish Windows64 Player artifact
+          find build -name 'GorillaEscape.exe' -type f -print -quit | grep -q '.'
+      - name: Preserve Unity Player
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: GorillaEscape-Windows64-UnityPlayer
+          name: unity-windows-player-raw
+          path: build/
+          retention-days: 7
+
+  windows-candidate:
+    name: Bundle Unity + host + SQLite backend + Java 21
+    needs: unity-build
+    if: ${{ inputs.package_candidate != false }}
+    runs-on: windows-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Josue1855/Gorilla-Escape-Backend
+          ref: develop
+          path: _external/backend
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: unity-windows-player-raw
+          path: _buildplayer
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: PWA/package-lock.json
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build host with embedded PWA (Unity parent controls host lifecycle)
+        shell: pwsh
+        run: |
+          npm --prefix PWA ci
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm --prefix PWA test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm --prefix PWA run build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & .\Server\mvnw.cmd -B -ntp -f Server/pom.xml -DskipTests package
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify independent Java+SQLite backend (Windows)
+        shell: pwsh
+        run: |
+          & .\_external\backend\mvnw.cmd -B -ntp -f _external/backend/pom.xml verify
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Create portable Windows JRE and assemble complete ZIP
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $PWD 'package'
+          foreach ($sub in @('Runtime','Host','Backend','Unity')) {
+            New-Item -ItemType Directory -Force -Path (Join-Path $root $sub) | Out-Null
+          }
+          & "$env:JAVA_HOME\bin\jlink.exe" --module-path "$env:JAVA_HOME\jmods" --add-modules ALL-MODULE-PATH --strip-debug --no-header-files --no-man-pages --output "$root\Runtime"
+          if ($LASTEXITCODE -ne 0) { throw 'jlink failed' }
+          & "$root\Runtime\bin\java.exe" -version
+          if ($LASTEXITCODE -ne 0) { throw 'Portable Java runtime invalid' }
+          $hostJar = Get-ChildItem 'Server/target/local-server-*.jar' -File | Where-Object { $_.Name -notmatch 'original' } | Select-Object -First 1
+          $backendJar = Get-ChildItem '_external/backend/target/backend-*.jar' -File | Where-Object { $_.Name -notmatch 'original' } | Select-Object -First 1
+          if (-not $hostJar -or -not $backendJar) { throw 'Validated JARs are missing' }
+          Copy-Item $hostJar.FullName "$root\Host\local-server.jar"
+          Copy-Item $backendJar.FullName "$root\Backend\backend.jar"
+          $unityExe = Get-ChildItem '_buildplayer' -Recurse -File -Filter 'GorillaEscape.exe' | Select-Object -First 1
+          if (-not $unityExe) { throw 'GorillaEscape.exe missing in Unity build' }
+          Copy-Item (Join-Path $unityExe.DirectoryName '*') "$root\Unity" -Recurse -Force
+          Copy-Item 'tools/windows/Start-GorillaEscape.ps1' "$root/Start-GorillaEscape.ps1"
+          Copy-Item 'tools/windows/Start-GorillaEscape.cmd' "$root/Start-GorillaEscape.cmd"
+          Copy-Item 'tools/windows/README.md' "$root/README.md"
+          $backendSha = (git -C _external/backend rev-parse HEAD).Trim()
+          @{
+            classification='CANDIDATE — real Windows/mobile gameplay QA required'
+            unityEditor='6000.3.23f1'
+            unityCommit=$env:GITHUB_SHA
+            backendCommit=$backendSha
+            hostJarSha256=(Get-FileHash "$root/Host/local-server.jar" -Algorithm SHA256).Hash
+            backendJarSha256=(Get-FileHash "$root/Backend/backend.jar" -Algorithm SHA256).Hash
+            unityPlayerSha256=(Get-FileHash "$root/Unity/GorillaEscape.exe" -Algorithm SHA256).Hash
+            javaRuntimeBundled=$true
+            sqliteDataIncluded=$false
+          } | ConvertTo-Json | Set-Content "$root/BUILD_INFO.json" -Encoding utf8
+          Compress-Archive -Path "$root/*" -DestinationPath 'GorillaEscape-Windows64-candidate.zip' -Force
+          (Get-FileHash 'GorillaEscape-Windows64-candidate.zip' -Algorithm SHA256).Hash | Set-Content 'GorillaEscape-Windows64-candidate.sha256' -Encoding ascii
+      - name: Save candidate and checksum
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: GorillaEscape-Windows64-candidate
           path: |
-            GorillaEscape-Windows64-UnityPlayer.tar.gz
-            GorillaEscape-Windows64-UnityPlayer.sha256
+            GorillaEscape-Windows64-candidate.zip
+            GorillaEscape-Windows64-candidate.sha256
           retention-days: 30
