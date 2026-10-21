@@ -25,12 +25,12 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
-      - name: Test and compile current Java/React foundation
+      - name: Compile developer snapshot (full Maven tests run in Foundation validation)
         run: |
           npm --prefix PWA ci
           npm --prefix PWA test
           npm --prefix PWA run build
-          Server/mvnw -B -f Server/pom.xml verify
+          Server/mvnw -B -f Server/pom.xml -DskipTests package
       - name: Package developer snapshot and build manifest
         shell: bash
         run: |
