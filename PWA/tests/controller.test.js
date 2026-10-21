@@ -106,3 +106,24 @@ test('ready control preview follows local tilt without inventing game balance or
   assert.equal('gameBalance' in model.snapshot(), false);
   await model.dispose();
 });
+
+test('connection check verifies HTTPS health without sending admission or sensor data', async () => {
+  const transport=client();let requested;
+  transport.fetcher=async(path,options)=>{requested={path,options};return {ok:true,json:async()=>({status:'ok',service:'gorilla-escape-local',secure:true})};};
+  const model=new ControllerSession({win:win(),url,client:transport});await model.checkConnection();
+  assert.equal(model.snapshot().connectionCheck,'READY');assert.equal(requested.path,'/api/health');assert.equal(requested.options.cache,'no-store');assert.equal(requested.options.body,undefined);
+  transport.fetcher=async()=>{throw Error('PRIVATE_CERTIFICATE_ERROR');};await model.checkConnection();
+  assert.equal(model.snapshot().connectionCheck,'UNREACHABLE');assert.equal(JSON.stringify(model.snapshot()).includes('PRIVATE'),false);await model.dispose();
+});
+test('connection check reports insecure context without a network call', async () => {
+  const transport=client();transport.fetcher=()=>{throw Error('must not call');};
+  const model=new ControllerSession({win:win({isSecureContext:false}),url,client:transport});await model.checkConnection();
+  assert.equal(model.snapshot().connectionCheck,'INSECURE');await model.dispose();
+});
+
+test('public tunnel connection check uses only its allowed landing page', async () => {
+  const transport=client();let path;
+  transport.fetcher=async value=>{path=value;return {ok:true,text:async()=>'<title>Gorilla Escape</title>'};};
+  const model=new ControllerSession({win:win(),url:'https://test-controller.trycloudflare.com/#sessionId=test&admission=UNIT_SECRET',client:transport});
+  await model.checkConnection();assert.equal(path,'/');assert.equal(model.snapshot().connectionCheck,'READY');assert.equal(model.snapshot().publicTunnel,true);await model.dispose();
+});

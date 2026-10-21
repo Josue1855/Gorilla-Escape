@@ -92,3 +92,13 @@ En Safari, INPUT_READY cambia la preparación por un mando visual del Desafío d
 La [vista previa del mando](../evidence/phone-controller-2026-10-20/controller-preview.png) usa el componente real renderizado con una inclinación de ejemplo a 393 × 852. Es una comprobación visual del diseño, no evidencia de una partida o sensores físicos.
 
 Validación de la integración: 185/185 EditMode, 5/5 pruebas de flujo PlayMode y 70/70 pruebas PWA; build web, empaquetado JAR y build Linux final correctos. La prueba de flujo cubre que red sin sensores o sin muestra fresca no finaliza la preparación, retorno al tronco, selección del slot conectado y calibración obligatoria. La vista móvil se revisó con el componente real en navegador a 393 × 852; la nueva interfaz y el retorno requieren repetir el recorrido en el iPhone físico.
+
+## Recuperación de errores HTTP en el teléfono
+
+JOIN_E03_SIGNAL_HTTP con httpStatus ausente significa que la petición no produjo una respuesta HTTP observable; no demuestra por sí solo QR vencido, certificado incorrecto o permiso de sensores. El diagnóstico incorpora fetchFailure con una categoría permitida, sin mensajes nativos, enlaces ni credenciales. La llamada predeterminada a fetch conserva el contexto global del navegador; los adaptadores de test siguen inyectándose.
+
+ERROR antes de conectar ofrece COMPROBAR CONEXIÓN y, para el origen local, Ver preparación de este teléfono. La comprobación usa GET /api/health en LAN y sólo GET / en el túnel público; no abre endpoints privados a Cloudflare ni consume una admisión. El resultado distingue respuesta verificada, contexto inseguro e inaccesibilidad sin atribuir automáticamente una causa.
+
+El Service Worker actualizado busca el HTML actual por red al navegar y conserva el shell en caché como recuperación offline. Los recursos estáticos siguen en caché; las peticiones de señalización y sesión nunca se interceptan. La activación de una versión nueva no recarga una partida activa.
+
+Validación: 75/75 pruebas PWA, build web y empaquetado JAR aprobados, validadores de foundation/gestión correctos. Incluye fetch con receptor global, sanitización de errores, navegación fresca y offline, comprobación local y comprobación por la superficie pública permitida. La resolución del fallo en Chrome/iPhone físico requiere un nuevo intento; no se declara resuelto por estos tests.

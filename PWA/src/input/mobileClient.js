@@ -24,9 +24,10 @@ export function sanitizeCandidate(candidate){
  return {type,protocol,addressKind,port};
 }
 export class MobileClient {
- constructor({source='synthetic',fetcher=fetch}={}){
+ constructor({source='synthetic',fetcher=null}={}){
   if(!['synthetic','replay','emulator','physical'].includes(source))throw Error('evidence source');
-  this.source=source;this.fetcher=(...args)=>fetcher(...args);this.sequence=0;this.pending=new Map();this.motionTelemetry=new Map();this.latest=null;this.flushScheduled=false;this.state='STOPPED';
+  const request=fetcher??globalThis.fetch.bind(globalThis);
+  this.source=source;this.fetcher=(...args)=>request(...args);this.sequence=0;this.pending=new Map();this.motionTelemetry=new Map();this.latest=null;this.flushScheduled=false;this.state='STOPPED';
   this.metrics={sent:0,received:0,errors:0,overwritten:0,motionSubmitted:0,motionSent:0,motionAck:0,motionErrors:0,motionAckMiss:0,motionPendingTelemetry:0,motionBufferedDrop:0,rtt:[]};
  }
  diagnosticEvent(event,value){
@@ -45,12 +46,15 @@ export class MobileClient {
     this.trace.rejectionCode=allowed.includes(reply?.code)?reply.code:'SIGNAL_FAILED_OTHER';throw Error('JOIN_E04_SIGNAL_REJECTED');
    }
    return await r.json();
+  }catch(error){
+   if(this.trace.httpStatus===null)this.trace.fetchFailure=['AbortError','TimeoutError','SecurityError','TypeError'].includes(error?.name)?error.name:'NETWORK_ERROR';
+   throw error;
   }finally{clearTimeout(timer);}
  }
  async connect(joinUrl,resume=null){
   if(this.pc)await this.close(false);
   const generation=this.generation=(this.generation||0)+1;
-  this.started=performance.now();this.trace={stage:'START',code:null,postExecuted:false,httpStatus:null,rejectionCode:null,remoteDescription:'NOT RUN',candidates:[],events:[]};
+  this.started=performance.now();this.trace={stage:'START',code:null,postExecuted:false,httpStatus:null,rejectionCode:null,fetchFailure:null,remoteDescription:'NOT RUN',candidates:[],events:[]};
   this.state='CONNECTING';let code='JOIN_E01_OFFER';let rejectIce;
   const iceFailed=new Promise((_,reject)=>{rejectIce=reject;});iceFailed.catch(()=>{});
   try{

@@ -38,6 +38,13 @@ function Controller() {
       <div className="status-symbol" aria-hidden="true">{feedback === 'connecting' ? '…' : feedback === 'success' ? '✓' : feedback === 'error' ? '×' : '◆'}</div>
       <div role="status" aria-live="polite" aria-atomic="true"><h2 id="connection-title">{title}</h2><p>{description}</p></div>
       {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión local establecida</p>}
+      {state === 'ERROR' && view?.network === 'NOT_CONNECTED' && <div className="connection-recovery">
+        <p>La conexión falló antes de recibir una respuesta de la PC. Comprueba este navegador antes de volver a escanear.</p>
+        <button className="primary" disabled={view?.connectionCheck === 'CHECKING'} onClick={() => void model.current.checkConnection()}>{view?.connectionCheck === 'CHECKING' ? 'COMPROBANDO…' : 'COMPROBAR CONEXIÓN'}</button>
+        {view?.connectionCheck === 'READY' && <p role="status">La PC responde desde este navegador. Cierra esta pestaña y escanea un QR nuevo en la PC.</p>}
+        {['UNREACHABLE', 'INSECURE'].includes(view?.connectionCheck) && <p role="status">Este navegador no pudo verificar la conexión. Comprueba la misma Wi-Fi y que el juego siga abierto. Si usas conexión local, revisa la confianza del certificado; la PC ofrece Configurar este teléfono.</p>}
+        {!view?.publicTunnel && <a className="prepare-link" href="/prepare" target="_blank" rel="noreferrer">Ver preparación de este teléfono</a>}
+      </div>}
       <aside className="safety" aria-label="Seguridad"><strong>Sujeta firmemente tu teléfono.</strong><span>No lo sueltes ni lo lances durante el juego.</span></aside>
       {(label || canRetryPermission) && <button className="primary" onClick={() => {
         setDiagnostic(null); setCopyStatus('');

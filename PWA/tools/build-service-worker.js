@@ -17,7 +17,7 @@ const urls = files.map(file => '/' + file);
 const source = `const CACHE = ${JSON.stringify(cache)};
 const URLS = ${JSON.stringify(urls)};
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(URLS)));
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(URLS)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('gorilla-shell-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -27,6 +27,10 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/')) return;
   const path = url.pathname === '/' ? '/index.html' : url.pathname;
   if (!URLS.includes(path)) return;
+  if (path === '/index.html') {
+    event.respondWith(fetch(event.request).catch(() => caches.open(CACHE).then(cache => cache.match('/index.html'))));
+    return;
+  }
   event.respondWith(caches.open(CACHE).then(cache => cache.match(path)).then(hit => hit || fetch(event.request)));
 });
 `;

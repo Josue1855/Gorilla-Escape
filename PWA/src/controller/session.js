@@ -6,9 +6,10 @@ export class ControllerSession {
   constructor({ win = window, url = win.location.href, client = new MobileClient({ source: 'physical' }), notify = () => {}, doc = win.document, now = () => performance.now() } = {}) {
     this.win = win; this.now = now; this.url = url; this.client = client; this.notify = notify;
     const fragment = new URLSearchParams(new URL(url).hash.slice(1));
+    this.publicTunnel = new URL(url).hostname.endsWith('.trycloudflare.com');
     this.hasAdmission = Boolean(fragment.get('sessionId') && fragment.get('admission'));
     this.state = this.hasAdmission ? 'CONNECT' : 'NO_ADMISSION';
-    this.controlTilt = 0; this.controlNeutral = null; this.lastControlPublish = -Infinity;
+    this.connectionCheck = null; this.controlTilt = 0; this.controlNeutral = null; this.lastControlPublish = -Infinity;
     this.network = 'NOT_CONNECTED'; this.attempted = false; this.disposed = false;
     this.capabilities = permissionCapabilities(win); this.permissions = null;
     this.pagehide = () => {
@@ -38,7 +39,7 @@ export class ControllerSession {
     };
     this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, onEmit: () => this.emissionRate.add(now()) });
   }
-  snapshot() { return { state: this.state, network: this.network, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
+  snapshot() { return { state: this.state, network: this.network, connectionCheck: this.connectionCheck, publicTunnel: this.publicTunnel, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
   publish() { if (!this.disposed) this.notify(this.snapshot()); }
   async connect() {
     if (this.disposed || this.attempted || !this.hasAdmission) return;
@@ -58,6 +59,23 @@ export class ControllerSession {
     } catch {
       if (!this.disposed) { this.state = 'ERROR'; this.network = 'NOT_CONNECTED'; this.publish(); }
     }
+  }
+  async checkConnection() {
+    if (this.disposed || this.connectionCheck === 'CHECKING') return;
+    if (!this.win.isSecureContext) { this.connectionCheck = 'INSECURE'; this.publish(); return; }
+    this.connectionCheck = 'CHECKING'; this.publish();
+    const abort = new AbortController(); const timeout = this.win.setTimeout(() => abort.abort(), 5000);
+    try {
+      const response = await this.client.fetcher(this.publicTunnel ? '/' : '/api/health', { cache: 'no-store', signal: abort.signal });
+      let ready = false;
+      if (response.ok && this.publicTunnel) ready = (await response.text()).includes('Gorilla Escape');
+      else if (response.ok) {
+        const health = await response.json();
+        ready = health?.status === 'ok' && health?.service === 'gorilla-escape-local' && health?.secure === true;
+      }
+      this.connectionCheck = ready ? 'READY' : 'UNREACHABLE';
+    } catch { this.connectionCheck = 'UNREACHABLE'; }
+    finally { this.win.clearTimeout(timeout); if (!this.disposed) this.publish(); }
   }
   activate() {
     if (this.disposed || this.network !== 'NETWORK_READY' || this.requesting ||
