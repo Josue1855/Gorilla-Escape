@@ -7,6 +7,21 @@ using UnityEngine.TestTools;
 
 public sealed class LogBalanceFlowTests
 {
+    [UnityTest] public IEnumerator TrunkRollsAndResetsWithAttemptTime()
+    {
+        var host=new GameObject("Rolling log test");var stage=new LogBalanceStage(host.transform,18);
+        try{
+            var pivot=stage.Root.transform.Find("Rolling trunk pivot");
+            stage.Present(.3f,0,false,0,0,true);var start=pivot.localRotation;
+            stage.Present(.3f,0,false,0,2,true);
+            Assert.That(Quaternion.Angle(start,pivot.localRotation),Is.EqualTo(36).Within(.01));
+            var human=stage.Root.transform.Find("Human castaway — controlled");Assert.False(float.IsNaN(human.localPosition.y));
+            var paused=pivot.localRotation;stage.Present(.3f,0,false,0,2,false);
+            Assert.That(Quaternion.Angle(paused,pivot.localRotation),Is.LessThan(.01));
+            stage.Present(0,0,false,0,0,false);Assert.That(Quaternion.Angle(start,pivot.localRotation),Is.LessThan(.01));
+        }finally{stage.Dispose();Object.Destroy(host);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator PrototypeKeepsServicesAndMenuOwnershipAndCanRestart()
     {
         var host=new GameObject("Log Balance test menu");var menu=host.AddComponent<MainMenuController>();

@@ -70,3 +70,11 @@ El Player configura sus servicios al arrancar: busca `Java/runtime/bin/java`, `J
 Para preparar la carpeta Development local una sola vez después del build/JAR: `./run-game.sh --prepare-only` con el runtime configurado arriba. Después abrir directamente `Unity/Builds/FoundationLinux/GorillaEscape.x86_64`. Los enlaces de runtimes son una comodidad local y no sustituyen al empaquetado de distribución mediante `tools/t020/package.py`.
 
 Validación del arranque directo: 184/184 EditMode, 3/3 flujos PlayMode y build Linux sin errores ni advertencias. Al ejecutar el Player sin lanzador ni variables GORILLA externas se observó Java RUNNING, cámara lista y el proceso cloudflared iniciado automáticamente. La comprobación pública HTTPS en esta red no se confirmó dentro del presupuesto del supervisor; iniciar el proceso no acredita una conexión física móvil ni disponibilidad WAN.
+
+## Tronco giratorio y pruebas desde Unity Editor
+
+El tronco suministrado gira sobre su eje longitudinal a 18 grados por segundo durante el cruce. Su posición permanece centrada entre las orillas. El apoyo del personaje se calcula contra los triángulos del modelo ya girados. La rotación usa el tiempo del intento: se detiene al pausar o terminar y vuelve a cero al reiniciar. Las reglas y sensores de equilibrio conservan su comportamiento.
+
+Desde Unity Hub abrir este proyecto (`Unity/`), esperar la importación y usar **Gorilla Escape → Play Tests with Phone**. El comando abre Bootstrap y el centro de pruebas con Java, cámara y Cloudflare preparados desde la carpeta Development local. Requiere preparar esa carpeta con `./run-game.sh --prepare-only` como se indica arriba. No hay que definir variables en una terminal para iniciar el editor. Al detener Play se restauran las variables previas; el Test Runner conserva el bloqueo de servicios físicos. Para probar únicamente el juego con teclado sigue disponible **Play Gorilla Escape**.
+
+Validación de esta iteración: 184/184 EditMode y 4/4 flujos PlayMode, incluida rotación real del tronco, pausa y reinicio. Build Linux Succeeded con 0 errores y 0 advertencias. La conexión física de iPhone y HTTPS pública siguen requiriendo comprobación en la red real.

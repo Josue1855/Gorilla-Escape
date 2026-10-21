@@ -11,6 +11,9 @@ namespace GorillaEscape.Minigames.LogBalance
         readonly List<Camera> hidden=new List<Camera>();
         readonly Dictionary<Color,Material> palette=new Dictionary<Color,Material>();
         readonly Transform human;
+        readonly Transform logRoll;
+        readonly List<Vector3> logSurface=new List<Vector3>();
+        Quaternion logRotation=Quaternion.identity;
         readonly LogBalanceCharacter character;
         readonly float length;
         readonly LogBalanceAtmosphere atmosphere;
@@ -36,7 +39,9 @@ namespace GorillaEscape.Minigames.LogBalance
             var log=Asset("trunk","Supplied crossing trunk",root.transform);
             var bounds=BoundsOf(log);
             log.transform.localScale=new Vector3(1.35f/bounds.size.x,1.15f/bounds.size.y,length/bounds.size.z);
-            bounds=BoundsOf(log);log.transform.position-=bounds.center;SampleDeck(log);
+            bounds=BoundsOf(log);log.transform.position-=bounds.center;
+            logRoll=new GameObject("Rolling trunk pivot").transform;logRoll.SetParent(root.transform,false);
+            log.transform.SetParent(logRoll,true);SampleDeck(log);
             Shape("Goal marker",PrimitiveType.Cube,new Vector3(0,.18f,length/2+.7f),new Vector3(2,.12f,.4f),new Color(.95f,.72f,.22f));
             var figure=Asset("Vagabundo","Vagabundo model",root.transform);
             human=new GameObject("Human castaway — controlled").transform;human.SetParent(root.transform,false);
@@ -46,26 +51,27 @@ namespace GorillaEscape.Minigames.LogBalance
         }
         void SampleDeck(GameObject log)
         {
-            // Sample the actual imported triangles, so decorative branches do not make feet float above the trunk.
-            for(int sample=0;sample<deck.Length;sample++)
+            foreach(var filter in log.GetComponentsInChildren<MeshFilter>())
             {
-                float z=Mathf.Lerp(-length/2+.03f,length/2-.03f,sample/(float)(deck.Length-1));
-                float height=float.NegativeInfinity;
-                foreach(var filter in log.GetComponentsInChildren<MeshFilter>())
-                {
-                    var vertices=filter.sharedMesh.vertices;var triangles=filter.sharedMesh.triangles;
-                    for(int i=0;i<triangles.Length;i+=3)
-                    {
-                        var a=filter.transform.TransformPoint(vertices[triangles[i]]);var b=filter.transform.TransformPoint(vertices[triangles[i+1]]);var c=filter.transform.TransformPoint(vertices[triangles[i+2]]);
-                        float det=(b.z-c.z)*(a.x-c.x)+(c.x-b.x)*(a.z-c.z);
-                        if(Mathf.Abs(det)<.000001f)continue;
-                        float u=((b.z-c.z)*(-c.x)+(c.x-b.x)*(z-c.z))/det;
-                        float v=((c.z-a.z)*(-c.x)+(a.x-c.x)*(z-c.z))/det;
-                        if(u>=-.001f&&v>=-.001f&&u+v<=1.001f)height=Mathf.Max(height,u*a.y+v*b.y+(1-u-v)*c.y);
-                    }
-                }
-                deck[sample]=float.IsNegativeInfinity(height)?0:height;
+                var vertices=filter.sharedMesh.vertices;var triangles=filter.sharedMesh.triangles;
+                foreach(int index in triangles)logSurface.Add(root.transform.InverseTransformPoint(filter.transform.TransformPoint(vertices[index])));
             }
+            for(int sample=0;sample<deck.Length;sample++)
+                deck[sample]=SampleLogHeight(Mathf.Lerp(-length/2+.03f,length/2-.03f,sample/(float)(deck.Length-1)),Quaternion.identity);
+        }
+        float SampleLogHeight(float z,Quaternion rotation)
+        {
+            float height=float.NegativeInfinity;
+            for(int i=0;i<logSurface.Count;i+=3)
+            {
+                var a=rotation*logSurface[i];var b=rotation*logSurface[i+1];var c=rotation*logSurface[i+2];
+                float det=(b.z-c.z)*(a.x-c.x)+(c.x-b.x)*(a.z-c.z);
+                if(Mathf.Abs(det)<.000001f)continue;
+                float u=((b.z-c.z)*(-c.x)+(c.x-b.x)*(z-c.z))/det;
+                float v=((c.z-a.z)*(-c.x)+(a.x-c.x)*(z-c.z))/det;
+                if(u>=-.001f&&v>=-.001f&&u+v<=1.001f)height=Mathf.Max(height,u*a.y+v*b.y+(1-u-v)*c.y);
+            }
+            return float.IsNegativeInfinity(height)?0:height;
         }
         public float SurfaceHeight(float progress)
         {float t=Mathf.Clamp01(progress)*(deck.Length-1);int i=Mathf.Min(deck.Length-2,(int)t);return Mathf.Lerp(deck[i],deck[i+1],t-i);}
@@ -213,9 +219,12 @@ namespace GorillaEscape.Minigames.LogBalance
         }
         public void Present(float progress,float balance,bool fell,float fallSeconds,float elapsed=0,bool walking=false,bool won=false)
         {
+            logRotation=Quaternion.Euler(0,0,elapsed*18f);
+            logRoll.localRotation=logRotation;
+            float support=SampleLogHeight(Mathf.Lerp(-length/2+.03f,length/2-.03f,Mathf.Clamp01(progress)),logRotation);
             float side=fell?(balance<0?-1:1)*Mathf.Min(2.7f,fallSeconds*3):0;
             float bob=walking?Mathf.Sin(elapsed*Mathf.PI*4.6f)*.025f:0;
-            human.localPosition=new Vector3(side,SurfaceHeight(progress)+.035f+bob-(fell?Mathf.Min(3.5f,fallSeconds*4):0),-length/2+length*progress);
+            human.localPosition=new Vector3(side,support+.035f+bob-(fell?Mathf.Min(3.5f,fallSeconds*4):0),-length/2+length*progress);
             human.localRotation=Quaternion.Euler(fell?Mathf.Min(65,fallSeconds*85):0,0,-balance*22-(fell?side*28:0));
             character.Pose(elapsed,balance,walking,fell,fallSeconds,won);
             if(!fell)human.localPosition+=Vector3.up*character.SupportOffset;

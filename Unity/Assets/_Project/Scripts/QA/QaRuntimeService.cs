@@ -82,7 +82,7 @@ namespace GorillaEscape.QA {
             }
         }
         async Task StartJava(){try{await java.RunLifecycleAsync(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"),Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"),cancel.Token);}catch(Exception){error="BACKEND FAILED: "+(java.LastSummary?.errorCode??"CHECK CONFIGURATION");}}
-        async Task StartVision(){try{await vision.StartPackagedAsync(Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancel.Token);Debug.Log("CAMERA_LAB_READY");}catch(Exception){error="CAMERA FAILED: "+vision.Error;}}
+        async Task StartVision(){try{await vision.StartPackagedAsync(Environment.GetEnvironmentVariable("GORILLA_PACKAGE_ROOT")??Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancel.Token);Debug.Log("CAMERA_LAB_READY");}catch(Exception){error="CAMERA FAILED: "+vision.Error;}}
         void Update(){if(quitting){if(closing==null)closing=Close();if(closing.IsCompleted){allowQuit=true;
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying=false;
