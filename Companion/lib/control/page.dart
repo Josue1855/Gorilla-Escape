@@ -28,7 +28,8 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   Timer? timer;
   bool activated = false, suspended = true, portrait = true;
   String sensorError = '';
-  bool starting = false, foreground = true;
+  bool starting = false, foreground = true, permissionRequested = false;
+  String previousTransportState = "";
   int sensorGeneration = 0, renderTick = 0, inspectedAcks = 0;
   @override
   void initState() {
@@ -42,7 +43,13 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   }
 
   void refresh() {
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    final connectedNow = transport.state == 'connected';
+    final becameConnected =
+        connectedNow && previousTransportState != 'connected';
+    previousTransportState = transport.state;
+    if (becameConnected && foreground) unawaited(startSensors());
+    setState(() {});
   }
 
   Future<void> stateMessage(String state) async {
@@ -85,7 +92,8 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       unawaited(keepAwake(true));
       sensorError = '';
       try {
-        if (RotationSensor.shouldRequestPermission) {
+        if (!permissionRequested && RotationSensor.shouldRequestPermission) {
+          permissionRequested = true;
           await RotationSensor.requestPermission();
         }
         if (!mounted || !foreground || generation != sensorGeneration) return;
@@ -170,6 +178,15 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       refresh();
     } finally {
       starting = false;
+      // The OS permission sheet may complete while the app is inactive.
+      if (mounted &&
+          foreground &&
+          transport.state == 'connected' &&
+          activated &&
+          subscriptions.isEmpty &&
+          sensorError.isEmpty) {
+        scheduleMicrotask(startSensors);
+      }
     }
   }
 
@@ -180,8 +197,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       if (activated && transport.state == 'connected') {
         unawaited(startSensors());
       }
-    } else if (state != AppLifecycleState.inactive ||
-        subscriptions.isNotEmpty) {
+    } else if (state != AppLifecycleState.inactive) {
       unawaited(stopSensors());
     }
   }
@@ -210,6 +226,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       transport.gameContext,
       transport.playerId,
     );
+    final stats = GameStats.fromContext(transport.gameContext);
     final connected = transport.state == 'connected';
     final gamma = motion.gamma(transport.clock.elapsedMilliseconds) ?? 0;
     final status = !connected
@@ -267,7 +284,9 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                   child: Center(
                     child: Transform.rotate(
                       angle: activated && !suspended
-                          ? gamma.clamp(-40, 40) * math.pi / 180
+                          ? (stats?['roll'] ?? gamma).clamp(-40, 40) *
+                                math.pi /
+                                180
                           : 0,
                       child: Icon(
                         view.phase == 'Won'
@@ -279,6 +298,10 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                     ),
                   ),
                 ),
+                if (stats != null) ...[
+                  const SizedBox(height: 20),
+                  GameScorePanel(stats: stats),
+                ],
                 const SizedBox(height: 24),
                 Semantics(
                   liveRegion: true,
@@ -296,11 +319,11 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                   style: const TextStyle(fontSize: 18, height: 1.5),
                 ),
                 const SizedBox(height: 24),
-                if (connected)
+                if (connected && (!activated || sensorError.isNotEmpty))
                   FilledButton(
                     onPressed: startSensors,
                     child: Text(
-                      activated ? 'REACTIVAR SENSORES' : 'ACTIVAR CONTROL',
+                      activated ? 'REINTENTAR SENSORES' : 'ACTIVAR CONTROL',
                     ),
                   ),
                 if (!connected &&
@@ -327,7 +350,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                 if (sensorError.isNotEmpty) Text(sensorError),
                 const SizedBox(height: 20),
                 const Text(
-                  'Sujeta el teléfono con ambas manos. El control se ajusta automáticamente; la PC muestra la partida.',
+                  'Sujeta el teléfono con ambas manos. El control se ajusta automáticamente; el panel muestra el estado de la partida.',
                   textAlign: TextAlign.center,
                 ),
                 if (connected)
@@ -389,4 +412,96 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       ),
     );
   }
+}
+
+class GameScorePanel extends StatelessWidget {
+  final GameStats stats;
+  const GameScorePanel({super.key, required this.stats});
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: 'Estado real de la partida',
+    child: Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 12,
+              runSpacing: 8,
+              children: [
+                Text('← IZQUIERDA'),
+                Text('CENTRO'),
+                Text('DERECHA →'),
+              ],
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 32,
+              child: LayoutBuilder(
+                builder: (context, box) => Stack(
+                  children: [
+                    Positioned.fill(
+                      top: 8,
+                      bottom: 8,
+                      child: ColoredBox(color: Color(0xff346d59)),
+                    ),
+                    Positioned(
+                      left: box.maxWidth / 2 - 1,
+                      top: 5,
+                      bottom: 5,
+                      child: SizedBox(
+                        width: 2,
+                        child: ColoredBox(color: Colors.white38),
+                      ),
+                    ),
+                    Positioned(
+                      left: ((stats['tendency'] + 1) / 2 * (box.maxWidth - 4)),
+                      top: 6,
+                      bottom: 6,
+                      child: SizedBox(
+                        width: 4,
+                        child: ColoredBox(color: Color(0xffffbd59)),
+                      ),
+                    ),
+                    Positioned(
+                      left: ((stats['balance'] + 1) / 2 * (box.maxWidth - 8)),
+                      top: 0,
+                      bottom: 0,
+                      child: SizedBox(
+                        width: 8,
+                        child: ColoredBox(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Text(
+              'Blanco: apoyo · Ámbar: tendencia',
+              style: TextStyle(fontSize: 13),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Recorrido ${(stats['progress'] * 100).round()} %',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            LinearProgressIndicator(
+              value: stats['progress'],
+              semanticsLabel: 'Avance del cruce',
+            ),
+            const SizedBox(height: 12),
+            Text(
+              '${stats['distance'].toStringAsFixed(1)} m · ${stats['elapsed'].toStringAsFixed(1)} s',
+            ),
+            Text(
+              'Giro ${stats['roll'].round()}° · Paso ${stats['speed'].toStringAsFixed(2)} m/s',
+            ),
+            Text('Viento ${stats['wind'] >= 0 ? '→' : '←'}'),
+          ],
+        ),
+      ),
+    ),
+  );
 }

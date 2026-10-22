@@ -17,3 +17,14 @@ export function gamePresentation(context, playerId) {
     instruction: spectator ? 'Otro náufrago está jugando. Espera tu turno en la PC.' : instruction,
     active: !spectator && context.phase === 'Crossing', phase: context.phase };
 }
+
+export function gameStats(context) {
+  if (context?.gameId !== 'log-balance' || !context.stats) return null;
+  const bounds = { balance: [-1,1], tendency: [-1,1], progress: [0,1], distance: [0,10000],
+    elapsed: [0,3600], roll: [-3600,3600], speed: [0,100], wind: [-100,100] };
+  for (const [key,[min,max]] of Object.entries(bounds)) {
+    const value = context.stats[key];
+    if (!Number.isFinite(value) || value < min || value > max) return null;
+  }
+  return context.stats;
+}

@@ -8,6 +8,16 @@ import 'package:gorilla_companion/control/protocol.dart';
 import 'package:gorilla_companion/control/transport.dart';
 
 void main() {
+  test('score rejects incomplete or impossible Unity data', () {
+    expect(GameStats.fromContext(null), isNull);
+    expect(
+      GameStats.fromContext({
+        'gameId': 'log-balance',
+        'stats': {'progress': 1},
+      }),
+      isNull,
+    );
+  });
   test(
     'native signaling sends a bounded length and never follows redirects',
     () async {

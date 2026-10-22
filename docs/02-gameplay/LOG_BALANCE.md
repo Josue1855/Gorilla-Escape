@@ -95,7 +95,7 @@ Validación de la corrección del QR: 185/185 EditMode en el editor y build Linu
 
 Al elegir CONECTAR TELÉFONO dentro del prototipo se conserva el destino. Cuando el jugador tiene Network Ready, Input Ready y una muestra de la misma sesión/dispositivo/epoch recibida en los últimos 350 ms, se cierra el QR y se vuelve automáticamente al tronco con su slot seleccionado. El control espera una postura estable y prepara la referencia automáticamente; COMENZAR inicia el intento cuando esté listo. Desde la conexión general del menú, CONTROL LISTO ofrece IR AL TRONCO. La conexión y los servicios se conservan durante el cambio de pantalla.
 
-En Safari, INPUT_READY cambia la preparación por un mando visual del Desafío del Tronco. El náufrago y el indicador responden a la inclinación local respecto de la postura inicial; no representan el balance calculado por Unity ni inventan progreso o resultados. El jugador mira la PC para comenzar y ver el resultado. Si los datos dejan de estar listos, la interfaz vuelve al estado real de pausa/error correspondiente. El diagnóstico sigue disponible bajo Ayuda y conexión.
+En Safari, INPUT_READY cambia la preparación por un mando visual del Desafío del Tronco. El panel de apoyo (blanco), tendencia (ámbar), avance, tiempo, giro, velocidad y viento usa valores calculados por Unity. También muestra victoria o caída según la fase recibida. Sin esos datos sólo muestra la inclinación local, sin inventar progreso ni resultados. El jugador mira la PC para comenzar y ver el resultado. Si los datos dejan de estar listos, la interfaz vuelve al estado real de pausa/error correspondiente. El diagnóstico sigue disponible bajo Ayuda y conexión.
 
 La [vista previa del mando](../evidence/phone-controller-2026-10-20/controller-preview.png) usa el componente real renderizado con una inclinación de ejemplo a 393 × 852. Es una comprobación visual del diseño, no evidencia de una partida o sensores físicos.
 
@@ -113,3 +113,10 @@ Validación: 75/75 pruebas PWA, build web y empaquetado JAR aprobados, validador
 
 
 Con varias conexiones físicas activas (por ejemplo Wi-Fi y conexión USB del iPhone), el servidor selecciona automáticamente la dirección de la ruta de salida del sistema. Una selección explícita mediante `GORILLA_LAN_INTERFACE` o `GORILLA_LAN_ADDRESS` conserva prioridad. Si no existe una ruta que resuelva la ambigüedad, se mantiene el diagnóstico de selección requerida.
+
+
+### Panel móvil y continuidad de sensores — 2026-10-21
+
+Unity envía un panel de estado por el canal existente, con actualización móvil de hasta 5 Hz y caducidad si deja de recibir contexto. PWA y Flutter muestran los datos reales también al terminar el cruce. Cambiar de intento no reinicia la captura ni solicita permisos otra vez.
+
+Flutter inicia el control al conectar y recupera la captura al volver a primer plano. El botón de reintento sólo aparece ante un error de sensores; la solicitud de permiso se realiza una vez por sesión de pantalla. La PWA conserva el permiso concedido y reactiva su captura al recuperar visibilidad; solicita mantener la pantalla encendida si el navegador ofrece esa función. El primer permiso en navegador sigue requiriendo un toque. Si el sistema bloquea o suspende la aplicación, se descartan los datos antiguos y Unity pausa hasta recibir muestras nuevas; no se simula movimiento en segundo plano.

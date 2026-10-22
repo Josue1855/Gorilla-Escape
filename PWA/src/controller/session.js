@@ -4,6 +4,9 @@ import { permissionCapabilities, requestControlPermissions, permissionState } fr
 
 export class ControllerSession {
   constructor({ win = window, url = win.location.href, client = new MobileClient({ source: 'physical' }), notify = () => {}, doc = win.document, now = () => performance.now() } = {}) {
+    this.doc = doc; this.wakeWanted = false; this.wakeLock = null; this.wakePending = false;
+    this.visibilityWake = () => { if (doc.visibilityState !== 'hidden') void this.keepAwake(); };
+    doc.addEventListener('visibilitychange', this.visibilityWake);
     this.win = win; this.now = now; this.url = url; this.client = client; this.notify = notify;
     const fragment = new URLSearchParams(new URL(url).hash.slice(1));
     this.publicTunnel = new URL(url).hostname.endsWith('.trycloudflare.com');
@@ -94,11 +97,22 @@ export class ControllerSession {
     } catch { this.connectionCheck = 'UNREACHABLE'; }
     finally { this.win.clearTimeout(timeout); if (!this.disposed) this.publish(); }
   }
+  async keepAwake() {
+    if (!this.wakeWanted || this.disposed || this.doc.visibilityState === 'hidden' || this.wakePending || (this.wakeLock && !this.wakeLock.released)) return;
+    this.wakePending = true;
+    try {
+      const lock = await this.win.navigator?.wakeLock?.request('screen');
+      if (this.disposed) await lock?.release(); else this.wakeLock = lock;
+    } catch { /* Unsupported or denied: sensors still work while visible. */ }
+    finally { this.wakePending = false; }
+  }
   activate() {
     if (this.disposed || this.network !== 'NETWORK_READY' || this.requesting ||
       !['PERMISSION_REQUIRED', 'PERMISSION_DENIED', 'SENSOR_UNAVAILABLE', 'NO_SENSOR_INPUT', 'INPUT_LIMITED', 'ERROR'].includes(this.state)) return;
     this.requesting = true;
-    const request = requestControlPermissions(this.win); // Invoke BEFORE notifying/rendering/awaiting.
+    this.wakeWanted = true; void this.keepAwake();
+    const request = this.permissions && !Object.values(this.permissions).some(p => ['denied', 'permission-error'].includes(p)) && Object.values(this.permissions).some(p => ['granted', 'not-required-by-api'].includes(p))
+      ? Promise.resolve({secure: this.win.isSecureContext, permissions: this.permissions, capabilities: this.capabilities}) : requestControlPermissions(this.win); // Invoke BEFORE notifying/rendering/awaiting.
     this.state = 'REQUESTING_PERMISSION'; this.publish();
     return request.then(async report => {
       if (this.disposed || this.network !== 'NETWORK_READY') return;
@@ -156,7 +170,9 @@ export class ControllerSession {
   }
   async dispose() {
     if (this.disposed) return;
-    this.disposed = true; this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
+    this.disposed = true; this.doc.removeEventListener('visibilitychange', this.visibilityWake);
+    void this.wakeLock?.release().catch(() => {});
+    this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
     return this.client.close(false); // Owned transport cleanup only; no new lifecycle policy.
   }
 }

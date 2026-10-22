@@ -91,7 +91,13 @@ namespace GorillaEscape.Minigames.LogBalance
             }
             if(!paused&&focused&&available)model.Tick(Mathf.Min(.1f,Time.unscaledDeltaTime),input);
             if(model.State==LogBalanceState.Fell)fallenTime+=Time.unscaledDeltaTime;
-            menu?.Runtime?.java?.PresentPhoneGame("log-balance",paused?"Paused":model.State.ToString(),player);
+            string Number(float n)=>n.ToString("0.###",System.Globalization.CultureInfo.InvariantCulture);
+            string stats="{\"balance\":"+Number(Mathf.Clamp(model.Balance/rules.balanceClamp,-1,1))
+                +",\"tendency\":"+Number(Mathf.Clamp((model.Balance+model.LateralVelocity*.35f)/rules.balanceClamp,-1,1))
+                +",\"progress\":"+Number(model.Progress)+",\"distance\":"+Number(model.Distance)
+                +",\"elapsed\":"+Number(model.Elapsed)+",\"roll\":"+Number(model.LogAngle*Mathf.Rad2Deg)
+                +",\"speed\":"+Number(model.ForwardVelocity)+",\"wind\":"+Number(model.Wind)+"}";
+            menu?.Runtime?.java?.PresentPhoneGame("log-balance",paused?"Paused":model.State.ToString(),player,stats);
             stage.Present(model.Progress,model.Balance,model.State==LogBalanceState.Fell,fallenTime,model.Elapsed,
                 model.State==LogBalanceState.Crossing&&!paused&&focused,model.State==LogBalanceState.Won,model.LogAngle*Mathf.Rad2Deg,model.FootstepPhase);
         }

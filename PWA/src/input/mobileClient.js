@@ -88,7 +88,7 @@ export class MobileClient {
     return opened.then(()=>this.stage(label==='control'?'CONTROL_OPEN':'MOTION_OPEN'));
    }))]);
    code='JOIN_E09_HELLO_TIMEOUT';this.stage('HELLO_ACK');this.state='RUNNING';await this.send('HELLO',{});
-   this.stage('READY');this.heartbeat=setInterval(()=>{this.send('HEARTBEAT',this.qaTelemetry?.()||{}).catch(()=>{this.metrics.errors++;});},1000);
+   this.stage('READY');this.heartbeat=setInterval(()=>{this.send('HEARTBEAT',this.qaTelemetry?.()||{}).catch(()=>{this.metrics.errors++;});},200);
    return {playerId:reply.playerId,connectionEpoch:reply.connectionEpoch};
   }catch(e){
    const known=/^JOIN_E(?:01_OFFER|02_LOCAL_SDP|02_ICE_GATHER|03_SIGNAL_HTTP|04_SIGNAL_REJECTED|05_REMOTE_SDP|06_ICE_FAILED|07_CONTROL_TIMEOUT|08_MOTION_TIMEOUT|09_HELLO_TIMEOUT)$/;

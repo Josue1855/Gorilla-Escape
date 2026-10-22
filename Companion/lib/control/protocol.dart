@@ -171,3 +171,36 @@ class GameView {
     );
   }
 }
+
+/// Authoritative Unity display data; never derive progress or balance from local sensors.
+class GameStats {
+  final Map<String, double> values;
+  GameStats._(this.values);
+  double operator [](String key) => values[key]!;
+  static GameStats? fromContext(Map<String, dynamic>? context) {
+    final stats = context?['stats'];
+    if (context?['gameId'] != 'log-balance' || stats is! Map) return null;
+    const bounds = {
+      'balance': [-1, 1],
+      'tendency': [-1, 1],
+      'progress': [0, 1],
+      'distance': [0, 10000],
+      'elapsed': [0, 3600],
+      'roll': [-3600, 3600],
+      'speed': [0, 100],
+      'wind': [-100, 100],
+    };
+    final values = <String, double>{};
+    for (final entry in bounds.entries) {
+      final value = stats[entry.key];
+      if (value is! num ||
+          !value.isFinite ||
+          value < entry.value[0] ||
+          value > entry.value[1]) {
+        return null;
+      }
+      values[entry.key] = value.toDouble();
+    }
+    return GameStats._(values);
+  }
+}

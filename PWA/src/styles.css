@@ -66,3 +66,12 @@ button:disabled { cursor: wait; opacity: .7; }
 .profile-setup { margin: 20px 0; text-align: left; }
 .profile-setup label { display: block; margin-top: 16px; }
 .profile-setup input { box-sizing: border-box; display: block; width: 100%; margin: 10px 0; padding: 14px; font: inherit; border: 1px solid #718a7c; background: #102b25; color: #f4e6c9; border-radius: 10px; }
+
+.game-score {margin:20px 0;padding:20px;border-radius:20px;background:#193d34;color:#fff;text-align:left}
+.score-labels {display:flex;justify-content:space-between;gap:6px;font-size:12px}
+.score-balance {position:relative;height:32px;margin:12px 0;background:linear-gradient(transparent 25%,#346d59 25%,#346d59 75%,transparent 75%)}
+.score-balance i {position:absolute;transform:translateX(-50%)}
+.score-center {left:50%;width:2px;top:4px;bottom:4px;background:#ffffff66}
+.score-tendency {width:4px;top:5px;bottom:5px;background:#ffbd59}
+.score-support {width:8px;top:0;bottom:0;background:white}
+.game-score h2 {font-size:24px;margin:16px 0 8px}.game-score progress{width:100%;accent-color:#63d5a0}.game-score p{line-height:1.6}

@@ -69,12 +69,12 @@ namespace GorillaEscape.Network
         public void RegenerateQa(){if(!qaEnabled)throw new InvalidOperationException("QA_DISABLED");Interlocked.Exchange(ref regenerateQa,1);}
         // Written on Unity's main thread; read by the authenticated IPC worker.
         string gameContext = "{\"version\":1,\"gameId\":\"lobby\",\"phase\":\"Ready\",\"playerId\":0}";
-        public void PresentPhoneGame(string gameId, string phase, int playerId)
+        public void PresentPhoneGame(string gameId, string phase, int playerId, string stats = null)
         {
             if(gameId!="lobby"&&gameId!="log-balance")return;
             if(phase!="Ready"&&phase!="Countdown"&&phase!="Crossing"&&phase!="Paused"&&phase!="Won"&&phase!="Fell")return;
             if(playerId<0||playerId>4)return;
-            Interlocked.Exchange(ref gameContext,"{\"version\":1,\"gameId\":\""+gameId+"\",\"phase\":\""+phase+"\",\"playerId\":"+playerId+"}");
+            Interlocked.Exchange(ref gameContext,"{\"version\":1,\"gameId\":\""+gameId+"\",\"phase\":\""+phase+"\",\"playerId\":"+playerId+(stats==null?"":",\"stats\":"+stats)+"}");
         }
         public event Action<PhoneInputWire> PhoneInputReceived;
         public event Action<int> HttpReady;

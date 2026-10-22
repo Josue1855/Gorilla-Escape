@@ -1,0 +1,33 @@
+{
+  "unityPlayMode": {
+    "passed": 5,
+    "failed": 0
+  },
+  "serverGamePresentation": {
+    "passed": 2,
+    "failed": 0
+  },
+  "pwa": {
+    "passed": 82,
+    "failed": 0,
+    "build": "passed"
+  },
+  "flutter": {
+    "passed": 10,
+    "failed": 0,
+    "analyze": "passed",
+    "largeTextNarrowPanel": "passed"
+  },
+  "physicalGameplay": "Pending user playtest",
+  "displaySource": "Unity game context; bounded optional stats; existing authenticated IPC and RTC",
+  "linuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "iphone": {
+    "installed": true,
+    "version": "1.1.2",
+    "build": "4"
+  }
+}

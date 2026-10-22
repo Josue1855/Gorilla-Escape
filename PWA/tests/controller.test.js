@@ -145,3 +145,25 @@ test('game presentation expires when authenticated heartbeat context stops arriv
  transport.gameContextExpires=performance.now()-1;
  assert.equal(model.snapshot().gameContext,null);await model.dispose();
 });
+
+test('retry reuses granted sensor permissions instead of prompting again', async () => {
+  let requests=0, starts=0;
+  const api={requestPermission:()=>{requests++;return Promise.resolve('granted');}};
+  const model=new ControllerSession({win:win({DeviceMotionEvent:api,DeviceOrientationEvent:api}),url,client:client()});
+  await model.connect();
+  model.capture.start=async()=>{starts++;};
+  await model.activate();
+  model.state='NO_SENSOR_INPUT';
+  await model.activate();
+  await model.dispose();
+  assert.equal(requests,2);assert.equal(starts,2);
+});
+test('screen wake lock is reacquired after OS release and released on exit', async () => {
+  let requests=0, releases=0;
+  const lock={released:false,async release(){this.released=true;releases++;}};
+  const w=win({navigator:{wakeLock:{async request(){requests++;lock.released=false;return lock;}}}});
+  const model=new ControllerSession({win:w,url,client:client()});
+  model.wakeWanted=true;await model.keepAwake();await model.keepAwake();assert.equal(requests,1);
+  lock.released=true;w.document.dispatchEvent(new Event('visibilitychange'));await Promise.resolve();
+  assert.equal(requests,2);await model.dispose();assert.equal(releases,1);
+});

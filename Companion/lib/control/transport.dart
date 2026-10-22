@@ -237,7 +237,7 @@ class NativeTransport extends ChangeNotifier {
       stage = 'ready';
       lastAckMs = clock.elapsedMilliseconds;
       changed();
-      _heartbeat = Timer.periodic(const Duration(seconds: 1), (_) async {
+      _heartbeat = Timer.periodic(const Duration(milliseconds: 200), (_) async {
         if (state != 'connected') return;
         try {
           await control('HEARTBEAT', {});

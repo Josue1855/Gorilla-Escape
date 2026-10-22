@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gorilla_companion/main.dart';
+import 'package:gorilla_companion/control/page.dart';
+import 'package:gorilla_companion/control/protocol.dart';
 
 void main() {
   test('only complete HTTPS admission links can open', () {
@@ -19,6 +21,44 @@ void main() {
       expect(controllerLink(url), isNull);
     }
   });
+  testWidgets(
+    'real game score remains readable on narrow screen with large text',
+    (tester) async {
+      final stats = GameStats.fromContext({
+        'gameId': 'log-balance',
+        'stats': {
+          'balance': .2,
+          'tendency': .3,
+          'progress': 1,
+          'distance': 18,
+          'elapsed': 22.7,
+          'roll': 10,
+          'speed': .88,
+          'wind': .2,
+        },
+      })!;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MediaQuery(
+              data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+              child: Center(
+                child: SizedBox(
+                  width: 320,
+                  child: SingleChildScrollView(
+                    child: GameScorePanel(stats: stats),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      expect(find.text('Recorrido 100 %'), findsOneWidget);
+      expect(find.text('18.0 m · 22.7 s'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
   testWidgets('home explains setup, scanner and safe physical control', (
     tester,
   ) async {
