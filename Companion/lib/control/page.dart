@@ -327,7 +327,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                 if (sensorError.isNotEmpty) Text(sensorError),
                 const SizedBox(height: 20),
                 const Text(
-                  'Sujeta el teléfono con ambas manos. La PC muestra la partida y permite calibrar tu posición.',
+                  'Sujeta el teléfono con ambas manos. El control se ajusta automáticamente; la PC muestra la partida.',
                   textAlign: TextAlign.center,
                 ),
                 if (connected)

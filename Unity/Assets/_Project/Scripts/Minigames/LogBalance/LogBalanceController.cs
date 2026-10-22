@@ -12,11 +12,11 @@ namespace GorillaEscape.Minigames.LogBalance
         LogBalanceStage stage;
         MainMenuController menu;
         LogBalanceModel model;
-        bool keyboard,paused,focused=true,showCredits;
+        bool keyboard,paused,focused=true,showCredits,pendingStart,pendingResume;
         string creditsText;
         int player=1;
         float fallenTime;
-        string notice="Sostén el teléfono vertical y calibra su posición cómoda.";
+        string notice="Sostén el teléfono en una posición cómoda. El control se prepara automáticamente.";
         Vector2 scroll;
         public LogBalanceModel Attempt => model;
         public bool Paused => paused;
@@ -36,10 +36,10 @@ namespace GorillaEscape.Minigames.LogBalance
         public void SelectKeyboard(bool value)
         {
             if(model.State!=LogBalanceState.Ready||value&&!KeyboardAvailable)return;
-            keyboard=value;tilt.Reset();notice=value?"Teclado de desarrollo: A/D o flechas. Izquierda corrige hacia la izquierda.":"Calibra el teléfono antes de comenzar.";
+            keyboard=value;tilt.Reset();pendingStart=pendingResume=false;notice=value?"Teclado de desarrollo: A/D o flechas. Izquierda corrige hacia la izquierda.":"El control se prepara automáticamente.";
         }
         public void SelectPlayer(int value)
-        {if(model.State!=LogBalanceState.Ready||value<1||value>4)return;player=value;tilt.Reset();}
+        {if(model.State!=LogBalanceState.Ready||value<1||value>4)return;player=value;tilt.Reset();pendingStart=pendingResume=false;}
         bool PlayerAdmitted()
         {
             var lobby=menu?.Runtime?.java?.Lobby?.Snapshot;
@@ -51,26 +51,25 @@ namespace GorillaEscape.Minigames.LogBalance
             return false;
         }
         bool ReadPhone(long now,out float value)
-        {value=0;return PlayerAdmitted()&&tilt.TryTilt(Phones,player,now,rules,out value);}
-        public bool Calibrate()
         {
-            bool ok=PlayerAdmitted()&&tilt.Calibrate(Phones,player,Now,rules);
-            notice=ok?"Calibrado. Pulsa comenzar o reanudar.":"No se pudo calibrar. "+(PlayerAdmitted()?tilt.Status:"Conecta el teléfono del jugador seleccionado.");
-            return ok;
+            value=0;if(!PlayerAdmitted())return false;
+            if(model.State==LogBalanceState.Ready||paused)tilt.PrepareAutomatically(Phones,player,now,rules);
+            return tilt.TryTilt(Phones,player,now,rules,out value);
         }
         public bool BeginAttempt()
         {
             if(model.State!=LogBalanceState.Ready)return false;
-            if(!keyboard&&!ReadPhone(Now,out _)){notice="Conecta y calibra el teléfono antes de comenzar.";return false;}
-            paused=false;fallenTime=0;model.Begin(player);return true;
+            if(!keyboard&&!ReadPhone(Now,out _)){pendingStart=true;notice="Preparando el control… El intento comenzará cuando esté listo.";return false;}
+            pendingStart=false;paused=false;fallenTime=0;model.Begin(player);return true;
         }
         public void RestartAttempt()
-        {model.Reset();tilt.Reset();paused=false;fallenTime=0;notice=keyboard?"Listo para otro intento.":"Calibra el teléfono para el nuevo intento.";}
-        public void PauseAttempt(){if(model.State==LogBalanceState.Crossing||model.State==LogBalanceState.Countdown)paused=true;}
+        {model.Reset();tilt.Reset();pendingStart=pendingResume=false;paused=false;fallenTime=0;notice=keyboard?"Listo para otro intento.":"El control se prepara automáticamente.";}
+        public void PauseAttempt(){if(!paused&&(model.State==LogBalanceState.Crossing||model.State==LogBalanceState.Countdown)){paused=true;if(!keyboard)tilt.Reset();}}
         public bool ResumeAttempt()
         {
-            if(!paused||!focused||!keyboard&&!ReadPhone(Now,out _))return false;
-            paused=false;return true;
+            if(!paused||!focused)return false;
+            if(!keyboard&&!ReadPhone(Now,out _)){pendingResume=true;return false;}
+            pendingResume=false;paused=false;return true;
         }
         void OnApplicationFocus(bool hasFocus){focused=hasFocus;if(!hasFocus)PauseAttempt();}
         void OnApplicationPause(bool value){if(value)PauseAttempt();}
@@ -78,13 +77,18 @@ namespace GorillaEscape.Minigames.LogBalance
         {
             if(UnityEngine.Input.GetKeyDown(KeyCode.Escape)){if(menu!=null)menu.CloseLogBalance();return;}
             if(UnityEngine.Input.GetKeyDown(KeyCode.R))RestartAttempt();
-            if(!keyboard&&UnityEngine.Input.GetKeyDown(KeyCode.C))Calibrate();
             if(UnityEngine.Input.GetKeyDown(KeyCode.Space)){if(paused)ResumeAttempt();else BeginAttempt();}
             float input=0;
             if(keyboard)
             {if(UnityEngine.Input.GetKey(KeyCode.A)||UnityEngine.Input.GetKey(KeyCode.LeftArrow))input-=1;if(UnityEngine.Input.GetKey(KeyCode.D)||UnityEngine.Input.GetKey(KeyCode.RightArrow))input+=1;}
             bool available=keyboard||ReadPhone(Now,out input);
             if(!available){PauseAttempt();if(!keyboard)notice=PlayerAdmitted()?tilt.Status:"Conecta el teléfono del jugador seleccionado.";}
+            if(available&&focused){
+                if(pendingStart&&model.State==LogBalanceState.Ready)BeginAttempt();
+                if(pendingResume&&paused)ResumeAttempt();
+                if(!keyboard&&model.State==LogBalanceState.Ready)notice="Control listo. Pulsa comenzar.";
+                else if(!keyboard&&paused)notice="Control listo. Pulsa reanudar.";
+            }
             if(!paused&&focused&&available)model.Tick(Mathf.Min(.1f,Time.unscaledDeltaTime),input);
             if(model.State==LogBalanceState.Fell)fallenTime+=Time.unscaledDeltaTime;
             menu?.Runtime?.java?.PresentPhoneGame("log-balance",paused?"Paused":model.State.ToString(),player);
@@ -150,18 +154,16 @@ namespace GorillaEscape.Minigames.LogBalance
                 if(KeyboardAvailable&&GUI.Button(new Rect(40,265,310,44),keyboard?"USAR TELÉFONO":"PROBAR CON TECLADO",button))SelectKeyboard(!keyboard);
                 if(!keyboard&&GUI.Button(new Rect(40,320,310,44),"CONECTAR TELÉFONO",button)&&menu!=null){menu.OpenPhoneForLogBalance();}
                 GUI.Label(new Rect(x,y+120,540,63),notice,body);
-                if(!keyboard&&GUI.Button(new Rect(x,y+185,260,45),"CALIBRAR (C)",button))Calibrate();
-                if(GUI.Button(new Rect(x+(keyboard?0:280),y+185,keyboard?540:260,45),"COMENZAR (ESPACIO)",button))BeginAttempt();
+                if(GUI.Button(new Rect(x,y+185,540,45),"COMENZAR (ESPACIO)",button))BeginAttempt();
             }
             else if(paused)
             {
                 GUI.Label(new Rect(x,y+120,540,60),"PAUSA · "+(focused?notice:"Vuelve a la ventana para continuar."),body);
-                if(!keyboard&&GUI.Button(new Rect(x,y+195,260,45),"CALIBRAR (C)",button))Calibrate();
-                if(GUI.Button(new Rect(x+(keyboard?0:280),y+195,keyboard?540:260,45),"REANUDAR",button))ResumeAttempt();
+                if(GUI.Button(new Rect(x,y+195,540,45),"REANUDAR",button))ResumeAttempt();
             }
             else GUI.Label(new Rect(x,y+125,540,70),model.State==LogBalanceState.Countdown?$"Comienza en {Mathf.CeilToInt(model.Countdown)}…":"Frena la inercia antes del borde\nR reinicia",title);
         }
-        public static bool IsGameplayKey(KeyCode key) => key==KeyCode.Space||key==KeyCode.R||key==KeyCode.C
+        public static bool IsGameplayKey(KeyCode key) => key==KeyCode.Space||key==KeyCode.R
             ||key==KeyCode.Escape||key==KeyCode.A||key==KeyCode.D||key==KeyCode.LeftArrow||key==KeyCode.RightArrow;
         static void Fill(Rect rect,Color value){GUI.color=value;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=Color.white;}
         void OnDestroy(){menu?.Runtime?.java?.PresentPhoneGame("lobby","Ready",0);stage?.Dispose();}

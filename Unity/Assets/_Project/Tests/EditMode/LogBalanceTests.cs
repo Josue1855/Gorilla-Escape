@@ -80,6 +80,37 @@ public sealed class LogBalanceTests
     static PhoneInputWire Sample(float gamma=10,long seq=1,long epoch=1) => new PhoneInputWire {
         playerId=1,sequence=seq,connectionEpoch=epoch,sessionId="session",deviceSessionId="device",messageType="MOTION_SAMPLE",connectionState="ACTIVE",serverReceiveTimestamp=1000,
         quality=new PhoneQuality{source="synthetic",status="available"},orientation=new PhoneValues{availability="partial",hasGamma=true,gamma=gamma},screenOrientation=new PhoneValues{availability="present",hasAngle=true,angle=0}};
+    [Test] public void AutomaticNeutralNeedsDistinctStableSamplesAndKeepsItsReferenceDuringPlay()
+    {
+        var store=new PhoneInputStore();var adapter=new LogBalanceTilt();var rules=Quiet();
+        for(int i=0;i<11;i++){
+            var sample=Sample(12+(i%2)*.3f,i+1);sample.serverReceiveTimestamp=1000+i*50;store.Accept(sample);
+            bool ready=adapter.PrepareAutomatically(store,1,sample.serverReceiveTimestamp,rules);
+            Assert.That(ready,Is.EqualTo(i>=9));
+        }
+        Assert.True(adapter.TryTilt(store,1,1500,rules,out float neutral));Assert.That(Math.Abs(neutral),Is.LessThan(.02));
+        var leaning=Sample(37,12);leaning.serverReceiveTimestamp=1550;store.Accept(leaning);
+        Assert.True(adapter.TryTilt(store,1,1550,rules,out float input));Assert.That(input,Is.GreaterThan(.95f));
+    }
+    [Test] public void AutomaticNeutralCannotUseOneRepeatedOrStaleSample()
+    {
+        var store=new PhoneInputStore();store.Accept(Sample());var adapter=new LogBalanceTilt();
+        for(int i=0;i<20;i++)Assert.False(adapter.PrepareAutomatically(store,1,1000+i*50,Quiet()));
+        Assert.False(adapter.Calibrated);
+    }
+    [Test] public void AutomaticNeutralWaitsThroughMovementAndRelearnsAfterReconnect()
+    {
+        var store=new PhoneInputStore();var adapter=new LogBalanceTilt();var rules=Quiet();
+        for(int i=0;i<15;i++){
+            var sample=Sample(i*3,i+1);sample.serverReceiveTimestamp=1000+i*50;store.Accept(sample);
+            Assert.False(adapter.PrepareAutomatically(store,1,sample.serverReceiveTimestamp,rules));
+        }
+        for(int i=0;i<12;i++){
+            var sample=Sample(-15,i+1,2);sample.serverReceiveTimestamp=2000+i*50;store.Accept(sample);
+            adapter.PrepareAutomatically(store,1,sample.serverReceiveTimestamp,rules);
+        }
+        Assert.True(adapter.Calibrated);Assert.True(adapter.TryTilt(store,1,2550,rules,out float value));Assert.That(value,Is.Zero);
+    }
     [Test] public void PhoneUsesNeutralAndExistingPlayerStore(){var store=new PhoneInputStore();store.Accept(Sample());var adapter=new LogBalanceTilt();var rules=Quiet();Assert.True(adapter.Calibrate(store,1,1000,rules));Assert.True(adapter.TryTilt(store,1,1000,rules,out float value));Assert.That(value,Is.Zero);store.Accept(Sample(35,2));Assert.True(adapter.TryTilt(store,1,1000,rules,out value));Assert.That(value,Is.EqualTo(1));store.Accept(Sample(-15,3));Assert.True(adapter.TryTilt(store,1,1000,rules,out value));Assert.That(value,Is.EqualTo(-1));Assert.False(adapter.TryTilt(store,2,1000,rules,out _));}
     [Test] public void StaleDisconnectedAndLandscapeSamplesNeverDriveAttempt()
     {

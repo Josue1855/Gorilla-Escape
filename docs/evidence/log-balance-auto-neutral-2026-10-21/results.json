@@ -1,0 +1,28 @@
+{
+  "editmode": {
+    "result": "Passed",
+    "total": "197",
+    "passed": "197",
+    "failed": "0"
+  },
+  "playmode": {
+    "result": "Passed",
+    "total": "5",
+    "passed": "5",
+    "failed": "0"
+  },
+  "pwaTestsPassed": 79,
+  "flutterTestsPassed": 8,
+  "flutterAnalyze": "passed",
+  "physicalGameplay": "Pending user playtest",
+  "linuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "iphone": {
+    "installed": true,
+    "version": "1.1.1",
+    "build": "3"
+  }
+}

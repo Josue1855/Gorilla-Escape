@@ -26,9 +26,9 @@ Se conserva PWA o Flutter nativo → WebRTC → Java → IPC → `PhoneInputStor
 1. Preparar los runtimes de Java/cámara y la conectividad del producto. Para Editor, los servicios físicos exigen el opt-in existente `GORILLA_EDITOR_PHYSICAL_QA=1`, Bootstrap, rutas de Java/JAR válidas y un entorno compatible. No se anula la protección del Test Runner.
 2. Desde el menú, **CONECTAR TELÉFONO**; escanear el QR JOIN y completar conexión y permisos de sensores. Resolver permisos de firewall/confianza con la recuperación existente, sin ignorar errores TLS.
 3. Volver y entrar al prototipo. Seleccionar el slot 1–4 correspondiente al teléfono admitido; el MVP procesa sólo ese jugador por intento.
-4. Mantener el teléfono **vertical, con su parte superior arriba** y en una posición cómoda. Pulsar **CALIBRAR** o C en la PC; se guarda el gamma neutro de esta conexión. Pulsar **COMENZAR**.
+4. Mantener el teléfono **vertical, con su parte superior arriba** y en una posición cómoda. El control reconoce automáticamente una postura estable (al menos 8 muestras y 450 ms, con variación máxima de 2°). Pulsar **COMENZAR** una sola vez: si falta preparación, el inicio queda pendiente hasta completarla.
 5. Inclinar lateralmente. Una muestra de otro jugador/sesión/dispositivo/epoch no puede mover el intento seleccionado. Datos ausentes, orientación no disponible o más de 350 ms sin recepción pausan el cruce y la cuenta regresiva.
-6. Al recuperar datos, **REANUDAR**. Cambiar de conexión exige calibrar de nuevo; cada intento nuevo también exige calibración. Girar la pantalla a horizontal bloquea el control: volver a vertical antes de continuar.
+6. Al recuperar datos, **REANUDAR**. Al reconectar o iniciar otro intento, la referencia se prepara automáticamente. Durante el cruce permanece fija para conservar la inclinación intencional. Girar la pantalla a horizontal bloquea el control: volver a vertical antes de continuar.
 
 El adaptador conserva el `PhoneInputWire` validado y usa gamma en grados; no fabrica el quaternion que `TryPhoneInput` declara ausente. El giro horizontal del teléfono no está soportado en este MVP. La cámara no es un requisito para calcular este equilibrio; su supervisor existente conserva su lifecycle y no se duplica.
 
@@ -93,13 +93,13 @@ Validación de la corrección del QR: 185/185 EditMode en el editor y build Linu
 
 ## Teléfono → regreso al tronco
 
-Al elegir CONECTAR TELÉFONO dentro del prototipo se conserva el destino. Cuando el jugador tiene Network Ready, Input Ready y una muestra de la misma sesión/dispositivo/epoch recibida en los últimos 350 ms, se cierra el QR y se vuelve automáticamente al tronco con su slot seleccionado. El intento espera CALIBRAR y COMENZAR: no calibra una postura accidental al cerrar el QR. Desde la conexión general del menú, CONTROL LISTO ofrece IR AL TRONCO. La conexión y los servicios se conservan durante el cambio de pantalla.
+Al elegir CONECTAR TELÉFONO dentro del prototipo se conserva el destino. Cuando el jugador tiene Network Ready, Input Ready y una muestra de la misma sesión/dispositivo/epoch recibida en los últimos 350 ms, se cierra el QR y se vuelve automáticamente al tronco con su slot seleccionado. El control espera una postura estable y prepara la referencia automáticamente; COMENZAR inicia el intento cuando esté listo. Desde la conexión general del menú, CONTROL LISTO ofrece IR AL TRONCO. La conexión y los servicios se conservan durante el cambio de pantalla.
 
-En Safari, INPUT_READY cambia la preparación por un mando visual del Desafío del Tronco. El náufrago y el indicador responden a la inclinación local respecto de la postura inicial; no representan el balance calculado por Unity ni inventan progreso o resultados. El jugador mira la PC para calibrar, comenzar y ver el resultado. Si los datos dejan de estar listos, la interfaz vuelve al estado real de pausa/error correspondiente. El diagnóstico sigue disponible bajo Ayuda y conexión.
+En Safari, INPUT_READY cambia la preparación por un mando visual del Desafío del Tronco. El náufrago y el indicador responden a la inclinación local respecto de la postura inicial; no representan el balance calculado por Unity ni inventan progreso o resultados. El jugador mira la PC para comenzar y ver el resultado. Si los datos dejan de estar listos, la interfaz vuelve al estado real de pausa/error correspondiente. El diagnóstico sigue disponible bajo Ayuda y conexión.
 
 La [vista previa del mando](../evidence/phone-controller-2026-10-20/controller-preview.png) usa el componente real renderizado con una inclinación de ejemplo a 393 × 852. Es una comprobación visual del diseño, no evidencia de una partida o sensores físicos.
 
-Validación de la integración: 185/185 EditMode, 5/5 pruebas de flujo PlayMode y 70/70 pruebas PWA; build web, empaquetado JAR y build Linux final correctos. La prueba de flujo cubre que red sin sensores o sin muestra fresca no finaliza la preparación, retorno al tronco, selección del slot conectado y calibración obligatoria. La vista móvil se revisó con el componente real en navegador a 393 × 852; la nueva interfaz y el retorno requieren repetir el recorrido en el iPhone físico.
+Validación de la integración: 185/185 EditMode, 5/5 pruebas de flujo PlayMode y 70/70 pruebas PWA; build web, empaquetado JAR y build Linux final correctos. La prueba de flujo cubre que red sin sensores o sin muestra fresca no finaliza la preparación, retorno al tronco, selección del slot conectado y preparación del control. La vista móvil se revisó con el componente real en navegador a 393 × 852; la nueva interfaz y el retorno requieren repetir el recorrido en el iPhone físico.
 
 ## Recuperación de errores HTTP en el teléfono
 

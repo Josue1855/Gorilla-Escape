@@ -116,3 +116,8 @@ La lista siguiente incluye las fuentes, recursos, pruebas, documentación y meta
 - `docs/evidence/log-balance-2026-10-20/countdown.png`
 - `docs/evidence/log-balance-2026-10-20/fall.png`
 - `docs/evidence/log-balance-2026-10-20/victory.png`
+
+
+## Preparación automática — 2026-10-21
+
+La referencia se calcula con muestras nuevas y estables en preparación o pausa. No se recentra durante el cruce. Comenzar y reanudar pueden quedar pendientes hasta disponer de una referencia válida; cada reintento y reconexión se prepara sin botón de calibración. Las pruebas cubren muestras repetidas, datos caducados, movimiento y cambio de conexión.

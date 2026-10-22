@@ -6,7 +6,7 @@ export const screens = {
   REQUESTING_PERMISSION: ['Esperando tu permiso…', 'Responde a la solicitud del navegador, si aparece.', null, 'connecting'],
   CONTROL_SUSPENDED: ['Control en pausa', 'Vuelve a Gorilla Escape para reanudar.', null, 'warning'],
   PREPARING_SENSORS: ['Preparando sensores…', 'Sujeta el teléfono mientras comprobamos su señal real.', null, 'connecting'],
-  INPUT_READY: ['Sensores listos', 'Recibimos movimiento y orientación. La calibración y la preparación para jugar siguen pendientes.', null, 'success'],
+  INPUT_READY: ['Sensores listos', 'Recibimos movimiento y orientación. El juego prepara automáticamente tu posición de control.', null, 'success'],
   INPUT_LIMITED: ['Señal de movimiento limitada', 'Recibimos parte de la señal. Algunas capacidades o ejes no están disponibles.', 'VOLVER A COMPROBAR', 'warning'],
   NO_SENSOR_INPUT: ['No estamos recibiendo movimiento', 'El permiso por sí solo no garantiza una señal. Mantén esta página visible y vuelve a comprobar los sensores.', 'VOLVER A COMPROBAR', 'warning'],
   PERMISSION_GRANTED: ['Acceso al movimiento permitido', 'La señal de sensores está pendiente de comprobar. Todavía no has completado la preparación para jugar.', null, 'success'],

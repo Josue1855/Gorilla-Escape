@@ -128,7 +128,7 @@ class GameView {
     const phases = {
       'Ready': [
         'Prepara tu equilibrio',
-        'Calibra tu posición en la PC antes de comenzar.',
+        'Sujeta el teléfono cómodamente. El control se prepara automáticamente.',
       ],
       'Countdown': [
         'La prueba comienza',
@@ -148,7 +148,7 @@ class GameView {
       ],
       'Fell': [
         'El río ganó esta vez',
-        'Vuelve a calibrar en la PC e inténtalo de nuevo.',
+        'Recupera una posición cómoda e inténtalo de nuevo.',
       ],
     };
     if (context?['version'] != 1 ||

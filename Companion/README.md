@@ -6,7 +6,7 @@ Aplicación Flutter con control nativo: escáner, sensores del teléfono y canal
 
 1. Abre Gorilla Escape en la PC y elige teléfono en el Desafío del Tronco.
 2. Escanea el QR dentro de la aplicación, o pega su enlace en la sección alternativa.
-3. Pulsa ACTIVAR CONTROL y permite movimiento. Calibra desde la PC.
+3. Pulsa ACTIVAR CONTROL y permite movimiento. Sostén el teléfono cómodamente: el control se prepara automáticamente.
 4. Unity comunica la prueba, el turno y la fase al control nativo. Al abandonar la app se suspende el envío; las muestras antiguas no se reutilizan al regresar.
 
 El QR debe ser HTTPS, versión 1, con sesión y admisión válidas en el fragmento. No se guardan enlaces, admisiones ni perfiles en almacenamiento de la app. El permiso de cámara se solicita al abrir el escáner; denegarlo conserva la alternativa por enlace.
