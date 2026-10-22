@@ -13,9 +13,16 @@ Este módulo contiene el proyecto Unity actual con Banana Bowling, Gorilla Boxin
 
 No se versionan `Library`, builds, el runtime local de Python, su entorno virtual ni `cloudflared.exe`; Unity los prepara como dependencias internas.
 
+## Carpeta definitiva
+
+La distribución final para pruebas usa una sola carpeta. `Assets`, `Packages`,
+`ProjectSettings`, `CameraTracker`, `MotionRelay` y `PREPARAR_MODULO.ps1` deben
+estar juntos en la raíz del proyecto. Esa raíz es la carpeta que se agrega a
+Unity Hub; no se debe abrir otra copia ni una subcarpeta `Unity`.
+
 ## Preparación inicial
 
-1. Abrir en Unity Hub la carpeta `Prototypes/JosueAlpha/Unity` con Unity 6000.6.0f1.
+1. Abrir en Unity Hub la carpeta raíz de la distribución con Unity 6000.6.0f1.
 2. Abrir `Assets/Scenes/Connection.unity` o agregar a Build Settings las escenas que aparecen en `ProjectSettings/EditorBuildSettings.asset`.
 3. Pulsar Play. Unity prepara las dependencias silenciosamente si todavía no existen; el primer inicio puede tardar varios minutos.
 

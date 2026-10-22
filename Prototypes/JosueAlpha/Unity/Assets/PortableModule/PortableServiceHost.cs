@@ -166,7 +166,12 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         string configured = Environment.GetEnvironmentVariable(RootEnvironmentVariable);
         if (!string.IsNullOrWhiteSpace(configured)) return Path.GetFullPath(configured);
 #if UNITY_EDITOR
-        return Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+        string projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+        if (File.Exists(Path.Combine(projectRoot, "CameraTracker", "camera_tracker.py")))
+            return projectRoot;
+
+        // Compatibilidad temporal con la antigua distribución Prototypes/JosueAlpha/Unity.
+        return Path.GetFullPath(Path.Combine(projectRoot, ".."));
 #else
         return Path.GetFullPath(Path.Combine(Application.dataPath, "..", "PortableModule"));
 #endif

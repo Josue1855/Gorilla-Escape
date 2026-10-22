@@ -18,6 +18,21 @@ if (-not (Test-Path -LiteralPath $python)) {
         "TargetDir=`"$runtimeRoot`""
     ) -WindowStyle Hidden -PassThru -Wait
     if ($install.ExitCode -ne 0) { throw "Python no se pudo instalar. Código $($install.ExitCode)." }
+
+    # El instalador de Python reutiliza una instalación 3.12 ya registrada y puede
+    # ignorar TargetDir. En ese caso copiamos ese runtime al módulo para conservar
+    # el aislamiento y evitar depender de otra carpeta del equipo.
+    if (-not (Test-Path -LiteralPath $python)) {
+        $registered = (Get-ItemProperty 'HKCU:\Software\Python\PythonCore\3.12\InstallPath' -ErrorAction SilentlyContinue).ExecutablePath
+        if ($registered -and (Test-Path -LiteralPath $registered)) {
+            New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
+            Copy-Item -Path (Join-Path (Split-Path -Parent $registered) '*') -Destination $runtimeRoot -Recurse -Force
+        }
+    }
+
+    if (-not (Test-Path -LiteralPath $python)) {
+        throw 'Python terminó de instalarse, pero no se encontró el runtime local.'
+    }
 }
 
 if (-not (Test-Path -LiteralPath $venvPython)) {
