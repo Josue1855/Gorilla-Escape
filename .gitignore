@@ -36,6 +36,7 @@ __pycache__/
 /Prototypes/JosueAlpha/CameraTracker/.venv/
 /Prototypes/JosueAlpha/CameraTracker/vendor/
 /Prototypes/JosueAlpha/MotionRelay/cloudflared.exe
+/Prototypes/JosueAlpha/unity-*.log
 # Regenerated defaults for unused systems, or local editor/UI state.
 /Unity/ProjectSettings/PackageManagerSettings.asset
 /Unity/ProjectSettings/Packages/com.unity.ai.assistant/

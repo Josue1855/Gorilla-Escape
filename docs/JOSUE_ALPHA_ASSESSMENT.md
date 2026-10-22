@@ -1,4 +1,4 @@
-# Evaluación del alpha de Josue
+# Evaluación del módulo alpha
 
 El prototipo está aislado en `Prototypes/JosueAlpha` para revisión. No sustituye los módulos oficiales y no debe fusionarse completo sin una decisión del equipo.
 

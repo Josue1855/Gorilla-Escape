@@ -2,9 +2,10 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using JungleParty.Portable;
 using UnityEngine;
 
-public sealed class MotionSession : MonoBehaviour
+public sealed class MotionSession : MonoBehaviour, IPortableInputSource
 {
     public static MotionSession Instance { get; private set; }
     public string RoomCode { get; private set; }
@@ -15,11 +16,11 @@ public sealed class MotionSession : MonoBehaviour
     public float LastPhonePacketAt { get; private set; } = -10f;
     public float LastPosePacketAt { get; private set; } = -10f;
 
-    private const string Endpoint = "http://127.0.0.1:8788/motion?room=";
     private readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
     private readonly object sync = new object();
     private CancellationTokenSource cancellation;
     private string motionJson, poseJson;
+    private PortableServiceHost serviceHost;
 
     public static MotionSession Ensure()
     {
@@ -32,12 +33,15 @@ public sealed class MotionSession : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this; DontDestroyOnLoad(gameObject);
+        serviceHost = PortableServiceHost.Ensure();
         RoomCode = RandomRoom();
+        Connect();
     }
 
     public void Connect()
     {
         if (IsPolling) return;
+        serviceHost.StartModule();
         cancellation = new CancellationTokenSource(); IsPolling = true; Status = "ESPERANDO EL CELULAR";
         _ = PollPhone(cancellation.Token); _ = PollPose(cancellation.Token);
     }
@@ -52,13 +56,30 @@ public sealed class MotionSession : MonoBehaviour
         lock (sync) { string value = poseJson; poseJson = null; return value; }
     }
 
+    public bool TryConsumeMotion(out string json)
+    {
+        json = ConsumeMotion();
+        return !string.IsNullOrEmpty(json);
+    }
+
+    public bool TryConsumePose(out string json)
+    {
+        json = ConsumePose();
+        return !string.IsNullOrEmpty(json);
+    }
+
+    private void Update()
+    {
+        serviceHost?.ReportReadyState(PhoneConnected, CameraConnected);
+    }
+
     private async Task PollPhone(CancellationToken token)
     {
         while (!token.IsCancellationRequested)
         {
             try
             {
-                using HttpResponseMessage response = await http.GetAsync(Endpoint + RoomCode, token);
+                using HttpResponseMessage response = await http.GetAsync(serviceHost.MotionEndpoint + RoomCode, token);
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent) Status = "ESPERANDO EL CELULAR";
                 else
                 {
@@ -78,7 +99,7 @@ public sealed class MotionSession : MonoBehaviour
         {
             try
             {
-                using HttpResponseMessage response = await http.GetAsync("http://127.0.0.1:8790/pose", token);
+                using HttpResponseMessage response = await http.GetAsync(serviceHost.PoseEndpoint, token);
                 response.EnsureSuccessStatusCode(); string json = await response.Content.ReadAsStringAsync();
                 lock (sync) poseJson = json; LastPosePacketAt = Time.unscaledTime;
             }

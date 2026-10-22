@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GLTFast;
@@ -34,9 +31,6 @@ public sealed class PhoneMotionController : MonoBehaviour
         public float x;
         public bool cactus;
     }
-    private const string Endpoint = "http://127.0.0.1:8788/motion?room=";
-    private readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
-    private readonly object dataLock = new object();
     private readonly List<GameObject> pins = new List<GameObject>();
     private readonly Dictionary<GameObject, Vector3> pinRackPositions = new Dictionary<GameObject, Vector3>();
     private readonly Dictionary<GameObject, Quaternion> pinRackRotations = new Dictionary<GameObject, Quaternion>();
@@ -46,7 +40,6 @@ public sealed class PhoneMotionController : MonoBehaviour
     private readonly List<int>[] bowlingFrames = new List<int>[10];
     private readonly int[] bowlingScoreCache = new int[10];
     private readonly int[] bowlingRollCache = new int[21];
-    private CancellationTokenSource cancellation;
     private Rigidbody ballBody;
     private GameObject ballVisual;
     private GameObject gorillaMascot;
@@ -64,7 +57,7 @@ public sealed class PhoneMotionController : MonoBehaviour
     private float gorillaReactionUntil;
     private int gorillaReaction;
     private int gorillaVariant, previousGorillaVariant = -1;
-    private string pendingJson, pendingPoseJson, connectionState = "PULSA CONECTAR";
+    private string connectionState = "PULSA CONECTAR";
     private string roomCode = "";
     private GameState state = GameState.Connecting;
     private bool polling, calibrated, hasRaw;
@@ -715,44 +708,9 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void Connect()
     {
-        if (sharedSession != null) { sharedSession.Connect(); polling = true; connectionState = sharedSession.Status; return; }
-        cancellation?.Cancel(); cancellation = new CancellationTokenSource(); polling = true;
-        connectionState = "ESPERANDO EL CELULAR"; state = GameState.Connecting;
-        _ = Poll(cancellation.Token); _ = PollPose(cancellation.Token);
-    }
-
-    private async Task Poll(CancellationToken token)
-    {
-        while (!token.IsCancellationRequested)
-        {
-            try
-            {
-                using HttpResponseMessage response = await http.GetAsync(Endpoint + roomCode, token);
-                if ((int)response.StatusCode == 204) connectionState = "ACTIVA EL CONTROL EN EL CELULAR";
-                else { response.EnsureSuccessStatusCode(); string json = await response.Content.ReadAsStringAsync(); lock (dataLock) pendingJson = json; }
-            }
-            catch (OperationCanceledException) { break; }
-            catch { connectionState = "RECONECTANDO…"; }
-            try { await Task.Delay(10, token); } catch { break; }
-        }
-        polling = false;
-    }
-
-    private async Task PollPose(CancellationToken token)
-    {
-        while (!token.IsCancellationRequested)
-        {
-            try
-            {
-                using HttpResponseMessage response = await http.GetAsync("http://127.0.0.1:8790/pose", token);
-                response.EnsureSuccessStatusCode();
-                string json = await response.Content.ReadAsStringAsync();
-                lock (dataLock) pendingPoseJson = json;
-            }
-            catch (OperationCanceledException) { break; }
-            catch { }
-            try { await Task.Delay(12, token); } catch { break; }
-        }
+        sharedSession.Connect();
+        polling = true;
+        connectionState = sharedSession.Status;
     }
 
     private void Update()
@@ -830,9 +788,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void ReadPose()
     {
-        string json = sharedSession != null ? sharedSession.ConsumePose() : null;
-        if (string.IsNullOrEmpty(json)) lock (dataLock) { json = pendingPoseJson; pendingPoseJson = null; }
-        if (string.IsNullOrEmpty(json)) return;
+        if (!sharedSession.TryConsumePose(out string json)) return;
         PosePacket pose = JsonUtility.FromJson<PosePacket>(json);
         poseDetected = pose.detected || pose.leftDetected || pose.rightDetected;
         if (!poseDetected) return;
@@ -884,9 +840,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void ReadPhone()
     {
-        string json = sharedSession != null ? sharedSession.ConsumeMotion() : null;
-        if (string.IsNullOrEmpty(json)) lock (dataLock) { json = pendingJson; pendingJson = null; }
-        if (string.IsNullOrEmpty(json)) return;
+        if (!sharedSession.TryConsumeMotion(out string json)) return;
         MotionPacket p = JsonUtility.FromJson<MotionPacket>(json); if (p.type != "motion") return;
         lastPacketAt = Time.unscaledTime; latestGamma = p.gamma; latestBeta = p.beta;
         rawRotation = Quaternion.Euler(p.beta, p.alpha, -p.gamma) * Quaternion.Euler(0, 0, -p.screen); hasRaw = true;
@@ -1524,5 +1478,5 @@ public sealed class PhoneMotionController : MonoBehaviour
         if (leavesBottom != null) GUI.DrawTexture(new Rect(0, Screen.height * .82f, Screen.width * .38f, Screen.height * .18f), leavesBottom, ScaleMode.ScaleToFit, true);
     }
 
-    private void OnDestroy() { cancellation?.Cancel(); http.Dispose(); gorillaImport?.Dispose(); islandImport?.Dispose(); }
+    private void OnDestroy() { gorillaImport?.Dispose(); islandImport?.Dispose(); }
 }

@@ -1,4 +1,4 @@
-# Jungle Party / Gorilla Escape — alpha de Josue
+# Jungle Party / Gorilla Escape — módulo alpha
 
 > Estado: **alpha muy temprana**. Esta carpeta es una captura ejecutable del prototipo y no reemplaza la arquitectura oficial de `Unity/`, `Server/` y `PWA/`. Debe revisarse antes de integrar cualquier parte a `develop`.
 
@@ -23,14 +23,16 @@ No se versionan `Library`, builds, el entorno virtual de Python ni `cloudflared.
 
 ## Cada vez que se juega
 
-1. Ejecutar `INICIAR_SERVICIOS.cmd`. Se abren dos ventanas:
-   - **Camera Tracker**, local en `http://127.0.0.1:8790/pose`.
-   - **MotionLink + Cloudflare**, local en el puerto `8788` y con una dirección temporal `https://...trycloudflare.com`.
-2. Copiar la dirección de Cloudflare que aparece en la ventana de MotionLink.
-3. Abrir el proyecto en Unity y pulsar Play.
-4. En el celular, abrir la dirección de Cloudflare, escribir el código de cuatro caracteres mostrado por Unity, activar el control y aceptar los permisos de movimiento.
+1. Abrir el proyecto en Unity y pulsar Play desde la escena `Connection`.
+2. El módulo inicia automáticamente Camera Tracker, MotionLink y Cloudflare en segundo plano.
+3. Pulsar **COPIAR ENLACE DEL CELULAR** cuando aparezca dentro del juego.
+4. En el celular, abrir el enlace, escribir el código de cuatro caracteres mostrado por Unity, activar el control y aceptar los permisos de movimiento.
 
-Los dos servicios deben permanecer abiertos mientras se juega. El túnel gratuito cambia de dirección al reiniciarse y envía únicamente los paquetes de movimiento del control; la webcam se procesa localmente y no se publica por Cloudflare.
+`INICIAR_SERVICIOS.cmd` queda únicamente como herramienta de diagnóstico. Durante el uso normal Unity administra el ciclo de vida completo. El túnel gratuito cambia de dirección al reiniciarse y envía únicamente los paquetes de movimiento del control; la webcam se procesa localmente y no se publica por Cloudflare.
+
+## Integración en otro proyecto
+
+La carpeta `Unity/Assets/PortableModule` contiene los contratos y el anfitrión de procesos. Los minijuegos consumen `IPortableInputSource`, por lo que pueden trasladarse sin depender directamente de HTTP, MediaPipe, Node o Cloudflare. Consulta su `README.md` para la disposición de archivos y la variable `JUNGLE_PARTY_MODULE_ROOT`.
 
 ## Alcance y riesgos del alpha
 
