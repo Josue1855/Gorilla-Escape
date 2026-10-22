@@ -1,0 +1,15 @@
+{
+  "cause": "Wi-Fi and USB tethering exposed two physical LAN candidates; startup rejected ambiguity",
+  "fix": "Use OS outbound route among eligible adapters when no explicit adapter/address is configured",
+  "tests": {
+    "LocalTrustTest": 3,
+    "LocalTrustProcessTest": 1,
+    "failed": 0
+  },
+  "packagedFlatpakProbe": {
+    "ipcReady": true,
+    "runningAtReady": true,
+    "cleanedUp": true
+  },
+  "iphonePairingAfterFix": "Pending user retry"
+}

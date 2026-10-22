@@ -110,3 +110,6 @@ ERROR antes de conectar ofrece COMPROBAR CONEXIÓN y, para el origen local, Ver 
 El Service Worker actualizado busca el HTML actual por red al navegar y conserva el shell en caché como recuperación offline. Los recursos estáticos siguen en caché; las peticiones de señalización y sesión nunca se interceptan. La activación de una versión nueva no recarga una partida activa.
 
 Validación: 75/75 pruebas PWA, build web y empaquetado JAR aprobados, validadores de foundation/gestión correctos. Incluye fetch con receptor global, sanitización de errores, navegación fresca y offline, comprobación local y comprobación por la superficie pública permitida. La resolución del fallo en Chrome/iPhone físico requiere un nuevo intento; no se declara resuelto por estos tests.
+
+
+Con varias conexiones físicas activas (por ejemplo Wi-Fi y conexión USB del iPhone), el servidor selecciona automáticamente la dirección de la ruta de salida del sistema. Una selección explícita mediante `GORILLA_LAN_INTERFACE` o `GORILLA_LAN_ADDRESS` conserva prioridad. Si no existe una ruta que resuelva la ambigüedad, se mantiene el diagnóstico de selección requerida.
