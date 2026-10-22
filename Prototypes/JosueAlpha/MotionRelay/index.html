@@ -1,14 +1,57 @@
-<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>MotionLink</title>
-<style>body{margin:0;background:#070b14;color:white;font:18px system-ui;display:grid;place-items:center;min-height:100vh}.c{width:min(88%,430px)}h1{font-size:48px;color:#73f4df;margin-bottom:10px}input,button{box-sizing:border-box;width:100%;height:64px;margin:8px 0;border-radius:14px;text-align:center;font-size:25px}button{background:#73f4df;border:0;font-weight:bold}p{color:#aeb8cc;line-height:1.5}.ok{color:#73f4df}</style>
-<main class=c><h1>MotionLink</h1><p>Sostén el celular vertical como un control de Wii y apunta moviendo la muñeca.</p><input id=room maxlength=4 placeholder=ABCD><button id=activate>Activar control</button><button id=confirmButton style="display:none;background:#ffd83d;height:82px">CONFIRMAR / LANZAR</button><button id=recenterButton style="display:none;background:#fff">RECENTRAR PUNTERO</button><p id=status>Esperando</p></main>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#071d22">
+  <title>Jungle Party Control</title>
+  <style>
+    :root{color-scheme:dark;--ink:#071d22;--cyan:#26e0cf;--gold:#ffd13d;--muted:#a8c4c2;--danger:#ff786f}
+    *{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(circle at 80% 5%,#1a6861 0,transparent 34%),linear-gradient(155deg,#06181c 0%,#0b3432 58%,#163c25 100%);color:#fff;font-family:Inter,ui-rounded,"SF Pro Rounded",system-ui,sans-serif;display:grid;place-items:center;padding:max(22px,env(safe-area-inset-top)) 20px max(24px,env(safe-area-inset-bottom));overflow-x:hidden}
+    body:before,body:after{content:"";position:fixed;width:210px;height:210px;border:34px solid rgba(38,224,207,.09);border-radius:48% 52% 58% 42%;transform:rotate(28deg);pointer-events:none}body:before{left:-130px;top:-100px}body:after{right:-145px;bottom:-110px;border-color:rgba(255,209,61,.08)}
+    main{width:min(100%,440px);position:relative}.brand{display:flex;align-items:center;gap:12px;margin:0 0 18px}.mark{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:var(--gold);color:var(--ink);font-size:25px;box-shadow:0 10px 28px #0005}.brand b{font-size:20px;letter-spacing:.12em}.brand small{display:block;color:var(--cyan);font-weight:800;letter-spacing:.14em;margin-top:2px}
+    .card{background:linear-gradient(145deg,rgba(12,52,55,.97),rgba(5,27,32,.97));border:1px solid rgba(112,245,229,.22);border-radius:28px;padding:28px;box-shadow:0 30px 70px #0008,inset 0 1px #ffffff12}h1{font-size:clamp(30px,9vw,42px);line-height:1.03;margin:0 0 10px;letter-spacing:-.045em}.intro{color:var(--muted);line-height:1.5;margin:0 0 24px}.step{font-size:12px;color:var(--cyan);font-weight:900;letter-spacing:.13em;margin-bottom:8px;text-transform:uppercase}
+    input,button{appearance:none;width:100%;border:0;border-radius:16px;font:inherit}input{height:70px;background:#06191d;border:2px solid #31585a;color:var(--gold);font-size:31px;font-weight:900;letter-spacing:.32em;text-align:center;text-transform:uppercase;outline:none;padding-left:.32em;margin-bottom:12px}input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px #26e0cf24}input::placeholder{color:#607a7b}
+    button{min-height:62px;padding:14px 16px;background:var(--cyan);color:#052325;font-weight:900;font-size:18px;cursor:pointer;box-shadow:0 10px 24px #0005;transition:transform .12s,filter .12s}button:active{transform:scale(.98)}button:disabled{opacity:.56;filter:grayscale(.35)}button.secondary{background:#fff;color:#092528}button.action{background:var(--gold);margin-top:12px;min-height:76px;font-size:19px}.controls{display:none;margin-top:12px}
+    .state{display:flex;align-items:flex-start;gap:11px;margin-top:18px;padding:14px;border-radius:15px;background:#061a1e;color:var(--muted);line-height:1.35}.dot{width:11px;height:11px;flex:0 0 auto;border-radius:50%;margin-top:5px;background:var(--gold);box-shadow:0 0 14px var(--gold)}.state.ok{color:#d9fff2}.state.ok .dot{background:#41ed8d;box-shadow:0 0 14px #41ed8d}.state.error{color:#ffd8d4;border:1px solid #ff786f55}.state.error .dot{background:var(--danger);box-shadow:0 0 14px var(--danger)}
+    .help{display:none;margin-top:12px;padding:15px;border-radius:15px;background:#3b1b1d;color:#ffdcd8;font-size:14px;line-height:1.45}.help strong{color:#fff}.foot{text-align:center;color:#739390;font-size:12px;margin:15px 0 0}
+  </style>
+</head>
+<body>
+<main>
+  <div class="brand"><div class="mark">🍌</div><div><b>JUNGLE PARTY</b><small>CONTROL MOVIL</small></div></div>
+  <section class="card">
+    <div class="step">Paso 1 de 2</div><h1>Conecta tu celular</h1>
+    <p class="intro">Escribe el código que aparece en Unity. Después permite el acceso al movimiento del dispositivo.</p>
+    <input id="room" maxlength="4" inputmode="text" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" placeholder="ABCD" aria-label="Código de sala">
+    <button id="activate">CONECTAR CONTROL</button>
+    <div id="controls" class="controls"><button id="confirmButton" class="action">CONFIRMAR / LANZAR</button><button id="recenterButton" class="secondary">RECENTRAR PUNTERO</button></div>
+    <div id="state" class="state"><span class="dot"></span><span id="status">Esperando el código de la pantalla</span></div><div id="help" class="help"></div>
+  </section><p class="foot">Mantén esta página abierta durante la partida.</p>
+</main>
 <script>
-const roomInput=document.getElementById('room'),activateButton=document.getElementById('activate'),confirmButton=document.getElementById('confirmButton'),recenterButton=document.getElementById('recenterButton'),statusText=document.getElementById('status');
-let latest=null,running=false,count=0,last=performance.now(),confirmCount=0,recenterCount=0;
+const roomInput=document.getElementById('room'),activateButton=document.getElementById('activate'),confirmButton=document.getElementById('confirmButton'),recenterButton=document.getElementById('recenterButton'),controls=document.getElementById('controls'),state=document.getElementById('state'),statusText=document.getElementById('status'),help=document.getElementById('help');
+let latest=null,running=false,listenersAttached=false,sensorSeen=false,count=0,last=performance.now(),confirmCount=0,recenterCount=0;
 let motion={ax:0,ay:0,az:0,rx:0,ry:0,rz:0};
-addEventListener('devicemotion',e=>{let a=e.acceleration||e.accelerationIncludingGravity,rot=e.rotationRate;motion={ax:a?.x||0,ay:a?.y||0,az:a?.z||0,rx:rot?.alpha||0,ry:rot?.beta||0,rz:rot?.gamma||0}});
-addEventListener('deviceorientation',e=>{if(e.alpha!=null)latest={type:'motion',time:Date.now(),alpha:e.alpha,beta:e.beta,gamma:e.gamma,screen:screen.orientation?.angle||0,confirm:confirmCount,recenter:recenterCount,...motion}});
-async function send(){if(!running)return;if(latest){try{await fetch('/motion?room='+roomInput.value.toUpperCase(),{method:'POST',body:JSON.stringify(latest),cache:'no-store'});count++;let now=performance.now();if(now-last>1000){statusText.className='ok';statusText.textContent='Control activo · '+count+' envíos/s';count=0;last=now}}catch{statusText.textContent='Reconectando…'}}setTimeout(send,0)}
-activateButton.onclick=async()=>{let code=roomInput.value.toUpperCase();if(!/^[A-Z0-9]{4}$/.test(code)){statusText.textContent='Escribe el código de 4 caracteres';return}if(DeviceMotionEvent.requestPermission&&await DeviceMotionEvent.requestPermission()!=='granted'){statusText.textContent='Permiso rechazado';return}running=true;activateButton.disabled=true;confirmButton.style.display='block';recenterButton.style.display='block';statusText.textContent='Activando sensores…';send()};
-confirmButton.onclick=()=>{confirmCount++;if(latest)latest.confirm=confirmCount;navigator.vibrate?.(50)};
-recenterButton.onclick=()=>{recenterCount++;if(latest)latest.recenter=recenterCount;navigator.vibrate?.([30,30,30])};
+function showStatus(message,kind=''){statusText.textContent=message;state.className='state'+(kind?' '+kind:'')}
+function showHelp(html){help.innerHTML=html;help.style.display='block'}function hideHelp(){help.style.display='none';help.textContent=''}
+function onMotion(e){const a=e.acceleration||e.accelerationIncludingGravity||{},rot=e.rotationRate||{};motion={ax:a.x||0,ay:a.y||0,az:a.z||0,rx:rot.alpha||0,ry:rot.beta||0,rz:rot.gamma||0};sensorSeen=true}
+function onOrientation(e){if(e.alpha==null)return;sensorSeen=true;latest={type:'motion',time:Date.now(),alpha:e.alpha,beta:e.beta||0,gamma:e.gamma||0,screen:screen.orientation?.angle||window.orientation||0,confirm:confirmCount,recenter:recenterCount,...motion}}
+function attachSensors(){if(listenersAttached)return;addEventListener('devicemotion',onMotion,{passive:true});addEventListener('deviceorientation',onOrientation,{passive:true});listenersAttached=true}
+function requestSensorPermission(EventType){if(!EventType||typeof EventType.requestPermission!=='function')return Promise.resolve('granted');return EventType.requestPermission()}
+async function send(){if(!running)return;if(latest){try{const response=await fetch('/motion?room='+encodeURIComponent(roomInput.value.toUpperCase()),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(latest),cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);count++;const now=performance.now();if(now-last>1000){showStatus('Control conectado · '+count+' envíos/s','ok');count=0;last=now}}catch(error){showStatus('Reconectando con Unity...','error')}}setTimeout(send,20)}
+activateButton.addEventListener('click',async()=>{
+  const code=roomInput.value.trim().toUpperCase();roomInput.value=code;hideHelp();
+  if(!/^[A-Z0-9]{4}$/.test(code)){showStatus('Escribe el código de 4 caracteres','error');roomInput.focus();return}
+  if(!window.isSecureContext){showStatus('El enlace no es seguro','error');showHelp('<strong>Abre el enlace HTTPS del código QR.</strong> El navegador bloquea los sensores en enlaces HTTP.');return}
+  activateButton.disabled=true;showStatus('Solicitando permiso de movimiento...');
+  try{
+    const motionPermission=requestSensorPermission(window.DeviceMotionEvent),orientationPermission=requestSensorPermission(window.DeviceOrientationEvent);
+    const permissions=await Promise.all([motionPermission,orientationPermission]);if(permissions.some(value=>value!=='granted'))throw new Error('permission-denied');
+    attachSensors();running=true;roomInput.disabled=true;activateButton.style.display='none';controls.style.display='grid';controls.style.gap='10px';showStatus('Mueve el celular para terminar la conexión...');send();
+    setTimeout(()=>{if(!sensorSeen){showStatus('No llegan datos del sensor','error');showHelp('<strong>Activa Movimiento y orientación para este sitio.</strong><br>iPhone: Ajustes › Safari › Movimiento y orientación.<br>Android: ajustes del sitio › Sensores de movimiento. Luego recarga esta página.')}},3500);
+  }catch(error){activateButton.disabled=false;showStatus('Acceso al movimiento bloqueado','error');showHelp('<strong>El código es correcto, pero el navegador negó los sensores.</strong><br>iPhone: abre esta página en Safari y permite Movimiento y orientación.<br>Android: abre los permisos del sitio y habilita Sensores de movimiento. Después recarga e intenta otra vez.')}
+});
+confirmButton.addEventListener('click',()=>{confirmCount++;if(latest)latest.confirm=confirmCount;navigator.vibrate?.(50)});recenterButton.addEventListener('click',()=>{recenterCount++;if(latest)latest.recenter=recenterCount;navigator.vibrate?.([30,30,30])});roomInput.addEventListener('input',()=>{roomInput.value=roomInput.value.replace(/[^a-z0-9]/gi,'').toUpperCase()});
 </script>
+</body></html>
