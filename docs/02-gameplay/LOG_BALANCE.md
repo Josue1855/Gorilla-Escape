@@ -1,12 +1,12 @@
 # Desafío del Tronco / Log Balance
 
-Iteración de desarrollo: 2026-10-20, rama `feature/gameplay-desafio-del-tronco`. La dirección narrativa y este quinto prototipo fueron autorizados por el PO en el encargo de implementación. Las cuatro disciplinas anteriores conservan su propio alcance y estado.
+Iteración de desarrollo: 2026-10-21, rama `feature/gameplay-desafio-del-tronco`. La dirección narrativa y este quinto prototipo fueron autorizados por el PO en el encargo de implementación. Las cuatro disciplinas anteriores conservan su propio alcance y estado.
 
 ## Historia y objetivo
 
 El personaje controlable es un humano náufrago llegado accidentalmente a la isla de los gorilas. Para escapar debe superar las pruebas que le imponen. En esta prueba cruza un tronco sobre un río; los gorilas son espectadores NPC. El personaje usa el modelo Vagabundo/Castaway suministrado por el PO; el tronco y el ambiente reutilizan sus GLB trunk y low_poly_trees. Los espectadores usan el gorila low poly proporcionado y reaccionan con poses sobre su esqueleto original. Consultar [arte y animación](LOG_BALANCE_ART.md) para el rig, derivados y créditos.
 
-Cuenta regresiva de tres segundos, avance automático y equilibrio lateral. Inclinar a la izquierda mueve el balance a la izquierda; inclinar a la derecha lo mueve a la derecha. Corregir hacia el centro evita la caída. El recorrido predeterminado es de 18 m a 0,75 m/s: unos 24 segundos de cruce, además de la cuenta regresiva.
+Cuenta regresiva de tres segundos, avance automático y equilibrio lateral. Inclinar a la izquierda mueve el balance a la izquierda; inclinar a la derecha lo mueve a la derecha. La inclinación aplica aceleración lateral: soltar el control no elimina la inercia; hay que contracorregir antes del borde. El recorrido es de 18 m, con paso base de 0,9 m/s y límite de 40 s. Acercarse al borde o hacer girar rápidamente el tronco reduce el avance. Un cruce centrado dura aproximadamente 20–21 s, más la cuenta regresiva.
 
 ## Abrir y probar con teclado
 
@@ -21,7 +21,7 @@ El teclado sólo está disponible en Editor y Development Build, mediante selecc
 
 ## Probar con teléfono
 
-Se conserva PWA → WebRTC → Java → IPC → `PhoneInputStore`; no hay otro backend ni cambios al protocolo. Usar la preparación del [producto integrado](../03-development/SETUP_AND_RUN.md) y el [contrato de conexión](../PHASE0_PHONE_CONNECTION_FINAL.md).
+Se conserva PWA o Flutter nativo → WebRTC → Java → IPC → `PhoneInputStore`; no hay otro backend ni cambios al protocolo. Usar la preparación del [producto integrado](../03-development/SETUP_AND_RUN.md) y el [contrato de conexión](../PHASE0_PHONE_CONNECTION_FINAL.md).
 
 1. Preparar los runtimes de Java/cámara y la conectividad del producto. Para Editor, los servicios físicos exigen el opt-in existente `GORILLA_EDITOR_PHYSICAL_QA=1`, Bootstrap, rutas de Java/JAR válidas y un entorno compatible. No se anula la protección del Test Runner.
 2. Desde el menú, **CONECTAR TELÉFONO**; escanear el QR JOIN y completar conexión y permisos de sensores. Resolver permisos de firewall/confianza con la recuperación existente, sin ignorar errores TLS.
@@ -38,7 +38,15 @@ El adaptador conserva el `PhoneInputWire` validado y usa gamma en grados; no fab
 
 Parámetros: cuenta regresiva, longitud, velocidad, duración máxima, grados para tilt completo, dead zone, smoothing, fuerza de control, perturbación, inestabilidad, dificultad, clamp, umbral/gracia de caída y freshness. Los cambios se aplican al abrir un nuevo prototipo. La duración máxima debe permitir completar longitud/velocidad.
 
-La lógica usa pasos de 10 ms, zona muerta reescalada, suavizado exponencial y perturbación determinista gradual. La perturbación no es viento ni un sistema de obstáculos. El balance se limita a ±1 por defecto; superar ±0,85 durante 0,65 s causa caída. Volver dentro del umbral limpia ese tiempo de riesgo. Caída prevalece si coincide con meta en el mismo paso; un resultado terminal no puede cambiar a otro. Durante una pausa no avanza el tiempo ni la distancia. Los frames de más de 100 ms se limitan para evitar saltos bruscos del control.
+La simulación usa pasos fijos de 10 ms y conserva velocidad lateral, ángulo y velocidad angular del tronco. El peso lateral genera torque; cada pisada añade una oscilación alternada según la distancia recorrida. El giro realimenta el equilibrio del personaje. El amortiguamiento permite frenar sin eliminar instantáneamente la inercia. Las ráfagas son suaves, deterministas e iguales para todos; el HUD indica su dirección.
+
+El giro visual procede del ángulo simulado, no de un motor de velocidad constante. La posición lateral del humano cambia sobre el tronco y la altura de apoyo se consulta en la malla girada bajo sus pies. La animación de las piernas sigue las pisadas por distancia, por lo que no patina a velocidad constante cuando el avance se ralentiza.
+
+La amplitud ambiental aumenta con el progreso. El umbral empieza en ±0,85 y termina en ±0,74; la gracia baja de 0,65 a aproximadamente 0,49 s. Recuperar apoyo reduce gradualmente el tiempo de peligro, evitando borrar el riesgo con pequeñas oscilaciones en el límite. Caer prevalece sobre llegar en el mismo paso; un resultado terminal no puede cambiar. La pausa congela movimiento, giro, tiempo y distancia. Los frames superiores a 100 ms se limitan para evitar saltos bruscos.
+
+El indicador blanco muestra el apoyo actual y el ámbar la tendencia por inercia, para anticipar la frenada.
+
+El Inspector expone aceleración/amortiguamiento lateral, torque por peso, amortiguamiento/restauración angular, acoplamiento del suelo, fuerza de pisada/viento, longitud de paso y progresión de dificultad. `coupledPhysics` está activado en el asset del producto; desactivarlo conserva la dinámica simple para comparar ajustes y regresiones.
 
 `LogBalanceResult` es un resultado inmutable del intento en memoria: jugador, victoria/caída, segundos, distancia, progreso y motivo. No existía un sistema común de resultados deportivos en esta base; no se usa `OfficialActionLedger` como puntuación ni se introduce persistencia/API/GP paralela. Publicación al backend y torneo quedan pendientes de integración acordada.
 

@@ -89,7 +89,7 @@ namespace GorillaEscape.Minigames.LogBalance
             if(model.State==LogBalanceState.Fell)fallenTime+=Time.unscaledDeltaTime;
             menu?.Runtime?.java?.PresentPhoneGame("log-balance",paused?"Paused":model.State.ToString(),player);
             stage.Present(model.Progress,model.Balance,model.State==LogBalanceState.Fell,fallenTime,model.Elapsed,
-                model.State==LogBalanceState.Crossing&&!paused&&focused,model.State==LogBalanceState.Won);
+                model.State==LogBalanceState.Crossing&&!paused&&focused,model.State==LogBalanceState.Won,model.LogAngle*Mathf.Rad2Deg,model.FootstepPhase);
         }
         void OnGUI()
         {
@@ -113,7 +113,7 @@ namespace GorillaEscape.Minigames.LogBalance
             var button=new GUIStyle(GUI.skin.button){fontSize=18};
             GUI.Box(new Rect(20,20,width-40,145),"");
             GUI.Label(new Rect(40,30,800,40),"DESAFÍO DEL TRONCO",title);
-            GUI.Label(new Rect(40,75,width-310,60),"Eres el náufrago: cruza el río y supera la prueba de los gorilas.\nAvanzas automáticamente. Inclina el teléfono para corregir el equilibrio.",body);
+            GUI.Label(new Rect(40,75,width-310,60),"Eres el náufrago: cruza el río y supera la prueba de los gorilas.\nCada paso y tu peso hacen girar el tronco. Corrige con suavidad y frena la inercia.",body);
             GUI.Label(new Rect(40,135,width-300,24),"Modelos: gashtan · Aditya Graphical · katarzynaszemla · Anskar · planeta-elefante — CC BY 4.0 (adaptados)",new GUIStyle(body){fontSize=13});
             if(GUI.Button(new Rect(width-220,45,170,50),"VOLVER",button)&&menu!=null)menu.CloseLogBalance();
             if(GUI.Button(new Rect(width-220,105,170,35),showCredits?"CERRAR CRÉDITOS":"CRÉDITOS",button))
@@ -126,15 +126,18 @@ namespace GorillaEscape.Minigames.LogBalance
             float x=width-600,y=height-300;
             GUI.Box(new Rect(x-25,y-10,590,285),"");
             GUI.Label(new Rect(x,y,540,32),"IZQUIERDA  ←                 CENTRO                 →  DERECHA",body);
-            float danger=Mathf.InverseLerp(rules.fallThreshold*.55f,rules.fallThreshold,Mathf.Abs(model.Balance));
+            float danger=Mathf.InverseLerp(.55f,1,model.Danger);
             Color bar=Color.Lerp(new Color(.2f,.7f,.45f),new Color(.95f,.25f,.12f),danger);
             if(model.State==LogBalanceState.Crossing&&!paused&&danger>0)
             {Fill(new Rect(0,0,7,height),new Color(.9f,.2f,.1f,danger*.7f));Fill(new Rect(width-7,0,7,height),new Color(.9f,.2f,.1f,danger*.7f));}
             Fill(new Rect(x,y+40,540,24),new Color(.25f,.28f,.3f));
-            float safe=rules.fallThreshold/rules.balanceClamp;
+            float safe=model.EffectiveFallThreshold/rules.balanceClamp;
             Fill(new Rect(x+270*(1-safe),y+40,540*safe,24),bar);
+            float tendency=Mathf.Clamp((model.Balance+model.LateralVelocity*.35f)/rules.balanceClamp,-1,1);
+            Fill(new Rect(x+270*(1+tendency)-2,y+40,4,24),new Color(1,.7f,.2f));
             Fill(new Rect(x+270*(1+model.Balance/rules.balanceClamp)-5,y+32,10,40),Color.white);
-            GUI.Label(new Rect(x,y+83,540,32),$"Progreso {model.Progress:P0} · {model.Distance:F1} / {rules.length:F0} m · {model.Elapsed:F1} s",body);
+            GUI.Label(new Rect(x,y+66,540,13),"BLANCO: APOYO ACTUAL · ÁMBAR: TENDENCIA DE MOVIMIENTO",new GUIStyle(body){fontSize=10});
+            GUI.Label(new Rect(x,y+78,540,48),$"Progreso {model.Progress:P0} · {model.Distance:F1} / {rules.length:F0} m · {model.Elapsed:F1} s\nGiro {model.LogAngle*Mathf.Rad2Deg:F0}° · Paso {model.ForwardVelocity:F2} m/s · Viento {(Mathf.Abs(model.Wind)<.06f?"suave":model.Wind>0?"→":"←")}",new GUIStyle(body){fontSize=16});
             if(model.Result!=null)
             {
                 GUI.Label(new Rect(x,y+120,540,60),$"{(model.Result.Completed?"¡CRUCE COMPLETADO!":"HAS CAÍDO") } · Jugador {model.Result.PlayerId}\n{model.Result.Seconds:F1} s · {model.Result.Distance:F1} m · {model.Result.Progress:P0}",body);
@@ -156,7 +159,7 @@ namespace GorillaEscape.Minigames.LogBalance
                 if(!keyboard&&GUI.Button(new Rect(x,y+195,260,45),"CALIBRAR (C)",button))Calibrate();
                 if(GUI.Button(new Rect(x+(keyboard?0:280),y+195,keyboard?540:260,45),"REANUDAR",button))ResumeAttempt();
             }
-            else GUI.Label(new Rect(x,y+125,540,70),model.State==LogBalanceState.Countdown?$"Comienza en {Mathf.CeilToInt(model.Countdown)}…":"Corrige hacia el centro · R reinicia",title);
+            else GUI.Label(new Rect(x,y+125,540,70),model.State==LogBalanceState.Countdown?$"Comienza en {Mathf.CeilToInt(model.Countdown)}…":"Frena la inercia antes del borde\nR reinicia",title);
         }
         public static bool IsGameplayKey(KeyCode key) => key==KeyCode.Space||key==KeyCode.R||key==KeyCode.C
             ||key==KeyCode.Escape||key==KeyCode.A||key==KeyCode.D||key==KeyCode.LeftArrow||key==KeyCode.RightArrow;

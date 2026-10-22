@@ -60,7 +60,7 @@ namespace GorillaEscape.Minigames.LogBalance
             for(int sample=0;sample<deck.Length;sample++)
                 deck[sample]=SampleLogHeight(Mathf.Lerp(-length/2+.03f,length/2-.03f,sample/(float)(deck.Length-1)),Quaternion.identity);
         }
-        float SampleLogHeight(float z,Quaternion rotation)
+        float SampleLogHeight(float z,Quaternion rotation,float x=0)
         {
             float height=float.NegativeInfinity;
             for(int i=0;i<logSurface.Count;i+=3)
@@ -68,8 +68,8 @@ namespace GorillaEscape.Minigames.LogBalance
                 var a=rotation*logSurface[i];var b=rotation*logSurface[i+1];var c=rotation*logSurface[i+2];
                 float det=(b.z-c.z)*(a.x-c.x)+(c.x-b.x)*(a.z-c.z);
                 if(Mathf.Abs(det)<.000001f)continue;
-                float u=((b.z-c.z)*(-c.x)+(c.x-b.x)*(z-c.z))/det;
-                float v=((c.z-a.z)*(-c.x)+(a.x-c.x)*(z-c.z))/det;
+                float u=((b.z-c.z)*(x-c.x)+(c.x-b.x)*(z-c.z))/det;
+                float v=((c.z-a.z)*(x-c.x)+(a.x-c.x)*(z-c.z))/det;
                 if(u>=-.001f&&v>=-.001f&&u+v<=1.001f)height=Mathf.Max(height,u*a.y+v*b.y+(1-u-v)*c.y);
             }
             return float.IsNegativeInfinity(height)?0:height;
@@ -206,16 +206,17 @@ namespace GorillaEscape.Minigames.LogBalance
             if(obj.GetComponent<MeshFilter>()==null)throw new System.InvalidOperationException("Primitive mesh missing.");
             obj.GetComponent<MeshRenderer>().sharedMaterial=Surface(color);return obj.transform;
         }
-        public void Present(float progress,float balance,bool fell,float fallSeconds,float elapsed=0,bool walking=false,bool won=false)
+        public void Present(float progress,float balance,bool fell,float fallSeconds,float elapsed=0,bool walking=false,bool won=false,float rollDegrees=0,float gaitPhase=-1)
         {
-            logRotation=Quaternion.Euler(0,0,elapsed*18f);
+            logRotation=Quaternion.Euler(0,0,-rollDegrees);
             logRoll.localRotation=logRotation;
-            float support=SampleLogHeight(Mathf.Lerp(-length/2+.03f,length/2-.03f,Mathf.Clamp01(progress)),logRotation);
+            float footX=Mathf.Clamp(balance,-1,1)*.42f;
+            float support=SampleLogHeight(Mathf.Lerp(-length/2+.03f,length/2-.03f,Mathf.Clamp01(progress)),logRotation,footX);
             float side=fell?(balance<0?-1:1)*Mathf.Min(2.7f,fallSeconds*3):0;
-            float bob=walking?Mathf.Sin(elapsed*Mathf.PI*4.6f)*.025f:0;
-            human.localPosition=new Vector3(side,support+.035f+bob-(fell?Mathf.Min(3.5f,fallSeconds*4):0),-length/2+length*progress);
+            float bob=walking?Mathf.Sin(gaitPhase>=0?gaitPhase*2:elapsed*Mathf.PI*4.6f)*.025f:0;
+            human.localPosition=new Vector3(footX+side,support+.035f+bob-(fell?Mathf.Min(3.5f,fallSeconds*4):0),-length/2+length*progress);
             human.localRotation=Quaternion.Euler(fell?Mathf.Min(65,fallSeconds*85):0,0,-balance*22-(fell?side*28:0));
-            character.Pose(elapsed,balance,walking,fell,fallSeconds,won);
+            character.Pose(elapsed,balance,walking,fell,fallSeconds,won,gaitPhase);
             if(!fell)human.localPosition+=Vector3.up*character.SupportOffset;
             for(int i=0;i<spectators.Count;i++)
             {

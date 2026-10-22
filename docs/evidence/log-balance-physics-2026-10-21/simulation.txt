@@ -1,0 +1,12 @@
+dt=0.01 lag=0: Won time=20.26 max=0.04
+dt=0.01 lag=0.15: Won time=20.29 max=0.04
+dt=0.01 lag=0.25: Won time=20.32 max=0.06
+dt=0.02 lag=0: Won time=20.26 max=0.04
+dt=0.02 lag=0.15: Won time=20.29 max=0.05
+dt=0.02 lag=0.25: Won time=20.32 max=0.06
+dt=0.05 lag=0: Won time=20.27 max=0.04
+dt=0.05 lag=0.15: Won time=20.29 max=0.05
+dt=0.05 lag=0.25: Won time=20.33 max=0.07
+weight -1: angle=-0.018155497 balance=-0.747386
+weight 1: angle=0.018155497 balance=0.747386
+constant input sweep: 0/201 wins; longest=7.71s input=-0.17

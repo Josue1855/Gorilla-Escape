@@ -29,12 +29,12 @@ namespace GorillaEscape.Minigames.LogBalance
         }
         void Awake(){BindRig();}
         void Turn(Transform bone,Vector3 axis,float degrees){if(bone!=null)bone.Rotate(axis,degrees,Space.World);}
-        public void Pose(float elapsed,float balance,bool walking,bool fell,float fallTime,bool won)
+        public void Pose(float elapsed,float balance,bool walking,bool fell,float fallTime,bool won,float gaitPhase=-1)
         {
             if(!bound)BindRig();
             foreach(var pose in rest)pose.bone.localRotation=pose.rotation;
             var lateral=transform.right;var forward=transform.forward;
-            float phase=elapsed*2*Mathf.PI*1.15f;
+            float phase=gaitPhase>=0?gaitPhase:elapsed*2*Mathf.PI*1.15f;
             float stride=walking?Mathf.Sin(phase)*20:0;
             Turn(leftThigh,lateral,stride);Turn(rightThigh,lateral,-stride);
             Turn(leftKnee,lateral,walking?-Mathf.Max(0,-Mathf.Sin(phase))*26:0);

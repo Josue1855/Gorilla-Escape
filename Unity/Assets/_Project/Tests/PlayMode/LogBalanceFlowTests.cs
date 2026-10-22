@@ -33,16 +33,16 @@ public sealed class LogBalanceFlowTests
             menu.CloseLogBalance();
         }finally{Object.Destroy(host);}yield return null;
     }
-    [UnityTest] public IEnumerator TrunkRollsAndResetsWithAttemptTime()
+    [UnityTest] public IEnumerator TrunkFollowsSimulatedRollAndLateralFootingInsteadOfElapsedTime()
     {
         var host=new GameObject("Rolling log test");var stage=new LogBalanceStage(host.transform,18);
         try{
             var pivot=stage.Root.transform.Find("Rolling trunk pivot");
             stage.Present(.3f,0,false,0,0,true);var start=pivot.localRotation;
-            stage.Present(.3f,0,false,0,2,true);
+            stage.Present(.3f,.6f,false,0,2,true,false,36,1);
             Assert.That(Quaternion.Angle(start,pivot.localRotation),Is.EqualTo(36).Within(.01));
-            var human=stage.Root.transform.Find("Human castaway — controlled");Assert.False(float.IsNaN(human.localPosition.y));
-            var paused=pivot.localRotation;stage.Present(.3f,0,false,0,2,false);
+            var human=stage.Root.transform.Find("Human castaway — controlled");Assert.False(float.IsNaN(human.localPosition.y));Assert.That(human.localPosition.x,Is.EqualTo(.252f).Within(.001));
+            var paused=pivot.localRotation;stage.Present(.3f,.6f,false,0,2,false,false,36,1);
             Assert.That(Quaternion.Angle(paused,pivot.localRotation),Is.LessThan(.01));
             stage.Present(0,0,false,0,0,false);Assert.That(Quaternion.Angle(start,pivot.localRotation),Is.LessThan(.01));
         }finally{stage.Dispose();Object.Destroy(host);}
@@ -65,7 +65,7 @@ public sealed class LogBalanceFlowTests
             var m=game.Attempt;m.Tick(.5f,0);game.RestartAttempt();
             Assert.That(m.State,Is.EqualTo(LogBalanceState.Ready));Assert.That(m.Result,Is.Null);
             Assert.That(m.Elapsed,Is.Zero);Assert.True(game.BeginAttempt());
-            for(int i=0;i<1500;i++)m.Tick(.02f,-.2f-m.Balance*.8f);
+            for(int i=0;i<1500;i++)m.Tick(.02f,-m.Balance*1.9f-m.LateralVelocity*.85f-m.LogAngle*.8f-m.LogAngularVelocity*.25f-.04f);
             Assert.That(m.State,Is.EqualTo(LogBalanceState.Won));
             game.RestartAttempt();Assert.True(game.BeginAttempt());
             for(int i=0;i<1500;i++)m.Tick(.02f,1);
@@ -103,7 +103,7 @@ public sealed class LogBalanceFlowTests
             Assert.True(game.Calibrate());Assert.True(game.BeginAttempt());game.Attempt.Tick(1,0);game.Attempt.Tick(1,0);game.Attempt.Tick(1,0);
             // Feed a short live stream while frames finish the countdown, then stop to test freshness loss.
             for(int frame=0;frame<8&&game.Attempt.FilteredTilt<=0;frame++){
-                sample(35,2+frame,1);yield return null;
+                sample(35,2+frame,1);yield return new WaitForSecondsRealtime(.02f);
             }
             Assert.That(game.Attempt.FilteredTilt,Is.GreaterThan(0));
             yield return new WaitForSecondsRealtime(.45f);Assert.True(game.Paused);

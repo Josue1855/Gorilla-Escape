@@ -15,8 +15,8 @@ MonoBehaviour:
   rules:
     countdownSeconds: 3
     length: 18
-    forwardSpeed: 0.75
-    maxSeconds: 30
+    forwardSpeed: 0.9
+    maxSeconds: 40
     tiltDegrees: 25
     deadZone: 0.08
     smoothingSeconds: 0.18
@@ -28,6 +28,17 @@ MonoBehaviour:
     fallThreshold: 0.85
     fallGraceSeconds: 0.65
     freshnessMilliseconds: 350
+    coupledPhysics: 1
+    lateralAcceleration: 3.6
+    lateralDamping: 1.8
+    weightTorque: 1.7
+    rollDamping: 1.15
+    rollRestoring: 0.85
+    footingCoupling: 2.1
+    stepTorque: 0.24
+    windTorque: 0.16
+    stepLength: 0.72
+    progressDifficulty: 0.65
   visuals:
     shadows: 1
     haze: 1

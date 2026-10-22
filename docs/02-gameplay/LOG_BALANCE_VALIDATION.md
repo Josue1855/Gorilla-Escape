@@ -1,5 +1,19 @@
 # Validación del vertical slice de Desafío del Tronco
 
+## Actualización de física — 2026-10-21
+
+La configuración activa usa balance y giro acoplados: aceleración e inercia lateral, torque por peso y pisadas, viento suave reproducible, avance más lento en peligro y dificultad progresiva. El giro visual sigue el estado simulado y el apoyo del humano se calcula sobre la malla girada bajo su posición lateral. El HUD distingue apoyo actual (blanco) y tendencia por inercia (ámbar).
+
+- EditMode completo: **194/194 PASS**. Incluye inercia, contracorrección, respuesta del tronco al peso, giro por pisadas, reinicio, determinismo y finalización con 250 ms de respuesta retrasada a tres cadencias.
+- Flujo PlayMode del minijuego: **5/5 PASS**. Incluye giro visual/apoyo lateral, menú, calibración, pérdida de muestras, pausa y nuevo epoch. El fixture espera un paso real de simulación en vez de asumir una duración mínima por frame.
+- Development Build Linux: **Succeeded, 0 errores y 0 advertencias**. Ejecutable local actualizado.
+- Barrido de 201 inclinaciones constantes entre −1 y +1: **0 victorias**; mejor supervivencia 7,71 s. Un corrector que considera velocidad y giro termina en aproximadamente 20,3 s, incluso con 250 ms de retraso y velocidad limitada de inclinación.
+
+[Evidencia de pruebas y build](../evidence/log-balance-physics-2026-10-21/results.json) · [simulaciones de ajuste](../evidence/log-balance-physics-2026-10-21/simulation.txt).
+
+Estas verificaciones acreditan comportamiento e integración, no la sensación de dificultad con un jugador físico. El ajuste final se hace probando el teléfono. Las secciones siguientes conservan los resultados históricos del primer prototipo, anteriores al arte actual y a esta dinámica.
+
+
 Fecha local: 2026-10-20. Rama exclusiva: `feature/gameplay-desafio-del-tronco`. Base: `1039cfe` (develop tras PR #124). No se integró a develop/main ni se abrió un PR para esta iteración.
 
 Actualización posterior de arte: las capturas y descripciones geométricas de este informe corresponden a la primera iteración. El escenario con los GLB suministrados y el rig del náufrago se registra en [arte y animación](LOG_BALANCE_ART.md).

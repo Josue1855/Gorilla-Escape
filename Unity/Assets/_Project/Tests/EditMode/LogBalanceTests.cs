@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GorillaEscape.Contracts;
 using GorillaEscape.Input;
 using GorillaEscape.Minigames.LogBalance;
@@ -6,7 +7,7 @@ using NUnit.Framework;
 
 public sealed class LogBalanceTests
 {
-    static LogBalanceRules Quiet() => new LogBalanceRules {countdownSeconds=0,disturbance=0,instability=0};
+    static LogBalanceRules Quiet() => new LogBalanceRules {countdownSeconds=0,disturbance=0,instability=0,coupledPhysics=false};
     static LogBalanceModel Started(LogBalanceRules rules=null)
     {var m=new LogBalanceModel(rules??Quiet());m.Begin(1);m.Tick(.02f,0);return m;}
     static void Run(LogBalanceModel m,float seconds,float input=0)
@@ -26,9 +27,56 @@ public sealed class LogBalanceTests
     [Test] public void FeedbackCanWinDefaultRulesAtDifferentFrameRates()
     {
         foreach(float dt in new[]{.01f,.02f,.05f})
-        {var r=new LogBalanceRules{countdownSeconds=0};var m=Started(r);for(int i=0;i<32/dt&&m.Result==null;i++)m.Tick(dt,-.2f-m.Balance*.8f);Assert.That(m.State,Is.EqualTo(LogBalanceState.Won),"dt="+dt);}
+        {var r=new LogBalanceRules{countdownSeconds=0};var m=Started(r);for(int i=0;i<32/dt&&m.Result==null;i++)m.Tick(dt,-m.Balance*1.9f-m.LateralVelocity*.85f-m.LogAngle*.8f-m.LogAngularVelocity*.25f-.04f);Assert.That(m.State,Is.EqualTo(LogBalanceState.Won),"dt="+dt);}
+    }
+    [TestCase(.01f)] [TestCase(.02f)] [TestCase(.05f)]
+    public void MomentumFeedbackCanFinishWithQuarterSecondDelayAndLimitedTiltRate(float dt)
+    {
+        var m=Started(new LogBalanceRules{countdownSeconds=0});var pending=new Queue<float>();float input=0;
+        for(int i=0;i<40/dt&&m.Result==null;i++){
+            float target=Math.Max(-1,Math.Min(1,-m.Balance*1.9f-m.LateralVelocity*.85f-m.LogAngle*.8f-m.LogAngularVelocity*.25f-.04f));
+            pending.Enqueue(target);target=pending.Count>Math.Round(.25f/dt)?pending.Dequeue():0;
+            input+=Math.Max(-1.5f*dt,Math.Min(1.5f*dt,target-input));m.Tick(dt,input);
+        }
+        Assert.That(m.State,Is.EqualTo(LogBalanceState.Won));
     }
     [Test] public void InvalidRulesAndNonFiniteInputsFailExplicitly(){var r=Quiet();r.deadZone=1;Assert.Throws<ArgumentException>(()=>new LogBalanceModel(r));var m=Started();Assert.Throws<ArgumentOutOfRangeException>(()=>m.Tick(.1f,float.NaN));Assert.Throws<ArgumentOutOfRangeException>(()=>m.Tick(float.NaN,0));}
+    [Test] public void CountersteeringBrakesMomentumInsteadOfTeleportingAcrossCenter()
+    {
+        var r=new LogBalanceRules{countdownSeconds=0,disturbance=0,instability=0,windTorque=0,stepTorque=0};
+        var m=Started(r);Run(m,.4f,1);float before=m.Balance,velocity=m.LateralVelocity;
+        Run(m,.08f,0);Assert.That(m.Balance,Is.GreaterThan(before));Assert.That(m.LateralVelocity,Is.GreaterThan(0));
+        Run(m,.2f,-1);Assert.That(m.LateralVelocity,Is.LessThan(velocity));
+    }
+    [Test] public void WeightTurnsLogToTheSideOccupiedByPlayer()
+    {
+        foreach(int direction in new[]{-1,1}){
+            var r=new LogBalanceRules{countdownSeconds=0,disturbance=0,instability=0,windTorque=0,stepTorque=0};
+            var m=Started(r);Run(m,1,direction);
+            Assert.That(Math.Sign(m.LogAngle),Is.EqualTo(direction));
+        }
+    }
+    [Test] public void ForwardFootfallsGenerateRollWithoutAnElapsedTimeMotor()
+    {
+        var r=new LogBalanceRules{countdownSeconds=0,disturbance=0,instability=0,windTorque=0,weightTorque=0};
+        var moving=Started(r);Run(moving,1);Assert.That(Math.Abs(moving.LogAngle),Is.GreaterThan(.001f));
+        r.stepTorque=0;var quiet=Started(r);Run(quiet,1);Assert.That(quiet.LogAngle,Is.Zero);
+    }
+    [Test] public void HoldingOneCorrectionIsNotEnoughAndProgressAddsDifficulty()
+    {
+        var m=Started(new LogBalanceRules{countdownSeconds=0});Run(m,30,-.2f);
+        Assert.That(m.State,Is.EqualTo(LogBalanceState.Fell));
+        Assert.That(m.EffectiveFallThreshold,Is.LessThan(.85f));
+    }
+    [Test] public void CoupledSimulationIsDeterministicAcrossRenderCadencesAndResetClearsMomentum()
+    {
+        var a=Started(new LogBalanceRules{countdownSeconds=0});var b=Started(new LogBalanceRules{countdownSeconds=0});
+        for(int i=0;i<200;i++)a.Tick(.01f,.1f);
+        for(int i=0;i<40;i++)b.Tick(.05f,.1f);
+        Assert.That(a.Balance,Is.EqualTo(b.Balance).Within(.00001));Assert.That(a.LogAngle,Is.EqualTo(b.LogAngle).Within(.00001));
+        Assert.That(a.Distance,Is.EqualTo(b.Distance).Within(.00001));a.Reset();
+        Assert.That(a.LateralVelocity,Is.Zero);Assert.That(a.LogAngle,Is.Zero);Assert.That(a.LogAngularVelocity,Is.Zero);
+    }
     static PhoneInputWire Sample(float gamma=10,long seq=1,long epoch=1) => new PhoneInputWire {
         playerId=1,sequence=seq,connectionEpoch=epoch,sessionId="session",deviceSessionId="device",messageType="MOTION_SAMPLE",connectionState="ACTIVE",serverReceiveTimestamp=1000,
         quality=new PhoneQuality{source="synthetic",status="available"},orientation=new PhoneValues{availability="partial",hasGamma=true,gamma=gamma},screenOrientation=new PhoneValues{availability="present",hasAngle=true,angle=0}};
