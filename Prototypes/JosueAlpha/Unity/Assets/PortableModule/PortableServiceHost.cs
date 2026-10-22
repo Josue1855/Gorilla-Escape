@@ -17,11 +17,11 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public string Status { get; private set; } = "MÓDULO SIN INICIAR";
     public string PublicControllerUrl { get; private set; } = string.Empty;
     public string MotionEndpoint => "http://127.0.0.1:8788/motion?room=";
-    public string PoseEndpoint => "http://127.0.0.1:8790/pose";
+    public string PoseEndpoint => "http://127.0.0.1:8788/pose";
 
     private readonly object statusLock = new object();
+    private Process preparationProcess;
     private Process cameraProcess;
-    private Process relayProcess;
     private Process tunnelProcess;
 
     public static PortableServiceHost Ensure()
@@ -45,20 +45,38 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         string root = ResolveModuleRoot();
         string python = Path.Combine(root, "CameraTracker", ".venv", "Scripts", "python.exe");
         string tracker = Path.Combine(root, "CameraTracker", "camera_tracker.py");
-        string relay = Path.Combine(root, "MotionRelay", "server.cjs");
         string cloudflared = Path.Combine(root, "MotionRelay", "cloudflared.exe");
+        string preparation = Path.Combine(root, "PREPARAR_MODULO.ps1");
 
-        if (!File.Exists(python) || !File.Exists(tracker) || !File.Exists(relay) || !File.Exists(cloudflared))
+        if (!File.Exists(tracker) || !File.Exists(preparation))
         {
-            Status = "FALTA PREPARAR EL MÓDULO";
-            Debug.LogError("Ejecuta PREPARAR_ALPHA.cmd. Raíz buscada: " + root);
+            Status = "FALTAN ARCHIVOS DEL MÓDULO";
+            Debug.LogError("No se encontró el módulo portable. Raíz buscada: " + root);
+            return false;
+        }
+
+        if (!File.Exists(python) || !File.Exists(cloudflared))
+        {
+            if (preparationProcess != null && !preparationProcess.HasExited) return false;
+            try
+            {
+                preparationProcess = StartHidden(
+                    "powershell.exe",
+                    "-NoProfile -ExecutionPolicy Bypass -File " + Quote(preparation),
+                    root);
+                Status = "PREPARANDO MÓDULO · PRIMER INICIO";
+            }
+            catch (Exception exception)
+            {
+                Status = "NO SE PUDO PREPARAR EL MÓDULO";
+                Debug.LogException(exception);
+            }
             return false;
         }
 
         try
         {
             cameraProcess = StartHidden(python, Quote(tracker), Path.GetDirectoryName(tracker));
-            relayProcess = StartHidden("node", Quote(relay), Path.GetDirectoryName(relay));
             tunnelProcess = StartTunnel(cloudflared, Path.GetDirectoryName(cloudflared));
             IsRunning = true;
             Status = "INICIANDO CÁMARA Y CONTROL";
@@ -75,6 +93,16 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         Status = "MÓDULO DISPONIBLE SOLO EN WINDOWS EN ESTE ALPHA";
         return false;
 #endif
+    }
+
+    private void Update()
+    {
+        if (preparationProcess == null || !preparationProcess.HasExited) return;
+        int exitCode = preparationProcess.ExitCode;
+        preparationProcess.Dispose();
+        preparationProcess = null;
+        if (exitCode == 0) StartModule();
+        else Status = "LA PREPARACIÓN FALLÓ · REVISA TU INTERNET";
     }
 
     public void ReportReadyState(bool phoneConnected, bool cameraConnected)
@@ -149,9 +177,9 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public void StopModule()
     {
         StopOwned(tunnelProcess);
-        StopOwned(relayProcess);
         StopOwned(cameraProcess);
-        tunnelProcess = relayProcess = cameraProcess = null;
+        StopOwned(preparationProcess);
+        tunnelProcess = cameraProcess = preparationProcess = null;
         IsRunning = false;
         PublicControllerUrl = string.Empty;
         Status = "MÓDULO DETENIDO";

@@ -4,6 +4,7 @@ import sys
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import parse_qs, urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "vendor"))
@@ -28,11 +29,13 @@ pose_data = {
     "time": 0,
 }
 data_lock = threading.Lock()
+rooms = {}
 
 
 class PoseHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path.startswith("/pose"):
+        request = urlparse(self.path)
+        if request.path == "/pose":
             with data_lock:
                 payload = json.dumps(pose_data).encode("utf-8")
             self.send_response(200)
@@ -42,16 +45,57 @@ class PoseHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(payload)))
             self.end_headers()
             self.wfile.write(payload)
+        elif request.path == "/motion":
+            room = parse_qs(request.query).get("room", [""])[0].upper()
+            with data_lock:
+                payload = rooms.get(room)
+            if payload is None:
+                self.send_response(204)
+                self.end_headers()
+                return
+            encoded = payload.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(encoded)))
+            self.end_headers()
+            self.wfile.write(encoded)
+        elif request.path == "/":
+            page_path = os.path.join(ROOT, "..", "MotionRelay", "index.html")
+            with open(page_path, "rb") as page:
+                payload = page.read()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
         else:
             self.send_response(404)
             self.end_headers()
+
+    def do_POST(self):
+        request = urlparse(self.path)
+        if request.path != "/motion":
+            self.send_response(404)
+            self.end_headers()
+            return
+        room = parse_qs(request.query).get("room", [""])[0].upper()
+        length = int(self.headers.get("Content-Length", "0"))
+        payload = self.rfile.read(length).decode("utf-8")
+        with data_lock:
+            rooms[room] = payload
+        self.send_response(200)
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(b"ok")
 
     def log_message(self, *_):
         return
 
 
 def run_server():
-    ThreadingHTTPServer(("127.0.0.1", 8790), PoseHandler).serve_forever()
+    ThreadingHTTPServer(("127.0.0.1", 8788), PoseHandler).serve_forever()
 
 
 def point(landmarks, index):
@@ -157,25 +201,7 @@ def main():
                     time=int(time.time() * 1000),
                 )
 
-            status = "DOS MANOS DETECTADAS" if left_detected and right_detected else "MUESTRA AMBAS MANOS"
-            color = (70, 240, 120) if detected else (30, 80, 255)
-            cv2.rectangle(frame, (0, 0), (960, 78), (12, 22, 28), -1)
-            cv2.putText(frame, status, (24, 34), cv2.FONT_HERSHEY_SIMPLEX, 0.82, color, 2)
-            cv2.putText(
-                frame,
-                f"Control: mano {active_hand.upper()}  |  H cambia mano  |  Q cierra",
-                (24, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.58, (235, 235, 235), 1,
-            )
-            cv2.imshow("Jungle Party - Rastreo corporal", frame)
-            key = cv2.waitKey(1) & 0xFF
-            if key in (ord("q"), 27):
-                break
-            if key == ord("h"):
-                active_hand = "left" if active_hand == "right" else "right"
-                active_wrist = 16 if active_hand == "left" else 15
-
     camera.release()
-    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
