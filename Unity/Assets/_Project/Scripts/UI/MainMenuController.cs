@@ -30,11 +30,20 @@ namespace GorillaEscape.UI
         public GorillaEscape.Minigames.LogBalance.LogBalanceController LogBalance { get; private set; }
         public void OpenLogBalance()
         {
-            if(InPhone||InTests||LogBalance!=null)return;
+            if(InPhone||InTests||LogBalance!=null||GorillaSmash!=null)return;
             var host=new GameObject("Desafío del Tronco");host.transform.SetParent(transform,false);
             LogBalance=host.AddComponent<GorillaEscape.Minigames.LogBalance.LogBalanceController>();LogBalance.Attach(this);
         }
         public void CloseLogBalance(){if(LogBalance==null)return;LogBalance.gameObject.SetActive(false);Destroy(LogBalance.gameObject);LogBalance=null;}
+
+        public GorillaEscape.Minigames.GorillaSmash.GorillaSmashController GorillaSmash { get; private set; }
+        public void OpenGorillaSmash()
+        {
+            if(InPhone||InTests||LogBalance!=null||GorillaSmash!=null)return;
+            var host=new GameObject("Gorilla Smash");host.transform.SetParent(transform,false);
+            GorillaSmash=host.AddComponent<GorillaEscape.Minigames.GorillaSmash.GorillaSmashController>();GorillaSmash.Attach(this);
+        }
+        public void CloseGorillaSmash(){if(GorillaSmash==null)return;GorillaSmash.gameObject.SetActive(false);Destroy(GorillaSmash.gameObject);GorillaSmash=null;}
         public QaRuntimeService Runtime { get; private set; }
         int reportedWidth,reportedHeight;
         Vector2 mainScroll;
@@ -174,7 +183,7 @@ namespace GorillaEscape.UI
         void OnDestroy(){if(prepareTexture!=null)Destroy(prepareTexture);}
         void OnGUI()
         {
-            if(LogBalance!=null)return;
+            if(LogBalance!=null||GorillaSmash!=null)return;
             if(Event.current.type==EventType.Repaint&&(reportedWidth!=Screen.width||reportedHeight!=Screen.height)) {
                 reportedWidth=Screen.width;reportedHeight=Screen.height;
                 Debug.Log("MAIN_MENU_LAYOUT "+reportedWidth+" "+reportedHeight);
