@@ -30,6 +30,7 @@ __pycache__/
 /Unity/python-install*.log
 /Unity/*-compile.log
 /Unity/Assets/_Recovery/
+/Unity/Assets/_Recovery.meta
 
 # La biblioteca compartida conserva fuentes, no residuos de herramientas.
 /assets/**/__pycache__/
