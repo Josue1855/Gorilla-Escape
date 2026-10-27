@@ -21,6 +21,18 @@ __pycache__/
 /Unity/Builds/
 /Unity/*.csproj
 /Unity/*.sln
+/Unity/*.slnx
+/Unity/CameraTracker/.venv/
+/Unity/CameraTracker/vendor/
+/Unity/CameraTracker/.runtime/
+/Unity/CameraTracker/.downloads/
+/Unity/MotionRelay/cloudflared.exe
+/Unity/python-install*.log
+/Unity/*-compile.log
+/Unity/Assets/_Recovery/
+
+# La biblioteca compartida conserva fuentes, no residuos de herramientas.
+/assets/**/__pycache__/
 
 # Prototipo alpha aislado de Josue
 /Prototypes/JosueAlpha/Unity/[Ll]ibrary/
