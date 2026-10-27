@@ -1,30 +1,31 @@
 # Arquitectura actual y objetivo
 
-Última revisión: 2026-10-16. Fuentes: S1, S2 y S3; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
+Última sincronización: 2026-10-16. Fuentes S9/S10 y evidencia fechada; [inventario](../00-product/SOURCE_INVENTORY.md). Trabajo documentado en ramas/PR, no integrado automáticamente.
 
-AS-IS: las flechas continuas del canal técnico tienen implementación y evidencia Software/Lab S1/S2. El tramo físico final conserva el bloqueo T019. La PWA UI/UX independiente sólo modifica estado local y consulta JSONPlaceholder; no está integrada.
+Hay dos flujos implementados con alcances distintos: canal técnico Software/Lab S1/S2 y laboratorio de persistencia S9/S10, ya integrado en los develop externos según S12. La incorporación al producto distribuido sigue pendiente.
 
 ```mermaid
 flowchart LR
   Phone["Teléfono: físico final pendiente"] --> Core["PWA técnica del monorepo"]
-  Core <-->|"HTTPS bootstrap / WebRTC LAN"| Java["Java local supervisado"]
-  Java <-->|"IPC TCP 127.0.0.1 autenticado"| Unity["Unity Foundation: autoridad"]
+  Core <-->|"HTTPS bootstrap y WebRTC LAN"| Java["Java local supervisado"]
+  Java <-->|"IPC loopback autenticado"| Unity["Unity Foundation: autoridad"]
   Vision["Proceso Vision PC"] -->|"CameraInput"| Unity
-  UI["PWA UI/UX independiente"] -->|"GET demo"| Demo["JSONPlaceholder"]
-  UI --> Local["Estado React local"]
+  UI["PWA laboratorio del fork"] -->|"GET y POST players"| Proxy["Proxy local de laboratorio"]
+  Proxy --> Backend["Spring Boot JDBC"]
+  Backend --> DB[("SQLite local")]
+  UI --> IDB[("Snapshot y borrador IndexedDB")]
 ```
 
-El Spring Boot de Java local aloja la PWA compilada, admite teléfonos y administra WebRTC. No tiene esquema SQL/JPA encontrado. Cloudflared es bootstrap HTTPS opcional; no convierte el input en juego remoto ni transporta la física. La cámara PC tiene supervisión propia; no se agrega un servidor de inferencia nuevo en esta tarea.
+El Java técnico aloja el cliente RTC y administra conectividad; no se le atribuye el esquema SQL del backend independiente. El proxy Node loopback4173 y backend8090 son herramientas ejecutadas en el laboratorio, no un nuevo supervisor ni distribución final. SQLite no expone puerto a LAN. Unity calcula reglas y resultados; REST de jugadores no transporta controles.
 
-TO-BE: conexiones discontinuas PROPUESTO, integración entre proyectos PLANIFICADO, backend localizado con implementación PLANIFICADO y BD DESCONOCIDO. No se reemplaza el servicio técnico por el backend de persistencia.
+Integraciones pendientes:
 
 ```mermaid
 flowchart LR
-  UI["Proyecto PWA UI/UX"] -.->|"Integrar cliente técnico existente"| Java["Servicio Java local / WebRTC"]
-  Java <-->|"IPC existente"| Unity["Proyecto Unity: reglas y resultados"]
-  UI -.->|"REST consultas / operaciones permitidas"| Backend["Proyecto PWA Backend: base documental"]
-  Unity -.->|"Adaptador autorizado de resultados"| Backend
-  Backend -.->|"Transacciones propuestas"| DB[("BD: motor sin confirmar")]
+  UI["UI de entrega por acordar"] -.->|"Adaptador técnico"| Java["Java y WebRTC existentes"]
+  Java <-->|"IPC existente"| Unity["Unity: reglas y resultados"]
+  Unity -.->|"Publicador autorizado con outbox"| Backend["Backend independiente"]
+  Backend -.->|"Modelo de competición futuro"| DB[("SQLite: jugadores ya implementados")]
 ```
 
-Responsabilidades: Unity calcula resultados; Java transporta y supervisa conectividad; UI/UX representa estado y captura intenciones; backend valida, autoriza y persiste; BD garantiza integridad. Tres proyectos de equipo no equivalen a tres procesos: el runtime actual incluye Unity, JVM y Vision. [Contratos](API_CONTRACTS.md), [red](NETWORK_AND_IPC.md) y [plan de integración](../03-development/INTEGRATION_PLAN.md).
+Outbox, autorización, sesiones/resultados/rankings e instalador autocontenido requieren tareas posteriores. [Contratos](API_CONTRACTS.md), [red](NETWORK_AND_IPC.md) y [offline](OFFLINE_STRATEGY.md) conservan estas fronteras.

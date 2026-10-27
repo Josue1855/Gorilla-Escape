@@ -1,0 +1,13 @@
+{
+  "name": "GorillaEscape.EditModeTests",
+  "references": [
+    "GorillaEscape.Contracts",
+    "GorillaEscape.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

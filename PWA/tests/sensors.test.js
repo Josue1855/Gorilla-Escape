@@ -110,3 +110,26 @@ test('emission budget resets due time on acquisition generation change without r
  bind(sample(1));bind(sample(1));bind(sample(2));assert.equal(emitted,2);
  assert.throws(()=>bindCapture(null,{}, {maximumHz:Infinity}),RangeError);
 });
+
+test('game touch zones accompany only real sensor samples, without timer-generated movement', async () => {
+ const f=fixture();await f.capture.start();const sent=[];let touch={x:0,y:.5,pressed:false};
+ const bind=bindCapture(f.capture,{state:'RUNNING',motion:p=>sent.push(p)},{getTouch:()=>touch});
+ f.at(10);f.send('devicemotion',motion);bind(f.capture.snapshot());
+ assert.equal(sent[0].touch.values.pressed,false);
+ touch={x:1,y:.5,pressed:true};bind(f.capture.snapshot());assert.equal(sent.length,1);
+ f.at(30);f.send('devicemotion',motion);bind(f.capture.snapshot());
+ assert.deepEqual(sent[1].touch.values,touch);f.capture.stop();
+});
+
+test('game buttons clear on backgrounding and reject disconnected or disposed input', async () => {
+ const f=fixture();const client={state:'RUNNING',metrics:{},async connect(){},async close(){},motion(){},diagnostic(){return {};}};
+ const session=new ControllerSession({win:f.win,now:f.now,client,url:'https://test.invalid/#sessionId=x&admission=x'});
+ assert.equal(session.setActionPressed(true),false);
+ await session.connect();await session.activate();
+ assert.equal(session.setActionPressed(true,'recenter'),true);
+ f.doc.visibilityState='hidden';f.doc.dispatchEvent(new Event('visibilitychange'));
+ assert.equal(session.actionPressed,false);
+ assert.equal(session.setActionPressed(true),false);
+ assert.equal(session.setActionPressed(true,'unknown'),false);
+ await session.dispose();assert.equal(session.setActionPressed(true),false);
+});

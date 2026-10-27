@@ -15,7 +15,7 @@
 
 El PO indicó «haz el repositorio tú del backend, y agrégalo al proyecto». Se creó [Josue1855/Gorilla-Escape-Backend](https://github.com/Josue1855/Gorilla-Escape-Backend), privado, rama main, commit inicial `e76371097f4bcd881fa081211ec8d0d78e308c0b`. REST confirmó URL/visibilidad/default_branch y permisos admin/push/read; consulta del commit confirmó exclusivamente tres Markdown: README.md, docs/ARCHITECTURE.md y docs/DEVELOPMENT_PLAN.md. La asociación mediante `gh project link` se verificó con GraphQL repositories: Project #1 ahora enlaza Unity y backend; sigue con 95 items, 21 campos y 10 vistas. No se crearon issues ni se modificaron campos/vistas/estados.
 
-La búsqueda S6 anterior que no localizaba backend permanece como evidencia histórica; S7 resuelve la URL sin inventar implementación. API/BD siguen PLANIFICADO y motor/ORM/versiones DESCONOCIDO. El checkout backend nuevo tiene un commit inicial documental, no un PR funcional ni una aplicación probada.
+La búsqueda S6 anterior que no localizaba backend permanece como evidencia histórica; S7 resuelve la URL sin inventar implementación. En ese snapshot S7, API/BD seguían PLANIFICADO y motor/ORM/versiones DESCONOCIDO. El checkout tenía sólo un commit documental. S9, al final de este inventario, registra el incremento funcional y las pruebas posteriores.
 
 ## Rutas significativas de S1
 
@@ -136,3 +136,34 @@ Antes de crear S7, búsqueda adicional de metadatos de repositorios visibles de 
 ## S8 — Flujo obligatorio de ramas confirmado por el PO
 
 El 2026-10-16 el PO confirmó: tareas en ramas desde develop, integración por PR a develop y promoción a main únicamente cuando la entrega esté validada. Backend: API confirmó default_branch=develop; main y develop apuntan a `e76371097f4bcd881fa081211ec8d0d78e308c0b` tras crear la rama de integración. Se preparó el [PR backend #1](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/1), desde codex/docs-development-workflow hacia develop, con README/CONTRIBUTING/plan actualizados en `67ca1c4`. No se hicieron nuevos commits en main ni merge de PR. La configuración y documentación del repositorio UI/UX siguen requiriendo al mantenedor porque no hay Write.
+
+## S9 — Backend de jugadores aprobado e implementado
+
+El PO aprobó «Sí, apruebo SQLite para este incremento». [ADR acotado](https://github.com/Josue1855/Gorilla-Escape-Backend/blob/36351860624412b0b454a80dc19a7f63704164e0/docs/adr/ADR-001-PLAYERS-APPROVAL.md). PR [#14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14) abierto hacia develop, rama feature/players-sqlite-increment; revisión funcional/evidencias `36351860624412b0b454a80dc19a7f63704164e0`. [CI Linux/Windows PASS](https://github.com/Josue1855/Gorilla-Escape-Backend/actions/runs/38989509375): 17 tests por plataforma, build y harness adicional Linux PASS. Spring Boot4.1.1, Java21, SQLite JDBC3.53.2.1 (core3.53.2), Flyway12.4.0, sin JPA. GET/POST /api/players y migración V1 reales. La aprobación es acotada: PR #12 de arquitectura permanece abierto, sin merge presumido.
+
+[Dossier](https://github.com/Josue1855/Gorilla-Escape-Backend/tree/36351860624412b0b454a80dc19a7f63704164e0/docs/laboratorio) con SQL, logs y capturas auténticas; tres capturas literales de DevTools pendientes. main/develop backend siguen en la base documental e763710; implementación en rama de tarea. S7/S8 se conservan como snapshots históricos, no estado de la implementación actual. Backend privado; evaluador necesita acceso o paquete de evidencias autorizado.
+
+## S10 — Fork PWA de laboratorio y evidencia navegador
+
+[PR #1 del fork](https://github.com/Josue1855/Dise-o_pwa/pull/1), rama codex/pwa-database-lab → develop, revisión funcional `69084f53aeabfa2aab4dfd7edaadd64f4c98775b`. [CI PASS](https://github.com/Josue1855/Dise-o_pwa/actions/runs/38989521358): siete tests, build y auditoría npm sin vulnerabilidades reportadas. React18.3.1, Vite6.4.4, plugin4.7.0. Pantalla /lab.html → proxy loopback4173 → backend8090 → SQLite. SW generado, Cache Storage shell y snapshot/borrador IndexedDB. Chrome real: GET2, POST201/SQL3, offline/recarga, reconexión sin envío automático, POST manual201/SQL4; API inaccesible simulada y validación sin escrituras. No hay Background Sync ni POST idempotente. No acredita teléfono, LAN/WAN físicos, instalador o gameplay.
+
+Upstream Quintana-117/Dise-o_pwa conserva main ffbec226 y permisos READ; no se cambió. develop del fork se creó sobre ese baseline y los cambios se proponen por PR sin tocar main. S4/S5 describen únicamente el upstream histórico; su falta de SW/IndexedDB ya está corregida y probada en el fork, pendiente de revisión del mantenedor.
+
+## Sincronización documental posterior
+
+El PR Unity #122 fue integrado por revisión externa el 2026-10-17T00:22:32Z; origin/develop observado `db408d7`. Esta actualización crea una nueva rama desde esa base y no modifica el checkout original con cambios locales. Los resultados citados pertenecen a sus commits; las validaciones documentales posteriores se registran por separado.
+
+## S11 — Propuesta UI/UX del PO
+
+Documento adjunto «Gorilla Escape: Gorilimpiadas — UI/UX Design System», fecha original2026-10-16, recibido en este chat. SHA-256 del texto original: `08f85ca3c67ce0c66f99eff74429f0eb84a045d9eb6bb2c953cbf45e3d63cafe`. Se incorpora como [propuesta para revisión](../01-architecture/UI_UX_DESIGN_SYSTEM.md), con correcciones explícitas a SQLite/jugadores y al perfil offline S9/S10. La [revisión documental](../04-testing/UI_UX_DESIGN_REVIEW.md) añade criterios medibles y enlaces a trabajo existente; no es aprobación visual ni nueva implementación. No se incluyen activos de fuentes descartadas.
+
+## S12 — Reconciliación del PR 130, 2026-10-26
+
+Se consultaron los PR y ramas por API al resolver los conflictos con Unity develop `7d109ac4164eba4a0b1ed78466d5192b17c2911d`. Se preservan sus mejoras del2026-10-20 a TEAM_START, SETUP_AND_RUN, navegación y CI; la rama de revisión del monorepo es `docs-lab-status-sync`. Esta operación incorpora develop en la rama de tarea, sin merge remoto a develop ni main.
+
+- Backend [PR #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14): MERGED en develop. Ramas observadas: develop `c83b8343f1e37c405b127304567e149a1416eddb`, main `da9dcd8c9936bd56ac74ad02583a50fddfdd73db`. El PR #12 de evaluación está CLOSED sin merge. La aprobación SQLite/JDBC para jugadores proviene del PO; no equivale a aceptar la distribución final.
+- Fork PWA: [PR #7](https://github.com/Josue1855/Dise-o_pwa/pull/7) MERGED en develop, observado `74b0ebad1b20fdb86c411e24f4d0c07a9a7c2349`; main sigue `ffbec2260dbad3f36743cffc2309cb206f7dba9a`. El PR #7 continúa el #1 cerrado tras el cambio de nombre de rama.
+- Upstream Quintana-117/Dise-o_pwa: permisos READ, sólo main; solicitud #1 sigue OPEN. Incorporación al upstream y adaptación RTC/Unity no se deducen de integrar el laboratorio en el fork.
+- El dossier vigente del backend sigue declarando pendientes tres capturas literales DevTools; emulación offline no certifica LAN/WAN físicos. Los resultados S9/S10 se mantienen con sus SHAs originales, incluso tras corregir autoría del historial; no se reescriben evidencias antiguas.
+
+La cuenta autenticada es Josue1855, autora del PR #130. GitHub exige otro revisor para su aprobación formal; un informe local favorable o checks verdes no se presentarán como una aprobación de otra cuenta.

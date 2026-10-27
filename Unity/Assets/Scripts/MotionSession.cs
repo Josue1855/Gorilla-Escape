@@ -1,137 +1,49 @@
-using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using JungleParty.Portable;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Gameplay facade only. No HTTP polling, process management, room creation or transport authority.
 public sealed class MotionSession : MonoBehaviour, IPortableInputSource
 {
     public enum HandTrackingMode { RightOnly, LeftOnly, Both }
     public static MotionSession Instance { get; private set; }
-    public string RoomCode { get; private set; }
-    public string Status { get; private set; } = "LISTO PARA CONECTAR";
-    public bool IsPolling { get; private set; }
-    public bool PhoneConnected => Time.unscaledTime - LastPhonePacketAt < 1.2f;
-    public bool CameraConnected => Time.unscaledTime - LastPosePacketAt < .7f;
-    public float LastPhonePacketAt { get; private set; } = -10f;
-    public float LastPosePacketAt { get; private set; } = -10f;
+    public string RoomCode => "JUGADOR 1";
+    public string Status => serviceHost != null ? serviceHost.PhoneStatus : "SIN CONEXIÓN";
+    public bool IsPolling => serviceHost != null && serviceHost.IsRunning;
+    public bool PhoneConnected => serviceHost != null && serviceHost.PhoneConnected;
+    public bool CameraConnected => serviceHost != null && serviceHost.CameraConnected;
+    public float LastPhonePacketAt => serviceHost != null ? serviceHost.LastPhonePacketAt : -10;
+    public float LastPosePacketAt => serviceHost != null ? serviceHost.LastPosePacketAt : -10;
     public HandTrackingMode HandMode { get; private set; } = HandTrackingMode.RightOnly;
     public bool UsesLeftHand => HandMode != HandTrackingMode.RightOnly;
     public bool UsesRightHand => HandMode != HandTrackingMode.LeftOnly;
-
-    private readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
-    private readonly object sync = new object();
-    private CancellationTokenSource cancellation;
-    private string motionJson, poseJson;
-    private PortableServiceHost serviceHost;
-
-    public static MotionSession Ensure()
-    {
-        if (Instance != null) return Instance;
-        var go = new GameObject("SESION PERSISTENTE - Sensores");
-        return go.AddComponent<MotionSession>();
-    }
-
-    private void Awake()
+    PortableServiceHost serviceHost;
+    public static MotionSession Ensure() => Instance != null ? Instance : new GameObject("SESION PERSISTENTE - Fase 0").AddComponent<MotionSession>();
+    void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this; DontDestroyOnLoad(gameObject);
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
         ConfigureForScene(SceneManager.GetActiveScene().name);
         serviceHost = PortableServiceHost.Ensure();
-        RoomCode = RandomRoom();
         Connect();
     }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => ConfigureForScene(scene.name);
-
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) => ConfigureForScene(scene.name);
     public void ConfigureForScene(string sceneName)
     {
         HandMode = sceneName == SceneNavigator.Boxing || sceneName == SceneNavigator.Drums || sceneName == SceneNavigator.CoconutSlice
-            ? HandTrackingMode.Both
-            : HandTrackingMode.RightOnly;
-        Debug.Log($"Rastreo corporal para {sceneName}: {(HandMode == HandTrackingMode.Both ? "dos manos" : "mano derecha")}");
+            ? HandTrackingMode.Both : HandTrackingMode.RightOnly;
     }
-
-    public void Connect()
+    public void Connect() => serviceHost.StartModule();
+    public string ConsumeMotion() => serviceHost.ConsumeMotion();
+    public string ConsumePose() => serviceHost.ConsumePose();
+    public bool TryConsumeMotion(out string json) { json = ConsumeMotion(); return !string.IsNullOrEmpty(json); }
+    public bool TryConsumePose(out string json) { json = ConsumePose(); return !string.IsNullOrEmpty(json); }
+    void OnDestroy()
     {
-        if (IsPolling) return;
-        serviceHost.StartModule();
-        cancellation = new CancellationTokenSource(); IsPolling = true; Status = "ESPERANDO EL CELULAR";
-        _ = PollPhone(cancellation.Token); _ = PollPose(cancellation.Token);
+        if (Instance != this) return;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        Instance = null;
     }
-
-    public string ConsumeMotion()
-    {
-        lock (sync) { string value = motionJson; motionJson = null; return value; }
-    }
-
-    public string ConsumePose()
-    {
-        lock (sync) { string value = poseJson; poseJson = null; return value; }
-    }
-
-    public bool TryConsumeMotion(out string json)
-    {
-        json = ConsumeMotion();
-        return !string.IsNullOrEmpty(json);
-    }
-
-    public bool TryConsumePose(out string json)
-    {
-        json = ConsumePose();
-        return !string.IsNullOrEmpty(json);
-    }
-
-    private void Update()
-    {
-        serviceHost?.ReportReadyState(PhoneConnected, CameraConnected);
-    }
-
-    private async Task PollPhone(CancellationToken token)
-    {
-        while (!token.IsCancellationRequested)
-        {
-            try
-            {
-                using HttpResponseMessage response = await http.GetAsync(serviceHost.MotionEndpoint + RoomCode, token);
-                if (response.StatusCode == System.Net.HttpStatusCode.NoContent) Status = "ESPERANDO EL CELULAR";
-                else
-                {
-                    response.EnsureSuccessStatusCode(); string json = await response.Content.ReadAsStringAsync();
-                    lock (sync) motionJson = json; LastPhonePacketAt = Time.unscaledTime; Status = "CELULAR CONECTADO";
-                }
-            }
-            catch (OperationCanceledException) { break; }
-            catch { Status = "RECONECTANDO"; }
-            try { await Task.Delay(10, token); } catch { break; }
-        }
-    }
-
-    private async Task PollPose(CancellationToken token)
-    {
-        while (!token.IsCancellationRequested)
-        {
-            try
-            {
-                using HttpResponseMessage response = await http.GetAsync(serviceHost.PoseEndpoint, token);
-                response.EnsureSuccessStatusCode(); string json = await response.Content.ReadAsStringAsync();
-                lock (sync) poseJson = json; LastPosePacketAt = Time.unscaledTime;
-            }
-            catch (OperationCanceledException) { break; }
-            catch { }
-            try { await Task.Delay(12, token); } catch { break; }
-        }
-    }
-
-    private static string RandomRoom()
-    {
-        const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; char[] result = new char[4];
-        for (int i = 0; i < result.Length; i++) result[i] = chars[UnityEngine.Random.Range(0, chars.Length)];
-        return new string(result);
-    }
-
-    private void OnDestroy() { if (Instance == this) { SceneManager.sceneLoaded -= OnSceneLoaded; cancellation?.Cancel(); http.Dispose(); Instance = null; } }
 }

@@ -1,5 +1,7 @@
 # Informe de auditoría y control de cambios
 
+> Snapshot histórico de la auditoría S1–S8. Para el backend/PWA implementados después, consultar [S9/S10](../00-product/SOURCE_INVENTORY.md#s9--backend-de-jugadores-aprobado-e-implementado), [estado actual](../00-product/DEVELOPMENT_STATUS.md) y [sincronización](../00-product/DOCUMENTATION_SYNC.md). Los conteos y ausencia de implementación descritos abajo corresponden al momento de esa auditoría.
+
 Última revisión: 2026-10-16. Estado documental: preparado para revisión con límites explícitos. El backend S7 ya tiene repositorio creado y verificado; su aplicación y el laboratorio integrado siguen sin implementar/ejecutar. No se declara producto ni Project PWA entregado.
 
 ## Resultado

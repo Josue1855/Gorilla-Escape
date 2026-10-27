@@ -1,17 +1,15 @@
-# Portable Module
+# Adaptador Jungle Party ↔ Fase 0
 
-Esta carpeta es la frontera copiable hacia otro proyecto Unity.
+`IPortableInputSource` conserva la interfaz consumida por los juegos de Saúl. `MotionSession` es una fachada de gameplay; no crea salas, conexiones HTTP ni procesos.
 
-- `IPortableInputSource` entrega movimiento y pose sin revelar el transporte.
-- `IPortableModuleStatus` entrega estado y URL pública.
-- `PortableServiceHost` prepara y administra el servicio local y Cloudflare sin ventanas adicionales.
-- `MotionSession` implementa `IPortableInputSource` para los juegos actuales.
+`PortableServiceHost` administra una sesión mediante `JavaProbeSupervisor`, `VisionSupervisor`, `PhoneInputStore`, `InputFusion` y `PlayerLock`. Los supervisores restaurados desde `develop` conservan su implementación: no se reescribieron sus protocolos, presupuestos de lanzamiento ni limpieza. La interfaz y los puntos de entrada de diagnóstico impiden arrancar propietarios duplicados.
 
-Para adaptarlo a otro proyecto:
+`JungleInputAdapter` convierte contratos Shared aceptados en DTO de compatibilidad locales a Unity. El flujo utiliza el jugador 1, descarta muestras incompletas/antiguas/duplicadas, conserva unidades y aplica una sola reflexión horizontal a las coordenadas no espejadas de cámara. Sólo entrega poses con asociación válida y alineación del teléfono/cámara. La falta de una mano mantiene su indicador de detección falso.
 
-1. Copiar `Assets/PortableModule` conservando los `.meta`.
-2. Copiar o adaptar `MotionSession.cs`.
-3. Consumir `IPortableInputSource` mediante composición o inyección.
-4. Colocar `CameraTracker`, `MotionRelay/index.html` y `PREPARAR_MODULO.ps1` en la raíz indicada por `JUNGLE_PARTY_MODULE_ROOT`.
+Los botones oficiales usan la superficie virtual de contacto: `x=0, y=0.5` para confirmar/lanzar y `x=1, y=0.5` para recentrar; `pressed` representa la pulsación. Se cuenta un flanco observado por pulsación, no cada muestra sostenida. No es un nuevo protocolo de red ni una garantía de entrega de acciones de torneo: continúa siendo latest-only y debe probarse físicamente.
 
-En el editor de este alpha, la raíz se detecta automáticamente. En un Player se espera una carpeta `PortableModule` junto al ejecutable. La variable de entorno permite otra disposición sin recompilar.
+El QR proviene de `QaAdmissionWire` por IPC y se dibuja en Unity; no se publica una URL de admisión ni se consulta un generador externo. La interfaz antigua `PublicControllerUrl` devuelve una cadena vacía por compatibilidad; no se utiliza para conectar.
+
+La recuperación es manual, después de esperar `ShutdownAsync` y comprobar la limpieza. Al salir se espera el cierre de los supervisores. El arranque en Editor exige opt-in y está deshabilitado en batch mode. Para reutilizarlo se necesitan también Shared y el runtime oficial en `_Project`, no basta copiar esta carpeta.
+
+Consulta [la integración y sus pendientes](../../../docs/03-development/SAUL_PHASE0_INTEGRATION.md).

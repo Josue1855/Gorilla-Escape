@@ -69,7 +69,7 @@
     },
     "com.unity.test-framework": {
       "version": "1.8.0",
-      "depth": 1,
+      "depth": 0,
       "source": "builtin",
       "dependencies": {
         "com.unity.ext.nunit": "2.1.0",
@@ -375,6 +375,12 @@
         "com.unity.modules.jsonserialize": "1.0.0",
         "com.unity.modules.subsystems": "1.0.0"
       }
+    },
+    "com.gorillaescape.contracts": {
+      "version": "file:../../Shared/CSharp",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
     }
   }
 }

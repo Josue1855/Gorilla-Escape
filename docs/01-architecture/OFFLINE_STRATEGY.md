@@ -5,11 +5,11 @@
 | Condición | Comportamiento actual | Diseño futuro / prueba |
 |---|---|---|
 | WAN desconectada, LAN activa | S1 tiene CABIN/WebRTC host y recursos locales; Software/Lab S2 | T019/T020 deben demostrarlo en hardware; backend local puede seguir accesible |
-| Backend local inaccesible, LAN activa | No backend de negocio integrado | UI distingue error del backend y evita éxito ficticio; conservar operación autorizada si hay cola durable |
+| Backend de jugadores inaccesible | S10 conserva consulta/borrador y protege intento incierto; fallo selectivo de API emulado | Sin cola ni POST automático; prueba física separada pendiente |
 | Wi-Fi/LAN perdida | Transporte técnico falla y requiere recuperación manual | No se envía gameplay retrospectivo ni se rehace una partida como si continuara |
-| Shell previamente cacheado | Monorepo tiene SW generado; S4 tiene fallos de dist | Probar instalación/caché real, actualización y recarga; no garantizar primera visita sin recursos |
+| Shell previamente cacheado | S1 y fork S10 tienen SW generado; S10 recarga offline comprobada en Chrome | S4 upstream conserva brecha; móvil/LAN física pendientes; primera visita offline no soportada |
 
-La demo JSONPlaceholder de S4 devuelve caché o competidores de rescate. Son datos simulados; no equivalen a backend LAN, identidad real, BD ni sincronización de POST. No hay IndexedDB/cola durable encontrada en S1/S4.
+El SW histórico de S4 proponía respaldo ficticio; esa descripción no aplica al laboratorio S10. En S10 Cache Storage sólo sirve shell y el API queda excluido; IndexedDB guarda snapshot/borrador etiquetados. Al volver online se requiere envío explícito. Un error de red/5xx no autoriza reintentar automáticamente. No hay Background Sync ni idempotencia. La falta de IndexedDB de S4 es un dato del upstream anterior, no del fork actual.
 
 Flujo de negocio **PROPUESTO**; sólo encolar operaciones aprobadas. Un resultado oficial necesita outbox Unity/adaptador durable, o una delegación autorizada explícita: no confiar sólo en IndexedDB del teléfono ni dejar que éste fabrique puntuación.
 

@@ -1,6 +1,5 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
+using GorillaEscape.QA;
 
 public sealed class ConnectionScreen : MonoBehaviour
 {
@@ -22,7 +21,8 @@ public sealed class ConnectionScreen : MonoBehaviour
     private Texture2D goldPixel;
     private Texture2D greenPixel;
     private Texture2D shadowPixel;
-    private string requestedQrUrl;
+    private string qrSignature;
+    private bool showingPreparation;
 
     private void Awake()
     {
@@ -97,27 +97,15 @@ public sealed class ConnectionScreen : MonoBehaviour
 
     private void Update()
     {
-        string controllerUrl = services.PublicControllerUrl;
-        if (string.IsNullOrEmpty(controllerUrl) || controllerUrl == requestedQrUrl) return;
-        requestedQrUrl = controllerUrl;
-        StartCoroutine(DownloadQr(controllerUrl));
-    }
-
-    private IEnumerator DownloadQr(string controllerUrl)
-    {
-        string endpoint = "https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data=" +
-            UnityWebRequest.EscapeURL(controllerUrl);
-        using UnityWebRequest request = UnityWebRequestTexture.GetTexture(endpoint, true);
-        yield return request.SendWebRequest();
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            if (qrTexture != null) Destroy(qrTexture);
-            qrTexture = DownloadHandlerTexture.GetContent(request);
-            qrTexture.filterMode = FilterMode.Point;
-            qrTexture.wrapMode = TextureWrapMode.Clamp;
-            qrTexture.anisoLevel = 0;
-        }
-        else Debug.LogWarning("No se pudo generar el QR: " + request.error);
+        var qr = showingPreparation ? services.Preparation : services.Admission;
+        bool available = qr != null && (showingPreparation || qr.state == "AVAILABLE") && !string.IsNullOrEmpty(qr.modules);
+        string signature = available ? qr.state + ":" + qr.modules : null;
+        if (signature == qrSignature) return;
+        qrSignature = signature;
+        if (qrTexture != null) { Destroy(qrTexture); qrTexture = null; }
+        if (!available) return;
+        try { qrTexture = QaRuntimeService.DecodeQr(qr); }
+        catch (System.Exception) { Debug.LogWarning("JUNGLE_QR_INVALID"); }
     }
 
     private void OnGUI()
@@ -152,18 +140,18 @@ public sealed class ConnectionScreen : MonoBehaviour
         GUIStyle eyebrow = Label(Mathf.RoundToInt(14 * scale), new Color(.29f, .96f, .87f), FontStyle.Bold, TextAnchor.MiddleLeft);
         GUIStyle heading = Label(Mathf.RoundToInt(34 * scale), Color.white, FontStyle.Bold, TextAnchor.UpperLeft);
         GUIStyle body = Label(Mathf.RoundToInt(16 * scale), new Color(.76f, .88f, .85f), FontStyle.Normal, TextAnchor.UpperLeft);
-        GUIStyle code = Label(Mathf.RoundToInt(56 * scale), new Color(1f, .82f, .15f), FontStyle.Bold, TextAnchor.MiddleCenter);
+        GUIStyle code = Label(Mathf.RoundToInt(28 * scale), new Color(1f, .82f, .15f), FontStyle.Bold, TextAnchor.MiddleCenter);
 
         GUI.Label(new Rect(left.x, left.y, left.width, 24 * scale), "CONFIGURACIÓN DEL JUGADOR", eyebrow);
         GUI.Label(new Rect(left.x, left.y + 30 * scale, left.width, 84 * scale), "Conecta tu\ncelular", heading);
-        GUI.Label(new Rect(left.x, left.y + 117 * scale, left.width, 48 * scale), "Escanea el QR y escribe este código en tu celular.", body);
+        GUI.Label(new Rect(left.x, left.y + 117 * scale, left.width, 48 * scale), "Escanea el QR y permite los sensores del celular. Si necesitas el certificado, abre Paso 1.", body);
 
         Rect codeCard = new Rect(left.x, left.y + 174 * scale, left.width, 78 * scale);
         GUI.Box(codeCard, GUIContent.none, PanelStyle(softCard, 20));
         GUI.Label(codeCard, session.RoomCode, code);
 
         GUIStyle statusText = Label(Mathf.RoundToInt(15 * scale), Color.white, FontStyle.Bold, TextAnchor.MiddleLeft);
-        DrawStatus(new Rect(left.x, left.y + 270 * scale, left.width, 48 * scale), "CÁMARA", session.CameraConnected ? "LISTA" : "PREPARANDO", session.CameraConnected, statusText, scale);
+        DrawStatus(new Rect(left.x, left.y + 270 * scale, left.width, 48 * scale), "CÁMARA", session.CameraConnected ? "LISTA" : "SIN SEÑAL", session.CameraConnected, statusText, scale);
         DrawStatus(new Rect(left.x, left.y + 328 * scale, left.width, 48 * scale), "CELULAR", session.PhoneConnected ? "CONECTADO" : "ESPERANDO", session.PhoneConnected, statusText, scale);
         GUI.Label(new Rect(left.x + 5 * scale, left.y + 387 * scale, left.width - 10 * scale, 45 * scale), services.Status, body);
 
@@ -175,15 +163,20 @@ public sealed class ConnectionScreen : MonoBehaviour
             GUI.DrawTexture(qrRect, qrTexture, ScaleMode.ScaleToFit, false);
         else
             GUI.Label(qrRect, "CREANDO\nENLACE SEGURO...", Label(Mathf.RoundToInt(18 * scale), new Color(.05f, .20f, .20f), FontStyle.Bold, TextAnchor.MiddleCenter));
-        GUI.Label(new Rect(qrCard.x + 5 * scale, qrCard.yMax - 52 * scale, qrCard.width - 10 * scale, 40 * scale), "ESCANEA PARA CONECTAR", Label(Mathf.RoundToInt(14 * scale), new Color(.04f, .16f, .16f), FontStyle.Bold, TextAnchor.MiddleCenter));
+        GUI.Label(new Rect(qrCard.x + 5 * scale, qrCard.yMax - 52 * scale, qrCard.width - 10 * scale, 40 * scale), (showingPreparation ? "PASO 1: PREPARAR" : "PASO 2: UNIRSE"), Label(Mathf.RoundToInt(14 * scale), new Color(.04f, .16f, .16f), FontStyle.Bold, TextAnchor.MiddleCenter));
 
         float buttonY = shell.yMax - pad - 50 * scale;
         GUIStyle copyButton = ButtonStyle(softCard, softCard, Color.white, Mathf.RoundToInt(15 * scale));
         GUIStyle continueButton = session.PhoneConnected
             ? ButtonStyle(goldButton, cyanButtonHover, new Color(.035f, .12f, .11f), Mathf.RoundToInt(16 * scale))
             : ButtonStyle(disabledButton, disabledButton, new Color(.68f, .76f, .74f), Mathf.RoundToInt(15 * scale));
-        if (!string.IsNullOrEmpty(services.PublicControllerUrl) && GUI.Button(new Rect(left.x, buttonY, left.width, 50 * scale), "COPIAR ENLACE", copyButton))
-            GUIUtility.systemCopyBuffer = services.PublicControllerUrl;
+        if (GUI.Button(new Rect(right.x, qrCard.yMax + 10 * scale, right.width, 40 * scale), showingPreparation ? "PASO 2: UNIRSE" : "PASO 1: PREPARAR", copyButton))
+            showingPreparation = !showingPreparation;
+        if (GUI.Button(new Rect(left.x, buttonY, left.width, 50 * scale), services.NeedsNetworkPermission ? "PERMITIR RED LOCAL" : "REINTENTAR CONEXIÓN", copyButton))
+        {
+            if (services.NeedsNetworkPermission) services.InstallNetwork();
+            else services.RestartModule();
+        }
         if (GUI.Button(new Rect(right.x, buttonY, right.width, 50 * scale), session.PhoneConnected ? "ENTRAR A LA SELVA" : "ESPERANDO CELULAR", continueButton) && session.PhoneConnected)
             SceneNavigator.Load(SceneNavigator.MainMenu);
 

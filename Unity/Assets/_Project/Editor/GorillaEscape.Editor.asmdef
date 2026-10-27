@@ -1,0 +1,10 @@
+{
+  "name": "GorillaEscape.Editor",
+  "references": [
+    "GorillaEscape.Runtime",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

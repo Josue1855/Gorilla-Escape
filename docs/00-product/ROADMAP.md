@@ -4,11 +4,11 @@
 
 | Orden | Resultado esperado | Dependencia / gate |
 |---|---|---|
-| P0 | Acordar stack/backend a partir del repositorio nuevo y propietarios de los Projects independientes | PO/equipo backend; no fecha conocida |
+| P0 | Revisar los incrementos backend/PWA ya implementados y acordar propietarios de Projects | Stack SQLite/JDBC aprobado; backend PR #14 y PWA fork PR #7 integrados en sus develop; integración al videojuego pendiente |
 | P0 | Completar T019 y después T020 sin detener el desarrollo paralelo autorizado | QA física, hardware y evidencia auténtica |
 | P0 | Acordar interfaz entre UI/UX y cliente técnico existente | Unity/Red + UI/UX; no duplicar lifecycle |
 | P0 | Vertical slice High Striker y controles por disciplina | Framework mínimo, calibración, reglas y tests de scoring |
-| P1 | GET real y POST transaccional del dominio | Backend confirmado, contrato y motor aprobados |
+| P1 | GET/POST de jugadores ya verificados; integrar tras revisión y ampliar dominio por incrementos | S9/S10: SQLite/React reales; sesiones/resultados todavía propuestos |
 | P1 | Completar Bowling, Throw y Slice | Autoridad Unity, criterios por minijuego, pruebas físicas |
 | P1 | Laboratorio WAN sin Internet y backend inaccesible | Test matrix y persistencia disponible |
 | P2 | Sincronización durable y retención aprobadas | Idempotencia/seguridad y almacenamiento local probado |

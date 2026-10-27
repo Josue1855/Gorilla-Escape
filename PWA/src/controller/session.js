@@ -8,6 +8,7 @@ export class ControllerSession {
     const fragment = new URLSearchParams(new URL(url).hash.slice(1));
     this.hasAdmission = Boolean(fragment.get('sessionId') && fragment.get('admission'));
     this.state = this.hasAdmission ? 'CONNECT' : 'NO_ADMISSION';
+    this.actionPressed = false; this.action = 'confirm';
     this.network = 'NOT_CONNECTED'; this.attempted = false; this.disposed = false;
     this.capabilities = permissionCapabilities(win); this.permissions = null;
     this.pagehide = () => {
@@ -27,7 +28,7 @@ export class ControllerSession {
         rttP50: rtt.length ? rtt[Math.ceil(rtt.length * .5)-1] : null,
         rttP95: rtt.length ? rtt[Math.ceil(rtt.length * .95)-1] : null };
     };
-    this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, onEmit: () => this.emissionRate.add(now()) });
+    this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, getTouch: () => ({ x: this.action === 'recenter' ? 1 : 0, y: .5, pressed: this.actionPressed }), onEmit: () => this.emissionRate.add(now()) });
   }
   snapshot() { return { state: this.state, network: this.network, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
   publish() { if (!this.disposed) this.notify(this.snapshot()); }
@@ -73,10 +74,17 @@ export class ControllerSession {
     if (this.disposed || this.network !== 'NETWORK_READY' || !['RUNNING', 'SUSPENDED'].includes(this.capture.state)) return;
     const state = this.capture.inputState();
     if (state === 'CONTROL_SUSPENDED') {
+      this.actionPressed = false;
       this.cancelMeasurement();
       this.client.latest = null; // Discard unsent pre-background input, leave an already-sent frame alone.
     }
     if (this.state !== state) { this.state = state; this.publish(); }
+  }
+  setActionPressed(pressed, action = 'confirm') {
+    if (!['confirm', 'recenter'].includes(action)) return false;
+    this.actionPressed = Boolean(pressed) && !this.disposed && this.network === 'NETWORK_READY' && this.capture.state === 'RUNNING';
+    this.action = action;
+    return this.actionPressed;
   }
   transportCounters() {
     const m = this.client.metrics || {};
@@ -112,7 +120,7 @@ export class ControllerSession {
   }
   async dispose() {
     if (this.disposed) return;
-    this.disposed = true; this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
+    this.actionPressed = false; this.disposed = true; this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
     return this.client.close(false); // Owned transport cleanup only; no new lifecycle policy.
   }
 }

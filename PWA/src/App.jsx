@@ -10,6 +10,16 @@ function GorillaMark() {
     <path fill="var(--core-forest)" d="M41 42h11v7H41zm27 0h11v7H68zM49 61h22l-4 7H53zm-4 14h30v4H45z"/>
   </svg>;
 }
+function GameAction({ session, action, children }) {
+  const release = () => session.current?.setActionPressed(false, action);
+  return <button className="secondary" style={{ touchAction: 'none' }}
+    onPointerDown={event => { event.currentTarget.setPointerCapture(event.pointerId); session.current?.setActionPressed(true, action); }}
+    onPointerUp={release} onPointerCancel={release} onLostPointerCapture={release} onBlur={release}
+    onKeyDown={event => { if ([' ', 'Enter'].includes(event.key)) { event.preventDefault(); session.current?.setActionPressed(true, action); } }}
+    onKeyUp={event => { if ([' ', 'Enter'].includes(event.key)) { event.preventDefault(); release(); } }}>
+    {children}
+  </button>;
+}
 function Controller() {
   const model = useRef(null);
   const [view, setView] = useState(null);
@@ -42,6 +52,10 @@ function Controller() {
         if (state === 'CONNECT') void model.current.connect();
         else void model.current.activate();
       }}>{label || 'REINTENTAR PERMISO'}</button>}
+      {state === 'INPUT_READY' && <div aria-label="Controles del juego">
+        <GameAction session={model} action="confirm">Confirmar / lanzar</GameAction>
+        <GameAction session={model} action="recenter">Recentrar</GameAction>
+      </div>}
     </section>
     <footer><p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
       <button className="secondary" onClick={copyDiagnostic}>Copiar diagnóstico</button>

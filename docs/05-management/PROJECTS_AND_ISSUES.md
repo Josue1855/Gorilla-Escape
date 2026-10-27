@@ -1,5 +1,7 @@
 # Auditoría y propuesta de Projects V2
 
+> Snapshot histórico de la auditoría S1–S8. Para el backend/PWA implementados después, consultar [S9/S10](../00-product/SOURCE_INVENTORY.md#s9--backend-de-jugadores-aprobado-e-implementado), [estado actual](../00-product/DEVELOPMENT_STATUS.md) y [sincronización](../00-product/DOCUMENTATION_SYNC.md). Los conteos y ausencia de implementación descritos abajo corresponden al momento de esa auditoría.
+
 Última revisión: 2026-10-16. Fuentes: S1, S3, S4 y S6; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
 
 ## Fase 7A: observado

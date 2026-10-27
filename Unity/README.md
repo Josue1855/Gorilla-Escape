@@ -1,53 +1,30 @@
-# Jungle Party / Gorilla Escape — módulo alpha
+# Jungle Party / Gorilla Escape — integración de Saúl con Fase 0
 
-> Estado: **alpha muy temprana**. Esta rama contiene la versión unificada y ejecutable del prototipo de Saúl. No se ha fusionado con `main` ni con `develop`; debe revisarse con el equipo antes de integrar sus componentes.
+Estado: **integración de código; aceptación física pendiente**. Esta rama conserva las escenas y recursos del alpha de Saúl e incorpora `develop` y el runtime de Fase 0. No se ha integrado esta rama hacia `develop` ni `main`.
 
-Este módulo contiene el proyecto Unity actual con Banana Bowling, Gorilla Boxing, Jungle Baseball y Jungle Drums, además del rastreador corporal local y el control del celular publicado mediante un túnel temporal de Cloudflare.
+## Proyecto y versión
 
-## Requisitos (Windows)
+Abrir esta carpeta `Unity/` con **Unity 6000.6.0f1**, la versión ya utilizada por las escenas de Saúl. No se degradaron las escenas a 6000.3.23f1. El pin histórico de Fase 0 era 6000.3.23f1; aceptar ambas versiones en el validador de metadatos no demuestra compatibilidad del motor.
 
-- Unity Hub y Unity **6000.6.0f1**.
-- Webcam.
-- Internet en el primer inicio para que Unity prepare Python, MediaPipe y Cloudflare.
-- Celular con navegador y sensores de movimiento.
+Se conservan `Connection`, `MainMenu`, `BananaBowling`, `GorillaBoxing`, `JungleBaseball`, `JungleDrums`, `CoconutSlice` y `WhackAMole`, además del Bootstrap técnico restaurado en `Assets/_Project/Scenes/Bootstrap/`.
 
-No se versionan `Library`, builds, el runtime local de Python, su entorno virtual ni `cloudflared.exe`; Unity los prepara como dependencias internas.
+## Conexión vigente
 
-## Carpeta definitiva
+Los juegos consumen `MotionSession`, que delega en `PortableServiceHost`. Este componente utiliza `JavaProbeSupervisor` y `VisionSupervisor` de Fase 0. El teléfono utiliza la PWA oficial, WebRTC y el Java supervisado; Unity recibe contratos Shared por IPC autenticado en loopback. La cámara utiliza el adaptador oficial y sus pipes privados.
 
-La versión de esta rama usa una sola carpeta. `Assets`, `Packages`,
-`ProjectSettings`, `CameraTracker`, `MotionRelay` y `PREPARAR_MODULO.ps1` deben
-estar juntos en la raíz del proyecto. Esa raíz es la carpeta que se agrega a
-Unity Hub; no se debe abrir otra copia ni una subcarpeta `Unity`.
+Los scripts antiguos `CameraTracker/`, `MotionRelay/` y `PREPARAR_MODULO.ps1` se conservan como referencia del alpha. **El flujo migrado no los ejecuta**, no prepara dependencias por PowerShell ni crea su propio túnel. El QR se dibuja localmente a partir de los módulos enviados por Java; no utiliza servicios externos de generación de QR.
 
-## Preparación inicial
+## Desarrollo local
 
-1. Abrir en Unity Hub la carpeta raíz de la distribución con Unity 6000.6.0f1.
-2. Abrir `Assets/Scenes/Connection.unity` o agregar a Build Settings las escenas que aparecen en `ProjectSettings/EditorBuildSettings.asset`.
-3. Pulsar Play. Unity prepara las dependencias silenciosamente si todavía no existen; el primer inicio puede tardar varios minutos.
+1. Ejecutar `npm --prefix PWA ci`, `npm --prefix PWA run build` y `Server/mvnw -B -f Server/pom.xml verify` desde la raíz del repositorio.
+2. Preparar los runtimes y variables de Fase 0. Para el editor puede usarse `tools/integration/run-jungle-editor.sh /ruta/al/Editor/Unity`. Requiere JDK 21 instalado sólo en la máquina de desarrollo; la distribución final usa el Java empaquetado.
+3. Para cámara, proporcionar el paquete oficial `Vision` mediante `GORILLA_PACKAGE_ROOT` o configurar las variables de laboratorio documentadas en [integración](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La cámara no usa el rastreador antiguo del alpha.
+4. Abrir `Assets/Scenes/Connection.unity` y pulsar Play. El arranque físico en Editor requiere `GORILLA_EDITOR_PHYSICAL_QA=1`; los tests y la edición ordinaria no arrancan servicios.
+5. Autorizar la red local si el sistema lo solicita. Usar Paso 1 para preparación del certificado cuando corresponda y Paso 2 para unirse. El código aleatorio de cuatro letras del prototipo ya no se usa.
+6. Conceder permisos de sensores en la PWA. Confirmar/lanzar y recentrar se transmiten como zonas de contacto dentro del contrato oficial. El alpha utiliza el jugador 1; no anuncia soporte multijugador migrado.
 
-## Cada vez que se juega
+No abrir simultáneamente la sesión técnica Bootstrap y la sesión de juegos: cada flujo tiene su propietario y la integración impide iniciar un segundo supervisor cuando el diagnóstico está activo.
 
-1. Abrir el proyecto en Unity y pulsar Play desde la escena `Connection`.
-2. El módulo inicia automáticamente el rastreo, el control móvil y Cloudflare en segundo plano.
-3. Escanear el QR mostrado por el juego, o pulsar **COPIAR ENLACE DEL CELULAR**.
-4. En el celular, escribir el código de cuatro caracteres mostrado por Unity, activar el control y aceptar los permisos de movimiento.
+## Validación y límites
 
-Unity administra el ciclo de vida completo sin abrir consolas. El túnel gratuito cambia de dirección al reiniciarse y envía únicamente los paquetes de movimiento del control; la webcam se procesa localmente y no se publica por Cloudflare.
-
-## Integración en otro proyecto
-
-La carpeta `Unity/Assets/PortableModule` contiene los contratos y el anfitrión de procesos. Los minijuegos consumen `IPortableInputSource`, por lo que pueden trasladarse sin depender directamente de HTTP, MediaPipe o Cloudflare. Consulta su `README.md` para la disposición de archivos y la variable `JUNGLE_PARTY_MODULE_ROOT`.
-
-## Alcance y riesgos del alpha
-
-- Probado como prototipo local de Windows, no como distribución final.
-- Usa un Quick Tunnel de Cloudflare, por lo que requiere Internet y no cumple todavía el objetivo final de juego sin Internet.
-- Unity 6000.6.0f1 difiere de la versión 6000.3.23f1 fijada actualmente por el repositorio principal.
-- El transporte HTTP integrado sigue siendo provisional; la arquitectura del equipo define Java/Spring Boot + React/WebSocket como destino.
-- Requiere pruebas reales en otra computadora, otro teléfono y distintas redes antes de considerarse portable.
-- Los recursos visuales y modelos deben pasar una revisión de licencia antes de una publicación pública o comercial.
-
-## Qué conviene reutilizar
-
-La rama sirve como evidencia y banco de integración. Los elementos más valiosos para migrar gradualmente son las escenas y controladores de los minijuegos, el contrato `PosePacket`, la experiencia de conexión y las pruebas físicas. El transporte y el sondeo HTTP deben tratarse como adaptadores temporales, no como la arquitectura final.
+[Resultados, comandos reproducibles y pendientes](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La compilación completa/importación en Unity, las pruebas físicas de controles y la distribución Windows están pendientes. La cámara oficial conserva las limitaciones Windows de Fase 0; esta migración no las resuelve ni declara un instalador final.

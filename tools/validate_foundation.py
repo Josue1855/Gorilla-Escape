@@ -5,7 +5,10 @@ r=Path(__file__).resolve().parents[1]
 m=json.loads((r/'Unity/Packages/manifest.json').read_text())
 p=m['dependencies']['com.gorillaescape.contracts'].removeprefix('file:')
 assert (r/'Unity/Packages'/p/'package.json').resolve().exists()
-assert '6000.3.23f1' in (r/'Unity/ProjectSettings/ProjectVersion.txt').read_text()
+# Keep the Phase 0 LTS pin and the Jungle branch's existing editor version explicit.
+# This is metadata validation, not evidence of compatibility or engine compilation.
+assert re.search(r'^m_EditorVersion: (6000\.3\.23f1|6000\.6\.0f1)$',
+                 (r/'Unity/ProjectSettings/ProjectVersion.txt').read_text(), re.M)
 guids=set()
 for base in [r/'Unity/Assets',r/'Shared/CSharp']:
  for f in base.rglob('*'):

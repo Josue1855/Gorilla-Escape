@@ -147,7 +147,7 @@ export class MobileClient {
   if(notify&&identity)await this.signal('/mobile/disconnect',{peerId:identity.peerId,resumeToken:identity.resumeToken});
  }
 }
-export function bindCapture(capture,client,{onEmit=()=>{},maximumHz=null}={}) {
+export function bindCapture(capture,client,{onEmit=()=>{},maximumHz=null,getTouch=()=>null}={}) {
  if(maximumHz!==null&&(!Number.isFinite(maximumHz)||maximumHz<=0))throw new RangeError('maximumHz');
  let last='',generation=null,nextDue=null,emitted=0,budgetDropped=0;
  const bind=snapshot=>{
@@ -168,7 +168,7 @@ export function bindCapture(capture,client,{onEmit=()=>{},maximumHz=null}={}) {
    nextDue=nextDue===null?at+step:nextDue+step;
    if(nextDue<=at)nextDue=at+step;
   }
-  client.motion(normalizeMotion(motion||{},orientation||{},latest?.screenAngleDegrees),latest?.receiptUtcMs??Date.now());
+  client.motion(normalizeMotion(motion||{},orientation||{},latest?.screenAngleDegrees,getTouch()),latest?.receiptUtcMs??Date.now());
   emitted++;onEmit();
  };
  bind.metrics=()=>({maximumHz,emitted,budgetDropped,policy:'real-event discard; latest values at accepted event; no timer'});

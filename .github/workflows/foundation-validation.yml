@@ -33,6 +33,8 @@ jobs:
           fi
           pulseaudio --start --exit-idle-time=-1
       - run: Server/mvnw -B -f Server/pom.xml verify
+      - name: Check Jungle Party adapter contracts (pure C#)
+        run: dotnet run --project tools/integration/jungle-phase0/JunglePhase0.Checks.csproj --configuration Release
       - run: python3 tools/validate_foundation.py
       - name: Validate closed firewall helper without elevation
         run: |
