@@ -10,7 +10,7 @@ namespace GorillaEscape.Core
         static readonly string[] gameplay = {
             EntryScenePath, "Assets/Scenes/MainMenu.unity", "Assets/Scenes/BananaBowling.unity",
             "Assets/Scenes/GorillaBoxing.unity", "Assets/Scenes/JungleBaseball.unity", "Assets/Scenes/JungleDrums.unity",
-            "Assets/Scenes/CoconutSlice.unity", "Assets/Scenes/WhackAMole.unity"
+            "Assets/Scenes/CoconutSlice.unity", "Assets/Scenes/WhackAMole.unity", "Assets/Scenes/LogBalance.unity"
         };
         public static IReadOnlyList<string> GameplayScenes { get; } = Array.AsReadOnly(gameplay);
         public static bool IsGameplayScene(string path) => Array.IndexOf(gameplay, path) >= 0;

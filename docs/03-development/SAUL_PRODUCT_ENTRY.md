@@ -40,3 +40,7 @@ python3 tools/github/validate_management.py
 ```
 
 `--project-scripts` requiere las DLL de paquetes importadas en `Unity/Library/ScriptAssemblies`. No arranca Unity. Para probar la interfaz, salir de Play si está activo, esperar a que Unity recompile y usar **Gorilla Escape → Play Gorilla Escape**. Debe abrirse Connection, no el menú técnico. Probar después la conexión real y cada juego antes de declarar aceptación completa.
+
+## Ampliación del catálogo (2026-10-27)
+
+El catálogo vigente añade Desafío del Tronco como séptimo juego: diez escenas en total, incluyendo Connection, MainMenu y Bootstrap. Las cifras de la verificación anterior son históricas. [Integración y validación actuales](../02-gameplay/LOG_BALANCE_SAUL.md).

@@ -8,17 +8,18 @@ using GorillaEscape.Gameplay.Input;
 static class GameplayChecks
 {
     static void Require(bool pass) { if(!pass)throw new Exception("assertion failed"); }
-    sealed class Lab
+    internal sealed class Lab
     {
         public readonly PhoneInputStore Phones=new PhoneInputStore();
         public readonly InputFusion Fusion;
         public readonly JungleGameplayInput Game=new JungleGameplayInput();
         public long At,Sequence,CameraSequence;
         public Lab(JungleGame game) {Fusion=new InputFusion(Phones,new FusionSettings());Fusion.Association.Ready(1);Game.Select(game);}
-        public void Step(long at,float angular=0,float rightY=.3f,float leftY=.3f,bool right=true,bool left=true,long epoch=1,bool partial=false)
+        public void Step(long at,float angular=0,float rightY=.3f,float leftY=.3f,bool right=true,bool left=true,long epoch=1,bool partial=false,float gamma=30,float screen=0)
         {
             At=at+2;
             var p=Checks.Phone(++Sequence);p.serverReceiveTimestamp=at;p.connectionEpoch=epoch;
+            p.orientation.gamma=gamma;p.screenOrientation.angle=screen;
             p.rotationRate.alpha=angular;p.rotationRate.beta=p.rotationRate.gamma=0;
             p.accelerationIncludingGravity.x=p.accelerationIncludingGravity.y=0;p.accelerationIncludingGravity.z=9.81f;
             if(partial)p.orientation.hasBeta=false;
@@ -41,12 +42,12 @@ static class GameplayChecks
         yield return ("technical pause freezes and restores the original time scale",()=>{var p=new JunglePauseLease();Require(p.Apply(true,.5f)==0&&p.Owned);Require(p.Apply(true,0)==0);Require(p.Apply(false,0)==.5f&&!p.Owned);});
         yield return ("technical pause never resumes another system's existing pause",()=>{var p=new JunglePauseLease();Require(p.Apply(true,0)==0&&!p.Owned);Require(p.Apply(false,0)==0);});
         yield return ("leaving a game releases only its own pause",()=>{var p=new JunglePauseLease();p.Apply(true,1);Require(p.Apply(false,0)==1);p.Apply(true,1);Require(p.Apply(false,.25f)==.25f);});
-        yield return ("all six gameplay scenes have an explicit fusion profile",()=>{
-            var scenes=new[]{"BananaBowling","GorillaBoxing","JungleBaseball","JungleDrums","CoconutSlice","WhackAMole"};
+        yield return ("all seven gameplay scenes have an explicit fusion profile",()=>{
+            var scenes=new[]{"BananaBowling","GorillaBoxing","JungleBaseball","JungleDrums","CoconutSlice","WhackAMole","LogBalance"};
             foreach(var s in scenes)Require(JungleGameplayInput.ForScene(s)!=JungleGame.None);
             Require(JungleGameplayInput.ForScene("Connection")==JungleGame.None&&JungleGameplayInput.ForScene("MainMenu")==JungleGame.None);
         });
-        foreach(var kind in new[]{JungleGame.Bowling,JungleGame.Boxing,JungleGame.Baseball,JungleGame.Drums,JungleGame.CoconutSlice,JungleGame.Whack})
+        foreach(var kind in new[]{JungleGame.Bowling,JungleGame.Boxing,JungleGame.Baseball,JungleGame.Drums,JungleGame.CoconutSlice,JungleGame.Whack,JungleGame.LogBalance})
         {
             var game=kind;
             yield return ($"{game}: tracking loss immediately invalidates prior actions",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.4f,.4f);var frame=l.Game.Current;Require(frame!=null);l.Lost();Require(!l.Game.Ready&&l.Game.Current==null);Require(!l.Game.Authorize(JungleAction.Throw,frame.Revision,l.At));});
@@ -54,7 +55,7 @@ static class GameplayChecks
             yield return ($"{game}: missing required right hand blocks gameplay",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.4f,.4f,right:false);Require(!l.Game.Ready);});
             yield return ($"{game}: a new phone epoch rebaselines without a false action",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.6f,.6f,epoch:2);Require(l.Game.Ready&&l.Game.Current.Baseline&&l.Game.Current.Actions==JungleAction.None);});
         }
-        foreach(var kind in new[]{JungleGame.Boxing,JungleGame.Drums,JungleGame.CoconutSlice})
+        foreach(var kind in new[]{JungleGame.Boxing,JungleGame.Drums,JungleGame.CoconutSlice,JungleGame.LogBalance})
         {
             var game=kind;
             yield return ($"{game}: left hand is required instead of invented",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.4f,.4f,left:false);Require(!l.Game.Ready);});

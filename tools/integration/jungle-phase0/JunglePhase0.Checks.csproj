@@ -3,6 +3,10 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="GameplayChecks.cs" />
+    <Compile Include="LogBalanceChecks.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceModel.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceArtCatalog.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/LogBalanceFusedControl.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/JunglePauseLease.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/CameraInput.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/PhoneInputStore.cs" />

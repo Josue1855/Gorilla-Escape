@@ -10,6 +10,7 @@ public static class SceneNavigator
     public const string Baseball = "JungleBaseball";
     public const string Drums = "JungleDrums";
     public const string CoconutSlice = "CoconutSlice";
+    public const string LogBalance = "LogBalance";
     public const string WhackAMole = "WhackAMole";
     public static void Load(string scene) { if (!string.IsNullOrEmpty(scene)) SceneManager.LoadScene(scene); }
 }

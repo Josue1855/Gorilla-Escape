@@ -45,7 +45,7 @@ public sealed class MotionSession : MonoBehaviour, IPortableInputSource
     }
     public void ConfigureForScene(string sceneName)
     {
-        HandMode = sceneName == SceneNavigator.Boxing || sceneName == SceneNavigator.Drums || sceneName == SceneNavigator.CoconutSlice
+        HandMode = sceneName == SceneNavigator.Boxing || sceneName == SceneNavigator.Drums || sceneName == SceneNavigator.CoconutSlice || sceneName == SceneNavigator.LogBalance
             ? HandTrackingMode.Both : HandTrackingMode.RightOnly;
         serviceHost.SelectGame(JungleGameplayInput.ForScene(sceneName));
         delivered=-1;

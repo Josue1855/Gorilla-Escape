@@ -6,11 +6,11 @@ using GorillaEscape.CameraTracking;
 
 namespace GorillaEscape.Gameplay.Input
 {
-    public enum JungleGame { None, Bowling, Boxing, Baseball, Drums, CoconutSlice, Whack }
+    public enum JungleGame { None, Bowling, Boxing, Baseball, Drums, CoconutSlice, Whack, LogBalance }
     [Flags] public enum JungleAction
     {
         None=0, Throw=1, PunchLeft=2, PunchRight=4, Recover=8, Swing=16,
-        DrumLeft=32, DrumRight=64, SliceLeft=128, SliceRight=256, Whack=512
+        DrumLeft=32, DrumRight=64, SliceLeft=128, SliceRight=256, Whack=512, Balance=1024
     }
     public enum JungleInputStatus { Menu, Waiting, TrackingLost, Unaligned, PartialInput, Reacquiring, Ready }
     public readonly struct JungleHand
@@ -74,7 +74,7 @@ namespace GorillaEscape.Gameplay.Input
         public static JungleGame ForScene(string scene) => scene=="BananaBowling"?JungleGame.Bowling
             :scene=="GorillaBoxing"?JungleGame.Boxing:scene=="JungleBaseball"?JungleGame.Baseball
             :scene=="JungleDrums"?JungleGame.Drums:scene=="CoconutSlice"?JungleGame.CoconutSlice
-            :scene=="WhackAMole"?JungleGame.Whack:JungleGame.None;
+            :scene=="WhackAMole"?JungleGame.Whack:scene=="LogBalance"?JungleGame.LogBalance:JungleGame.None;
         public void Select(JungleGame game)
         {
             Game=game;Break(game==JungleGame.None?JungleInputStatus.Menu:JungleInputStatus.Waiting);
@@ -110,7 +110,7 @@ namespace GorillaEscape.Gameplay.Input
             {Break(JungleInputStatus.Unaligned);return;}
             if(!CameraInputStore.Valid(camera)||camera.trackingState!="TRACKING") {Break(JungleInputStatus.TrackingLost);return;}
             var person=Array.Find(camera.subjects,s=>s.subjectId==input.SubjectId);
-            bool both=Game==JungleGame.Boxing||Game==JungleGame.Drums||Game==JungleGame.CoconutSlice;
+            bool both=Game==JungleGame.Boxing||Game==JungleGame.Drums||Game==JungleGame.CoconutSlice||Game==JungleGame.LogBalance;
             if(person==null||person.ambiguous||person.confidence<.6f||!Wrist(person,"right-wrist")||(both&&!Wrist(person,"left-wrist")))
             {Break(JungleInputStatus.TrackingLost);return;}
             bool identity=session!=p.sessionId||device!=p.deviceSessionId||epoch!=p.connectionEpoch||subject!=input.SubjectId;
@@ -164,6 +164,7 @@ namespace GorillaEscape.Gameplay.Input
                 if(left.Speed>.72f)result|=JungleAction.SliceLeft;
                 if(right.Speed>.72f)result|=JungleAction.SliceRight;
             }
+            if(Game==JungleGame.LogBalance)result|=JungleAction.Balance;
             float whack=Math.Max(0,gravity-9.81f)*18+angular;
             if(Game==JungleGame.Whack&&first.Observe(right.VelocityY>.72f&&whack>235,right.VelocityY<.2f&&whack<150,now,220))result|=JungleAction.Whack;
             return result;

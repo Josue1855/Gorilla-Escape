@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/WhackAMole.unity
     guid: c23deae6b101e15469ad84d36e05d72c
   - enabled: 1
+    path: Assets/Scenes/LogBalance.unity
+    guid: c6ad059ae2cb4e108a82654e8874b4f0
+  - enabled: 1
     path: Assets/_Project/Scenes/Bootstrap/Bootstrap.unity
     guid: 7cbbe2b8a1ac10c569cc7500257c1e7a
   m_configObjects: {}

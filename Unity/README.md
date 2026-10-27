@@ -6,7 +6,7 @@ Estado: **integración de código; aceptación física pendiente**. Esta rama co
 
 Abrir esta carpeta `Unity/` con **Unity 6000.6.0f1**, la versión ya utilizada por las escenas de Saúl. No se degradaron las escenas a 6000.3.23f1. El pin histórico de Fase 0 era 6000.3.23f1; aceptar ambas versiones en el validador de metadatos no demuestra compatibilidad del motor.
 
-Se conservan `Connection`, `MainMenu`, `BananaBowling`, `GorillaBoxing`, `JungleBaseball`, `JungleDrums`, `CoconutSlice` y `WhackAMole`, además del Bootstrap técnico restaurado en `Assets/_Project/Scenes/Bootstrap/`.
+Se conservan `Connection`, `MainMenu`, `BananaBowling`, `GorillaBoxing`, `JungleBaseball`, `JungleDrums`, `CoconutSlice` y `WhackAMole`, junto con `LogBalance` (Desafío del Tronco), además del Bootstrap técnico restaurado en `Assets/_Project/Scenes/Bootstrap/`.
 
 ## Conexión vigente
 
@@ -19,13 +19,13 @@ Los scripts antiguos `CameraTracker/`, `MotionRelay/` y `PREPARAR_MODULO.ps1` se
 1. Ejecutar `npm --prefix PWA ci`, `npm --prefix PWA run build` y `Server/mvnw -B -f Server/pom.xml verify` desde la raíz del repositorio.
 2. Preparar los runtimes y variables de Fase 0. Para el editor puede usarse `tools/integration/run-jungle-editor.sh /ruta/al/Editor/Unity`. Requiere JDK 21 instalado sólo en la máquina de desarrollo; la distribución final usa el Java empaquetado.
 3. Para cámara, proporcionar el paquete oficial `Vision` mediante `GORILLA_PACKAGE_ROOT` o configurar las variables de laboratorio documentadas en [integración](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La cámara no usa el rastreador antiguo del alpha.
-4. Usar **Gorilla Escape → Play Gorilla Escape**. Este comando prepara las rutas locales de Java/JAR, registra las nueve escenas y abre `Assets/Scenes/Connection.unity` antes de activar Play. **Open Bootstrap** abre solamente el diagnóstico técnico. También puede abrirse Connection manualmente usando el launcher; el arranque físico exige opt-in y permiso del test runner. Los tests y la edición ordinaria no arrancan servicios.
+4. Usar **Gorilla Escape → Play Gorilla Escape**. Este comando prepara las rutas locales de Java/JAR, registra las diez escenas y abre `Assets/Scenes/Connection.unity` antes de activar Play. **Open Bootstrap** abre solamente el diagnóstico técnico. También puede abrirse Connection manualmente usando el launcher; el arranque físico exige opt-in y permiso del test runner. Los tests y la edición ordinaria no arrancan servicios.
 5. Autorizar la red local si el sistema lo solicita. Usar Paso 1 para preparación del certificado cuando corresponda y Paso 2 para unirse. El código aleatorio de cuatro letras del prototipo ya no se usa.
 6. Conceder permisos de sensores en la PWA. Confirmar/lanzar y recentrar se transmiten como zonas de contacto dentro del contrato oficial. El alpha utiliza el jugador 1; no anuncia soporte multijugador migrado.
 
 No abrir simultáneamente la sesión técnica Bootstrap y la sesión de juegos: cada flujo tiene su propietario y la integración impide iniciar un segundo supervisor cuando el diagnóstico está activo.
 
-## InputFusion en los seis juegos
+## InputFusion en los siete juegos
 
 Las mecánicas consumen ahora una muestra fusionada tipada y requieren autorización de gesto. La pérdida de seguimiento pausa tiempo y física; el ratón y el teléfono sin cámara no son vías alternativas de puntuación. [Reglas por juego, rearme y pruebas](../docs/02-gameplay/JUNGLE_FUSED_INPUT.md).
 
@@ -34,3 +34,5 @@ Las mecánicas consumen ahora una muestra fusionada tipada y requieren autorizac
 [Resultados, comandos reproducibles y pendientes](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La compilación completa/importación en Unity, las pruebas físicas de controles y la distribución Windows están pendientes. La cámara oficial conserva las limitaciones Windows de Fase 0; esta migración no las resuelve ni declara un instalador final.
 
 Corrección del punto de entrada y verificaciones: [detalle](../docs/03-development/SAUL_PRODUCT_ENTRY.md).
+
+El séptimo juego conserva el modelo físico y el náufrago del tronco, y reutiliza la selva, los gorilas y el tema de Saúl. [Integración, créditos y prueba pendiente](../docs/02-gameplay/LOG_BALANCE_SAUL.md).

@@ -28,7 +28,7 @@ class Checks
         int failures=0;
         var tests=new (string,Action)[]{
             ("product starts at Connection rather than diagnostics",()=>{var paths=ProductScenes.BuildScenePaths();Require(paths[0]=="Assets/Scenes/Connection.unity"&&paths[0]!=ProductScenes.DiagnosticsScenePath);}),
-            ("all games and diagnostic Bootstrap are registered once",()=>{var paths=ProductScenes.BuildScenePaths();Require(paths.Length==9&&new HashSet<string>(paths).Count==9&&paths[8]==ProductScenes.DiagnosticsScenePath);foreach(var scene in ProductScenes.GameplayScenes)Require(ProductScenes.IsGameplayScene(scene));Require(!ProductScenes.IsGameplayScene(ProductScenes.DiagnosticsScenePath));}),
+            ("all games and diagnostic Bootstrap are registered once",()=>{var paths=ProductScenes.BuildScenePaths();Require(paths.Length==10&&new HashSet<string>(paths).Count==10&&paths[9]==ProductScenes.DiagnosticsScenePath);foreach(var scene in ProductScenes.GameplayScenes)Require(ProductScenes.IsGameplayScene(scene));Require(!ProductScenes.IsGameplayScene(ProductScenes.DiagnosticsScenePath));}),
             ("callers cannot mutate the build scene catalog",()=>{var paths=ProductScenes.BuildScenePaths();paths[0]="wrong";Require(ProductScenes.BuildScenePaths()[0]==ProductScenes.EntryScenePath);}),
             ("editor physical services require opt in and runner permission",()=>{ProductScenes.EditorPhysicalPermission=()=>false;Require(!ProductScenes.CanStartEditorServices(false,"1"));ProductScenes.EditorPhysicalPermission=()=>true;Require(ProductScenes.CanStartEditorServices(false,"1")&&!ProductScenes.CanStartEditorServices(true,"1")&&!ProductScenes.CanStartEditorServices(false,null));ProductScenes.EditorPhysicalPermission=null;}),
             ("preserves real sensor units and axes",()=>{var a=new JungleInputAdapter();Require(a.TryMotion(Phone(),1000,out var p)&&p.ax==1&&p.az==9.81f&&p.rx==10&&p.beta==20);}),
@@ -47,7 +47,7 @@ class Checks
             ("player lock acquires from two real frames",()=>{var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera());Require(l.State==PlayerLockState.ACQUIRING);l.Observe(Camera(2));Require(l.State==PlayerLockState.LOCKED);}),
             ("second camera candidate invalidates association",()=>{var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera());l.Observe(Camera(2));var f=Camera(3);var s=f.subjects[0];f.subjects=new[]{s,new CameraSubject{subjectId=2,centerX=.5f,centerY=.5f,confidence=.9f,landmarks=s.landmarks}};l.Observe(f);Require(l.State==PlayerLockState.LOST);})
         };
-        tests=tests.Concat(GameplayChecks.All()).ToArray();
+        tests=tests.Concat(GameplayChecks.All()).Concat(LogBalanceChecks.All()).ToArray();
         foreach(var test in tests) {try{test.Item2();Console.WriteLine("PASS "+test.Item1);}catch(Exception e){failures++;Console.WriteLine("FAIL "+test.Item1+": "+e.Message);}}
         Console.WriteLine($"{tests.Length-failures}/{tests.Length} passed (pure C# contracts; not Unity or physical acceptance)");
         return failures==0?0:1;

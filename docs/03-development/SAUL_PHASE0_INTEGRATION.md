@@ -8,7 +8,7 @@ El usuario detectó que `Gorilla Escape → Play Gorilla Escape` todavía abría
 
 ## Adaptación de mecánicas (2026-10-27)
 
-La entrega separada de motion/pose descrita en el primer incremento fue sustituida por un frame fusionado tipado, autorización por juego y pausa técnica. [Estado vigente y matriz de los seis juegos](../02-gameplay/JUNGLE_FUSED_INPUT.md). Los resultados del primer incremento que aparecen más abajo son históricos y no sustituyen esta nueva verificación.
+La entrega separada de motion/pose descrita en el primer incremento fue sustituida por un frame fusionado tipado, autorización por juego y pausa técnica. [Estado vigente y matriz de los siete juegos](../02-gameplay/JUNGLE_FUSED_INPUT.md). Los resultados del primer incremento que aparecen más abajo son históricos y no sustituyen esta nueva verificación.
 
 ## Decisión y alcance
 

@@ -4,7 +4,7 @@
 
 `PortableServiceHost` reutiliza los supervisores oficiales, PhoneInputStore, PlayerLock e InputFusion. Consulta `EvaluateLatest` y entrega su resultado a las reglas puras de `Scripts/Gameplay/Input/`; no conserva una ruta de gameplay que lea directamente el teléfono. Los supervisores no se reescriben.
 
-Cada uno de los seis juegos exige las muñecas que necesita y un teléfono alineado. Las velocidades usan el tiempo de captura, los pulsos requieren rearme y una revisión no autoriza dos veces la misma acción. Los controladores verifican la autorización antes de cambiar su mecánica/puntuación. Los cortes continuos reciben una autorización por mano y por muestra de cámara nueva.
+Cada uno de los siete juegos exige las muñecas que necesita y un teléfono alineado. Las velocidades usan el tiempo de captura, los pulsos requieren rearme y una revisión no autoriza dos veces la misma acción. Los controladores verifican la autorización antes de cambiar su mecánica/puntuación. Los cortes continuos reciben una autorización por mano y por muestra de cámara nueva.
 
 El modo actual usa al jugador 1. Compartir la infraestructura no declara soporte multijugador migrado, aceptación física ni instalador terminado. Los umbrales se mantienen como parámetros de prototipo pendientes de calibración.
 

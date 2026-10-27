@@ -1,4 +1,4 @@
-# Entrada fusionada de los seis juegos de Saúl
+# Entrada fusionada de los siete juegos
 
 Revisión: 2026-10-27. Rama `feature/saul-jungle-party-alpha`. Sustituye la entrega separada de movimiento/pose del incremento `095995f`.
 
@@ -47,6 +47,8 @@ La intensidad `PhonePower` conserva la heurística del alpha —magnitud angular
 | Coconut Slice | Ambas muñecas + teléfono alineado | Segmentos de cámara nuevos con velocidad >0.72. Una autorización por mano/revisión y separación geométrica por mano. Se elimina la puntuación mediante ratón y no se dibuja un segmento atravesando una pérdida de seguimiento. |
 | Gorilla Whack | Muñeca derecha + teléfono alineado | Descenso derecho >0.72 **y** impulso del teléfono >235 según la heurística propia del alpha. Se elimina la alternativa OR y el apuntado de emergencia sólo por teléfono; se conserva la comprobación espacial de la cabeza. |
 
+| Desafío del Tronco | Ambas muñecas + teléfono alineado | Autorización Balance por revisión válida; inclinación gamma relativa al neutro observado (≥8 muestras distintas, ≥450 ms estables), sin pulsos ni teclado. La pose valida asociación y presencia; no se inventa una fuerza de cámara. |
+
 Las acciones de esta capa autorizan mecánicas locales. No crean resultados persistidos de torneo ni sustituyen el protocolo/registro oficial de resultados futuro. El `OfficialActionLedger` existente de Fase 0 conserva su implementación y no se llena con cada frame de cámara.
 
 ## Pérdida y recuperación
@@ -57,7 +59,7 @@ La pausa conserva la escala anterior, no reanuda una pausa ajena y se libera al 
 
 La vuelta exige asociación válida y una línea base nueva. Los gestos de pulso necesitan observar reposo antes de rearmarse. Una bola que ya había sido lanzada reanuda su física; la recuperación no devuelve indebidamente el estado a Aim ni crea otro lanzamiento. Un corte no une la última mano visible con la posición reaparecida.
 
-Se retiraron las ramas sin uso de tótems/equilibrio/karate del controlador combinado antiguo; no eran escenas de estos seis juegos. Se conserva el historial Git y no se modifica la rama independiente del juego de equilibrio. Las escenas, modelos, materiales, recursos visuales y sus GUID se conservan.
+Se retiraron las ramas sin uso de tótems/equilibrio/karate del controlador combinado antiguo. El tronco se integra ahora desde su rama independiente mediante su propio modelo y controlador, sin reactivar aquel código. Las escenas y recursos de los seis juegos de Saúl se conservan. [Diseño del séptimo juego](LOG_BALANCE_SAUL.md).
 
 ## Verificación reproducible
 
@@ -70,7 +72,7 @@ python3 tools/validate_foundation.py
 python3 tools/github/validate_management.py
 ```
 
-El harness ejecuta el InputFusion, almacenes, asociación, proyección, reconocimiento y autorización reales contra fixtures sintéticos. Incluye los seis perfiles, desconexión, manos perdidas, cambio de época, pares obsoletos, datos parciales, duplicados, rearme, pausa y 10 000 muestras con almacenamiento acotado. El validador comprueba que las seis escenas guardadas referencian los controladores migrados y que no hay rutas de puntuación por ratón/JSON/transporte directo. Ambos forman parte de CI Foundation.
+El harness ejecuta el InputFusion, almacenes, asociación, proyección, reconocimiento y autorización reales contra fixtures sintéticos. Incluye los siete perfiles, desconexión, manos perdidas, cambio de época, pares obsoletos, datos parciales, duplicados, rearme, pausa y 10 000 muestras con almacenamiento acotado. El validador comprueba que las siete escenas guardadas referencian los controladores migrados y que no hay rutas de puntuación por ratón/JSON/transporte directo. Ambos forman parte de CI Foundation. El harness incluye además física del tronco y calibración desde frames fusionados.
 
 Las comprobaciones C# usan las DLL reales importadas de Unity/glTFast para compilar los scripts de runtime, gameplay y Editor. Esto no ejecuta el motor, sus coroutines, la física ni sus assets. [Resultados de esta revisión](../evidence/saul-gameplay-fusion-2026-10-27/README.md).
 

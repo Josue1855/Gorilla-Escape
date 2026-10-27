@@ -1,0 +1,8 @@
+{
+  "sourceBranch": "feature/gameplay-desafio-del-tronco",
+  "sourceCommit": "bcb4fc4ca76876c5a7f6d9cad14f50b20683f526",
+  "unchangedModel": "Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceModel.cs",
+  "sha256": "bf952cac717a8b5ae8733e96f883e508c8078eb5e714a23d49d19e1b195cca33",
+  "nativeUnityAcceptance": "pending",
+  "physicalAcceptance": "pending"
+}
