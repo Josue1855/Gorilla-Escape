@@ -55,16 +55,7 @@ public static class AutomaticPrototypeSetup
 
     private static void EnsureMultiSceneBuildSettings()
     {
-        string[] paths = {
-            "Assets/Scenes/Connection.unity",
-            "Assets/Scenes/MainMenu.unity",
-            "Assets/Scenes/BananaBowling.unity",
-            "Assets/Scenes/GorillaBoxing.unity",
-            "Assets/Scenes/JungleBaseball.unity",
-            "Assets/Scenes/JungleDrums.unity",
-            "Assets/Scenes/CoconutSlice.unity",
-            "Assets/Scenes/WhackAMole.unity"
-        };
+        string[] paths = GorillaEscape.Core.ProductScenes.BuildScenePaths();
         foreach (string path in paths) if (!System.IO.File.Exists(path)) return;
         bool correct = EditorBuildSettings.scenes.Length == paths.Length;
         if (correct) for (int i = 0; i < paths.Length; i++) correct &= EditorBuildSettings.scenes[i].enabled && EditorBuildSettings.scenes[i].path == paths[i];

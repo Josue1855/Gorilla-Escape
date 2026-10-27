@@ -13,6 +13,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--editor-data', type=Path, required=True)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--project-scripts', action='store_true', help='Also type-check gameplay and Editor scripts using imported package DLLs')
     parser.add_argument('--player', action='store_true', help='Check player preprocessor paths instead of Editor paths')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
@@ -49,9 +50,21 @@ def main():
 
     contracts = compile_assembly('GorillaEscape.Contracts', list((root / 'Shared/CSharp/Runtime').glob('*.cs')))
     runtime = compile_assembly('GorillaEscape.Runtime', list((root / 'Unity/Assets/_Project/Scripts').rglob('*.cs')), [contracts])
-    compile_assembly('JungleParty.Phase0', [root / 'Unity/Assets' / path for path in (
-        'PortableModule/PortableModuleContracts.cs', 'PortableModule/PortableServiceHost.cs',
-        'Scripts/MotionSession.cs', 'Scripts/SceneNavigator.cs', 'Scripts/ConnectionScreen.cs')], [contracts, runtime])
+    if args.project_scripts:
+        cached = root / 'Unity/Library/ScriptAssemblies'
+        packages = [p for p in cached.glob('*.dll') if not p.name.startswith(('GorillaEscape.', 'Assembly-CSharp'))]
+        if not (cached / 'glTFast.dll').exists():
+            parser.error('Import the project packages in Unity first; glTFast.dll is missing')
+        refs.extend(packages)
+        gameplay = compile_assembly('Assembly-CSharp', list((root / 'Unity/Assets/Scripts').glob('*.cs'))
+                                    + list((root / 'Unity/Assets/PortableModule').glob('*.cs')), [contracts, runtime])
+        if not args.player:
+            compile_assembly('GorillaEscape.Editor', list((root / 'Unity/Assets/_Project/Editor').glob('*.cs')), [contracts, runtime])
+            compile_assembly('Assembly-CSharp-Editor', list((root / 'Unity/Assets/Editor').glob('*.cs')), [contracts, runtime, gameplay])
+    else:
+        compile_assembly('JungleParty.Phase0', [root / 'Unity/Assets' / path for path in (
+            'PortableModule/PortableModuleContracts.cs', 'PortableModule/PortableServiceHost.cs',
+            'Scripts/MotionSession.cs', 'Scripts/SceneNavigator.cs', 'Scripts/ConnectionScreen.cs')], [contracts, runtime])
     print('Source type check only; full Unity compilation and physical acceptance remain separate.')
     print('Logs:', output)
 

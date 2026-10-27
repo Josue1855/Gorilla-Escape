@@ -8,7 +8,7 @@ namespace GorillaEscape.UI
     /// <summary>Product navigation. Technical owners survive the transition between these two views.</summary>
     public sealed class MainMenuController : MonoBehaviour
     {
-        public const string BootstrapScenePath = "Assets/_Project/Scenes/Bootstrap/Bootstrap.unity";
+        public const string BootstrapScenePath = GorillaEscape.Core.ProductScenes.DiagnosticsScenePath;
 #if UNITY_EDITOR
         // Editor assembly supplies test-runner isolation without a player dependency on UnityEditor.
         public static Func<bool> EditorLaunchPermission { private get; set; }
@@ -16,11 +16,7 @@ namespace GorillaEscape.UI
         public static bool ShouldAutoLaunch(bool editor, bool playing, bool batch, bool testRun, string scenePath, bool productFlow)
             => playing && scenePath == BootstrapScenePath && (editor ? !batch && !testRun : productFlow);
 
-        public static bool IsJungleScene(string path) => Array.IndexOf(new[] {
-            "Assets/Scenes/Connection.unity", "Assets/Scenes/MainMenu.unity", "Assets/Scenes/BananaBowling.unity",
-            "Assets/Scenes/GorillaBoxing.unity", "Assets/Scenes/JungleBaseball.unity", "Assets/Scenes/JungleDrums.unity",
-            "Assets/Scenes/CoconutSlice.unity", "Assets/Scenes/WhackAMole.unity"
-        }, path) >= 0;
+        public static bool IsJungleScene(string path) => GorillaEscape.Core.ProductScenes.IsGameplayScene(path);
 
         public static bool QaVisible => Environment.GetEnvironmentVariable("GORILLA_QA_MENU") != "0";
         public static bool ProductFlow => Environment.GetEnvironmentVariable("GORILLA_MAIN_MENU") == "1"
@@ -32,7 +28,7 @@ namespace GorillaEscape.UI
         bool AutomatedMeasurement => Environment.GetEnvironmentVariable("GORILLA_QA_AUTOMATED_MEASUREMENT")=="1"&&Runtime!=null&&Runtime.MeasuringFrames;
         public bool InTests { get; private set; }
         public bool InPhone { get; private set; }
-        public bool PlayEnabled => false; // E0 is still open; no gameplay scene exists.
+        public bool PlayEnabled => false; // This Bootstrap is the diagnostics surface; product play starts in ProductScenes.EntryScenePath.
         public QaRuntimeService Runtime { get; private set; }
         int reportedWidth,reportedHeight;
         Vector2 mainScroll;

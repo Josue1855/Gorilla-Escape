@@ -59,7 +59,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         if (IsRunning) return true;
         if (quitting || closing != null && !closing.IsCompleted || !CleanupComplete) return false;
         // Editor tests and ordinary scene editing never launch physical services implicitly.
-        if (Application.isBatchMode || Application.isEditor && Environment.GetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA") != "1")
+        if (Application.isBatchMode || Application.isEditor && !GorillaEscape.Core.ProductScenes.CanStartEditorServices(Application.isBatchMode, Environment.GetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA")))
         {
             Status = "EDITOR: ACTIVA EL INICIO FÍSICO PARA CONECTAR";
             return false;

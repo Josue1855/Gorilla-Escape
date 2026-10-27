@@ -2,6 +2,10 @@
 
 Fecha local: 2026-10-26. Rama: `feature/saul-jungle-party-alpha`.
 
+## Corrección posterior del inicio del producto
+
+El usuario detectó que `Gorilla Escape → Play Gorilla Escape` todavía abría el menú Bootstrap de develop. Esto era una integración de navegación incompleta en el commit `a0fb822`, aunque el adaptador de transporte ya existía. [Corrección del punto de entrada](SAUL_PRODUCT_ENTRY.md): Connection inicia el producto; Bootstrap permanece como diagnóstico. Esta corrección incorpora el catálogo de nueve escenas y preparación del arranque desde el menú del Editor.
+
 ## Decisión y alcance
 
 El usuario autorizó fusionar `develop` e incluir la migración de los juegos al transporte oficial, conservando lo mejor de ambas ramas. Base de Saúl: `43ef0b962705a03b02102d1a5e6462b3c9f6bcb3`; `develop` incorporado: `851e8dc3943129ec89210743c6cc0e494836d610`. No se integra esta rama hacia `develop` ni se modifica `main`.

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GorillaEscape.Core;
 using GorillaEscape.Contracts;
 using GorillaEscape.Input;
 using GorillaEscape.Input.Fusion;
@@ -24,6 +25,10 @@ class Checks
     static int Main() {
         int failures=0;
         var tests=new (string,Action)[]{
+            ("product starts at Connection rather than diagnostics",()=>{var paths=ProductScenes.BuildScenePaths();Require(paths[0]=="Assets/Scenes/Connection.unity"&&paths[0]!=ProductScenes.DiagnosticsScenePath);}),
+            ("all games and diagnostic Bootstrap are registered once",()=>{var paths=ProductScenes.BuildScenePaths();Require(paths.Length==9&&new HashSet<string>(paths).Count==9&&paths[8]==ProductScenes.DiagnosticsScenePath);foreach(var scene in ProductScenes.GameplayScenes)Require(ProductScenes.IsGameplayScene(scene));Require(!ProductScenes.IsGameplayScene(ProductScenes.DiagnosticsScenePath));}),
+            ("callers cannot mutate the build scene catalog",()=>{var paths=ProductScenes.BuildScenePaths();paths[0]="wrong";Require(ProductScenes.BuildScenePaths()[0]==ProductScenes.EntryScenePath);}),
+            ("editor physical services require opt in and runner permission",()=>{ProductScenes.EditorPhysicalPermission=()=>false;Require(!ProductScenes.CanStartEditorServices(false,"1"));ProductScenes.EditorPhysicalPermission=()=>true;Require(ProductScenes.CanStartEditorServices(false,"1")&&!ProductScenes.CanStartEditorServices(true,"1")&&!ProductScenes.CanStartEditorServices(false,null));ProductScenes.EditorPhysicalPermission=null;}),
             ("preserves real sensor units and axes",()=>{var a=new JungleInputAdapter();Require(a.TryMotion(Phone(),1000,out var p)&&p.ax==1&&p.az==9.81f&&p.rx==10&&p.beta==20);}),
             ("rejects duplicate and reordered samples",()=>{var a=new JungleInputAdapter();a.TryMotion(Phone(2),1000,out _);Require(!a.TryMotion(Phone(2),1000,out _)&&!a.TryMotion(Phone(1),1000,out _));}),
             ("rejects stale and future timestamps",()=>{var a=new JungleInputAdapter();Require(!a.TryMotion(Phone(),1300,out _)&&!a.TryMotion(Phone(),900,out _));}),

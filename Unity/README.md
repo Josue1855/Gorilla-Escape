@@ -19,7 +19,7 @@ Los scripts antiguos `CameraTracker/`, `MotionRelay/` y `PREPARAR_MODULO.ps1` se
 1. Ejecutar `npm --prefix PWA ci`, `npm --prefix PWA run build` y `Server/mvnw -B -f Server/pom.xml verify` desde la raíz del repositorio.
 2. Preparar los runtimes y variables de Fase 0. Para el editor puede usarse `tools/integration/run-jungle-editor.sh /ruta/al/Editor/Unity`. Requiere JDK 21 instalado sólo en la máquina de desarrollo; la distribución final usa el Java empaquetado.
 3. Para cámara, proporcionar el paquete oficial `Vision` mediante `GORILLA_PACKAGE_ROOT` o configurar las variables de laboratorio documentadas en [integración](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La cámara no usa el rastreador antiguo del alpha.
-4. Abrir `Assets/Scenes/Connection.unity` y pulsar Play. El arranque físico en Editor requiere `GORILLA_EDITOR_PHYSICAL_QA=1`; los tests y la edición ordinaria no arrancan servicios.
+4. Usar **Gorilla Escape → Play Gorilla Escape**. Este comando prepara las rutas locales de Java/JAR, registra las nueve escenas y abre `Assets/Scenes/Connection.unity` antes de activar Play. **Open Bootstrap** abre solamente el diagnóstico técnico. También puede abrirse Connection manualmente usando el launcher; el arranque físico exige opt-in y permiso del test runner. Los tests y la edición ordinaria no arrancan servicios.
 5. Autorizar la red local si el sistema lo solicita. Usar Paso 1 para preparación del certificado cuando corresponda y Paso 2 para unirse. El código aleatorio de cuatro letras del prototipo ya no se usa.
 6. Conceder permisos de sensores en la PWA. Confirmar/lanzar y recentrar se transmiten como zonas de contacto dentro del contrato oficial. El alpha utiliza el jugador 1; no anuncia soporte multijugador migrado.
 
@@ -28,3 +28,5 @@ No abrir simultáneamente la sesión técnica Bootstrap y la sesión de juegos: 
 ## Validación y límites
 
 [Resultados, comandos reproducibles y pendientes](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La compilación completa/importación en Unity, las pruebas físicas de controles y la distribución Windows están pendientes. La cámara oficial conserva las limitaciones Windows de Fase 0; esta migración no las resuelve ni declara un instalador final.
+
+Corrección del punto de entrada y verificaciones: [detalle](../docs/03-development/SAUL_PRODUCT_ENTRY.md).
