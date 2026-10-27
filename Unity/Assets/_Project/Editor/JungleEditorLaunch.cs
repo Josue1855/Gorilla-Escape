@@ -46,6 +46,19 @@ namespace GorillaEscape.Editor
             Environment.SetEnvironmentVariable("GORILLA_IPC_JAVA", java);
             Environment.SetEnvironmentVariable("GORILLA_IPC_JAR", jar);
             Environment.SetEnvironmentVariable("GORILLA_PACKAGE_ROOT", package);
+            // Reuse only known prepared locations; the Java supervisor verifies the pinned hash.
+            // Never search the old MotionRelay binary or install/download during Play.
+            if (Application.platform == RuntimePlatform.LinuxEditor
+                && string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_CLOUDFLARED_PATH")))
+            {
+                foreach (string candidate in new[] { Path.Combine(package, "Tools/cloudflared"),
+                    Path.Combine(repository, "Tools/cloudflared"),
+                    Path.Combine(repository, "Unity/Builds/FoundationLinux/Tools/cloudflared") })
+                {
+                    if (Path.IsPathRooted(candidate) && File.Exists(candidate))
+                    { Environment.SetEnvironmentVariable("GORILLA_CLOUDFLARED_PATH", candidate); break; }
+                }
+            }
             Environment.SetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA", "1");
             Environment.SetEnvironmentVariable("GORILLA_MAIN_MENU", "1");
             Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");

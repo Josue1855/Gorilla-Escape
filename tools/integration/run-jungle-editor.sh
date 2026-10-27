@@ -9,7 +9,25 @@ repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 export GORILLA_IPC_JAVA="${GORILLA_IPC_JAVA:-$(command -v java)}"
 export GORILLA_IPC_JAR="${GORILLA_IPC_JAR:-$repo_root/Server/target/local-server-0.1.0-SNAPSHOT.jar}"
 [ -f "$GORILLA_IPC_JAR" ] || { echo 'Primero compila el servidor y la PWA.' >&2; exit 2; }
-export GORILLA_PACKAGE_ROOT="${GORILLA_PACKAGE_ROOT:-$repo_root}"
+# Match the Editor menu: reuse the prepared Phase 0 package when available.
+prepared_package="$repo_root/Unity/Builds/FoundationLinux"
+if [ -z "${GORILLA_PACKAGE_ROOT:-}" ]; then
+    if [ -f "$prepared_package/Vision/manifest.json" ] && [ -f "$prepared_package/tools/setup-firewall.sh" ]; then
+        GORILLA_PACKAGE_ROOT=$prepared_package
+    else
+        GORILLA_PACKAGE_ROOT=$repo_root
+    fi
+fi
+export GORILLA_PACKAGE_ROOT
+# Explicit configuration wins. Java verifies the pinned hash before executing any candidate.
+if [ -z "${GORILLA_CLOUDFLARED_PATH:-}" ]; then
+    for candidate in "$GORILLA_PACKAGE_ROOT/Tools/cloudflared" "$repo_root/Tools/cloudflared" "$prepared_package/Tools/cloudflared"; do
+        if [ -f "$candidate" ] && [ -x "$candidate" ]; then
+            export GORILLA_CLOUDFLARED_PATH="$candidate"
+            break
+        fi
+    done
+fi
 export GORILLA_EDITOR_PHYSICAL_QA=1
 export GORILLA_MAIN_MENU=1
 export GORILLA_QA_OVERLAY=1

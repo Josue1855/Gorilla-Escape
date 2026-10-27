@@ -42,6 +42,8 @@ jobs:
       - run: Server/mvnw -B -f Server/pom.xml verify
       - name: Check Jungle Party adapter contracts (pure C#)
         run: dotnet run --project tools/integration/jungle-phase0/JunglePhase0.Checks.csproj --configuration Release
+      - name: Check Jungle Editor launcher configuration
+        run: python3 -m unittest discover -s tools/integration -p 'test_jungle_launcher.py' -v
       - name: Validate saved Jungle gameplay wiring
         run: python3 tools/integration/validate_jungle_gameplay.py
       - run: python3 tools/validate_foundation.py

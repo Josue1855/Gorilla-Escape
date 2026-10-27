@@ -36,3 +36,11 @@ Las mecánicas consumen ahora una muestra fusionada tipada y requieren autorizac
 Corrección del punto de entrada y verificaciones: [detalle](../docs/03-development/SAUL_PRODUCT_ENTRY.md).
 
 El séptimo juego conserva el modelo físico y el náufrago del tronco, y reutiliza la selva, los gorilas y el tema de Saúl. [Integración, créditos y prueba pendiente](../docs/02-gameplay/LOG_BALANCE_SAUL.md).
+
+## Cloudflared del paquete de Fase 0
+
+El menú del Editor y `run-jungle-editor.sh` reutilizan `Unity/Builds/FoundationLinux` si contiene Vision y el helper de firewall. Cloudflared se busca en el paquete seleccionado, en `Tools/cloudflared` del repositorio o en aquel paquete preparado; una ruta explícita `GORILLA_CLOUDFLARED_PATH` tiene prioridad. Se mantiene `AUTO` salvo configuración explícita. Java verifica el SHA-256 fijado antes de ejecutarlo; Play no descarga ni instala herramientas.
+
+En esta PC ya existe el binario revisado dentro del paquete preparado. Un checkout nuevo necesita los artefactos de distribución: el helper existente `python3 tools/t063/package-cloudflared.py /ruta/al/binario-revisado /ruta/al/paquete` incluye binario, licencia y manifiesto. No se versionan copias de los ejecutables generados. Este soporte de empaquetado es Linux amd64; no certifica Windows.
+
+[Comprobación real y límite de conectividad observado](../docs/evidence/saul-log-balance-2026-10-27/cloudflared.md). Que el proceso se registre no garantiza HTTPS público disponible. AUTO conserva la vía LAN si la comprobación externa falla.
