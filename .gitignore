@@ -78,3 +78,10 @@ __pycache__/
 # DEC-016 private trust material is outside the checkout; defense in depth.
 *.key
 *.pem
+
+# Isolated CI dependency checkouts
+/.ci-backend/
+/.ci-flutter/
+
+# Wrangler local artifacts
+.wrangler/

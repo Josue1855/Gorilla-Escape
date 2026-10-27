@@ -39,11 +39,21 @@ jobs:
             sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 install -y --no-install-recommends pulseaudio
           fi
           timeout 20s pulseaudio --start --exit-idle-time=-1
-      - run: Server/mvnw -B -f Server/pom.xml verify
+      - name: Check out the reviewed players backend contract
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Josue1855/Gorilla-Escape-Backend
+          ref: c83b8343f1e37c405b127304567e149a1416eddb
+          path: .ci-backend
+          persist-credentials: false
+      - name: Build and test SQLite backend
+        run: .ci-backend/mvnw -B -f .ci-backend/pom.xml verify
+      - name: Verify Java with the real supervised SQLite backend
+        run: Server/mvnw -B -f Server/pom.xml -Dgorilla.test.playersJar="$GITHUB_WORKSPACE/.ci-backend/target/backend-0.1.0-SNAPSHOT.jar" verify
       - name: Check Jungle Party adapter contracts (pure C#)
         run: dotnet run --project tools/integration/jungle-phase0/JunglePhase0.Checks.csproj --configuration Release
       - name: Check Jungle Editor launcher configuration
-        run: python3 -m unittest discover -s tools/integration -p 'test_jungle_launcher.py' -v
+        run: python3 -m unittest discover -s tools/integration -p 'test_*launcher.py' -v
       - name: Validate saved Jungle gameplay wiring
         run: python3 tools/integration/validate_jungle_gameplay.py
       - run: python3 tools/validate_foundation.py
@@ -52,3 +62,28 @@ jobs:
           python3 -m unittest discover -s tools/connectivity -v
           bash -n tools/setup-firewall.sh
           sh -n tools/t062/run-qa.sh
+
+  flutter-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Check out the reviewed Flutter SDK
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: flutter/flutter
+          ref: 5fc346839b5d0eef006ed8404392afb4dfae428d
+          path: .ci-flutter
+          persist-credentials: false
+      - name: Check native controller sources and widgets
+        working-directory: Companion
+        env:
+          CI: 'true'
+        run: |
+          git -C "$GITHUB_WORKSPACE/.ci-flutter" fetch --depth=1 origin tag 3.47.6
+          test "$(git -C "$GITHUB_WORKSPACE/.ci-flutter" rev-list -n 1 3.47.6)" = "5fc346839b5d0eef006ed8404392afb4dfae428d"
+          export PATH="$GITHUB_WORKSPACE/.ci-flutter/bin:$PATH"
+          flutter config --no-analytics
+          flutter pub get
+          flutter analyze
+          flutter test

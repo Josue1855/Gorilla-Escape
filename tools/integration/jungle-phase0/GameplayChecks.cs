@@ -27,14 +27,14 @@ static class GameplayChecks
             var c=Checks.Camera(++CameraSequence);c.captureTimestamp=at;c.processTimestamp=at+1;
             c.subjects[0].landmarks[4].y=leftY;c.subjects[0].landmarks[4].visible=left;
             c.subjects[0].landmarks[5].y=rightY;c.subjects[0].landmarks[5].visible=right;
-            Require(Fusion.ObserveCamera(c,At));Game.Update(Fusion.EvaluateLatest(1,At),At);
+            Require(Fusion.ObserveCamera(c,At));if(Game.Game==JungleGame.LogBalance)Game.UpdatePhone(p,At);else Game.Update(Fusion.EvaluateLatest(1,At),At);
         }
         public void Warm() { Step(1000);Step(1050);Step(1100);Require(Game.Ready); }
         public bool Use(JungleAction action) => Game.Current!=null&&Game.Authorize(action,Game.Current.Revision,At);
         public void Lost()
         {
             var c=Checks.Camera(++CameraSequence);c.captureTimestamp=At;c.processTimestamp=At+1;c.subjects=Array.Empty<CameraSubject>();c.trackingState="LOST";
-            Fusion.ObserveCamera(c,At+2);At+=2;Game.Update(Fusion.EvaluateLatest(1,At),At);
+            Fusion.ObserveCamera(c,At+2);At+=2;if(Game.Game==JungleGame.LogBalance)Game.UpdatePhone(null,At);else Game.Update(Fusion.EvaluateLatest(1,At),At);
         }
     }
     public static IEnumerable<(string,Action)> All()
@@ -47,7 +47,7 @@ static class GameplayChecks
             foreach(var s in scenes)Require(JungleGameplayInput.ForScene(s)!=JungleGame.None);
             Require(JungleGameplayInput.ForScene("Connection")==JungleGame.None&&JungleGameplayInput.ForScene("MainMenu")==JungleGame.None);
         });
-        foreach(var kind in new[]{JungleGame.Bowling,JungleGame.Boxing,JungleGame.Baseball,JungleGame.Drums,JungleGame.CoconutSlice,JungleGame.Whack,JungleGame.LogBalance})
+        foreach(var kind in new[]{JungleGame.Bowling,JungleGame.Boxing,JungleGame.Baseball,JungleGame.Drums,JungleGame.CoconutSlice,JungleGame.Whack})
         {
             var game=kind;
             yield return ($"{game}: tracking loss immediately invalidates prior actions",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.4f,.4f);var frame=l.Game.Current;Require(frame!=null);l.Lost();Require(!l.Game.Ready&&l.Game.Current==null);Require(!l.Game.Authorize(JungleAction.Throw,frame.Revision,l.At));});
@@ -55,11 +55,31 @@ static class GameplayChecks
             yield return ($"{game}: missing required right hand blocks gameplay",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.4f,.4f,right:false);Require(!l.Game.Ready);});
             yield return ($"{game}: a new phone epoch rebaselines without a false action",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.6f,.6f,epoch:2);Require(l.Game.Ready&&l.Game.Current.Baseline&&l.Game.Current.Actions==JungleAction.None);});
         }
-        foreach(var kind in new[]{JungleGame.Boxing,JungleGame.Drums,JungleGame.CoconutSlice,JungleGame.LogBalance})
+        foreach(var kind in new[]{JungleGame.Boxing,JungleGame.Drums,JungleGame.CoconutSlice})
         {
             var game=kind;
             yield return ($"{game}: left hand is required instead of invented",()=>{var l=new Lab(game);l.Warm();l.Step(1150,500,.4f,.4f,left:false);Require(!l.Game.Ready);});
         }
+        yield return ("Tronco: phone works without a camera and rejects stale data",()=>{
+            var game=new JungleGameplayInput();game.Select(JungleGame.LogBalance);
+            var first=Checks.Phone(1);first.serverReceiveTimestamp=1000;game.UpdatePhone(first,1000);
+            Require(game.Ready&&game.Current.Baseline&&!JungleGameplayInput.RequiresCamera(JungleGame.LogBalance));
+            var next=Checks.Phone(2);next.serverReceiveTimestamp=1050;game.UpdatePhone(next,1050);
+            Require(game.Ready&&game.Authorize(JungleAction.Balance,game.Current.Revision,1050));
+            game.UpdatePhone(next,1401);Require(!game.Ready&&game.Current==null);
+        });
+        yield return ("Tronco: accepts gamma and screen without unrelated motion axes",()=>{
+            var game=new JungleGameplayInput();game.Select(JungleGame.LogBalance);
+            var phone=Checks.Phone(1);phone.serverReceiveTimestamp=1000;phone.rotationRate=null;phone.accelerationIncludingGravity=null;
+            phone.orientation.hasAlpha=false;phone.orientation.hasBeta=false;game.UpdatePhone(phone,1000);Require(game.Ready);
+        });
+        yield return ("Tronco: disconnection and incomplete sensor input pause safely",()=>{
+            var game=new JungleGameplayInput();game.Select(JungleGame.LogBalance);
+            var phone=Checks.Phone(1);phone.serverReceiveTimestamp=1000;game.UpdatePhone(phone,1000);Require(game.Ready);
+            phone.connectionState="DISCONNECTED";game.UpdatePhone(phone,1001);Require(!game.Ready);
+            var partial=Checks.Phone(2);partial.serverReceiveTimestamp=1050;partial.orientation.hasGamma=false;
+            game.UpdatePhone(partial,1050);Require(!game.Ready&&game.Status==JungleInputStatus.PartialInput);
+        });
         yield return ("Bowling: launch requires both real wrist movement and phone peak",()=>{
             var l=new Lab(JungleGame.Bowling);l.Warm();l.Step(1150,400);Require(!l.Use(JungleAction.Throw));
             l.Step(1200);l.Step(1250,400,.4f);Require(l.Use(JungleAction.Throw));Require(!l.Use(JungleAction.Throw));

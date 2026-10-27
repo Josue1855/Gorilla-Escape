@@ -9,6 +9,7 @@ namespace GorillaEscape.Minigames.LogBalance
         readonly List<Material> materials=new List<Material>();
         readonly List<Mesh> meshes=new List<Mesh>();
         readonly List<Camera> hidden=new List<Camera>();
+        readonly List<Light> hiddenDirectionalLights=new List<Light>();
         readonly Dictionary<string,Material> importedMaterials=new Dictionary<string,Material>();
         readonly Dictionary<Color,Material> palette=new Dictionary<Color,Material>();
         readonly Transform human;
@@ -33,12 +34,15 @@ namespace GorillaEscape.Minigames.LogBalance
             root=new GameObject("Desafío del Tronco — selva de Saúl");root.transform.SetParent(parent,false);
             foreach(var camera in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None))
                 if(camera.enabled){hidden.Add(camera);camera.enabled=false;}
+            // The scene may already contain a sun. Keep a single, controlled daylight source.
+            foreach(var existing in Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+                if(existing.enabled && existing.type==LightType.Directional){hiddenDirectionalLights.Add(existing);existing.enabled=false;}
             var view=new GameObject("Log Balance Camera");view.transform.SetParent(root.transform);
             var cam=view.AddComponent<Camera>();cam.transform.position=new Vector3(13,11,-14);
             cam.transform.LookAt(new Vector3(0,1,0));cam.clearFlags=CameraClearFlags.SolidColor;
             cam.backgroundColor=new Color(.12f,.25f,.22f);cam.orthographic=true;cam.orthographicSize=12.5f;
             var sun=new GameObject("Jungle daylight");sun.transform.SetParent(root.transform);
-            var light=sun.AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.15f;light.color=new Color(1,.94f,.79f);
+            var light=sun.AddComponent<Light>();light.type=LightType.Directional;light.intensity=.85f;light.color=new Color(1,.94f,.85f);
             sun.transform.rotation=Quaternion.Euler(48,-25,0);
             atmosphere=new LogBalanceAtmosphere(root.transform,cam,light,length,visuals??new LogBalanceVisuals());
             Shape("River",PrimitiveType.Cube,new Vector3(0,-1.05f,0),new Vector3(80,.15f,80),new Color(.12f,.42f,.39f));
@@ -156,7 +160,8 @@ namespace GorillaEscape.Minigames.LogBalance
                     if(!clip.name.StartsWith("__preview__")&&(idle==null||clip.name.ToLowerInvariant().Contains("idle")))idle=clip;
                 if(idle!=null)idle.SampleAnimation(model,0);
             }
-            model.transform.localRotation=Quaternion.identity;
+            // Palm FBX carries an import-axis correction on its root; keep it upright.
+            if(path!=LogBalanceArtCatalog.Palm)model.transform.localRotation=Quaternion.identity;
             var renderers=model.GetComponentsInChildren<Renderer>(true);
             if(renderers.Length==0)throw new System.InvalidOperationException("Log Balance empty model: "+path);
             var bounds=BoundsOf(model);container.transform.localScale=Vector3.one*(height/Mathf.Max(.01f,bounds.size.y));
@@ -248,6 +253,7 @@ namespace GorillaEscape.Minigames.LogBalance
             atmosphere?.Dispose();
             if(root!=null)root.SetActive(false);
             foreach(var camera in hidden)if(camera!=null)camera.enabled=true;
+            foreach(var light in hiddenDirectionalLights)if(light!=null)light.enabled=true;
             foreach(var material in materials)Object.Destroy(material);foreach(var mesh in meshes)Object.Destroy(mesh);
             Object.Destroy(root);
         }

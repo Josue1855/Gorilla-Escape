@@ -95,6 +95,24 @@ namespace GorillaEscape.Gameplay.Input
             var p=Array.Find(subject.landmarks,l=>l.name==name);
             return p!=null&&p.visible&&p.visibility>=.6f&&p.presence>=.6f&&p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;
         }
+        public static bool RequiresCamera(JungleGame game) => game!=JungleGame.None && game!=JungleGame.LogBalance;
+        // Log Balance uses only the phone orientation; no camera sample or player association is needed.
+        public void UpdatePhone(PhoneInputWire phone,long now)
+        {
+            if(Game!=JungleGame.LogBalance){Break(JungleInputStatus.Waiting);return;}
+            if(phone==null || phone.playerId!=1 || phone.messageType!="MOTION_SAMPLE" || phone.connectionState!="ACTIVE" || !Fresh(phone.serverReceiveTimestamp,now))
+            {Break(JungleInputStatus.TrackingLost);return;}
+            bool identity=session!=phone.sessionId || device!=phone.deviceSessionId || epoch!=phone.connectionEpoch;
+            if(identity){Break(JungleInputStatus.Reacquiring);session=phone.sessionId;device=phone.deviceSessionId;epoch=phone.connectionEpoch;}
+            if(!identity && phone.sequence<phoneSequence){Break(JungleInputStatus.Reacquiring);return;}
+            if(!identity && phone.sequence==phoneSequence)return;
+            if(!adapter.TryTilt(phone,now,out var next)){Break(JungleInputStatus.PartialInput);return;}
+            bool baseline=broken;broken=false;Status=JungleInputStatus.Ready;motion=next;phoneSequence=phone.sequence;
+            Current=new JungleFusedFrame {Revision=++revision,Continuity=continuity,PhoneSequence=phone.sequence,
+                PhoneTimestamp=phone.serverReceiveTimestamp,Baseline=baseline,NewMotion=!baseline,Motion=next,
+                Actions=baseline?JungleAction.None:JungleAction.Balance};
+            consumed=JungleAction.None;
+        }
         public void Update(InputFusionFrame input,long now)
         {
             if(Game==JungleGame.None){Status=JungleInputStatus.Menu;Current=null;return;}
@@ -173,7 +191,7 @@ namespace GorillaEscape.Gameplay.Input
         {
             int bit=(int)action;
             if(!Ready||Current==null||Current.Baseline||sourceRevision!=Current.Revision||bit==0||(bit&(bit-1))!=0
-                ||!Fresh(Current.PhoneTimestamp,now)||!Fresh(Current.CameraTimestamp,now)
+                ||!Fresh(Current.PhoneTimestamp,now)||(RequiresCamera(Game)&&!Fresh(Current.CameraTimestamp,now))
                 ||(Current.Actions&action)==0||(consumed&action)!=0)return false;
             consumed|=action;return true;
         }

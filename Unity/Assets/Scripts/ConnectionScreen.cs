@@ -97,6 +97,7 @@ public sealed class ConnectionScreen : MonoBehaviour
 
     private void Update()
     {
+        if(services.AdmissionMode == "CLOUDFLARED") showingPreparation = false;
         var qr = showingPreparation ? services.Preparation : services.Admission;
         bool available = qr != null && (showingPreparation || qr.state == "AVAILABLE") && !string.IsNullOrEmpty(qr.modules);
         string signature = available ? qr.state + ":" + qr.modules : null;
@@ -144,16 +145,36 @@ public sealed class ConnectionScreen : MonoBehaviour
 
         GUI.Label(new Rect(left.x, left.y, left.width, 24 * scale), "CONFIGURACIÓN DEL JUGADOR", eyebrow);
         GUI.Label(new Rect(left.x, left.y + 30 * scale, left.width, 84 * scale), "Conecta tu\ncelular", heading);
-        GUI.Label(new Rect(left.x, left.y + 117 * scale, left.width, 48 * scale), "Escanea el QR y permite los sensores del celular. Si necesitas el certificado, abre Paso 1.", body);
+        GUI.Label(new Rect(left.x, left.y + 117 * scale, left.width, 48 * scale), "Conecta el celular a la misma red, escanea el QR y permite los sensores.", body);
 
         Rect codeCard = new Rect(left.x, left.y + 174 * scale, left.width, 78 * scale);
         GUI.Box(codeCard, GUIContent.none, PanelStyle(softCard, 20));
-        GUI.Label(codeCard, session.RoomCode, code);
+        string currentRoom = session.RoomCode;
+        bool hasRoom = !string.IsNullOrEmpty(currentRoom);
+        string displayCode = hasRoom ? currentRoom.ToUpperInvariant() : "...";
+        GUIStyle pinLabel = Label(Mathf.RoundToInt(30 * scale), new Color(1f, .82f, .15f), FontStyle.Bold, TextAnchor.MiddleCenter);
+        GUIStyle urlSubtext = Label(Mathf.RoundToInt(14 * scale), new Color(.65f, .95f, .90f), FontStyle.Bold, TextAnchor.MiddleCenter);
+        GUI.Label(new Rect(codeCard.x, codeCard.y + 6 * scale, codeCard.width, 38 * scale), "SALA: " + displayCode, pinLabel);
+        string connectionLabel = services.AdmissionMode == "CLOUDFLARED" && hasRoom
+            ? "play.gorillas.run/" + currentRoom.ToLowerInvariant() + " · entra con el QR"
+            : services.AdmissionMode == "CABIN" ? (string.IsNullOrEmpty(services.ConnectionFallback) || services.ConnectionFallback == "NONE" ? "CONEXIÓN LOCAL · EL QR USA LA IP DE LA PC" : "TÚNEL NO DISPONIBLE · QR DE CONEXIÓN LOCAL")
+            : "PREPARANDO CONEXIÓN Y QR";
+        GUI.Label(new Rect(codeCard.x, codeCard.y + 44 * scale, codeCard.width, 24 * scale), connectionLabel, urlSubtext);
 
         GUIStyle statusText = Label(Mathf.RoundToInt(15 * scale), Color.white, FontStyle.Bold, TextAnchor.MiddleLeft);
         DrawStatus(new Rect(left.x, left.y + 270 * scale, left.width, 48 * scale), "CÁMARA", session.CameraConnected ? "LISTA" : "SIN SEÑAL", session.CameraConnected, statusText, scale);
         DrawStatus(new Rect(left.x, left.y + 328 * scale, left.width, 48 * scale), "CELULAR", session.PhoneConnected ? "CONECTADO" : "ESPERANDO", session.PhoneConnected, statusText, scale);
         GUI.Label(new Rect(left.x + 5 * scale, left.y + 387 * scale, left.width - 10 * scale, 45 * scale), services.Status, body);
+        var players = services.Lobby?.players;
+        GUIStyle playerHeader = Label(Mathf.RoundToInt(15 * scale), new Color(.29f,.96f,.87f), FontStyle.Bold, TextAnchor.MiddleLeft);
+        GUIStyle playerLine = Label(Mathf.RoundToInt(16 * scale), Color.white, FontStyle.Normal, TextAnchor.MiddleLeft);
+        GUI.Label(new Rect(left.x + 5 * scale,left.y + 430 * scale,left.width - 10 * scale,24 * scale), "JUGADORES " + (players?.Length ?? 0) + "/4", playerHeader);
+        if(players!=null)for(int i=0;i<players.Length && i<4;i++){
+            var player=players[i];
+            string playerName=string.IsNullOrWhiteSpace(player.displayName)?"Escribiendo nombre…":player.displayName;
+            string playerState=player.connectionState=="DISCONNECTED"?"DESCONECTADO":player.inputReady?"LISTO":"CONECTADO";
+            GUI.Label(new Rect(left.x + 5 * scale,left.y + (458 + i*25) * scale,left.width - 10 * scale,24 * scale), playerName + "  ·  " + playerState, playerLine);
+        }
 
         Rect qrCard = new Rect(right.x, right.y + 2 * scale, right.width, right.width + 62 * scale);
         GUI.Box(qrCard, GUIContent.none, PanelStyle(whiteCard, 22));
@@ -162,22 +183,41 @@ public sealed class ConnectionScreen : MonoBehaviour
         if (qrTexture != null)
             GUI.DrawTexture(qrRect, qrTexture, ScaleMode.ScaleToFit, false);
         else
-            GUI.Label(qrRect, "CREANDO\nENLACE SEGURO...", Label(Mathf.RoundToInt(18 * scale), new Color(.05f, .20f, .20f), FontStyle.Bold, TextAnchor.MiddleCenter));
-        GUI.Label(new Rect(qrCard.x + 5 * scale, qrCard.yMax - 52 * scale, qrCard.width - 10 * scale, 40 * scale), (showingPreparation ? "PASO 1: PREPARAR" : "PASO 2: UNIRSE"), Label(Mathf.RoundToInt(14 * scale), new Color(.04f, .16f, .16f), FontStyle.Bold, TextAnchor.MiddleCenter));
+        {
+            // Radar scanline effect over QR area
+            float scanCycle = Mathf.Repeat(time * 0.85f, 1f);
+            float scanY = qrRect.y + scanCycle * (qrRect.height - 4 * scale);
+            float glowHeight = 24 * scale;
+
+            Color prev = GUI.color;
+            GUI.color = new Color(.16f, .94f, .84f, .15f);
+            GUI.DrawTexture(new Rect(qrRect.x, Mathf.Max(qrRect.y, scanY - glowHeight), qrRect.width, glowHeight), cyanPixel);
+            GUI.color = new Color(.16f, .94f, .84f, .85f);
+            GUI.DrawTexture(new Rect(qrRect.x, scanY, qrRect.width, Mathf.Max(2, 3 * scale)), cyanPixel);
+            GUI.color = prev;
+
+            float pulse = (Mathf.Sin(time * 3.5f) + 1f) * .5f;
+            Color loadingColor = Color.Lerp(new Color(.05f, .22f, .22f), new Color(.12f, .55f, .50f), pulse);
+            string dots = new string('.', 1 + ((int)(time * 2f) % 3));
+            GUI.Label(qrRect, "CONECTANDO CON\nLA SELVA" + dots + "\n\nPREPARANDO QR", Label(Mathf.RoundToInt(16 * scale), loadingColor, FontStyle.Bold, TextAnchor.MiddleCenter));
+        }
+        GUI.Label(new Rect(qrCard.x + 5 * scale, qrCard.yMax - 52 * scale, qrCard.width - 10 * scale, 40 * scale), (services.AdmissionMode == "CLOUDFLARED" ? "ESCANEA PARA JUGAR" : showingPreparation ? "PASO 1: PREPARAR" : "PASO 2: ESCANEAR PARA JUGAR"), Label(Mathf.RoundToInt(14 * scale), new Color(.04f, .16f, .16f), FontStyle.Bold, TextAnchor.MiddleCenter));
 
         float buttonY = shell.yMax - pad - 50 * scale;
         GUIStyle copyButton = ButtonStyle(softCard, softCard, Color.white, Mathf.RoundToInt(15 * scale));
-        GUIStyle continueButton = session.PhoneConnected
+        bool namedPlayer = players!=null && System.Array.Exists(players, p=>p!=null && p.connectionState!="DISCONNECTED" && !string.IsNullOrWhiteSpace(p.displayName));
+        bool canEnter = session.PhoneConnected && namedPlayer;
+        GUIStyle continueButton = canEnter
             ? ButtonStyle(goldButton, cyanButtonHover, new Color(.035f, .12f, .11f), Mathf.RoundToInt(16 * scale))
             : ButtonStyle(disabledButton, disabledButton, new Color(.68f, .76f, .74f), Mathf.RoundToInt(15 * scale));
-        if (GUI.Button(new Rect(right.x, qrCard.yMax + 10 * scale, right.width, 40 * scale), showingPreparation ? "PASO 2: UNIRSE" : "PASO 1: PREPARAR", copyButton))
+        if (services.AdmissionMode == "CABIN" && GUI.Button(new Rect(right.x, qrCard.yMax + 10 * scale, right.width, 40 * scale), showingPreparation ? "PASO 2: UNIRSE" : "PASO 1: PREPARAR", copyButton))
             showingPreparation = !showingPreparation;
         if (GUI.Button(new Rect(left.x, buttonY, left.width, 50 * scale), services.NeedsNetworkPermission ? "PERMITIR RED LOCAL" : "REINTENTAR CONEXIÓN", copyButton))
         {
             if (services.NeedsNetworkPermission) services.InstallNetwork();
             else services.RestartModule();
         }
-        if (GUI.Button(new Rect(right.x, buttonY, right.width, 50 * scale), session.PhoneConnected ? "ENTRAR A LA SELVA" : "ESPERANDO CELULAR", continueButton) && session.PhoneConnected)
+        if (GUI.Button(new Rect(right.x, buttonY, right.width, 50 * scale), canEnter ? "ENTRAR A LA SELVA" : session.PhoneConnected ? "ESPERANDO NOMBRE" : "ESPERANDO CELULAR", continueButton) && canEnter)
             SceneNavigator.Load(SceneNavigator.MainMenu);
 
         DrawForegroundLeaves(w, h, time, scale);

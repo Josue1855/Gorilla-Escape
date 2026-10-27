@@ -4,11 +4,17 @@ import { permissionCapabilities, requestControlPermissions, permissionState } fr
 
 export class ControllerSession {
   constructor({ win = window, url = win.location.href, client = new MobileClient({ source: 'physical' }), notify = () => {}, doc = win.document, now = () => performance.now() } = {}) {
+    this.doc = doc; this.wakeWanted = false; this.wakeLock = null; this.wakePending = false;
+    this.visibilityWake = () => { if (doc.visibilityState !== 'hidden') void this.keepAwake(); };
+    doc.addEventListener('visibilitychange', this.visibilityWake);
     this.win = win; this.now = now; this.url = url; this.client = client; this.notify = notify;
     const fragment = new URLSearchParams(new URL(url).hash.slice(1));
+    const host = new URL(url).hostname;
+    this.publicTunnel = host.endsWith('.trycloudflare.com') || host === 'gorillas.run' || host.endsWith('.gorillas.run');
     this.hasAdmission = Boolean(fragment.get('sessionId') && fragment.get('admission'));
     this.state = this.hasAdmission ? 'CONNECT' : 'NO_ADMISSION';
     this.actionPressed = false; this.action = 'confirm';
+    this.connectionCheck = null; this.controlTilt = 0; this.controlNeutral = null; this.lastControlPublish = -Infinity;
     this.network = 'NOT_CONNECTED'; this.attempted = false; this.disposed = false;
     this.capabilities = permissionCapabilities(win); this.permissions = null;
     this.pagehide = () => {
@@ -18,7 +24,15 @@ export class ControllerSession {
     this.win.addEventListener('pagehide', this.pagehide);
     this.emissionRate = new RateWindow(); this.measurement = null; this.measureTimer = null;
     this.capture = new SensorCapture({ win, doc, now, notify: () => this.updateInput(),
-      onSample: snapshot => { this.emitSample(snapshot); this.updateInput(); } });
+      onSample: snapshot => {
+        this.emitSample(snapshot); this.updateInput();
+        const gamma = snapshot.channels?.orientation?.latest?.angles?.gamma;
+        if (this.state === 'INPUT_READY' && Number.isFinite(gamma)) {
+          this.controlNeutral ??= gamma;
+          this.controlTilt = Math.max(-1, Math.min(1, (gamma - this.controlNeutral) / 30));
+          if (this.now() - this.lastControlPublish >= 60) { this.lastControlPublish = this.now(); this.publish(); }
+        }
+      } });
     // Reuse acquisition/emission measurements; only bounded aggregates cross the control channel.
     this.client.qaTelemetry = () => {
       const metrics = this.capture.metrics(), rtt = [...(this.client.metrics?.rtt || [])].sort((a,b) => a-b);
@@ -30,7 +44,7 @@ export class ControllerSession {
     };
     this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, getTouch: () => ({ x: this.action === 'recenter' ? 1 : 0, y: .5, pressed: this.actionPressed }), onEmit: () => this.emissionRate.add(now()) });
   }
-  snapshot() { return { state: this.state, network: this.network, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
+  snapshot() { return { gameContext: this.client.gameContextExpires >= performance.now() ? this.client.gameContext || null : null, playerId: this.client.identity?.playerId || null, state: this.state, network: this.network, connectionCheck: this.connectionCheck, publicTunnel: this.publicTunnel, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
   publish() { if (!this.disposed) this.notify(this.snapshot()); }
   async connect() {
     if (this.disposed || this.attempted || !this.hasAdmission) return;
@@ -46,16 +60,74 @@ export class ControllerSession {
           this.win.clearInterval(this.monitor); this.publish();
           void this.client.close(false).catch(() => {});
         }
+        else this.publish();
       }, 500);
     } catch {
       if (!this.disposed) { this.state = 'ERROR'; this.network = 'NOT_CONNECTED'; this.publish(); }
     }
   }
+  async setPlayerName(displayName) {
+    if (this.disposed || this.network !== 'NETWORK_READY') return 'UNAVAILABLE';
+    const name = displayName.normalize('NFC').trim();
+    if (!name || name.length > 40 || !/^[\p{L}\p{M}\p{N} _.'-]+$/u.test(name)) return 'INVALID';
+    try {
+      const { peerId, resumeToken } = this.client.identity;
+      const response = await this.client.fetcher('/mobile/name', { method: 'POST', cache: 'no-store', signal: AbortSignal.timeout(6500),
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ peerId, resumeToken, displayName: name }) });
+      if (!response.ok) return 'UNAVAILABLE';
+      return (await response.json()).displayName === name ? 'SAVED' : 'UNAVAILABLE';
+    } catch { return 'UNAVAILABLE'; }
+  }
+  async createProfile(displayName) {
+    if (this.disposed || this.network !== 'NETWORK_READY' || this.profileAttempted) return 'UNAVAILABLE';
+    const name = displayName.normalize('NFC').trim();
+    if (!name || name.length > 40 || !/^[\p{L}\p{M}\p{N} _.'-]+$/u.test(name)) return 'INVALID';
+    this.profileAttempted = true;
+    const abort = new AbortController(); const timer = this.win.setTimeout(() => abort.abort(), 6500);
+    try {
+      const { peerId, resumeToken } = this.client.identity;
+      const response = await this.client.fetcher('/mobile/profile', { method: 'POST', cache: 'no-store', signal: abort.signal,
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ peerId, resumeToken, displayName: name }) });
+      if (response.status === 503) { this.profileAttempted=false; return 'UNAVAILABLE'; }
+      if (!response.ok) return 'UNCONFIRMED';
+      const result = await response.json();
+      return typeof result.id === 'string' ? 'SAVED' : 'UNCONFIRMED';
+    } catch { return 'UNCONFIRMED'; }
+    finally { this.win.clearTimeout(timer); }
+  }
+  async checkConnection() {
+    if (this.disposed || this.connectionCheck === 'CHECKING') return;
+    if (!this.win.isSecureContext) { this.connectionCheck = 'INSECURE'; this.publish(); return; }
+    this.connectionCheck = 'CHECKING'; this.publish();
+    const abort = new AbortController(); const timeout = this.win.setTimeout(() => abort.abort(), 5000);
+    try {
+      const response = await this.client.fetcher(this.publicTunnel ? '/' : '/api/health', { cache: 'no-store', signal: abort.signal });
+      let ready = false;
+      if (response.ok && this.publicTunnel) ready = (await response.text()).includes('Gorilla Escape');
+      else if (response.ok) {
+        const health = await response.json();
+        ready = health?.status === 'ok' && health?.service === 'gorilla-escape-local' && health?.secure === true;
+      }
+      this.connectionCheck = ready ? 'READY' : 'UNREACHABLE';
+    } catch { this.connectionCheck = 'UNREACHABLE'; }
+    finally { this.win.clearTimeout(timeout); if (!this.disposed) this.publish(); }
+  }
+  async keepAwake() {
+    if (!this.wakeWanted || this.disposed || this.doc.visibilityState === 'hidden' || this.wakePending || (this.wakeLock && !this.wakeLock.released)) return;
+    this.wakePending = true;
+    try {
+      const lock = await this.win.navigator?.wakeLock?.request('screen');
+      if (this.disposed || this.doc.visibilityState === 'hidden' || !this.wakeWanted) await lock?.release(); else this.wakeLock = lock;
+    } catch { /* Unsupported or denied: sensors still work while visible. */ }
+    finally { this.wakePending = false; }
+  }
   activate() {
     if (this.disposed || this.network !== 'NETWORK_READY' || this.requesting ||
       !['PERMISSION_REQUIRED', 'PERMISSION_DENIED', 'SENSOR_UNAVAILABLE', 'NO_SENSOR_INPUT', 'INPUT_LIMITED', 'ERROR'].includes(this.state)) return;
     this.requesting = true;
-    const request = requestControlPermissions(this.win); // Invoke BEFORE notifying/rendering/awaiting.
+    this.wakeWanted = true; void this.keepAwake();
+    const request = this.permissions && !Object.values(this.permissions).some(p => ['denied', 'permission-error'].includes(p)) && Object.values(this.permissions).some(p => ['granted', 'not-required-by-api'].includes(p))
+      ? Promise.resolve({secure: this.win.isSecureContext, permissions: this.permissions, capabilities: this.capabilities}) : requestControlPermissions(this.win); // Invoke BEFORE notifying/rendering/awaiting.
     this.state = 'REQUESTING_PERMISSION'; this.publish();
     return request.then(async report => {
       if (this.disposed || this.network !== 'NETWORK_READY') return;
@@ -74,7 +146,7 @@ export class ControllerSession {
     if (this.disposed || this.network !== 'NETWORK_READY' || !['RUNNING', 'SUSPENDED'].includes(this.capture.state)) return;
     const state = this.capture.inputState();
     if (state === 'CONTROL_SUSPENDED') {
-      this.actionPressed = false;
+      this.actionPressed = false; this.controlNeutral = null; this.controlTilt = 0;
       this.cancelMeasurement();
       this.client.latest = null; // Discard unsent pre-background input, leave an already-sent frame alone.
     }
@@ -120,7 +192,10 @@ export class ControllerSession {
   }
   async dispose() {
     if (this.disposed) return;
-    this.actionPressed = false; this.disposed = true; this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
+    this.actionPressed = false; this.wakeWanted = false;
+    this.disposed = true; this.doc.removeEventListener('visibilitychange', this.visibilityWake);
+    void this.wakeLock?.release().catch(() => {});
+    this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
     return this.client.close(false); // Owned transport cleanup only; no new lifecycle policy.
   }
 }

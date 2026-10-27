@@ -65,6 +65,12 @@ namespace GorillaEscape.Network
         public void RequestConnectionMode(string mode){if(!qaEnabled||Array.IndexOf(new[]{"AUTO","CABIN","CLOUDFLARED"},mode)<0)throw new InvalidOperationException("QA_CONNECTION_MODE");Interlocked.Exchange(ref requestedQaMode,mode);}
         public QaAdmissionWire Qa {get;private set;}
         public QaMetricsWire QaMetrics {get;private set;}
+        string gameContext;
+        public void PresentPhoneGame(GamePresentationWire context)
+        {
+            if(context==null||!context.Valid())throw new ArgumentException("GAME_CONTEXT_INVALID");
+            Interlocked.Exchange(ref gameContext,JsonUtility.ToJson(context));
+        }
         int regenerateQa;
         public void RegenerateQa(){if(!qaEnabled)throw new InvalidOperationException("QA_DISABLED");Interlocked.Exchange(ref regenerateQa,1);}
         public event Action<PhoneInputWire> PhoneInputReceived;
@@ -146,7 +152,7 @@ namespace GorillaEscape.Network
                 string secret = Convert.ToBase64String(random).TrimEnd('=').Replace('+', '-').Replace('/', '_');
                 var start = new ProcessStartInfo { FileName = java, UseShellExecute = false, RedirectStandardInput = true,
                     RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true, WorkingDirectory = Path.GetDirectoryName(jar) };
-                start.Arguments = "-Djava.net.preferIPv4Stack=true -jar " + Quote(jar) + " --gorilla.ipc.managed=true --server.address=127.0.0.1 --server.port=0 --logging.config=classpath:ipc-logback.xml";
+                start.Arguments = "-Djava.net.preferIPv4Stack=true -XX:TieredStopAtLevel=1 -noverify -jar " + Quote(jar) + " --gorilla.ipc.managed=true --server.address=127.0.0.1 --server.port=0 --logging.config=classpath:ipc-logback.xml";
                 if(lobbyEnabled||Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1")start.Arguments+=" --gorilla.mobile.rtc-enabled=true";
                 start.EnvironmentVariables["GORILLA_IPC_INSTANCE"] = a.result.instanceId;
                 start.EnvironmentVariables["GORILLA_IPC_TOKEN"] = secret;
@@ -234,6 +240,7 @@ namespace GorillaEscape.Network
                     }
                     if(qaEnabled&&secret==null){var action=Interlocked.Exchange(ref requestedNetworkAction,null);if(action!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaNetworkAction\":\""+action+"\"}";}
                     if(qaEnabled&&secret==null){var mode=Interlocked.Exchange(ref requestedQaMode,null);if(mode!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaConnectionMode\":\""+mode+"\"}";}
+                    if(phone&&secret==null){var display=Interlocked.CompareExchange(ref gameContext,null,null);if(display!=null)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"gameContext\":"+display+"}";}
                     if(qaEnabled&&secret==null&&Interlocked.Exchange(ref regenerateQa,0)==1)payload=(payload=="{}"?"{":payload.Substring(0,payload.Length-1)+",")+"\"qaRegenerate\":true}";
                     a.result.sent++;
                     IpcFrameCodec.Write(stream, "{\"ipcVersion\":1,\"type\":\"PING\",\"instanceId\":\"" + a.result.instanceId

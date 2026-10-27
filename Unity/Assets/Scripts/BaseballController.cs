@@ -60,6 +60,7 @@ public sealed class BaseballController : MonoBehaviour
 
     private void Update()
     {
+        session.PresentGame(state==PlayState.GameOver?"Finished":state==PlayState.Ready?"Ready":"Playing",score,Mathf.Clamp01(pitches/10f));
         if(!session.IsInputReady){phonePower=0;phoneCalibrated=false;return;}
         if(session.TryConsumeFrame(out var frame))ReadSensors(frame);
         Vector3 handPosition = new Vector3(Mathf.Lerp(-2.45f,2.45f,rightHand.x),Mathf.Lerp(2.75f,.30f,rightHand.y),-3.1f);

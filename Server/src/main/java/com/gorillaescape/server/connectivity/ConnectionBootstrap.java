@@ -86,7 +86,7 @@ public final class ConnectionBootstrap implements AutoCloseable {
             "dns",publicReady?"PASS":"NOT_CONFIRMED","publicHttps",publicReady?"200":"NOT_CONFIRMED",
             "tunnelStartup",state);
     }
-    public URI page(){return page;}public long revision(){return revision;}public boolean ready(){return state.equals("READY");}
+    public URI page(){return page;}public long revision(){return revision;}public boolean ready(){return state.equals("READY");}public Mode requested(){return requested;}
     public synchronized Map<String,Object> snapshot(){poll();return Map.ofEntries(Map.entry("requestedMode",requested.name()),Map.entry("resolvedMode",resolved),Map.entry("bootstrapState",state),Map.entry("tunnelState",tunnel.state().name()),Map.entry("publicOrigin",page.toASCIIString()),Map.entry("lanOrigin",cabin.toASCIIString()),Map.entry("fallbackReason",fallback),Map.entry("tunnelStartupMs",startupMs),Map.entry("fallbackMs",fallbackMs),Map.entry("wanAvailability",resolved.equals("CLOUDFLARED")&&state.equals("READY")?"TUNNEL_CONNECTED":"NOT_MEASURED"),Map.entry("webRtcPath","LAN DIRECT"));}
     @Override public void close(){
         synchronized(this){closed=true;nextRetryNano=0;worker.shutdownNow();state="STOPPED";}

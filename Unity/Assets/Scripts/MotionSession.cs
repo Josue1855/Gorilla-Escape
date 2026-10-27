@@ -9,7 +9,7 @@ public sealed class MotionSession : MonoBehaviour, IPortableInputSource
 {
     public enum HandTrackingMode { RightOnly, LeftOnly, Both }
     public static MotionSession Instance { get; private set; }
-    public string RoomCode => "JUGADOR 1";
+    public string RoomCode => serviceHost != null && !string.IsNullOrEmpty(serviceHost.RoomCode) ? serviceHost.RoomCode : "";
     public string Status => serviceHost != null ? serviceHost.PhoneStatus : "SIN CONEXIÓN";
     public bool IsPolling => serviceHost != null && serviceHost.IsRunning;
     public bool PhoneConnected => serviceHost != null && serviceHost.PhoneConnected;
@@ -20,6 +20,25 @@ public sealed class MotionSession : MonoBehaviour, IPortableInputSource
     public bool UsesLeftHand => HandMode != HandTrackingMode.RightOnly;
     public bool UsesRightHand => HandMode != HandTrackingMode.LeftOnly;
     PortableServiceHost serviceHost;
+    readonly GorillaEscape.Contracts.GamePresentationWire presentation=new GorillaEscape.Contracts.GamePresentationWire();
+    float nextPresentation;
+    public void PresentGame(string phase,double? score=null,float? progress=null,float? elapsed=null,float? balance=null,float? distance=null)
+    {
+        presentation.phase=phase;var s=presentation.stats;
+        s.hasScore=score.HasValue;s.score=score.GetValueOrDefault();
+        s.hasProgress=progress.HasValue;s.progress=Mathf.Clamp01(progress.GetValueOrDefault());
+        s.hasElapsed=elapsed.HasValue;s.elapsed=Mathf.Clamp(elapsed.GetValueOrDefault(),0,3600);
+        s.hasBalance=balance.HasValue;s.balance=Mathf.Clamp(balance.GetValueOrDefault(),-1,1);
+        s.hasDistance=distance.HasValue;s.distance=Mathf.Clamp(distance.GetValueOrDefault(),0,10000);
+    }
+    void LateUpdate()
+    {
+        if(serviceHost==null||Time.unscaledTime<nextPresentation)return;
+        nextPresentation=Time.unscaledTime+.2f;
+        var context=presentation.Copy();
+        if(context.gameId!="lobby"&&(!IsInputReady||Time.timeScale==0)&&context.phase!="Won"&&context.phase!="Lost"&&context.phase!="Finished")context.phase="Paused";
+        serviceHost.PresentPhoneGame(context);
+    }
     long delivered=-1;
     readonly JunglePauseLease pause=new JunglePauseLease();
     public bool IsInputReady => serviceHost!=null&&serviceHost.IsInputReady;
@@ -45,6 +64,11 @@ public sealed class MotionSession : MonoBehaviour, IPortableInputSource
     }
     public void ConfigureForScene(string sceneName)
     {
+        presentation.gameId=JungleGameplayInput.ForScene(sceneName) switch {
+            JungleGame.Bowling=>"bowling",JungleGame.Boxing=>"boxing",JungleGame.Baseball=>"baseball",JungleGame.Drums=>"drums",
+            JungleGame.CoconutSlice=>"coconut-slice",JungleGame.Whack=>"whack",JungleGame.LogBalance=>"log-balance",_=>"lobby"};
+        presentation.playerId=presentation.gameId=="lobby"?0:1;
+        PresentGame("Ready");nextPresentation=0;
         HandMode = sceneName == SceneNavigator.Boxing || sceneName == SceneNavigator.Drums || sceneName == SceneNavigator.CoconutSlice || sceneName == SceneNavigator.LogBalance
             ? HandTrackingMode.Both : HandTrackingMode.RightOnly;
         serviceHost.SelectGame(JungleGameplayInput.ForScene(sceneName));
@@ -77,7 +101,8 @@ public sealed class MotionSession : MonoBehaviour, IPortableInputSource
         int depth=GUI.depth;GUI.depth=-100;
         float width=Mathf.Min(Screen.width-40,760);
         GUI.Box(new Rect((Screen.width-width)/2,Screen.height*.38f,width,140),"JUEGO EN PAUSA");
-        string message=InputStatus==JungleInputStatus.PartialInput?"Revisa los permisos y sensores del teléfono."
+        string message=serviceHost.Game==JungleGame.LogBalance?"Revisa la conexión y los sensores del teléfono."
+            :InputStatus==JungleInputStatus.PartialInput?"Revisa los permisos y sensores del teléfono."
             :"Colócate frente a la cámara y mantén visibles las manos. Revisa la conexión del teléfono.";
         GUI.Label(new Rect((Screen.width-width)/2+20,Screen.height*.38f+35,width-40,85),message,
             new GUIStyle(GUI.skin.label){wordWrap=true,alignment=TextAnchor.MiddleCenter,fontSize=20});

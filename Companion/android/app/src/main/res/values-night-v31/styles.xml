@@ -1,0 +1,1 @@
+<resources><style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar"><item name="android:windowSplashScreenBackground">#102B25</item><item name="android:windowSplashScreenAnimatedIcon">@drawable/gorilla_mark</item><item name="android:windowBackground">#102B25</item></style></resources>

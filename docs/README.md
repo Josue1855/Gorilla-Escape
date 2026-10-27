@@ -1,5 +1,7 @@
 # Documentación de Gorilla Escape: Gorilimpiadas
 
+Integración actual de la rama de juegos: [red, PWA, SQLite, Flutter y ejecutable](03-development/MOBILE_STACK_INTEGRATION.md).
+
 Última revisión: 2026-10-26. Se conservan las mejoras de navegación y arranque de develop. El backend de jugadores y el laboratorio PWA ya están integrados en los develop de sus repositorios Josue1855; la propuesta UI/UX sigue para revisión. El upstream de Hiram, el adaptador RTC/UI y el empaquetado final siguen separados. Tres capturas literales DevTools pendientes según el dossier. [Fuentes y estado actual](00-product/SOURCE_INVENTORY.md#s12--reconciliación-del-pr-130-2026-10-26).
 
 Comenzar por [estado verificable](00-product/DEVELOPMENT_STATUS.md), [informe de auditoría](00-product/AUDIT_REPORT.md) y [siguientes acciones](05-management/NEXT_STEPS.md). Las etiquetas, límites de verificación y decisiones están centralizados; los documentos especializados contienen su detalle único.

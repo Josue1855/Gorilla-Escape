@@ -20,7 +20,7 @@ def validate():
         guid = re.search(r'^guid: ([a-f0-9]{32})$', Path(str(path) + '.meta').read_text(), re.M)[1]
         assert guid in (ROOT / 'Unity/Assets/Scenes' / (scene + '.unity')).read_text(), scene
         text = path.read_text()
-        for required in ('TryConsumeFrame', 'TryAuthorize', 'IsInputReady'):
+        for required in ('TryConsumeFrame', 'TryAuthorize', 'IsInputReady', 'PresentGame'):
             assert required in text, f'{controller}: missing {required}'
         for forbidden in ('ConsumeMotion', 'ConsumePose', 'JsonUtility.FromJson', 'GetMouseButton', 'HttpClient', 'UnityWebRequest', 'Time.timeScale ='):
             assert forbidden not in text, f'{controller}: unexpected input/authority path {forbidden}'

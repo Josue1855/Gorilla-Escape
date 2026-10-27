@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import ReadyControl from './controller/ReadyControl.jsx';
 import HealthProbe from './connection/HealthProbe.jsx';
 import { ControllerSession } from './controller/session.js';
 import { screens } from './controller/presentation.js';
@@ -25,6 +26,8 @@ function Controller() {
   const [view, setView] = useState(null);
   const [diagnostic, setDiagnostic] = useState(null);
   const [copyStatus, setCopyStatus] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [nameStatus, setNameStatus] = useState(null);
   useEffect(() => {
     const session = new ControllerSession({ notify: setView });
     model.current = session; setView(session.snapshot());
@@ -39,6 +42,7 @@ function Controller() {
     catch { setCopyStatus('Copia el diagnóstico que aparece abajo.'); }
   }
   const canRetryPermission = state === 'ERROR' && view?.network === 'NETWORK_READY';
+  if (state === 'INPUT_READY') return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} actions={<><GameAction session={model} action="confirm">Confirmar / lanzar</GameAction><GameAction session={model} action="recenter">Recentrar</GameAction></>}/>;
   return <main className="controller-shell">
     <header className="brand"><GorillaMark/><div><p className="eyebrow">GORILIMPIADAS</p><h1>GORILLA<br/>ESCAPE</h1></div></header>
     <p className="edition">GORILLA CORE · TU TELÉFONO, TU CONTROL</p>
@@ -46,16 +50,27 @@ function Controller() {
       <div className="status-symbol" aria-hidden="true">{feedback === 'connecting' ? '…' : feedback === 'success' ? '✓' : feedback === 'error' ? '×' : '◆'}</div>
       <div role="status" aria-live="polite" aria-atomic="true"><h2 id="connection-title">{title}</h2><p>{description}</p></div>
       {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión local establecida</p>}
+      {state === 'ERROR' && view?.network === 'NOT_CONNECTED' && <div className="connection-recovery">
+        <p>La conexión falló antes de recibir una respuesta de la PC. Comprueba este navegador antes de volver a escanear.</p>
+        <button className="primary" disabled={view?.connectionCheck === 'CHECKING'} onClick={() => void model.current.checkConnection()}>{view?.connectionCheck === 'CHECKING' ? 'COMPROBANDO…' : 'COMPROBAR CONEXIÓN'}</button>
+        {view?.connectionCheck === 'READY' && <p role="status">La PC responde desde este navegador. Cierra esta pestaña y escanea un QR nuevo en la PC.</p>}
+        {['UNREACHABLE', 'INSECURE'].includes(view?.connectionCheck) && <p role="status">Este navegador no pudo verificar la conexión. Comprueba la misma Wi-Fi y que el juego siga abierto. Si usas conexión local, revisa la confianza del certificado; la PC ofrece Configurar este teléfono.</p>}
+        {!view?.publicTunnel && <a className="prepare-link" href="/prepare" target="_blank" rel="noreferrer">Ver preparación de este teléfono</a>}
+      </div>}
+      {state === 'PERMISSION_REQUIRED' && nameStatus !== 'SAVED' && <form className="profile-setup" onSubmit={async event => {
+        event.preventDefault(); setNameStatus('SAVING');
+        setNameStatus(await model.current.setPlayerName(displayName));
+      }}>
+        <label>¿Cómo te llamas?<input value={displayName} maxLength={40} autoComplete="nickname" onChange={e => setDisplayName(e.target.value)} disabled={nameStatus === 'SAVING'}/></label>
+        <button className="primary" type="submit" disabled={!displayName.trim() || nameStatus === 'SAVING'}>{nameStatus === 'SAVING' ? 'GUARDANDO…' : 'CONTINUAR'}</button>
+        <p role="status">{nameStatus === 'INVALID' ? 'Usa hasta 40 letras, números o signos simples.' : nameStatus === 'UNAVAILABLE' ? 'No se pudo guardar tu nombre. Comprueba la conexión e inténtalo de nuevo.' : 'Tu nombre aparecerá en la pantalla del juego.'}</p>
+      </form>}
       <aside className="safety" aria-label="Seguridad"><strong>Sujeta firmemente tu teléfono.</strong><span>No lo sueltes ni lo lances durante el juego.</span></aside>
-      {(label || canRetryPermission) && <button className="primary" onClick={() => {
+      {(label || canRetryPermission) && !(state === 'PERMISSION_REQUIRED' && nameStatus !== 'SAVED') && <button className="primary" onClick={() => {
         setDiagnostic(null); setCopyStatus('');
         if (state === 'CONNECT') void model.current.connect();
         else void model.current.activate();
       }}>{label || 'REINTENTAR PERMISO'}</button>}
-      {state === 'INPUT_READY' && <div aria-label="Controles del juego">
-        <GameAction session={model} action="confirm">Confirmar / lanzar</GameAction>
-        <GameAction session={model} action="recenter">Recentrar</GameAction>
-      </div>}
     </section>
     <footer><p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
       <button className="secondary" onClick={copyDiagnostic}>Copiar diagnóstico</button>

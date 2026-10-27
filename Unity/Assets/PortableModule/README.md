@@ -11,3 +11,5 @@ El modo actual usa al jugador 1. Compartir la infraestructura no declara soporte
 El QR se dibuja localmente desde los módulos enviados por Java en IPC autenticado. Los botones de la PWA usan el grupo touch del contrato existente para confirmar/recentrar; no generan por sí mismos golpes deportivos. La recuperación de procesos sigue siendo manual y exige limpieza completa. El Editor necesita opt-in y permiso del test runner; no se inicia hardware en batch mode.
 
 Para reutilizar este adaptador se requieren Shared, `_Project` y los runtimes oficiales; no basta copiar esta carpeta. [Arquitectura, matriz por juego, pruebas y aceptación pendiente](../../../docs/02-gameplay/JUNGLE_FUSED_INPUT.md).
+
+La presentación móvil usa el DTO Shared GamePresentationWire v2 por el IPC autenticado existente. PortableServiceHost sólo lo entrega al supervisor; no registra perfiles ni consulta SQLite. El backend privado lo supervisa Java. [Integración](../../../docs/03-development/MOBILE_STACK_INTEGRATION.md).

@@ -25,6 +25,7 @@ public sealed class WhackAMoleController : MonoBehaviour
 
     private void Update()
     {
+        session.PresentGame(state==State.Intro?"Ready":state==State.Countdown?"Countdown":state==State.Playing?"Playing":"Finished",score);
         if(!session.IsInputReady){downSpeed=phonePower=0;whackRequested=false;return;}
         whackRequested=false;
         if(session.TryConsumeFrame(out var frame))ReadInput(frame);

@@ -296,6 +296,7 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     private void Update()
     {
+        session.PresentGame(state==GameState.Intro?"Ready":state==GameState.Countdown?"Countdown":state==GameState.Playing?"Playing":"Finished",score);
         if(!session.IsInputReady){leftSpeed=rightSpeed=0;return;}
         if(session.TryConsumeFrame(out var frame))ReadPose(frame);
         UpdateDistractorGorilla();

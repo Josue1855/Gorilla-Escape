@@ -18,8 +18,35 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public static PortableServiceHost Instance { get; private set; }
     public bool IsRunning => java != null && (java.State == IpcState.STARTING || java.State == IpcState.CONNECTING || java.State == IpcState.RUNNING);
     public string Status { get; private set; } = "LISTO PARA CONECTAR";
+    private string pregeneratedRoomCode;
+    public string RoomCode => !string.IsNullOrEmpty(pregeneratedRoomCode) ? pregeneratedRoomCode : (java?.QaConnection?.roomCode ?? java?.Lobby?.Snapshot?.roomCode ?? "");
+    public void EnsureRoomCode()
+    {
+        if (string.IsNullOrEmpty(pregeneratedRoomCode))
+        {
+            string env = Environment.GetEnvironmentVariable("GORILLA_ROOM_CODE");
+            string priorGenerated = Environment.GetEnvironmentVariable("GORILLA_GENERATED_ROOM_CODE");
+            if (!string.IsNullOrEmpty(env) && env.Length >= 4 && !string.Equals(env,priorGenerated,StringComparison.OrdinalIgnoreCase))
+                pregeneratedRoomCode = env.ToLowerInvariant();
+            else
+            {
+                const string chars = "abcdefghjkmnpqrstuvwxyz23456789";
+                var rng = new System.Random();
+                char[] code = new char[4];
+                do {
+                    for (int i = 0; i < 4; i++) code[i] = chars[rng.Next(chars.Length)];
+                    pregeneratedRoomCode = new string(code);
+                } while (string.Equals(pregeneratedRoomCode,priorGenerated,StringComparison.OrdinalIgnoreCase));
+                Environment.SetEnvironmentVariable("GORILLA_GENERATED_ROOM_CODE", pregeneratedRoomCode);
+                Environment.SetEnvironmentVariable("GORILLA_ROOM_CODE", pregeneratedRoomCode);
+            }
+        }
+    }
     // Admission secrets never leave the Java-generated QR over authenticated loopback IPC.
     public QaAdmissionWire Admission => java?.State == IpcState.RUNNING ? java.Qa : null;
+    public LobbySnapshotWire Lobby => java?.State == IpcState.RUNNING ? java.Lobby.Snapshot : null;
+    public string AdmissionMode => java?.State == IpcState.RUNNING ? java.QaConnection?.admissionMode : null;
+    public string ConnectionFallback => java?.State == IpcState.RUNNING ? java.QaConnection?.fallbackReason : null;
     public QaAdmissionWire Preparation => java?.State == IpcState.RUNNING ? java.QaHosting?.prepare : null;
     public string FirewallState => java?.QaConnection?.firewallState ?? "CHECKING";
     public bool NeedsNetworkPermission => FirewallState == "NEEDS_PERMISSION" || FirewallState == "INSPECTION_REQUIRED";
@@ -59,9 +86,10 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public bool Authorize(JungleAction action,long revision)
     {
         RefreshInput();
-        return PhoneConnected&&vision?.State=="RUNNING"&&gameplay.Authorize(action,revision,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+        return PhoneConnected&&(!JungleGameplayInput.RequiresCamera(gameplay.Game)||vision?.State=="RUNNING")&&gameplay.Authorize(action,revision,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
     }
-    bool admissionRequested, quitting, allowQuit, previousBackground, shutdownFailed;
+    bool admissionRequested, replacementRequested, quitting, allowQuit, previousBackground, shutdownFailed;
+    string lastConnectionDiagnostic;
 
     public static PortableServiceHost Ensure()
     {
@@ -73,12 +101,14 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        EnsureRoomCode();
         previousBackground = Application.runInBackground;
         Application.runInBackground = true;
         Application.wantsToQuit += WantsToQuit;
     }
     public bool StartModule()
     {
+        EnsureRoomCode();
         if (IsRunning) return true;
         if (quitting || closing != null && !closing.IsCompleted || !CleanupComplete) return false;
         // Editor tests and ordinary scene editing never launch physical services implicitly.
@@ -93,6 +123,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
             return false;
         }
         string root = Environment.GetEnvironmentVariable("GORILLA_PACKAGE_ROOT") ?? Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+        if(!Application.isEditor)GorillaEscape.Core.PackagedRuntimeEnvironment.Configure(root,Application.platform==RuntimePlatform.WindowsPlayer);
         string javaPath = Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA") ?? Path.Combine(root, "Java", "runtime", "bin", Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor ? "java.exe" : "java");
         string jarPath = Environment.GetEnvironmentVariable("GORILLA_IPC_JAR") ?? Path.Combine(root, "Java", "server.jar");
         if (!Path.IsPathRooted(javaPath) || !File.Exists(javaPath) || !Path.IsPathRooted(jarPath) || !File.Exists(jarPath))
@@ -115,7 +146,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         gameplay.Select(gameplay.Game);
         refreshedFrame=-1;
         closing = null;
-        admissionRequested = false;
+        admissionRequested = false; replacementRequested = false;
         Status = "INICIANDO SERVIDOR LOCAL";
         javaRun = RunJava(javaPath, jarPath);
         visionRun = Environment.GetEnvironmentVariable("GORILLA_CAMERA_ENABLED") == "0" ? Task.CompletedTask : RunVision(root);
@@ -143,25 +174,39 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
             LastPhonePacketAt=LastPosePacketAt=-10;
             return;
         }
+        var connection=java.QaConnection;
+        if(connection!=null){
+            string diagnostic=(connection.requestedMode??"?")+"/"+(connection.resolvedMode??"?")+"/"+(connection.bootstrapState??"?")+"/"+(connection.fallbackReason??"?");
+            if(diagnostic!=lastConnectionDiagnostic){lastConnectionDiagnostic=diagnostic;Debug.Log("Gorilla connection: "+diagnostic);}
+        }
+        if(java.Qa?.state=="SCANNED/JOINED" && !replacementRequested && (java.Lobby.Snapshot?.players?.Length??0)<4){java.RegenerateQa();replacementRequested=true;}
+        else if(java.Qa?.state=="AVAILABLE")replacementRequested=false;
         if(!admissionRequested){java.RegenerateQa();admissionRequested=true;}
-        if(java.PhoneInputs.TryLatest(1,out var phone))
+        else if(!PhoneConnected&&java.QaConnection?.resolvedMode=="CLOUDFLARED"&&java.QaConnection?.admissionMode!="CLOUDFLARED")
+        {
+            java.RegenerateQa();
+        }
+        java.PhoneInputs.TryLatest(1,out var phone);
+        if(phone!=null)
         {
             if(phone.sequence!=observedSequence||phone.connectionEpoch!=observedEpoch||phone.sessionId!=observedSession||phone.deviceSessionId!=observedDevice)
             {
                 observedSequence=phone.sequence;observedEpoch=phone.connectionEpoch;observedSession=phone.sessionId;observedDevice=phone.deviceSessionId;
                 fusion.ObservePhone(phone);
-                if(adapter.TryMotion(phone,now,out _))LastPhonePacketAt=Time.unscaledTime;
+                if(adapter.TryMotion(phone,now,out _) || (gameplay.Game==JungleGame.LogBalance && adapter.TryTilt(phone,now,out _)))LastPhonePacketAt=Time.unscaledTime;
             }
         }
         vision.Poll();
         if(vision.Take(out var frame,out var received))fusion.ObserveCamera(frame,received);
         var candidate=fusion.EvaluateLatest(1,now);
-        if(vision.State!="RUNNING")gameplay.Update(null,now);
+        if(gameplay.Game==JungleGame.LogBalance)gameplay.UpdatePhone(phone,now);
+        else if(vision.State!="RUNNING")gameplay.Update(null,now);
         else gameplay.Update(candidate,now);
         LastPosePacketAt=candidate.Eligible?Time.unscaledTime:-10;
         Status=NeedsNetworkPermission?"AUTORIZA EL ACCESO A LA RED LOCAL":PhoneConnected?"CELULAR CONECTADO":"ESPERANDO EL CELULAR";
     }
     bool CurrentPhoneConnected() => java.PhoneInputs.TryLatest(1,out var input) && input.connectionState!="DISCONNECTED";
+    public void PresentPhoneGame(GorillaEscape.Contracts.GamePresentationWire context) { if(java?.State==IpcState.RUNNING)java.PresentPhoneGame(context); }
     public void InstallNetwork() { if (java?.State == IpcState.RUNNING && NeedsNetworkPermission) java.RequestNetworkAction("INSTALL"); }
     public void RegenerateAdmission() { if (java?.State == IpcState.RUNNING) java.RegenerateQa(); }
     public Task ShutdownAsync() => closing ?? (closing = Close());

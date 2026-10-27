@@ -46,3 +46,7 @@ En esta PC ya existe el binario revisado dentro del paquete preparado. Un checko
 [Comprobación real y límite de conectividad observado](../docs/evidence/saul-log-balance-2026-10-27/cloudflared.md). Que el proceso se registre no garantiza HTTPS público disponible. AUTO conserva la vía LAN si la comprobación externa falla.
 
 Los tiempos y la recuperación AUTO se ampliaron con los ajustes de la rama del tronco: [política vigente y pruebas](../docs/03-development/CLOUDFLARED_RECOVERY.md). Arranque de 30 s por defecto, configurable hasta 60 s; reintento tras 20 s sin jugadores y con limpieza completa.
+
+## Teléfono y persistencia
+
+Los siete juegos publican presentación v2 sobre IPC/RTC, con métricas reales disponibles; PWA y Companion la muestran sin decidir la simulación. Registro opcional en SQLite y arranque del Player usan los procesos privados empaquetados. [Implementación, build y validación](../docs/03-development/MOBILE_STACK_INTEGRATION.md).

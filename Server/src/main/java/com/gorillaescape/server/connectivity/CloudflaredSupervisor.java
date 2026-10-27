@@ -36,15 +36,18 @@ public final class CloudflaredSupervisor implements Tunnel {
     }
     @FunctionalInterface interface HealthProbe {boolean ready(URI origin,long remainingMs)throws Exception;}
     private final HealthProbe probe;
-    // Package-private injection is exclusively for deterministic process fixtures.
-    CloudflaredSupervisor(Path binary,HealthProbe probe){this(binary,probe,false);}
-    private CloudflaredSupervisor(Path binary,HealthProbe probe,boolean verifyBinary){this.binary=binary;this.probe=probe;this.verifyBinary=verifyBinary;}
-    private static final Pattern URL=Pattern.compile("(?<![A-Za-z0-9./_-])https://[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com(?=[\\s|]|$)");
+    private final java.util.function.Consumer<URI> onRegistered;
+    CloudflaredSupervisor(Path binary,HealthProbe probe){this(binary,probe,false,null);}
+    CloudflaredSupervisor(Path binary,HealthProbe probe,boolean verifyBinary){this(binary,probe,verifyBinary,null);}
+    private CloudflaredSupervisor(Path binary,HealthProbe probe,boolean verifyBinary,java.util.function.Consumer<URI> onRegistered){this.binary=binary;this.probe=probe;this.verifyBinary=verifyBinary;this.onRegistered=onRegistered;}
+    private static final String DEFAULT_NAMED_HOST="play.gorillas.run";
+    private static final Pattern URL=Pattern.compile("(?<![A-Za-z0-9./_-])https://(?:[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com|(?:play\\.)?gorillas\\.run)(?=[\\s|]|$)");
     private volatile int healthAttempts,lastHttpsStatus;
     private volatile java.net.http.HttpClient httpClient;
     private volatile String probeFailure="NONE";
     public Map<String,Object> diagnostics(){return Map.of("binarySha",binarySha,"registered",registered,"activeConnections",activeConnections,"healthAttempts",healthAttempts,"lastHttpsStatus",lastHttpsStatus,"probeFailure",probeFailure,"failure",failure,"cleanupComplete",cleanupComplete());}
-    public CloudflaredSupervisor(Path binary){this.binary=binary;this.verifyBinary=true;this.probe=this::httpReady;}
+    public CloudflaredSupervisor(Path binary){this(binary,(java.util.function.Consumer<URI>)null);}
+    public CloudflaredSupervisor(Path binary,java.util.function.Consumer<URI> onRegistered){this.binary=binary;this.verifyBinary=true;this.probe=this::httpReady;this.onRegistered=onRegistered;}
     private boolean httpReady(URI origin,long remainingMs)throws Exception{
         if(cancelled)throw new InterruptedException();
         var client=httpClient;
@@ -59,7 +62,12 @@ public final class CloudflaredSupervisor implements Tunnel {
         return null;
     }
     public static URI validatePublicOrigin(String value){
-        if(value==null||value.length()>253||!value.matches("https://[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com"))throw new IllegalArgumentException("TUNNEL_ORIGIN_INVALID");
+        if(value==null||value.length()>253)throw new IllegalArgumentException("TUNNEL_ORIGIN_INVALID");
+        boolean matchesQuick=value.matches("https://[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com");
+        boolean matchesCustom=value.matches("https://(?:play\\.)?gorillas\\.run");
+        String customDomain=System.getenv("GORILLA_TUNNEL_DOMAIN");
+        if(customDomain!=null&&!customDomain.isBlank()&&value.equals("https://"+customDomain.trim()))matchesCustom=true;
+        if(!matchesQuick&&!matchesCustom)throw new IllegalArgumentException("TUNNEL_ORIGIN_INVALID");
         var uri=URI.create(value);if(uri.getHost().length()>253||uri.getHost().split("\\.")[0].length()>63)throw new IllegalArgumentException("TUNNEL_ORIGIN_INVALID");return uri;
     }
     static URI parseOrigin(String line){if(line.length()>2048)return null;var m=URL.matcher(line);if(!m.find())return null;try{return validatePublicOrigin(m.group());}catch(IllegalArgumentException e){return null;}}
@@ -78,10 +86,21 @@ public final class CloudflaredSupervisor implements Tunnel {
             if(child.exitValue()!=0||output.length>256||!info.matches("cloudflared version [0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,3}(?: \\(built [A-Za-z0-9: .+-]+\\))?"))throw new IOException("TUNNEL_VERSION_INVALID");
             version=info;child=null;
             long left=deadline-System.nanoTime();if(left<=0)throw new IOException("TUNNEL_TIMEOUT");
-            config=Files.createTempFile("gorilla-quick-tunnel-",".yaml");Files.writeString(config,"# Isolated temporary QA tunnel; no account, token or named ingress.\n");
-            launch(binary.toString(),"tunnel","--config",config.toString(),"--no-autoupdate","--url",ingress.toASCIIString(),"--metrics","127.0.0.1:0");
+
+            // Check if a named tunnel credentials file is available (in production / verified binary or explicit opt-in)
+            NamedTunnelSpec named=onRegistered==null&&System.getenv("GORILLA_TUNNEL_ID")!=null?resolveNamedTunnel(ingress):null;
+            URI expectedOrigin=null;
+            if(named!=null){
+                config=named.configFile;
+                expectedOrigin=named.origin;
+                launch(binary.toString(),"tunnel","--config",config.toString(),"--no-autoupdate","--metrics","127.0.0.1:0","run",named.tunnelId);
+            }else{
+                config=Files.createTempFile("gorilla-quick-tunnel-",".yaml");Files.writeString(config,"# Isolated temporary QA tunnel; no account, token or named ingress.\n");
+                launch(binary.toString(),"tunnel","--config",config.toString(),"--no-autoupdate","--url",ingress.toASCIIString(),"--metrics","127.0.0.1:0");
+            }
             var ready=new CompletableFuture<URI>();Process owned=child;
-            reader=new Thread(()->read(owned,ready),"cloudflared-output");reader.setDaemon(true);reader.start();
+            final URI defaultOrigin=expectedOrigin;
+            reader=new Thread(()->read(owned,ready,defaultOrigin),"cloudflared-output");reader.setDaemon(true);reader.start();
             URI origin=ready.get(Math.max(1,deadline-System.nanoTime()),TimeUnit.NANOSECONDS);
             if(!owned.isAlive())throw new IOException("TUNNEL_DIED");
             boolean healthy=false;
@@ -103,9 +122,11 @@ public final class CloudflaredSupervisor implements Tunnel {
                     },3,3,TimeUnit.SECONDS);
                 }
             }
+            if(onRegistered!=null)onRegistered.accept(origin);
             return origin;
         }catch(Exception e){
-            failure=e instanceof IOException&&Set.of("TUNNEL_UNAVAILABLE","TUNNEL_SHA_INVALID","TUNNEL_VERSION_TIMEOUT","TUNNEL_VERSION_INVALID","TUNNEL_HTTPS_UNAVAILABLE","TUNNEL_TIMEOUT","TUNNEL_DIED","TUNNEL_CANCELLED").contains(e.getMessage())?e.getMessage():"TUNNEL_START_FAILED";
+            failure=(e instanceof IOException&&Set.of("TUNNEL_UNAVAILABLE","TUNNEL_SHA_INVALID","TUNNEL_VERSION_TIMEOUT","TUNNEL_VERSION_INVALID","TUNNEL_HTTPS_UNAVAILABLE","TUNNEL_TIMEOUT","TUNNEL_DIED","TUNNEL_CANCELLED").contains(e.getMessage()))
+                ||(e instanceof IllegalStateException&&Set.of("ROOM_IN_USE","ROOM_REGISTRATION_REJECTED","ROOM_REGISTRATION_UNCONFIGURED","ROOM_TUNNEL_INVALID","ROOM_ROUTE_UNAVAILABLE","ROOM_REGISTRATION_FAILED").contains(e.getMessage())) ? e.getMessage():"TUNNEL_START_FAILED";
             LOG.warn("Cloudflared startup failed: reason={} attempts={} httpStatus={} cause={} activeConnections={}",
                 failure,healthAttempts,lastHttpsStatus,probeFailure,activeConnections);
             close();state=State.FAILED;throw new IOException(failure);
@@ -118,6 +139,9 @@ public final class CloudflaredSupervisor implements Tunnel {
             if(i>0)types.append(" <- ");types.append(error.getClass().getSimpleName());
         }
         return types.toString();
+    }
+    synchronized void registrationLost(){
+        if(state==State.RUNNING){failure="ROOM_REGISTRATION_LOST";state=State.FAILED;}
     }
     void checkHealth(URI origin){
         if(state!=State.RUNNING)return;
@@ -151,8 +175,56 @@ public final class CloudflaredSupervisor implements Tunnel {
         builder.environment().keySet().removeIf(k->k.startsWith("GORILLA_")||k.startsWith("TUNNEL_")||k.startsWith("CLOUDFLARE_")||k.startsWith("CF_"));
         return builder;
     }
-    private void read(Process owned,CompletableFuture<URI> ready){
-        URI origin=null;var registrations=new RegistrationTracker();
+    record NamedTunnelSpec(String tunnelId,Path configFile,URI origin){}
+    private static NamedTunnelSpec resolveNamedTunnel(URI ingress){
+        try{
+            String tunnelId=System.getenv("GORILLA_TUNNEL_ID");
+            String credPath=System.getenv("GORILLA_TUNNEL_CREDENTIALS");
+            Path credFile=credPath!=null&&!credPath.isBlank()?Path.of(credPath):null;
+            if(credFile==null||!Files.isRegularFile(credFile)){
+                Path defaultCloudflaredDir=Path.of(System.getProperty("user.home"),".cloudflared");
+                if(Files.isDirectory(defaultCloudflaredDir)){
+                    if(tunnelId!=null&&!tunnelId.isBlank()){
+                        Path candidate=defaultCloudflaredDir.resolve(tunnelId+".json");
+                        if(Files.isRegularFile(candidate))credFile=candidate;
+                    }else{
+                        try(var stream=Files.list(defaultCloudflaredDir)){
+                            var list=stream.filter(p->p.getFileName().toString().endsWith(".json")).toList();
+                            if(!list.isEmpty()){
+                                credFile=list.get(0);
+                                String fn=credFile.getFileName().toString();
+                                tunnelId=fn.substring(0,fn.length()-5);
+                            }
+                        }
+                    }
+                }
+            }
+            if(credFile==null||tunnelId==null||tunnelId.isBlank()||!Files.isRegularFile(credFile))return null;
+            String domain=System.getenv("GORILLA_TUNNEL_DOMAIN");
+            String hostname=domain!=null&&!domain.isBlank()?domain.trim():DEFAULT_NAMED_HOST;
+            URI origin=validatePublicOrigin("https://"+hostname);
+            Path tempConfig=Files.createTempFile("gorilla-named-tunnel-",".yaml");
+            StringBuilder yaml=new StringBuilder();
+            yaml.append("tunnel: ").append(tunnelId).append("\n");
+            yaml.append("credentials-file: ").append(credFile.toAbsolutePath()).append("\n");
+            yaml.append("ingress:\n");
+            yaml.append("  - hostname: ").append(hostname).append("\n");
+            yaml.append("    service: ").append(ingress.toASCIIString()).append("\n");
+            if(hostname.startsWith("play.")){
+                String rootDomain=hostname.substring(5);
+                yaml.append("  - hostname: ").append(rootDomain).append("\n");
+                yaml.append("    service: ").append(ingress.toASCIIString()).append("\n");
+            }
+            yaml.append("  - service: http_status:404\n");
+            Files.writeString(tempConfig,yaml.toString());
+            return new NamedTunnelSpec(tunnelId,tempConfig,origin);
+        }catch(Exception e){
+            LOG.warn("Failed resolving named tunnel spec: {}",e.getMessage());
+            return null;
+        }
+    }
+    private void read(Process owned,CompletableFuture<URI> ready,URI defaultOrigin){
+        URI origin=defaultOrigin;var registrations=new RegistrationTracker();
         try(var input=new InputStreamReader(owned.getInputStream(),java.nio.charset.StandardCharsets.UTF_8)){
             var line=new StringBuilder();boolean oversized=false;int c;
             while((c=input.read())!=-1){

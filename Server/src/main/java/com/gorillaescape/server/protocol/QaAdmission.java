@@ -14,7 +14,7 @@ public final class QaAdmission implements AutoCloseable {
         state=session.admissionState(current);long ttl=session.admissionRemainingMs(current);
         if(!"AVAILABLE".equals(state))return new View(state,ttl,0,"");
         if(!regenerate)return new View(state,ttl,0,"");
-        try{var link=lab?JoinQrPoc.labLink(page,current):JoinQrPoc.link(page,current);
+        try{var link=lab?JoinQrPoc.labLink(page,current):JoinQrPoc.link(page,current,session.roomCode());
             return raster(link,state,ttl);
         }catch(Exception e){session.revokeAdmission(current.token());current=null;state="CONFIG_REQUIRED";return new View(state,0,0,"");}
     }

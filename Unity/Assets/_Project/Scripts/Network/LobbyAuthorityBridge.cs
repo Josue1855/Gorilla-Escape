@@ -55,9 +55,9 @@ namespace GorillaEscape.Network
         }
         private static LobbySnapshotWire Copy(LobbySnapshotWire s){
             if(s==null)return null;
-            var copy=new LobbySnapshotWire{lobbyVersion=s.lobbyVersion,sessionId=s.sessionId,phase=s.phase,players=new LobbyPlayerWire[s.players.Length]};
+            var copy=new LobbySnapshotWire{lobbyVersion=s.lobbyVersion,sessionId=s.sessionId,phase=s.phase,roomCode=s.roomCode,players=new LobbyPlayerWire[s.players.Length]};
             for(int i=0;i<s.players.Length;i++){var p=s.players[i];copy.players[i]=new LobbyPlayerWire{playerId=p.playerId,deviceSessionId=p.deviceSessionId,connectionEpoch=p.connectionEpoch,
-                connectionState=p.connectionState,networkReady=p.networkReady,inputReady=p.inputReady,playerReady=p.playerReady};}return copy;
+                connectionState=p.connectionState,displayName=p.displayName,networkReady=p.networkReady,inputReady=p.inputReady,playerReady=p.playerReady};}return copy;
         }
     }
 }

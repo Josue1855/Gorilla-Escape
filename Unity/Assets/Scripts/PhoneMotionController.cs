@@ -1025,6 +1025,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void Update()
     {
+        if(sharedSession!=null)sharedSession.PresentGame(state==GameState.BoxingOver?"Finished":bowlingGameOver?"Finished":state==GameState.Connecting||state==GameState.Menu?"Ready":"Playing",sharedSession.HandMode==MotionSession.HandTrackingMode.Both?(double?)null:GetDisplayedBowlingScore());
         if(!sharedSession.IsInputReady)
         {
             poseDetected=hasRaw=calibrated=false;power=boxingLeftSpeed=boxingRightSpeed=0;poseTrail.Clear();

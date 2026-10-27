@@ -35,7 +35,7 @@ public final class MobileController {
         URI page=lab?URI.create("http://127.0.0.1:"+r.getLocalPort()+"/mobile-lab/index.html"):
             MobileOrigin.page(origin,address,r.getLocalPort());
         if(connectivity!=null)try{page=connectivity.page();}catch(IllegalStateException e){throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"CONNECTION_NOT_READY");}
-        var admission=runtime.admission();URI uri="http".equals(page.getScheme())?JoinQrPoc.labLink(page,admission):JoinQrPoc.link(page,admission);
+        var admission=runtime.admission();URI uri="http".equals(page.getScheme())?JoinQrPoc.labLink(page,admission):JoinQrPoc.link(page,admission,runtime.roomCode());
         var bits=JoinQrPoc.encode(uri);var image=new BufferedImage(bits.getWidth(),bits.getHeight(),BufferedImage.TYPE_INT_RGB);
         for(int y=0;y<bits.getHeight();y++)for(int x=0;x<bits.getWidth();x++)image.setRGB(x,y,bits.get(x,y)?0:0xffffff);
         var bytes=new ByteArrayOutputStream();ImageIO.write(image,"PNG",bytes);
@@ -50,6 +50,14 @@ public final class MobileController {
     @PostMapping("/reconnect")public MobileRuntime.Answer reconnect(@RequestBody Resume r){try{return runtime.reconnect(r.sessionId(),r.playerId(),r.resumeToken(),r.offer());}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"RESUME_REJECTED");}}
     public record Leave(String peerId,String resumeToken){}
     @PostMapping("/disconnect")public Map<String,String> disconnect(@RequestBody Leave r){try{runtime.disconnect(r.peerId(),r.resumeToken());return Map.of("state","DISCONNECTED");}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"DISCONNECT_REJECTED");}}
+    @PostMapping("/name")public ResponseEntity<?> name(@RequestBody MobileRuntime.ProfileRequest request){
+        try{return ResponseEntity.ok(runtime.setDisplayName(request));}catch(Exception error){return ResponseEntity.badRequest().body(Map.of("error","NAME_REJECTED"));}
+    }
+    @PostMapping("/profile")public ResponseEntity<?> profile(@RequestBody MobileRuntime.ProfileRequest request){
+        try{return ResponseEntity.ok(runtime.createProfile(request));}
+        catch(Exception error){String code=Set.of("PLAYERS_UNAVAILABLE","PROFILE_NAME").contains(String.valueOf(error.getMessage()))?error.getMessage():"PROFILE_NOT_CONFIRMED";
+            return ResponseEntity.status(code.equals("PLAYERS_UNAVAILABLE")?503:400).body(Map.of("error",code));}
+    }
     @GetMapping("/diagnostics")public Map<String,Object> diagnostics(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied){operator(r,supplied);return Map.of("peers",runtime.peerCount(),"inputs",runtime.inputs.metrics(),"joinAttempts",runtime.joinDiagnostics());}
     @PostMapping("/end")public Map<String,String> end(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied){operator(r,supplied);runtime.destroy();return Map.of("state","CLOSED");}
 }

@@ -43,6 +43,9 @@ class LocalTrustTest {
         assertEquals(wifi,LanInterface.choose(List.of(wifi),null,null));
         assertEquals(ethernet,LanInterface.choose(List.of(wifi,ethernet),"ethernet",null));
         assertThrows(IllegalArgumentException.class,()->LanInterface.choose(List.of(wifi,ethernet),null,null));
+        assertEquals(wifi,LanInterface.choose(List.of(wifi,ethernet),null,null,wifi.address()));
+        assertEquals(ethernet,LanInterface.choose(List.of(wifi,ethernet),"ethernet",null,wifi.address()));
+        assertThrows(IllegalArgumentException.class,()->LanInterface.choose(List.of(wifi,ethernet),null,null,"127.0.0.1"));
         assertThrows(IllegalArgumentException.class,()->LanInterface.choose(List.of(),null,null));
         assertThrows(IllegalArgumentException.class,()->LanInterface.choose(List.of(new LanInterface.Candidate("lo","127.0.0.1")),null,null));
         assertEquals("https://192.168.1.37:8443/",MobileOrigin.page("https://192.168.1.37:8443","192.168.1.37",8443).toString());

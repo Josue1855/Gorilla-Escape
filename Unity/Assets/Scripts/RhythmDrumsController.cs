@@ -49,6 +49,7 @@ public sealed class RhythmDrumsController : MonoBehaviour
 
     private void Update()
     {
+        session.PresentGame(finished?"Finished":Time.time<startTime?"Countdown":"Playing",score,Mathf.Clamp01((Time.time-startTime)/(65*Beat)),Mathf.Max(0,Time.time-startTime));
         if(!session.IsInputReady)return;
         if(session.TryConsumeFrame(out var frame))ReadSensors(frame);
         float now=Time.time;

@@ -81,6 +81,22 @@ namespace GorillaEscape.Input
             };
             return true;
         }
+        // Log Balance only needs a real gamma angle and portrait screen orientation.
+        public bool TryTilt(PhoneInputWire input,long now,out JungleMotionPacket packet)
+        {
+            packet=null;
+            if(input==null||input.playerId!=1||input.messageType!="MOTION_SAMPLE"||input.connectionState!="ACTIVE"
+                ||string.IsNullOrEmpty(input.sessionId)||string.IsNullOrEmpty(input.deviceSessionId)||input.connectionEpoch<1
+                ||input.sequence<0||!Fresh(input.serverReceiveTimestamp,now))return false;
+            bool changed=session!=input.sessionId||device!=input.deviceSessionId||epoch!=input.connectionEpoch;
+            if(!changed&&input.sequence<=sequence)return false;
+            var orientation=input.orientation;var screen=input.screenOrientation;
+            if(orientation==null||!orientation.hasGamma||!Finite(orientation.gamma)
+                ||screen==null||!screen.hasAngle||!Finite(screen.angle))return false;
+            session=input.sessionId;device=input.deviceSessionId;epoch=input.connectionEpoch;sequence=input.sequence;
+            packet=new JungleMotionPacket {time=input.serverReceiveTimestamp,gamma=orientation.gamma,screen=screen.angle,hasScreen=true};
+            return true;
+        }
         public bool TryPose(CameraInputWire frame, int subjectId, long now, out JunglePosePacket packet)
         {
             packet = null;

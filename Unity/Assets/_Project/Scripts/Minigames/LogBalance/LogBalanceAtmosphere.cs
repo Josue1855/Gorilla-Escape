@@ -9,7 +9,7 @@ namespace GorillaEscape.Minigames.LogBalance
     {
         public bool shadows=true, haze=true, flowingRiver=true, splash=true;
         [Range(0,1)] public float shadowStrength=.72f;
-        [Range(.5f,2)] public float sunlight=1.15f;
+        [Range(.5f,2)] public float sunlight=.85f;
         [Range(20,90)] public float shadowDistance=55;
         [Range(0,3)] public float riverSpeed=1.2f;
         [Range(0,2)] public float cameraRoll=.8f;
@@ -41,9 +41,9 @@ namespace GorillaEscape.Minigames.LogBalance
             this.options=options;this.camera=camera;baseCameraRotation=camera.transform.rotation;
             root=new GameObject("River and atmosphere effects");root.transform.SetParent(stage,false);
             RenderSettings.ambientMode=AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor=new Color(.48f,.58f,.62f);
-            RenderSettings.ambientEquatorColor=new Color(.31f,.38f,.28f);
-            RenderSettings.ambientGroundColor=new Color(.18f,.21f,.13f);RenderSettings.ambientIntensity=.8f;
+            RenderSettings.ambientSkyColor=new Color(.38f,.45f,.46f);
+            RenderSettings.ambientEquatorColor=new Color(.25f,.30f,.23f);
+            RenderSettings.ambientGroundColor=new Color(.16f,.18f,.13f);RenderSettings.ambientIntensity=.7f;
             RenderSettings.sun=sun;sun.intensity=options.sunlight;
             sun.shadows=options.shadows?LightShadows.Soft:LightShadows.None;
             sun.shadowStrength=options.shadowStrength;sun.shadowBias=.035f;sun.shadowNormalBias=.15f;

@@ -39,6 +39,7 @@ public sealed class LogBalanceGameController : MonoBehaviour
     }
     void Update()
     {
+        session.PresentGame(manualPause||credits?"Paused":preparing||model.State==LogBalanceState.Ready?"Ready":model.State==LogBalanceState.Countdown?"Countdown":model.State==LogBalanceState.Won?"Won":model.State==LogBalanceState.Fell?"Lost":"Playing",progress:model.Progress,elapsed:model.Elapsed,balance:model.Balance,distance:model.Distance);
         if(assetError!=null)return;
         if(!session.IsInputReady){control.Reset();preparing=true;tilt=0;return;}
         if(session.TryConsumeFrame(out var frame))
