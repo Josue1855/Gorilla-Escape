@@ -44,3 +44,5 @@ El menú del Editor y `run-jungle-editor.sh` reutilizan `Unity/Builds/Foundation
 En esta PC ya existe el binario revisado dentro del paquete preparado. Un checkout nuevo necesita los artefactos de distribución: el helper existente `python3 tools/t063/package-cloudflared.py /ruta/al/binario-revisado /ruta/al/paquete` incluye binario, licencia y manifiesto. No se versionan copias de los ejecutables generados. Este soporte de empaquetado es Linux amd64; no certifica Windows.
 
 [Comprobación real y límite de conectividad observado](../docs/evidence/saul-log-balance-2026-10-27/cloudflared.md). Que el proceso se registre no garantiza HTTPS público disponible. AUTO conserva la vía LAN si la comprobación externa falla.
+
+Los tiempos y la recuperación AUTO se ampliaron con los ajustes de la rama del tronco: [política vigente y pruebas](../docs/03-development/CLOUDFLARED_RECOVERY.md). Arranque de 30 s por defecto, configurable hasta 60 s; reintento tras 20 s sin jugadores y con limpieza completa.

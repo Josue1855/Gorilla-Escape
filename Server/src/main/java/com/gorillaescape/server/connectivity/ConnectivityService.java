@@ -28,7 +28,7 @@ public final class ConnectivityService implements DisposableBean {
         int port=((WebServerApplicationContext)event.getApplicationContext()).getWebServer().getPort();
         URI cabin=lab?URI.create("http://127.0.0.1:"+port+"/mobile-lab/index.html"):MobileOrigin.page(origin,address,port);
         ConnectionBootstrap.Mode mode;try{mode=ConnectionBootstrap.Mode.valueOf(System.getenv().getOrDefault("GORILLA_CONNECTION_MODE","AUTO"));}catch(IllegalArgumentException e){throw new IllegalArgumentException("CONNECTION_MODE_INVALID");}
-        long timeout;try{timeout=Long.parseLong(System.getenv().getOrDefault("GORILLA_TUNNEL_STARTUP_MS","15000"));}catch(NumberFormatException e){throw new IllegalArgumentException("BOOTSTRAP_BUDGET");}
+        long timeout;try{timeout=Long.parseLong(System.getenv().getOrDefault("GORILLA_TUNNEL_STARTUP_MS",Long.toString(ConnectionBootstrap.DEFAULT_STARTUP_MS)));}catch(NumberFormatException e){throw new IllegalArgumentException("BOOTSTRAP_BUDGET");}
         String packaged=System.getenv("GORILLA_PACKAGE_ROOT");
         String supplied=System.getenv("GORILLA_CLOUDFLARED_PATH");
         if(supplied==null&&packaged!=null)supplied=java.nio.file.Path.of(packaged,"Tools","cloudflared").toString();
@@ -36,14 +36,14 @@ public final class ConnectivityService implements DisposableBean {
         // Missing optional executable requires neither a listener nor a download.
         if(binary!=null&&mode!=ConnectionBootstrap.Mode.CABIN)try{ingress=PublicIngress.forRuntime(mobile);}catch(Exception optional){/* Cabin stays usable. */}
         firewall=new FirewallPreflight(lab,address,System.getenv("GORILLA_PACKAGE_ROOT"));
-        bootstrap=new ConnectionBootstrap(mode,cabin,new CloudflaredSupervisor(binary),timeout);bootstrap.start(ingress==null?null:ingress.origin());
+        bootstrap=new ConnectionBootstrap(mode,cabin,new CloudflaredSupervisor(binary),timeout,()->!mobile.lobby().players().isEmpty());bootstrap.start(ingress==null?null:ingress.origin());
     }
     public synchronized Map<String,Object> snapshot(){if(bootstrap==null)return Map.of("bootstrapState","STOPPED");var result=new java.util.LinkedHashMap<String,Object>(bootstrap.snapshot());
         if(firewall!=null)firewall.poll();
         result.put("firewallState",firewall==null?"NOT_REQUIRED":firewall.state());
         result.put("recoveryRequested",recoveryRequested);
         result.put("admissionMode",admissionPage==null?"NONE":admissionPage.getHost().endsWith(".trycloudflare.com")?"CLOUDFLARED":"CABIN");
-        if(ingress!=null){if(bootstrap.ready()&&"CLOUDFLARED".equals(result.get("resolvedMode")))ingress.publicOrigin(URI.create("https://"+bootstrap.page().getHost()));else if(!"STARTING".equals(result.get("bootstrapState"))){ingress.close();ingress=null;}}
+        if(ingress!=null){if(bootstrap.ready()&&"CLOUDFLARED".equals(result.get("resolvedMode")))ingress.publicOrigin(URI.create("https://"+bootstrap.page().getHost()));else if(!"STARTING".equals(result.get("bootstrapState"))&&"CABIN".equals(result.get("requestedMode"))){ingress.close();ingress=null;}}
         var preflight=new java.util.LinkedHashMap<String,String>(bootstrap.preflight());
         preflight.put("localTrust",lab?"LAB_NOT_REQUIRED":com.gorillaescape.server.hosting.LocalTrust.current()!=null?"PASS":"UNAVAILABLE");
         preflight.put("publicIngress",ingress!=null?"BOUND":"UNAVAILABLE");this.preflight=Map.copyOf(preflight);

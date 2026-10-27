@@ -1,5 +1,7 @@
 # Phone connection decision — PO, 2026-10-16
 
+> Actualización de esta rama, 2026-10-27: [tiempos y recuperación Cloudflared](03-development/CLOUDFLARED_RECOVERY.md) amplía el arranque a 30 s (máximo configurable 60 s) y añade recuperación AUTO. Las cifras anteriores de este documento se conservan como historial.
+
 Status: implementation candidate based on remote develop `b1db2f3` (PR #120).
 T063 remains closed Software/Lab. T019, T020, F05 and E0 remain open; Phase1
 implementation by the team is authorized under the subsequent PO instruction below; JUGAR remains disabled until gameplay exists. This decision supersedes the

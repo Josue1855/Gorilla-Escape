@@ -77,7 +77,7 @@ class ConnectivityTest {
         assertNull(link.getRawQuery());assertTrue(link.getRawFragment().contains("admission="));assertFalse(link.toString().split("#")[0].contains(next.token()));
     }
     @Test void startupBudgetRejectsUnboundedValues(){
-        for(long value:new long[]{0,99,15001,Long.MAX_VALUE})assertThrows(IllegalArgumentException.class,()->new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),new Fake(),value));
+        for(long value:new long[]{0,99,60001,Long.MAX_VALUE})assertThrows(IllegalArgumentException.class,()->new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),new Fake(),value));
     }
     @Test void httpHealthFailureCannotCreateReadyAndVersionTimeoutCleansOwnedChild()throws Exception{
         var binary=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nexec sleep 20\n");

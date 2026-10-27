@@ -11,12 +11,12 @@ import com.gorillaescape.server.protocol.GorillaProtocol;
 /** Explicit opt-in EXTERNAL NETWORK LAB; absent prerequisite is NOT RUN, never physical PASS. */
 @EnabledIfEnvironmentVariable(named="GORILLA_REAL_TUNNEL",matches=".+")
 class RealQuickTunnelTest {
-    @Test @Timeout(60) void publicHttpsBootstrapOnly()throws Exception{
+    @Test @Timeout(100) void publicHttpsBootstrapOnly()throws Exception{
         DnsRetryPolicy.configure();
         var result=new LinkedHashMap<String,Object>();result.put("classification","EXTERNAL NETWORK LAB / no physical phone");
         var tunnel=new CloudflaredSupervisor(Path.of(System.getenv("GORILLA_REAL_TUNNEL")));
         try(var ingress=new PublicIngress((path,body)->{throw new IllegalArgumentException("INVALID_TEST_ADMISSION");});tunnel){
-            long start=System.nanoTime();var origin=tunnel.start(ingress.origin(),15000);ingress.publicOrigin(origin);result.put("tunnelStartupMs",(System.nanoTime()-start)/1_000_000);result.put("version",tunnel.version());
+            long start=System.nanoTime();var origin=tunnel.start(ingress.origin(),ConnectionBootstrap.DEFAULT_STARTUP_MS);ingress.publicOrigin(origin);result.put("tunnelStartupMs",(System.nanoTime()-start)/1_000_000);result.put("version",tunnel.version());
             var client=HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
             var response=client.send(HttpRequest.newBuilder(origin.resolve("/")).timeout(Duration.ofSeconds(10)).GET().build(),HttpResponse.BodyHandlers.ofString());
             result.put("publicHttpsStatus",response.statusCode());assertEquals(200,response.statusCode());assertTrue(response.body().contains("Gorilla Escape"));

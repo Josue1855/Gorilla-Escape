@@ -9,6 +9,9 @@ import java.util.regex.*;
 
 /** Owns only explicitly launched children. Raw output never reaches application logs. */
 public final class CloudflaredSupervisor implements Tunnel {
+    private static final org.slf4j.Logger LOG=org.slf4j.LoggerFactory.getLogger(CloudflaredSupervisor.class);
+    static final int HTTPS_TIMEOUT_MS=3000,HEALTH_FAILURE_LIMIT=4;
+    private volatile int activeConnections;
     private volatile State state=State.STOPPED;
     private volatile Process child;
     private volatile Thread reader;
@@ -40,13 +43,13 @@ public final class CloudflaredSupervisor implements Tunnel {
     private volatile int healthAttempts,lastHttpsStatus;
     private volatile java.net.http.HttpClient httpClient;
     private volatile String probeFailure="NONE";
-    public Map<String,Object> diagnostics(){return Map.of("binarySha",binarySha,"registered",registered,"healthAttempts",healthAttempts,"lastHttpsStatus",lastHttpsStatus,"probeFailure",probeFailure,"failure",failure,"cleanupComplete",cleanupComplete());}
+    public Map<String,Object> diagnostics(){return Map.of("binarySha",binarySha,"registered",registered,"activeConnections",activeConnections,"healthAttempts",healthAttempts,"lastHttpsStatus",lastHttpsStatus,"probeFailure",probeFailure,"failure",failure,"cleanupComplete",cleanupComplete());}
     public CloudflaredSupervisor(Path binary){this.binary=binary;this.verifyBinary=true;this.probe=this::httpReady;}
     private boolean httpReady(URI origin,long remainingMs)throws Exception{
         if(cancelled)throw new InterruptedException();
         var client=httpClient;
-        if(client==null)httpClient=client=java.net.http.HttpClient.newBuilder().connectTimeout(java.time.Duration.ofMillis(1500)).build();
-        var request=java.net.http.HttpRequest.newBuilder(origin.resolve("/")).timeout(java.time.Duration.ofMillis(Math.max(1,Math.min(1500,remainingMs)))).GET().build();
+        if(client==null)httpClient=client=java.net.http.HttpClient.newBuilder().connectTimeout(java.time.Duration.ofMillis(HTTPS_TIMEOUT_MS)).build();
+        var request=java.net.http.HttpRequest.newBuilder(origin.resolve("/")).timeout(java.time.Duration.ofMillis(Math.max(1,Math.min(HTTPS_TIMEOUT_MS,remainingMs)))).GET().build();
         lastHttpsStatus=client.send(request,java.net.http.HttpResponse.BodyHandlers.discarding()).statusCode();return lastHttpsStatus==200;
     }
     // Discovery never downloads. Every production execution independently verifies the pinned hash.
@@ -63,12 +66,12 @@ public final class CloudflaredSupervisor implements Tunnel {
     @Override public URI start(URI ingress,long timeoutMs)throws Exception{
         if(state==State.STARTING||state==State.RUNNING)throw new IllegalStateException("TUNNEL_ALREADY_STARTED");
         if(!"http".equals(ingress.getScheme())||!"127.0.0.1".equals(ingress.getHost())||ingress.getPort()<1||!ingress.getRawPath().isEmpty()||ingress.getRawQuery()!=null||ingress.getRawFragment()!=null||ingress.getUserInfo()!=null)throw new IllegalArgumentException("TUNNEL_INGRESS_INVALID");
-        synchronized(this){cancelled=false;state=State.STARTING;clean=false;}
+        synchronized(this){if(Thread.currentThread().isInterrupted())throw new InterruptedException("TUNNEL_CANCELLED");cancelled=false;state=State.STARTING;clean=false;}
         long deadline=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(timeoutMs);
         try{
+            registered=false;activeConnections=healthFailures=healthAttempts=lastHttpsStatus=0;probeFailure="NONE";failure="NONE";binarySha="NOT_CHECKED";
             if(binary==null)throw new IOException("TUNNEL_UNAVAILABLE");
             if(verifyBinary){binarySha=verified(binary)?"PASS":"INVALID";if(!binarySha.equals("PASS"))throw new IOException("TUNNEL_SHA_INVALID");}
-            registered=false;
             launch(binary.toString(),"--version");
             if(!child.waitFor(Math.min(500,timeoutMs),TimeUnit.MILLISECONDS))throw new IOException("TUNNEL_VERSION_TIMEOUT");
             byte[] output=child.getInputStream().readNBytes(257);String info=new String(output,java.nio.charset.StandardCharsets.US_ASCII).trim();
@@ -84,10 +87,10 @@ public final class CloudflaredSupervisor implements Tunnel {
             boolean healthy=false;
             while(owned.isAlive()&&registered&&System.nanoTime()<deadline){
                 long remaining=Math.max(1,TimeUnit.NANOSECONDS.toMillis(deadline-System.nanoTime()));
-                try{healthAttempts++;healthy=probe.ready(origin,Math.min(1500,remaining));}catch(Exception early){probeFailure=early.getClass().getSimpleName();healthy=false;}
+                try{healthAttempts++;healthy=probe.ready(origin,Math.min(HTTPS_TIMEOUT_MS,remaining));probeFailure="NONE";}catch(Exception early){probeFailure=describeFailure(early);healthy=false;}
                 if(healthy)break;
                 remaining=TimeUnit.NANOSECONDS.toMillis(deadline-System.nanoTime());
-                if(remaining>0)Thread.sleep(Math.min(200,remaining));
+                if(remaining>0)Thread.sleep(Math.min(500,remaining));
             }
             if(!healthy||!registered||!owned.isAlive()||System.nanoTime()>deadline)throw new IOException("TUNNEL_HTTPS_UNAVAILABLE");
             synchronized(this){
@@ -96,17 +99,48 @@ public final class CloudflaredSupervisor implements Tunnel {
                 if(verifyBinary){
                     monitor=Executors.newSingleThreadScheduledExecutor(r->{var t=new Thread(r,"cloudflared-health");t.setDaemon(true);return t;});
                     monitor.scheduleWithFixedDelay(()->{
-                        if(state!=State.RUNNING)return;
-                        boolean ok=false;try{ok=probe.ready(origin,1500);}catch(Exception ignored){}
-                        healthFailures=ok?0:healthFailures+1;if(healthFailures>=2)state=State.FAILED;
+                        checkHealth(origin);
                     },3,3,TimeUnit.SECONDS);
                 }
             }
             return origin;
         }catch(Exception e){
             failure=e instanceof IOException&&Set.of("TUNNEL_UNAVAILABLE","TUNNEL_SHA_INVALID","TUNNEL_VERSION_TIMEOUT","TUNNEL_VERSION_INVALID","TUNNEL_HTTPS_UNAVAILABLE","TUNNEL_TIMEOUT","TUNNEL_DIED","TUNNEL_CANCELLED").contains(e.getMessage())?e.getMessage():"TUNNEL_START_FAILED";
+            LOG.warn("Cloudflared startup failed: reason={} attempts={} httpStatus={} cause={} activeConnections={}",
+                failure,healthAttempts,lastHttpsStatus,probeFailure,activeConnections);
             close();state=State.FAILED;throw new IOException(failure);
         }
+    }
+    // Log exception types, including the root cause, never arbitrary exception text or admission URLs.
+    static String describeFailure(Throwable error){
+        StringBuilder types=new StringBuilder();
+        for(int i=0;error!=null&&i<4;i++,error=error.getCause()){
+            if(i>0)types.append(" <- ");types.append(error.getClass().getSimpleName());
+        }
+        return types.toString();
+    }
+    void checkHealth(URI origin){
+        if(state!=State.RUNNING)return;
+        boolean ok=false;try{healthAttempts++;ok=probe.ready(origin,HTTPS_TIMEOUT_MS);probeFailure="NONE";}
+        catch(Exception error){probeFailure=describeFailure(error);}
+        healthFailures=ok?0:healthFailures+1;
+        if(healthFailures>=HEALTH_FAILURE_LIMIT){
+            failure="TUNNEL_HTTPS_UNAVAILABLE";state=State.FAILED;
+            LOG.warn("Cloudflared health failed: consecutiveFailures={} attempts={} httpStatus={} cause={}",
+                healthFailures,healthAttempts,lastHttpsStatus,probeFailure);
+        }
+    }
+    // Cloudflared multiplexes connections. Duplicate registration lines must not inflate the count.
+    static final class RegistrationTracker {
+        private static final Pattern INDEX=Pattern.compile("\\bconnIndex=([0-9]{1,2})\\b");
+        private final Set<String> connections=new HashSet<>();
+        void observe(String text){
+            var match=INDEX.matcher(text);String index=match.find()?match.group(1):"unindexed";
+            if(text.contains("Unregistered tunnel connection"))connections.remove(index);
+            else if(text.contains("Registered tunnel connection"))connections.add(index);
+            else if(text.contains("Serve tunnel error")||text.contains("failed to serve tunnel connection"))connections.remove(index);
+        }
+        int size(){return connections.size();}
     }
     private synchronized void launch(String... arguments)throws IOException{
         if(cancelled)throw new IOException("TUNNEL_CANCELLED");
@@ -118,14 +152,14 @@ public final class CloudflaredSupervisor implements Tunnel {
         return builder;
     }
     private void read(Process owned,CompletableFuture<URI> ready){
-        URI origin=null;
+        URI origin=null;var registrations=new RegistrationTracker();
         try(var input=new InputStreamReader(owned.getInputStream(),java.nio.charset.StandardCharsets.UTF_8)){
             var line=new StringBuilder();boolean oversized=false;int c;
             while((c=input.read())!=-1){
                 if(c!='\n'){if(line.length()<2048&&!oversized)line.append((char)c);else{oversized=true;line.setLength(0);}continue;}
                 if(!oversized){String text=line.toString();URI parsed=parseOrigin(text);if(parsed!=null)origin=parsed;
-                    if(text.contains("Registered tunnel connection"))registered=true;
-                    if(text.contains("Unregistered tunnel connection")||text.contains("Serve tunnel error")||text.contains("failed to serve tunnel connection")){registered=false;if(state==State.RUNNING)state=State.FAILED;}
+                    registrations.observe(text);activeConnections=registrations.size();registered=activeConnections>0;
+                    if(!registered&&state==State.RUNNING)state=State.FAILED;
                     if(origin!=null&&registered)ready.complete(origin);
                 }line.setLength(0);oversized=false;
             }

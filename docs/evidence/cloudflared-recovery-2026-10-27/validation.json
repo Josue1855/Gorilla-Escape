@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-27",
+  "sourceCommit": "44890bedc738d143a079422929502ae3e40448dd",
+  "fullVerify": {
+    "tests": 125,
+    "executed": 121,
+    "skipped": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  "focusedIncludingRealNetwork": {
+    "tests": 35,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  },
+  "physicalUnityPhone": "NOT RUN",
+  "sourceSha256": {
+    "Server/src/main/java/com/gorillaescape/server/connectivity/CloudflaredSupervisor.java": "61e2b7a4cc143d8223e3b70932e428eb21ad4cc05f191de291953ba0bbe24c0a",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/ConnectionBootstrap.java": "6a197b14c54f2d6c464b8d1a93021acfbfbd6d651aaf2bd3cd5a19238987c0c1",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/ConnectivityService.java": "98b7280c442fa1a54074aa06a2759fad88d2f97a6406facaf697dab27dc683e2"
+  }
+}
