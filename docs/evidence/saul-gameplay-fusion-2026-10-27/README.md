@@ -9,3 +9,5 @@
 Los escenarios usan los algoritmos reales de InputFusion/asociación/gestos con fixtures sintéticos. No ejecutan física, animaciones, callbacks de Unity ni hardware. El intento nativo de EditMode desde terminal terminó antes de ejecutar pruebas, con salida 198 por licencia no reconocida en ese contexto; el usuario sí había mostrado Unity Student en Hub. No se declara aceptación física ni licencia inexistente en Hub.
 
 Se preservan contratos Shared, supervisores, Java, PWA, escenas y recursos visuales. Las comprobaciones de fuentes Editor/Player no sustituyen importación completa, un nuevo Player ni el ensayo de teléfono/cámara.
+
+[Diagnóstico de la primera descarga de CI y corrección del runner](ci-runner-download.md).
