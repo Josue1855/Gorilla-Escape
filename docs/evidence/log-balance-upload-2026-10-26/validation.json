@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-26",
+  "purpose": "Pre-push source backup on feature/gameplay-desafio-del-tronco; no merge or release acceptance",
+  "pwa": {
+    "tests": 87,
+    "passed": 87,
+    "failed": 0,
+    "build": "PASS"
+  },
+  "flutter": {
+    "tests": 22,
+    "passed": 22,
+    "failed": 0,
+    "analyze": "No issues found",
+    "physicalDeviceRun": "NOT RUN"
+  },
+  "server": {
+    "build": "PASS",
+    "tests": 123,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 5,
+    "passed": 118,
+    "skippedCases": [
+      {
+        "suite": "com.gorillaescape.server.mobile.PlayersBackendTest",
+        "test": "registeredPlayerHasPersistentUuidAndOwnedProcessStops",
+        "reason": "Requires packaged players backend (gorilla.test.playersJar)"
+      },
+      {
+        "suite": "com.gorillaescape.server.hosting.MobileHttpsTest",
+        "test": "incorrectSanAndPasswordFailBeforeOpeningServer",
+        "reason": "System property [gorilla.test.lanAddress] does not exist"
+      },
+      {
+        "suite": "com.gorillaescape.server.hosting.MobileHttpsTest",
+        "test": "invalidOriginAndMissingHostnameFailWithOtherwiseValidConfiguration",
+        "reason": "System property [gorilla.test.lanAddress] does not exist"
+      },
+      {
+        "suite": "com.gorillaescape.server.connectivity.RealQuickTunnelTest",
+        "test": "publicHttpsBootstrapOnly",
+        "reason": "Environment variable [GORILLA_REAL_TUNNEL] does not exist"
+      },
+      {
+        "suite": "com.gorillaescape.server.connectivity.BootstrapRtcLabTest",
+        "test": "oneTwoFourPeersSurviveBootstrapLoss",
+        "reason": "Environment variable [GORILLA_TEST_NODE] does not exist"
+      }
+    ]
+  },
+  "firewall": {
+    "tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "elevatedRulesChanged": false
+  },
+  "staticValidation": {
+    "foundation": "PASS",
+    "management": "PASS",
+    "localLinks": 1034
+  },
+  "unityCurrentAttempt": {
+    "editor": "6000.3.23f1",
+    "testPlatform": "EditMode",
+    "exitCode": 198,
+    "testsExecuted": false,
+    "status": "BLOCKED_LICENSE",
+    "reason": "No valid Unity Editor license found; no license bypass or activation attempted",
+    "playMode": "NOT RUN after Editor failed to start"
+  },
+  "historicalEvidence": "Reports dated 2026-10-22/23 are preserved. Broad PlayMode failures in island-design results remain documented and are not replaced by this run.",
+  "exclusions": [
+    "Unity/Assets/_Recovery/",
+    "Unity/Assets/_Recovery.meta",
+    "docs/evidence/lan-discovery-2026-10-23/avahi-discovery.log",
+    "build/cache/SDK output and private trust material"
+  ],
+  "formatValidation": {
+    "sourceDiffExcludingUnmodifiedVendorLicenseText": "PASS",
+    "vendorLicenseNote": "Bundled OFL license text retains upstream trailing whitespace; license content not reformatted."
+  },
+  "sourceCommit": "44890bedc738d143a079422929502ae3e40448dd"
+}

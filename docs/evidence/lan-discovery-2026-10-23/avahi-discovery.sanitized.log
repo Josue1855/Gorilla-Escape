@@ -1,0 +1,4 @@
++;[NETWORK_INTERFACE];IPv4;Gorilla\032Escape\032[SESSION_SUFFIX];_gorillaescape._tcp;local
+=;[NETWORK_INTERFACE];IPv4;Gorilla\032Escape\032[SESSION_SUFFIX];_gorillaescape._tcp;local;[LAN_HOSTNAME];[LAN_IP];8443;"origin=https://local-discovery-test.trycloudflare.com" "game=gorilla-escape" "v=1"
+-;[NETWORK_INTERFACE];IPv4;Gorilla\032Escape\032[SESSION_SUFFIX];_gorillaescape._tcp;local
+Got SIGTERM, quitting.

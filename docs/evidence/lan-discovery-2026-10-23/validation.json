@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-23",
+  "serverFocusedTests": {
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "flutterTests": 22,
+  "flutterAnalyze": "No issues found",
+  "iosBuild": "1.3.0+9 release; Bonjour declaration verified",
+  "androidBuild": "debug APK succeeded",
+  "realLanSmoke": "Java publisher found/resolved and removed by independent Avahi browser",
+  "packagedJavaDiscovery": true,
+  "physicalPhoneRun": "pending; no physical device available",
+  "externalDirectory": "none",
+  "mergePush": "none"
+}

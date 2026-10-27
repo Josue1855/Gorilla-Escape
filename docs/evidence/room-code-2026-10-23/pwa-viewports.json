@@ -1,0 +1,154 @@
+[
+  {
+    "controls": [
+      {
+        "bottom": 763,
+        "text": "room-pin",
+        "top": 715,
+        "width": 205
+      },
+      {
+        "bottom": 763,
+        "text": "ENTRAR",
+        "top": 715,
+        "width": 110
+      },
+      {
+        "bottom": 840,
+        "text": "Control",
+        "top": 792,
+        "width": 113.65625
+      },
+      {
+        "bottom": 840,
+        "text": "Ayuda",
+        "top": 792,
+        "width": 113.671875
+      },
+      {
+        "bottom": 840,
+        "text": "Datos",
+        "top": 792,
+        "width": 113.671875
+      }
+    ],
+    "h": 852,
+    "sh": 852,
+    "sw": 393,
+    "w": 393
+  },
+  {
+    "controls": [
+      {
+        "bottom": 491,
+        "text": "room-pin",
+        "top": 443,
+        "width": 140
+      },
+      {
+        "bottom": 491,
+        "text": "ENTRAR",
+        "top": 443,
+        "width": 110
+      },
+      {
+        "bottom": 560,
+        "text": "Control",
+        "top": 512,
+        "width": 89.328125
+      },
+      {
+        "bottom": 560,
+        "text": "Ayuda",
+        "top": 512,
+        "width": 89.34375
+      },
+      {
+        "bottom": 560,
+        "text": "Datos",
+        "top": 512,
+        "width": 89.328125
+      }
+    ],
+    "h": 568,
+    "sh": 568,
+    "sw": 320,
+    "w": 320
+  },
+  {
+    "controls": [
+      {
+        "bottom": 253,
+        "text": "room-pin",
+        "top": 205,
+        "width": 368
+      },
+      {
+        "bottom": 253,
+        "text": "ENTRAR",
+        "top": 205,
+        "width": 110
+      },
+      {
+        "bottom": 312,
+        "text": "Control",
+        "top": 268,
+        "width": 162.65625
+      },
+      {
+        "bottom": 312,
+        "text": "Ayuda",
+        "top": 268,
+        "width": 162.671875
+      },
+      {
+        "bottom": 312,
+        "text": "Datos",
+        "top": 268,
+        "width": 162.671875
+      }
+    ],
+    "h": 320,
+    "sh": 320,
+    "sw": 568,
+    "w": 568
+  },
+  {
+    "controls": [
+      {
+        "bottom": 233,
+        "text": "room-pin",
+        "top": 185,
+        "width": 148
+      },
+      {
+        "bottom": 233,
+        "text": "ENTRAR",
+        "top": 185,
+        "width": 110
+      },
+      {
+        "bottom": 292,
+        "text": "Control",
+        "top": 248,
+        "width": 89.328125
+      },
+      {
+        "bottom": 292,
+        "text": "Ayuda",
+        "top": 248,
+        "width": 89.34375
+      },
+      {
+        "bottom": 292,
+        "text": "Datos",
+        "top": 248,
+        "width": 89.328125
+      }
+    ],
+    "h": 300,
+    "sh": 300,
+    "sw": 320,
+    "w": 320
+  }
+]

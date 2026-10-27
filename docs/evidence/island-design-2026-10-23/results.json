@@ -1,0 +1,40 @@
+{
+  "design": "Shared island expedition identity across Unity menu, PWA and Flutter",
+  "unityFlow": {
+    "result": "Passed",
+    "total": "5",
+    "passed": "5",
+    "failed": "0"
+  },
+  "unityLinuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "pwa": {
+    "testsPassed": 83,
+    "build": "passed",
+    "visualReview": "Actual connection and control components; control preview uses explicitly labelled illustrative data",
+    "detailsExpandable": true
+  },
+  "flutter": {
+    "testsPassed": 13,
+    "analyze": "passed",
+    "largeText320px": "passed",
+    "homeScreenshot": "Actual widget rendering with bundled fonts and images, not a physical device capture"
+  },
+  "broadPlayModeAttempt": {
+    "passed": 14,
+    "failed": 17,
+    "skipped": 3,
+    "limitation": "Process/camera/RTC fixtures lacked required environment and device paths. These are not certified by the focused UI run."
+  },
+  "iphone": {
+    "installed": false,
+    "availability": "User previously reported unavailable",
+    "version": "1.2.0",
+    "build": "6",
+    "releaseBuild": "passed"
+  },
+  "merge": false
+}

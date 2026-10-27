@@ -42,7 +42,7 @@ La simulación usa pasos fijos de 10 ms y conserva velocidad lateral, ángulo y 
 
 El giro visual procede del ángulo simulado, no de un motor de velocidad constante. La posición lateral del humano cambia sobre el tronco y la altura de apoyo se consulta en la malla girada bajo sus pies. La animación de las piernas sigue las pisadas por distancia, por lo que no patina a velocidad constante cuando el avance se ralentiza.
 
-La amplitud ambiental aumenta con el progreso. El umbral empieza en ±0,85 y termina en ±0,74; la gracia baja de 0,65 a aproximadamente 0,49 s. Recuperar apoyo reduce gradualmente el tiempo de peligro, evitando borrar el riesgo con pequeñas oscilaciones en el límite. Caer prevalece sobre llegar en el mismo paso; un resultado terminal no puede cambiar. La pausa congela movimiento, giro, tiempo y distancia. Los frames superiores a 100 ms se limitan para evitar saltos bruscos.
+La amplitud ambiental usa una curva suave: empieza al 65 % de intensidad y llega al 165 % con los valores predeterminados. La curva evita saltos entre tramos. El umbral empieza en ±0,85 y termina en ±0,74; la gracia baja de 0,65 a aproximadamente 0,49 s. Recuperar apoyo reduce gradualmente el tiempo de peligro, evitando borrar el riesgo con pequeñas oscilaciones en el límite. Caer prevalece sobre llegar en el mismo paso; un resultado terminal no puede cambiar. La pausa congela movimiento, giro, tiempo y distancia. Los frames superiores a 100 ms se limitan para evitar saltos bruscos.
 
 El indicador blanco muestra el apoyo actual y el ámbar la tendencia por inercia, para anticipar la frenada.
 
@@ -120,3 +120,12 @@ Con varias conexiones físicas activas (por ejemplo Wi-Fi y conexión USB del iP
 Unity envía un panel de estado por el canal existente, con actualización móvil de hasta 5 Hz y caducidad si deja de recibir contexto. PWA y Flutter muestran los datos reales también al terminar el cruce. Cambiar de intento no reinicia la captura ni solicita permisos otra vez.
 
 Flutter inicia el control al conectar y recupera la captura al volver a primer plano. El botón de reintento sólo aparece ante un error de sensores; la solicitud de permiso se realiza una vez por sesión de pantalla. La PWA conserva el permiso concedido y reactiva su captura al recuperar visibilidad; solicita mantener la pantalla encendida si el navegador ofrece esa función. El primer permiso en navegador sigue requiriendo un toque. Si el sistema bloquea o suspende la aplicación, se descartan los datos antiguos y Unity pausa hasta recibir muestras nuevas; no se simula movimiento en segundo plano.
+
+
+### Avisos de desequilibrio y panel compacto — 2026-10-22
+
+Al alcanzar el 60 % del límite de caída aparecen una corrección direccional, un balanceo corporal suave y un aviso sonoro breve. A partir del 85 % aumenta la frecuencia del aviso; la caída y el cruce completado tienen sonidos propios. Los clips se generan localmente y se liberan con la escena. Los avisos no alteran la simulación ni la gracia de recuperación.
+
+La app nativa emite pulsos hápticos separados (900 ms en aviso, 450 ms en peligro alto), con opción de desactivarlos en Ayuda. La PWA solicita vibración sólo si su navegador ofrece la API; no se presupone soporte en iPhone. Pausa, falta de contexto o turno ajeno no producen avisos repetidos. El peligro procede de Unity, junto a los datos ya existentes, y se valida entre 0 y 1.
+
+El panel móvil prioriza equilibrio, corrección y porcentaje. Tiempo, distancia, giro, velocidad y viento se despliegan en Detalles del cruce. No se duplica la ilustración grande cuando existe telemetría real. El permiso y la calibración conservan el flujo automático previamente integrado.

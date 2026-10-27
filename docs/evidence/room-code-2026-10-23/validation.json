@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-23",
+  "architecture": "local PC; cloudflared is the only tunnel; no room directory service",
+  "serverFocusedTests": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "pwa": {
+    "passed": 87,
+    "build": "succeeded"
+  },
+  "flutter": {
+    "analyze": "No issues found",
+    "iosBuilt": "1.2.2+8",
+    "physicalInstall": "not performed",
+    "passed": 18
+  },
+  "unityLinuxBuild": "succeeded",
+  "packagedWebMatchesLatestBuild": true,
+  "externalDirectoryClassAbsent": true,
+  "publicServicesCreated": false
+}

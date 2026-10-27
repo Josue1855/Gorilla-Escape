@@ -1,0 +1,41 @@
+{
+  "pwaTests": {
+    "passed": 85,
+    "failed": 0
+  },
+  "viewports": [
+    {
+      "width": 393,
+      "height": 852
+    },
+    {
+      "width": 320,
+      "height": 568
+    },
+    {
+      "width": 568,
+      "height": 320
+    },
+    {
+      "width": 320,
+      "height": 300
+    }
+  ],
+  "control": {
+    "documentFits": true,
+    "panelsFit": true,
+    "buttonsFit": true
+  },
+  "secondaryViewsAt320x300": {
+    "detailsFits": true,
+    "helpFits": true,
+    "diagnosticFits": true,
+    "nextPageVerified": true
+  },
+  "scrollGesturesAt393x852": {
+    "horizontal": 0,
+    "vertical": 0
+  },
+  "screenshot": "Design fixture with illustrative Unity data, not physical gameplay",
+  "physicalSafariKeyboard": "Not verified on physical iPhone"
+}
