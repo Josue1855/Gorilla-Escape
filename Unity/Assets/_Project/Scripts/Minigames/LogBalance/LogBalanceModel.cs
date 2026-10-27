@@ -61,7 +61,7 @@ namespace GorillaEscape.Minigames.LogBalance
         public float ForwardVelocity { get; private set; }
         public float Wind { get; private set; }
         public float FootstepPhase => Distance / rules.stepLength * (float)Math.PI;
-        public float EffectiveFallThreshold => rules.fallThreshold*(rules.coupledPhysics?1-.13f*Progress:1);
+        public float EffectiveFallThreshold => rules.fallThreshold*(rules.coupledPhysics?1-.13f*SmoothProgress(Progress):1);
         public float Danger => Math.Min(1,Math.Abs(Balance)/EffectiveFallThreshold);
         public float Distance { get; private set; }
         public float Progress => Math.Min(1,Distance/rules.length);
@@ -98,17 +98,20 @@ namespace GorillaEscape.Minigames.LogBalance
                 // Recovering lowers accumulated danger rather than erasing it with a tiny edge crossing.
                 if(Math.Abs(Balance)>=EffectiveFallThreshold)outsideSeconds+=Step;
                 else outsideSeconds=rules.coupledPhysics?Math.Max(0,outsideSeconds-Step*2):0;
-                float grace=rules.fallGraceSeconds*(rules.coupledPhysics?1-.25f*Progress:1);
+                float grace=rules.fallGraceSeconds*(rules.coupledPhysics?1-.25f*SmoothProgress(Progress):1);
                 // Falling wins the tie if the grace threshold and goal are crossed on the same simulation step.
                 if(outsideSeconds+0.00001f>=grace)Finish(false,"balance");
                 else if(Distance+0.00001f>=rules.length)Finish(true,"goal");
                 else if(Elapsed>=rules.maxSeconds)Finish(false,"timeout");
             }
         }
+        static float SmoothProgress(float progress){float p=Clamp(progress,0,1);return p*p*(3-2*p);}
+        public static float DifficultyAt(float progress,float increase)
+            => increase<=0?1:.65f+(.35f+increase)*SmoothProgress(progress);
         static float Clamp(float value,float min,float max)=>Math.Max(min,Math.Min(max,value));
         void SimulateCoupled()
         {
-            float ramp=1+rules.progressDifficulty*Progress;
+            float ramp=DifficultyAt(Progress,rules.progressDifficulty);
             // Deterministic gusts and footfalls are shared by every player; no random death impulses.
             Wind=rules.windTorque*rules.difficulty*ramp*(float)(Math.Sin(Elapsed*.83)+.35*Math.Sin(Elapsed*1.71));
             float steps=rules.stepTorque*rules.difficulty*ramp*(float)Math.Sin(FootstepPhase);

@@ -8,6 +8,19 @@ import 'package:gorilla_companion/control/protocol.dart';
 import 'package:gorilla_companion/control/transport.dart';
 
 void main() {
+  test('danger cues warn early, intensify, and stop during pause or spectator turns', () {
+    final cues = BalanceCues();
+    expect(cues.update('Crossing', .59, 0, true), isNull);
+    expect(cues.update('Crossing', .65, 10, true), 'warning');
+    expect(cues.update('Crossing', .65, 200, true), isNull);
+    expect(cues.update('Crossing', .9, 470, true), 'critical');
+    expect(cues.update('Paused', 1, 1200, true), isNull);
+    expect(cues.update('Crossing', 1, 1500, false), isNull);
+    expect(cues.update('Fell', 1, 1600, true), 'Fell');
+    expect(cues.update('Fell', 1, 1800, true), isNull);
+    cues.update('Ready', 0, 2000, true);
+    expect(cues.update('Crossing', .7, 2100, true), 'warning');
+  });
   test('score rejects incomplete or impossible Unity data', () {
     expect(GameStats.fromContext(null), isNull);
     expect(

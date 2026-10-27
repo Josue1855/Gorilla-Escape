@@ -13,10 +13,11 @@ public final class GamePresentation {
             throw new IOException("IPC_GAME_CONTEXT");
         if(n.size()==5) {
             var stats=n.path("stats");
-            if(!"log-balance".equals(n.path("gameId").asString()) || !stats.isObject() || stats.size()!=8) throw new IOException("IPC_GAME_STATS");
+            if(!"log-balance".equals(n.path("gameId").asString()) || !stats.isObject() || (stats.size()!=8&&stats.size()!=9)) throw new IOException("IPC_GAME_STATS");
             range(stats,"balance",-1,1);range(stats,"tendency",-1,1);range(stats,"progress",0,1);
             range(stats,"distance",0,10000);range(stats,"elapsed",0,3600);range(stats,"roll",-3600,3600);
             range(stats,"speed",0,100);range(stats,"wind",-100,100);
+            if(stats.size()==9)range(stats,"danger",0,1);
         }
     }
     private static void range(JsonNode stats,String key,double min,double max)throws IOException {

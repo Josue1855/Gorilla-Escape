@@ -76,6 +76,14 @@ public final class MobileRuntime implements DisposableBean {
     public MobileRuntime(){expiry.setRemoveOnCancelPolicy(true);expiry.scheduleWithFixedDelay(this::expire,1,1,TimeUnit.SECONDS);}
     public synchronized void revokePendingAdmissions(){session.revokePendingAdmissions();qaAdmission.invalidate();}
     public synchronized TechnicalSession.Admission admission(){if(closed)throw new IllegalStateException("SESSION_CLOSED");return session.createAdmission();}
+    private long pinWindow;private int failedPins;
+    public synchronized TechnicalSession.Admission admissionByPin(String pin){
+        if(closed)throw new IllegalStateException("SESSION_CLOSED");
+        long now=System.nanoTime();if(now-pinWindow>=60_000_000_000L){pinWindow=now;failedPins=0;}
+        if(failedPins>=8)throw new IllegalStateException("PIN_RATE_LIMITED");
+        try{return session.joinByPin(pin);}catch(IllegalArgumentException bad){failedPins++;throw bad;}
+    }
+    public synchronized String roomCode(){return session.roomCode();}
     public record Signal(int protocolVersion,String messageType,String sessionId,String admission,String offer) {}
     public record Answer(int protocolVersion,String messageType,String sessionId,int playerId,String deviceSessionId,String resumeToken,long connectionEpoch,String peerId,String answer) {}
     public synchronized Answer join(Signal signal)throws Exception{

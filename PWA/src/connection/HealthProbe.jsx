@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import {FixedScreen,PagedText} from '../controller/FixedScreen.jsx';
 import { checkServer } from './health.js';
 
 export default function App() {
@@ -31,23 +32,7 @@ export default function App() {
       setState('error');
     } finally { checking.current = false; }
   }
-  return <main>
-    <p className="eyebrow">GORILIMPIADAS · PRUEBA LAN</p>
-    <h1>Comprueba tu conexión</h1>
-    <section aria-label="Estado de la comprobación">
-      <p role="status" aria-live="polite">{message}</p>
-      <button onClick={check} disabled={state === 'checking'}>
-        {state === 'checking' ? 'Comprobando…' : 'Comprobar Java ahora'}
-      </button>
-      <p>Contexto seguro: {window.isSecureContext ? 'sí' : 'no'} · HTTPS: {location.protocol === 'https:' ? 'sí' : 'no'}</p>
-      <p>Service worker: {worker}</p>
-      {diagnostic && <div>
-        <p>Servidor: <code>{diagnostic.serverInstanceId}</code></p>
-        <p>Petición recibida: {diagnostic.requestNumber} · respuesta en {diagnostic.elapsedMs.toFixed(1)} ms</p>
-        <p>Resultado puntual de esta petición; pulsa el botón para verificar de nuevo.</p>
-      </div>}
-    </section>
-    <p>No se solicitan sensores ni cámara. Si el navegador muestra un error de certificado, pide al operador revisar la confianza antes de continuar.</p>
-    <p className="safety">Sujeta siempre el teléfono.</p>
-  </main>;
+  return <FixedScreen title="Comprobar conexión" nav={<button onClick={check} disabled={state==='checking'}>{state==='checking'?'Comprobando…':'Comprobar ahora'}</button>}>
+    <div className="fixed-section"><h2>Conexión con la PC</h2><PagedText text={`${message}\n\nContexto seguro: ${window.isSecureContext?'sí':'no'}. HTTPS: ${location.protocol==='https:'?'sí':'no'}.\nService worker: ${worker}\n${diagnostic?JSON.stringify(diagnostic,null,2):''}\nNo se solicitan sensores ni cámara. Ante un error de certificado, revisa la confianza con el operador.`}/></div>
+  </FixedScreen>;
 }

@@ -21,7 +21,7 @@ namespace GorillaEscape.Contracts
     }
     [Serializable] public sealed class QaConnectionWire {public bool recoveryRequested;public string firewallState;public string admissionMode,requestedMode,resolvedMode,bootstrapState,tunnelState,publicOrigin,lanOrigin,fallbackReason,wanAvailability,webRtcPath;public long tunnelStartupMs,fallbackMs;}
     [Serializable] public sealed class QaHostingWire {public QaAdmissionWire prepare;public string origin,fingerprint,prepareUrl;}
-    [Serializable] public sealed class QaAdmissionWire {public string state,modules;public long ttlMs;public int size;}
+    [Serializable] public sealed class QaAdmissionWire {public string state,modules,roomCode;public long ttlMs;public int size;}
     [Serializable] public sealed class QaMetricsWire {public long attempted,succeeded,reconnectAttempted,reconnectSucceeded;}
     [Serializable] public sealed class PhonePongPayload { public QaPhoneMetricsWire[] qaPhones; public QaConnectionWire qaConnection; public QaHostingWire qaHosting; public QaAdmissionWire qa; public QaMetricsWire qaMetrics; public PhoneInputWire[] phoneInputs; public bool hasLobbyResult; public LobbySnapshotWire lobby; public LobbyCommandResult lobbyResult; }
     [Serializable] public sealed class PhonePong {

@@ -7,7 +7,7 @@ public final class QaAdmission implements AutoCloseable {
     private String state="NOT_REQUESTED";
     public record View(String state,long ttlMs,int size,String modules) { @Override public String toString(){return "QaAdmission["+state+", ttlMs="+ttlMs+"]";} }
     public synchronized View view(TechnicalSession session,URI page,boolean lab,boolean regenerate) {
-        if(regenerate){if(current!=null)session.revokeAdmission(current.token());current=null;
+        if(regenerate){if(current!=null)session.revokeAdmission(current.token());current=null;session.regenerateRoomCode();
             try{current=session.createAdmission();}catch(IllegalStateException e){state="SESSION_FULL";return new View(state,0,0,"");}}
         if(current==null)return new View(state,0,0,"");
         if(!regenerate&&"SCANNED/JOINED".equals(state))return new View(state,0,0,"");

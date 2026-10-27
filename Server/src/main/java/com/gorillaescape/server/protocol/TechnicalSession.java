@@ -27,9 +27,24 @@ public final class TechnicalSession {
     private final long admissionTtl,liveness,resumeTtl;
     private boolean closed;
     private LobbyPhase phase=LobbyPhase.OPEN;
+    private static final String ROOM_CODE_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+    private String roomCode;
     public TechnicalSession(LongSupplier clock,long admissionTtl,long liveness,long resumeTtl){
         if(admissionTtl<=0||liveness<=0||resumeTtl<liveness)throw new IllegalArgumentException("SESSION_CONFIG");
         this.clock=clock;this.admissionTtl=admissionTtl;this.liveness=liveness;this.resumeTtl=resumeTtl;
+        this.roomCode=generateRoomCode();
+    }
+    private String generateRoomCode(){
+        char[] chars=new char[4];
+        for(int i=0;i<4;i++)chars[i]=ROOM_CODE_ALPHABET.charAt(random.nextInt(ROOM_CODE_ALPHABET.length()));
+        return new String(chars);
+    }
+    public synchronized String roomCode(){return roomCode;}
+    public synchronized void regenerateRoomCode(){roomCode=generateRoomCode();}
+    public synchronized Admission joinByPin(String pin){
+        live();admissionOpen();
+        if(pin==null||!pin.trim().equalsIgnoreCase(roomCode))throw new IllegalArgumentException("PIN_INVALID");
+        return createAdmission();
     }
     private String token(){byte[] b=new byte[32];random.nextBytes(b);return Base64.getUrlEncoder().withoutPadding().encodeToString(b);}
     private void live(){if(closed)throw new IllegalStateException("SESSION_CLOSED");expire();}

@@ -25,7 +25,7 @@ namespace GorillaEscape.QA {
         bool timingLogged;
         internal int selected=1;
         bool quitting,allowQuit,generated,priorBackground;
-        internal string qrState="STARTING",error="";
+        internal string qrState="STARTING",error="",roomCode="";
         internal long qrVisible,joinEnd,applied,presented;
         long sequence=-1,epoch=-1;
         internal int appliedFrame,presentedFrame;
@@ -67,6 +67,7 @@ namespace GorillaEscape.QA {
             void Default(string name,string value){if(string.IsNullOrEmpty(read(name)))write(name,value);}
             Default("GORILLA_PACKAGE_ROOT",root);
             Default("GORILLA_CONNECTION_MODE","AUTO");
+            Default("GORILLA_TUNNEL_STARTUP_MS","30000");
             Default("GORILLA_CLOUDFLARED_PATH",Path.Combine(root,"Tools","cloudflared"));
             Default("GORILLA_IPC_JAVA",Path.Combine(root,"Java","runtime","bin",Application.platform==RuntimePlatform.WindowsPlayer?"java.exe":"java"));
             Default("GORILLA_IPC_JAR",Path.Combine(root,"Java","server.jar"));
@@ -104,8 +105,8 @@ namespace GorillaEscape.QA {
             if(vision.Take(out var frame,out var at)&&cameras.Accept(frame,at))fusion.ObserveCamera(frame,at);
             if(cameras.Latest!=null&&!cameras.Fresh(Now(),250,20))fusion.Association.MarkLost();
             if((TestsActive||PhoneActive)&&java.State==IpcState.RUNNING&&!generated){generated=true;PrepareQr();java.RegenerateQa();}
-            var qr=java.Qa;if((TestsActive||PhoneActive)&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){{ClearQr();try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
-            if((TestsActive||PhoneActive)&&(java.State==IpcState.FAILED||java.State==IpcState.STOPPED)){ClearQr();qrState="BACKEND UNAVAILABLE";}
+            var qr=java.Qa;if((TestsActive||PhoneActive)&&qr!=null){qrState=qr.state;roomCode=qr.roomCode??"";if(!string.IsNullOrEmpty(qr.modules)){{ClearQr();try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
+            if((TestsActive||PhoneActive)&&(java.State==IpcState.FAILED||java.State==IpcState.STOPPED)){ClearQr();roomCode="";qrState="BACKEND UNAVAILABLE";}
             var lobby=java.Lobby.Snapshot;if((TestsActive||PhoneActive)&&qrVisible>0&&joinEnd==0&&lobby?.players!=null)foreach(var p in lobby.players)if(!priorPlayers.Contains(PlayerKey(p))&&p.networkReady&&p.inputReady&&p.connectionEpoch==1){joinEnd=Now();break;}
             if(TestsActive&&java.PhoneInputs.TryLatest(selected,out var pInput)){sample=pInput;fusion.ObservePhone(pInput);if(pInput.sequence!=sequence||pInput.connectionEpoch!=epoch){sequence=pInput.sequence;epoch=pInput.connectionEpoch;applied=Now();appliedFrame=Time.frameCount;presented=0;}}
             else {sample=null;applied=presented=0;}

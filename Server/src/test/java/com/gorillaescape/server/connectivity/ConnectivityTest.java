@@ -62,7 +62,7 @@ class ConnectivityTest {
                 for(String method:List.of("GET","POST")){var request=HttpRequest.newBuilder(ingress.origin().resolve(path));if(method.equals("POST"))request.header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}"));else request.GET();var r=client.send(request.build(),HttpResponse.BodyHandlers.ofString());assertEquals(404,r.statusCode(),method+" "+path);}
             }
             for(String path:PublicIngress.SIGNAL){var r=client.send(HttpRequest.newBuilder(ingress.origin().resolve(path)).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build(),HttpResponse.BodyHandlers.ofString());assertEquals(200,r.statusCode());assertTrue(r.headers().firstValue("Cache-Control").orElseThrow().contains("no-store"));}
-            assertEquals(4,calls.get());var large=client.send(HttpRequest.newBuilder(ingress.origin().resolve("/mobile/join")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("x".repeat(PublicIngress.MAX_BODY+1))).build(),HttpResponse.BodyHandlers.ofString());assertEquals(413,large.statusCode());assertEquals(4,calls.get());
+            assertEquals(5,calls.get());var large=client.send(HttpRequest.newBuilder(ingress.origin().resolve("/mobile/join")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("x".repeat(PublicIngress.MAX_BODY+1))).build(),HttpResponse.BodyHandlers.ofString());assertEquals(413,large.statusCode());assertEquals(5,calls.get());
             var foreign=client.send(HttpRequest.newBuilder(ingress.origin().resolve("/mobile/join")).header("Origin","https://evil.org").header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build(),HttpResponse.BodyHandlers.ofString());assertEquals(403,foreign.statusCode());
         }
     }
@@ -77,7 +77,7 @@ class ConnectivityTest {
         assertNull(link.getRawQuery());assertTrue(link.getRawFragment().contains("admission="));assertFalse(link.toString().split("#")[0].contains(next.token()));
     }
     @Test void startupBudgetRejectsUnboundedValues(){
-        for(long value:new long[]{0,99,15001,Long.MAX_VALUE})assertThrows(IllegalArgumentException.class,()->new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),new Fake(),value));
+        for(long value:new long[]{0,99,60001,Long.MAX_VALUE})assertThrows(IllegalArgumentException.class,()->new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),new Fake(),value));
     }
     @Test void httpHealthFailureCannotCreateReadyAndVersionTimeoutCleansOwnedChild()throws Exception{
         var binary=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nexec sleep 20\n");

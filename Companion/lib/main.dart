@@ -3,6 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import 'control/page.dart';
+import 'control/room_code.dart';
+import 'control/lan_discovery.dart';
+
+import 'dart:async';
+
+import 'island_theme.dart';
 import 'control/protocol.dart';
 export 'control/protocol.dart' show controllerLink;
 
@@ -14,22 +20,7 @@ class GorillaCompanion extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
     title: 'Gorilla Escape',
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: const Color(0xff102b25),
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xffe5bd75),
-        brightness: Brightness.dark,
-      ),
-      useMaterial3: true,
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          minimumSize: const Size(double.infinity, 56),
-          backgroundColor: const Color(0xffe5bd75),
-          foregroundColor: const Color(0xff102b25),
-        ),
-      ),
-    ),
+    theme: IslandStyle.theme(),
     home: const IslandHome(),
   );
 }
@@ -40,14 +31,97 @@ class IslandHome extends StatefulWidget {
   State<IslandHome> createState() => _IslandHomeState();
 }
 
-class _IslandHomeState extends State<IslandHome> {
+class _IslandHomeState extends State<IslandHome> with WidgetsBindingObserver {
+  final nearby = LanDiscovery();
+  Uri? selectedOrigin;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    nearby.addListener(nearbyChanged);
+    unawaited(nearby.start());
+  }
+
+  void nearbyChanged() {
+    if (mounted) {
+      if (selectedOrigin != null &&
+          !nearby.rooms.values.any((pc) => pc.origin == selectedOrigin)) {
+        selectedOrigin = null;
+      }
+      setState(() {});
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && !opening) {
+      unawaited(nearby.start());
+    } else if (state != AppLifecycleState.resumed) {
+      unawaited(nearby.stop());
+    }
+  }
+
   final link = TextEditingController();
+  final pin = TextEditingController();
+  Uri? recentOrigin;
   String? message;
   bool opening = false;
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    nearby.removeListener(nearbyChanged);
+    nearby.dispose();
     link.dispose();
+    pin.dispose();
     super.dispose();
+  }
+
+  Future<void> openWithPin() async {
+    if (opening) return;
+    if (roomCode(pin.text) == null) {
+      setState(() => message = 'El código debe tener 4 letras o números.');
+      return;
+    }
+    setState(() {
+      opening = true;
+      message = null;
+    });
+    final client = RoomCodeClient();
+    try {
+      final found = nearby.rooms.values.toList();
+      final target =
+          selectedOrigin ??
+          (found.length == 1 ? found.single.origin : null) ??
+          recentOrigin;
+      if (selectedOrigin == null && found.length > 1) {
+        throw const FormatException("CHOOSE_PC");
+      }
+      final uri = await client.join(pin.text, recentOrigin: target);
+      if (!mounted) return;
+      client.close();
+      pin.clear();
+      await open(uri.toString());
+    } on FormatException catch (error) {
+      if (mounted) {
+        setState(
+          () => message = error.message == 'PC_NOT_LINKED'
+              ? 'No encontramos la PC. Conéctate al mismo Wi-Fi, busca de nuevo o escanea su QR.'
+              : error.message == 'CHOOSE_PC'
+              ? 'Selecciona la PC de tu partida.'
+              : 'Sala no disponible. Revisa el código o espera antes de reintentar.',
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () =>
+              message = 'No pudimos contactar con la sala. Revisa la conexión.',
+        );
+      }
+    } finally {
+      client.close();
+      if (mounted) setState(() => opening = false);
+    }
   }
 
   Future<void> open(String text) async {
@@ -68,6 +142,8 @@ class _IslandHomeState extends State<IslandHome> {
       message = null;
     });
     try {
+      await nearby.stop();
+      recentOrigin = uri.replace(path: '/', query: null, fragment: null);
       link.clear();
       await HapticFeedback.selectionClick();
       if (!mounted) return;
@@ -103,16 +179,28 @@ class _IslandHomeState extends State<IslandHome> {
               const SizedBox(height: 20),
               const Row(
                 children: [
-                  Icon(Icons.forest, color: Color(0xffe5bd75), size: 34),
+                  IslandSeal(),
                   SizedBox(width: 12),
-                  Text('GORILIMPIADAS', style: TextStyle(letterSpacing: 3)),
+                  Expanded(
+                    child: Text(
+                      'GORILLA ESCAPE',
+                      style: TextStyle(
+                        fontFamily: 'IslandTitle',
+                        fontSize: 23,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: 24),
+              const IslandBanner(),
+              const SizedBox(height: 24),
               const Text(
                 'TU SALIDA\nDE LA ISLA',
                 style: TextStyle(
-                  fontSize: 44,
+                  fontFamily: 'IslandTitle',
+                  fontSize: 38,
                   height: 1.04,
                   fontWeight: FontWeight.w900,
                   color: Color(0xfff4e6c9),
@@ -129,17 +217,78 @@ class _IslandHomeState extends State<IslandHome> {
                 icon: const Icon(Icons.qr_code_scanner),
                 label: const Text('ESCANEAR QR DE LA PC'),
               ),
+              const SizedBox(height: 16),
+              Text(
+                nearby.searching
+                    ? 'Buscando partidas en tu Wi-Fi…'
+                    : nearby.rooms.isNotEmpty
+                    ? 'PC encontrada. Ingresa el código que muestra el juego.'
+                    : 'Busca la PC en tu Wi-Fi o escanea su QR.',
+              ),
+              for (final pc in nearby.rooms.values)
+                ListTile(
+                  leading: Icon(
+                    selectedOrigin == pc.origin ||
+                            (selectedOrigin == null && nearby.rooms.length == 1)
+                        ? Icons.check_circle
+                        : Icons.computer,
+                  ),
+                  title: Text(pc.name),
+                  onTap: opening
+                      ? null
+                      : () => setState(() => selectedOrigin = pc.origin),
+                ),
+              TextButton.icon(
+                onPressed: opening || nearby.searching
+                    ? null
+                    : () {
+                        selectedOrigin = null;
+                        unawaited(nearby.start());
+                      },
+                icon: const Icon(Icons.wifi_find),
+                label: const Text('BUSCAR PC'),
+              ),
+              ExpansionTile(
+                key: ValueKey(nearby.rooms.isNotEmpty),
+                initiallyExpanded: nearby.rooms.isNotEmpty,
+                title: const Text('Ingresar código de sala'),
+                children: [
+                  TextField(
+                    controller: pin,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    textCapitalization: TextCapitalization.characters,
+                    maxLength: 4,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'[2-9a-hjkmnp-zA-HJKMNP-Z]'),
+                      ),
+                    ],
+                    decoration: const InputDecoration(
+                      labelText: 'Código de 4 caracteres (ej. K7M4)',
+                      counterText: '',
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
+                  FilledButton(
+                    onPressed: opening ? null : openWithPin,
+                    child: const Text('CONECTAR CON CÓDIGO'),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              ),
               const SizedBox(height: 32),
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
                   color: const Color(0xff1d3c33),
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(4),
                 ),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.water, color: Color(0xff9bc6bd), size: 42),
+                    IslandSeal(size: 32),
                     SizedBox(height: 18),
                     Text(
                       'DESAFÍO DEL TRONCO',

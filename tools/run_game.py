@@ -42,6 +42,7 @@ if '--prepare-only' in sys.argv[1:]:
 env = os.environ.copy()
 env.update(
     GORILLA_PACKAGE_ROOT=str(player.parent), GORILLA_CONNECTION_MODE=mode,
+    GORILLA_TUNNEL_STARTUP_MS=os.environ.get('GORILLA_TUNNEL_STARTUP_MS', '30000'),
     GORILLA_CLOUDFLARED_PATH=str(binary), GORILLA_MAIN_MENU='1',
     GORILLA_QA_MENU='1', GORILLA_QA_OVERLAY='1', GORILLA_PHONE_INPUT='1',
     GORILLA_IPC_JAVA=str(runtime / 'Java/runtime/bin/java'), GORILLA_IPC_JAR=str(jar),

@@ -9,6 +9,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'protocol.dart';
+import '../island_theme.dart';
 import 'transport.dart';
 
 class ControlPage extends StatefulWidget {
@@ -21,6 +22,8 @@ class ControlPage extends StatefulWidget {
 class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   final transport = NativeTransport();
   final motion = MotionStore();
+  final cues = BalanceCues();
+  bool vibration = true;
   final name = TextEditingController();
   String profileStatus = '';
   bool savingProfile = false;
@@ -49,6 +52,25 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
         connectedNow && previousTransportState != 'connected';
     previousTransportState = transport.state;
     if (becameConnected && foreground) unawaited(startSensors());
+    final game = GameView.fromContext(
+      transport.gameContext,
+      transport.playerId,
+    );
+    final stats = GameStats.fromContext(transport.gameContext);
+    final cue = cues.update(
+      game.phase,
+      stats?.danger ?? 0,
+      transport.clock.elapsedMilliseconds,
+      game.myTurn && foreground && !suspended,
+    );
+    if (vibration && cue != null) {
+      final pulse = cue == 'Fell'
+          ? HapticFeedback.heavyImpact()
+          : cue == 'critical'
+          ? HapticFeedback.mediumImpact()
+          : HapticFeedback.lightImpact();
+      unawaited(pulse.catchError((Object _) {}));
+    }
     setState(() {});
   }
 
@@ -228,7 +250,6 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
     );
     final stats = GameStats.fromContext(transport.gameContext);
     final connected = transport.state == 'connected';
-    final gamma = motion.gamma(transport.clock.elapsedMilliseconds) ?? 0;
     final status = !connected
         ? (transport.state == 'connecting'
               ? 'Conectando con la isla…'
@@ -242,6 +263,9 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
         : 'CONTROL ACTIVO';
     return Scaffold(
       appBar: AppBar(
+        actions: const [
+          Padding(padding: EdgeInsets.all(12), child: IslandSeal(size: 28)),
+        ],
         title: Text(
           transport.playerId == null
               ? 'Tu control'
@@ -268,39 +292,18 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                 const SizedBox(height: 30),
                 Text(
                   view.title,
-                  style: const TextStyle(
-                    fontSize: 42,
+                  style: TextStyle(
+                    fontFamily: 'IslandTitle',
+                    fontSize: stats == null ? 36 : 30,
                     height: 1.05,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
                 const SizedBox(height: 30),
-                Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff1d3c33),
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  child: Center(
-                    child: Transform.rotate(
-                      angle: activated && !suspended
-                          ? (stats?['roll'] ?? gamma).clamp(-40, 40) *
-                                math.pi /
-                                180
-                          : 0,
-                      child: Icon(
-                        view.phase == 'Won'
-                            ? Icons.emoji_events
-                            : Icons.accessibility_new,
-                        size: 100,
-                        color: const Color(0xffe5bd75),
-                      ),
-                    ),
-                  ),
-                ),
+                if (stats == null) const IslandBanner(compact: true),
                 if (stats != null) ...[
                   const SizedBox(height: 20),
-                  GameScorePanel(stats: stats),
+                  GameScorePanel(stats: stats, phase: view.phase),
                 ],
                 const SizedBox(height: 24),
                 Semantics(
@@ -394,6 +397,11 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                     }
                   },
                   children: [
+                    SwitchListTile(
+                      title: const Text('Vibración de equilibrio'),
+                      value: vibration,
+                      onChanged: (value) => setState(() => vibration = value),
+                    ),
                     Text('Muestras confirmadas: $inspectedAcks'),
                     if (transport.code.isNotEmpty)
                       Text('Código: ${transport.code}'),
@@ -416,7 +424,12 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
 
 class GameScorePanel extends StatelessWidget {
   final GameStats stats;
-  const GameScorePanel({super.key, required this.stats});
+  final String phase;
+  const GameScorePanel({
+    super.key,
+    required this.stats,
+    this.phase = 'Crossing',
+  });
   @override
   Widget build(BuildContext context) => Semantics(
     label: 'Estado real de la partida',
@@ -482,6 +495,22 @@ class GameScorePanel extends StatelessWidget {
               'Blanco: apoyo · Ámbar: tendencia',
               style: TextStyle(fontSize: 13),
             ),
+            if (phase == 'Crossing' && stats.danger >= .6)
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  stats['balance'] > 0
+                      ? '← Corrige a la izquierda'
+                      : 'Corrige a la derecha →',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: stats.danger >= .85
+                        ? const Color(0xffffad88)
+                        : const Color(0xffffd484),
+                  ),
+                ),
+              ),
             const SizedBox(height: 16),
             Text(
               'Recorrido ${(stats['progress'] * 100).round()} %',
@@ -491,14 +520,18 @@ class GameScorePanel extends StatelessWidget {
               value: stats['progress'],
               semanticsLabel: 'Avance del cruce',
             ),
-            const SizedBox(height: 12),
-            Text(
-              '${stats['distance'].toStringAsFixed(1)} m · ${stats['elapsed'].toStringAsFixed(1)} s',
+            ExpansionTile(
+              title: const Text('Detalles del cruce'),
+              children: [
+                Text(
+                  '${stats['distance'].toStringAsFixed(1)} m · ${stats['elapsed'].toStringAsFixed(1)} s',
+                ),
+                Text(
+                  'Giro ${stats['roll'].round()}° · Paso ${stats['speed'].toStringAsFixed(2)} m/s',
+                ),
+                Text('Viento ${stats['wind'] >= 0 ? '→' : '←'}'),
+              ],
             ),
-            Text(
-              'Giro ${stats['roll'].round()}° · Paso ${stats['speed'].toStringAsFixed(2)} m/s',
-            ),
-            Text('Viento ${stats['wind'] >= 0 ? '→' : '←'}'),
           ],
         ),
       ),

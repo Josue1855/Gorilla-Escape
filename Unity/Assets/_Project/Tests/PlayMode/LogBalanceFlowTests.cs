@@ -143,12 +143,12 @@ public sealed class LogBalanceFlowTests
     }
     [UnityTest] public IEnumerator LeavingPrototypeRestoresLightingAndShadowPreferences()
     {
+        var host=new GameObject("Log Balance lighting fixture");var menu=host.AddComponent<MainMenuController>();
+        yield return null;
         var mode=UnityEngine.RenderSettings.ambientMode;var fog=UnityEngine.RenderSettings.fog;
         var sky=UnityEngine.RenderSettings.ambientSkyColor;var sun=UnityEngine.RenderSettings.sun;
         var shadows=QualitySettings.shadows;var distance=QualitySettings.shadowDistance;
         var resolution=QualitySettings.shadowResolution;int cascades=QualitySettings.shadowCascades;
-        var host=new GameObject("Log Balance lighting fixture");var menu=host.AddComponent<MainMenuController>();
-        yield return null;
         try
         {
             menu.OpenLogBalance();

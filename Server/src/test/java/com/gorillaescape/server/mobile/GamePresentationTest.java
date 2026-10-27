@@ -11,6 +11,10 @@ class GamePresentationTest {
  @Test void validatesAuthoritativeStatsAndRejectsUnboundedValues()throws Exception {
   var context=GorillaProtocol.JSON.readTree("{\"version\":1,\"gameId\":\"log-balance\",\"phase\":\"Won\",\"playerId\":1,\"stats\":{\"balance\":0.2,\"tendency\":0.3,\"progress\":1,\"distance\":18,\"elapsed\":22.7,\"roll\":10,\"speed\":0.88,\"wind\":0.2}}");
   GamePresentation.validate(context);
+  var stats=(tools.jackson.databind.node.ObjectNode)context.path("stats");
+  stats.put("danger",.9);GamePresentation.validate(context);
+  stats.put("danger",2);assertThrows(java.io.IOException.class,()->GamePresentation.validate(context));
+  stats.put("danger",.9);
   ((tools.jackson.databind.node.ObjectNode)context.path("stats")).put("progress",2);
   assertThrows(java.io.IOException.class,()->GamePresentation.validate(context));
   ((tools.jackson.databind.node.ObjectNode)context.path("stats")).remove("progress");

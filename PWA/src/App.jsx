@@ -1,16 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import ReadyControl from './controller/ReadyControl.jsx';
+import {FixedScreen,PagedText} from './controller/FixedScreen.jsx';
 import HealthProbe from './connection/HealthProbe.jsx';
 import { ControllerSession } from './controller/session.js';
 import { screens } from './controller/presentation.js';
 
-function GorillaMark() {
-  return <svg className="gorilla-mark" viewBox="0 0 120 100" aria-hidden="true">
-    <path fill="currentColor" d="M20 25 37 8h46l17 17 12 37-20 30H28L8 62z"/>
-    <path fill="var(--core-sand)" d="m30 38 15-10 15 8 15-8 15 10-3 17-8 6 9 10-12 13H44L32 71l9-10-8-6z"/>
-    <path fill="var(--core-forest)" d="M41 42h11v7H41zm27 0h11v7H68zM49 61h22l-4 7H53zm-4 14h30v4H45z"/>
-  </svg>;
-}
 function Controller() {
   const model = useRef(null);
   const [view, setView] = useState(null);
@@ -18,10 +12,15 @@ function Controller() {
   const [copyStatus, setCopyStatus] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [profileStatus, setProfileStatus] = useState(null);
+  const [panel,setPanel]=useState('control');
+  const [pin, setPin] = useState('');
+  const [pinStatus, setPinStatus] = useState('');
   useEffect(() => {
     const session = new ControllerSession({ notify: setView });
     model.current = session; setView(session.snapshot());
-    return () => { model.current = null; void session.dispose().catch(() => {}); };
+    const incoming=new URLSearchParams(location.hash.slice(1)).get('room');
+    const roomTimer=incoming?window.setTimeout(()=>{setPin(incoming);setPinStatus('Conectando…');void session.joinWithPin(incoming).then(result=>{if(result!=='JOINED'&&result!=='REDIRECTING'&&!session.disposed)setPinStatus('No se pudo entrar. Revisa el código e inténtalo de nuevo.');});},0):null;
+    return () => { if(roomTimer!==null)window.clearTimeout(roomTimer);model.current = null; void session.dispose().catch(() => {}); };
   }, []);
   const state = view?.state || 'NO_ADMISSION';
   const [title, description, label, feedback] = screens[state];
@@ -33,46 +32,81 @@ function Controller() {
   }
   const canRetryPermission = state === 'ERROR' && view?.network === 'NETWORK_READY';
   if (state === 'INPUT_READY') return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic}/>;
-  return <main className="controller-shell">
-    <header className="brand"><GorillaMark/><div><p className="eyebrow">GORILIMPIADAS</p><h1>GORILLA<br/>ESCAPE</h1></div></header>
-    <p className="edition">GORILLA CORE · TU TELÉFONO, TU CONTROL</p>
-    <section className="connection-panel" data-feedback={feedback} aria-labelledby="connection-title">
-      <div className="status-symbol" aria-hidden="true">{feedback === 'connecting' ? '…' : feedback === 'success' ? '✓' : feedback === 'error' ? '×' : '◆'}</div>
-      <div role="status" aria-live="polite" aria-atomic="true"><h2 id="connection-title">{title}</h2><p>{description}</p></div>
-      {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión local establecida</p>}
-      {state === 'ERROR' && view?.network === 'NOT_CONNECTED' && <div className="connection-recovery">
-        <p>La conexión falló antes de recibir una respuesta de la PC. Comprueba este navegador antes de volver a escanear.</p>
-        <button className="primary" disabled={view?.connectionCheck === 'CHECKING'} onClick={() => void model.current.checkConnection()}>{view?.connectionCheck === 'CHECKING' ? 'COMPROBANDO…' : 'COMPROBAR CONEXIÓN'}</button>
-        {view?.connectionCheck === 'READY' && <p role="status">La PC responde desde este navegador. Cierra esta pestaña y escanea un QR nuevo en la PC.</p>}
-        {['UNREACHABLE', 'INSECURE'].includes(view?.connectionCheck) && <p role="status">Este navegador no pudo verificar la conexión. Comprueba la misma Wi-Fi y que el juego siga abierto. Si usas conexión local, revisa la confianza del certificado; la PC ofrece Configurar este teléfono.</p>}
-        {!view?.publicTunnel && <a className="prepare-link" href="/prepare" target="_blank" rel="noreferrer">Ver preparación de este teléfono</a>}
-      </div>}
-      {state === 'PERMISSION_REQUIRED' && <details className="profile-setup"><summary>Tu nombre en la isla (opcional)</summary>
-        <label>Nombre del náufrago<input value={displayName} maxLength={40} autoComplete="off" onChange={e => setDisplayName(e.target.value)} disabled={Boolean(profileStatus)}/></label>
-        <button className="secondary" disabled={!displayName.trim() || Boolean(profileStatus)} onClick={async () => {
-          setProfileStatus('SAVING'); setProfileStatus(await model.current.createProfile(displayName)); setDisplayName('');
-        }}>Guardar nombre</button>
-        <p role="status">{profileStatus === 'SAVED' ? 'Nombre guardado en esta PC.' : profileStatus === 'SAVING' ? 'Guardando…' : profileStatus ? 'No pudimos confirmar el guardado. Puedes jugar sin nombre; no repetiremos la operación.' : 'Puedes continuar sin registrar un nombre.'}</p>
-      </details>}
-      <aside className="safety" aria-label="Seguridad"><strong>Sujeta firmemente tu teléfono.</strong><span>No lo sueltes ni lo lances durante el juego.</span></aside>
-      {(label || canRetryPermission) && <button className="primary" onClick={() => {
-        setDiagnostic(null); setCopyStatus('');
-        if (state === 'CONNECT') void model.current.connect();
-        else void model.current.activate();
+  const tabs=['control','help','data'];
+  const names={control:'Control',help:'Ayuda',data:'Datos'};
+  return <FixedScreen title="GORILLA ESCAPE" nav={tabs.map(tab=><button key={tab} aria-current={panel===tab?'page':undefined} onClick={()=>setPanel(tab)}>{names[tab]}</button>)}>
+    {panel==='control' && <div className="fixed-control" data-feedback={feedback}>
+      <img className="fixed-art" src="/brand/island-route.png" alt=""/>
+      <div className="fixed-status" role="status" aria-live="polite"><h2>{title}</h2><p className="primary-description">{description}</p></div>
+      <p className="fixed-safety">Sujeta el teléfono con ambas manos.</p>
+      {state === 'NO_ADMISSION' && <form className="pin-form" onSubmit={async e => {
+        e.preventDefault();
+        if (pin.trim().length === 4) {
+          setPinStatus('Conectando…');
+          const res = await model.current.joinWithPin(pin);
+          if (res !== 'JOINED' && res !== 'REDIRECTING') {
+            setPinStatus(res === 'PIN_INVALID' ? 'Código no válido' : res === 'SESSION_FULL' ? 'Sala llena' : res === 'PIN_RATE_LIMITED' ? 'Demasiados intentos. Espera un minuto.' : res === 'ROOM_NOT_FOUND' ? 'La sala no está disponible.' : 'No se pudo conectar');
+          }
+        }
+      }}>
+        <label htmlFor="room-pin" className="pin-label">O ingresa el código de sala (4 caracteres):</label>
+        <div className="pin-input-group">
+          <input
+            id="room-pin"
+            type="text"
+            className="pin-input"
+            value={pin}
+            maxLength={4}
+            autoCapitalize="characters"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck="false"
+            placeholder="ABCD"
+            onChange={e => {
+              setPin(e.target.value.toUpperCase().replace(/[^2-9A-HJKMNP-Z]/g, '').slice(0, 4));
+              setPinStatus('');
+            }}
+            disabled={pinStatus === 'Conectando…'}
+          />
+          <button type="submit" className="primary pin-submit" disabled={pin.length !== 4 || pinStatus === 'Conectando…'}>
+            {pinStatus === 'Conectando…' ? '…' : 'ENTRAR'}
+          </button>
+        </div>
+        {pinStatus && pinStatus !== 'Conectando…' && <p role="alert" className="brief-status">{pinStatus}</p>}
+      </form>}
+      {(label || canRetryPermission) && <button className="primary" onClick={()=>{
+        setDiagnostic(null);setCopyStatus('');
+        if(state==='CONNECT')void model.current.connect();else void model.current.activate();
       }}>{label || 'REINTENTAR PERMISO'}</button>}
-    </section>
-    <footer><p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
-      <button className="secondary" onClick={copyDiagnostic}>Copiar diagnóstico</button>
-      {view?.network === 'NETWORK_READY' && <details><summary>Medición técnica de sensores</summary>
-        <p>Sujeta el teléfono. No lo lances ni lo agites con fuerza.</p>
-        <button className="secondary" disabled={view?.measurement?.status === 'MEASURING'} onClick={() => model.current.startMeasurement('rest')}>Medir reposo · 15 s</button>
-        <button className="secondary" disabled={view?.measurement?.status === 'MEASURING'} onClick={() => model.current.startMeasurement('gentle')}>Medir movimiento suave · 25 s</button>
-        <p role="status">{view?.measurement?.status === 'MEASURING' ? 'Medición en curso. Mantén esta página visible.' : view?.measurement?.status === 'COMPLETE' ? 'Medición terminada. Copia el diagnóstico antes de iniciar otra.' : view?.measurement?.status === 'INTERRUPTED' ? 'Medición interrumpida.' : 'Las métricas aparecen al copiar el diagnóstico.'}</p>
-      </details>}
-      <p role="status" className="copy-status">{copyStatus}</p>
-      {diagnostic && <details open><summary>Diagnóstico técnico</summary><pre tabIndex="0">{JSON.stringify(diagnostic, null, 2)}</pre></details>}
-    </footer>
-  </main>;
+    </div>}
+    {panel==='help' && <div className="fixed-section">
+      <h2>Ayuda de conexión</h2>
+      <PagedText text={`${description}\n\nMantén el juego abierto en la PC. Sujeta el teléfono con ambas manos y conserva esta pantalla visible. No lo lances ni lo agites.`}/>
+      {view?.network==='NETWORK_READY' && <button onClick={()=>setPanel('profile')}>Tu nombre en la isla</button>}
+      {state==='ERROR' && view?.network==='NOT_CONNECTED' && <button onClick={()=>setPanel('recovery')}>Revisar conexión</button>}
+    </div>}
+    {panel==='recovery' && <div className="fixed-section"><h2>Revisar conexión</h2><PagedText text="Comprueba la misma Wi-Fi, la confianza HTTPS y que el juego siga abierto. Si la PC responde, escanea un QR nuevo."/>
+        <button disabled={view?.connectionCheck==='CHECKING'} onClick={()=>void model.current.checkConnection()}>COMPROBAR CONEXIÓN</button>
+        <p role="status" className="brief-status">{view?.connectionCheck==='READY'?'La PC responde. Escanea un QR nuevo.':view?.connectionCheck==='CHECKING'?'Comprobando…':['UNREACHABLE','INSECURE'].includes(view?.connectionCheck)?'No se pudo verificar. Revisa la red y la confianza HTTPS.':''}</p>
+        {!view?.publicTunnel && <a href="/prepare" target="_blank" rel="noreferrer">Preparar este teléfono</a>}
+    </div>}
+    {panel==='profile' && <div className="fixed-section">
+      <h2>Tu nombre en la isla</h2>
+      <label>Nombre del náufrago<input value={displayName} maxLength={40} autoComplete="off" onChange={e=>setDisplayName(e.target.value)} disabled={Boolean(profileStatus)}/></label>
+      <button disabled={!displayName.trim() || Boolean(profileStatus)} onClick={async()=>{setProfileStatus('SAVING');setProfileStatus(await model.current.createProfile(displayName));setDisplayName('');}}>Guardar nombre</button>
+      <p className="brief-status" role="status">{profileStatus==='SAVED'?'Nombre guardado.':profileStatus==='SAVING'?'Guardando…':profileStatus?'No se confirmó el guardado. Puedes jugar sin nombre.':''}</p>
+    </div>}
+    {panel==='data' && <div className="fixed-section">
+      <h2>Datos y diagnóstico</h2>
+      {diagnostic ? <PagedText label="Diagnóstico técnico" text={JSON.stringify(diagnostic,null,2)}/> : <PagedText text="Copia el diagnóstico para revisar la conexión y los sensores. Las mediciones técnicas no son necesarias para jugar."/>}
+      <button onClick={()=>void copyDiagnostic()}>Copiar diagnóstico</button>
+      {view?.network==='NETWORK_READY' && !diagnostic && <div className="measurement-actions">
+        <button disabled={view?.measurement?.status==='MEASURING'} onClick={()=>model.current.startMeasurement('rest')}>Reposo · 15 s</button>
+        <button disabled={view?.measurement?.status==='MEASURING'} onClick={()=>model.current.startMeasurement('gentle')}>Movimiento · 25 s</button>
+      </div>}
+      <p role="status" className="brief-status">{copyStatus || (view?.measurement?.status==='MEASURING'?'Medición en curso…':'')}</p>
+    </div>}
+  </FixedScreen>;
 }
 export default function App() {
   return new URLSearchParams(location.search).get('view') === 'health' ? <HealthProbe/> : <Controller/>;

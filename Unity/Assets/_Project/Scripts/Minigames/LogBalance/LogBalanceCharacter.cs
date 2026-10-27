@@ -41,9 +41,12 @@ namespace GorillaEscape.Minigames.LogBalance
             Turn(rightKnee,lateral,walking?-Mathf.Max(0,Mathf.Sin(phase))*26:0);
             Turn(leftFoot,lateral,-stride*.35f);Turn(rightFoot,lateral,stride*.35f);
             float alarm=Mathf.InverseLerp(.4f,.9f,Mathf.Abs(balance));
-            Turn(spine,forward,balance*10);Turn(chest,lateral,walking?3:0);Turn(head,forward,balance*8);
-            Turn(leftArm,forward,48+alarm*18+balance*16);Turn(rightArm,forward,-48-alarm*18+balance*16);
-            Turn(leftElbow,lateral,10+alarm*15);Turn(rightElbow,lateral,10+alarm*15);
+            float breath=!walking&&Mathf.Abs(balance)<=.05f?Mathf.Sin(elapsed*2.2f):0;
+            Turn(spine,forward,balance*10);Turn(chest,lateral,walking?3:breath*1.5f);Turn(head,forward,balance*8);
+            float armSpread=(walking||Mathf.Abs(balance)>.05f?42:18+breath*1.5f)+alarm*18;
+            Turn(leftArm,forward,-armSpread-balance*16);Turn(rightArm,forward,armSpread-balance*16);
+            float elbowBend=(walking||Mathf.Abs(balance)>.05f?-16:-12)-alarm*10;
+            Turn(leftElbow,lateral,elbowBend);Turn(rightElbow,lateral,elbowBend);
             if(fell)
             {
                 float tumble=Mathf.Clamp01(fallTime*2);
@@ -51,7 +54,7 @@ namespace GorillaEscape.Minigames.LogBalance
                 Turn(leftKnee,lateral,-45*tumble);Turn(rightKnee,lateral,-30*tumble);
                 Turn(leftArm,lateral,-65*tumble);Turn(rightArm,lateral,50*tumble);
             }
-            if(won){Turn(leftArm,forward,65);Turn(rightArm,forward,-65);Turn(head,lateral,-8);}
+            if(won){Turn(leftArm,forward,-65);Turn(rightArm,forward,65);Turn(head,lateral,-8);}
             SupportOffset=leftFoot!=null&&rightFoot!=null?restAnkleHeight-Mathf.Min(transform.InverseTransformPoint(leftFoot.position).y,transform.InverseTransformPoint(rightFoot.position).y):0;
         }
     }

@@ -8,6 +8,8 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSBonjourServices</key>
+	<array><string>_gorillaescape._tcp</string></array>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Conectamos este control con Gorilla Escape en tu PC para jugar en la misma red.</string>
 	<key>NSMotionUsageDescription</key>

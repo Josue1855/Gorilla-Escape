@@ -12,6 +12,29 @@ public sealed class LogBalanceTests
     {var m=new LogBalanceModel(rules??Quiet());m.Begin(1);m.Tick(.02f,0);return m;}
     static void Run(LogBalanceModel m,float seconds,float input=0)
     {for(int i=0;i<(int)Math.Round(seconds/.02f);i++)m.Tick(.02f,input);}
+    [Test] public void ProgressiveDifficultyStartsGentleAndIncreasesContinuously()
+    {
+        float prior=LogBalanceModel.DifficultyAt(0,.65f);
+        Assert.That(prior,Is.EqualTo(.65f).Within(.001f));
+        for(int i=1;i<=100;i++){
+            float current=LogBalanceModel.DifficultyAt(i/100f,.65f);
+            Assert.That(current,Is.GreaterThanOrEqualTo(prior));
+            Assert.That(current-prior,Is.LessThan(.02f));prior=current;
+        }
+        Assert.That(prior,Is.EqualTo(1.65f).Within(.001f));
+        Assert.That(LogBalanceModel.DifficultyAt(.5f,0),Is.EqualTo(1));
+    }
+    [Test] public void SustainedBadInputWarnsBeforeFalling()
+    {
+        var m=Started(new LogBalanceRules{countdownSeconds=0});float warned=-1;
+        for(int i=0;i<1000&&m.Result==null;i++){
+            m.Tick(.02f,1);
+            if(m.Danger>=.6f&&warned<0)warned=m.Elapsed;
+        }
+        Assert.That(m.State,Is.EqualTo(LogBalanceState.Fell));
+        Assert.That(warned,Is.GreaterThanOrEqualTo(0));
+        Assert.That(m.Elapsed-warned,Is.GreaterThan(.3f));
+    }
     [Test] public void NeutralRemainsBalancedWithoutDisturbance(){var m=Started();Run(m,2);Assert.That(m.Balance,Is.Zero);Assert.That(m.Distance,Is.GreaterThan(0));}
     [TestCase(-1,-1)] [TestCase(1,1)]
     public void TiltMovesInRequestedDirection(float tilt,int sign){var m=Started();Run(m,.3f,tilt);Assert.That(Math.Sign(m.Balance),Is.EqualTo(sign));}

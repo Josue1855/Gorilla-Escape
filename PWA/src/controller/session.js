@@ -1,3 +1,4 @@
+import {normalizeRoomCode} from './roomCode.js';
 import { SensorCapture, RateWindow } from '../input/sensors/capture.js';
 import { MobileClient, bindCapture } from '../input/mobileClient.js';
 import { permissionCapabilities, requestControlPermissions, permissionState } from './permissions.js';
@@ -7,6 +8,7 @@ export class ControllerSession {
     this.doc = doc; this.wakeWanted = false; this.wakeLock = null; this.wakePending = false;
     this.visibilityWake = () => { if (doc.visibilityState !== 'hidden') void this.keepAwake(); };
     doc.addEventListener('visibilitychange', this.visibilityWake);
+    this.joiningPin=false;
     this.win = win; this.now = now; this.url = url; this.client = client; this.notify = notify;
     const fragment = new URLSearchParams(new URL(url).hash.slice(1));
     this.publicTunnel = new URL(url).hostname.endsWith('.trycloudflare.com');
@@ -63,6 +65,24 @@ export class ControllerSession {
     } catch {
       if (!this.disposed) { this.state = 'ERROR'; this.network = 'NOT_CONNECTED'; this.publish(); }
     }
+  }
+  async joinWithPin(pin) {
+    const clean=normalizeRoomCode(pin);
+    if(this.disposed||!clean)return 'PIN_INVALID';
+    if(this.joiningPin||this.attempted)return 'JOIN_IN_PROGRESS';
+    this.joiningPin=true;
+    const abort=new AbortController(),timer=this.win.setTimeout(()=>abort.abort(),6500);this.pinAbort=abort;
+    try {
+      if(this.disposed)return 'CANCELLED';
+      const response=await this.client.fetcher('/mobile/pin-admission',{method:'POST',redirect:'error',cache:'no-store',signal:abort.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify({pin:clean})});
+      const data=await response.json();
+      if(!response.ok)return ['PIN_INVALID','SESSION_FULL','PIN_RATE_LIMITED','LOBBY_ADMISSION_CLOSED'].includes(data.code||data.error)?data.code||data.error:'PIN_REJECTED';
+      if(this.disposed)return 'CANCELLED';
+      if(!/^[a-f0-9-]{36}$/.test(data.sessionId)||!/^[A-Za-z0-9_-]{43}$/.test(data.admission))return 'PIN_REJECTED';
+      const u=new URL(this.url);u.hash=new URLSearchParams({v:'1',sessionId:data.sessionId,admission:data.admission}).toString();
+      this.url=u.href;this.hasAdmission=true;this.state='CONNECT';this.publish();await this.connect();
+      return this.network==='NETWORK_READY'?'JOINED':'NETWORK_ERROR';
+    }catch{return 'NETWORK_ERROR';}finally{this.joiningPin=false;this.pinAbort=null;this.win.clearTimeout(timer);}
   }
   async createProfile(displayName) {
     if (this.disposed || this.network !== 'NETWORK_READY' || this.profileAttempted) return 'UNAVAILABLE';
@@ -170,7 +190,7 @@ export class ControllerSession {
   }
   async dispose() {
     if (this.disposed) return;
-    this.disposed = true; this.doc.removeEventListener('visibilitychange', this.visibilityWake);
+    this.disposed = true;this.pinAbort?.abort(); this.doc.removeEventListener('visibilitychange', this.visibilityWake);
     void this.wakeLock?.release().catch(() => {});
     this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
     return this.client.close(false); // Owned transport cleanup only; no new lifecycle policy.

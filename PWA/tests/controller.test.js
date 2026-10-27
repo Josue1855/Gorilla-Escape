@@ -167,3 +167,32 @@ test('screen wake lock is reacquired after OS release and released on exit', asy
   lock.released=true;w.document.dispatchEvent(new Event('visibilitychange'));await Promise.resolve();
   assert.equal(requests,2);await model.dispose();assert.equal(releases,1);
 });
+test('joinWithPin validates PIN and updates session admission', async () => {
+  const model = new ControllerSession({ win: win(), url: 'https://192.168.1.5:8443/', client: client() });
+  assert.equal(await model.joinWithPin(''), 'PIN_INVALID');
+  assert.equal(await model.joinWithPin('123'), 'PIN_INVALID');
+  assert.equal(await model.joinWithPin('12345'), 'PIN_INVALID');
+  assert.equal(await model.joinWithPin(null), 'PIN_INVALID');
+
+  model.client.fetcher = async (path, opts) => {
+    const body = JSON.parse(opts.body);
+    if (body.pin === 'FAIL') return { ok: false, json: async () => ({ error: 'PIN_INVALID' }) };
+    if (body.pin === 'K7M4') return { ok: true, json: async () => ({ sessionId: '00000000-0000-0000-0000-000000000001', admission: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' }) };
+    return { ok: false, json: async () => ({}) };
+  };
+
+  assert.equal(await model.joinWithPin('fail'), 'PIN_INVALID');
+  const res = await model.joinWithPin('k7m4');
+  assert.equal(res, 'JOINED');
+  assert.equal(model.hasAdmission, true);
+  assert.ok(model.url.includes('sessionId=00000000-0000-0000-0000-000000000001'));
+  assert.ok(model.url.includes('admission=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'));
+  await model.dispose();
+});
+
+
+test('PIN admission stays on the already opened PC origin',async()=>{
+ const model=new ControllerSession({win:win(),url:'https://game.trycloudflare.com/',client:client()});let called;
+ model.client.fetcher=async(path)=>{called=path;return {ok:false,json:async()=>({error:'PIN_INVALID'})};};
+ assert.equal(await model.joinWithPin('K7M4'),'PIN_INVALID');assert.equal(called,'/mobile/pin-admission');await model.dispose();
+});

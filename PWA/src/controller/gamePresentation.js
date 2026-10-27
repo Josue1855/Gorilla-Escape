@@ -26,5 +26,19 @@ export function gameStats(context) {
     const value = context.stats[key];
     if (!Number.isFinite(value) || value < min || value > max) return null;
   }
+  if(context.stats.danger !== undefined && (!Number.isFinite(context.stats.danger) || context.stats.danger<0 || context.stats.danger>1))return null;
   return context.stats;
+}
+
+export class BalanceCues {
+  phase = ''; lastPulse = -10000;
+  update(phase,danger,now,myTurn) {
+    const changed=phase!==this.phase;this.phase=phase;
+    if(!myTurn)return null;
+    if(phase==='Ready'){this.lastPulse=-10000;return null;}
+    if(changed && ['Won','Fell'].includes(phase))return phase;
+    if(phase!=='Crossing'||danger<.6)return null;
+    if(now-this.lastPulse<(danger>=.85?450:900))return null;
+    this.lastPulse=now;return danger>=.85?'critical':'warning';
+  }
 }

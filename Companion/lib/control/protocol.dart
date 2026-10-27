@@ -177,6 +177,7 @@ class GameStats {
   final Map<String, double> values;
   GameStats._(this.values);
   double operator [](String key) => values[key]!;
+  double get danger => values['danger'] ?? 0;
   static GameStats? fromContext(Map<String, dynamic>? context) {
     final stats = context?['stats'];
     if (context?['gameId'] != 'log-balance' || stats is! Map) return null;
@@ -201,6 +202,34 @@ class GameStats {
       }
       values[entry.key] = value.toDouble();
     }
+    final danger = stats['danger'];
+    if (danger != null) {
+      if (danger is! num || !danger.isFinite || danger < 0 || danger > 1) {
+        return null;
+      }
+      values['danger'] = danger.toDouble();
+    }
     return GameStats._(values);
+  }
+}
+
+/// Cues are based only on fresh Unity state and are bounded to avoid continuous vibration.
+class BalanceCues {
+  String previousPhase = '';
+  int lastPulse = -10000;
+  String? update(String phase, double danger, int now, bool myTurn) {
+    final changed = phase != previousPhase;
+    previousPhase = phase;
+    if (!myTurn) return null;
+    if (phase == 'Ready') {
+      lastPulse = -10000;
+      return null;
+    }
+    if (changed && (phase == 'Won' || phase == 'Fell')) return phase;
+    if (phase != 'Crossing' || danger < .6) return null;
+    final interval = danger >= .85 ? 450 : 900;
+    if (now - lastPulse < interval) return null;
+    lastPulse = now;
+    return danger >= .85 ? 'critical' : 'warning';
   }
 }

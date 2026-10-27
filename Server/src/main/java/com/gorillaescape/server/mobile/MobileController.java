@@ -39,7 +39,22 @@ public final class MobileController {
         var bits=JoinQrPoc.encode(uri);var image=new BufferedImage(bits.getWidth(),bits.getHeight(),BufferedImage.TYPE_INT_RGB);
         for(int y=0;y<bits.getHeight();y++)for(int x=0;x<bits.getWidth();x++)image.setRGB(x,y,bits.get(x,y)?0:0xffffff);
         var bytes=new ByteArrayOutputStream();ImageIO.write(image,"PNG",bytes);
-        return Map.of("protocolVersion",1,"url",uri.toASCIIString(),"qrPng",Base64.getEncoder().encodeToString(bytes.toByteArray()),"expiresInSeconds",30,"scope",lab?"loopback software/lab; not phone onboarding":"DEC-016 prepared-device LAN HTTPS");
+        return Map.of("protocolVersion",1,"url",uri.toASCIIString(),"qrPng",Base64.getEncoder().encodeToString(bytes.toByteArray()),"expiresInSeconds",30,"roomCode",runtime.roomCode(),"scope",lab?"loopback software/lab; not phone onboarding":"DEC-016 prepared-device LAN HTTPS");
+    }
+    public record PinAdmissionRequest(String pin) {}
+    @PostMapping("/pin-admission")public ResponseEntity<?> pinAdmission(@RequestBody PinAdmissionRequest request){
+        if(request==null||request.pin()==null||request.pin().isBlank())return ResponseEntity.badRequest().body(Map.of("error","PIN_REQUIRED"));
+        try{
+            var admission=runtime.admissionByPin(request.pin());
+            return ResponseEntity.ok(Map.of("sessionId",admission.sessionId(),"admission",admission.token(),"expiresInSeconds",30));
+        }catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(Map.of("error","PIN_INVALID"));
+        }catch(IllegalStateException e){
+            String code=Set.of("PIN_RATE_LIMITED","SESSION_FULL","SESSION_CLOSED","LOBBY_ADMISSION_CLOSED").contains(String.valueOf(e.getMessage()))?e.getMessage():"PIN_FAILED";
+            return ResponseEntity.status("PIN_RATE_LIMITED".equals(code)?429:400).body(Map.of("error",code));
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(Map.of("error","PIN_FAILED"));
+        }
     }
     @PostMapping("/join")public ResponseEntity<?> join(@RequestBody MobileRuntime.Signal signal){
         try{return ResponseEntity.ok(runtime.join(signal));}

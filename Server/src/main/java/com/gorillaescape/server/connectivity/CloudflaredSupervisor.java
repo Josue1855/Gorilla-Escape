@@ -22,6 +22,7 @@ public final class CloudflaredSupervisor implements Tunnel {
     private final Path binary;
     private final boolean verifyBinary;
     private volatile boolean registered,cancelled;
+    private volatile int activeConnections;
     private ScheduledExecutorService monitor;
     private int healthFailures;
     public static boolean verified(Path binary){
@@ -45,8 +46,8 @@ public final class CloudflaredSupervisor implements Tunnel {
     private boolean httpReady(URI origin,long remainingMs)throws Exception{
         if(cancelled)throw new InterruptedException();
         var client=httpClient;
-        if(client==null)httpClient=client=java.net.http.HttpClient.newBuilder().connectTimeout(java.time.Duration.ofMillis(1500)).build();
-        var request=java.net.http.HttpRequest.newBuilder(origin.resolve("/")).timeout(java.time.Duration.ofMillis(Math.max(1,Math.min(1500,remainingMs)))).GET().build();
+        if(client==null)httpClient=client=java.net.http.HttpClient.newBuilder().connectTimeout(java.time.Duration.ofMillis(3000)).build();
+        var request=java.net.http.HttpRequest.newBuilder(origin.resolve("/")).timeout(java.time.Duration.ofMillis(Math.max(1,Math.min(3000,remainingMs)))).GET().build();
         lastHttpsStatus=client.send(request,java.net.http.HttpResponse.BodyHandlers.discarding()).statusCode();return lastHttpsStatus==200;
     }
     // Discovery never downloads. Every production execution independently verifies the pinned hash.
@@ -84,12 +85,15 @@ public final class CloudflaredSupervisor implements Tunnel {
             boolean healthy=false;
             while(owned.isAlive()&&registered&&System.nanoTime()<deadline){
                 long remaining=Math.max(1,TimeUnit.NANOSECONDS.toMillis(deadline-System.nanoTime()));
-                try{healthAttempts++;healthy=probe.ready(origin,Math.min(1500,remaining));}catch(Exception early){probeFailure=early.getClass().getSimpleName();healthy=false;}
+                try{healthAttempts++;healthy=probe.ready(origin,Math.min(3000,remaining));}catch(Exception early){probeFailure=early.getClass().getSimpleName()+":"+early.getMessage();healthy=false;}
                 if(healthy)break;
                 remaining=TimeUnit.NANOSECONDS.toMillis(deadline-System.nanoTime());
-                if(remaining>0)Thread.sleep(Math.min(200,remaining));
+                if(remaining>0)Thread.sleep(Math.min(500,remaining));
             }
-            if(!healthy||!registered||!owned.isAlive()||System.nanoTime()>deadline)throw new IOException("TUNNEL_HTTPS_UNAVAILABLE");
+            if(!healthy||!registered||!owned.isAlive()||System.nanoTime()>deadline){
+                System.err.println("[TUNNEL_FAIL] origin="+origin+" healthy="+healthy+" registered="+registered+" alive="+owned.isAlive()+" attempts="+healthAttempts+" lastStatus="+lastHttpsStatus+" probeFailure="+probeFailure);
+                throw new IOException("TUNNEL_HTTPS_UNAVAILABLE");
+            }
             synchronized(this){
                 if(cancelled)throw new IOException("TUNNEL_CANCELLED");
                 state=State.RUNNING;
@@ -97,8 +101,8 @@ public final class CloudflaredSupervisor implements Tunnel {
                     monitor=Executors.newSingleThreadScheduledExecutor(r->{var t=new Thread(r,"cloudflared-health");t.setDaemon(true);return t;});
                     monitor.scheduleWithFixedDelay(()->{
                         if(state!=State.RUNNING)return;
-                        boolean ok=false;try{ok=probe.ready(origin,1500);}catch(Exception ignored){}
-                        healthFailures=ok?0:healthFailures+1;if(healthFailures>=2)state=State.FAILED;
+                        boolean ok=false;try{ok=probe.ready(origin,3000);}catch(Exception ignored){}
+                        healthFailures=ok?0:healthFailures+1;if(healthFailures>=4)state=State.FAILED;
                     },3,3,TimeUnit.SECONDS);
                 }
             }
@@ -124,8 +128,8 @@ public final class CloudflaredSupervisor implements Tunnel {
             while((c=input.read())!=-1){
                 if(c!='\n'){if(line.length()<2048&&!oversized)line.append((char)c);else{oversized=true;line.setLength(0);}continue;}
                 if(!oversized){String text=line.toString();URI parsed=parseOrigin(text);if(parsed!=null)origin=parsed;
-                    if(text.contains("Registered tunnel connection"))registered=true;
-                    if(text.contains("Unregistered tunnel connection")||text.contains("Serve tunnel error")||text.contains("failed to serve tunnel connection")){registered=false;if(state==State.RUNNING)state=State.FAILED;}
+                    if(text.contains("Registered tunnel connection")){activeConnections++;registered=true;}
+                    if(text.contains("Unregistered tunnel connection")){activeConnections=Math.max(0,activeConnections-1);if(activeConnections==0&&!owned.isAlive()){registered=false;if(state==State.RUNNING)state=State.FAILED;}}
                     if(origin!=null&&registered)ready.complete(origin);
                 }line.setLength(0);oversized=false;
             }

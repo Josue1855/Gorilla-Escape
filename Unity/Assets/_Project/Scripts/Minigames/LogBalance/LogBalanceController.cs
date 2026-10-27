@@ -15,7 +15,32 @@ namespace GorillaEscape.Minigames.LogBalance
         bool keyboard,paused,focused=true,showCredits,pendingStart,pendingResume;
         string creditsText;
         int player=1;
-        float fallenTime;
+        float fallenTime,nextWarning;
+        AudioSource feedbackAudio;
+        AudioClip warningSound,fallSound,winSound;
+        LogBalanceState priorFeedbackState;
+        AudioClip Tone(string name,float frequency,float end,float seconds)
+        {
+            const int rate=22050;var samples=new float[(int)(rate*seconds)];float phase=0;
+            for(int i=0;i<samples.Length;i++){
+                float t=(float)i/samples.Length;phase+=2*Mathf.PI*Mathf.Lerp(frequency,end,t)/rate;
+                samples[i]=Mathf.Sin(phase)*Mathf.Sin(Mathf.PI*t)*.18f;
+            }
+            var clip=AudioClip.Create(name,samples.Length,1,rate,false);clip.SetData(samples,0);return clip;
+        }
+        void PresentFeedback()
+        {
+            if(model.State==LogBalanceState.Crossing&&!paused&&focused&&model.Danger>=.6f&&Time.unscaledTime>=nextWarning){
+                feedbackAudio.PlayOneShot(warningSound,model.Danger>=.85f?.85f:.55f);
+                nextWarning=Time.unscaledTime+(model.Danger>=.85f?.45f:.9f);
+            }
+            if(model.State!=priorFeedbackState){
+                if(model.State==LogBalanceState.Fell)feedbackAudio.PlayOneShot(fallSound);
+                if(model.State==LogBalanceState.Won)feedbackAudio.PlayOneShot(winSound);
+                if(model.State==LogBalanceState.Ready)nextWarning=0;
+                priorFeedbackState=model.State;
+            }
+        }
         string notice="Sostén el teléfono en una posición cómoda. El control se prepara automáticamente.";
         Vector2 scroll;
         public LogBalanceModel Attempt => model;
@@ -30,6 +55,10 @@ namespace GorillaEscape.Minigames.LogBalance
             if(settings==null)settings=Resources.Load<LogBalanceSettings>("LogBalanceSettings");
             rules=(settings!=null?settings.rules:new LogBalanceRules()).Copy();rules.Validate();
             creditsText=Resources.Load<TextAsset>("LogBalance/CREDITS")?.text??"Créditos en Art/LogBalance/ATTRIBUTION.md";
+            bool hasListener=false;foreach(var listener in FindObjectsByType<AudioListener>(FindObjectsSortMode.None))if(listener.enabled)hasListener=true;
+            if(!hasListener)gameObject.AddComponent<AudioListener>();
+            feedbackAudio=gameObject.AddComponent<AudioSource>();feedbackAudio.playOnAwake=false;feedbackAudio.spatialBlend=0;
+            warningSound=Tone("Balance warning",380,460,.12f);fallSound=Tone("River fall",230,65,.5f);winSound=Tone("Crossing complete",480,880,.4f);
             model=new LogBalanceModel(rules);stage=new LogBalanceStage(transform,rules.length,settings!=null?settings.visuals:null);
         }
         public void Attach(MainMenuController owner) {menu=owner;}
@@ -91,15 +120,16 @@ namespace GorillaEscape.Minigames.LogBalance
             }
             if(!paused&&focused&&available)model.Tick(Mathf.Min(.1f,Time.unscaledDeltaTime),input);
             if(model.State==LogBalanceState.Fell)fallenTime+=Time.unscaledDeltaTime;
+            PresentFeedback();
             string Number(float n)=>n.ToString("0.###",System.Globalization.CultureInfo.InvariantCulture);
             string stats="{\"balance\":"+Number(Mathf.Clamp(model.Balance/rules.balanceClamp,-1,1))
                 +",\"tendency\":"+Number(Mathf.Clamp((model.Balance+model.LateralVelocity*.35f)/rules.balanceClamp,-1,1))
                 +",\"progress\":"+Number(model.Progress)+",\"distance\":"+Number(model.Distance)
                 +",\"elapsed\":"+Number(model.Elapsed)+",\"roll\":"+Number(model.LogAngle*Mathf.Rad2Deg)
-                +",\"speed\":"+Number(model.ForwardVelocity)+",\"wind\":"+Number(model.Wind)+"}";
+                +",\"speed\":"+Number(model.ForwardVelocity)+",\"wind\":"+Number(model.Wind)+",\"danger\":"+Number(model.Danger)+"}";
             menu?.Runtime?.java?.PresentPhoneGame("log-balance",paused?"Paused":model.State.ToString(),player,stats);
             stage.Present(model.Progress,model.Balance,model.State==LogBalanceState.Fell,fallenTime,model.Elapsed,
-                model.State==LogBalanceState.Crossing&&!paused&&focused,model.State==LogBalanceState.Won,model.LogAngle*Mathf.Rad2Deg,model.FootstepPhase);
+                model.State==LogBalanceState.Crossing&&!paused&&focused,model.State==LogBalanceState.Won,model.LogAngle*Mathf.Rad2Deg,model.FootstepPhase,model.Danger);
         }
         void OnGUI()
         {
@@ -167,11 +197,11 @@ namespace GorillaEscape.Minigames.LogBalance
                 GUI.Label(new Rect(x,y+120,540,60),"PAUSA · "+(focused?notice:"Vuelve a la ventana para continuar."),body);
                 if(GUI.Button(new Rect(x,y+195,540,45),"REANUDAR",button))ResumeAttempt();
             }
-            else GUI.Label(new Rect(x,y+125,540,70),model.State==LogBalanceState.Countdown?$"Comienza en {Mathf.CeilToInt(model.Countdown)}…":"Frena la inercia antes del borde\nR reinicia",title);
+            else GUI.Label(new Rect(x,y+125,540,70),model.State==LogBalanceState.Crossing&&model.Danger>=.6f?(model.Balance>0?"¡CORRIGE HACIA LA IZQUIERDA!":"¡CORRIGE HACIA LA DERECHA!"):model.State==LogBalanceState.Countdown?$"Comienza en {Mathf.CeilToInt(model.Countdown)}…":"Frena la inercia antes del borde\nR reinicia",title);
         }
         public static bool IsGameplayKey(KeyCode key) => key==KeyCode.Space||key==KeyCode.R
             ||key==KeyCode.Escape||key==KeyCode.A||key==KeyCode.D||key==KeyCode.LeftArrow||key==KeyCode.RightArrow;
         static void Fill(Rect rect,Color value){GUI.color=value;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=Color.white;}
-        void OnDestroy(){menu?.Runtime?.java?.PresentPhoneGame("lobby","Ready",0);stage?.Dispose();}
+        void OnDestroy(){if(warningSound!=null)Destroy(warningSound);if(fallSound!=null)Destroy(fallSound);if(winSound!=null)Destroy(winSound);menu?.Runtime?.java?.PresentPhoneGame("lobby","Ready",0);stage?.Dispose();}
     }
 }

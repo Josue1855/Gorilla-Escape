@@ -22,6 +22,29 @@ void main() {
     }
   });
   testWidgets(
+    'expedition home remains reachable at narrow width and large text',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(320, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+            child: const IslandHome(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      await tester.scrollUntilVisible(
+        find.text('ESCANEAR QR DE LA PC'),
+        250,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.text('ESCANEAR QR DE LA PC').hitTestable(), findsOneWidget);
+    },
+  );
+  testWidgets(
     'real game score remains readable on narrow screen with large text',
     (tester) async {
       final stats = GameStats.fromContext({
@@ -55,6 +78,10 @@ void main() {
         ),
       );
       expect(find.text('Recorrido 100 %'), findsOneWidget);
+      expect(find.text('18.0 m · 22.7 s'), findsNothing);
+      await tester.ensureVisible(find.text('Detalles del cruce'));
+      await tester.tap(find.text('Detalles del cruce'));
+      await tester.pumpAndSettle();
       expect(find.text('18.0 m · 22.7 s'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
@@ -66,5 +93,21 @@ void main() {
     expect(find.text('TU SALIDA\nDE LA ISLA'), findsOneWidget);
     expect(find.text('ESCANEAR QR DE LA PC'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
+  });
+  testWidgets('home allows expanding room code entry', (tester) async {
+    await tester.pumpWidget(const GorillaCompanion());
+    await tester.scrollUntilVisible(
+      find.text('Ingresar código de sala'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, -150));
+    await tester.pumpAndSettle();
+    expect(find.text('Ingresar código de sala'), findsOneWidget);
+    await tester.tap(find.text('Ingresar código de sala'));
+    await tester.pumpAndSettle();
+    expect(find.text('Código de 4 caracteres (ej. K7M4)'), findsOneWidget);
+    expect(find.textContaining('Dirección o IP'), findsNothing);
+    expect(find.text('CONECTAR CON CÓDIGO'), findsOneWidget);
   });
 }

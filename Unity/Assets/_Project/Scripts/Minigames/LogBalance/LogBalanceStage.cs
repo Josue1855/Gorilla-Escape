@@ -206,7 +206,7 @@ namespace GorillaEscape.Minigames.LogBalance
             if(obj.GetComponent<MeshFilter>()==null)throw new System.InvalidOperationException("Primitive mesh missing.");
             obj.GetComponent<MeshRenderer>().sharedMaterial=Surface(color);return obj.transform;
         }
-        public void Present(float progress,float balance,bool fell,float fallSeconds,float elapsed=0,bool walking=false,bool won=false,float rollDegrees=0,float gaitPhase=-1)
+        public void Present(float progress,float balance,bool fell,float fallSeconds,float elapsed=0,bool walking=false,bool won=false,float rollDegrees=0,float gaitPhase=-1,float danger=0)
         {
             logRotation=Quaternion.Euler(0,0,-rollDegrees);
             logRoll.localRotation=logRotation;
@@ -215,7 +215,8 @@ namespace GorillaEscape.Minigames.LogBalance
             float side=fell?(balance<0?-1:1)*Mathf.Min(2.7f,fallSeconds*3):0;
             float bob=walking?Mathf.Sin(gaitPhase>=0?gaitPhase*2:elapsed*Mathf.PI*4.6f)*.025f:0;
             human.localPosition=new Vector3(footX+side,support+.035f+bob-(fell?Mathf.Min(3.5f,fallSeconds*4):0),-length/2+length*progress);
-            human.localRotation=Quaternion.Euler(fell?Mathf.Min(65,fallSeconds*85):0,0,-balance*22-(fell?side*28:0));
+            float warningLean=walking?Mathf.Sin(elapsed*11)*Mathf.InverseLerp(.6f,1,danger)*3:0;
+            human.localRotation=Quaternion.Euler(fell?Mathf.Min(65,fallSeconds*85):0,0,-balance*22+warningLean-(fell?side*28:0));
             character.Pose(elapsed,balance,walking,fell,fallSeconds,won,gaitPhase);
             if(!fell)human.localPosition+=Vector3.up*character.SupportOffset;
             for(int i=0;i<spectators.Count;i++)

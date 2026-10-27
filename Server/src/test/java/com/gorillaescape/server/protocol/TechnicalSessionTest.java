@@ -13,4 +13,30 @@ class TechnicalSessionTest {
  @Test void disconnectIsolationAndWrongDevice(){var s=session();var a=s.createAdmission();var c=s.join(a.sessionId(),a.token());var b=s.createAdmission();var d=s.join(b.sessionId(),b.token());assertThrows(IllegalArgumentException.class,()->s.disconnect(c.sessionId(),c.playerId(),d.sessionDeviceId(),c.epoch()));s.disconnect(c.sessionId(),c.playerId(),c.sessionDeviceId(),c.epoch());assertEquals(TechnicalSession.State.CONNECTED,s.state(d.playerId()));assertThrows(IllegalArgumentException.class,()->s.reconnect(c.sessionId(),c.playerId(),"wrong"));}
  @Test void expiredResumeAndShutdown(){var s=session();var a=s.createAdmission();var c=s.join(a.sessionId(),a.token());clock.set(60);assertThrows(IllegalArgumentException.class,()->s.reconnect(c.sessionId(),c.playerId(),c.resumeToken()));assertEquals(0,s.retainedClients());s.close();assertThrows(IllegalStateException.class,s::createAdmission);}
  @Test void rollbackOnlyReleasesExactOwnedSlotAndPreservesNormalResume(){var s=session();var a=s.createAdmission();var c=s.join(a.sessionId(),a.token());s.abortUnconfirmedJoin(c);assertEquals(0,s.retainedClients());assertThrows(IllegalArgumentException.class,()->s.join(a.sessionId(),a.token()));var fresh=s.createAdmission();var next=s.join(fresh.sessionId(),fresh.token());assertEquals(c.playerId(),next.playerId());assertThrows(IllegalArgumentException.class,()->s.abortUnconfirmedJoin(c));assertEquals(1,s.retainedClients());s.disconnect(next.sessionId(),next.playerId(),next.sessionDeviceId(),next.epoch());assertEquals(1,s.retainedClients());assertNotNull(s.reconnect(next.sessionId(),next.playerId(),next.resumeToken()));}
+ @Test void roomCodeGenerationAndPinAdmission(){
+  var s=session();
+  var code=s.roomCode();
+  assertNotNull(code);
+  assertEquals(4,code.length());
+  assertTrue(code.matches("[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{4}"));
+  assertThrows(IllegalArgumentException.class,()->s.joinByPin("XXXX"));
+  assertThrows(IllegalArgumentException.class,()->s.joinByPin(""));
+  assertThrows(IllegalArgumentException.class,()->s.joinByPin(null));
+  var a=s.joinByPin(code.toLowerCase());
+  assertNotNull(a);
+  var joined=s.join(a.sessionId(),a.token());
+  assertEquals(1,joined.playerId());
+  s.regenerateRoomCode();
+  assertNotNull(s.roomCode());
+  assertEquals(4,s.roomCode().length());
+ }
+ @Test void localPinDoesNotInvalidateQrAndClosesWithSession(){
+  var s=session();var qr=s.createAdmission();String code=s.roomCode();
+  var pin=s.joinByPin(code.toLowerCase());assertNotEquals(qr.token(),pin.token());
+  assertEquals(1,s.join(qr.sessionId(),qr.token()).playerId());assertEquals(2,s.join(pin.sessionId(),pin.token()).playerId());
+  assertThrows(IllegalArgumentException.class,()->s.join(pin.sessionId(),pin.token()));
+  s.close();
+  assertThrows(IllegalStateException.class,()->s.joinByPin(code));
+ }
+
 }

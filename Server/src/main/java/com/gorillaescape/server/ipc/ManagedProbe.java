@@ -148,7 +148,9 @@ public final class ManagedProbe implements DisposableBean {
                             pongPayload.set("lobby",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.lobby()));
                         }
                         if(qa){var trust=com.gorillaescape.server.hosting.LocalTrust.current();pongPayload.set("qaHosting",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(java.util.Map.of("prepare",prepareRaster,"origin",lab?"LAB loopback":origin,"fingerprint",trust==null?"NOT MEASURED":trust.fingerprint(),"prepareUrl",trust==null||bootstrapPort==0?"NOT MEASURED":"http://"+address+":"+bootstrapPort+"/prepare")));
-                            pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity==null?mobile.qa(qaPage,lab,regenerateQa):connectivity.qa(regenerateQa)));
+                            var qaNode=(tools.jackson.databind.node.ObjectNode)com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity==null?mobile.qa(qaPage,lab,regenerateQa):connectivity.qa(regenerateQa));
+                            qaNode.put("roomCode",connectivity==null?"":connectivity.publishedRoomCode());
+                            pongPayload.set("qa",qaNode);
                             if(connectivity!=null)pongPayload.set("qaConnection",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity.snapshot()));
                             pongPayload.set("qaPhones",mobile.qaPhones());pongPayload.set("qaMetrics",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qaMetrics()));}
                         int overhead=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsBytes(root).length;
