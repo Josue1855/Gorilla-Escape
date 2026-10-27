@@ -8,8 +8,8 @@
 
 | Alcance | Situación verificable |
 |---|---|
-| Backend de jugadores | SQLite/JDBC aprobado expresamente por el PO e implementado con GET/POST y migración; [PR backend #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14). La evaluación amplia del PR #12 permanece separada. |
-| PWA de laboratorio | Fork con Service Worker compilado, snapshot/borrador IndexedDB y GET/POST reales, probados en escritorio; [PR del fork #1](https://github.com/Josue1855/Dise-o_pwa/pull/1). Sin Background Sync ni idempotencia POST; incorporación upstream pendiente. |
+| Backend de jugadores | SQLite/JDBC aprobado expresamente por el PO e implementado con GET/POST y migración; [PR backend #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14). El PR #14 ya se integró en develop; el PR #12 de evaluación fue cerrado sin merge. |
+| PWA de laboratorio | Fork con Service Worker compilado, snapshot/borrador IndexedDB y GET/POST reales, probados en escritorio; [PR del fork #7 integrado en develop](https://github.com/Josue1855/Dise-o_pwa/pull/7). Sin Background Sync ni idempotencia POST; incorporación upstream pendiente. |
 | Diseño de producto completo | Menús/HUD, estados y controles por disciplina descritos abajo son objetivos. Los colores del laboratorio o la demo no constituyen una paleta oficial ratificada. |
 | Permisos de repositorio UI/UX | Upstream sólo READ/main; [solicitud de develop y revisión](https://github.com/Quintana-117/Dise-o_pwa/issues/1) abierta. No se modifica main ni se presupone autorización de merge. |
 
@@ -100,7 +100,7 @@ Cachear sólo recursos aprobados del shell; datos de negocio sujetos a expiraci�
 
 - Unity (Josue1855/Gorilla-Escape): UI de TV, navegación de lobby, HUD, resultados oficiales, feedback de reglas y contrato de entrada.
 - PWA UI/UX (Quintana-117/Dise-o_pwa): pantallas móviles, controles, estilos responsivos, accesibilidad, Service Worker, datos REST y cola offline cuando esté aprobada.
-- Backend (Josue1855/Gorilla-Escape-Backend): API y almacenamiento de identidades/resultados, validación, idempotencia, métricas y contratos. SQLite/JDBC ya está aprobado para el primer incremento de jugadores e implementado en PR #14; sesiones, resultados, rankings e idempotencia de negocio siguen pendientes. PR #12 conserva la evaluación amplia sin merge presumido.
+- Backend (Josue1855/Gorilla-Escape-Backend): API y almacenamiento de identidades/resultados, validación, idempotencia, métricas y contratos. SQLite/JDBC ya está aprobado para el primer incremento de jugadores e implementado en PR #14; sesiones, resultados, rankings e idempotencia de negocio siguen pendientes. PR #12 conserva la evaluación amplia como documento histórico, cerrado sin merge; PR #14 ya está integrado en develop.
 
 No incorporar código ni activos de Google Playground. No reemplazar el canal Java/WebRTC/IPC por llamadas REST.
 

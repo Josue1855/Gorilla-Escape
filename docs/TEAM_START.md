@@ -1,133 +1,78 @@
 # Base de trabajo del equipo
 
-> Actualización posterior: backend de jugadores y laboratorio PWA del fork implementados y probados en ramas para revisión. [Estado vigente](00-product/DEVELOPMENT_STATUS.md), [evidencias](04-testing/PWA_TEST_LAB.md) y [decisiones](00-product/ARCHITECTURE_DECISIONS.md). Los checkpoints fechados siguientes conservan su contexto histórico; no describen la ausencia actual de SQLite.
-
-> Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
-
-> **Estado de capacidades:** esta guía conserva procedimientos y antecedentes de arranque. Para implementación validada, transporte DEC-010, cierre Software/Lab y deuda física, consultar [auditoría final](PHASE0_FINAL_AUDIT.md). Referencias antiguas a red/cámara pendientes no describen el candidato local vigente.
-
-Fecha: 2026-10-06. Alcance: arranque de Fase 0; no completa Spike 0 ni implementa juego. Arquitectura aprobada en DEC-002 y v4 enmendada.
+Última revisión: 2026-10-26; conserva las instrucciones de develop revisadas el 2026-10-20. Guía operativa del monorepo en `develop`; contrastada con sus manifiestos y fuentes. Los resultados de pruebas y sus límites se consultan en el [estado verificable](00-product/DEVELOPMENT_STATUS.md) y el [índice de evidencias](04-testing/EVIDENCE_INDEX.md). Esta revisión documental no ejecuta ni acredita pruebas físicas.
 
 ## Arranque del equipo autorizado 2026-10-16
 
-El PO autorizó integrar conexión/firewall y que los compañeros comiencen el resto
-del desarrollo. La base compartida es `develop`: actualizarla y crear una rama
-pequeña por tarea; proponer PR hacia `develop`, sin trabajar directamente sobre
-esa rama protegida ni crear ramas permanentes por persona.
+Está autorizado comenzar juegos, PWA y el cliente Flutter cuando se tome su tarea acordada, mientras continúa la validación física. La base compartida es `develop`: cada tarea se desarrolla en una rama pequeña y se entrega mediante PR hacia `develop`. `main` recibe promociones de entregas validadas y aprobadas.
 
-- **Unity/juegos:** implementar los juegos del alcance aprobado usando input
-  normalizado y autoridad Unity. No duplicar sesiones ni transportar reglas de
-  juego al teléfono. Coordinar escenas/prefabs y entregar sus `.meta`.
-- **PWA:** continuar el controlador React existente sobre el mismo Gorilla
-  Protocol/WebRTC y backend Java; conservar sensores y ciclo de vida.
-- **Flutter:** crear el cliente cuando se tome su tarea autorizada; todavía no
-  existe un proyecto Flutter en esta base. Reutilizar protocolo, identidad y
-  semántica existentes, sin otro backend ni autoridad de juego.
+La autorización permite iniciar implementación; T019, T020, F05 y E0 conservan sus criterios de aceptación pendientes. El botón JUGAR permanece deshabilitado porque los minijuegos aún no están implementados.
 
-La conexión normal ofrece un único QR JOIN; AUTO espera la oportunidad pública
-acotada y conserva el fallback local. Certificados son recuperación explícita;
-la elevación pertenece sólo al helper de firewall y nunca al juego. [Contrato y
-límites](PHASE0_PHONE_CONNECTION_FINAL.md).
+## Qué existe y qué falta
 
-Esta autorización supersede el bloqueo de **inicio de implementación** de los
-checkpoints históricos. No cierra ni acredita T019, T020, F05 o E0, no cambia
-sus dependencias/criterios y no declara listas las plataformas sin pruebas.
-Las validaciones físicas continúan en paralelo; no se habilita una entrega
-jugable sólo por integrar esta base. No se asignan personas automáticamente.
-
-## Stack fijado
-
-| Componente | Versión / herramienta | Estado |
+| Área | Base disponible | Trabajo pendiente |
 |---|---|---|
-| Juego PC | Unity 6000.3.23f1 LTS, C# | Foundation validada en Linux de desarrollo; presentación pendiente |
-| Servidor local | Java 21, Spring Boot 4.1.1 Web MVC + WebSocket | Build y cuatro tests PASS |
-| Build Java | Maven 3.9.11, wrapper 3.3.2 | Wrapper Windows/Linux/macOS, hash de descarga fijado |
-| Control | React 19.3.0, React DOM 19.3.0 | Pantalla inicial y health check; sin gameplay |
-| Build web | Vite 8.3.2, plugin React 6.1.2, Node 24 | npm lockfile, cuatro tests y build PASS |
-| Tracking | MediaPipe + OpenCV | Adaptador y versiones pendientes del Spike; no instalar arbitrariamente |
-| Persistencia | JSON local | Requisito; no implementada aún |
+| Unity | Foundation, menú, supervisión Java, admisión, PhoneInput, CameraInput, Player Lock y Fusion de infraestructura | Framework y cuatro minijuegos; validación de controles y equipo físicos |
+| Conectividad | HTTPS, QR JOIN, señalización REST, input WebRTC DataChannel e IPC loopback; validación Software/Lab | T019 con teléfonos físicos y T020 en otra PC |
+| PWA del monorepo | React, admisión RTC, permisos, sensores, lifecycle y service worker | Validación física final e integración acordada con UI/UX independiente |
+| Backend separado | SQLite/JDBC, migración y GET/POST jugadores integrados en su develop (PR #14) | Publicador autorizado de resultados, idempotencia, backup e instalador final |
+| PWA del fork UI/UX | Laboratorio React/SQLite y shell/IndexedDB integrados en su develop (PR #7) | Incorporación al upstream, adaptador técnico y QA física |
+| Flutter | Inicio autorizado por tarea | Proyecto y cliente por implementar |
 
-No requiere PostgreSQL, JPA, Lombok, Redis, Docker ni cloud para esta base. Node/Maven se usan para desarrollo/build; el producto final debe incluir recursos y runtime necesarios sin descargarlos durante gameplay. Empaquetado final JRE/Unity pendiente.
+El cliente de [UI/UX independiente](00-product/REPOSITORIES.md) y `PWA/` son bases diferentes. El laboratorio /lab.html del fork ya consume persistencia real; el mando demo /index.html no integra RTC. `Server/` es el host técnico local, sin reglas de juego ni base de datos empresarial.
 
-## Clonar y empezar
+## Herramientas
 
-El clonado público no requiere invitación. Para publicar ramas en el repo se necesita permiso de escritura; también es posible proponer cambios desde un fork. Los permisos del equipo no se asignan por cargo académico.
+| Componente | Versión fijada / fuente |
+|---|---|
+| Unity | 6000.3.23f1, `Unity/ProjectSettings/ProjectVersion.txt`; licencia válida |
+| Java | JDK 21; Spring Boot 4.1.1 en `Server/pom.xml` |
+| Maven | Usar `Server/mvnw` o `Server/mvnw.cmd`, con la configuración versionada |
+| Web | Node 24; React 19.3.0 y Vite 8.3.2 en `PWA/package.json` |
+| Contratos | `Shared/Protocol/` y paquete local `Shared/CSharp/` |
+| Cámara | Runtime local MediaPipe/OpenCV; preparación en [T016](PHASE0_T016_CAMERA_RUNTIME.md) |
 
-Usar develop como base compartida y origen de ramas pequeñas. La preparación técnica está incluida en ambas ramas permanentes.
+Conservar lockfiles y `.meta`. No actualizar paquetes o editor incidentalmente ni instalar dependencias de cámara con versiones arbitrarias. Las primeras restauraciones requieren Internet; eso no implica una dependencia WAN obligatoria durante la partida local. El empaquetado Linux tiene evidencia de laboratorio, pero no acredita PC limpia ni otras plataformas.
+
+## Clonar y preparar una tarea
 
 ```sh
 git clone https://github.com/Josue1855/Gorilla-Escape.git
 cd Gorilla-Escape
 git switch develop
-npm --prefix PWA ci
-npm --prefix PWA test
-npm --prefix PWA run build
-Server/mvnw -B -f Server/pom.xml verify
-java -jar Server/target/local-server-0.1.0-SNAPSHOT.jar
+git pull --ff-only
+git switch -c feature/gameplay-nombre-de-tarea
 ```
 
-En Windows sustituir Server/mvnw por Server\mvnw.cmd. Instalar JDK 21 y Node 24 desde sus distribuidores oficiales; comprobar java -version y node --version. El wrapper descarga Maven al primer uso; npm ci y Maven requieren Internet inicialmente. Dependencias resueltas/recursos empaquetados permiten ejecución local posterior.
+Si ya existe un checkout, conservar sus cambios antes de actualizarlo. Elegir nombre y alcance según la Issue. El clonado público no requiere invitación; publicar ramas requiere escritura. Sin ese permiso, coordinar la entrega con el mantenedor sin compartir credenciales.
 
-Abrir http://127.0.0.1:8080. El JAR incluye la salida PWA/dist generada por Vite. Nunca editar Server/target ni mantener una copia manual del frontend dentro de Server. Para cambios web: reconstruir PWA y volver a empaquetar el JAR.
+Seguir [preparación y ejecución](03-development/SETUP_AND_RUN.md) para restaurar dependencias, probar y arrancar cada componente. Esa guía distingue el servidor de desarrollo del producto supervisado por Unity.
 
-Durante desarrollo web usar npm --prefix PWA run dev: Vite en localhost y proxy /api hacia Java:8080. El health check verifica sólo disponibilidad del host y versión; no significa teléfono incorporado a una partida.
+## Empezar un juego en Unity
 
-El servidor escucha 127.0.0.1 por defecto. GORILLA_SERVER_PORT cambia puerto; GORILLA_SERVER_ADDRESS permite configurar interfaz para pruebas LAN planificadas. No hay CORS global abierto ni un endpoint WebSocket de juego todavía. HTTPS/WSS confiable en teléfonos es requisito pendiente: HTTP a una IP LAN no garantiza sensores, instalación o service worker. No publicar claves/certificados.
+1. Abrir `Unity/` en Unity Hub con el editor fijado y esperar la importación del paquete local `Shared/CSharp`.
+2. Usar **Gorilla Escape → Open Bootstrap** y **Play Gorilla Escape**. `Create Foundation Scene` se reserva para crear la foundation si falta; no regenerar escenas compartidas para iniciar una tarea.
+3. Leer [Unity y autoridad](01-architecture/UNITY.md), [entradas y personajes](02-gameplay/INPUT_AND_CHARACTERS.md), [framework propuesto](02-gameplay/MINIGAME_FRAMEWORK.md) y la ficha de la disciplina.
+4. Implementar reglas y simulación en Unity consumiendo input normalizado. Las interfaces del framework documental son propuestas; revisar clases reales antes de añadir adaptadores.
+5. Coordinar escenas/prefabs con el equipo, entregar `.meta` y cubrir reglas, puntuación, turnos, reinicio y desconexión según la aceptación de la tarea.
+6. Usar entradas sintéticas para desarrollar y registrar esa limitación. La aceptación de controles físicos requiere pruebas separadas.
 
-## Unity
+El alcance vigente contiene [Gorilla Smash](02-gameplay/GORILLA_SMASH.md), [Coconut Throw](02-gameplay/COCONUT_THROW.md), [Coconut Bowling](02-gameplay/COCONUT_BOWLING.md) y [Jungle Slice](02-gameplay/JUNGLE_SLICE.md). Las reglas aún abiertas se acuerdan antes de implementarlas como definitivas.
 
-1. Unity Hub: añadir Unity/ al proyecto y usar exactamente 6000.3.23f1 con licencia válida. No actualizar automáticamente.
-2. Resolver el paquete local Shared/CSharp y Test Framework core 1.6.0 (DEC-003). Manifest y lockfile revisados; NUnit 2.0.5 e IMGUI 1.0.0 son transitivos. No agregar NUnit ni toolchains Linux al manifest compartido.
-3. Ejecutar Gorilla Escape → Create Foundation Scene. Crea la escena Bootstrap y ApplicationSettings; conserva una escena existente y pide guardar cambios antes de reemplazar la escena abierta. Revisar/versionar escena, settings y .meta generados.
-4. Test Runner: EditMode y PlayMode. Bootstrap configura targetFrameRate y lo restaura al destruirse. EditMode verifica el fixture y la escena guardada; PlayMode verifica aplicación/restauración. 60 configurados no equivalen a 60 FPS medidos.
-5. Para desarrollo Linux/Mono, usar FoundationSetup.BuildDevelopmentLinux y registrar versión/OS/logs. Import, EditMode 2/2, PlayMode 1/1, build, Player con gráficos, cierre y reimportación limpia PASS con el procedimiento de [UNITY_FOUNDATION_VALIDATION](UNITY_FOUNDATION_VALIDATION.md). PC oficial y backend de presentación pendientes.
+## Conexión y límites entre componentes
 
-En este host Flatpak, ejecutar batch dentro del entorno del Hub; el arranque directo anterior falló con 198. Las opciones locales que evitan la migración automática de toolchains se detallan en la guía; no son dependencias de todos los equipos. Cerrar editores del checkout antes de validar para evitar escrituras concurrentes.
+Unity conserva la autoridad sobre jugadores competitivos, reglas y resultados. Java administra transporte y sesión técnica; la PWA captura intención y presenta estados. Shared mantiene contratos interoperables independientes del motor. No trasladar puntuación al teléfono ni crear un segundo sistema de sesiones.
 
-Metadatos .meta de las fuentes y assets de foundation están incluidos en el cambio candidato. No incluir Library/Temp/Logs, credenciales ni assets comerciales. Render pipeline/plugin cámara deben validarse antes de adoptarse; no se instaló URP por defecto.
+El transporte móvil seleccionado es **WebRTC DataChannel**, con señalización REST; Unity y Java usan IPC loopback supervisado. La disponibilidad de WebSocket en dependencias o referencias históricas no cambia esa decisión.
 
-## Fronteras y responsables
+La experiencia normal ofrece un QR JOIN. AUTO intenta la ruta pública durante un plazo acotado y conserva fallback HTTPS local; el origen de una admisión queda congelado. La confianza de certificados se trata mediante recuperación explícita y los permisos de firewall pertenecen al helper acotado. Unity, Java y cámara se ejecutan como usuario normal. No asumir sensores reales sobre HTTP LAN ni omitir errores TLS. Ver [contrato de conexión](PHASE0_PHONE_CONNECTION_FINAL.md).
 
-| Ruta | Responsable v4 | Frontera |
-|---|---|---|
-| Unity/ | Arturo | Gameplay autoritativo PC; consume PlayerInput |
-| Server/ | Hiram | Host local Java, conexiones futuras, publicación de PWA |
-| PWA/ | Hiram + Saul | Captura futura/UI personal React; no calcula score ni ganador |
-| Shared/Protocol/ | Hiram + Arturo | Fixtures JSON, versión y acuerdos interoperables |
-| Shared/CSharp/ | Arturo | DTOs independientes del motor; no cargar Java ni net10 DLL en Unity |
-| Unity/.../CameraTracking/ | Austin | Adaptador MediaPipe/OpenCV local; produce CameraInput |
-| Unity/.../Art y Audio/ | Saul | Arte/audio propios, licencias y UI |
-| docs/ y Project | Josue + Erik | Alcance/aceptación y seguimiento |
+## Entregar y revisar
 
-Spring DI nativa en Java; composición explícita en Unity. Módulos del mismo producto, sin servicios remotos ni lógica duplicada del torneo. El starter WebSocket está disponible, pero no hay handler de partida. El IPC/ciclo de vida Unity↔Java y la confirmación del resultado siguen abiertos; el DTO no decide esa autoridad.
+Elegir Issue, alcance, dependencias y responsable antes de modificar archivos compartidos. Ejecutar los checks aplicables de [preparación](03-development/SETUP_AND_RUN.md), describir evidencia y límites en el PR y solicitar revisión de otro integrante. Los checks Java/web no prueban Unity ni hardware.
 
-## Protocolo
+Usar el [flujo de ramas](03-development/GIT_WORKFLOW.md), las [convenciones](03-development/CODING_CONVENTIONS.md) y el [plan de integración](03-development/INTEGRATION_PLAN.md). No incluir `Library/`, outputs, SDK, credenciales ni assets sin derechos.
 
-Shared/Protocol/fixtures/sensor.json procede de v4 §8 y lo consumen tests Java/JS/Unity. Los tipos C#/Java usan escalares, nunca tipos de un motor ajeno. Java usa Jackson incluido en Spring. Shared no es una librería ejecutable común a Java/C#; el contrato interoperable es JSON. No generar/copiar DLLs a mano. No confundir el ejemplo type:sensor con una resolución de todos los tipos mayúscula/minúscula: revisar esta discrepancia antes del handler WebSocket. Timestamp/unidades y validación de frontera se acuerdan durante el Spike.
+## Orden de lectura y antecedentes
 
-## Ramas y entrega
-
-Crear feature/mobile-..., feature/gameplay-..., feature/camera-..., feature/ui-... o fix/... desde develop; no editar main/develop directamente. Actualizar develop antes de crear la rama. Los PR de tareas apuntan a develop y cumplen sus revisiones y controles.
-
-Un check verde Java/web no valida Unity ni hardware. Las Issues permanecen abiertas; este arranque aporta parte de T003–T007, no cierra su Definition of Done. Revisar el PR con otro integrante antes de integrar.
-
-## Pruebas humanas pendientes
-
-- Unity: importación limpia, cero errores, tests EditMode/PlayMode y Player PC. Versionar defaults/lockfile generados revisados.
-- PWA: instalar desde HTTPS confiable en Android/iPhone; revisar layout, activación, actualización y shell sin Internet. El service worker sólo guarda recursos de interfaz; /api nunca se cachea.
-- Spike siguiente dentro de Fase 0: QR, WebSocket, permisos, sensores, cámara, integración Unity/Java, métricas físicas. No pasar a Gorilla Smash completo sin evidencia y decisión de alcance.
-
-## Referencias revisadas
-
-- [comp_alumno](https://github.com/alfonsojbarroso/comp_alumno/blob/master/pom.xml): Java 21, Spring Boot 4.1.1 y WebFlux. Se conserva una ruta Web MVC más pequeña para el host local.
-- [base-alumno](https://github.com/alfonsojbarroso/base-alumno): Java/Spring; no se adopta su base de datos.
-- [pwa-alumno](https://github.com/alfonsojbarroso/pwa-alumno): ramas develop/master/feat/serviceworker/feat/fetch_company consultadas; HTML/JS/SW, sin React. React proviene de la solicitud del usuario.
-- [Spring Boot](https://spring.io/projects/spring-boot) y [React/Vite](https://react.dev/learn/build-a-react-app-from-scratch). No se copió código de los repos de alumno.
-
-## Checklist antes de compartir una tarea
-
-1. Clonar la rama base disponible y confirmar versiones de JDK/Node/Unity.
-2. Restaurar dependencias, generar PWA y ejecutar Maven verify; validar documentos y foundation.
-3. Para Unity, importar con licencia y ejecutar tests/build; registrar cualquier bloqueo antes de declarar Ready/Done.
-4. Acordar Issue, dueño, dependencia y aceptación con el equipo. Crear rama de tarea pequeña; no editar main/develop directamente.
-5. Abrir PR con evidencia real y revisión de otro integrante. No confundir base operativa Java/web con Spike o minijuego completo.
+El [índice único](README.md), el [estado verificable](00-product/DEVELOPMENT_STATUS.md) y las [decisiones vigentes](00-product/ARCHITECTURE_DECISIONS.md) orientan la implementación. Los informes fechados de Phase 0 y la especificación v4 conservan trazabilidad; sus restricciones sustituidas no anulan decisiones posteriores. Ante una contradicción nueva, resolverla con el equipo y actualizar la guía afectada antes de tratarla como requisito.

@@ -1,8 +1,17 @@
 # Documentación de Gorilla Escape: Gorilimpiadas
 
-Última revisión: 2026-10-16. Índice único de la documentación vigente. El código y la evidencia fechada prevalecen sobre descripciones históricas. Unity mantiene su base técnica; el backend ya implementa jugadores con SQLite y la PWA del fork tiene laboratorio funcional. Las ramas aún requieren revisión hacia develop; tres capturas literales de DevTools siguen pendientes. [Sincronización y alcance](00-product/DOCUMENTATION_SYNC.md).
+Última revisión: 2026-10-26. Se conservan las mejoras de navegación y arranque de develop. El backend de jugadores y el laboratorio PWA ya están integrados en los develop de sus repositorios Josue1855; la propuesta UI/UX sigue para revisión. El upstream de Hiram, el adaptador RTC/UI y el empaquetado final siguen separados. Tres capturas literales DevTools pendientes según el dossier. [Fuentes y estado actual](00-product/SOURCE_INVENTORY.md#s12--reconciliación-del-pr-130-2026-10-26).
 
 Comenzar por [estado verificable](00-product/DEVELOPMENT_STATUS.md), [informe de auditoría](00-product/AUDIT_REPORT.md) y [siguientes acciones](05-management/NEXT_STEPS.md). Las etiquetas, límites de verificación y decisiones están centralizados; los documentos especializados contienen su detalle único.
+
+## Para comenzar una tarea
+
+1. Leer el estado verificable y las decisiones vigentes enlazados arriba.
+2. Seguir [TEAM_START](TEAM_START.md) y [preparación y ejecución](03-development/SETUP_AND_RUN.md).
+3. Consultar la arquitectura y la ficha del juego o componente que se modificará.
+4. Crear una rama desde `develop` y entregar un PR hacia `develop`; `main` recibe promociones validadas.
+
+El inicio de juegos y clientes está autorizado. La aceptación física de Fase 0 continúa pendiente. Las fechas de los informes describen su evidencia original; esta revisión de guías no los convierte en pruebas nuevas.
 
 ## Producto, fuentes y decisiones
 

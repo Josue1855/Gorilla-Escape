@@ -4,7 +4,7 @@
 
 | Orden | Resultado esperado | Dependencia / gate |
 |---|---|---|
-| P0 | Revisar los incrementos backend/PWA ya implementados y acordar propietarios de Projects | Stack SQLite/JDBC aprobado; PR backend #14 y PWA fork #1 abiertos |
+| P0 | Revisar los incrementos backend/PWA ya implementados y acordar propietarios de Projects | Stack SQLite/JDBC aprobado; backend PR #14 y PWA fork PR #7 integrados en sus develop; integración al videojuego pendiente |
 | P0 | Completar T019 y después T020 sin detener el desarrollo paralelo autorizado | QA física, hardware y evidencia auténtica |
 | P0 | Acordar interfaz entre UI/UX y cliente técnico existente | Unity/Red + UI/UX; no duplicar lifecycle |
 | P0 | Vertical slice High Striker y controles por disciplina | Framework mínimo, calibración, reglas y tests de scoring |

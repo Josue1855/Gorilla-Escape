@@ -156,3 +156,14 @@ El PR Unity #122 fue integrado por revisión externa el 2026-10-17T00:22:32Z; or
 ## S11 — Propuesta UI/UX del PO
 
 Documento adjunto «Gorilla Escape: Gorilimpiadas — UI/UX Design System», fecha original2026-10-16, recibido en este chat. SHA-256 del texto original: `08f85ca3c67ce0c66f99eff74429f0eb84a045d9eb6bb2c953cbf45e3d63cafe`. Se incorpora como [propuesta para revisión](../01-architecture/UI_UX_DESIGN_SYSTEM.md), con correcciones explícitas a SQLite/jugadores y al perfil offline S9/S10. La [revisión documental](../04-testing/UI_UX_DESIGN_REVIEW.md) añade criterios medibles y enlaces a trabajo existente; no es aprobación visual ni nueva implementación. No se incluyen activos de fuentes descartadas.
+
+## S12 — Reconciliación del PR 130, 2026-10-26
+
+Se consultaron los PR y ramas por API al resolver los conflictos con Unity develop `7d109ac4164eba4a0b1ed78466d5192b17c2911d`. Se preservan sus mejoras del2026-10-20 a TEAM_START, SETUP_AND_RUN, navegación y CI; la rama de revisión del monorepo es `docs-lab-status-sync`. Esta operación incorpora develop en la rama de tarea, sin merge remoto a develop ni main.
+
+- Backend [PR #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14): MERGED en develop. Ramas observadas: develop `c83b8343f1e37c405b127304567e149a1416eddb`, main `da9dcd8c9936bd56ac74ad02583a50fddfdd73db`. El PR #12 de evaluación está CLOSED sin merge. La aprobación SQLite/JDBC para jugadores proviene del PO; no equivale a aceptar la distribución final.
+- Fork PWA: [PR #7](https://github.com/Josue1855/Dise-o_pwa/pull/7) MERGED en develop, observado `74b0ebad1b20fdb86c411e24f4d0c07a9a7c2349`; main sigue `ffbec2260dbad3f36743cffc2309cb206f7dba9a`. El PR #7 continúa el #1 cerrado tras el cambio de nombre de rama.
+- Upstream Quintana-117/Dise-o_pwa: permisos READ, sólo main; solicitud #1 sigue OPEN. Incorporación al upstream y adaptación RTC/Unity no se deducen de integrar el laboratorio en el fork.
+- El dossier vigente del backend sigue declarando pendientes tres capturas literales DevTools; emulación offline no certifica LAN/WAN físicos. Los resultados S9/S10 se mantienen con sus SHAs originales, incluso tras corregir autoría del historial; no se reescriben evidencias antiguas.
+
+La cuenta autenticada es Josue1855, autora del PR #130. GitHub exige otro revisor para su aprobación formal; un informe local favorable o checks verdes no se presentarán como una aprobación de otra cuenta.

@@ -6,7 +6,7 @@
 |---|---|---|
 | S1 PWA/ monorepo | React19.3.0/Vite8.3.2; cliente Gorilla Core, sensores, RTC y lifecycle | S2 Software/Lab; físico final pendiente |
 | S4 upstream UI/UX | React18.3.1, demo App/AvatarList y JSONPlaceholder | Sólo main y READ; no se modificó; S5 detectó dist incompleto |
-| S10 fork de laboratorio | React18.3.1/Vite6.4.4/plugin4.7.0; /lab.html consume backend real | [PR #1](https://github.com/Josue1855/Dise-o_pwa/pull/1), siete tests/build/audit PASS; integración al upstream pendiente |
+| S10 fork de laboratorio | React18.3.1/Vite6.4.4/plugin4.7.0; /lab.html consume backend real | [PR #7 integrado](https://github.com/Josue1855/Dise-o_pwa/pull/7) en develop del fork; siete tests/build/audit históricos S10 PASS; upstream original pendiente |
 
 El laboratorio tiene Service Worker generado desde assets compilados, manifest público e icono SVG. Cache Storage sólo contiene shell; API/POST quedan fuera. IndexedDB conserva snapshot y borrador. La primera visita requiere red; recarga offline del shell y consulta local se verificó en Chrome. No hay competidores de rescate ni sincronización ficticia en /lab.html.
 

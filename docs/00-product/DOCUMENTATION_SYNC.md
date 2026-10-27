@@ -1,5 +1,7 @@
 # Sincronización documental de backend y laboratorio PWA
 
+> Registro de la sincronización inicial del 2026-10-16. Los estados de PR y nombres de rama de ese momento se conservan como historia. Para el estado verificado el 2026-10-26, consultar [S12](SOURCE_INVENTORY.md#s12--reconciliación-del-pr-130-2026-10-26).
+
 Fecha: 2026-10-16. Base Unity develop db408d7 tras merge externo del PR #122. Rama codex/docs-lab-status-sync. Backend PR #14 y fork PWA PR #1 abiertos hacia develop. No se modificó main ni el checkout original con cambios locales.
 
 ## Hechos incorporados

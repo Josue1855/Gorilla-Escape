@@ -2,7 +2,7 @@
 
 Última sincronización: 2026-10-16. Fuentes S9/S10 y evidencia fechada; [inventario](../00-product/SOURCE_INVENTORY.md). Trabajo documentado en ramas/PR, no integrado automáticamente.
 
-Hay dos flujos implementados con alcances distintos: canal técnico Software/Lab S1/S2 y laboratorio de persistencia S9/S10 en ramas para revisión. La incorporación al producto distribuido sigue pendiente.
+Hay dos flujos implementados con alcances distintos: canal técnico Software/Lab S1/S2 y laboratorio de persistencia S9/S10, ya integrado en los develop externos según S12. La incorporación al producto distribuido sigue pendiente.
 
 ```mermaid
 flowchart LR

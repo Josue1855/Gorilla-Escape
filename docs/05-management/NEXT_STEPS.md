@@ -2,7 +2,7 @@
 
 Última sincronización: 2026-10-16. Fuentes S9/S10 y evidencia fechada; [inventario](../00-product/SOURCE_INVENTORY.md). Trabajo documentado en ramas/PR, no integrado automáticamente.
 
-1. Revisar [PR backend #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14), [PR PWA del fork #1](https://github.com/Josue1855/Dise-o_pwa/pull/1) y sincronización documental; integrar únicamente tras revisión. main no recibe trabajo de tarea.
+1. Usar los develop actualizados del backend (PR #14 integrado) y del fork PWA (PR #7 integrado). Revisar la sincronización documental en [PR #130](https://github.com/Josue1855/Gorilla-Escape/pull/130) antes de integrarla al monorepo. main no recibe trabajo de tarea.
 2. Mantenedor upstream UI/UX: habilitar develop y revisar incorporación desde el fork. No se necesita asumir Write para abrir un PR entre forks cuando exista la base correcta.
 3. Completar tres capturas literales DevTools Network/Application/Console siguiendo [laboratorio](../04-testing/PWA_TEST_LAB.md); SQL, GET/POST/UI y offline emulado ya ejecutados. Garantizar acceso del docente al backend privado o paquete de evidencias.
 4. Ejecutar T019 final y T020 en PC separada; escenarios físicos WAN/LAN/backend siguen pendientes. No sustituirlos por emulación Chrome.

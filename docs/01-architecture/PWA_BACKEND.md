@@ -2,7 +2,7 @@
 
 Última sincronización: 2026-10-16. Fuentes S9/S10 y evidencia fechada; [inventario](../00-product/SOURCE_INVENTORY.md). Trabajo documentado en ramas/PR, no integrado automáticamente.
 
-Repositorio privado [Gorilla-Escape-Backend](https://github.com/Josue1855/Gorilla-Escape-Backend), [PR #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14) hacia develop, funcional 3635186. El PO aprobó SQLite/JDBC para este incremento; [ADR acotado](https://github.com/Josue1855/Gorilla-Escape-Backend/blob/3635186/docs/adr/ADR-001-PLAYERS-APPROVAL.md). La evaluación amplia del PR #12 sigue separada y no se presume integrada.
+Repositorio privado [Gorilla-Escape-Backend](https://github.com/Josue1855/Gorilla-Escape-Backend), [PR #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14) integrado en develop; evidencia funcional original 3635186 y estado actual en S12. El PO aprobó SQLite/JDBC para este incremento; [ADR acotado](https://github.com/Josue1855/Gorilla-Escape-Backend/blob/3635186/docs/adr/ADR-001-PLAYERS-APPROVAL.md). El PR #12 de evaluación amplia fue cerrado sin merge; no confundirlo con la aprobación acotada del PO ni con la implementación integrada del PR #14.
 
 Implementado: Spring Boot4.1.1/Java21, JDBC parametrizado, SQLite JDBC3.53.2.1 y Flyway12.4.0; módulos players/api/application/domain/infrastructure, persistencia y HTTP. GET /api/players paginado, POST validado con201 tras COMMIT, Problem Details sanitizado, OpenAPI servido. No JPA, PostgreSQL, Docker, cuentas, partidas ni rankings.
 
