@@ -1,26 +1,25 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using GorillaEscape.Gameplay.Input;
 
 public sealed class RhythmDrumsController : MonoBehaviour
 {
-    [Serializable] private struct MotionPacket { public string type; public float ax,ay,az,rx,ry,rz; }
-    [Serializable] private struct PosePacket { public bool leftDetected,rightDetected; public float leftWristX,leftWristY,rightWristX,rightWristY; }
     private sealed class Note { public bool left, judged; public float time; }
 
     private MotionSession session;
     private readonly List<Note> notes=new List<Note>();
-    private Vector2 leftHand=new Vector2(.35f,.50f),rightHand=new Vector2(.65f,.50f),previousLeft,previousRight;
-    private float leftDownSpeed,rightDownSpeed,phonePower,nextBeat,startTime,lastLeftHit,lastRightHit,leftFlash,rightFlash;
-    private int score,combo,bestCombo,misses,beatIndex;
-    private bool rightPowerReady=true,finished;
+    private float startTime,leftFlash,rightFlash;
+    private int score,combo,bestCombo,misses;
+    private bool finished;
+    private long inputRevision;
     private const float Beat=.54545f;
     private Texture2D dark,cyan,orange,white,green,red;
 
     private void Awake()
     {
-        session=MotionSession.Ensure(); previousLeft=leftHand; previousRight=rightHand;
-        BuildStage(); startTime=Time.time+2f; nextBeat=startTime; GenerateChart();
+        session=MotionSession.Ensure();
+        BuildStage(); startTime=Time.time+2f; GenerateChart();
     }
 
     private Material Mat(Color c){Material m=new Material(Shader.Find("Standard"));m.color=c;return m;}
@@ -50,7 +49,9 @@ public sealed class RhythmDrumsController : MonoBehaviour
 
     private void Update()
     {
-        ReadSensors();float now=Time.time;
+        if(!session.IsInputReady)return;
+        if(session.TryConsumeFrame(out var frame))ReadSensors(frame);
+        float now=Time.time;
         if(!finished)
         {
             foreach(Note note in notes)if(!note.judged&&now-note.time>.24f){note.judged=true;misses++;combo=0;}
@@ -58,27 +59,16 @@ public sealed class RhythmDrumsController : MonoBehaviour
         }
     }
 
-    private void ReadSensors()
+    private void ReadSensors(JungleFusedFrame frame)
     {
-        string poseJson=session.ConsumePose();
-        if(!string.IsNullOrEmpty(poseJson))
-        {
-            PosePacket p=JsonUtility.FromJson<PosePacket>(poseJson);float dt=Mathf.Clamp(Time.deltaTime,.01f,.08f);
-            Vector2 nl=new Vector2(p.leftWristX,p.leftWristY),nr=new Vector2(p.rightWristX,p.rightWristY);
-            leftDownSpeed=(nl.y-previousLeft.y)/dt;rightDownSpeed=(nr.y-previousRight.y)/dt;
-            if(p.leftDetected)leftHand=Vector2.Lerp(leftHand,nl,.72f);if(p.rightDetected)rightHand=Vector2.Lerp(rightHand,nr,.72f);
-            previousLeft=nl;previousRight=nr;
-            if(p.leftDetected&&leftDownSpeed>.62f&&Time.time-lastLeftHit>.20f){lastLeftHit=Time.time;TryHit(true,leftDownSpeed);}
-            if(p.rightDetected&&rightDownSpeed>.62f&&Time.time-lastRightHit>.20f){lastRightHit=Time.time;TryHit(false,rightDownSpeed);}
-        }
-        string motionJson=session.ConsumeMotion();if(string.IsNullOrEmpty(motionJson))return;
-        MotionPacket m=JsonUtility.FromJson<MotionPacket>(motionJson);phonePower=Mathf.Sqrt(m.rx*m.rx+m.ry*m.ry+m.rz*m.rz)+new Vector3(m.ax,m.ay,m.az).magnitude*7f;
-        if(phonePower<150f)rightPowerReady=true;
-        if(phonePower>225f&&rightPowerReady&&Time.time-lastRightHit>.16f){rightPowerReady=false;lastRightHit=Time.time;TryHit(false,phonePower/180f);}
+        inputRevision=frame.Revision;
+        if((frame.Actions&JungleAction.DrumLeft)!=0)TryHit(true);
+        if((frame.Actions&JungleAction.DrumRight)!=0)TryHit(false);
     }
 
-    private void TryHit(bool left,float strength)
+    private void TryHit(bool left)
     {
+        if(finished||Time.time<startTime||!session.TryAuthorize(left?JungleAction.DrumLeft:JungleAction.DrumRight,inputRevision))return;
         Note best=null;float error=.26f;
         foreach(Note n in notes)if(!n.judged&&n.left==left&&Mathf.Abs(Time.time-n.time)<error){best=n;error=Mathf.Abs(Time.time-n.time);}
         if(best==null){combo=0;misses++;return;}best.judged=true;combo++;bestCombo=Mathf.Max(bestCombo,combo);

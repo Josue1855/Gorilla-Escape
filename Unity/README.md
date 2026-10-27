@@ -25,6 +25,10 @@ Los scripts antiguos `CameraTracker/`, `MotionRelay/` y `PREPARAR_MODULO.ps1` se
 
 No abrir simultáneamente la sesión técnica Bootstrap y la sesión de juegos: cada flujo tiene su propietario y la integración impide iniciar un segundo supervisor cuando el diagnóstico está activo.
 
+## InputFusion en los seis juegos
+
+Las mecánicas consumen ahora una muestra fusionada tipada y requieren autorización de gesto. La pérdida de seguimiento pausa tiempo y física; el ratón y el teléfono sin cámara no son vías alternativas de puntuación. [Reglas por juego, rearme y pruebas](../docs/02-gameplay/JUNGLE_FUSED_INPUT.md).
+
 ## Validación y límites
 
 [Resultados, comandos reproducibles y pendientes](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La compilación completa/importación en Unity, las pruebas físicas de controles y la distribución Windows están pendientes. La cámara oficial conserva las limitaciones Windows de Fase 0; esta migración no las resuelve ni declara un instalador final.

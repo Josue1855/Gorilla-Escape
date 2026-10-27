@@ -24,6 +24,7 @@ namespace GorillaEscape.Input.Fusion
         readonly Dictionary<int,List<PhoneInputWire>> history=new Dictionary<int,List<PhoneInputWire>>();
         public CameraInputStore Cameras {get;}=new CameraInputStore();
         public PlayerLock Association {get;}
+        public int RetainedPhoneSamples(int player) => history.TryGetValue(player,out var samples)?samples.Count:0;
         public long DuplicateOrReordered {get;private set;} public long Candidates {get;private set;}
         public InputFusion(PhoneInputStore phones,FusionSettings settings){settings.Validate();this.phones=phones;this.settings=settings;Association=new PlayerLock(settings);}
         // Observes the already validated PhoneInputStore, never replaces mobile/IPC validation.
@@ -35,7 +36,10 @@ namespace GorillaEscape.Input.Fusion
         }
         public bool ObserveCamera(CameraInputWire frame,long received){if(!Cameras.Accept(frame,received))return false;Association.Observe(frame);return true;}
         static bool Fresh(long timestamp,long now,long age,long future)=>timestamp>=now-age&&timestamp<=now+future;
-        public InputFusionFrame Evaluate(int player,long now){
+        public InputFusionFrame Evaluate(int player,long now) => Evaluate(player,now,false);
+        // Gameplay requires the current pair, not an older minimum-skew pair from diagnostic history.
+        public InputFusionFrame EvaluateLatest(int player,long now) => Evaluate(player,now,true);
+        InputFusionFrame Evaluate(int player,long now,bool latestOnly){
             var result=new InputFusionFrame{PlayerId=player,SubjectId=Association.SubjectId,LockState=Association.State,EvaluationTimestamp=now,Status=AlignmentStatus.NO_CANDIDATE,AvailableSignals=Array.Empty<string>()};
             if(player<1||player>4)return result;
             phones.TryLatest(player,out var current);
@@ -50,10 +54,12 @@ namespace GorillaEscape.Input.Fusion
             // Camera is turn-active only. Select nearest compatible pair, not a forced 1:1 cadence.
             bool active=Association.PlayerId==player;
             if(connected&&samples!=null)foreach(var p in samples){
+                if(latestOnly && p.sequence!=current.sequence)continue;
                 if(p.sessionId!=current.sessionId||p.deviceSessionId!=current.deviceSessionId||p.connectionEpoch!=current.connectionEpoch||!Fresh(p.serverReceiveTimestamp,now,settings.maxPhoneAge,settings.futureTolerance))continue;
                 if(phone==null||p.serverReceiveTimestamp>phone.serverReceiveTimestamp)phone=p;
                 if(!active||Association.State!=PlayerLockState.LOCKED)continue;
                 foreach(var c in Cameras.Frames){
+                    if(latestOnly && c.frameSequence!=Cameras.Latest.frameSequence)continue;
                     if(!Fresh(c.captureTimestamp,now,settings.maxCameraAge,settings.futureTolerance))continue;
                     foreach(var s in c.subjects){
                         if(s.subjectId!=Association.SubjectId||s.ambiguous||s.confidence<settings.minCameraConfidence)continue;

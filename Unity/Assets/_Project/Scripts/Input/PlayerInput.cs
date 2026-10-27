@@ -14,15 +14,6 @@ namespace GorillaEscape.Input
         public Vector2 LeftHand, RightHand;
         public bool Throw, Smash, Swing, PlayerTracked;
     }
-    public struct CameraInput
-    {
-        public int PlayerId;
-        public GorillaEscape.Contracts.CameraInputWire Frame;
-        public GorillaEscape.Contracts.CameraSubject Subject;
-        public bool PlayerDetected;
-        public float TrackingConfidence;
-        public long Timestamp;
-    }
     public struct PhoneInput
     {
         public int PlayerId;

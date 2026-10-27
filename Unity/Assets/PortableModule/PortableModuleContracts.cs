@@ -1,18 +1,16 @@
+using GorillaEscape.Gameplay.Input;
 namespace JungleParty.Portable
 {
     public interface IPortableInputSource
     {
-        string RoomCode { get; }
-        bool PhoneConnected { get; }
-        bool CameraConnected { get; }
-        bool TryConsumeMotion(out string json);
-        bool TryConsumePose(out string json);
+        bool IsInputReady { get; }
+        JungleInputStatus InputStatus { get; }
+        bool TryConsumeFrame(out JungleFusedFrame frame);
+        bool TryAuthorize(JungleAction action,long revision);
     }
-
     public interface IPortableModuleStatus
     {
         bool IsRunning { get; }
         string Status { get; }
-        string PublicControllerUrl { get; }
     }
 }

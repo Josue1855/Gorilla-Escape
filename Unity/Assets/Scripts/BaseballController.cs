@@ -1,19 +1,18 @@
 using System;
 using UnityEngine;
+using GorillaEscape.Gameplay.Input;
 
 public sealed class BaseballController : MonoBehaviour
 {
-    [Serializable] private struct MotionPacket { public string type; public float alpha, beta, gamma, screen, ax, ay, az, rx, ry, rz; public int recenter; }
-    [Serializable] private struct PosePacket { public bool detected, leftDetected, rightDetected; public float leftWristX, leftWristY, rightWristX, rightWristY, bodyX; }
     private enum PlayState { Ready, Pitching, HitFlight, Result, GameOver }
 
     private MotionSession session;
     private PlayState state = PlayState.Ready;
     private GameObject ball, bat;
     private Rigidbody ballBody;
-    private Vector2 rightHand = new Vector2(.62f,.58f), previousRight;
-    private float handSpeed, phonePower, pitchAt, stateUntil, hitDistance;
-    private bool powerReady = true;
+    private Vector2 rightHand = new Vector2(.62f,.58f);
+    private float phonePower, pitchAt, stateUntil, hitDistance;
+    private long inputRevision;
     private bool phoneCalibrated;
     private float centerBeta, centerGamma;
     private int lastRecenter;
@@ -26,7 +25,6 @@ public sealed class BaseballController : MonoBehaviour
     {
         session = MotionSession.Ensure();
         BuildField();
-        previousRight = rightHand;
         SchedulePitch(1.2f);
     }
 
@@ -62,7 +60,8 @@ public sealed class BaseballController : MonoBehaviour
 
     private void Update()
     {
-        ReadSensors();
+        if(!session.IsInputReady){phonePower=0;phoneCalibrated=false;return;}
+        if(session.TryConsumeFrame(out var frame))ReadSensors(frame);
         Vector3 handPosition = new Vector3(Mathf.Lerp(-2.45f,2.45f,rightHand.x),Mathf.Lerp(2.75f,.30f,rightHand.y),-3.1f);
         bat.transform.position = Vector3.Lerp(bat.transform.position, handPosition, 18f * Time.deltaTime);
         bat.transform.rotation = Quaternion.Slerp(bat.transform.rotation, batOrientation, 20f * Time.deltaTime);
@@ -88,33 +87,24 @@ public sealed class BaseballController : MonoBehaviour
         ball.transform.position=new Vector3(UnityEngine.Random.Range(-.45f,.45f),UnityEngine.Random.Range(1.25f,1.85f),5.8f);
     }
 
-    private void ReadSensors()
+    private void ReadSensors(JungleFusedFrame frame)
     {
-        string poseJson=session.ConsumePose();
-        if(!string.IsNullOrEmpty(poseJson))
-        {
-            PosePacket pose=JsonUtility.FromJson<PosePacket>(poseJson); float dt=Mathf.Max(.01f,Time.deltaTime);
-            Vector2 next=new Vector2(pose.rightWristX,pose.rightWristY); handSpeed=Vector2.Distance(next,previousRight)/dt;
-            if(pose.rightDetected) rightHand=Vector2.Lerp(rightHand,next,.72f); previousRight=next;
-        }
-        string motionJson=session.ConsumeMotion();
-        if(string.IsNullOrEmpty(motionJson)) return;
-        MotionPacket motion=JsonUtility.FromJson<MotionPacket>(motionJson);
-        if(!phoneCalibrated || motion.recenter!=lastRecenter)
-        {
-            centerBeta=motion.beta; centerGamma=motion.gamma; lastRecenter=motion.recenter; phoneCalibrated=true;
-        }
+        inputRevision=frame.Revision;
+        if(frame.Baseline)phoneCalibrated=false;
+        rightHand=new Vector2(frame.Right.X,frame.Right.Y);
+        phonePower=frame.PhonePower;
+        var motion=frame.Motion;
+        if(!phoneCalibrated||motion.recenter!=lastRecenter)
+        {centerBeta=motion.beta;centerGamma=motion.gamma;lastRecenter=motion.recenter;phoneCalibrated=true;}
         float tiltUp=Mathf.Clamp(Mathf.DeltaAngle(centerBeta,motion.beta),-70f,70f);
         float tiltSide=Mathf.Clamp(Mathf.DeltaAngle(centerGamma,motion.gamma),-95f,95f);
-        // El cubo del bate es largo sobre Z: inclinación del celular controla elevación y giro lateral.
         batOrientation=Quaternion.Euler(12f-tiltUp*.95f,tiltSide*.90f,-tiltSide*.28f);
-        phonePower=Mathf.Sqrt(motion.rx*motion.rx+motion.ry*motion.ry+motion.rz*motion.rz)+new Vector3(motion.ax,motion.ay,motion.az).magnitude*7f;
-        if(phonePower<155f) powerReady=true;
-        if(state==PlayState.Pitching && powerReady && phonePower>260f && handSpeed>.55f) { powerReady=false; TrySwing(); }
+        if(state==PlayState.Pitching&&(frame.Actions&JungleAction.Swing)!=0)TrySwing();
     }
 
     private void TrySwing()
     {
+        if(state!=PlayState.Pitching||!session.TryAuthorize(JungleAction.Swing,inputRevision))return;
         float z=ball.transform.position.z;
         if(z>1.1f || z<-3.6f) { message="SWING TEMPRANO"; return; }
         float timing=1f-Mathf.Clamp01(Mathf.Abs(z+1.4f)/2.5f);
@@ -138,7 +128,7 @@ public sealed class BaseballController : MonoBehaviour
         JungleUITheme.DrawPanel(new Rect(w*.12f,h*.03f,w*.76f,h*.16f)); GUI.Label(new Rect(w*.14f,h*.04f,w*.72f,h*.065f),"JUNGLE BASEBALL",title);
         GUI.Label(new Rect(w*.15f,h*.105f,w*.70f,h*.06f),$"LANZAMIENTO {Mathf.Min(pitches+1,10)}/10    HITS {hits}    JONRONES {homeRuns}    PUNTOS {score}",title);
         GUI.DrawTexture(new Rect(w*.34f,h*.22f,w*.32f,h*.075f),message.Contains("JON")?yellow:message.Contains("STRIKE")?red:blue); GUI.Label(new Rect(w*.34f,h*.22f,w*.32f,h*.075f),message,title);
-        if(state==PlayState.GameOver){GUI.DrawTexture(new Rect(w*.27f,h*.34f,w*.46f,h*.25f),panel);GUI.Label(new Rect(w*.29f,h*.37f,w*.42f,h*.08f),$"PARTIDA TERMINADA · {score} PUNTOS",title);if(GUI.Button(new Rect(w*.38f,h*.49f,w*.24f,h*.07f),"OTRA PARTIDA")){pitches=strikes=hits=homeRuns=score=0;SchedulePitch(1f);}}
+        if(state==PlayState.GameOver){GUI.DrawTexture(new Rect(w*.27f,h*.34f,w*.46f,h*.25f),panel);GUI.Label(new Rect(w*.29f,h*.37f,w*.42f,h*.08f),$"PARTIDA TERMINADA · {score} PUNTOS",title);if(GUI.Button(new Rect(w*.38f,h*.49f,w*.24f,h*.07f),"OTRA PARTIDA")){session.ResetRound();pitches=strikes=hits=homeRuns=score=0;SchedulePitch(1f);}}
         if(GUI.Button(new Rect(w*.84f,h*.04f,w*.13f,h*.07f),"MENÚ",JungleUITheme.Button))SceneNavigator.Load(SceneNavigator.MainMenu);
         GUI.Label(new Rect(w*.18f,h*.88f,w*.64f,h*.06f),"SIGUE LA PELOTA · HAZ EL SWING CON EL CELULAR Y LA MANO DERECHA",title);
         JungleUITheme.DrawLeaves();

@@ -1,19 +1,19 @@
 using System;
 using UnityEngine;
+using GorillaEscape.Gameplay.Input;
 
 public sealed class WhackAMoleController : MonoBehaviour
 {
-    [Serializable] private struct PosePacket { public bool rightDetected; public float rightWristX,rightWristY; }
-    [Serializable] private struct MotionPacket { public float beta,gamma,ax,ay,az,rx,ry,rz; public int recenter; }
     private enum State { Intro, Countdown, Playing, Results }
     private readonly Vector2[] slots={new(.385f,.625f),new(.5f,.635f),new(.615f,.625f),new(.38f,.485f),new(.5f,.495f),new(.62f,.485f),new(.372f,.34f),new(.5f,.35f),new(.628f,.34f)};
     private MotionSession session; private State state; private GameObject table,hammer,head,hitHead; private Transform hammerPivot;
     private GameObject tablePrefab,headPrefab,hitPrefab,hammerPrefab; private Material tableMat,headMat,hitMat,hammerMat;
-    private Vector2 cursorViewport=new(.5f,.5f),previousPose,activeSlot; private float downSpeed,phonePower,stateAt,endAt,nextHeadAt,headAt,headUntil,hitUntil,lastHit,lastPoseAt,centerBeta,centerGamma; private int lastRecenter; private bool phoneCalibrated;
+    private Vector2 cursorViewport=new(.5f,.5f),activeSlot; private float downSpeed,phonePower,stateAt,endAt,nextHeadAt,headAt,headUntil,hitUntil,lastHit;
+    private long inputRevision; private bool whackRequested;
     private int score,hits,misses,combo,bestCombo; private string message=""; private Texture2D dark,gold,red,turquoise,white; private GUIStyle title,body,scoreStyle,big;
     private Vector2 HandViewport=>cursorViewport;
 
-    private void Awake(){session=MotionSession.Ensure();session.ConfigureForScene(SceneNavigator.WhackAMole);LoadAssets();BuildScene();previousPose=new Vector2(.5f,.5f);stateAt=Time.time;}
+    private void Awake(){session=MotionSession.Ensure();session.ConfigureForScene(SceneNavigator.WhackAMole);LoadAssets();BuildScene();stateAt=Time.time;}
     private Material Mat(Texture2D t,string n){var m=new Material(Shader.Find("Universal Render Pipeline/Lit")??Shader.Find("Standard")){name=n,mainTexture=t,color=Color.white};return m;}
     private void LoadAssets(){const string r="Jungle/NewModels/WhackAMole/",tr=r+"Meshy_AI_model_20261026_texture_fbx/",hr=r+"Meshy_AI_Cheeky_Monkey_20261026_texture_fbx/",ir=r+"Meshy_AI_Dizzy_Monkey_20261026_texture_fbx/",mr=r+"Meshy_AI_Wooden_War_Drum_20261026_texture_fbx/";tablePrefab=Resources.Load<GameObject>(tr+"Meshy_AI_model_20261026_texture");headPrefab=Resources.Load<GameObject>(hr+"Meshy_AI_Cheeky_Monkey_20261026_texture");hitPrefab=Resources.Load<GameObject>(ir+"Meshy_AI_Dizzy_Monkey_20261026_texture");hammerPrefab=Resources.Load<GameObject>(mr+"Meshy_AI_Wooden_War_Drum_20261026_texture");tableMat=Mat(Resources.Load<Texture2D>(tr+"Meshy_AI_model_20261026_texture"),"Mesa");headMat=Mat(Resources.Load<Texture2D>(hr+"Meshy_AI_Cheeky_Monkey_20261026_texture"),"Cabeza");hitMat=Mat(Resources.Load<Texture2D>(ir+"Meshy_AI_Dizzy_Monkey_20261026_texture"),"Golpeado");hammerMat=Mat(Resources.Load<Texture2D>(mr+"Meshy_AI_Wooden_War_Drum_20261026_texture"),"Mazo");}
 
@@ -23,14 +23,56 @@ public sealed class WhackAMoleController : MonoBehaviour
     private GameObject Model(GameObject prefab,Material mat,string n,Vector3 pos,float size,bool width,Quaternion rot){var root=new GameObject(n);root.transform.SetParent(transform);root.transform.position=pos;var pivot=new GameObject("Pivote visual");pivot.transform.SetParent(root.transform,false);if(prefab==null){Debug.LogError("Falta "+n);return root;}var model=Instantiate(prefab,pivot.transform);model.name="Modelo";model.transform.SetLocalPositionAndRotation(Vector3.zero,rot);model.transform.localScale=Vector3.one;foreach(var c in model.GetComponentsInChildren<Collider>(true))c.enabled=false;var rs=model.GetComponentsInChildren<Renderer>(true);if(rs.Length==0)return root;Bounds b=BoundsOf(rs);float measure=width?b.size.x:Mathf.Max(b.size.x,b.size.y);model.transform.localScale=Vector3.one*(size/Mathf.Max(.01f,measure));b=BoundsOf(rs);model.transform.position+=pos-b.center;foreach(var r in rs){r.enabled=true;r.gameObject.layer=0;var ms=r.sharedMaterials;for(int i=0;i<ms.Length;i++)ms[i]=mat;r.sharedMaterials=ms;}return root;}
     private static Bounds BoundsOf(Renderer[] rs){Bounds b=rs[0].bounds;for(int i=1;i<rs.Length;i++)b.Encapsulate(rs[i].bounds);return b;}
 
-    private void Update(){ReadInput();MoveHammer();if(state==State.Countdown&&Time.time-stateAt>=3)StartRound();else if(state==State.Playing){if(Time.time>=endAt)Finish();else UpdateHead();}}
-    private static float DeadZone(float value,float radius){float a=Mathf.Abs(value);return a<=radius?0:Mathf.Sign(value)*(a-radius);}
-    private void ReadInput(){if(session.TryConsumePose(out string p)){var pose=JsonUtility.FromJson<PosePacket>(p);if(pose.rightDetected){Vector2 next=new(pose.rightWristX,pose.rightWristY);float dt=Mathf.Max(.01f,Time.deltaTime);downSpeed=Mathf.Lerp(downSpeed,(next.y-previousPose.y)/dt,.4f);previousPose=next;lastPoseAt=Time.time;Vector2 cameraTarget=new(next.x,1f-next.y);cursorViewport=Vector2.Lerp(cursorViewport,cameraTarget,Mathf.Clamp01(14f*Time.deltaTime));}}if(session.TryConsumeMotion(out string m)){var q=JsonUtility.FromJson<MotionPacket>(m);phonePower=Mathf.Max(0,(new Vector3(q.ax,q.ay,q.az).magnitude-9.81f)*18f)+new Vector3(q.rx,q.ry,q.rz).magnitude;if(!phoneCalibrated||q.recenter!=lastRecenter){centerBeta=q.beta;centerGamma=q.gamma;lastRecenter=q.recenter;phoneCalibrated=true;}if(Time.time-lastPoseAt>.3f){float side=DeadZone(Mathf.DeltaAngle(centerGamma,q.gamma),2.2f);float vertical=DeadZone(Mathf.DeltaAngle(centerBeta,q.beta),2.2f);Vector2 phoneTarget=new(Mathf.Clamp01(.5f+side/70f),Mathf.Clamp01(.5f-vertical/56f));cursorViewport=Vector2.Lerp(cursorViewport,phoneTarget,Mathf.Clamp01(9f*Time.deltaTime));}}}
-    private void MoveHammer(){if(hammer==null)return;hammer.transform.position=Vector3.Lerp(hammer.transform.position,World(HandViewport,7.7f),22*Time.deltaTime);float s=Mathf.Clamp01(Mathf.Max(downSpeed/2.2f,phonePower/260));if(hammerPivot!=null)hammerPivot.localRotation=Quaternion.Slerp(hammerPivot.localRotation,Quaternion.Euler(0,0,Mathf.Lerp(0,68,s)),20*Time.deltaTime);if(state==State.Playing&&head!=null&&Time.time-lastHit>.22f&&(downSpeed>.72f||phonePower>235))TryHit();}
+    private void Update()
+    {
+        if(!session.IsInputReady){downSpeed=phonePower=0;whackRequested=false;return;}
+        whackRequested=false;
+        if(session.TryConsumeFrame(out var frame))ReadInput(frame);
+        MoveHammer();
+        if(state==State.Countdown&&Time.time-stateAt>=3)StartRound();
+        else if(state==State.Playing)
+        {
+            if(Time.time>=endAt)Finish();
+            else UpdateHead();
+        }
+    }
+    private void ReadInput(JungleFusedFrame frame)
+    {
+        inputRevision=frame.Revision;
+        downSpeed=frame.Right.VelocityY;phonePower=frame.PhonePower;
+        cursorViewport=new Vector2(frame.Right.X,1f-frame.Right.Y);
+        whackRequested=(frame.Actions&JungleAction.Whack)!=0;
+    }
+    private void MoveHammer()
+    {
+        if(hammer==null)return;
+        hammer.transform.position=Vector3.Lerp(hammer.transform.position,World(HandViewport,7.7f),22*Time.deltaTime);
+        float strength=Mathf.Clamp01(Mathf.Max(downSpeed/2.2f,phonePower/260));
+        if(hammerPivot!=null)hammerPivot.localRotation=Quaternion.Slerp(hammerPivot.localRotation,
+            Quaternion.Euler(0,0,Mathf.Lerp(0,68,strength)),20*Time.deltaTime);
+        if(state==State.Playing&&head!=null&&Time.time-lastHit>.22f&&whackRequested)TryHit();
+    }
     private void SpawnHead(){activeSlot=slots[UnityEngine.Random.Range(0,slots.Length)];head=Model(headPrefab,headMat,"03 Cabeza activa",World(activeSlot+Vector2.down*.075f,10.45f),1.42f,false,Quaternion.Euler(180,180,0));headAt=Time.time;headUntil=Time.time+1.25f;message="¡AHORA!";}
     private void UpdateHead(){if(hitHead!=null&&Time.time>=hitUntil){Destroy(hitHead);hitHead=null;nextHeadAt=Time.time+UnityEngine.Random.Range(.18f,.48f);}if(head==null&&hitHead==null&&Time.time>=nextHeadAt)SpawnHead();if(head==null)return;float age=Time.time-headAt,remaining=headUntil-Time.time,pop=Mathf.SmoothStep(0,1,Mathf.Clamp01(age/.18f));if(remaining<.18f)pop=Mathf.SmoothStep(0,1,Mathf.Clamp01(remaining/.18f));head.transform.position=World(activeSlot+Vector2.down*Mathf.Lerp(.075f,0,pop),10.45f);if(Time.time>=headUntil){Destroy(head);head=null;misses++;combo=0;message="¡SE ESCAPÓ!";nextHeadAt=Time.time+.28f;}}
-    private void TryHit(){if(Time.time-headAt<.14f||Vector2.Distance(HandViewport,activeSlot)>.105f)return;lastHit=Time.time;Destroy(head);head=null;hitHead=Model(hitPrefab,hitMat,"03 Cabeza golpeada",World(activeSlot,10.35f),1.52f,false,Quaternion.Euler(180,180,UnityEngine.Random.Range(-7,7)));hitUntil=Time.time+.42f;hits++;combo++;bestCombo=Mathf.Max(bestCombo,combo);int gain=100+Mathf.Min(combo,12)*20;score+=gain;message=combo>=4?$"¡COMBO x{combo}!":$"+{gain}";}
-    private void Begin(){score=hits=misses=combo=bestCombo=0;phoneCalibrated=false;cursorViewport=new Vector2(.5f,.5f);state=State.Countdown;stateAt=Time.time;}
+    private void TryHit()
+    {
+        if(state!=State.Playing||head==null||Time.time-headAt<.14f||Vector2.Distance(HandViewport,activeSlot)>.105f)return;
+        if(!session.TryAuthorize(JungleAction.Whack,inputRevision))return;
+        lastHit=Time.time;
+        Destroy(head);head=null;
+        hitHead=Model(hitPrefab,hitMat,"03 Cabeza golpeada",World(activeSlot,10.35f),1.52f,false,
+            Quaternion.Euler(180,180,UnityEngine.Random.Range(-7,7)));
+        hitUntil=Time.time+.42f;hits++;combo++;bestCombo=Mathf.Max(bestCombo,combo);
+        int gain=100+Mathf.Min(combo,12)*20;score+=gain;
+        message=combo>=4?$"¡COMBO x{combo}":$"+{gain}";
+    }
+    private void Begin()
+    {
+        session.ResetRound();
+        score=hits=misses=combo=bestCombo=0;
+        cursorViewport=new Vector2(.5f,.5f);
+        state=State.Countdown;stateAt=Time.time;
+    }
     private void StartRound(){state=State.Playing;endAt=Time.time+45;nextHeadAt=Time.time+.35f;message="¡A JUGAR!";}
     private void Finish(){if(head!=null)Destroy(head);if(hitHead!=null)Destroy(hitHead);head=hitHead=null;state=State.Results;message="¡TIEMPO!";}
 

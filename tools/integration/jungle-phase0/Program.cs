@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GorillaEscape.Core;
 using GorillaEscape.Contracts;
 using GorillaEscape.Input;
@@ -7,13 +8,14 @@ using GorillaEscape.Input.Fusion;
 class Checks
 {
     static PhoneValues Angles() => new PhoneValues { availability="present", hasAlpha=true, hasBeta=true, hasGamma=true, alpha=10, beta=20, gamma=30 };
-    static PhoneInputWire Phone(long sequence=1) => new PhoneInputWire {
-        playerId=1, messageType="MOTION_SAMPLE", sessionId="session", deviceSessionId="device", connectionEpoch=1,
+    internal static PhoneInputWire Phone(long sequence=1) => new PhoneInputWire {
+        quality=new PhoneQuality{source="synthetic",status="available"},playerId=1, messageType="MOTION_SAMPLE", sessionId="session", deviceSessionId="device", connectionEpoch=1,
         sequence=sequence, serverReceiveTimestamp=1000, connectionState="ACTIVE",
         accelerationIncludingGravity=new PhoneValues { availability="present", hasX=true,hasY=true,hasZ=true,x=1,y=2,z=9.81f },
+        screenOrientation=new PhoneValues{availability="present",hasAngle=true,angle=0},
         rotationRate=Angles(), orientation=Angles(), touch=new PhoneValues {hasPressed=true,pressed=false}
     };
-    static CameraInputWire Camera(long seq=1) {
+    internal static CameraInputWire Camera(long seq=1) {
         var names=new[]{"left-shoulder","right-shoulder","left-elbow","right-elbow","left-wrist","right-wrist"};
         var landmarks=new List<CameraLandmark>();
         foreach(var name in names) landmarks.Add(new CameraLandmark { name=name,x=.2f,y=.3f,visibility=.9f,presence=.9f,visible=true });
@@ -45,6 +47,7 @@ class Checks
             ("player lock acquires from two real frames",()=>{var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera());Require(l.State==PlayerLockState.ACQUIRING);l.Observe(Camera(2));Require(l.State==PlayerLockState.LOCKED);}),
             ("second camera candidate invalidates association",()=>{var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera());l.Observe(Camera(2));var f=Camera(3);var s=f.subjects[0];f.subjects=new[]{s,new CameraSubject{subjectId=2,centerX=.5f,centerY=.5f,confidence=.9f,landmarks=s.landmarks}};l.Observe(f);Require(l.State==PlayerLockState.LOST);})
         };
+        tests=tests.Concat(GameplayChecks.All()).ToArray();
         foreach(var test in tests) {try{test.Item2();Console.WriteLine("PASS "+test.Item1);}catch(Exception e){failures++;Console.WriteLine("FAIL "+test.Item1+": "+e.Message);}}
         Console.WriteLine($"{tests.Length-failures}/{tests.Length} passed (pure C# contracts; not Unity or physical acceptance)");
         return failures==0?0:1;

@@ -1,15 +1,13 @@
-# Adaptador Jungle Party ↔ Fase 0
+# Entrada Jungle Party sobre Fase 0
 
-`IPortableInputSource` conserva la interfaz consumida por los juegos de Saúl. `MotionSession` es una fachada de gameplay; no crea salas, conexiones HTTP ni procesos.
+`IPortableInputSource` entrega un `JungleFusedFrame` tipado y permite autorizar acciones por revisión. Se eliminan las lecturas JSON separadas de teléfono/pose. `MotionSession` mantiene la sesión entre escenas y es el propietario de la pausa técnica al perder entrada válida.
 
-`PortableServiceHost` administra una sesión mediante `JavaProbeSupervisor`, `VisionSupervisor`, `PhoneInputStore`, `InputFusion` y `PlayerLock`. Los supervisores restaurados desde `develop` conservan su implementación: no se reescribieron sus protocolos, presupuestos de lanzamiento ni limpieza. La interfaz y los puntos de entrada de diagnóstico impiden arrancar propietarios duplicados.
+`PortableServiceHost` reutiliza los supervisores oficiales, PhoneInputStore, PlayerLock e InputFusion. Consulta `EvaluateLatest` y entrega su resultado a las reglas puras de `Scripts/Gameplay/Input/`; no conserva una ruta de gameplay que lea directamente el teléfono. Los supervisores no se reescriben.
 
-`JungleInputAdapter` convierte contratos Shared aceptados en DTO de compatibilidad locales a Unity. El flujo utiliza el jugador 1, descarta muestras incompletas/antiguas/duplicadas, conserva unidades y aplica una sola reflexión horizontal a las coordenadas no espejadas de cámara. Sólo entrega poses con asociación válida y alineación del teléfono/cámara. La falta de una mano mantiene su indicador de detección falso.
+Cada uno de los seis juegos exige las muñecas que necesita y un teléfono alineado. Las velocidades usan el tiempo de captura, los pulsos requieren rearme y una revisión no autoriza dos veces la misma acción. Los controladores verifican la autorización antes de cambiar su mecánica/puntuación. Los cortes continuos reciben una autorización por mano y por muestra de cámara nueva.
 
-Los botones oficiales usan la superficie virtual de contacto: `x=0, y=0.5` para confirmar/lanzar y `x=1, y=0.5` para recentrar; `pressed` representa la pulsación. Se cuenta un flanco observado por pulsación, no cada muestra sostenida. No es un nuevo protocolo de red ni una garantía de entrega de acciones de torneo: continúa siendo latest-only y debe probarse físicamente.
+El modo actual usa al jugador 1. Compartir la infraestructura no declara soporte multijugador migrado, aceptación física ni instalador terminado. Los umbrales se mantienen como parámetros de prototipo pendientes de calibración.
 
-El QR proviene de `QaAdmissionWire` por IPC y se dibuja en Unity; no se publica una URL de admisión ni se consulta un generador externo. La interfaz antigua `PublicControllerUrl` devuelve una cadena vacía por compatibilidad; no se utiliza para conectar.
+El QR se dibuja localmente desde los módulos enviados por Java en IPC autenticado. Los botones de la PWA usan el grupo touch del contrato existente para confirmar/recentrar; no generan por sí mismos golpes deportivos. La recuperación de procesos sigue siendo manual y exige limpieza completa. El Editor necesita opt-in y permiso del test runner; no se inicia hardware en batch mode.
 
-La recuperación es manual, después de esperar `ShutdownAsync` y comprobar la limpieza. Al salir se espera el cierre de los supervisores. El arranque en Editor exige opt-in y está deshabilitado en batch mode. Para reutilizarlo se necesitan también Shared y el runtime oficial en `_Project`, no basta copiar esta carpeta.
-
-Consulta [la integración y sus pendientes](../../../docs/03-development/SAUL_PHASE0_INTEGRATION.md).
+Para reutilizar este adaptador se requieren Shared, `_Project` y los runtimes oficiales; no basta copiar esta carpeta. [Arquitectura, matriz por juego, pruebas y aceptación pendiente](../../../docs/02-gameplay/JUNGLE_FUSED_INPUT.md).

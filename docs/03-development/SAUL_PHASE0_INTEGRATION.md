@@ -6,6 +6,10 @@ Fecha local: 2026-10-26. Rama: `feature/saul-jungle-party-alpha`.
 
 El usuario detectó que `Gorilla Escape → Play Gorilla Escape` todavía abría el menú Bootstrap de develop. Esto era una integración de navegación incompleta en el commit `a0fb822`, aunque el adaptador de transporte ya existía. [Corrección del punto de entrada](SAUL_PRODUCT_ENTRY.md): Connection inicia el producto; Bootstrap permanece como diagnóstico. Esta corrección incorpora el catálogo de nueve escenas y preparación del arranque desde el menú del Editor.
 
+## Adaptación de mecánicas (2026-10-27)
+
+La entrega separada de motion/pose descrita en el primer incremento fue sustituida por un frame fusionado tipado, autorización por juego y pausa técnica. [Estado vigente y matriz de los seis juegos](../02-gameplay/JUNGLE_FUSED_INPUT.md). Los resultados del primer incremento que aparecen más abajo son históricos y no sustituyen esta nueva verificación.
+
 ## Decisión y alcance
 
 El usuario autorizó fusionar `develop` e incluir la migración de los juegos al transporte oficial, conservando lo mejor de ambas ramas. Base de Saúl: `43ef0b962705a03b02102d1a5e6462b3c9f6bcb3`; `develop` incorporado: `851e8dc3943129ec89210743c6cc0e494836d610`. No se integra esta rama hacia `develop` ni se modifica `main`.
@@ -87,7 +91,7 @@ Para cámara, `GORILLA_PACKAGE_ROOT` debe apuntar a un paquete Fase 0 válido co
 
 El Player conserva las rutas relativas `Java/runtime/bin/java[.exe]` y `Java/server.jar`, y el paquete de cámara de Fase 0. El launcher/empaquetador oficial requiere revisión y reconstrucción del Player de esta rama antes de distribuirlo. No se declara un instalador único terminado ni soporte de cámara Windows completado.
 
-## Resultado verificable
+## Resultado del primer incremento (histórico)
 
 | Comprobación | Resultado local |
 | --- | --- |

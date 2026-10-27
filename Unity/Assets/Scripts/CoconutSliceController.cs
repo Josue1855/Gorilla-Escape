@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using GorillaEscape.Gameplay.Input;
 
 public sealed class CoconutSliceController : MonoBehaviour
 {
-    [Serializable] private struct PosePacket
-    {
-        public bool detected, leftDetected, rightDetected;
-        public float leftWristX, leftWristY, rightWristX, rightWristY, bodyX, confidence, time;
-    }
-
     private enum GameState { Intro, Countdown, Playing, Finale, Results }
     private sealed class Coconut
     {
@@ -22,14 +17,13 @@ public sealed class CoconutSliceController : MonoBehaviour
     }
 
     private const float RoundDuration = 45f;
-    private const float SliceSpeed = .72f;
     private readonly List<Coconut> coconuts = new List<Coconut>();
     private readonly List<GameObject> temporaryPieces = new List<GameObject>();
     private MotionSession session;
     private GameState state = GameState.Intro;
     private Vector2 leftHand = new Vector2(.32f, .52f), rightHand = new Vector2(.68f, .52f);
-    private Vector2 previousLeft, previousRight, mousePrevious;
-    private float leftSpeed, rightSpeed, nextSpawn, stateStartedAt, roundEndsAt, lastSliceAt;
+    private Vector2 previousLeft, previousRight;
+    private float leftSpeed, rightSpeed, nextSpawn, stateStartedAt, roundEndsAt, lastLeftSliceAt, lastRightSliceAt;
     private int score, combo, bestCombo, missed, sliced, lives = 3;
     private string callout = "";
     private float calloutUntil;
@@ -302,7 +296,8 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     private void Update()
     {
-        ReadPose();
+        if(!session.IsInputReady){leftSpeed=rightSpeed=0;return;}
+        if(session.TryConsumeFrame(out var frame))ReadPose(frame);
         UpdateDistractorGorilla();
 
         if (state == GameState.Countdown && Time.time - stateStartedAt >= 3.2f) StartRound();
@@ -322,39 +317,26 @@ public sealed class CoconutSliceController : MonoBehaviour
         UpdateTemporaryPieces();
     }
 
-    private void ReadPose()
+    private void ReadPose(JungleFusedFrame frame)
     {
-        string json = session.ConsumePose();
-        if (!string.IsNullOrEmpty(json))
+        if(!frame.NewPose&&!frame.Baseline)return;
+        Vector2 nextLeft=new Vector2(frame.Left.X,1f-frame.Left.Y);
+        Vector2 nextRight=new Vector2(frame.Right.X,1f-frame.Right.Y);
+        leftSpeed=frame.Left.Speed;rightSpeed=frame.Right.Speed;
+        if(!frame.Baseline)
         {
-            PosePacket pose = JsonUtility.FromJson<PosePacket>(json);
-            float dt = Mathf.Clamp(Time.deltaTime, .01f, .08f);
-            Vector2 nextLeft = new Vector2(pose.leftWristX, 1f - pose.leftWristY);
-            Vector2 nextRight = new Vector2(pose.rightWristX, 1f - pose.rightWristY);
-            leftSpeed = Vector2.Distance(nextLeft, previousLeft) / dt;
-            rightSpeed = Vector2.Distance(nextRight, previousRight) / dt;
-            if (pose.leftDetected)
-            {
-                TrySliceSegment(previousLeft, nextLeft, leftSpeed);
-                leftHand = Vector2.Lerp(leftHand, nextLeft, .72f);
-            }
-            if (pose.rightDetected)
-            {
-                TrySliceSegment(previousRight, nextRight, rightSpeed);
-                rightHand = Vector2.Lerp(rightHand, nextRight, .72f);
-            }
-            previousLeft = nextLeft;
-            previousRight = nextRight;
+            if((frame.Actions&JungleAction.SliceLeft)!=0)TrySliceSegment(previousLeft,nextLeft,leftSpeed,JungleAction.SliceLeft,frame.Revision);
+            if((frame.Actions&JungleAction.SliceRight)!=0)TrySliceSegment(previousRight,nextRight,rightSpeed,JungleAction.SliceRight,frame.Revision);
         }
-
-        Vector2 mouse = new Vector2(Input.mousePosition.x / Mathf.Max(1f, Screen.width), Input.mousePosition.y / Mathf.Max(1f, Screen.height));
-        if (Input.GetMouseButton(0)) TrySliceSegment(mousePrevious, mouse, Vector2.Distance(mousePrevious, mouse) / Mathf.Max(.01f, Time.deltaTime));
-        mousePrevious = mouse;
+        leftHand=nextLeft;rightHand=nextRight;
+        previousLeft=nextLeft;previousRight=nextRight;
     }
 
-    private void TrySliceSegment(Vector2 from, Vector2 to, float speed)
+    private void TrySliceSegment(Vector2 from, Vector2 to, float speed, JungleAction action, long revision)
     {
-        if (state != GameState.Playing || speed < SliceSpeed || Time.time - lastSliceAt < .045f) return;
+        float previousSlice=action==JungleAction.SliceLeft?lastLeftSliceAt:lastRightSliceAt;
+        if (state != GameState.Playing || Time.time - previousSlice < .045f) return;
+        if(!session.TryAuthorize(action,revision))return;
         for (int i = coconuts.Count - 1; i >= 0; i--)
         {
             Coconut coconut = coconuts[i];
@@ -365,7 +347,7 @@ public sealed class CoconutSliceController : MonoBehaviour
             if (DistanceToSegment(viewport, from, to) < .075f)
             {
                 Slice(coconut, to - from, speed);
-                lastSliceAt = Time.time;
+                if(action==JungleAction.SliceLeft)lastLeftSliceAt=Time.time;else lastRightSliceAt=Time.time;
                 break;
             }
         }
@@ -577,6 +559,7 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     private void BeginCountdown()
     {
+        session.ResetRound();
         ClearCoconuts();
         score = combo = bestCombo = missed = sliced = 0;
         lives = 3;

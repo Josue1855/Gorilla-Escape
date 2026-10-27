@@ -26,3 +26,7 @@ Los dos avisos npm de S5 se resolvieron en el fork S10 con Vite6.4.4; audit post
 ## Integración Jungle Party con Fase 0 (rama de Saúl)
 
 [Resultados de software y limitaciones](../evidence/saul-phase0-integration-2026-10-26/README.md). Conserva assets/escenas; validación de motor y aceptación física pendientes por el alcance indicado.
+
+## Mecánicas Jungle con InputFusion — 2026-10-27
+
+[Resultados y límites de la revisión](../evidence/saul-gameplay-fusion-2026-10-27/README.md): 71 pruebas de software, enlace de seis escenas, tipos C# Editor/Player; ejecución nativa y hardware pendientes.

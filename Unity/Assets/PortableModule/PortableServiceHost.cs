@@ -6,18 +6,19 @@ using GorillaEscape.CameraTracking;
 using GorillaEscape.Contracts;
 using GorillaEscape.Input;
 using GorillaEscape.Input.Fusion;
+using GorillaEscape.Gameplay.Input;
 using GorillaEscape.Network;
 using JungleParty.Portable;
 using UnityEngine;
 
 // Scene-independent owner. All child process and IPC work stays in the audited Phase 0 supervisors.
+[DefaultExecutionOrder(-11000)]
 public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
 {
     public static PortableServiceHost Instance { get; private set; }
     public bool IsRunning => java != null && (java.State == IpcState.STARTING || java.State == IpcState.CONNECTING || java.State == IpcState.RUNNING);
     public string Status { get; private set; } = "LISTO PARA CONECTAR";
     // Admission secrets never leave the Java-generated QR over authenticated loopback IPC.
-    public string PublicControllerUrl => string.Empty;
     public QaAdmissionWire Admission => java?.State == IpcState.RUNNING ? java.Qa : null;
     public QaAdmissionWire Preparation => java?.State == IpcState.RUNNING ? java.QaHosting?.prepare : null;
     public string FirewallState => java?.QaConnection?.firewallState ?? "CHECKING";
@@ -37,7 +38,29 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     JungleInputAdapter adapter;
     CancellationTokenSource cancellation;
     Task javaRun, visionRun, closing;
-    string motionJson, poseJson;
+    readonly JungleGameplayInput gameplay = new JungleGameplayInput();
+    int refreshedFrame=-1;
+    long observedSequence=-1,observedEpoch=-1;
+    string observedSession,observedDevice;
+    public bool IsInputReady { get { RefreshInput(); return gameplay.Ready; } }
+    public JungleInputStatus InputStatus { get { RefreshInput(); return gameplay.Status; } }
+    public JungleGame Game => gameplay.Game;
+    public void SelectGame(JungleGame game,bool force=false)
+    {
+        if(!force&&gameplay.Game==game)return;
+        gameplay.Select(game);
+        fusion?.Association.Ready(1);
+        refreshedFrame=-1;
+    }
+    public bool TryReadFrame(out JungleFusedFrame frame)
+    {
+        RefreshInput();frame=gameplay.Ready?gameplay.Current:null;return frame!=null;
+    }
+    public bool Authorize(JungleAction action,long revision)
+    {
+        RefreshInput();
+        return PhoneConnected&&vision?.State=="RUNNING"&&gameplay.Authorize(action,revision,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+    }
     bool admissionRequested, quitting, allowQuit, previousBackground, shutdownFailed;
 
     public static PortableServiceHost Ensure()
@@ -87,8 +110,10 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         fusion = new InputFusion(java.PhoneInputs, new FusionSettings());
         fusion.Association.Ready(1); // This alpha has one turn-active player; never select another player's input.
         adapter = new JungleInputAdapter();
+        observedSequence=observedEpoch=-1;observedSession=observedDevice=null;
         LastPhonePacketAt = LastPosePacketAt = -10;
-        motionJson = poseJson = null;
+        gameplay.Select(gameplay.Game);
+        refreshedFrame=-1;
         closing = null;
         admissionRequested = false;
         Status = "INICIANDO SERVIDOR LOCAL";
@@ -106,41 +131,44 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         try { await vision.StartPackagedAsync(root, cancellation.Token); }
         catch (Exception) { Debug.LogWarning("JUNGLE_CAMERA_UNAVAILABLE (revisa el paquete Vision y el diagnóstico de Fase 0)"); }
     }
-    void Update()
+    void Update() => RefreshInput();
+    void RefreshInput()
     {
-        if (quitting || java == null) return;
-        long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        if (java.State != IpcState.RUNNING)
+        if(refreshedFrame==Time.frameCount)return;
+        refreshedFrame=Time.frameCount;
+        long now=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        if(quitting||java==null||java.State!=IpcState.RUNNING)
         {
-            motionJson = poseJson = null;
-            LastPhonePacketAt = LastPosePacketAt = -10;
+            gameplay.Update(null,now);
+            LastPhonePacketAt=LastPosePacketAt=-10;
             return;
         }
-        if (!admissionRequested) { java.RegenerateQa(); admissionRequested = true; }
-        Status = NeedsNetworkPermission ? "AUTORIZA EL ACCESO A LA RED LOCAL" : PhoneConnected ? "CELULAR CONECTADO" : "ESPERANDO EL CELULAR";
-        if (java.PhoneInputs.TryLatest(1, out var phone))
+        if(!admissionRequested){java.RegenerateQa();admissionRequested=true;}
+        if(java.PhoneInputs.TryLatest(1,out var phone))
         {
-            fusion.ObservePhone(phone);
-            if (adapter.TryMotion(phone, now, out var motion)) { motionJson = JsonUtility.ToJson(motion); LastPhonePacketAt = Time.unscaledTime; }
+            if(phone.sequence!=observedSequence||phone.connectionEpoch!=observedEpoch||phone.sessionId!=observedSession||phone.deviceSessionId!=observedDevice)
+            {
+                observedSequence=phone.sequence;observedEpoch=phone.connectionEpoch;observedSession=phone.sessionId;observedDevice=phone.deviceSessionId;
+                fusion.ObservePhone(phone);
+                if(adapter.TryMotion(phone,now,out _))LastPhonePacketAt=Time.unscaledTime;
+            }
         }
-        if (!PhoneConnected) motionJson = null;
         vision.Poll();
-        if (vision.Take(out var frame, out var received)) fusion.ObserveCamera(frame, received);
-        var candidate = fusion.Evaluate(1, now);
-        if (candidate.Eligible && adapter.TryPose(candidate.Camera, candidate.SubjectId, now, out var pose))
-        { poseJson = JsonUtility.ToJson(pose); LastPosePacketAt = Time.unscaledTime; }
-        if (!CameraConnected || !candidate.Eligible) { poseJson = null; LastPosePacketAt = -10; }
+        if(vision.Take(out var frame,out var received))fusion.ObserveCamera(frame,received);
+        var candidate=fusion.EvaluateLatest(1,now);
+        if(vision.State!="RUNNING")gameplay.Update(null,now);
+        else gameplay.Update(candidate,now);
+        LastPosePacketAt=candidate.Eligible?Time.unscaledTime:-10;
+        Status=NeedsNetworkPermission?"AUTORIZA EL ACCESO A LA RED LOCAL":PhoneConnected?"CELULAR CONECTADO":"ESPERANDO EL CELULAR";
     }
-    bool CurrentPhoneConnected() => java.PhoneInputs.TryLatest(1, out var input) && input.connectionState != "DISCONNECTED";
-    public string ConsumeMotion() { var value = motionJson; motionJson = null; return PhoneConnected ? value : null; }
-    public string ConsumePose() { var value = poseJson; poseJson = null; return CameraConnected ? value : null; }
+    bool CurrentPhoneConnected() => java.PhoneInputs.TryLatest(1,out var input) && input.connectionState!="DISCONNECTED";
     public void InstallNetwork() { if (java?.State == IpcState.RUNNING && NeedsNetworkPermission) java.RequestNetworkAction("INSTALL"); }
     public void RegenerateAdmission() { if (java?.State == IpcState.RUNNING) java.RegenerateQa(); }
-    public void ReportReadyState(bool phoneConnected, bool cameraConnected) { }
     public Task ShutdownAsync() => closing ?? (closing = Close());
     async Task Close()
     {
-        motionJson = poseJson = null;
+        gameplay.Select(gameplay.Game);
+        refreshedFrame=-1;
         LastPhonePacketAt = LastPosePacketAt = -10;
         try
         {

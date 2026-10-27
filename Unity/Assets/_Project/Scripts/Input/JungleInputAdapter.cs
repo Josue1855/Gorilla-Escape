@@ -4,21 +4,40 @@ using GorillaEscape.CameraTracking;
 
 namespace GorillaEscape.Input
 {
-    // Compatibility DTOs for the existing Jungle Party gameplay, never a second wire protocol.
-    [Serializable] public sealed class JungleMotionPacket
+    // Engine-independent typed projections; never a second network protocol or JSON bridge.
+    public sealed class JungleMotionPacket
     {
-        public string type = "motion";
-        public long time;
-        public float alpha, beta, gamma, screen, ax, ay, az, rx, ry, rz;
-        public int confirm, recenter;
+        public string type {get;internal set;} = "motion";
+        public long time {get;internal set;}
+        public float alpha {get;internal set;}
+        public float beta {get;internal set;}
+        public float gamma {get;internal set;}
+        public float screen {get;internal set;}
+        public bool hasScreen {get;internal set;}
+        public float ax {get;internal set;}
+        public float ay {get;internal set;}
+        public float az {get;internal set;}
+        public float rx {get;internal set;}
+        public float ry {get;internal set;}
+        public float rz {get;internal set;}
+        public int confirm {get;internal set;}
+        public int recenter {get;internal set;}
     }
-    [Serializable] public sealed class JunglePosePacket
+    public sealed class JunglePosePacket
     {
-        public bool detected, leftDetected, rightDetected;
-        public string hand = "right";
-        public float wristX, wristY, bodyX, confidence;
-        public float leftWristX, leftWristY, rightWristX, rightWristY;
-        public long time;
+        public bool detected {get;internal set;}
+        public bool leftDetected {get;internal set;}
+        public bool rightDetected {get;internal set;}
+        public string hand {get;internal set;} = "right";
+        public float wristX {get;internal set;}
+        public float wristY {get;internal set;}
+        public float bodyX {get;internal set;}
+        public float confidence {get;internal set;}
+        public float leftWristX {get;internal set;}
+        public float leftWristY {get;internal set;}
+        public float rightWristX {get;internal set;}
+        public float rightWristY {get;internal set;}
+        public long time {get;internal set;}
     }
 
     public sealed class JungleInputAdapter
@@ -55,6 +74,7 @@ namespace GorillaEscape.Input
             packet = new JungleMotionPacket {
                 time = input.serverReceiveTimestamp, ax = a.x, ay = a.y, az = a.z,
                 rx = r.alpha, ry = r.beta, rz = r.gamma, alpha = o.alpha, beta = o.beta, gamma = o.gamma,
+                hasScreen = input.screenOrientation!=null&&input.screenOrientation.hasAngle&&Finite(input.screenOrientation.angle),
                 screen = input.screenOrientation != null && input.screenOrientation.hasAngle && Finite(input.screenOrientation.angle)
                     ? input.screenOrientation.angle : 0,
                 confirm = confirmations, recenter = recenters

@@ -1,0 +1,72 @@
+PASS product starts at Connection rather than diagnostics
+PASS all games and diagnostic Bootstrap are registered once
+PASS callers cannot mutate the build scene catalog
+PASS editor physical services require opt in and runner permission
+PASS preserves real sensor units and axes
+PASS rejects duplicate and reordered samples
+PASS rejects stale and future timestamps
+PASS rejects disconnected and other player input
+PASS does not invent unavailable axes
+PASS rejects nonfinite values
+PASS new epoch accepts reset sequence
+PASS touch confirms once per observed rising edge
+PASS recenter uses its own virtual touch zone
+PASS preserves mirror and hand identity
+PASS rejects unassigned ambiguous and stale poses
+PASS missing wrist stays explicitly undetected
+PASS pose duplicate never replays
+PASS player lock acquires from two real frames
+PASS second camera candidate invalidates association
+PASS technical pause freezes and restores the original time scale
+PASS technical pause never resumes another system's existing pause
+PASS leaving a game releases only its own pause
+PASS all six gameplay scenes have an explicit fusion profile
+PASS Bowling: tracking loss immediately invalidates prior actions
+PASS Bowling: baseline never creates a scoring gesture
+PASS Bowling: missing required right hand blocks gameplay
+PASS Bowling: a new phone epoch rebaselines without a false action
+PASS Boxing: tracking loss immediately invalidates prior actions
+PASS Boxing: baseline never creates a scoring gesture
+PASS Boxing: missing required right hand blocks gameplay
+PASS Boxing: a new phone epoch rebaselines without a false action
+PASS Baseball: tracking loss immediately invalidates prior actions
+PASS Baseball: baseline never creates a scoring gesture
+PASS Baseball: missing required right hand blocks gameplay
+PASS Baseball: a new phone epoch rebaselines without a false action
+PASS Drums: tracking loss immediately invalidates prior actions
+PASS Drums: baseline never creates a scoring gesture
+PASS Drums: missing required right hand blocks gameplay
+PASS Drums: a new phone epoch rebaselines without a false action
+PASS CoconutSlice: tracking loss immediately invalidates prior actions
+PASS CoconutSlice: baseline never creates a scoring gesture
+PASS CoconutSlice: missing required right hand blocks gameplay
+PASS CoconutSlice: a new phone epoch rebaselines without a false action
+PASS Whack: tracking loss immediately invalidates prior actions
+PASS Whack: baseline never creates a scoring gesture
+PASS Whack: missing required right hand blocks gameplay
+PASS Whack: a new phone epoch rebaselines without a false action
+PASS Boxing: left hand is required instead of invented
+PASS Drums: left hand is required instead of invented
+PASS CoconutSlice: left hand is required instead of invented
+PASS Bowling: launch requires both real wrist movement and phone peak
+PASS Boxing: left and right punches have independent validated gestures
+PASS Boxing: stand-up pulse also requires tracked motion
+PASS Baseball: old hand speed cannot turn a new phone peak into a swing
+PASS Drums: simultaneous hands are authorized once each
+PASS Coconut Slice: actual capture interval determines cutting speed
+PASS Whack: phone shake without downward hand motion never hits
+PASS held peak cannot repeatedly fire after cooldown
+PASS recovery rebaselines before computing wrist velocity
+PASS partial current input cannot reuse a complete historical sample
+PASS disconnection invalidates the frame without waiting for a camera event
+PASS current pair rejects obsolete minimum-skew diagnostic match
+PASS a second subject immediately invalidates gameplay association
+PASS scene transition invalidates outstanding gesture authorization
+PASS freshness is checked again at action authorization
+PASS same accepted pair never generates a second frame or repeated action
+PASS an action mask cannot authorize combined or unrelated gestures
+PASS implausible derived numeric overflow is rejected
+PASS unknown screen orientation does not become a fabricated zero
+PASS a tracking coordinate teleport is discarded before gesture recognition
+PASS long runs keep bounded camera and input histories
+71/71 passed (pure C# contracts; not Unity or physical acceptance)

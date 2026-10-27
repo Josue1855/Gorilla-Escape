@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using GorillaEscape.Gameplay.Input;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -10,36 +11,12 @@ using GLTFast;
 
 public sealed class PhoneMotionController : MonoBehaviour
 {
-    [Serializable] private struct MotionPacket
-    {
-        public string type;
-        public long time;
-        public float alpha, beta, gamma, screen, ax, ay, az, rx, ry, rz;
-        public int confirm, recenter;
-    }
-
-    [Serializable] private struct PosePacket
-    {
-        public bool detected;
-        public bool leftDetected, rightDetected;
-        public string hand;
-        public float wristX, wristY, bodyX, confidence;
-        public float leftWristX, leftWristY, rightWristX, rightWristY;
-        public long time;
-    }
-
-    private enum GameState { Connecting, Menu, Aim, Rolling, Results, TargetGame, BalanceGame, KarateGame, MiniResults, Boxing, BoxingKnockdown, BoxingOver }
-    private sealed class KarateItem
-    {
-        public float x;
-        public bool cactus;
-    }
+    private enum GameState { Connecting, Menu, Aim, Rolling, Results, Boxing, BoxingKnockdown, BoxingOver }
     private readonly List<GameObject> pins = new List<GameObject>();
     private readonly Dictionary<GameObject, Vector3> pinRackPositions = new Dictionary<GameObject, Vector3>();
     private readonly Dictionary<GameObject, Quaternion> pinRackRotations = new Dictionary<GameObject, Quaternion>();
     private readonly HashSet<GameObject> pinsFallenThisRoll = new HashSet<GameObject>();
     private readonly List<Vector3> poseTrail = new List<Vector3>();
-    private readonly List<KarateItem> karateItems = new List<KarateItem>();
     private readonly List<int>[] bowlingFrames = new List<int>[10];
     private readonly int[] bowlingScoreCache = new int[10];
     private readonly int[] bowlingRollCache = new int[21];
@@ -76,41 +53,34 @@ public sealed class PhoneMotionController : MonoBehaviour
     private bool polling, calibrated, hasRaw;
     private float lastPacketAt = -10f, centerGamma, centerBeta, latestGamma, latestBeta, aimX, power, resultAt;
     private float ballPassedPinsAt = -1f;
-    private float miniTime, lastMiniAction, balancePoints, aimReadyAt;
-    private float poseWristX = .5f, poseBodyX = .5f, poseWristVelocityX, poseSampleAt;
+    private float lastPunchAt, aimReadyAt;
+    private float poseWristX = .5f, poseBodyX = .5f;
     private Vector2 boxingLeftHand = new Vector2(.36f, .63f), boxingRightHand = new Vector2(.64f, .63f);
-    private Vector2 previousBoxingLeft, previousBoxingRight;
     private float boxingLeftSpeed, boxingRightSpeed, playerHealth, gorillaHealth, boxingRoundTime, gorillaActionAt, gorillaAttackResolveAt, boxingMessageUntil, getUpEnergy;
     private int boxingGorillaAction, boxingMessageCode;
-    private bool boxingAttackResolved, boxingPowerReady = true;
+    private bool boxingAttackResolved;
     private readonly Vector3 bowlingCameraPosition = new Vector3(0, 6.4f, -12.5f);
-    private float swingStartedAt, swingPeakPower, swingStartGamma, lastLaunchDirection;
-    private float karateSpawnAt, karateFlashUntil;
-    private int round = 1, totalScore, lastPins, menuSelection, lastConfirm, lastRecenter, miniScore, miniMisses;
+    private float swingStartGamma, lastLaunchDirection;
+    private int totalScore, lastPins, menuSelection, lastConfirm, lastRecenter;
     private int bowlingFrame, bowlingBall = 1;
     private bool confirmInitialized;
     private bool poseDetected;
-    private bool swingPending;
-    private bool karateLost;
-    private bool karateMotionHigh;
     private bool bowlingGameOver, nextNeedsFullRack;
     private bool editableScene;
     private Transform gorillaAnchor;
     private Transform islandAnchor;
-    private float lastPoseAt = -10f;
     private Vector2 menuCursor = new Vector2(.32f, .56f);
-    private Vector2 gameCursor = new Vector2(.5f, .55f), targetPoint = new Vector2(.65f, .42f), balanceTarget = new Vector2(.5f, .55f);
     private Quaternion rawRotation = Quaternion.identity;
     private GUIStyle titleStyle, bigStyle, bodyStyle, buttonStyle;
     private GUIStyle dashHeadingStyle, dashRowStyle, dashRowActiveStyle, dashScoreStyle, dashScoreActiveStyle;
-    private Texture2D panelTexture, accentTexture, selectedTexture, optionTexture, coconutTexture, cactusTexture, darkTexture, boxingBlueTexture, boxingRedTexture, gorillaTexture, leavesBottom, leavesLeft, leavesRight;
+    private Texture2D panelTexture, accentTexture, selectedTexture, optionTexture, darkTexture, boxingBlueTexture, boxingRedTexture, gorillaTexture, leavesBottom, leavesLeft, leavesRight;
     private Texture2D bowlingHudTexture, bowlingCardTexture, bowlingButtonTexture, bowlingButtonHoverTexture;
     private Font hudFont;
     private MotionSession sharedSession;
+    private JungleFusedFrame inputFrame;
 
     private void Awake()
     {
-        Application.runInBackground = true;
         for (int i = 0; i < bowlingFrames.Length; i++) bowlingFrames[i] = new List<int>();
         sharedSession = MotionSession.Ensure();
         roomCode = sharedSession.RoomCode;
@@ -132,14 +102,6 @@ public sealed class PhoneMotionController : MonoBehaviour
             ApplyCoconutModel();
         }
         if (SceneManager.GetActiveScene().name == SceneNavigator.Boxing) StartBoxingGame();
-    }
-
-    private static string RandomRoom()
-    {
-        const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        var r = new char[4];
-        for (int i = 0; i < 4; i++) r[i] = chars[UnityEngine.Random.Range(0, chars.Length)];
-        return new string(r);
     }
 
     private Material MakeMaterial(Color color, float metallic = 0f, float smoothness = .35f)
@@ -959,47 +921,20 @@ public sealed class PhoneMotionController : MonoBehaviour
         StopBody(ballBody, true);
         transform.position = new Vector3(0, .48f, -7.2f);
         transform.rotation = Quaternion.identity;
-        aimX = 0; power = 0; aimReadyAt = Time.time + .8f; poseWristVelocityX = 0; swingPending = false;
+        aimX = 0; power = 0; aimReadyAt = Time.time + .8f;
         poseTrail.Clear();
         state = polling ? GameState.Aim : GameState.Connecting;
     }
 
     private void StartBowlingGame()
     {
+        sharedSession.ResetRound();
         SetBowlingVisible(true);
         if (gorillaMascot != null) { gorillaMascot.transform.position = gorillaRestPosition; gorillaMascot.transform.rotation = gorillaRestRotation; }
         for (int i = 0; i < bowlingFrames.Length; i++) bowlingFrames[i].Clear();
         bowlingFrame = 0; bowlingBall = 1; totalScore = 0; lastPins = 0;
         bowlingGameOver = false; nextNeedsFullRack = true;
         ResetRack();
-    }
-
-    private void StartMiniGame(int game)
-    {
-        Calibrate(); miniScore = 0; miniMisses = 0; balancePoints = 0; miniTime = 30f; lastMiniAction = -10f; karateLost = false;
-        gameCursor = new Vector2(.5f, .55f);
-        if (game == 0)
-        {
-            StartBowlingGame(); state = GameState.Aim;
-        }
-        else if (game == 1) StartBoxingGame();
-        else if (game == 2) state = GameState.BalanceGame;
-        else
-        {
-            karateItems.Clear(); karateLost = false; karateMotionHigh = false; miniTime = 35f;
-            karateSpawnAt = Time.time + .35f; karateFlashUntil = 0;
-            state = GameState.KarateGame;
-        }
-    }
-
-    private Vector2 NewTarget()
-    {
-        return new Vector2(UnityEngine.Random.Range(.2f, .8f), UnityEngine.Random.Range(.34f, .74f));
-    }
-
-    private void FinishMiniGame()
-    {
-        state = GameState.MiniResults; resultAt = Time.time + 3.5f;
     }
 
     private void SetBowlingVisible(bool visible)
@@ -1030,10 +965,10 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void StartBoxingGame()
     {
+        sharedSession.ResetRound();
         SetBowlingVisible(false);
         playerHealth = 100f; gorillaHealth = 100f; boxingRoundTime = 90f; getUpEnergy = 0f;
         boxingGorillaAction = 0; gorillaActionAt = Time.time + 1.8f; boxingMessageCode = 0; boxingMessageUntil = 0;
-        previousBoxingLeft = boxingLeftHand; previousBoxingRight = boxingRightHand;
         if (gorillaMascot != null)
         {
             gorillaMascot.transform.position = SceneManager.GetActiveScene().name == SceneNavigator.Boxing ? gorillaRestPosition : gorillaRestPosition + new Vector3(4.3f, 0f, -6.8f);
@@ -1069,9 +1004,9 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void TryBoxingPunch(bool right, float cameraSpeed, float phonePower)
     {
-        if (state != GameState.Boxing || Time.time < lastMiniAction + .34f || cameraSpeed < .72f) return;
-        if (right && phonePower < 215f) return;
-        lastMiniAction = Time.time;
+        if (state != GameState.Boxing || Time.time < lastPunchAt + .34f) return;
+        if(inputFrame==null||!sharedSession.TryAuthorize(right?JungleAction.PunchRight:JungleAction.PunchLeft,inputFrame.Revision))return;
+        lastPunchAt = Time.time;
         bool gorillaBlocking = boxingGorillaAction == 2;
         float baseDamage = right ? Mathf.Clamp((phonePower - 180f) / 28f, 5f, 20f) : Mathf.Clamp(cameraSpeed * 4.2f, 3f, 10f);
         float damage = gorillaBlocking ? baseDamage * .18f : baseDamage;
@@ -1090,8 +1025,19 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void Update()
     {
-        ReadPhone();
-        ReadPose();
+        if(!sharedSession.IsInputReady)
+        {
+            poseDetected=hasRaw=calibrated=false;power=boxingLeftSpeed=boxingRightSpeed=0;poseTrail.Clear();
+            return;
+        }
+        if(sharedSession.TryConsumeFrame(out var frame))
+        {
+            inputFrame=frame;
+            if(frame.Baseline){poseTrail.Clear();calibrated=confirmInitialized=false;}
+            power=frame.PhonePower;
+            ReadPose(frame);
+            ReadPhone(frame);
+        }
         AnimateGorilla();
         if (state == GameState.Aim)
         {
@@ -1112,93 +1058,37 @@ public sealed class PhoneMotionController : MonoBehaviour
             if (getUpEnergy >= 100f) { playerHealth = 45f; boxingGorillaAction = 0; gorillaActionAt = Time.time + 1.5f; state = GameState.Boxing; }
             else if (Time.time >= resultAt) state = GameState.BoxingOver;
         }
-        else if (state == GameState.TargetGame || state == GameState.BalanceGame || state == GameState.KarateGame)
-        {
-            miniTime -= Time.deltaTime;
-            if (state == GameState.BalanceGame)
-            {
-                balanceTarget = new Vector2(.5f + Mathf.Sin(Time.time * .83f) * .22f, .55f + Mathf.Cos(Time.time * 1.17f) * .15f);
-                if (Vector2.Distance(gameCursor, balanceTarget) < .115f) balancePoints += Time.deltaTime * 10f;
-                miniScore = Mathf.FloorToInt(balancePoints);
-            }
-            else if (state == GameState.KarateGame) UpdateKarateRow();
-            if (miniTime <= 0) FinishMiniGame();
-        }
-        else if (state == GameState.MiniResults && Time.time >= resultAt) state = GameState.Menu;
+
     }
 
-    private void UpdateKarateRow()
-    {
-        for (int i = karateItems.Count - 1; i >= 0; i--)
-        {
-            karateItems[i].x -= Time.deltaTime * .25f;
-            if (karateItems[i].x < -.1f) karateItems.RemoveAt(i);
-        }
-        if (Time.time >= karateSpawnAt)
-        {
-            karateItems.Add(new KarateItem { x = 1.08f, cactus = UnityEngine.Random.value < .32f });
-            karateSpawnAt = Time.time + UnityEngine.Random.Range(.82f, 1.08f);
-        }
-    }
+    private bool CameraActive => sharedSession.IsInputReady && poseDetected;
 
-    private void TryKarateHit()
+    private void ReadPose(JungleFusedFrame frame)
     {
-        if (Time.time - lastMiniAction < .48f) return;
-        float downwardTravel = 0f;
-        if (poseTrail.Count >= 2) downwardTravel = poseTrail[poseTrail.Count - 1].y - poseTrail[0].y;
-        if (CameraActive && downwardTravel < .035f) return;
-        lastMiniAction = Time.time;
-        int nearest = -1; float distance = .14f;
-        for (int i = 0; i < karateItems.Count; i++)
-        {
-            float candidate = Mathf.Abs(karateItems[i].x - .34f);
-            if (candidate < distance) { distance = candidate; nearest = i; }
-        }
-        if (nearest < 0) { karateFlashUntil = Time.time + .12f; return; }
-        if (karateItems[nearest].cactus)
-        {
-            karateLost = true; karateItems.Clear(); FinishMiniGame();
-        }
-        else
-        {
-            karateItems.RemoveAt(nearest); miniScore++; karateFlashUntil = Time.time + .18f;
-        }
-    }
-
-    private bool CameraActive => poseDetected && Time.unscaledTime - lastPoseAt < .45f;
-
-    private void ReadPose()
-    {
-        if (!sharedSession.TryConsumePose(out string json)) return;
-        PosePacket pose = JsonUtility.FromJson<PosePacket>(json);
+        var pose=frame.Pose;
         bool needsBothHands = sharedSession.HandMode == MotionSession.HandTrackingMode.Both;
         poseDetected = needsBothHands
             ? pose.leftDetected || pose.rightDetected
             : sharedSession.HandMode == MotionSession.HandTrackingMode.LeftOnly ? pose.leftDetected : pose.rightDetected || pose.detected;
         if (!poseDetected) return;
         float now = Time.unscaledTime;
-        float dt = poseSampleAt > 0 ? Mathf.Clamp(now - poseSampleAt, .008f, .12f) : .033f;
+
         if (pose.leftDetected || pose.rightDetected)
         {
             Vector2 newLeft = new Vector2(pose.leftWristX, pose.leftWristY);
             Vector2 newRight = new Vector2(pose.rightWristX, pose.rightWristY);
-            boxingLeftSpeed = Vector2.Distance(newLeft, previousBoxingLeft) / dt;
-            boxingRightSpeed = Vector2.Distance(newRight, previousBoxingRight) / dt;
+            boxingLeftSpeed = frame.Left.Speed;
+            boxingRightSpeed = frame.Right.Speed;
             if (pose.leftDetected) boxingLeftHand = Vector2.Lerp(boxingLeftHand, newLeft, .72f);
             if (pose.rightDetected) boxingRightHand = Vector2.Lerp(boxingRightHand, newRight, .72f);
-            previousBoxingLeft = newLeft; previousBoxingRight = newRight;
-            if (state == GameState.Boxing) TryBoxingPunch(false, boxingLeftSpeed, power);
+            if (state == GameState.Boxing && (frame.Actions&JungleAction.PunchLeft)!=0) TryBoxingPunch(false, boxingLeftSpeed, power);
         }
         float activeWristX = sharedSession.HandMode == MotionSession.HandTrackingMode.LeftOnly ? pose.leftWristX : pose.rightWristX;
         float activeWristY = sharedSession.HandMode == MotionSession.HandTrackingMode.LeftOnly ? pose.leftWristY : pose.rightWristY;
-        float measuredVelocity = (activeWristX - poseWristX) / dt;
-        poseWristVelocityX = Mathf.Lerp(poseWristVelocityX, measuredVelocity, .38f);
         poseWristX = activeWristX;
         poseBodyX = pose.bodyX;
-        poseSampleAt = now;
-        poseTrail.Add(new Vector3(activeWristX - pose.bodyX, activeWristY, now));
+        if(frame.NewPose)poseTrail.Add(new Vector3(activeWristX - pose.bodyX, activeWristY, now));
         while (poseTrail.Count > 0 && now - poseTrail[0].z > .65f) poseTrail.RemoveAt(0);
-        lastPoseAt = Time.unscaledTime;
         Vector2 hand = new Vector2(
             Mathf.Clamp01(.5f + (activeWristX - .5f) * 1.55f),
             Mathf.Clamp01(.5f + (activeWristY - .5f) * 1.35f));
@@ -1207,8 +1097,7 @@ public sealed class PhoneMotionController : MonoBehaviour
             menuCursor = Vector2.Lerp(menuCursor, hand, .72f);
             UpdateMenuSelection();
         }
-        else if (state == GameState.TargetGame || state == GameState.BalanceGame)
-            gameCursor = Vector2.Lerp(gameCursor, hand, .76f);
+
         else if (state == GameState.Aim)
             aimX = Mathf.Lerp(-3.05f, 3.05f, Mathf.InverseLerp(.08f, .92f, hand.x));
     }
@@ -1224,10 +1113,9 @@ public sealed class PhoneMotionController : MonoBehaviour
         }
     }
 
-    private void ReadPhone()
+    private void ReadPhone(JungleFusedFrame frame)
     {
-        if (!sharedSession.TryConsumeMotion(out string json)) return;
-        MotionPacket p = JsonUtility.FromJson<MotionPacket>(json); if (p.type != "motion") return;
+        var p=frame.Motion;
         lastPacketAt = Time.unscaledTime; latestGamma = p.gamma; latestBeta = p.beta;
         rawRotation = Quaternion.Euler(p.beta, p.alpha, -p.gamma) * Quaternion.Euler(0, 0, -p.screen); hasRaw = true;
         if (!calibrated) Calibrate();
@@ -1235,76 +1123,39 @@ public sealed class PhoneMotionController : MonoBehaviour
         {
             lastConfirm = p.confirm; lastRecenter = p.recenter; confirmInitialized = true;
             string activeScene = SceneManager.GetActiveScene().name;
-            if (activeScene == SceneNavigator.Bowling) state = GameState.Aim;
-            else if (activeScene != SceneNavigator.Boxing) state = GameState.Menu;
+            if (activeScene == SceneNavigator.Bowling && state == GameState.Connecting) state = GameState.Aim;
+            else if (activeScene != SceneNavigator.Boxing && state == GameState.Connecting) state = GameState.Menu;
         }
         if (p.recenter != lastRecenter) { lastRecenter = p.recenter; Calibrate(); menuCursor = new Vector2(.32f, .56f); }
         if (state == GameState.Menu)
         {
-            float dx = Mathf.DeltaAngle(centerGamma, p.gamma);
-            float dy = Mathf.DeltaAngle(centerBeta, p.beta);
-            Vector2 targetCursor = new Vector2(Mathf.Clamp01(.32f + dx / 75f), Mathf.Clamp01(.56f - dy / 65f));
-            if (!CameraActive) menuCursor = Vector2.Lerp(menuCursor, targetCursor, .28f);
             UpdateMenuSelection();
             if (p.confirm != lastConfirm)
             {
                 lastConfirm = p.confirm;
-                if (menuSelection < 2) StartMiniGame(menuSelection);
+                if (menuSelection < 2) SceneNavigator.Load(menuSelection==0?SceneNavigator.Bowling:SceneNavigator.Boxing);
                 else { Calibrate(); menuCursor = new Vector2(.32f, .56f); }
             }
             return;
         }
 
-        power = Mathf.Sqrt(p.rx * p.rx + p.ry * p.ry + p.rz * p.rz) + new Vector3(p.ax, p.ay, p.az).magnitude * 7f;
+        power=frame.PhonePower;
         if (state == GameState.BoxingKnockdown)
         {
-            if (power > 245f && boxingPowerReady) { getUpEnergy = Mathf.Min(100f, getUpEnergy + Mathf.Clamp((power - 210f) * .12f, 8f, 24f)); boxingPowerReady = false; }
-            if (power < 155f) boxingPowerReady = true;
+            if ((frame.Actions&JungleAction.Recover)!=0 && sharedSession.TryAuthorize(JungleAction.Recover,frame.Revision)) { getUpEnergy = Mathf.Min(100f, getUpEnergy + Mathf.Clamp((power - 210f) * .12f, 8f, 24f));  }
             return;
         }
         if (state == GameState.Boxing)
         {
-            if (power > 215f && boxingPowerReady) { TryBoxingPunch(true, boxingRightSpeed, power); boxingPowerReady = false; }
-            if (power < 150f) boxingPowerReady = true;
+            if ((frame.Actions&JungleAction.PunchRight)!=0) { TryBoxingPunch(true, boxingRightSpeed, power);  }
             return;
         }
 
-        if (state == GameState.TargetGame || state == GameState.BalanceGame)
-        {
-            float dx = Mathf.DeltaAngle(centerGamma, p.gamma);
-            float dy = Mathf.DeltaAngle(centerBeta, p.beta);
-            Vector2 desired = new Vector2(Mathf.Clamp01(.5f + dx / 70f), Mathf.Clamp01(.55f - dy / 60f));
-            if (!CameraActive) gameCursor = Vector2.Lerp(gameCursor, desired, .35f);
-            power = Mathf.Sqrt(p.rx * p.rx + p.ry * p.ry + p.rz * p.rz) + new Vector3(p.ax, p.ay, p.az).magnitude * 7f;
-            if (state == GameState.TargetGame && power > 285f && Time.time - lastMiniAction > .65f)
-            {
-                lastMiniAction = Time.time;
-                if (Vector2.Distance(gameCursor, targetPoint) < .14f) { miniScore++; targetPoint = NewTarget(); }
-                else miniMisses++;
-            }
-            return;
-        }
-        if (state == GameState.KarateGame)
-        {
-            power = Mathf.Sqrt(p.rx * p.rx + p.ry * p.ry + p.rz * p.rz) + new Vector3(p.ax, p.ay, p.az).magnitude * 7f;
-            if (power < 185f) karateMotionHigh = false;
-            if (power > 310f && !karateMotionHigh)
-            {
-                karateMotionHigh = true;
-                TryKarateHit();
-            }
-            return;
-        }
-        if (!CameraActive) aimX = Mathf.Clamp(Mathf.DeltaAngle(centerGamma, p.gamma) / 13f, -3.05f, 3.05f);
-        power = Mathf.Sqrt(p.rx * p.rx + p.ry * p.ry + p.rz * p.rz) + new Vector3(p.ax, p.ay, p.az).magnitude * 7f;
         if (state == GameState.Aim && Time.time >= aimReadyAt)
         {
-            if (power > 330f)
+            if ((frame.Actions&JungleAction.Throw)!=0)
             {
-                swingStartedAt = Time.time;
-                swingPeakPower = power;
                 swingStartGamma = centerGamma;
-                swingPending = false;
                 LaunchBall();
             }
         }
@@ -1318,6 +1169,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void LaunchBall()
     {
+        if(state!=GameState.Aim||inputFrame==null||!CameraActive||!sharedSession.TryAuthorize(JungleAction.Throw,inputFrame.Revision))return;
         state = GameState.Rolling; ballBody.isKinematic = false;
         ballPassedPinsAt = -1f;
         float speed = Mathf.Clamp(8.3f + (power - 330f) * .022f, 8.3f, 15.8f);
@@ -1336,7 +1188,7 @@ public sealed class PhoneMotionController : MonoBehaviour
             float phoneTurn = Mathf.DeltaAngle(swingStartGamma, latestGamma) / 55f;
             direction = Mathf.Clamp(trajectoryX * 6.2f + handSide * .55f + phoneTurn * .3f, -1f, 1f);
         }
-        else direction = Mathf.Clamp(Mathf.DeltaAngle(centerGamma, latestGamma) / 28f, -1f, 1f);
+        else return;
         lastLaunchDirection = direction;
         ballBody.linearVelocity = new Vector3(direction * 3.1f, 0, speed);
         ballBody.angularVelocity = new Vector3(speed * 1.4f, 0, -direction * 7.5f);
@@ -1602,8 +1454,6 @@ public sealed class PhoneMotionController : MonoBehaviour
         accentTexture ??= Solid(new Color(.05f, .72f, .92f, 1f));
         selectedTexture ??= Solid(new Color(1f, .78f, .08f, .96f));
         optionTexture ??= Solid(new Color(.08f, .19f, .13f, .96f));
-        coconutTexture ??= Solid(new Color(.34f, .15f, .055f, 1f));
-        cactusTexture ??= Solid(new Color(.08f, .62f, .22f, 1f));
         darkTexture ??= Solid(new Color(.035f, .025f, .018f, 1f));
         boxingBlueTexture ??= Solid(new Color(.12f, .55f, 1f, 1f));
         boxingRedTexture ??= Solid(new Color(1f, .25f, .12f, 1f));
@@ -1663,13 +1513,6 @@ public sealed class PhoneMotionController : MonoBehaviour
         {
             DrawBoxing(); DrawCameraStatus(); DrawLeafFrame(); return;
         }
-        if (state == GameState.TargetGame || state == GameState.BalanceGame || state == GameState.KarateGame || state == GameState.MiniResults)
-        {
-            DrawMiniGame();
-            DrawCameraStatus();
-            DrawLeafFrame();
-            return;
-        }
         DrawBowlingHud();
         DrawBowlingDashboard();
         DrawCameraStatus();
@@ -1699,7 +1542,7 @@ public sealed class PhoneMotionController : MonoBehaviour
         GUI.Label(new Rect(hud.x + 22 * scale, hud.y + 40 * scale, hud.width * .44f, 43 * scale), $"FRAME {Mathf.Min(bowlingFrame + 1, 10)}  ·  BOLA {bowlingBall}", frame);
         string shotLabel = lastLaunchDirection < -.18f ? "DIAGONAL IZQUIERDA" : lastLaunchDirection > .18f ? "DIAGONAL DERECHA" : "TIRO RECTO";
         string message = bowlingGameOver ? $"PARTIDA TERMINADA · TOTAL {GetDisplayedBowlingScore()}" : state == GameState.Aim
-            ? (swingPending ? "Leyendo trayectoria..." : "Coloca la mano · Swing fuerte · Traza la diagonal")
+            ? "Coloca la mano · Swing fuerte · Traza la diagonal"
             : state == GameState.Rolling ? $"¡Bola en juego! · {shotLabel}" : $"Derribaste {lastPins} pinos";
         GUI.Label(new Rect(hud.x + 22 * scale, hud.y + 80 * scale, hud.width - 44 * scale, 28 * scale), message, messageStyle);
 
@@ -1886,80 +1729,6 @@ public sealed class PhoneMotionController : MonoBehaviour
             GUI.Label(new Rect(row.x + row.width * .62f, row.y, row.width * .32f, row.height), scores[i] >= 0 ? scores[i].ToString() : "", frameScore);
         }
         GUI.Label(new Rect(x + 16 * scale, y + height - 66 * scale, width - 32 * scale, 45 * scale), $"TOTAL  {GetDisplayedBowlingScore()}", dashHeadingStyle);
-    }
-
-    private void DrawMiniGame()
-    {
-        float w = Screen.width, h = Screen.height;
-        GUI.DrawTexture(new Rect(w * .19f, 18, w * .62f, h * .16f), panelTexture);
-        GUIStyle miniTitle = new GUIStyle(titleStyle) { fontSize = Mathf.RoundToInt(h * .042f) };
-        GUIStyle scoreStyle = new GUIStyle(bigStyle) { fontSize = Mathf.RoundToInt(h * .038f) };
-        if (state == GameState.MiniResults)
-        {
-            GUI.DrawTexture(new Rect(w * .22f, h * .32f, w * .56f, h * .34f), panelTexture);
-            GUI.Label(new Rect(w * .24f, h * .36f, w * .52f, h * .10f), karateLost ? "¡AY! GOLPEASTE UN CACTUS" : "¡DESAFÍO TERMINADO!", miniTitle);
-            GUI.Label(new Rect(w * .24f, h * .47f, w * .52f, h * .10f), $"PUNTOS  {miniScore}", scoreStyle);
-            GUI.Label(new Rect(w * .24f, h * .56f, w * .52f, h * .07f), "VOLVIENDO AL MENÚ…", bodyStyle);
-            return;
-        }
-        string title = state == GameState.TargetGame ? "GOLPEA TÓTEMS" : state == GameState.BalanceGame ? "EQUILIBRIO SELVA" : "KARATE COCO";
-        GUI.Label(new Rect(w * .21f, 24, w * .58f, h * .07f), title, miniTitle);
-        GUI.Label(new Rect(w * .21f, h * .085f, w * .58f, h * .07f), $"PUNTOS {miniScore}     TIEMPO {Mathf.CeilToInt(miniTime)}", scoreStyle);
-        if (state == GameState.TargetGame)
-        {
-            float tx = targetPoint.x * w, ty = targetPoint.y * h;
-            float size = Mathf.Min(w, h) * .15f;
-            GUI.DrawTexture(new Rect(tx - size * .58f, ty - size * .58f, size * 1.16f, size * 1.16f), selectedTexture);
-            GUI.DrawTexture(new Rect(tx - size * .38f, ty - size * .38f, size * .76f, size * .76f), optionTexture);
-            GUI.DrawTexture(new Rect(tx - size * .16f, ty - size * .16f, size * .32f, size * .32f), accentTexture);
-            GUI.Label(new Rect(w * .26f, h * .82f, w * .48f, h * .08f), "APUNTA AL TÓTEM Y HAZ UN SWING", bodyStyle);
-        }
-        else if (state == GameState.BalanceGame)
-        {
-            float bx = balanceTarget.x * w, by = balanceTarget.y * h;
-            float size = Mathf.Min(w, h) * .22f;
-            GUI.DrawTexture(new Rect(bx - size / 2, by - size / 2, size, size), accentTexture);
-            GUI.DrawTexture(new Rect(bx - size * .38f, by - size * .38f, size * .76f, size * .76f), selectedTexture);
-            GUI.Label(new Rect(w * .22f, h * .82f, w * .56f, h * .08f), "MANTÉN LA MIRA DENTRO DE LA ZONA", bodyStyle);
-        }
-        else DrawKarateRow(w, h);
-        if (state != GameState.KarateGame) DrawPointer(gameCursor.x * w, gameCursor.y * h);
-        if (GUI.Button(new Rect(w * .82f, h * .04f, w * .14f, h * .07f), "MENÚ", buttonStyle)) state = GameState.Menu;
-    }
-
-    private void DrawKarateRow(float w, float h)
-    {
-        float laneY = h * .58f;
-        GUI.DrawTexture(new Rect(0, laneY - h * .09f, w, h * .19f), panelTexture);
-        GUI.DrawTexture(new Rect(w * .325f, laneY - h * .14f, w * .03f, h * .28f), Time.time < karateFlashUntil ? selectedTexture : accentTexture);
-        GUIStyle zone = new GUIStyle(bodyStyle) { fontSize = Mathf.RoundToInt(h * .022f), normal = { textColor = new Color(1f, .85f, .2f) } };
-        GUI.Label(new Rect(w * .25f, laneY + h * .105f, w * .18f, h * .06f), "ZONA DE GOLPE", zone);
-        float size = Mathf.Min(w, h) * .15f;
-        foreach (KarateItem item in karateItems)
-        {
-            float x = item.x * w;
-            if (item.cactus) DrawCactus(x, laneY, size);
-            else DrawCoconut(x, laneY, size);
-        }
-        GUI.Label(new Rect(w * .19f, h * .80f, w * .62f, h * .09f), "GOLPEA HACIA ABAJO SOLO CUANDO PASE UN COCO", bodyStyle);
-    }
-
-    private void DrawCoconut(float x, float y, float size)
-    {
-        GUI.DrawTexture(new Rect(x - size * .48f, y - size * .48f, size * .96f, size * .96f), coconutTexture);
-        float eye = size * .12f;
-        GUI.DrawTexture(new Rect(x - size * .22f, y - size * .13f, eye, eye), darkTexture);
-        GUI.DrawTexture(new Rect(x + size * .10f, y - size * .13f, eye, eye), darkTexture);
-        GUI.DrawTexture(new Rect(x - eye * .5f, y + size * .13f, eye, eye), darkTexture);
-    }
-
-    private void DrawCactus(float x, float y, float size)
-    {
-        GUI.DrawTexture(new Rect(x - size * .18f, y - size * .52f, size * .36f, size * 1.04f), cactusTexture);
-        GUI.DrawTexture(new Rect(x - size * .42f, y - size * .12f, size * .30f, size * .20f), cactusTexture);
-        GUI.DrawTexture(new Rect(x + size * .12f, y - size * .30f, size * .30f, size * .20f), cactusTexture);
-        GUI.DrawTexture(new Rect(x - size * .42f, y - size * .30f, size * .13f, size * .25f), cactusTexture);
-        GUI.DrawTexture(new Rect(x + size * .29f, y - size * .46f, size * .13f, size * .27f), cactusTexture);
     }
 
     private void DrawPointer(float x, float y)
