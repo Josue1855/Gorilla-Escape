@@ -1,5 +1,7 @@
 # Progreso de desarrollo
 
+> Actualización posterior: backend de jugadores y laboratorio PWA del fork implementados y probados en ramas para revisión. [Estado vigente](00-product/DEVELOPMENT_STATUS.md), [evidencias](04-testing/PWA_TEST_LAB.md) y [decisiones](00-product/ARCHITECTURE_DECISIONS.md). Los checkpoints fechados siguientes conservan su contexto histórico; no describen la ausencia actual de SQLite.
+
 > Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
 
 > **Estado vigente — 2026-10-14:** T017/T018/F04 CLOSED/completed/Done bajo DEC-027/028; T019/T020/F05/E0 OPEN. Phase0 IN PROGRESS; Phase1 NOT STARTED. [Final Exit Report](PHASE0_FINAL_EXIT_REPORT.md). Las entradas posteriores conservan checkpoints históricos fechados; no sustituyen este estado.
