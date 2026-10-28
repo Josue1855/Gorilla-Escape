@@ -42,7 +42,7 @@ public final class PublicIngress implements AutoCloseable {
     public void publicOrigin(URI origin){publicOrigin=origin;}
     public static boolean allowed(String method,String rawPath){
         if(rawPath==null||rawPath.length()>180||rawPath.contains("%")||rawPath.contains("..")||rawPath.contains("\\"))return false;
-        return "POST".equals(method)?SIGNAL.contains(rawPath):"GET".equals(method)&&(STATIC.contains(rawPath)||rawPath.matches("/assets/[A-Za-z0-9_-]{1,100}\\.(js|css)"));
+        return "POST".equals(method)?SIGNAL.contains(rawPath):"GET".equals(method)&&(STATIC.contains(rawPath)||rawPath.matches("/assets/[A-Za-z0-9_-]{1,100}\\.(js|css|ttf)"));
     }
     private synchronized boolean budget(){long now=System.nanoTime();if(now-window>=1_000_000_000L){window=now;requests=0;}return ++requests<=60;}
     private void handle(HttpExchange x)throws IOException{
@@ -66,7 +66,7 @@ public final class PublicIngress implements AutoCloseable {
                 try(var in=PublicIngress.class.getClassLoader().getResourceAsStream(resource)){
                     if(in==null){reply(x,404,Map.of("error","NOT_FOUND"));return;}
                     byte[] data=in.readNBytes(2_000_001);if(data.length>2_000_000){reply(x,404,Map.of("error","NOT_FOUND"));return;}
-                    h.set("Content-Type",path.endsWith(".js")?"text/javascript; charset=utf-8":path.endsWith(".css")?"text/css; charset=utf-8":path.endsWith(".png")?"image/png":path.endsWith(".webmanifest")?"application/manifest+json":"text/html; charset=utf-8");
+                    h.set("Content-Type",path.endsWith(".ttf")?"font/ttf":path.endsWith(".js")?"text/javascript; charset=utf-8":path.endsWith(".css")?"text/css; charset=utf-8":path.endsWith(".png")?"image/png":path.endsWith(".webmanifest")?"application/manifest+json":"text/html; charset=utf-8");
                     x.sendResponseHeaders(200,data.length);x.getResponseBody().write(data);
                 }
             }

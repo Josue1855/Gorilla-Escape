@@ -82,7 +82,7 @@ public sealed class RhythmDrumsController : MonoBehaviour
     {
         JungleUITheme.Ensure();
         dark??=Solid(new Color(.015f,.025f,.04f,.94f));cyan??=Solid(new Color(.05f,.7f,1f));orange??=Solid(new Color(1f,.32f,.06f));white??=Solid(Color.white);green??=Solid(new Color(.15f,.9f,.3f));red??=Solid(new Color(.9f,.08f,.06f));
-        float w=Screen.width,h=Screen.height;GUIStyle title=new GUIStyle(GUI.skin.label){fontSize=Mathf.RoundToInt(h*.038f),fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,normal={textColor=Color.white}};
+        float w=Screen.width,h=Screen.height;GUIStyle title=new GUIStyle(JungleUITheme.Title){fontSize=Mathf.RoundToInt(h*.038f),normal={textColor=Color.white}};
         JungleUITheme.DrawPanel(new Rect(w*.16f,h*.02f,w*.68f,h*.13f));GUI.Label(new Rect(w*.18f,h*.025f,w*.64f,h*.055f),"JUNGLE DRUMS",title);GUI.Label(new Rect(w*.19f,h*.08f,w*.62f,h*.05f),$"PUNTOS {score}    COMBO {combo}    MEJOR {bestCombo}    FALLOS {misses}",title);
         DrawLane(true,w*.25f,w,h,title);DrawLane(false,w*.62f,w,h,title);
         if(finished){GUI.DrawTexture(new Rect(w*.28f,h*.31f,w*.44f,h*.25f),dark);GUI.Label(new Rect(w*.30f,h*.35f,w*.40f,h*.08f),$"CANCIÓN TERMINADA · {score}",title);if(GUI.Button(new Rect(w*.39f,h*.47f,w*.22f,h*.06f),"REPETIR"))SceneNavigator.Load(SceneNavigator.Drums);}

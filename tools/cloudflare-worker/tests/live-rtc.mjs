@@ -9,6 +9,8 @@ const browser = await chromium.launch({ executablePath: process.env.GORILLA_TEST
 try {
  const page = await browser.newPage(); const response = await page.goto(url, { waitUntil: 'load', timeout: 30000 });
  if (response.status() !== 200) throw Error('PUBLIC_PAGE');
+ const fonts=await page.evaluate(async()=>Promise.all(['JungleTitle','JungleText'].map(async family=>(await document.fonts.load('16px '+family)).length)));
+ if(fonts.some(count=>count===0))throw Error('PUBLIC_FONT_UNAVAILABLE');
  const result = await page.evaluate(async ({ source, url }) => {
   const { MobileClient } = await import('data:text/javascript;base64,' + btoa(source));
   const client = new MobileClient({ source:'synthetic' });

@@ -44,7 +44,7 @@ export default {
     const target = lookup.ok ? (await lookup.json()).target : null;
     if (!target || !targetPattern.test(target)) return new Response('Sala no encontrada o expirada. Escanea el QR vigente.', { status: 404 });
     const path = '/' + parts.join('/') + (parts.length && url.pathname.endsWith('/') ? '/' : '');
-    const allowed = request.method === 'GET' && (['/', '/index.html', '/manifest.webmanifest', '/sw.js', '/icons/icon-192.png', '/icons/icon-512.png'].includes(path) || /^\/assets\/[A-Za-z0-9_-]{1,100}\.(js|css)$/.test(path)) || request.method === 'POST' && ['/mobile/join', '/mobile/reconnect', '/mobile/disconnect', '/mobile/profile', '/mobile/name'].includes(path);
+    const allowed = request.method === 'GET' && (['/', '/index.html', '/manifest.webmanifest', '/sw.js', '/icons/icon-192.png', '/icons/icon-512.png'].includes(path) || /^\/assets\/[A-Za-z0-9_-]{1,100}\.(js|css|ttf)$/.test(path)) || request.method === 'POST' && ['/mobile/join', '/mobile/reconnect', '/mobile/disconnect', '/mobile/profile', '/mobile/name'].includes(path);
     if (!allowed || url.search) return new Response('No encontrado.', { status: 404 });
     try {
       const headers = new Headers(request.headers);

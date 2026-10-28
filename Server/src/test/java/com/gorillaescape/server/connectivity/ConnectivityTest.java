@@ -127,6 +127,12 @@ class ConnectivityTest {
         assertEquals("explicit-secret",ConnectivityService.registrationSecret("explicit-secret",sandbox.toString(),home.toString()));
     }
 
+    @Test void publicIngressAllowsBundledFontsOnlyUnderAssets(){
+        assertTrue(PublicIngress.allowed("GET","/assets/LilitaOne-a1.ttf"));
+        assertFalse(PublicIngress.allowed("GET","/private/secret.ttf"));
+        assertFalse(PublicIngress.allowed("POST","/assets/LilitaOne-a1.ttf"));
+    }
+
     @Test void precomputedFirstQrIsOnlyHandedOutOnceAfterReady()throws Exception{
         var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
         try(var b=new ConnectionBootstrap(ConnectionBootstrap.Mode.CABIN,URI.create("https://192.168.1.2:8443/"),new Fake(),1000)){

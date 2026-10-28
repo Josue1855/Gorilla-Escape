@@ -15,7 +15,7 @@ static class GameplayChecks
         public readonly JungleGameplayInput Game=new JungleGameplayInput();
         public long At,Sequence,CameraSequence;
         public Lab(JungleGame game) {Fusion=new InputFusion(Phones,new FusionSettings());Fusion.Association.Ready(1);Game.Select(game);}
-        public void Step(long at,float angular=0,float rightY=.3f,float leftY=.3f,bool right=true,bool left=true,long epoch=1,bool partial=false,float gamma=30,float screen=0)
+        public void Step(long at,float angular=0,float rightY=.3f,float leftY=.3f,bool right=true,bool left=true,long epoch=1,bool partial=false,float gamma=30,float screen=0,int subject=1)
         {
             At=at+2;
             var p=Checks.Phone(++Sequence);p.serverReceiveTimestamp=at;p.connectionEpoch=epoch;
@@ -25,6 +25,7 @@ static class GameplayChecks
             if(partial)p.orientation.hasBeta=false;
             Require(Phones.Accept(p));Fusion.ObservePhone(p);
             var c=Checks.Camera(++CameraSequence);c.captureTimestamp=at;c.processTimestamp=at+1;
+            c.subjects[0].subjectId=subject;
             c.subjects[0].landmarks[4].y=leftY;c.subjects[0].landmarks[4].visible=left;
             c.subjects[0].landmarks[5].y=rightY;c.subjects[0].landmarks[5].visible=right;
             Require(Fusion.ObserveCamera(c,At));if(Game.Game==JungleGame.LogBalance)Game.UpdatePhone(p,At);else Game.Update(Fusion.EvaluateLatest(1,At),At);
@@ -42,6 +43,15 @@ static class GameplayChecks
         yield return ("technical pause freezes and restores the original time scale",()=>{var p=new JunglePauseLease();Require(p.Apply(true,.5f)==0&&p.Owned);Require(p.Apply(true,0)==0);Require(p.Apply(false,0)==.5f&&!p.Owned);});
         yield return ("technical pause never resumes another system's existing pause",()=>{var p=new JunglePauseLease();Require(p.Apply(true,0)==0&&!p.Owned);Require(p.Apply(false,0)==0);});
         yield return ("leaving a game releases only its own pause",()=>{var p=new JunglePauseLease();p.Apply(true,1);Require(p.Apply(false,0)==1);p.Apply(true,1);Require(p.Apply(false,.25f)==.25f);});
+        yield return ("manual camera reacquisition requires fresh frames and never replays an action",()=>{
+            var l=new Lab(JungleGame.CoconutSlice);l.Warm();l.Step(1150,0,.4f,.4f);var old=l.Game.Current;Require(old!=null);
+            l.Lost();l.Step(1200,0,.4f,.4f,subject:2);l.Step(1250,0,.4f,.4f,subject:2);
+            Require(!l.Game.Ready&&l.Fusion.Association.SubjectId==1&&!l.Game.Authorize(JungleAction.SliceRight,old.Revision,l.At));
+            l.Fusion.Association.Ready(1);l.Game.Select(l.Game.Game);
+            l.Step(1300,0,.6f,.6f,subject:2);Require(!l.Game.Ready);
+            l.Step(1350,0,.6f,.6f,subject:2);Require(l.Game.Ready&&l.Game.Current.Baseline&&l.Game.Current.Actions==JungleAction.None);
+            Require(!l.Game.Authorize(JungleAction.SliceRight,old.Revision,l.At));
+        });
         yield return ("all seven gameplay scenes have an explicit fusion profile",()=>{
             var scenes=new[]{"BananaBowling","GorillaBoxing","JungleBaseball","JungleDrums","CoconutSlice","WhackAMole","LogBalance"};
             foreach(var s in scenes)Require(JungleGameplayInput.ForScene(s)!=JungleGame.None);

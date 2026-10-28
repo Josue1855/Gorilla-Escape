@@ -1444,7 +1444,8 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void PrepareStyles()
     {
-        hudFont ??= Font.CreateDynamicFontFromOSFont(new[] { "Segoe UI", "Arial" }, 32);
+        JungleUITheme.Ensure();
+        hudFont ??= JungleUITheme.TextFont ?? Font.CreateDynamicFontFromOSFont(new[] { "Segoe UI", "Arial" }, 32);
         // Las referencias sobreviven a una recompilación mientras Play está activo.
         // Descarta las texturas antiguas para que el nuevo HUD se vea de inmediato.
         if (bowlingHudTexture != null && bowlingHudTexture.width < 192) { Destroy(bowlingHudTexture); bowlingHudTexture = null; }
@@ -1462,10 +1463,10 @@ public sealed class PhoneMotionController : MonoBehaviour
         bowlingCardTexture ??= Rounded(144, 36, new Color(.035f, .15f, .13f, .96f), new Color(.035f, .15f, .13f, .96f));
         bowlingButtonTexture ??= Rounded(128, 32, new Color(.07f, .67f, .84f, 1f), new Color(.07f, .67f, .84f, 1f));
         bowlingButtonHoverTexture ??= Rounded(128, 32, new Color(.16f, .84f, .94f, 1f), new Color(.16f, .84f, .94f, 1f));
-        titleStyle ??= new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = 32, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(.45f, .94f, 1f) } };
-        bigStyle ??= new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = 38, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
-        bodyStyle ??= new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = 21, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = new Color(.86f, .9f, 1f) } };
-        buttonStyle ??= new GUIStyle(GUI.skin.button) { font = hudFont, fontSize = 22, fontStyle = FontStyle.Bold, normal = { background = accentTexture, textColor = new Color(.01f, .06f, .1f) } };
+        titleStyle ??= new GUIStyle(GUI.skin.label) { font = JungleUITheme.TitleFont ?? hudFont, fontSize = 32, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(.45f, .94f, 1f) } };
+        bigStyle ??= new GUIStyle(GUI.skin.label) { font = JungleUITheme.TitleFont ?? hudFont, fontSize = 38, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
+        bodyStyle ??= new GUIStyle(GUI.skin.label) { font = JungleUITheme.TextFont ?? hudFont, fontSize = 21, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = new Color(.86f, .9f, 1f) } };
+        buttonStyle ??= new GUIStyle(GUI.skin.button) { font = JungleUITheme.TextFont ?? hudFont, fontSize = 22, fontStyle = FontStyle.Bold, normal = { background = accentTexture, textColor = new Color(.01f, .06f, .1f) } };
     }
 
     private Texture2D Rounded(int size, int radius, Color fill, Color border)
@@ -1558,14 +1559,15 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private GUIStyle CrispLabel(int size, Color color, FontStyle weight, TextAnchor alignment)
     {
-        var style = new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = Mathf.Max(15, size), fontStyle = weight, alignment = alignment, clipping = TextClipping.Clip };
+        var font = size >= 28 ? (JungleUITheme.TitleFont ?? hudFont) : (JungleUITheme.TextFont ?? hudFont);
+        var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = Mathf.Max(15, size), fontStyle = weight, alignment = alignment, clipping = TextClipping.Clip };
         style.normal.textColor = color;
         return style;
     }
 
     private GUIStyle CrispButton(int size)
     {
-        var style = new GUIStyle(GUI.skin.button) { font = hudFont, fontSize = Mathf.Max(14, size), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, border = new RectOffset(32, 32, 32, 32) };
+        var style = new GUIStyle(GUI.skin.button) { font = JungleUITheme.TextFont ?? hudFont, fontSize = Mathf.Max(14, size), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, border = new RectOffset(32, 32, 32, 32) };
         style.normal.background = bowlingButtonTexture;
         style.hover.background = bowlingButtonHoverTexture;
         style.active.background = bowlingButtonHoverTexture;
@@ -1748,7 +1750,11 @@ public sealed class PhoneMotionController : MonoBehaviour
         status.normal.textColor = CameraActive ? new Color(.3f, 1f, .45f) : new Color(1f, .72f, .22f);
         Rect rect = new Rect(Screen.width - 292 * scale - 24 * scale, Screen.height - 55 * scale, 292 * scale, 38 * scale);
         GUI.Box(rect, GUIContent.none, RoundedStyle(bowlingHudTexture, 18));
-        GUI.Label(rect, CameraActive ? "● CÁMARA · MANO DETECTADA" : "○ CÁMARA · ESPERANDO", status);
+        string cameraLabel = CameraActive ? "● CÁMARA · MANO DETECTADA"
+            : !sharedSession.CameraConnected ? "○ CÁMARA · SIN SEÑAL"
+            : !sharedSession.PhoneConnected ? "○ CÁMARA LISTA · ESPERA CELULAR"
+            : "○ CÁMARA LISTA · CONTROL EN ESPERA";
+        GUI.Label(rect, cameraLabel, status);
     }
 
     private void DrawLeafFrame()

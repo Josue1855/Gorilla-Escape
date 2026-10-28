@@ -4,6 +4,9 @@ public static class JungleUITheme
 {
     private static bool ready;
     private static Texture2D deepGreen, jungleGreen, wood, woodLight, gold, turquoise, shadow, leafLeft, leafRight, leafBottom, gorilla;
+    private static Font titleFont, textFont;
+    public static Font TitleFont => titleFont != null ? titleFont : (titleFont = Resources.Load<Font>("Brand/LilitaOne"));
+    public static Font TextFont => textFont != null ? textFont : (textFont = Resources.Load<Font>("Brand/NunitoSans"));
     public static GUIStyle Title { get; private set; }
     public static GUIStyle Heading { get; private set; }
     public static GUIStyle Body { get; private set; }
@@ -22,10 +25,10 @@ public static class JungleUITheme
         wood=Solid(new Color(.20f,.095f,.035f,.97f));woodLight=Solid(new Color(.36f,.18f,.055f,1f));
         gold=Solid(new Color(1f,.76f,.08f,1f));turquoise=Solid(new Color(.04f,.76f,.82f,1f));shadow=Solid(new Color(.005f,.012f,.01f,.72f));
         leafLeft=Resources.Load<Texture2D>("Jungle/hojas_superior_izquierda");leafRight=Resources.Load<Texture2D>("Jungle/hoja_superior_derecha");leafBottom=Resources.Load<Texture2D>("Jungle/hojas_inferiores");gorilla=Resources.Load<Texture2D>("Jungle/gorila_menu");
-        Title=new GUIStyle(GUI.skin.label){fontSize=54,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,normal={textColor=new Color(1f,.82f,.16f)}};
+        Title=new GUIStyle(GUI.skin.label){font=TitleFont,fontSize=54,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,normal={textColor=new Color(1f,.82f,.16f)}};
         Heading=new GUIStyle(Title){fontSize=34,normal={textColor=Color.white}};
-        Body=new GUIStyle(GUI.skin.label){fontSize=23,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,wordWrap=true,normal={textColor=new Color(.92f,.97f,.88f)}};
-        Button=new GUIStyle(GUI.skin.button){fontSize=26,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,border=new RectOffset(8,8,8,8),normal={background=woodLight,textColor=Color.white},hover={background=turquoise,textColor=new Color(.015f,.08f,.055f)},active={background=gold,textColor=new Color(.12f,.06f,.01f)}};
+        Body=new GUIStyle(GUI.skin.label){font=TextFont,fontSize=23,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,wordWrap=true,normal={textColor=new Color(.92f,.97f,.88f)}};
+        Button=new GUIStyle(GUI.skin.button){font=TextFont,fontSize=26,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,border=new RectOffset(8,8,8,8),normal={background=woodLight,textColor=Color.white},hover={background=turquoise,textColor=new Color(.015f,.08f,.055f)},active={background=gold,textColor=new Color(.12f,.06f,.01f)}};
         ButtonSelected=new GUIStyle(Button);ButtonSelected.normal.background=gold;ButtonSelected.normal.textColor=new Color(.12f,.06f,.01f);
     }
 

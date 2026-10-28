@@ -43,6 +43,7 @@ public sealed class CoconutSliceController : MonoBehaviour
     private bool distractorIsFall;
     private bool hasSpawnedDistractor, previousDistractorWasFall;
     private bool rareGorillaSpawned, lostByGorilla;
+    private bool lostByLives;
     private float rareGorillaAt;
     private int repeatedDistractorType;
     private Texture2D dark, gold, turquoise, orange, red, white;
@@ -296,6 +297,8 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     private void Update()
     {
+        // End the round before consuming a new input frame or spawning a wave.
+        EndRoundIfExpired();
         session.PresentGame(state==GameState.Intro?"Ready":state==GameState.Countdown?"Countdown":state==GameState.Playing?"Playing":"Finished",score);
         if(!session.IsInputReady){leftSpeed=rightSpeed=0;return;}
         if(session.TryConsumeFrame(out var frame))ReadPose(frame);
@@ -305,7 +308,6 @@ public sealed class CoconutSliceController : MonoBehaviour
         else if (state == GameState.Playing)
         {
             if (Time.time >= nextSpawn) SpawnWave();
-            if (Time.time >= roundEndsAt) StartFinale();
         }
         else if (state == GameState.Finale && Time.time - stateStartedAt >= 3.4f)
         {
@@ -316,6 +318,11 @@ public sealed class CoconutSliceController : MonoBehaviour
 
         UpdateCoconuts();
         UpdateTemporaryPieces();
+    }
+
+    private void EndRoundIfExpired()
+    {
+        if (state == GameState.Playing && Time.time >= roundEndsAt) StartFinale();
     }
 
     private void ReadPose(JungleFusedFrame frame)
@@ -449,6 +456,7 @@ public sealed class CoconutSliceController : MonoBehaviour
             {
                 state = GameState.Finale;
                 stateStartedAt = Time.time;
+                lostByLives = true;
             }
         }
         else
@@ -456,11 +464,16 @@ public sealed class CoconutSliceController : MonoBehaviour
             sliced++;
             combo++;
             bestCombo = Mathf.Max(bestCombo, combo);
-            int gained = 100 + Mathf.Min(combo, 20) * 15;
+            int gained = FruitPointsForCombo(combo);
             score += gained;
             callout = combo >= 10 ? "¡GORILA IMPARABLE!  x" + combo : combo >= 5 ? "¡COMBO x" + combo + "!" : "+" + gained;
             calloutUntil = Time.time + .65f;
         }
+    }
+
+    private static int FruitPointsForCombo(int currentCombo)
+    {
+        return 100 + Mathf.Clamp(currentCombo, 0, 20) * 15;
     }
 
     private void ShowHitGorilla(Vector3 position, Vector3 velocity, Vector2 direction, float speed)
@@ -565,7 +578,11 @@ public sealed class CoconutSliceController : MonoBehaviour
         score = combo = bestCombo = missed = sliced = 0;
         lives = 3;
         lostByGorilla = false;
+        lostByLives = false;
         rareGorillaSpawned = false;
+        callout = "";
+        calloutUntil = 0f;
+        lastLeftSliceAt = lastRightSliceAt = 0f;
         state = GameState.Countdown;
         stateStartedAt = Time.time;
     }
@@ -615,9 +632,9 @@ public sealed class CoconutSliceController : MonoBehaviour
         orange = Solid(new Color(1f, .34f, .08f, .95f));
         red = Solid(new Color(.90f, .08f, .04f, .95f));
         white = Solid(new Color(1f, 1f, 1f, .92f));
-        titleStyle = new GUIStyle(GUI.skin.label) { fontSize = Mathf.RoundToInt(Screen.height * .052f), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, .82f, .15f) } };
+        titleStyle = new GUIStyle(JungleUITheme.Title) { fontSize = Mathf.RoundToInt(Screen.height * .052f), normal = { textColor = new Color(1f, .82f, .15f) } };
         bigStyle = new GUIStyle(titleStyle) { fontSize = Mathf.RoundToInt(Screen.height * .105f), normal = { textColor = Color.white } };
-        bodyStyle = new GUIStyle(GUI.skin.label) { fontSize = Mathf.RoundToInt(Screen.height * .029f), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = Color.white } };
+        bodyStyle = new GUIStyle(JungleUITheme.Body) { fontSize = Mathf.RoundToInt(Screen.height * .029f), normal = { textColor = Color.white } };
         scoreStyle = new GUIStyle(bodyStyle) { fontSize = Mathf.RoundToInt(Screen.height * .034f) };
     }
 
@@ -697,9 +714,10 @@ public sealed class CoconutSliceController : MonoBehaviour
         float t = Time.time - stateStartedAt;
         float scale = 1f + Mathf.Sin(t * 8f) * Mathf.Exp(-t * 1.5f) * .16f;
         Rect box = new Rect(w * (.50f - .22f * scale), h * .32f, w * .44f * scale, h * .22f * scale);
-        GUI.DrawTexture(box, lostByGorilla ? red : gold);
-        GUI.Label(box, lostByGorilla ? "¡PERDISTE!" : "¡TIEMPO!", bigStyle);
-        GUI.Label(new Rect(w * .27f, h * .57f, w * .46f, h * .07f), lostByGorilla ? "CORTASTE AL GORILA POR ACCIDENTE" : "EL GORILA CUENTA TUS COCOS...", bodyStyle);
+        bool lost = lostByGorilla || lostByLives;
+        GUI.DrawTexture(box, lost ? red : gold);
+        GUI.Label(box, lost ? "¡PERDISTE!" : "¡TIEMPO!", bigStyle);
+        GUI.Label(new Rect(w * .27f, h * .57f, w * .46f, h * .07f), lostByGorilla ? "CORTASTE AL GORILA POR ACCIDENTE" : lostByLives ? "TE QUEDASTE SIN VIDAS" : "EL GORILA CUENTA TUS COCOS...", bodyStyle);
     }
 
     private void DrawResults(float w, float h)

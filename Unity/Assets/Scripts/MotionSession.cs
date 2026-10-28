@@ -1,5 +1,6 @@
 using JungleParty.Portable;
 using GorillaEscape.Gameplay.Input;
+using GorillaEscape.Contracts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -100,14 +101,58 @@ public sealed class MotionSession : MonoBehaviour, IPortableInputSource
         if(serviceHost==null||serviceHost.Game==JungleGame.None||IsInputReady)return;
         int depth=GUI.depth;GUI.depth=-100;
         float width=Mathf.Min(Screen.width-40,760);
-        GUI.Box(new Rect((Screen.width-width)/2,Screen.height*.38f,width,140),"JUEGO EN PAUSA");
-        string message=serviceHost.Game==JungleGame.LogBalance?"Revisa la conexión y los sensores del teléfono."
-            :InputStatus==JungleInputStatus.PartialInput?"Revisa los permisos y sensores del teléfono."
-            :"Colócate frente a la cámara y mantén visibles las manos. Revisa la conexión del teléfono.";
-        GUI.Label(new Rect((Screen.width-width)/2+20,Screen.height*.38f+35,width-40,85),message,
-            new GUIStyle(GUI.skin.label){wordWrap=true,alignment=TextAnchor.MiddleCenter,fontSize=20});
+        var pauseTitle = new GUIStyle(GUI.skin.label) { font = JungleUITheme.TitleFont, fontSize = 24, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+        bool canReacquire=JungleGameplayInput.RequiresCamera(serviceHost.Game)&&serviceHost.CameraConnected;
+        bool showHelp=serviceHost.ShowCameraHelp;
+        float previewHeight=showHelp?Mathf.Min(260,Mathf.Max(100,Screen.height*.38f)):0;
+        float height=(canReacquire?190:140)+(showHelp?previewHeight+35:0);
+        float top=Mathf.Max(5,(Screen.height-height)/2);
+        GUI.Box(new Rect((Screen.width-width)/2,top,width,height),GUIContent.none);
+        GUI.Label(new Rect((Screen.width-width)/2+20,top+8,width-40,34),"JUEGO EN PAUSA",pauseTitle);
+        string message=serviceHost.PauseMessage;
+        GUI.Label(new Rect((Screen.width-width)/2+20,top+43,width-40,60),message,
+            new GUIStyle(GUI.skin.label){font=JungleUITheme.TextFont,wordWrap=true,alignment=TextAnchor.MiddleCenter,fontSize=20});
+        if(showHelp)
+        {
+            float imageWidth=Mathf.Min(width-40,previewHeight*4f/3f);
+            Rect picture=new Rect((Screen.width-imageWidth)/2,top+108,imageWidth,previewHeight);
+            GUI.DrawTexture(picture,Texture2D.blackTexture);
+            var texture=serviceHost.CameraHelpTexture;
+            if(texture!=null){GUI.DrawTextureWithTexCoords(picture,texture,new Rect(1,0,-1,1));DrawCameraGuides(picture,serviceHost.CameraHelpFrame);}
+            else GUI.Label(picture,"PREPARANDO VISTA DE CÁMARA",new GUIStyle(GUI.skin.label){alignment=TextAnchor.MiddleCenter,wordWrap=true});
+            GUI.Label(new Rect((Screen.width-width)/2+20,picture.yMax+3,width-40,25),"Colócate en el centro y muestra hombros, brazos y manos.",new GUIStyle(GUI.skin.label){font=JungleUITheme.TextFont,fontSize=14,alignment=TextAnchor.MiddleCenter,wordWrap=true});
+        }
+        if(canReacquire&&GUI.Button(new Rect((Screen.width-width)/2+width*.22f,top+height-50,width*.56f,42),"VOLVER A DETECTAR JUGADOR"))
+        {
+            if(serviceHost.ReacquireCamera())delivered=-1;
+        }
         GUI.depth=depth;
     }
+    static void DrawCameraGuides(Rect picture,CameraInputWire frame)
+    {
+        if(frame?.subjects==null)return;
+        Color before=GUI.color;
+        foreach(var subject in frame.subjects)
+        {
+            if(subject?.landmarks==null)continue;
+            GUI.color=subject.ambiguous?Color.yellow:Color.green;
+            foreach(var point in subject.landmarks)
+            {
+                if(point==null||!point.visible||point.x<0||point.x>1||point.y<0||point.y>1)continue;
+                Vector2 p=CameraPoint(picture,point);GUI.DrawTexture(new Rect(p.x-3,p.y-3,6,6),Texture2D.whiteTexture);
+            }
+            foreach(string pair in new[]{"left-shoulder,right-shoulder","left-shoulder,left-elbow","left-elbow,left-wrist","left-wrist,left-hand","right-shoulder,right-elbow","right-elbow,right-wrist","right-wrist,right-hand"})
+            {
+                var names=pair.Split(',');var a=System.Array.Find(subject.landmarks,p=>p!=null&&p.name==names[0]);var b=System.Array.Find(subject.landmarks,p=>p!=null&&p.name==names[1]);
+                if(a==null||b==null||!a.visible||!b.visible||a.x<0||a.x>1||a.y<0||a.y>1||b.x<0||b.x>1||b.y<0||b.y>1)continue;
+                Vector2 start=CameraPoint(picture,a),end=CameraPoint(picture,b);var matrix=GUI.matrix;
+                GUIUtility.RotateAroundPivot(Mathf.Atan2(end.y-start.y,end.x-start.x)*Mathf.Rad2Deg,start);
+                GUI.DrawTexture(new Rect(start.x,start.y,Vector2.Distance(start,end),2),Texture2D.whiteTexture);GUI.matrix=matrix;
+            }
+        }
+        GUI.color=before;
+    }
+    static Vector2 CameraPoint(Rect picture,CameraLandmark point)=>new Vector2(picture.x+(1-point.x)*picture.width,picture.y+point.y*picture.height);
     void OnDestroy()
     {
         if (Instance != this) return;

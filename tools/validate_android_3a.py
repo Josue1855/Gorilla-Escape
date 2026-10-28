@@ -195,7 +195,16 @@ class Run:
         self.report['android'] = dict(api=self.adb_call('shell', 'getprop', 'ro.build.version.sdk').decode().strip(),
                                      chrome=self.adb_call('shell', 'dumpsys', 'package', 'com.android.chrome').decode().split('versionName=')[1].splitlines()[0].strip())
         self.adb_call('shell', 'input', 'keyevent', '82')
-        self.adb_call('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', 'about:blank', '-p', 'com.android.chrome')
+        # On cold boots package metadata can appear before Chrome's activity is ready.
+        launch_deadline = time.monotonic() + 30
+        while True:
+            try:
+                self.adb_call('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', 'about:blank', '-p', 'com.android.chrome')
+                break
+            except CommandFailure:
+                if time.monotonic() >= launch_deadline:
+                    raise
+                time.sleep(.5)
         # First-run dialogs only in our disposable AVD. Tap exclusively from UI-tree bounds.
         first_run_end = time.monotonic()+90
         step = 0
@@ -305,7 +314,8 @@ class Run:
         self.start_android()
         http_port = self.start_java()
         self.adb_call('reverse', f'tcp:{http_port}', f'tcp:{http_port}')
-        url = f'http://127.0.0.1:{http_port}/'
+        # The health probe is now an explicit view; the root is the controller.
+        url = f'http://127.0.0.1:{http_port}/?view=health'
         self.adb_call('shell','am','start','-a','android.intent.action.VIEW','-d',url,'-p','com.android.chrome')
         debugger = int(self.adb_call('forward','tcp:0','localabstract:chrome_devtools_remote').strip())
         cdp = await self.connect(debugger)

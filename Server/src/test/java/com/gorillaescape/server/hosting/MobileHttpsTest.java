@@ -253,8 +253,8 @@ class MobileHttpsTest {
             assertNotNull(UUID.fromString(data.get("serverInstanceId").asString()));
             assertEquals(2, JsonMapper.builder().build().readTree(get(trusted, port, "/api/health").body()).get("requestNumber").intValue());
             var root = get(trusted, port, "/"); assertEquals(200, root.statusCode()); assertTrue(root.body().contains("id=\"root\""));
-            var scripts = java.util.regex.Pattern.compile("(?:src|href)=\"(/assets/[^\"]+)\"").matcher(root.body());
-            int assets = 0; while (scripts.find()) { assertEquals(200, get(trusted, port, scripts.group(1)).statusCode()); assets++; }
+            var scripts = java.util.regex.Pattern.compile("(?:src|href)=\"(?:\\./|/)(assets/[^\"]+)\"").matcher(root.body());
+            int assets = 0; while (scripts.find()) { assertEquals(200, get(trusted, port, "/"+scripts.group(1)).statusCode()); assets++; }
             assertTrue(assets >= 2);
             assertEquals(200, get(trusted, port, "/manifest.webmanifest").statusCode());
             String worker = get(trusted, port, "/sw.js").body(); assertTrue(worker.contains("url.pathname.startsWith('/api/')"));

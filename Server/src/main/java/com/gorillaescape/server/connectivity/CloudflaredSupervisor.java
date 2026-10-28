@@ -52,8 +52,18 @@ public final class CloudflaredSupervisor implements Tunnel {
         if(cancelled)throw new InterruptedException();
         var client=httpClient;
         if(client==null)httpClient=client=java.net.http.HttpClient.newBuilder().connectTimeout(java.time.Duration.ofMillis(HTTPS_TIMEOUT_MS)).build();
-        var request=java.net.http.HttpRequest.newBuilder(origin.resolve("/")).timeout(java.time.Duration.ofMillis(Math.max(1,Math.min(HTTPS_TIMEOUT_MS,remainingMs)))).GET().build();
-        lastHttpsStatus=client.send(request,java.net.http.HttpResponse.BodyHandlers.discarding()).statusCode();return lastHttpsStatus==200;
+        long started=System.nanoTime();
+        boolean quick=origin.getHost()!=null&&origin.getHost().endsWith(".trycloudflare.com");
+        long directBudget=Math.max(1,Math.min(quick?1000:HTTPS_TIMEOUT_MS,remainingMs));
+        var request=java.net.http.HttpRequest.newBuilder(origin.resolve("/")).timeout(java.time.Duration.ofMillis(directBudget)).GET().build();
+        try {lastHttpsStatus=client.send(request,java.net.http.HttpResponse.BodyHandlers.discarding()).statusCode();return lastHttpsStatus==200;}
+        catch(java.io.IOException failure){
+            long left=remainingMs-TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-started);
+            if(left<=0||!quick)throw failure;
+            boolean ready=QuickTunnelDnsProbe.ready(origin,left);
+            if(ready)lastHttpsStatus=200;
+            return ready;
+        }
     }
     // Discovery never downloads. Every production execution independently verifies the pinned hash.
     public static Path discover(String explicit,String path){

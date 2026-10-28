@@ -299,6 +299,7 @@ public sealed class ConnectionScreen : MonoBehaviour
     {
         var style = new GUIStyle(GUI.skin.label)
         {
+            font = size >= 28 ? JungleUITheme.TitleFont : JungleUITheme.TextFont,
             fontSize = size,
             fontStyle = weight,
             alignment = alignment,
@@ -313,6 +314,7 @@ public sealed class ConnectionScreen : MonoBehaviour
     {
         var style = new GUIStyle(GUI.skin.button)
         {
+            font = JungleUITheme.TextFont,
             fontSize = size,
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,

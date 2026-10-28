@@ -34,7 +34,8 @@ test('room routes reach their tunnel without a referrer and only allow public en
     const page = await worker.fetch(new Request('https://play.gorillas.run/abcd/'), env);
     const html = await page.text(); assert.match(html, /<base href="\/abcd\/">/); assert.match(html, /src="assets\/main.js"/);
     assert.equal((await worker.fetch(new Request('https://play.gorillas.run/abcd/mobile/join', { method:'POST', body:'{}' }), env)).status, 200);
+    assert.equal((await worker.fetch(new Request('https://play.gorillas.run/abcd/assets/LilitaOne-a1.ttf'), env)).status, 200);
     assert.equal((await worker.fetch(new Request('https://play.gorillas.run/abcd/private'), env)).status, 404);
-    assert.deepEqual(seen, ['https://test.trycloudflare.com/', 'https://test.trycloudflare.com/mobile/join']);
+    assert.deepEqual(seen, ['https://test.trycloudflare.com/', 'https://test.trycloudflare.com/mobile/join', 'https://test.trycloudflare.com/assets/LilitaOne-a1.ttf']);
   } finally { globalThis.fetch = original; }
 });

@@ -125,7 +125,7 @@ public sealed class BaseballController : MonoBehaviour
     {
         JungleUITheme.Ensure();
         panel??=Solid(new Color(.02f,.04f,.055f,.94f)); green??=Solid(new Color(.08f,.65f,.18f)); yellow??=Solid(new Color(1f,.78f,.08f)); red??=Solid(new Color(.9f,.12f,.08f)); blue??=Solid(new Color(.06f,.55f,.9f));
-        float w=Screen.width,h=Screen.height; GUIStyle title=new GUIStyle(GUI.skin.label){fontSize=Mathf.RoundToInt(h*.045f),fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,normal={textColor=Color.white}};
+        float w=Screen.width,h=Screen.height; GUIStyle title=new GUIStyle(JungleUITheme.Title){fontSize=Mathf.RoundToInt(h*.045f),normal={textColor=Color.white}};
         JungleUITheme.DrawPanel(new Rect(w*.12f,h*.03f,w*.76f,h*.16f)); GUI.Label(new Rect(w*.14f,h*.04f,w*.72f,h*.065f),"JUNGLE BASEBALL",title);
         GUI.Label(new Rect(w*.15f,h*.105f,w*.70f,h*.06f),$"LANZAMIENTO {Mathf.Min(pitches+1,10)}/10    HITS {hits}    JONRONES {homeRuns}    PUNTOS {score}",title);
         GUI.DrawTexture(new Rect(w*.34f,h*.22f,w*.32f,h*.075f),message.Contains("JON")?yellow:message.Contains("STRIKE")?red:blue); GUI.Label(new Rect(w*.34f,h*.22f,w*.32f,h*.075f),message,title);
