@@ -11,6 +11,7 @@
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceArtCatalog.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/LogBalanceFusedControl.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/JunglePauseLease.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/ShotMechanics.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/CameraInput.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/PhoneInputStore.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/OfficialActionLedger.cs" />

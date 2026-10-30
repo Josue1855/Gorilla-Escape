@@ -4,10 +4,10 @@ A loopback consumer enables encoding with P; disconnect discards both bounded sl
 import socket,struct,threading,time
 from pipeline import LatestFrameSlot
 MAX_BYTES=65536
-WIDTH,HEIGHT,FPS=320,240,5
+WIDTH,HEIGHT,FPS=320,240,20
 class Preview:
     def __init__(self,stop,metrics,encoder=None):
-        self.stop=threading.Event();self.metrics=metrics;self.slot=LatestFrameSlot();self.latest=None;self.lock=threading.Lock();self.client=None;self.errors=0
+        self.stop=threading.Event();self.metrics=metrics;self.slot=LatestFrameSlot();self.latest=None;self.lock=threading.Lock();self.client=None;self.errors=0;self.max_fps=FPS
         self.enabled=threading.Event()
         self.encoder=encoder or self.jpeg
         self.listener=socket.socket();self.listener.bind(('127.0.0.1',0));self.listener.listen(1);self.listener.settimeout(.2)
@@ -53,7 +53,9 @@ class Preview:
                 while not self.stop.is_set():
                     if c.recv(1)!=b'P':break
                     self.enabled.set()
-                    with self.lock:data=self.latest
+                    # Consume each encoded image once. Re-sending the same JPEG
+                    # makes a stalled capture look like a healthy live preview.
+                    with self.lock:data=self.latest;self.latest=None
                     c.sendall(struct.pack('!I',len(data) if data else 0)+(data or b''));data=None
                     self.stop.wait(1/FPS)
             except (OSError,TimeoutError):pass

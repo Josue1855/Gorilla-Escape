@@ -78,8 +78,11 @@ namespace GorillaEscape.Minigames.LogBalance
         }
         Material Material(Color color)
         {
-            var template=Resources.Load<Material>("LogBalanceStage");
-            var material=template!=null?new Material(template):new Material(Shader.Find("Standard"));material.color=color;
+            var template=JungleAssets.Load<Material>("LogBalanceStage");
+            var shader=Shader.Find("Universal Render Pipeline/Lit")??Shader.Find("Standard");
+            var material=template!=null?new Material(template):new Material(shader);
+            material.color=color;
+            if(material.HasProperty("_BaseColor"))material.SetColor("_BaseColor",color);
             material.SetFloat("_Glossiness",.15f);material.SetFloat("_Metallic",0);materials.Add(material);return material;
         }
         static Transform Cube(string name,Transform parent,Material material)

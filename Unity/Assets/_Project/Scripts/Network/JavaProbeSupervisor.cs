@@ -66,6 +66,8 @@ namespace GorillaEscape.Network
         public QaAdmissionWire Qa {get;private set;}
         public QaMetricsWire QaMetrics {get;private set;}
         string gameContext;
+        readonly Queue<MobileUiCommandWire> uiCommands=new Queue<MobileUiCommandWire>();
+        public bool TakeUiCommand(out MobileUiCommandWire command){lock(uiCommands){command=uiCommands.Count>0?uiCommands.Dequeue():null;return command!=null;}}
         public void PresentPhoneGame(GamePresentationWire context)
         {
             if(context==null||!context.Valid())throw new ArgumentException("GAME_CONTEXT_INVALID");
@@ -144,7 +146,7 @@ namespace GorillaEscape.Network
             CancellationToken token = a.cancellation.Token;
             using (var startup = CancellationTokenSource.CreateLinkedTokenSource(token))
             {
-                startup.CancelAfter(15000);
+                startup.CancelAfter(30000);
                 var clock = Stopwatch.StartNew();
                 token.ThrowIfCancellationRequested();
                 if (!Path.IsPathRooted(java) || !File.Exists(java) || !Path.IsPathRooted(jar) || !File.Exists(jar)) throw new Failure("CONFIG_INVALID");
@@ -252,6 +254,7 @@ namespace GorillaEscape.Network
                             var mobile=JsonUtility.FromJson<PhonePong>(body);
                             if(mobile==null||mobile.ipcVersion!=1||mobile.type!="PONG"||mobile.instanceId!=a.result.instanceId||mobile.connectionId!=connection||mobile.sequence!=sequence||mobile.payload?.phoneInputs==null||mobile.payload.phoneInputs.Length>4)throw new InvalidDataException("PHONE_PONG");
                             if(lobbyEnabled){Lobby.Accept(mobile.payload.lobby,mobile.payload.hasLobbyResult?mobile.payload.lobbyResult:null);PhoneInputs.ObserveLobby(Lobby.Snapshot);}
+                            if(mobile.payload.uiCommand!=null)lock(uiCommands){if(uiCommands.Count<8)uiCommands.Enqueue(mobile.payload.uiCommand);}
                             if(qaEnabled){if(QaPhones==null)QaPhones=new QaPhoneMetricsWire[4];if(mobile.payload.qaPhones!=null)foreach(var report in mobile.payload.qaPhones)if(report.playerId>=1&&report.playerId<=4)QaPhones[report.playerId-1]=report;QaConnection=mobile.payload.qaConnection;QaHosting=mobile.payload.qaHosting;var next=mobile.payload.qa;if(next!=null&&next.state=="AVAILABLE"&&string.IsNullOrEmpty(next.modules)&&Qa?.state=="AVAILABLE"){next.modules=Qa.modules;next.size=Qa.size;}Qa=next;QaMetrics=mobile.payload.qaMetrics;}
                             foreach(var input in mobile.payload.phoneInputs){input.unityReceiveTimestamp=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();if(PhoneInputs.Accept(input)){input.unityAcceptTimestamp=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();PhoneInputReceived?.Invoke(input);}}
                             pong=new IpcPong{ipcVersion=mobile.ipcVersion,type=mobile.type,instanceId=mobile.instanceId,connectionId=mobile.connectionId,sequence=mobile.sequence};
@@ -336,7 +339,7 @@ namespace GorillaEscape.Network
         private static void CloseSocket(Attempt a) { try { a.client?.Close(); } catch (ObjectDisposedException) { } }
         private static int Remaining(Stopwatch clock)
         {
-            int value = 15000 - (int)clock.ElapsedMilliseconds;
+            int value = 30000 - (int)clock.ElapsedMilliseconds;
             if (value <= 0) throw new TimeoutException("STARTUP_TIMEOUT"); return value;
         }
         private static string Quote(string path)

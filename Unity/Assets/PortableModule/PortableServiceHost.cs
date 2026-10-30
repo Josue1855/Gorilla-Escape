@@ -18,6 +18,11 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
 {
     public static PortableServiceHost Instance { get; private set; }
     public bool IsRunning => java != null && (java.State == IpcState.STARTING || java.State == IpcState.CONNECTING || java.State == IpcState.RUNNING);
+    public bool CameraOnly {get;private set;}
+    public bool CameraLossGraceAllowed => (CameraOnly||PhoneConnected)&&JungleGameplayInput.RequiresCamera(gameplay.Game)
+        &&(fusion?.Cameras.Latest?.subjects==null||fusion.Cameras.Latest.subjects.Length<=1)
+        &&(fusion?.Cameras.Latest?.subjects==null||fusion.Cameras.Latest.subjects.Length==0||!fusion.Cameras.Latest.subjects[0].ambiguous);
+    public void SetCameraOnly(bool enabled){CameraOnly=enabled;SelectGame(gameplay.Game,true);}
     public string Status { get; private set; } = "LISTO PARA CONECTAR";
     private string pregeneratedRoomCode;
     public string RoomCode => !string.IsNullOrEmpty(pregeneratedRoomCode) ? pregeneratedRoomCode : (java?.QaConnection?.roomCode ?? java?.Lobby?.Snapshot?.roomCode ?? "");
@@ -56,6 +61,11 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public float LastPosePacketAt { get; private set; } = -10;
     public bool PhoneConnected => java?.State == IpcState.RUNNING && CurrentPhoneConnected()
         && Time.unscaledTime - LastPhonePacketAt < .25f;
+    public bool TryPhoneVisualEstimate(out PhoneVisualEstimate estimate)
+    {
+        estimate=null;
+        return PhoneConnected&&fusion!=null&&fusion.TryPhoneVisualEstimate(1,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),out estimate);
+    }
     // Camera availability must not depend on a phone or on fusion alignment.
     public bool CameraConnected => vision?.State == "RUNNING" && fusion != null
         && fusion.Cameras.Fresh(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), 250, 50);
@@ -66,12 +76,64 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     VisionSupervisor vision;
     CameraPreviewClient helpPreview;
     Task helpPreviewClosing;
+    float helpPreviewStartedAt=-1,helpPreviewLastFrameAt=-1,nextPreviewRetry;
     Texture2D helpPreviewTexture;
-    bool helpPreviewRequested;
+    bool helpPreviewRequested, cameraSetupVisible;
+    bool preferLeftCursor;
+    bool cursorHandChosen;
+    int cursorSubject=-1,cursorHandSwitchFrame=-1;
+    long cursorSequence=-1;
+    readonly HandVisualPrediction menuCursor=new HandVisualPrediction();
+    public bool PipEnabled { get; set; } = true;
+    public void SetCameraSetupVisible(bool visible) => cameraSetupVisible=visible;
+    public bool CameraActive => vision?.State=="RUNNING"||vision?.State=="STARTING";
+    public string CameraGuidance => GorillaEscape.CameraTracking.CameraGuidance.Describe(CameraConnected,CameraHelpFrame,true);
+    public CameraFramingReport CameraFraming => ShotMechanics.EvaluateFraming(CameraConnected,CameraHelpFrame,
+        gameplay.Game==JungleGame.Boxing||gameplay.Game==JungleGame.Drums||gameplay.Game==JungleGame.CoconutSlice);
     public Texture2D CameraHelpTexture => helpPreviewTexture;
     public CameraInputWire CameraHelpFrame => fusion!=null&&fusion.Cameras.Fresh(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),250,50) ? fusion.Cameras.Latest : null;
+    public bool TryCameraVisualLandmark(int subject,string name,out float x,out float y)
+    {
+        x=y=0;
+        return vision?.State=="RUNNING"&&fusion!=null&&fusion.Cameras.TryVisualLandmark(subject,name,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),out x,out y);
+    }
+    public bool TryCameraCursor(out Vector2 screenNormalized, out string handLabel, out bool handRaised)
+    {
+        screenNormalized = new Vector2(.5f, .5f);
+        handLabel = "DER";
+        var framing = CameraFraming;
+        handRaised = framing.HandRaised;
+        var frame = CameraHelpFrame;
+        if (!CameraConnected || frame?.subjects == null || frame.subjects.Length != 1 || frame.subjects[0] == null || frame.subjects[0].ambiguous || frame.subjects[0].landmarks == null)
+        { menuCursor.Reset();cursorSequence=-1;cursorSubject=-1;cursorHandChosen=false;return false; }
+        var subject = frame.subjects[0];
+        CameraLandmark left = null, right = null;
+        for (int i = 0; i < subject.landmarks.Length; i++)
+        {
+            var lm = subject.landmarks[i];
+            if (lm == null) continue;
+            if (lm.name == "left-wrist") left = lm;
+            else if (lm.name == "right-wrist") right = lm;
+        }
+        bool leftOk = left != null && left.visible && left.visibility >= .6f && left.presence >= .6f && left.x >= 0f && left.x <= 1f && left.y >= 0f && left.y <= 1f;
+        bool rightOk = right != null && right.visible && right.visibility >= .6f && right.presence >= .6f && right.x >= 0f && right.x <= 1f && right.y >= 0f && right.y <= 1f;
+        if (!leftOk && !rightOk) {menuCursor.Reset();cursorSequence=-1;cursorHandChosen=false;return false;}
+        if(cursorSubject!=subject.subjectId){menuCursor.Reset();cursorSequence=-1;cursorSubject=subject.subjectId;cursorHandChosen=false;}
+        if(!cursorHandChosen){preferLeftCursor=leftOk&&(!rightOk||left.y<right.y-.07f);cursorHandChosen=true;}
+        else if(preferLeftCursor&&!leftOk||!preferLeftCursor&&!rightOk)
+        {preferLeftCursor=leftOk;menuCursor.Reset();cursorSequence=-1;cursorHandSwitchFrame=Time.frameCount;}
+        if(cursorHandSwitchFrame==Time.frameCount)return false;
+        bool useLeft = preferLeftCursor;
+        var chosen = useLeft ? left : right;
+        if(frame.frameSequence!=cursorSequence){menuCursor.Observe(1f-chosen.x,chosen.y,0,0,Time.unscaledTime);cursorSequence=frame.frameSequence;}
+        if(!menuCursor.TryPosition(Time.unscaledTime,out float x,out float y))return false;
+        HandCursorMapping.Map(x,y,out float screenX,out float screenY);
+        screenNormalized = new Vector2(screenX,screenY);
+        handLabel = useLeft ? "MANO IZQ" : "MANO DER";
+        return true;
+    }
     public bool ShowCameraHelp => !quitting && JungleGameplayInput.RequiresCamera(gameplay.Game) && CameraConnected
-        && (fusion?.Cameras.Latest?.trackingState!="TRACKING" || (PhoneConnected && !gameplay.Ready));
+        && (fusion?.Cameras.Latest?.trackingState!="TRACKING" || ((CameraOnly||PhoneConnected) && !gameplay.Ready));
     InputFusion fusion;
     JungleInputAdapter adapter;
     CancellationTokenSource cancellation;
@@ -88,22 +150,28 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         get
         {
             RefreshInput();
-            if(!PhoneConnected) return "Conecta el teléfono, permite los sensores y mantén abierta la pantalla del control.";
+            if(CameraOnly&&!JungleGameplayInput.SupportsCameraOnly(gameplay.Game))return "Este juego necesita un celular. Vuelve al menú de juegos sin celular.";
+            if(!CameraOnly&&!PhoneConnected) return "Conecta el teléfono, permite los sensores y mantén abierta la pantalla del control.";
             if(!JungleGameplayInput.RequiresCamera(gameplay.Game)) return "Revisa los sensores del teléfono y mantén abierto el control.";
             if(!CameraConnected) return "La cámara no está enviando imágenes. Revisa su conexión y vuelve a intentarlo.";
             var camera=fusion?.Cameras.Latest;
-            if(camera==null||camera.trackingState!="TRACKING") return "La cámara recibe imagen, pero no detecta al jugador. Ponte frente a ella.";
-            if(gameplay.Status==JungleInputStatus.Unaligned) return "Esperando que la cámara y el teléfono se sincronicen. Mantén abierto el control.";
+            string guidance=GorillaEscape.CameraTracking.CameraGuidance.Describe(CameraConnected,camera,gameplay.Game==JungleGame.Boxing||gameplay.Game==JungleGame.Drums||gameplay.Game==JungleGame.CoconutSlice,gameplay.Game==JungleGame.Bowling?(gameplay.LeftHanded?"left":"right"):null);
+            if(gameplay.Game==JungleGame.Bowling&&gameplay.Status!=JungleInputStatus.Unaligned&&gameplay.Status!=JungleInputStatus.Reacquiring)return guidance;
+            if(camera==null||camera.trackingState!="TRACKING"||guidance!="La cámara detecta tus hombros y manos. Mantente dentro de la imagen.")return guidance;
+            if(gameplay.Status==JungleInputStatus.Unaligned) return "La cámara y el teléfono envían datos con tiempos diferentes. Mantén abierto el control y revisa la conexión.";
             if(gameplay.Status==JungleInputStatus.PartialInput) return "Faltan datos de las manos o del teléfono. Revisa que estén visibles y permite los sensores.";
             if(gameplay.Status==JungleInputStatus.Reacquiring) return "Recuperando el seguimiento. Mantente frente a la cámara y mueve suavemente el teléfono.";
             return "La cámara recibe imagen. Ponte frente a ella; procura que solo haya una persona visible y muestra las manos.";
         }
     }
     public JungleGame Game => gameplay.Game;
+    public bool LeftHanded => gameplay.LeftHanded;
+    public void SetDominantHand(bool left){gameplay.LeftHanded=left;SelectGame(gameplay.Game,true);}
+    public bool TakeUiCommand(out MobileUiCommandWire command){command=null;return java?.State==IpcState.RUNNING&&java.TakeUiCommand(out command);}
     public void SelectGame(JungleGame game,bool force=false)
     {
         if(!force&&gameplay.Game==game)return;
-        gameplay.Select(game);
+        gameplay.Select(game,CameraOnly);
         fusion?.Association.Ready(1);
         refreshedFrame=-1;
     }
@@ -113,7 +181,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         RefreshInput();
         if(quitting||fusion==null||gameplay.Ready||!JungleGameplayInput.RequiresCamera(gameplay.Game)||!CameraConnected)return false;
         fusion.Association.Ready(1);
-        gameplay.Select(gameplay.Game);
+        gameplay.Select(gameplay.Game,CameraOnly);
         LastPosePacketAt=-10;
         refreshedFrame=-1;
         return true;
@@ -125,7 +193,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public bool Authorize(JungleAction action,long revision)
     {
         RefreshInput();
-        return PhoneConnected&&(!JungleGameplayInput.RequiresCamera(gameplay.Game)||vision?.State=="RUNNING")&&gameplay.Authorize(action,revision,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+        return (CameraOnly||PhoneConnected)&&(!JungleGameplayInput.RequiresCamera(gameplay.Game)||vision?.State=="RUNNING")&&gameplay.Authorize(action,revision,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
     }
     bool admissionRequested, replacementRequested, quitting, allowQuit, previousBackground, shutdownFailed;
     string lastConnectionDiagnostic;
@@ -156,7 +224,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
             Status = "EDITOR: ACTIVA EL INICIO FÍSICO PARA CONECTAR";
             return false;
         }
-        if (FindFirstObjectByType<GorillaEscape.QA.QaRuntimeService>() != null)
+        if (FindAnyObjectByType<GorillaEscape.QA.QaRuntimeService>() != null)
         {
             Status = "CIERRA LA SESIÓN DE DIAGNÓSTICO ANTES DE ABRIR LOS JUEGOS";
             return false;
@@ -182,7 +250,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         adapter = new JungleInputAdapter();
         observedSequence=observedEpoch=-1;observedSession=observedDevice=null;
         LastPhonePacketAt = LastPosePacketAt = -10;
-        gameplay.Select(gameplay.Game);
+        gameplay.Select(gameplay.Game,CameraOnly);
         refreshedFrame=-1;
         closing = null;
         admissionRequested = false; replacementRequested = false;
@@ -199,21 +267,29 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     async Task RunVision(string root)
     {
         try { await vision.StartPackagedAsync(root, cancellation.Token); }
-        catch (Exception) { Debug.LogWarning("JUNGLE_CAMERA_UNAVAILABLE (revisa el paquete Vision y el diagnóstico de Fase 0)"); }
+        catch (Exception) { Debug.LogWarning("JUNGLE_CAMERA_UNAVAILABLE " + (vision.Error ?? "UNKNOWN")); }
     }
     void Update() { RefreshInput(); UpdateCameraHelp(); }
     void UpdateCameraHelp()
     {
-        bool wanted=ShowCameraHelp && vision?.State=="RUNNING";
+        bool wanted=(cameraSetupVisible||ShowCameraHelp||(PipEnabled&&(CameraOnly||gameplay.Game==JungleGame.None||JungleGameplayInput.RequiresCamera(gameplay.Game)))) && vision?.State=="RUNNING";
         if(vision?.State=="RUNNING"&&wanted!=helpPreviewRequested)
         {
             vision.SetQaPreview(wanted);
             helpPreviewRequested=wanted;
         }
         if(!wanted){CloseCameraHelp();return;}
-        if(vision.PreviewPort>0&&helpPreview==null&&(helpPreviewClosing==null||helpPreviewClosing.IsCompleted))
+        // A dead or stalled preview client must not leave its last JPEG frozen on screen.
+        // Retrying only the preview keeps camera tracking and the phone session untouched.
+        if(helpPreview!=null&&(helpPreview.State=="FAILED"||
+            Time.unscaledTime-(helpPreviewLastFrameAt>=0?helpPreviewLastFrameAt:helpPreviewStartedAt)>3f))
+        {
+            CloseCameraHelp();nextPreviewRetry=Time.unscaledTime+1f;
+        }
+        if(vision.PreviewPort>0&&helpPreview==null&&Time.unscaledTime>=nextPreviewRetry&&(helpPreviewClosing==null||helpPreviewClosing.IsCompleted))
         {
             helpPreview=new CameraPreviewClient();
+            helpPreviewStartedAt=Time.unscaledTime;helpPreviewLastFrameAt=-1;
             helpPreview.Start(vision.PreviewPort);
         }
         var bytes=helpPreview?.Take();
@@ -223,6 +299,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
             if(helpPreviewTexture==null)helpPreviewTexture=new Texture2D(2,2,TextureFormat.RGB24,false);
             if(!CameraPreviewClient.ValidJpeg(bytes)||!helpPreviewTexture.LoadImage(bytes)||helpPreviewTexture.width>320||helpPreviewTexture.height>240)
             { Destroy(helpPreviewTexture);helpPreviewTexture=null; }
+            else helpPreviewLastFrameAt=Time.unscaledTime;
         }
         finally { Array.Clear(bytes,0,bytes.Length); }
     }
@@ -230,6 +307,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     {
         if(helpPreview!=null){var old=helpPreview;old.Dispose();helpPreviewClosing=old.Run;helpPreview=null;}
         if(helpPreviewTexture!=null){Destroy(helpPreviewTexture);helpPreviewTexture=null;}
+        helpPreviewStartedAt=helpPreviewLastFrameAt=-1;
     }
     void RefreshInput()
     {
@@ -239,7 +317,14 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         if(!quitting&&vision!=null&&fusion!=null)
         {
             vision.Poll();
-            if(vision.Take(out var frame,out var received))fusion.ObserveCamera(frame,received);
+            if(vision.Take(out var frame,out var received))fusion.ObserveCamera(frame,received,(CameraOnly&&gameplay.Game==JungleGame.CoconutSlice)||gameplay.Game==JungleGame.None||gameplay.Game==JungleGame.Bowling);
+        }
+        if(CameraOnly&&!quitting&&gameplay.Game!=JungleGame.None)
+        {
+            gameplay.UpdateCamera(vision?.State=="RUNNING"?fusion?.Cameras.Latest:null,
+                fusion?.Association.State??PlayerLockState.UNASSIGNED,fusion?.Association.SubjectId??0,now);
+            LastPosePacketAt=gameplay.Ready?Time.unscaledTime:-10;
+            return;
         }
         if(quitting||java==null||java.State!=IpcState.RUNNING)
         {
@@ -281,8 +366,10 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
                 +" phoneFresh="+candidate.PhoneReceiptFresh+" cameraFresh="+candidate.CameraFrameFresh
                 +" camera="+(vision?.State??"STOPPED")+" tracking="+(candidate.RawCamera?.trackingState??"NONE")
                 +" association="+candidate.LockState+" alignment="+candidate.Status
+                +" alignmentDeltaMs="+(candidate.AlignmentDelta==long.MaxValue?-1:candidate.AlignmentDelta)
                 +" phoneAgeMs="+(candidate.RawPhone==null?-1:candidate.RawPhoneAge)
-                +" cameraAgeMs="+(candidate.RawCamera==null?-1:candidate.RawCameraAge));
+                +" cameraAgeMs="+(candidate.RawCamera==null?-1:candidate.RawCameraAge)
+                +" cameraProcessingMs="+(candidate.RawCamera==null?-1:Math.Max(0,candidate.RawCamera.processTimestamp-candidate.RawCamera.captureTimestamp)));
         }
         Status=NeedsNetworkPermission?"AUTORIZA EL ACCESO A LA RED LOCAL":PhoneConnected?"CELULAR CONECTADO":"ESPERANDO EL CELULAR";
     }
@@ -290,10 +377,11 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public void PresentPhoneGame(GorillaEscape.Contracts.GamePresentationWire context) { if(java?.State==IpcState.RUNNING)java.PresentPhoneGame(context); }
     public void InstallNetwork() { if (java?.State == IpcState.RUNNING && NeedsNetworkPermission) java.RequestNetworkAction("INSTALL"); }
     public void RegenerateAdmission() { if (java?.State == IpcState.RUNNING) java.RegenerateQa(); }
+    public void RequestConnectionMode(string mode) { if (java?.State == IpcState.RUNNING) java.RequestConnectionMode(mode); }
     public Task ShutdownAsync() => closing ?? (closing = Close());
     async Task Close()
     {
-        gameplay.Select(gameplay.Game);
+        gameplay.Select(gameplay.Game,CameraOnly);
         refreshedFrame=-1;
         LastPhonePacketAt = LastPosePacketAt = -10;
         try

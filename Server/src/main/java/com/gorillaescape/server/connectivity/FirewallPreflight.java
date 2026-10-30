@@ -17,13 +17,14 @@ public final class FirewallPreflight implements AutoCloseable {
     public FirewallPreflight(boolean lab,String address,String packageRoot){
         this.lab=lab;this.address=address;helper=packageRoot==null?null:Path.of(packageRoot,"tools","setup-firewall.sh").toAbsolutePath();
         runner=this::execute;
-        if(lab)state="NOT_REQUIRED";else check();
+        boolean windows=System.getProperty("os.name","").toLowerCase(Locale.ROOT).contains("win");
+        if(lab||windows)state="NOT_REQUIRED";else check();
     }
     FirewallPreflight(Runner runner){this.runner=runner;address="";helper=null;lab=false;check();}
     public String state(){return state;}
     public boolean ready(){return Set.of("READY","DISABLED","NOT_INSTALLED","NOT_REQUIRED").contains(state);}
     public synchronized void poll(){if(!closed&&pending!=null&&pending.isDone()&&!state.equals("NOT_REQUIRED")&&!state.equals("CANCELLED")&&System.nanoTime()>=nextCheck)submit(false);}
-    public synchronized void check(){if(closed||lab)return;state="CHECKING";if(pending!=null&&!pending.isDone()){recheck=true;return;}submit(false);}
+    public synchronized void check(){if(closed||lab||System.getProperty("os.name","").toLowerCase(Locale.ROOT).contains("win"))return;state="CHECKING";if(pending!=null&&!pending.isDone()){recheck=true;return;}submit(false);}
     public synchronized void install(boolean forRecovery){
         if(closed||lab||pending!=null&&!pending.isDone())return;
         recovery=forRecovery;state="AUTHORIZING";submit(true);

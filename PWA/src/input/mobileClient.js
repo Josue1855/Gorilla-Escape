@@ -58,7 +58,7 @@ export class MobileClient {
   if(this.pc)await this.close(false);
   const generation=this.generation=(this.generation||0)+1;
   this.started=performance.now();this.trace={stage:'START',code:null,postExecuted:false,httpStatus:null,rejectionCode:null,fetchFailure:null,remoteDescription:'NOT RUN',candidates:[],events:[]};
-  this.state='CONNECTING';let code='JOIN_E01_OFFER';let rejectIce;
+  this.gameContext=null;this.gameContextExpires=0;this.state='CONNECTING';let code='JOIN_E01_OFFER';let rejectIce;
   const iceFailed=new Promise((_,reject)=>{rejectIce=reject;});iceFailed.catch(()=>{});
   try{
    this.pc=new RTCPeerConnection({iceServers:[]});this.channels={};
@@ -82,7 +82,7 @@ export class MobileClient {
    const fragment=new URLSearchParams(new URL(joinUrl,location.href).hash.slice(1));
    code='JOIN_E03_SIGNAL_HTTP';this.stage('SIGNALING_POST');
    const reply=resume?await this.signal('/mobile/reconnect',{sessionId:resume.sessionId,playerId:resume.playerId,resumeToken:resume.resumeToken,offer:this.pc.localDescription.sdp}):await this.signal('/mobile/join',{protocolVersion:1,messageType:'JOIN',sessionId:fragment.get('sessionId'),admission:fragment.get('admission'),offer:this.pc.localDescription.sdp});
-   this.identity=reply;this.sequence=0;
+   this.identity=reply;this.onIdentity?.(reply);this.sequence=0;
    code='JOIN_E05_REMOTE_SDP';this.stage('REMOTE_DESCRIPTION');await this.pc.setRemoteDescription({type:'answer',sdp:reply.answer});this.trace.remoteDescription='PASS';
    this.stage('ICE_CONNECTING');code='JOIN_E06_ICE_FAILED';
    await Promise.race([iceFailed,Promise.all(Object.entries(this.channels).map(([label,ch])=>{
@@ -91,7 +91,7 @@ export class MobileClient {
     return opened.then(()=>this.stage(label==='control'?'CONTROL_OPEN':'MOTION_OPEN'));
    }))]);
    code='JOIN_E09_HELLO_TIMEOUT';this.stage('HELLO_ACK');this.state='RUNNING';await this.send('HELLO',{});
-   this.stage('READY');this.heartbeat=setInterval(()=>{this.send('HEARTBEAT',this.qaTelemetry?.()||{}).catch(()=>{this.metrics.errors++;});},200);
+   this.lastHeartbeatAck=performance.now();this.stage('READY');this.heartbeat=setInterval(()=>{this.send('HEARTBEAT',this.qaTelemetry?.()||{}).catch(()=>{this.metrics.errors++;if(performance.now()-this.lastHeartbeatAck>3000&&this.state==='RUNNING')this.state='DISCONNECTED';});},200);
    return {playerId:reply.playerId,connectionEpoch:reply.connectionEpoch};
   }catch(e){
    const known=/^JOIN_E(?:01_OFFER|02_LOCAL_SDP|02_ICE_GATHER|03_SIGNAL_HTTP|04_SIGNAL_REJECTED|05_REMOTE_SDP|06_ICE_FAILED|07_CONTROL_TIMEOUT|08_MOTION_TIMEOUT|09_HELLO_TIMEOUT)$/;
@@ -139,7 +139,7 @@ export class MobileClient {
    this.metrics.motionAck++;this.metrics.received++;if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-motion.started);return;
   }
   const p=this.pending.get(n.sequence);if(!p)return;clearTimeout(p.timer);this.pending.delete(n.sequence);this.metrics.received++;
-  if(p.type==='HEARTBEAT'){this.gameContext=n.payload?.gameContext||null;this.gameContextExpires=performance.now()+2500;}
+  if(p.type==='HEARTBEAT'){this.lastHeartbeatAck=performance.now();this.gameContext=n.payload?.gameContext||null;this.gameContextExpires=performance.now()+2500;}
   if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-p.started);p.resolve(n);
  }
  motion(payload,clientTimestamp=Date.now()){

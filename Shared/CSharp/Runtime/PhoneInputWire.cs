@@ -23,7 +23,7 @@ namespace GorillaEscape.Contracts
     [Serializable] public sealed class QaHostingWire {public QaAdmissionWire prepare;public string origin,fingerprint,prepareUrl;}
     [Serializable] public sealed class QaAdmissionWire {public string state,modules;public long ttlMs;public int size;}
     [Serializable] public sealed class QaMetricsWire {public long attempted,succeeded,reconnectAttempted,reconnectSucceeded;}
-    [Serializable] public sealed class PhonePongPayload { public QaPhoneMetricsWire[] qaPhones; public QaConnectionWire qaConnection; public QaHostingWire qaHosting; public QaAdmissionWire qa; public QaMetricsWire qaMetrics; public PhoneInputWire[] phoneInputs; public bool hasLobbyResult; public LobbySnapshotWire lobby; public LobbyCommandResult lobbyResult; }
+    [Serializable] public sealed class PhonePongPayload { public MobileUiCommandWire uiCommand; public QaPhoneMetricsWire[] qaPhones; public QaConnectionWire qaConnection; public QaHostingWire qaHosting; public QaAdmissionWire qa; public QaMetricsWire qaMetrics; public PhoneInputWire[] phoneInputs; public bool hasLobbyResult; public LobbySnapshotWire lobby; public LobbyCommandResult lobbyResult; }
     [Serializable] public sealed class PhonePong {
         public int ipcVersion,sequence;public string type,instanceId,connectionId;public PhonePongPayload payload;
     }

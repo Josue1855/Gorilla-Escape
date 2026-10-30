@@ -116,9 +116,7 @@ class ConnectivityRecoveryTest {
         connections.observe("Serve tunnel error connIndex=1");assertEquals(0,connections.size());
     }
     Path script(String output)throws Exception{
-        var binary=temp.resolve("cloudflared-fixture");
-        Files.writeString(binary,"#!/bin/sh\nif [ \"$1\" = '--version' ]; then echo 'cloudflared version 2026.10.0'; exit 0; fi\n"+output+"\nexec sleep 20\n");
-        binary.toFile().setExecutable(true);return binary;
+        return TestCloudflaredFixture.create(temp,output+"\nexec sleep 20\n");
     }
     @Test void realReaderKeepsSurvivingConnection()throws Exception{
         var binary=script("echo 'Registered tunnel connection connIndex=0'\necho 'Registered tunnel connection connIndex=1'\necho 'Unregistered tunnel connection connIndex=0'\necho 'https://partial.trycloudflare.com'");

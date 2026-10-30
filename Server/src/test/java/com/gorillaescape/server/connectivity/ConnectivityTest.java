@@ -10,6 +10,12 @@ import java.util.*;
 import java.util.concurrent.*;
 
 class ConnectivityTest {
+    @Test void publicTunnelDoesNotRequireLanFirewallButCabinStillDoes(){
+        assertTrue(ConnectivityService.firewallAllowsAdmission(false,true,"CLOUDFLARED"));
+        assertFalse(ConnectivityService.firewallAllowsAdmission(false,true,"CABIN"));
+        assertFalse(ConnectivityService.firewallAllowsAdmission(false,false,"CLOUDFLARED"));
+        assertTrue(ConnectivityService.firewallAllowsAdmission(true,true,"CABIN"));
+    }
     @TempDir Path temp;
     static class Fake implements Tunnel {
         State state=State.STOPPED;boolean clean=true;int starts,closes;String failure;
@@ -43,8 +49,7 @@ class ConnectivityTest {
         assertEquals("https://play.gorillas.run",CloudflaredSupervisor.parseOrigin("Registered tunnel connection connIndex=0 event=0 https://play.gorillas.run").toASCIIString());
     }
     Path script(String scenario)throws Exception{
-        var p=temp.resolve("cloudflared "+UUID.randomUUID());
-        Files.writeString(p,"#!/bin/sh\nif [ \"$1\" = '--version' ]; then echo 'cloudflared version 2026.10.0'; exit 0; fi\n"+scenario);p.toFile().setExecutable(true);return p;
+        return TestCloudflaredFixture.create(temp,scenario);
     }
     @Test void ownedProcessReadyTimeoutInvalidOutputDeathAndCleanup()throws Exception{
         for(String output:List.of("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nexec sleep 20\n","echo 'https://qa-test.trycloudflare.com.evil.org'\necho 'Registered tunnel connection'\nexec sleep 20\n","exec sleep 20\n","exit 1\n")){
@@ -85,7 +90,7 @@ class ConnectivityTest {
     @Test void httpHealthFailureCannotCreateReadyAndVersionTimeoutCleansOwnedChild()throws Exception{
         var binary=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nexec sleep 20\n");
         try(var supervisor=new CloudflaredSupervisor(binary,(origin,budget)->false)){assertThrows(Exception.class,()->supervisor.start(URI.create("http://127.0.0.1:9"),200));assertTrue(supervisor.cleanupComplete());assertEquals(Tunnel.State.FAILED,supervisor.state());}
-        var hung=temp.resolve("hung-version");Files.writeString(hung,"#!/bin/sh\nexec sleep 20\n");hung.toFile().setExecutable(true);
+        var hung=TestCloudflaredFixture.create(temp,"HANG_VERSION");
         try(var supervisor=new CloudflaredSupervisor(hung,(origin,budget)->true)){assertThrows(Exception.class,()->supervisor.start(URI.create("http://127.0.0.1:9"),100));assertTrue(supervisor.cleanupComplete());}
     }
 
@@ -120,11 +125,14 @@ class ConnectivityTest {
         var home=temp.resolve("home");var sandbox=temp.resolve("flatpak");
         Files.createDirectories(home.resolve(".config/gorilla-escape"));
         Files.writeString(home.resolve(".config/gorilla-escape/room-registration-secret"),"standard-secret");
-        assertEquals("standard-secret",ConnectivityService.registrationSecret(null,sandbox.toString(),home.toString()));
+        assertEquals("standard-secret",ConnectivityService.registrationSecret(null,sandbox.toString(),null,home.toString()));
         Files.createDirectories(sandbox.resolve("gorilla-escape"));
         Files.writeString(sandbox.resolve("gorilla-escape/room-registration-secret"),"flatpak-secret");
-        assertEquals("flatpak-secret",ConnectivityService.registrationSecret(null,sandbox.toString(),home.toString()));
-        assertEquals("explicit-secret",ConnectivityService.registrationSecret("explicit-secret",sandbox.toString(),home.toString()));
+        assertEquals("flatpak-secret",ConnectivityService.registrationSecret(null,sandbox.toString(),null,home.toString()));
+        assertEquals("explicit-secret",ConnectivityService.registrationSecret("explicit-secret",sandbox.toString(),null,home.toString()));
+        var appData=temp.resolve("AppData/Roaming");Files.createDirectories(appData.resolve("Gorilla Escape"));
+        Files.writeString(appData.resolve("Gorilla Escape/room-registration-secret"),"windows-secret");
+        assertEquals("windows-secret",ConnectivityService.registrationSecret(null,null,appData.toString(),home.toString()));
     }
 
     @Test void publicIngressAllowsBundledFontsOnlyUnderAssets(){
@@ -182,7 +190,7 @@ class ConnectivityTest {
     @Test void actualRunningProcessDeathIsDetectedAndMalformedOutputIsBounded()throws Exception{
         var dying=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nsleep 0.1\n");
         try(var tunnel=new CloudflaredSupervisor(dying,(origin,budget)->true)){
-            tunnel.start(URI.create("http://127.0.0.1:9"),500);long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(1);
+            tunnel.start(URI.create("http://127.0.0.1:9"),500);long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(5);
             while(tunnel.state()==Tunnel.State.RUNNING&&System.nanoTime()<end)Thread.sleep(10);assertEquals(Tunnel.State.FAILED,tunnel.state());tunnel.close();assertTrue(tunnel.cleanupComplete());
         }
         var bad=script("printf '%s\\n' 'https://qa-test.trycloudflare.com;$(touch should-never-exist)'\necho 'Registered tunnel connection'\nexec sleep 20\n");

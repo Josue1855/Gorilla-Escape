@@ -3,6 +3,7 @@ import ReadyControl from './controller/ReadyControl.jsx';
 import HealthProbe from './connection/HealthProbe.jsx';
 import { ControllerSession } from './controller/session.js';
 import { screens } from './controller/presentation.js';
+import { controlProfile } from './controller/gamePresentation.js';
 
 function GorillaMark() {
   return <svg className="gorilla-mark" viewBox="0 0 120 100" aria-hidden="true">
@@ -31,10 +32,11 @@ function Controller() {
   useEffect(() => {
     const session = new ControllerSession({ notify: setView });
     model.current = session; setView(session.snapshot());
+    if(session.savedResume)void session.connect();
     return () => { model.current = null; void session.dispose().catch(() => {}); };
   }, []);
   const state = view?.state || 'NO_ADMISSION';
-  const [title, description, label, feedback] = screens[state];
+  const [title, description, label, feedback] = screens[state]||screens.ERROR;
   async function copyDiagnostic() {
     const report = model.current.diagnostic();
     setDiagnostic(report);
@@ -42,7 +44,7 @@ function Controller() {
     catch { setCopyStatus('Copia el diagnóstico que aparece abajo.'); }
   }
   const canRetryPermission = state === 'ERROR' && view?.network === 'NETWORK_READY';
-  if (state === 'INPUT_READY') return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} actions={<><GameAction session={model} action="confirm">Confirmar / lanzar</GameAction><GameAction session={model} action="recenter">Recentrar</GameAction></>}/>;
+  if(view?.network==='NETWORK_READY'&&(state==='INPUT_READY'||controlProfile(view.gameContext,view.playerId).valid))return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} onCommand={(action,target)=>model.current?.command(action,target)} onActivate={()=>void model.current?.activate()} actions={<GameAction session={model} action="recenter">CENTRAR APUNTADO</GameAction>}/>;
   return <main className="controller-shell">
     <header className="brand"><GorillaMark/><div><p className="eyebrow">GORILIMPIADAS</p><h1>GORILLA<br/>ESCAPE</h1></div></header>
     <p className="edition">GORILLA CORE · TU TELÉFONO, TU CONTROL</p>
@@ -50,6 +52,7 @@ function Controller() {
       <div className="status-symbol" aria-hidden="true">{feedback === 'connecting' ? '…' : feedback === 'success' ? '✓' : feedback === 'error' ? '×' : '◆'}</div>
       <div role="status" aria-live="polite" aria-atomic="true"><h2 id="connection-title">{title}</h2><p>{description}</p></div>
       {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión local establecida</p>}
+      {state==='DISCONNECTED'&&<button className="primary" onClick={()=>void model.current.reconnect()}>RECONECTAR MI SESIÓN</button>}
       {state === 'ERROR' && view?.network === 'NOT_CONNECTED' && <div className="connection-recovery">
         <p>La conexión falló antes de recibir una respuesta de la PC. Comprueba este navegador antes de volver a escanear.</p>
         <button className="primary" disabled={view?.connectionCheck === 'CHECKING'} onClick={() => void model.current.checkConnection()}>{view?.connectionCheck === 'CHECKING' ? 'COMPROBANDO…' : 'COMPROBAR CONEXIÓN'}</button>

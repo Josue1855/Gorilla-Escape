@@ -151,6 +151,7 @@ public final class ManagedProbe implements DisposableBean {
                             pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity==null?mobile.qa(qaPage,lab,regenerateQa):connectivity.qa(regenerateQa)));
                             if(connectivity!=null)pongPayload.set("qaConnection",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity.snapshot()));
                             pongPayload.set("qaPhones",mobile.qaPhones());pongPayload.set("qaMetrics",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qaMetrics()));}
+                        var uiCommand=mobile.uiCommands.drain();if(uiCommand!=null)pongPayload.set("uiCommand",uiCommand);
                         int overhead=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsBytes(root).length;
                         pongPayload.set("phoneInputs",mobile.inputs.drain(Math.min(3500,ProbeCodec.MAX_FRAME-overhead-20)));
                         pong=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(root);}

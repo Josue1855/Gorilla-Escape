@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
+
+import 'protocol.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -76,6 +79,9 @@ class NativeTransport extends ChangeNotifier {
   final Set<int> _motionPending = {};
   String state = 'idle', stage = 'idle', code = '';
   bool _disposed = false, profileAttempted = false, _motionSending = false;
+  bool _connecting = false;
+  bool get needsRecovery =>
+      state != 'connected' || clock.elapsedMilliseconds - lastAckMs > 2500;
   bool get canResume => _identity != null;
   int? get playerId => _identity?['playerId'];
   Map<String, dynamic>? get gameContext =>
@@ -93,9 +99,23 @@ class NativeTransport extends ChangeNotifier {
   Future<Map<String, dynamic>> request(
     String path,
     Map<String, dynamic> body,
-  ) => postControllerJson(_http, _origin!.resolve(path), body);
+  ) => postControllerJson(
+    _http,
+    _origin!.resolve(path.replaceFirst(RegExp(r'^/'), '')),
+    body,
+  );
 
   Future<void> connect(Uri link, {bool resume = false}) async {
+    if (_connecting || _disposed) return;
+    _connecting = true;
+    try {
+      await _connect(link, resume: resume);
+    } finally {
+      _connecting = false;
+    }
+  }
+
+  Future<void> _connect(Uri link, {bool resume = false}) async {
     final prior = resume ? _identity : null;
     final generation = ++_generation;
     await _release();
@@ -109,7 +129,11 @@ class NativeTransport extends ChangeNotifier {
       scheme: link.scheme,
       host: link.host,
       port: link.hasPort ? link.port : null,
-      path: '/',
+      path:
+          link.host == 'play.gorillas.run' &&
+              RegExp(r'^/[a-z0-9]{4,8}/?$').hasMatch(link.path)
+          ? '${link.path.replaceAll(RegExp(r'/$'), '')}/'
+          : '/',
     );
     try {
       final pc = await createPeerConnection({'iceServers': <dynamic>[]});
@@ -293,6 +317,22 @@ class NativeTransport extends ChangeNotifier {
     },
     'payload': payload,
   };
+  Future<void> command(String action, {String target = ''}) async {
+    final profile = GameControlProfile.fromContext(gameContext, playerId);
+    if (!profile.canNavigate) throw const ControlFailure('COMMAND_CONTEXT');
+    final random = math.Random.secure();
+    final requestId = List.generate(
+      16,
+      (_) => random.nextInt(256).toRadixString(16).padLeft(2, '0'),
+    ).join();
+    await control('UI_COMMAND', {
+      'requestId': requestId,
+      'contextId': profile.contextId,
+      'action': action,
+      'target': target,
+    });
+  }
+
   Future<void> control(String type, Map<String, dynamic> payload) async {
     if (state != 'connected' ||
         _control?.state != RTCDataChannelState.RTCDataChannelOpen ||

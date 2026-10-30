@@ -44,7 +44,7 @@ public final class LocalTrust {
     }
     public static Material prepare(Path directory, String address) throws Exception {
         if (!directory.isAbsolute() || !MobileHttpsSettings.privateIpv4(address)) throw new IOException("TRUST_CONFIG_INVALID");
-        Files.createDirectories(directory, PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------")));
+        OwnerOnlyFiles.createDirectories(directory);
         Path dir=directory.toRealPath();
         for(Path parent=dir;parent!=null;parent=parent.getParent()) if(Files.exists(parent.resolve(".git"))) throw new IOException("TRUST_DIRECTORY_IN_REPOSITORY");
         secure(dir,true);
@@ -61,7 +61,7 @@ public final class LocalTrust {
         Path root=dir.resolve("root.p12"),password=dir.resolve("password"),publicRoot=dir.resolve("root.cer"),leaf=dir.resolve("server.p12");
         boolean exists=Files.exists(root)||Files.exists(password)||Files.exists(publicRoot)||Files.exists(leaf);
         if(exists && (!Files.exists(root)||!Files.exists(password)||!Files.exists(publicRoot)))throw new IOException("TRUST_STATE_INCOMPLETE");
-        Path temp=Files.createTempDirectory(dir,"work-",PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------")));
+        Path temp=OwnerOnlyFiles.createTempDirectory(dir,"work-");
         try {
             if(!exists) {
                 byte[] random=new byte[32];new SecureRandom().nextBytes(random);
@@ -106,8 +106,9 @@ public final class LocalTrust {
     }
     private static KeyStore load(Path path,String password)throws Exception {var k=KeyStore.getInstance("PKCS12");try(var in=Files.newInputStream(path)){k.load(in,password.toCharArray());}return k;}
     private static void tool(Path dir,Path password,String...args)throws Exception {
-        Path binary=Path.of(System.getProperty("java.home"),"bin",System.getProperty("os.name").startsWith("Windows")?"keytool.exe":"keytool");
-        if(!Files.isExecutable(binary))throw new IOException("KEYTOOL_REQUIRED");
+        boolean windows=System.getProperty("os.name").startsWith("Windows");
+        Path binary=Path.of(System.getProperty("java.home"),"bin",windows?"keytool.exe":"keytool");
+        if(!(Files.isExecutable(binary)||(windows&&Files.isRegularFile(binary))))throw new IOException("KEYTOOL_REQUIRED");
         List<String> command=new ArrayList<>();command.add(binary.toString());command.addAll(List.of(args));command.addAll(List.of("-storepass:file",password.toString()));
         var parentBefore=GorillaEscapeApplication.managedParent();
         if(Thread.currentThread().isInterrupted()||parentBefore!=null&&!parentBefore.publishIfAlive(()->{}))throw new IOException("TRUST_GENERATION_CANCELLED");
@@ -124,12 +125,10 @@ public final class LocalTrust {
     private static void move(Path from,Path to)throws IOException {secure(from,false);Files.move(from,to,StandardCopyOption.ATOMIC_MOVE,StandardCopyOption.REPLACE_EXISTING);}
     private static void check(Path f)throws IOException {if(Files.isSymbolicLink(f)||!Files.isRegularFile(f)||Files.size(f)>1024*1024)throw new IOException("TRUST_FILE_INVALID");secure(f,false);}
     private static void secure(Path f,boolean directory)throws IOException {
-        if(!Files.getFileStore(f).supportsFileAttributeView("posix"))throw new IOException("TRUST_PERMISSIONS_UNSUPPORTED");
-        var permissions=PosixFilePermissions.fromString(directory?"rwx------":"rw-------");
         if(Files.isSymbolicLink(f))throw new IOException("TRUST_FILE_INVALID");
         // Never quietly tighten existing shared files: this may indicate the wrong installation path.
-        if(!Files.getPosixFilePermissions(f).equals(permissions)) {
-            if(f.getFileName().toString().equals("trust.lock")||f.getParent().getFileName().toString().startsWith("work-"))Files.setPosixFilePermissions(f,permissions);
+        if(!OwnerOnlyFiles.isOwnerOnly(f,directory)) {
+            if(f.getFileName().toString().equals("trust.lock")||f.getParent().getFileName().toString().startsWith("work-"))OwnerOnlyFiles.restrict(f);
             else throw new IOException("TRUST_PERMISSIONS_INVALID");
         }
     }

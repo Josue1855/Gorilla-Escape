@@ -21,7 +21,10 @@ public final class CloudflaredSupervisor implements Tunnel {
     private volatile String failure="NONE",binarySha="NOT_CHECKED";
     @Override public String failureReason(){return failure;}
     public String binarySha(){return binarySha;}
-    public static final String PINNED_SHA256="d33ff2d14475178d2012c2c56beba87389ac5ded27649519f198a7d3134a99db";
+    public static final String LINUX_AMD64_SHA256="d33ff2d14475178d2012c2c56beba87389ac5ded27649519f198a7d3134a99db";
+    public static final String WINDOWS_AMD64_SHA256="86aee4017b26625cee8484c113558f48effa4cd47f7aa05fcf425604e5d2b23c";
+    /** Retained for Linux package compatibility. */
+    public static final String PINNED_SHA256=LINUX_AMD64_SHA256;
     private final Path binary;
     private final boolean verifyBinary;
     private volatile boolean registered,cancelled;
@@ -31,7 +34,9 @@ public final class CloudflaredSupervisor implements Tunnel {
         try(var in=Files.newInputStream(binary)){
             var digest=java.security.MessageDigest.getInstance("SHA-256");
             byte[] buffer=new byte[65536];int n;while((n=in.read(buffer))!=-1)digest.update(buffer,0,n);
-            return PINNED_SHA256.equals(java.util.HexFormat.of().formatHex(digest.digest()));
+            String os=System.getProperty("os.name","").toLowerCase(Locale.ROOT);
+            String expected=os.contains("win")?WINDOWS_AMD64_SHA256:LINUX_AMD64_SHA256;
+            return expected.equals(java.util.HexFormat.of().formatHex(digest.digest()));
         }catch(Exception e){return false;}
     }
     @FunctionalInterface interface HealthProbe {boolean ready(URI origin,long remainingMs)throws Exception;}
@@ -67,8 +72,9 @@ public final class CloudflaredSupervisor implements Tunnel {
     }
     // Discovery never downloads. Every production execution independently verifies the pinned hash.
     public static Path discover(String explicit,String path){
-        if(explicit!=null&&!explicit.isBlank()){var p=Path.of(explicit);if(p.isAbsolute()&&Files.isRegularFile(p)&&Files.isExecutable(p))return p;}
-        if(path!=null)for(String part:path.split(java.io.File.pathSeparator)){if(part.isBlank())continue;var p=Path.of(part,"cloudflared");if(p.isAbsolute()&&Files.isRegularFile(p)&&Files.isExecutable(p))return p;}
+        if(explicit!=null&&!explicit.isBlank())try{var p=Path.of(explicit);if(p.isAbsolute()&&Files.isRegularFile(p)&&Files.isExecutable(p))return p;}catch(InvalidPathException ignored){}
+        String executable=System.getProperty("os.name","").toLowerCase(Locale.ROOT).contains("win")?"cloudflared.exe":"cloudflared";
+        if(path!=null)for(String part:path.split(java.io.File.pathSeparator)){if(part.isBlank())continue;try{var p=Path.of(part,executable);if(p.isAbsolute()&&Files.isRegularFile(p)&&Files.isExecutable(p))return p;}catch(InvalidPathException ignored){}}
         return null;
     }
     public static URI validatePublicOrigin(String value){
@@ -91,7 +97,7 @@ public final class CloudflaredSupervisor implements Tunnel {
             if(binary==null)throw new IOException("TUNNEL_UNAVAILABLE");
             if(verifyBinary){binarySha=verified(binary)?"PASS":"INVALID";if(!binarySha.equals("PASS"))throw new IOException("TUNNEL_SHA_INVALID");}
             launch(binary.toString(),"--version");
-            if(!child.waitFor(Math.min(500,timeoutMs),TimeUnit.MILLISECONDS))throw new IOException("TUNNEL_VERSION_TIMEOUT");
+            if(!child.waitFor(Math.min(5000,timeoutMs),TimeUnit.MILLISECONDS))throw new IOException("TUNNEL_VERSION_TIMEOUT");
             byte[] output=child.getInputStream().readNBytes(257);String info=new String(output,java.nio.charset.StandardCharsets.US_ASCII).trim();
             if(child.exitValue()!=0||output.length>256||!info.matches("cloudflared version [0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,3}(?: \\(built [A-Za-z0-9: .+-]+\\))?"))throw new IOException("TUNNEL_VERSION_INVALID");
             version=info;child=null;

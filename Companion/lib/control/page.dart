@@ -10,6 +10,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'protocol.dart';
 import 'transport.dart';
+import 'game_surface.dart';
 
 class ControlPage extends StatefulWidget {
   final Uri link;
@@ -31,7 +32,15 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   String sensorError = '';
   bool starting = false, foreground = true, permissionRequested = false;
   String previousTransportState = "";
+  String? previousPhase;
+  double? previousScore;
   int sensorGeneration = 0, renderTick = 0, inspectedAcks = 0;
+  Timer? recoveryTimer;
+  int recoveryAttempts = 0;
+  bool recovering = false, commandPending = false;
+  bool? wakeDesired;
+  String commandStatus = '', profileContext = '';
+  double? neutralGamma;
   @override
   void initState() {
     super.initState();
@@ -46,10 +55,52 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   void refresh() {
     if (!mounted) return;
     final connectedNow = transport.state == 'connected';
-    final becameConnected =
-        connectedNow && previousTransportState != 'connected';
     previousTransportState = transport.state;
-    if (becameConnected && foreground) unawaited(startSensors());
+    final ctx = transport.gameContext;
+    final profile = GameControlProfile.fromContext(ctx, transport.playerId);
+    if (profile.valid && profile.contextId != profileContext) {
+      profileContext = profile.contextId!;
+      motion.setAction(false);
+      neutralGamma = null;
+      previousPhase = null;
+      previousScore = null;
+    }
+    if (connectedNow && foreground && profile.valid) {
+      if (profile.phoneRequired && subscriptions.isEmpty && !starting) {
+        unawaited(startSensors());
+      }
+      if (!profile.phoneRequired && subscriptions.isNotEmpty) {
+        unawaited(stopSensors());
+      }
+      unawaited(keepAwake(profile.phoneRequired && activated));
+    }
+    if (!connectedNow &&
+        foreground &&
+        transport.canResume &&
+        transport.state != 'connecting' &&
+        !recovering) {
+      scheduleRecovery();
+    }
+    final phase = ctx?['phase'];
+    if (phase is String) {
+      if (previousPhase != null && phase != previousPhase && foreground) {
+        if (phase == 'Won' ||
+            phase == 'Lost' ||
+            phase == 'Fell' ||
+            phase == 'Playing') {
+          unawaited(HapticFeedback.mediumImpact());
+        }
+      }
+      previousPhase = phase;
+    }
+    final stats = GameStats.fromContext(ctx);
+    final score = stats?.values['score'];
+    if (score != null) {
+      if (previousScore != null && score > previousScore! && foreground) {
+        unawaited(HapticFeedback.lightImpact());
+      }
+      previousScore = score;
+    }
     setState(() {});
   }
 
@@ -60,9 +111,64 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   }
 
   Future<void> keepAwake(bool enabled) async {
+    if (wakeDesired == enabled) return;
+    wakeDesired = enabled;
     try {
       await WakelockPlus.toggle(enable: enabled);
-    } catch (_) {}
+    } catch (_) {
+      wakeDesired = null;
+    }
+  }
+
+  void scheduleRecovery() {
+    if (recoveryTimer != null ||
+        recoveryAttempts >= 3 ||
+        !mounted ||
+        !foreground) {
+      return;
+    }
+    recoveryTimer = Timer(
+      Duration(milliseconds: 1000 * (recoveryAttempts + 1)),
+      () {
+        recoveryTimer = null;
+        unawaited(recoverSession());
+      },
+    );
+  }
+
+  Future<void> recoverSession() async {
+    if (recovering || !mounted || !foreground || !transport.canResume) return;
+    recovering = true;
+    recoveryTimer?.cancel();
+    recoveryTimer = null;
+    await stopSensors();
+    await transport.connect(widget.link, resume: true);
+    recovering = false;
+    if (!mounted) return;
+    if (transport.state == 'connected') {
+      recoveryAttempts = 0;
+      profileContext = '';
+      refresh();
+    } else {
+      recoveryAttempts++;
+      scheduleRecovery();
+    }
+  }
+
+  Future<void> sendCommand(String action, String target) async {
+    if (commandPending) return;
+    setState(() {
+      commandPending = true;
+      commandStatus = 'Enviando…';
+    });
+    try {
+      await transport.command(action, target: target);
+      commandStatus = 'Solicitud enviada a la PC.';
+    } catch (_) {
+      commandStatus = 'La PC no confirmó la solicitud. Inténtalo de nuevo.';
+    } finally {
+      if (mounted) setState(() => commandPending = false);
+    }
   }
 
   Future<void> stopSensors() async {
@@ -111,6 +217,9 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
         void record(String group, Map<String, num> values) {
           if (mounted && foreground && generation == sensorGeneration) {
             motion.record(group, values, transport.clock.elapsedMilliseconds);
+            if (group == 'orientation') {
+              neutralGamma ??= values['gamma']?.toDouble();
+            }
           }
         }
 
@@ -198,9 +307,21 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     foreground = state == AppLifecycleState.resumed;
-    if (!foreground) motion.setAction(false);
+    if (!foreground) {
+      motion.setAction(false);
+      recoveryTimer?.cancel();
+      recoveryTimer = null;
+    }
     if (state == AppLifecycleState.resumed) {
-      if (activated && transport.state == 'connected') {
+      recoveryAttempts = 0;
+      if (transport.canResume && transport.needsRecovery) {
+        unawaited(recoverSession());
+      } else if (activated &&
+          transport.state == 'connected' &&
+          GameControlProfile.fromContext(
+            transport.gameContext,
+            transport.playerId,
+          ).phoneRequired) {
         unawaited(startSensors());
       }
     } else if (state != AppLifecycleState.inactive) {
@@ -211,6 +332,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   @override
   void dispose() {
     ++sensorGeneration;
+    recoveryTimer?.cancel();
     foreground = false;
     unawaited(keepAwake(false));
     WidgetsBinding.instance.removeObserver(this);
@@ -228,17 +350,19 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     portrait = MediaQuery.orientationOf(context) == Orientation.portrait;
-    final view = GameView.fromContext(
+    final stats = GameStats.fromContext(transport.gameContext);
+    final connected = transport.state == 'connected';
+    final profile = GameControlProfile.fromContext(
       transport.gameContext,
       transport.playerId,
     );
-    final stats = GameStats.fromContext(transport.gameContext);
-    final connected = transport.state == 'connected';
     final gamma = motion.gamma(transport.clock.elapsedMilliseconds) ?? 0;
     final status = !connected
         ? (transport.state == 'connecting'
               ? 'Conectando con la isla…'
               : 'Conexión interrumpida')
+        : profile.valid && !profile.phoneRequired
+        ? 'CONECTADO · MANOS LIBRES'
         : !activated
         ? 'Conectado · activa el control'
         : !portrait
@@ -272,81 +396,39 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Text(
-                  view.title,
-                  style: const TextStyle(
-                    fontSize: 42,
-                    height: 1.05,
-                    fontWeight: FontWeight.w900,
+                GameControlSurface(
+                  contextData: transport.gameContext,
+                  player: transport.playerId,
+                  sensorsReady: activated && !suspended && connected,
+                  tilt: ((gamma - (neutralGamma ?? gamma)) / 30).clamp(
+                    -1.0,
+                    1.0,
                   ),
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff1d3c33),
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  child: Center(
-                    child: Transform.rotate(
-                      angle: activated && !suspended
-                          ? (stats?.values['roll'] ?? gamma).clamp(-40, 40) *
-                                math.pi /
-                                180
-                          : 0,
-                      child: Icon(
-                        view.phase == 'Won'
-                            ? Icons.emoji_events
-                            : Icons.accessibility_new,
-                        size: 100,
-                        color: const Color(0xffe5bd75),
-                      ),
+                  busy: commandPending,
+                  onCommand: (action, target) =>
+                      unawaited(sendCommand(action, target)),
+                  scorePanel: stats == null
+                      ? null
+                      : GameScorePanel(stats: stats),
+                  recenter: Listener(
+                    onPointerDown: (_) {
+                      unawaited(HapticFeedback.selectionClick());
+                      motion.setAction(true, center: true);
+                    },
+                    onPointerUp: (_) => motion.setAction(false, center: true),
+                    onPointerCancel: (_) =>
+                        motion.setAction(false, center: true),
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      child: const Text('CENTRAR APUNTADO'),
                     ),
                   ),
                 ),
-                if (stats != null) ...[
-                  const SizedBox(height: 20),
-                  GameScorePanel(stats: stats),
-                ],
-                if (activated && !suspended)
-                  Wrap(
-                    spacing: 12,
-                    children: [
-                      for (final center in [false, true])
-                        Listener(
-                          onPointerDown: (_) =>
-                              motion.setAction(true, center: center),
-                          onPointerUp: (_) =>
-                              motion.setAction(false, center: center),
-                          onPointerCancel: (_) =>
-                              motion.setAction(false, center: center),
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            child: Text(
-                              center ? 'Recentrar' : 'Confirmar / lanzar',
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                Text(commandStatus),
                 const SizedBox(height: 24),
-                Semantics(
-                  liveRegion: true,
-                  child: Text(
-                    view.heading,
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  view.instruction,
-                  style: const TextStyle(fontSize: 18, height: 1.5),
-                ),
-                const SizedBox(height: 24),
-                if (connected && (!activated || sensorError.isNotEmpty))
+                if (connected &&
+                    profile.phoneRequired &&
+                    (!activated || sensorError.isNotEmpty))
                   FilledButton(
                     onPressed: startSensors,
                     child: Text(
@@ -357,12 +439,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                     transport.state != 'connecting' &&
                     transport.canResume)
                   FilledButton(
-                    onPressed: () async {
-                      await transport.connect(widget.link, resume: true);
-                      if (activated && transport.state == 'connected') {
-                        await startSensors();
-                      }
-                    },
+                    onPressed: () => unawaited(recoverSession()),
                     child: const Text('RECONECTAR'),
                   ),
                 if (!connected && transport.state != 'connecting')

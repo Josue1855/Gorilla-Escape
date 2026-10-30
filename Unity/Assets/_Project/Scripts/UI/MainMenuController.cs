@@ -48,7 +48,7 @@ namespace GorillaEscape.UI
 #endif
             if (!ShouldAutoLaunch(Application.isEditor, Application.isPlaying, Application.isBatchMode,
                 false, SceneManager.GetActiveScene().path, ProductFlow)) return;
-            if (FindFirstObjectByType<MainMenuController>(FindObjectsInactive.Include) != null) return;
+            if (FindAnyObjectByType<MainMenuController>(FindObjectsInactive.Include) != null) return;
             var host = new GameObject("MainMenu");
             DontDestroyOnLoad(host);
             host.AddComponent<MainMenuController>();
@@ -56,7 +56,7 @@ namespace GorillaEscape.UI
 
         void Awake()
         {
-            if(Camera.main==null&&FindFirstObjectByType<Camera>()==null){
+            if(Camera.main==null&&FindAnyObjectByType<Camera>()==null){
                 var view=new GameObject("Menu Camera");view.transform.SetParent(transform);
                 var camera=view.AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;
                 camera.backgroundColor=new Color(.06f,.08f,.11f);camera.cullingMask=0;

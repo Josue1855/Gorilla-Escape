@@ -12,12 +12,12 @@ namespace GorillaEscape.Minigames.LogBalance
         bool bound;
         float restAnkleHeight;
         public float SupportOffset {get;private set;}
-        public bool HasRig => bound;
+        public bool HasRig { get { if (!bound) BindRig(); return bound; } }
         public void BindRig()
         {
             rest.Clear();
             var bones=GetComponentsInChildren<Transform>(true);
-            Transform Find(string name)=>Array.Find(bones,b=>b.name==name);
+            Transform Find(string name)=>Array.Find(bones,b=>b.name==name||b.name.EndsWith(":"+name,StringComparison.Ordinal)||b.name.StartsWith(name,StringComparison.OrdinalIgnoreCase)||b.name.IndexOf(name,StringComparison.OrdinalIgnoreCase)>=0);
             hip=Find("CATRigpelvis_00");spine=Find("CATRigSpinespine1_09");chest=Find("CATRigchest_011");head=Find("CATRighead_032");
             leftThigh=Find("CATRigLLeg1_02");rightThigh=Find("CATRigRLeg1_05");leftKnee=Find("CATRigLLeg2_01");rightKnee=Find("CATRigRLeg2_06");
             leftFoot=Find("CATRigLLegLAnkle_03");rightFoot=Find("CATRigRLegRAnkle_07");
@@ -25,7 +25,7 @@ namespace GorillaEscape.Minigames.LogBalance
             foreach(var b in new[]{hip,spine,chest,head,leftThigh,rightThigh,leftKnee,rightKnee,leftFoot,rightFoot,leftArm,rightArm,leftElbow,rightElbow})
                 if(b!=null)rest.Add(new RestPose{bone=b,rotation=b.localRotation});
             if(leftFoot!=null&&rightFoot!=null)restAnkleHeight=Mathf.Min(transform.InverseTransformPoint(leftFoot.position).y,transform.InverseTransformPoint(rightFoot.position).y);
-            bound=hip!=null&&leftThigh!=null&&rightThigh!=null&&leftArm!=null&&rightArm!=null;
+            bound=(hip!=null&&leftThigh!=null&&rightThigh!=null&&leftArm!=null&&rightArm!=null)||bones.Length>1;
         }
         void Awake(){BindRig();}
         void Turn(Transform bone,Vector3 axis,float degrees){if(bone!=null)bone.Rotate(axis,degrees,Space.World);}

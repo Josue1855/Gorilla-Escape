@@ -32,6 +32,7 @@ namespace GorillaEscape.Input
         public float wristX {get;internal set;}
         public float wristY {get;internal set;}
         public float bodyX {get;internal set;}
+        public float bodyY {get;internal set;}
         public float confidence {get;internal set;}
         public float leftWristX {get;internal set;}
         public float leftWristY {get;internal set;}
@@ -46,6 +47,12 @@ namespace GorillaEscape.Input
         long epoch = -1, sequence = -1, cameraSequence = -1;
         bool pressed;
         int confirmations, recenters;
+        public static bool MotionAvailable(PhoneInputWire input,long now) => input!=null
+            &&input.playerId==1&&input.messageType=="MOTION_SAMPLE"&&input.connectionState=="ACTIVE"
+            &&!string.IsNullOrEmpty(input.sessionId)&&!string.IsNullOrEmpty(input.deviceSessionId)
+            &&input.connectionEpoch>=1&&input.sequence>=0&&Fresh(input.serverReceiveTimestamp,now)
+            &&Vector(input.accelerationIncludingGravity)&&Angles(input.rotationRate)&&Angles(input.orientation)
+            &&input.screenOrientation!=null&&input.screenOrientation.hasAngle&&Finite(input.screenOrientation.angle);
         public bool TryMotion(PhoneInputWire input, long now, out JungleMotionPacket packet)
         {
             packet = null;
@@ -97,13 +104,13 @@ namespace GorillaEscape.Input
             packet=new JungleMotionPacket {time=input.serverReceiveTimestamp,gamma=orientation.gamma,screen=screen.angle,hasScreen=true};
             return true;
         }
-        public bool TryPose(CameraInputWire frame, int subjectId, long now, out JunglePosePacket packet)
+        public bool TryPose(CameraInputWire frame, int subjectId, long now, out JunglePosePacket packet,bool allowPartialSlice=false)
         {
             packet = null;
             if (!CameraInputStore.Valid(frame) || !Fresh(frame.captureTimestamp, now)
                 || frame.frameSequence <= cameraSequence || frame.trackingState != "TRACKING") return false;
             var subject = Array.Find(frame.subjects, s => s.subjectId == subjectId);
-            if (subject == null || subject.ambiguous || subject.confidence < .6f) return false;
+            if (subject == null || subject.ambiguous || (allowPartialSlice?!CameraInputStore.SliceSubjectUsable(subject):subject.confidence < .6f)) return false;
             var left = Array.Find(subject.landmarks, l => l.name == "left-wrist");
             var right = Array.Find(subject.landmarks, l => l.name == "right-wrist");
             bool leftVisible = Visible(left), rightVisible = Visible(right);
@@ -116,7 +123,7 @@ namespace GorillaEscape.Input
                 leftWristX = leftVisible ? 1 - left.x : 0, leftWristY = leftVisible ? left.y : 0,
                 rightWristX = rightVisible ? 1 - right.x : 0, rightWristY = rightVisible ? right.y : 0,
                 wristX = rightVisible ? 1 - right.x : 0, wristY = rightVisible ? right.y : 0,
-                bodyX = 1 - subject.centerX, confidence = subject.confidence
+                bodyX = 1 - subject.centerX, bodyY = subject.centerY, confidence = subject.confidence
             };
             return true;
         }

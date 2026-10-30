@@ -5,7 +5,19 @@ import tools.jackson.databind.JsonNode;
 /** Bounded display context only. Unity retains gameplay/result authority. */
 public final class GamePresentation {
     private GamePresentation(){}
+    public static final Set<String> GAMES=Set.of("lobby","bowling","boxing","baseball","drums","coconut-slice","jungle-keeper","whack","log-balance");
     public static void validate(JsonNode n)throws IOException {
+        if(n!=null&&n.path("version").asInt()==3){
+            if(!n.isObject()||n.size()!=9||!GAMES.contains(n.path("gameId").asString())
+                ||!Set.of("menu","connection","game").contains(n.path("screen").asString())
+                ||!n.path("phoneRequired").isBoolean()||!n.path("contextId").asString().matches("[a-f0-9]{32}")
+                ||!Set.of("left","right").contains(n.path("hand").asString())
+                ||("lobby".equals(n.path("gameId").asString())?"game".equals(n.path("screen").asString()):!"game".equals(n.path("screen").asString())))throw new IOException("IPC_GAME_CONTEXT");
+            var legacy=((tools.jackson.databind.node.ObjectNode)n).deepCopy();legacy.put("version",2);
+            legacy.remove("screen");legacy.remove("phoneRequired");legacy.remove("contextId");legacy.remove("hand");
+            if("jungle-keeper".equals(legacy.path("gameId").asString()))legacy.put("gameId","coconut-slice");
+            validateV2(legacy);return;
+        }
         if(n!=null&&n.path("version").isInt()&&n.path("version").intValue()==2){validateV2(n);return;}
         if(n==null||!n.isObject()||(n.size()!=4&&n.size()!=5)||!n.path("version").isInt()||n.path("version").intValue()!=1
             ||!n.path("gameId").isTextual()||!Set.of("lobby","log-balance").contains(n.path("gameId").asString())

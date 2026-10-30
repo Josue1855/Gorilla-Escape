@@ -79,7 +79,7 @@ public static class AutomaticPrototypeSetup
         GameObject controller = GameObject.CreatePrimitive(PrimitiveType.Cube);
         controller.name = "Phone Controlled Object";
         controller.transform.localScale = new Vector3(2.4f, 0.35f, 1.1f);
-        controller.AddComponent<PhoneMotionController>();
+        controller.AddComponent<BowlingController>();
 
         var material = new Material(Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard"));
         material.color = new Color(0.05f, 0.55f, 1f);
@@ -138,12 +138,12 @@ public static class AutomaticPrototypeSetup
         GameObject controller = GameObject.CreatePrimitive(PrimitiveType.Cube); controller.name = "Coco y controlador del juego";
         controller.transform.SetParent(root.transform); controller.transform.position = new Vector3(0, .48f, -7.2f);
         controller.GetComponent<Renderer>().enabled = false; controller.GetComponent<Collider>().enabled = false;
-        controller.AddComponent<PhoneMotionController>();
+        controller.AddComponent<BowlingController>();
         GameObject coconut = GameObject.CreatePrimitive(PrimitiveType.Sphere); coconut.name = "Visual del coco"; coconut.transform.SetParent(controller.transform, false);
         coconut.transform.localScale = new Vector3(1.08f, 1.03f, 1.1f); coconut.GetComponent<Renderer>().sharedMaterial = MaterialFor("Coco", new Color(.30f, .14f, .055f)); coconut.GetComponent<Collider>().enabled = false;
 
         Camera.main.transform.position = new Vector3(0, 6.4f, -12.5f); Camera.main.transform.LookAt(new Vector3(0, .5f, 2.8f)); Camera.main.fieldOfView = 52f;
-        Light light = Object.FindFirstObjectByType<Light>(); if (light != null) { light.intensity = 1.35f; light.transform.rotation = Quaternion.Euler(48, -25, 0); }
+        Light light = Object.FindAnyObjectByType<Light>(); if (light != null) { light.intensity = 1.35f; light.transform.rotation = Quaternion.Euler(48, -25, 0); }
         EditorSceneManager.SaveScene(scene, ScenePath);
         EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
         Selection.activeGameObject = root;
@@ -166,7 +166,7 @@ public static class AutomaticPrototypeSetup
         if (!System.IO.File.Exists(bowlingPath)) AssetDatabase.CopyAsset(ScenePath, bowlingPath);
         CreateSimpleScene(connectionPath, "Connection Controller", typeof(ConnectionScreen), new Color(.015f, .06f, .055f));
         CreateSimpleScene(menuPath, "Main Menu Controller", typeof(MainMenuController), new Color(.018f, .075f, .055f));
-        CreateSimpleScene(boxingPath, "Boxing Controller", typeof(PhoneMotionController), new Color(.012f, .018f, .022f));
+        CreateSimpleScene(boxingPath, "Boxing Controller", typeof(BoxingController), new Color(.012f, .018f, .022f));
         CreateSimpleScene(baseballPath, "Baseball Controller", typeof(BaseballController), new Color(.22f, .58f, .88f));
         CreateSimpleScene(drumsPath, "Rhythm Drums Controller", typeof(RhythmDrumsController), new Color(.018f, .035f, .05f));
         CreateSimpleScene(coconutSlicePath, "Coconut Slice Controller", typeof(CoconutSliceController), new Color(.015f, .075f, .055f));

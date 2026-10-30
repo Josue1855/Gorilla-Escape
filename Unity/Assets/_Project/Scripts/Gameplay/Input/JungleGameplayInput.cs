@@ -10,7 +10,7 @@ namespace GorillaEscape.Gameplay.Input
     [Flags] public enum JungleAction
     {
         None=0, Throw=1, PunchLeft=2, PunchRight=4, Recover=8, Swing=16,
-        DrumLeft=32, DrumRight=64, SliceLeft=128, SliceRight=256, Whack=512, Balance=1024
+        DrumLeft=32, DrumRight=64, SliceLeft=128, SliceRight=256, Whack=512, Balance=1024, Save=2048
     }
     public enum JungleInputStatus { Menu, Waiting, TrackingLost, Unaligned, PartialInput, Reacquiring, Ready }
     public readonly struct JungleHand
@@ -57,6 +57,8 @@ namespace GorillaEscape.Gameplay.Input
             }
         }
         public JungleGame Game {get;private set;}
+        public bool CameraOnly {get;private set;}
+        public bool LeftHanded {get;set;}
         public JungleInputStatus Status {get;private set;}=JungleInputStatus.Menu;
         public bool Ready => Status==JungleInputStatus.Ready;
         public JungleFusedFrame Current {get;private set;}
@@ -75,8 +77,9 @@ namespace GorillaEscape.Gameplay.Input
             :scene=="GorillaBoxing"?JungleGame.Boxing:scene=="JungleBaseball"?JungleGame.Baseball
             :scene=="JungleDrums"?JungleGame.Drums:scene=="CoconutSlice"?JungleGame.CoconutSlice
             :scene=="WhackAMole"?JungleGame.Whack:scene=="LogBalance"?JungleGame.LogBalance:JungleGame.None;
-        public void Select(JungleGame game)
+        public void Select(JungleGame game,bool cameraOnly=false)
         {
+            CameraOnly=cameraOnly;
             Game=game;Break(game==JungleGame.None?JungleInputStatus.Menu:JungleInputStatus.Waiting);
             session=device=null;epoch=-1;subject=0;
         }
@@ -96,6 +99,35 @@ namespace GorillaEscape.Gameplay.Input
             return p!=null&&p.visible&&p.visibility>=.6f&&p.presence>=.6f&&p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;
         }
         public static bool RequiresCamera(JungleGame game) => game!=JungleGame.None && game!=JungleGame.LogBalance;
+        public static bool SupportsCameraOnly(JungleGame game) => game==JungleGame.CoconutSlice;
+        public void UpdateCamera(CameraInputWire frame,PlayerLockState lockState,int subjectId,long now)
+        {
+            if(!CameraOnly||!SupportsCameraOnly(Game)||lockState!=PlayerLockState.LOCKED||!CameraInputStore.Valid(frame)
+                ||!Fresh(frame.captureTimestamp,now)||frame.trackingState!="TRACKING")
+            {Break(JungleInputStatus.TrackingLost);return;}
+            var person=Array.Find(frame.subjects,s=>s.subjectId==subjectId);
+            if(frame.subjects.Length!=1||!CameraInputStore.SliceSubjectUsable(person))
+            {Break(JungleInputStatus.TrackingLost);return;}
+            if(subject!=subjectId){Break(JungleInputStatus.Reacquiring);subject=subjectId;}
+            bool baseline=broken;
+            if(frame.frameSequence<cameraSequence){Break(JungleInputStatus.Reacquiring);return;}
+            if(frame.frameSequence==cameraSequence)return;
+            if(!adapter.TryPose(frame,subjectId,now,out var next,true)){Break(JungleInputStatus.PartialInput);return;}
+            double dt=(frame.captureTimestamp-poseTime)/1000.0;
+            bool derivative=!baseline&&pose!=null&&dt>=.008&&dt<=.25;
+            bool leftDerivative=derivative&&next.leftDetected&&pose.leftDetected,rightDerivative=derivative&&next.rightDetected&&pose.rightDetected;
+            left=new JungleHand(next.leftWristX,next.leftWristY,leftDerivative?(float)((next.leftWristX-pose.leftWristX)/dt):0,leftDerivative?(float)((next.leftWristY-pose.leftWristY)/dt):0);
+            right=new JungleHand(next.rightWristX,next.rightWristY,rightDerivative?(float)((next.rightWristX-pose.rightWristX)/dt):0,rightDerivative?(float)((next.rightWristY-pose.rightWristY)/dt):0);
+            if(leftDerivative&&left.Speed>MaximumHandSpeed){next.leftDetected=false;left=default;}
+            if(rightDerivative&&right.Speed>MaximumHandSpeed){next.rightDetected=false;next.detected=false;right=default;}
+            if(!next.leftDetected&&!next.rightDetected){Break(JungleInputStatus.Reacquiring);return;}
+            pose=next;poseTime=frame.captureTimestamp;cameraSequence=frame.frameSequence;
+            broken=false;Status=JungleInputStatus.Ready;
+            JungleAction actions=baseline?JungleAction.None:Recognize(true,0,0,0,now);
+            Current=new JungleFusedFrame{Revision=++revision,Continuity=continuity,CameraSequence=frame.frameSequence,
+                CameraTimestamp=frame.captureTimestamp,Baseline=baseline,NewPose=!baseline,Pose=pose,Left=left,Right=right,Actions=actions};
+            consumed=JungleAction.None;
+        }
         // Log Balance uses only the phone orientation; no camera sample or player association is needed.
         public void UpdatePhone(PhoneInputWire phone,long now)
         {
@@ -121,15 +153,19 @@ namespace GorillaEscape.Gameplay.Input
             var p=input.Phone;var c=input.Camera;var raw=input.RawPhone;var camera=input.RawCamera;
             if(p==null||c==null||raw==null||camera==null||!Fresh(raw.serverReceiveTimestamp,now)
                 ||!Fresh(camera.captureTimestamp,now)||raw.connectionState!="ACTIVE"
-                ||p.sequence!=raw.sequence||p.sessionId!=raw.sessionId||p.deviceSessionId!=raw.deviceSessionId
+                ||p.sequence>raw.sequence||p.sessionId!=raw.sessionId||p.deviceSessionId!=raw.deviceSessionId
                 ||p.connectionEpoch!=raw.connectionEpoch||c.frameSequence!=camera.frameSequence
                 ||!Fresh(p.serverReceiveTimestamp,now)||!Fresh(c.captureTimestamp,now)
                 ||Math.Abs(p.serverReceiveTimestamp-c.captureTimestamp)>100)
             {Break(JungleInputStatus.Unaligned);return;}
+            // A buffered match must not conceal missing sensors in the live phone stream.
+            if(!JungleInputAdapter.MotionAvailable(raw,now))
+            {Break(JungleInputStatus.PartialInput);return;}
             if(!CameraInputStore.Valid(camera)||camera.trackingState!="TRACKING") {Break(JungleInputStatus.TrackingLost);return;}
             var person=Array.Find(camera.subjects,s=>s.subjectId==input.SubjectId);
             bool both=Game==JungleGame.Boxing||Game==JungleGame.Drums||Game==JungleGame.CoconutSlice||Game==JungleGame.LogBalance;
-            if(person==null||person.ambiguous||person.confidence<.6f||!Wrist(person,"right-wrist")||(both&&!Wrist(person,"left-wrist")))
+            if(person==null||person.ambiguous||(Game==JungleGame.Bowling?!CameraInputStore.SliceSubjectUsable(person):person.confidence<.6f)
+                ||!Wrist(person,Game==JungleGame.Bowling&&LeftHanded?"left-wrist":"right-wrist")||(both&&!Wrist(person,"left-wrist")))
             {Break(JungleInputStatus.TrackingLost);return;}
             bool identity=session!=p.sessionId||device!=p.deviceSessionId||epoch!=p.connectionEpoch||subject!=input.SubjectId;
             if(identity) {Break(JungleInputStatus.Reacquiring);session=p.sessionId;device=p.deviceSessionId;epoch=p.connectionEpoch;subject=input.SubjectId;}
@@ -139,12 +175,12 @@ namespace GorillaEscape.Gameplay.Input
             if(newMotion&&(!adapter.TryMotion(p,now,out motion)||!motion.hasScreen)) {Break(JungleInputStatus.PartialInput);return;}
             if(newPose)
             {
-                if(!adapter.TryPose(c,input.SubjectId,now,out var next)) {Break(JungleInputStatus.PartialInput);return;}
+                if(!adapter.TryPose(c,input.SubjectId,now,out var next,Game==JungleGame.Bowling)) {Break(JungleInputStatus.PartialInput);return;}
                 double dt=(c.captureTimestamp-poseTime)/1000.0;
                 bool derivative=!baseline&&pose!=null&&dt>=.008&&dt<=.25;
                 left=new JungleHand(next.leftWristX,next.leftWristY,derivative?(float)((next.leftWristX-pose.leftWristX)/dt):0,derivative?(float)((next.leftWristY-pose.leftWristY)/dt):0);
                 right=new JungleHand(next.rightWristX,next.rightWristY,derivative?(float)((next.rightWristX-pose.rightWristX)/dt):0,derivative?(float)((next.rightWristY-pose.rightWristY)/dt):0);
-                if(derivative&&(right.Speed>MaximumHandSpeed||(both&&left.Speed>MaximumHandSpeed))){Break(JungleInputStatus.Reacquiring);return;}
+                if(derivative&&((Game==JungleGame.Bowling&&LeftHanded?left.Speed:right.Speed)>MaximumHandSpeed||(both&&left.Speed>MaximumHandSpeed))){Break(JungleInputStatus.Reacquiring);return;}
                 pose=next;poseTime=c.captureTimestamp;
             }
             broken=false;Status=JungleInputStatus.Ready;
@@ -164,7 +200,8 @@ namespace GorillaEscape.Gameplay.Input
         JungleAction Recognize(bool poseChanged,float power,float angular,float gravity,long now)
         {
             JungleAction result=JungleAction.None;
-            if(Game==JungleGame.Bowling&&first.Observe(power>330&&right.Speed>.35f,power<180&&right.Speed<.25f,now,600))result|=JungleAction.Throw;
+            var throwingHand=LeftHanded?left:right;
+            if(Game==JungleGame.Bowling&&first.Observe(power>330&&throwingHand.Speed>.35f,power<180&&throwingHand.Speed<.25f,now,600))result|=JungleAction.Throw;
             if(Game==JungleGame.Boxing)
             {
                 if(poseChanged&&first.Observe(left.Speed>.72f,left.Speed<.25f,now,340))result|=JungleAction.PunchLeft;
@@ -182,6 +219,8 @@ namespace GorillaEscape.Gameplay.Input
                 if(left.Speed>.72f)result|=JungleAction.SliceLeft;
                 if(right.Speed>.72f)result|=JungleAction.SliceRight;
             }
+            if(Game==JungleGame.CoconutSlice&&pose!=null&&(pose.leftDetected||pose.rightDetected))
+                result|=JungleAction.Save;
             if(Game==JungleGame.LogBalance)result|=JungleAction.Balance;
             float whack=Math.Max(0,gravity-9.81f)*18+angular;
             if(Game==JungleGame.Whack&&first.Observe(right.VelocityY>.72f&&whack>235,right.VelocityY<.2f&&whack<150,now,220))result|=JungleAction.Whack;
@@ -191,7 +230,7 @@ namespace GorillaEscape.Gameplay.Input
         {
             int bit=(int)action;
             if(!Ready||Current==null||Current.Baseline||sourceRevision!=Current.Revision||bit==0||(bit&(bit-1))!=0
-                ||!Fresh(Current.PhoneTimestamp,now)||(RequiresCamera(Game)&&!Fresh(Current.CameraTimestamp,now))
+                ||(!CameraOnly&&!Fresh(Current.PhoneTimestamp,now))||(RequiresCamera(Game)&&!Fresh(Current.CameraTimestamp,now))
                 ||(Current.Actions&action)==0||(consumed&action)!=0)return false;
             consumed|=action;return true;
         }

@@ -18,6 +18,7 @@ __pycache__/
 /Unity/[Oo]bj/
 /Unity/[Ll]ogs/
 /Unity/[Uu]ser[Ss]ettings/
+/Unity/.vs/
 /Unity/Builds/
 /Unity/*.csproj
 /Unity/*.sln
@@ -27,6 +28,8 @@ __pycache__/
 /Unity/CameraTracker/.runtime/
 /Unity/CameraTracker/.downloads/
 /Unity/MotionRelay/cloudflared.exe
+/Tools/cloudflared*
+/tools/cloudflared*
 /Unity/python-install*.log
 /Unity/*-compile.log
 /Unity/Assets/_Recovery/

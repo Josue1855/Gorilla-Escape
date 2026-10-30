@@ -37,7 +37,10 @@ public final class ConnectivityService implements DisposableBean {
         long timeout;try{timeout=Long.parseLong(System.getenv().getOrDefault("GORILLA_TUNNEL_STARTUP_MS",Long.toString(ConnectionBootstrap.DEFAULT_STARTUP_MS)));}catch(NumberFormatException e){throw new IllegalArgumentException("BOOTSTRAP_BUDGET");}
         String packaged=System.getenv("GORILLA_PACKAGE_ROOT");
         String supplied=System.getenv("GORILLA_CLOUDFLARED_PATH");
-        if(supplied==null&&packaged!=null)supplied=java.nio.file.Path.of(packaged,"Tools","cloudflared").toString();
+        if(supplied==null&&packaged!=null){
+            String executable=System.getProperty("os.name","").toLowerCase(java.util.Locale.ROOT).contains("win")?"cloudflared.exe":"cloudflared";
+            supplied=java.nio.file.Path.of(packaged,"Tools",executable).toString();
+        }
         var binary=CloudflaredSupervisor.discover(supplied,null);
         // Missing optional executable requires neither a listener nor a download.
         if(binary!=null&&mode!=ConnectionBootstrap.Mode.CABIN)try{ingress=PublicIngress.forRuntime(mobile);}catch(Exception optional){/* Cabin stays usable. */}
@@ -58,16 +61,17 @@ public final class ConnectivityService implements DisposableBean {
             }
         },30,30,java.util.concurrent.TimeUnit.SECONDS);
     }
-    static String registrationSecret(String supplied,String xdg,String home){
+    static String registrationSecret(String supplied,String xdg,String appData,String home){
         if(supplied!=null&&!supplied.isBlank())return supplied;
         var paths=new java.util.ArrayList<java.nio.file.Path>();
         if(xdg!=null&&!xdg.isBlank())paths.add(java.nio.file.Path.of(xdg,"gorilla-escape","room-registration-secret"));
+        if(appData!=null&&!appData.isBlank())paths.add(java.nio.file.Path.of(appData,"Gorilla Escape","room-registration-secret"));
         if(home!=null&&!home.isBlank())paths.add(java.nio.file.Path.of(home,".config","gorilla-escape","room-registration-secret"));
         for(var path:paths)try{String value=java.nio.file.Files.readString(path).trim();if(!value.isEmpty())return value;}catch(java.io.IOException ignored){}
         return null;
     }
     private void registerRoom(URI tunnelOrigin,String roomCode){
-        String secret=registrationSecret(System.getenv("GORILLA_ROOM_REGISTRATION_SECRET"),System.getenv("XDG_CONFIG_HOME"),System.getProperty("user.home"));
+        String secret=registrationSecret(System.getenv("GORILLA_ROOM_REGISTRATION_SECRET"),System.getenv("XDG_CONFIG_HOME"),System.getenv("APPDATA"),System.getProperty("user.home"));
         if(secret==null||secret.isBlank()||tunnelOrigin==null||roomCode==null)throw new IllegalStateException("ROOM_REGISTRATION_UNCONFIGURED");
         if(!tunnelOrigin.getHost().endsWith(".trycloudflare.com"))throw new IllegalStateException("ROOM_TUNNEL_INVALID");
         try{
@@ -113,7 +117,7 @@ public final class ConnectivityService implements DisposableBean {
     }
     // Precompute only after the chosen route and firewall have actually become ready.
     synchronized void prepareFirstQr(){
-        if(bootstrap==null || !bootstrap.ready() || admissionPage!=null || (firewall!=null&&!firewall.ready()))return;
+        if(bootstrap==null || !bootstrap.ready() || admissionPage!=null || !firewallAllowsAdmission())return;
         long revision=bootstrap.revision(); URI page=bootstrap.page();
         if(preparedQr!=null && preparedRevision==revision && page.equals(preparedPage)) {
             var live=mobile.qa(page,"http".equals(page.getScheme()),false);
@@ -125,7 +129,7 @@ public final class ConnectivityService implements DisposableBean {
     }
     public synchronized com.gorillaescape.server.protocol.QaAdmission.View qa(boolean regenerate){
         if(regenerate)pendingQrRequest=true;
-        snapshot();if(firewall!=null&&!firewall.ready())return new com.gorillaescape.server.protocol.QaAdmission.View("FIREWALL_NOT_READY",0,0,"");
+        snapshot();if(!firewallAllowsAdmission())return new com.gorillaescape.server.protocol.QaAdmission.View("FIREWALL_NOT_READY",0,0,"");
         boolean issue=regenerate||pendingQrRequest;
         if(!issue && admissionPage==null && preparedQr!=null && bootstrap!=null && bootstrap.ready()
                 && preparedRevision==bootstrap.revision() && preparedPage.equals(bootstrap.page())) {
@@ -155,6 +159,8 @@ public final class ConnectivityService implements DisposableBean {
     public synchronized void installFirewall(boolean recovery){if(firewall!=null)firewall.install(recovery);}
     public synchronized void recovery(boolean enabled){recoveryRequested=enabled;if(firewall!=null){if(enabled)firewall.requireRecovery();else firewall.endRecovery();}}
     public synchronized boolean recoveryReady(){return recoveryRequested&&(firewall==null||firewall.ready());}
-    public synchronized URI page(){snapshot();if(bootstrap==null||!bootstrap.ready()||firewall!=null&&!firewall.ready())throw new IllegalStateException("CONNECTION_NOT_READY");return bootstrap.page();}
+    static boolean firewallAllowsAdmission(boolean firewallReady,boolean routeReady,String resolvedMode){return firewallReady||routeReady&&"CLOUDFLARED".equals(resolvedMode);}
+    private boolean firewallAllowsAdmission(){return firewallAllowsAdmission(firewall==null||firewall.ready(),bootstrap!=null&&bootstrap.ready(),bootstrap==null?null:(String)bootstrap.snapshot().get("resolvedMode"));}
+    public synchronized URI page(){snapshot();if(bootstrap==null||!bootstrap.ready()||!firewallAllowsAdmission())throw new IllegalStateException("CONNECTION_NOT_READY");return bootstrap.page();}
     @Override public void destroy(){if(renewalPoller!=null){renewalPoller.shutdownNow();renewalPoller=null;}if(poller!=null){poller.shutdownNow();poller=null;}if(firewall!=null)firewall.close();if(bootstrap!=null)bootstrap.close();if(ingress!=null)ingress.close();}
 }

@@ -4,7 +4,8 @@ using GorillaEscape.Minigames.LogBalance;
 using UnityEngine;
 
 // The original fixed-step log simulation, presented in Saul's jungle and driven only by fused input.
-public sealed class LogBalanceGameController : MonoBehaviour
+[RequireComponent(typeof(JunglePanel))]
+public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
 {
     [SerializeField] LogBalanceSettings settings;
     [SerializeField] Material trunkMaterial;
@@ -18,7 +19,11 @@ public sealed class LogBalanceGameController : MonoBehaviour
     LogBalanceState feedbackState;
     float tilt,fallenTime,nextWarning;
     bool manualPause,preparing=true,focused=true,credits;
-    string assetError;
+    string assetError,creditsText;
+    GUIStyle titleStyle,bodyStyle,buttonStyle;
+    int lastScreenHeight;
+    int cachedPct=-1,cachedDistTenths=-1,cachedElapsedTenths=-1,cachedCountdownSec=-1;
+    string cachedStatsText="",cachedCountdownText="";
     public LogBalanceModel Attempt => model;
 
     void Awake()
@@ -28,14 +33,9 @@ public sealed class LogBalanceGameController : MonoBehaviour
         model=new LogBalanceModel(rules);
         try { stage=new LogBalanceStage(transform,rules.length,settings!=null?settings.visuals:null,trunkMaterial); }
         catch(Exception error) { assetError="No se pudo preparar el escenario del tronco. Revisa sus recursos en Unity.";Debug.LogError("LOG_BALANCE_STAGE_FAILED: "+error.Message); }
-        feedback=gameObject.AddComponent<AudioSource>();feedback.playOnAwake=false;feedback.spatialBlend=0;
-        warning=Tone("Tronco / aviso",380,460,.12f);fall=Tone("Tronco / caída",230,65,.5f);win=Tone("Tronco / meta",480,880,.4f);
-    }
-    AudioClip Tone(string name,float from,float to,float duration)
-    {
-        const int rate=22050;var samples=new float[(int)(rate*duration)];float phase=0;
-        for(int i=0;i<samples.Length;i++){float t=(float)i/samples.Length;phase+=2*Mathf.PI*Mathf.Lerp(from,to,t)/rate;samples[i]=Mathf.Sin(phase)*Mathf.Sin(Mathf.PI*t)*.18f;}
-        var clip=AudioClip.Create(name,samples.Length,1,rate,false);clip.SetData(samples,0);return clip;
+        creditsText=JungleAssets.Load<TextAsset>("LogBalance/CREDITS")?.text??"Consulta los créditos del tronco en el repositorio.";
+        feedback=JungleAudioBank.Attach2DSource(gameObject);
+        warning=JungleAudioBank.LogWarning;fall=JungleAudioBank.LogFall;win=JungleAudioBank.LogWin;
     }
     void Update()
     {
@@ -62,10 +62,11 @@ public sealed class LogBalanceGameController : MonoBehaviour
         if(running&&model.State==LogBalanceState.Crossing&&model.Danger>=.6f&&Time.time>=nextWarning)
         {feedback.PlayOneShot(warning,model.Danger>=.85f?.85f:.55f);nextWarning=Time.time+(model.Danger>=.85f?.45f:.9f);}
         if(model.State==feedbackState)return;
-        if(model.State==LogBalanceState.Fell)feedback.PlayOneShot(fall);
+        if(model.State==LogBalanceState.Fell){feedback.PlayOneShot(fall);JungleStageBuilder.ShakeCamera(.18f,.25f);}
         else if(model.State==LogBalanceState.Won)feedback.PlayOneShot(win);
         feedbackState=model.State;
     }
+    public void BeginFromPhone()=>Begin();
     void Begin()
     {
         if(model.State!=LogBalanceState.Ready||!session.IsInputReady||preparing||!control.Calibrated)return;
@@ -76,50 +77,62 @@ public sealed class LogBalanceGameController : MonoBehaviour
         model.Reset();control.Reset();session.ResetRound();
         preparing=true;manualPause=false;tilt=fallenTime=nextWarning=0;feedbackState=LogBalanceState.Ready;
     }
-    void OnApplicationFocus(bool value){focused=value;if(!value){manualPause=true;control.Reset();preparing=true;}}
-    void OnApplicationPause(bool value){if(value){manualPause=true;control.Reset();preparing=true;}}
-    void OnGUI()
+    void OnApplicationFocus(bool value) { }
+    void OnApplicationPause(bool value) { }
+    public void RenderUI()
     {
         JungleUITheme.Ensure();float w=Screen.width,h=Screen.height;
-        var title=new GUIStyle(JungleUITheme.Title){fontSize=Mathf.RoundToInt(h*.043f)};
-        var body=new GUIStyle(JungleUITheme.Body){fontSize=Mathf.RoundToInt(Mathf.Clamp(h*.024f,14,24))};
-        var button=new GUIStyle(JungleUITheme.Button){fontSize=Mathf.RoundToInt(Mathf.Clamp(h*.025f,15,24))};
+        if(titleStyle==null||lastScreenHeight!=Screen.height)
+        {
+            lastScreenHeight=Screen.height;
+            titleStyle=new GUIStyle(JungleUITheme.Title){fontSize=Mathf.RoundToInt(h*.043f)};
+            bodyStyle=new GUIStyle(JungleUITheme.Body){fontSize=Mathf.RoundToInt(Mathf.Clamp(h*.024f,14,24))};
+            buttonStyle=new GUIStyle(JungleUITheme.Button){fontSize=Mathf.RoundToInt(Mathf.Clamp(h*.025f,15,24))};
+        }
+        var title=titleStyle;var body=bodyStyle;var button=buttonStyle;
         JungleUITheme.DrawPanel(new Rect(w*.035f,h*.025f,w*.93f,h*.145f));
-        GUI.Label(new Rect(w*.06f,h*.035f,w*.58f,h*.06f),"DESAFÍO DEL TRONCO",title);
-        GUI.Label(new Rect(w*.06f,h*.095f,w*.58f,h*.05f),"Cruza el río. Inclina suavemente el teléfono y frena la inercia.",body);
-        if(GUI.Button(new Rect(w*.81f,h*.045f,w*.13f,h*.05f),"MENÚ",button))SceneNavigator.Load(SceneNavigator.MainMenu);
-        if(GUI.Button(new Rect(w*.81f,h*.105f,w*.13f,h*.04f),credits?"CERRAR":"CRÉDITOS",button))credits=!credits;
-        if(assetError!=null){GUI.Label(new Rect(w*.16f,h*.35f,w*.68f,h*.24f),assetError,body);return;}
+        JungleUITheme.DrawShadowedLabel(new Rect(w*.06f,h*.035f,w*.56f,h*.06f),"DESAFÍO DEL TRONCO",title,3f);
+        JungleUITheme.DrawShadowedLabel(new Rect(w*.06f,h*.095f,w*.56f,h*.05f),"Cruza el río. Inclina suavemente el teléfono y frena la inercia.",body,1.5f);
+        if(JungleRetainedUI.Button(new Rect(w*.66f,h*.065f,w*.135f,h*.062f),credits?"CERRAR":"CRÉDITOS",button))credits=!credits;
+        if(JungleRetainedUI.Button(new Rect(w*.81f,h*.065f,w*.135f,h*.062f),"MENÚ",button))SceneNavigator.Load(SceneNavigator.MainMenu);
+        if(assetError!=null){JungleRetainedUI.Label(new Rect(w*.16f,h*.35f,w*.68f,h*.24f),assetError,body);return;}
         if(credits)
         {
             JungleUITheme.DrawPanel(new Rect(w*.14f,h*.22f,w*.72f,h*.5f));
-            GUI.Label(new Rect(w*.18f,h*.25f,w*.64f,h*.43f),Resources.Load<TextAsset>("LogBalance/CREDITS")?.text??"Consulta los créditos del tronco en el repositorio.",body);
+            JungleRetainedUI.Label(new Rect(w*.18f,h*.25f,w*.64f,h*.43f),creditsText,body);
             return;
         }
         float x=w*.52f,y=h*.66f,pw=w*.43f,ph=h*.30f;
         JungleUITheme.DrawPanel(new Rect(x,y,pw,ph));
-        GUI.Label(new Rect(x+15,y+10,pw-30,ph*.18f),$"{model.Progress:P0} · {model.Distance:F1}/{rules.length:F0} m · {model.Elapsed:F1} s",body);
+        int pct=Mathf.RoundToInt(model.Progress*100f),distT=Mathf.RoundToInt(model.Distance*10f),elapT=Mathf.RoundToInt(model.Elapsed*10f);
+        if(pct!=cachedPct||distT!=cachedDistTenths||elapT!=cachedElapsedTenths)
+        {
+            cachedPct=pct;cachedDistTenths=distT;cachedElapsedTenths=elapT;
+            cachedStatsText=$"{model.Progress:P0} · {model.Distance:F1}/{rules.length:F0} m · {model.Elapsed:F1} s";
+        }
+        JungleRetainedUI.Label(new Rect(x+15,y+10,pw-30,ph*.18f),cachedStatsText,body);
         float bx=x+25,by=y+ph*.25f,bw=pw-50;
-        GUI.Box(new Rect(bx,by,bw,20),GUIContent.none);
+        JungleUITheme.DrawSubPanel(new Rect(bx,by,bw,22));
         float position=Mathf.Clamp01(.5f+.5f*model.Balance/rules.balanceClamp);
-        Color prior=GUI.color;GUI.color=Color.Lerp(new Color(.2f,.9f,.55f),new Color(1,.25f,.1f),model.Danger);
-        GUI.DrawTexture(new Rect(bx+bw*position-4,by-5,8,30),Texture2D.whiteTexture);GUI.color=prior;
-        string message=preparing?control.Status:manualPause?"EN PAUSA":model.State==LogBalanceState.Countdown?$"PREPÁRATE · {Mathf.CeilToInt(model.Countdown)}"
+        Color prior=JungleRetainedUI.color;JungleRetainedUI.color=Color.Lerp(new Color(.2f,.9f,.55f),new Color(1,.25f,.1f),model.Danger);
+        JungleRetainedUI.DrawTexture(new Rect(bx+bw*position-4,by-4,8,30),Texture2D.whiteTexture);JungleRetainedUI.color=prior;
+        int cdSec=Mathf.CeilToInt(model.Countdown);
+        if(model.State==LogBalanceState.Countdown&&cdSec!=cachedCountdownSec){cachedCountdownSec=cdSec;cachedCountdownText=$"PREPÁRATE · {cdSec}";}
+        string message=preparing?control.Status:manualPause?"EN PAUSA":model.State==LogBalanceState.Countdown?cachedCountdownText
             :model.State==LogBalanceState.Crossing?"IZQUIERDA ← CORRIGE CON SUAVIDAD → DERECHA"
             :model.State==LogBalanceState.Won?"¡CRUCE COMPLETADO!":model.State==LogBalanceState.Fell?"HAS CAÍDO. PUEDES VOLVER A INTENTARLO.":"Control listo. Pulsa comenzar.";
-        GUI.Label(new Rect(x+20,y+ph*.40f,pw-40,ph*.28f),message,body);
-        bool enabled=GUI.enabled;
+        JungleRetainedUI.Label(new Rect(x+20,y+ph*.40f,pw-40,ph*.28f),message,body);
+        bool enabled=JungleRetainedUI.enabled;
         if(model.State==LogBalanceState.Ready)
-        {GUI.enabled=enabled&&session.IsInputReady&&!preparing&&control.Calibrated;if(GUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"COMENZAR",button))Begin();}
+        {JungleRetainedUI.enabled=enabled&&session.IsInputReady&&!preparing&&control.Calibrated;if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"COMENZAR",button))Begin();}
         else if(model.Result!=null)
-        {if(GUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"OTRO INTENTO",button))Restart();}
+        {if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"OTRO INTENTO",button))Restart();}
         else
-        {GUI.enabled=enabled&&(!manualPause||control.Calibrated&&!preparing);if(GUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),manualPause?"REANUDAR":"PAUSAR",button))manualPause=!manualPause;}
-        GUI.enabled=enabled;JungleUITheme.DrawLeaves();
+        {JungleRetainedUI.enabled=enabled&&(!manualPause||control.Calibrated&&!preparing);if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),manualPause?"REANUDAR":"PAUSAR",button))manualPause=!manualPause;}
+        JungleRetainedUI.enabled=enabled;JungleUITheme.DrawLeaves();
     }
     void OnDestroy()
     {
         stage?.Dispose();
-        if(warning!=null)Destroy(warning);if(fall!=null)Destroy(fall);if(win!=null)Destroy(win);
     }
 }

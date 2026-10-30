@@ -186,3 +186,26 @@ test('player name is validated and submitted with the active session', async () 
  assert.equal(await model.setPlayerName(' Josué '),'SAVED');assert.equal(sent.path,'/mobile/name');assert.equal(sent.body.displayName,'Josué');
  assert.equal(await model.setPlayerName(' '),'INVALID');await model.dispose();
 });
+
+test('recenter action resets local tilt neutral and triggers haptic feedback when supported', async () => {
+  const vibrations = [];
+  const transport = client();
+  const w = win({ navigator: { vibrate: pattern => { vibrations.push(pattern); return true; } } });
+  let at = 0;
+  const model = new ControllerSession({ win: w, url, client: transport, now: () => at });
+  model.network = 'NETWORK_READY';
+  model.capture.state = 'RUNNING';
+  model.capture.inputState = () => 'INPUT_READY';
+  const sample = gamma => model.capture.onSample({
+    channels: { motion: { validSequence: 0 }, orientation: { validSequence: 0, latest: { angles: { gamma } } } },
+  });
+  sample(15);
+  at = 70;
+  sample(45);
+  assert.equal(model.snapshot().controlTilt, 1);
+  assert.equal(model.setActionPressed(true, 'recenter'), true);
+  assert.equal(model.snapshot().controlTilt, 0);
+  assert.equal(model.controlNeutral, null);
+  assert.ok(vibrations.includes(16));
+  await model.dispose();
+});

@@ -28,19 +28,33 @@ namespace GorillaEscape.Minigames.LogBalance
             this.length=length;
             foreach(string asset in new[]{LogBalanceArtCatalog.Palm,LogBalanceArtCatalog.Bush,LogBalanceArtCatalog.Gorilla,
                 LogBalanceArtCatalog.Human,LogBalanceArtCatalog.Trunk})
-                if(Resources.Load<GameObject>(asset)==null)throw new System.InvalidOperationException("Log Balance asset missing: "+asset);
+                if(JungleAssets.Load<GameObject>(asset)==null&&Resources.Load<GameObject>(asset)==null)throw new System.InvalidOperationException("Log Balance asset missing: "+asset);
             try
             {
             root=new GameObject("Desafío del Tronco — selva de Saúl");root.transform.SetParent(parent,false);
+            var cam=Camera.main;
+            if(cam!=null)
+            {
+                cam.transform.position=new Vector3(13,11,-14);
+                cam.transform.LookAt(new Vector3(0,1,0));
+                cam.clearFlags=CameraClearFlags.SolidColor;
+                cam.backgroundColor=new Color(.12f,.25f,.22f);
+                cam.orthographic=true;
+                cam.orthographicSize=12.5f;
+                cam.enabled=true;
+            }
+            else
+            {
+                var view=new GameObject("Log Balance Camera");view.transform.SetParent(root.transform);
+                cam=view.AddComponent<Camera>();cam.transform.position=new Vector3(13,11,-14);
+                cam.transform.LookAt(new Vector3(0,1,0));cam.clearFlags=CameraClearFlags.SolidColor;
+                cam.backgroundColor=new Color(.12f,.25f,.22f);cam.orthographic=true;cam.orthographicSize=12.5f;
+            }
             foreach(var camera in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None))
-                if(camera.enabled){hidden.Add(camera);camera.enabled=false;}
+                if(camera!=cam&&camera.enabled){hidden.Add(camera);camera.enabled=false;}
             // The scene may already contain a sun. Keep a single, controlled daylight source.
             foreach(var existing in Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
                 if(existing.enabled && existing.type==LightType.Directional){hiddenDirectionalLights.Add(existing);existing.enabled=false;}
-            var view=new GameObject("Log Balance Camera");view.transform.SetParent(root.transform);
-            var cam=view.AddComponent<Camera>();cam.transform.position=new Vector3(13,11,-14);
-            cam.transform.LookAt(new Vector3(0,1,0));cam.clearFlags=CameraClearFlags.SolidColor;
-            cam.backgroundColor=new Color(.12f,.25f,.22f);cam.orthographic=true;cam.orthographicSize=12.5f;
             var sun=new GameObject("Jungle daylight");sun.transform.SetParent(root.transform);
             var light=sun.AddComponent<Light>();light.type=LightType.Directional;light.intensity=.85f;light.color=new Color(1,.94f,.85f);
             sun.transform.rotation=Quaternion.Euler(48,-25,0);
@@ -58,8 +72,8 @@ namespace GorillaEscape.Minigames.LogBalance
             Shape("Goal marker",PrimitiveType.Cube,new Vector3(0,.18f,length/2+.7f),new Vector3(2,.12f,.4f),new Color(.95f,.72f,.22f));
             var figure=Asset("Vagabundo","Vagabundo model",root.transform);
             human=new GameObject("Human castaway — controlled").transform;human.SetParent(root.transform,false);
-            figure.transform.SetParent(human,false);character=figure.GetComponent<LogBalanceCharacter>();
-            if(character==null||!character.HasRig)throw new System.InvalidOperationException("Castaway rig unavailable.");
+            figure.transform.SetParent(human,false);character=figure.GetComponentInChildren<LogBalanceCharacter>() ?? figure.AddComponent<LogBalanceCharacter>();
+            if(character!=null)character.BindRig();
             PopulateJungle();PopulateGrass();CreateSpectators();CreateBackdrop(cam);Present(0,0,false,0,0,false,false);
             }
             catch { Dispose(); throw; }
@@ -96,18 +110,22 @@ namespace GorillaEscape.Minigames.LogBalance
             var renderers=model.GetComponentsInChildren<Renderer>();var bounds=renderers[0].bounds;
             foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);return bounds;
         }
+        static Shader FindLitShader()=>Shader.Find("Universal Render Pipeline/Lit")??Shader.Find("Standard")??Shader.Find("Mobile/Diffuse")??Shader.Find("Diffuse");
+        static Shader FindUnlitShader()=>Shader.Find("Universal Render Pipeline/Unlit")??Shader.Find("Unlit/Texture")??Shader.Find("Mobile/Unlit (Supports Lightmap)")??FindLitShader();
         static GameObject Asset(string file,string name,Transform parent)
         {
-            var prefab=Resources.Load<GameObject>("LogBalance/Prefabs/"+file);
+            var prefab=JungleAssets.Load<GameObject>("LogBalance/Prefabs/"+file)??Resources.Load<GameObject>("LogBalance/Prefabs/"+file);
             if(prefab==null)throw new System.InvalidOperationException("Log Balance art prefab missing: "+file);
             var obj=Object.Instantiate(prefab,parent,false);obj.name=name;return obj;
         }
         Material Surface(Color color)
         {
             if(palette.TryGetValue(color,out var cached))return cached;
-            var template=Resources.Load<Material>("LogBalanceStage");
-            var material=template!=null?new Material(template):new Material(Shader.Find("Standard"));
-            material.color=color;material.SetFloat("_Glossiness",0);material.SetFloat("_Metallic",0);
+            var template=JungleAssets.Load<Material>("LogBalanceStage")??Resources.Load<Material>("LogBalanceStage");
+            var material=template!=null?new Material(template):new Material(FindLitShader());
+            material.color=color;
+            if(material.HasProperty("_BaseColor"))material.SetColor("_BaseColor",color);
+            material.SetFloat("_Glossiness",0);material.SetFloat("_Metallic",0);
             materials.Add(material);palette.Add(color,material);return material;
         }
         Transform Facets(string name,List<Vector3> vertices,Color color,Transform parent=null)
@@ -138,15 +156,17 @@ namespace GorillaEscape.Minigames.LogBalance
         Material ImportedMaterial(string texture)
         {
             if(importedMaterials.TryGetValue(texture,out var cached))return cached;
-            var image=Resources.Load<Texture2D>(texture);
+            var image=JungleAssets.Load<Texture2D>(texture)??Resources.Load<Texture2D>(texture);
             if(image==null)throw new System.InvalidOperationException("Log Balance texture missing: "+texture);
-            var material=new Material(Shader.Find("Standard")){name="Tronco / Saúl / "+texture,mainTexture=image,color=Color.white,enableInstancing=true};
+            var material=new Material(FindLitShader()){name="Tronco / Saúl / "+texture,mainTexture=image,color=Color.white,enableInstancing=true};
+            if(material.HasProperty("_BaseColor"))material.SetColor("_BaseColor",Color.white);
+            if(material.HasProperty("_BaseMap"))material.SetTexture("_BaseMap",image);
             material.SetFloat("_Glossiness",.12f);material.SetFloat("_Metallic",0);
             materials.Add(material);importedMaterials.Add(texture,material);return material;
         }
         GameObject SaulAsset(string path,string texture,string name,Vector3 position,float height,float yaw)
         {
-            var prefab=Resources.Load<GameObject>(path);
+            var prefab=JungleAssets.Load<GameObject>(path)??Resources.Load<GameObject>(path);
             if(prefab==null)throw new System.InvalidOperationException("Log Balance asset missing: "+path);
             var container=new GameObject(name);container.transform.SetParent(root.transform,false);
             var model=Object.Instantiate(prefab,container.transform,false);
@@ -156,7 +176,7 @@ namespace GorillaEscape.Minigames.LogBalance
             if(path==LogBalanceArtCatalog.Gorilla)
             {
                 AnimationClip idle=null;
-                foreach(var clip in Resources.LoadAll<AnimationClip>(path))
+                foreach(var clip in JungleAssets.LoadAll<AnimationClip>(path))
                     if(!clip.name.StartsWith("__preview__")&&(idle==null||clip.name.ToLowerInvariant().Contains("idle")))idle=clip;
                 if(idle!=null)idle.SampleAnimation(model,0);
             }
@@ -211,13 +231,14 @@ namespace GorillaEscape.Minigames.LogBalance
         }
         void CreateBackdrop(Camera view)
         {
-            var image=Resources.Load<Texture2D>(LogBalanceArtCatalog.Background);
+            var image=JungleAssets.Load<Texture2D>(LogBalanceArtCatalog.Background)??Resources.Load<Texture2D>(LogBalanceArtCatalog.Background);
             if(image==null)throw new System.InvalidOperationException("Log Balance backdrop missing.");
             var backdrop=GameObject.CreatePrimitive(PrimitiveType.Quad);backdrop.name="Fondo de cascada de Saúl";
             backdrop.transform.SetParent(root.transform,false);backdrop.transform.position=view.transform.position+view.transform.forward*60;
             backdrop.transform.rotation=view.transform.rotation;backdrop.transform.localScale=new Vector3(140,80,1);
             backdrop.GetComponent<Collider>().enabled=false;
-            var material=new Material(Shader.Find("Unlit/Texture")){mainTexture=image};materials.Add(material);
+            var material=new Material(FindUnlitShader()){mainTexture=image};materials.Add(material);
+            if(material.HasProperty("_BaseMap"))material.SetTexture("_BaseMap",image);
             backdrop.GetComponent<MeshRenderer>().sharedMaterial=material;
         }
         Transform Shape(string name,PrimitiveType type,Vector3 position,Vector3 scale,Color color)

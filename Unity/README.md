@@ -41,7 +41,7 @@ El séptimo juego conserva el modelo físico y el náufrago del tronco, y reutil
 
 El menú del Editor y `run-jungle-editor.sh` reutilizan `Unity/Builds/FoundationLinux` si contiene Vision y el helper de firewall. Cloudflared se busca en el paquete seleccionado, en `Tools/cloudflared` del repositorio o en aquel paquete preparado; una ruta explícita `GORILLA_CLOUDFLARED_PATH` tiene prioridad. Se mantiene `AUTO` salvo configuración explícita. Java verifica el SHA-256 fijado antes de ejecutarlo; Play no descarga ni instala herramientas.
 
-En esta PC ya existe el binario revisado dentro del paquete preparado. Un checkout nuevo necesita los artefactos de distribución: el helper existente `python3 tools/t063/package-cloudflared.py /ruta/al/binario-revisado /ruta/al/paquete` incluye binario, licencia y manifiesto. No se versionan copias de los ejecutables generados. Este soporte de empaquetado es Linux amd64; no certifica Windows.
+En la PC Linux original existía el binario revisado dentro del paquete preparado. Un checkout nuevo necesita los artefactos de distribución: `python tools/t063/package-cloudflared.py <binario-revisado> <paquete> <plataforma>` incluye binario, licencia y manifiesto. Las plataformas admitidas son `linux-amd64` (valor predeterminado) y `windows-amd64`; Windows genera `Tools/cloudflared.exe` y usa un pin independiente. No se versionan copias de los ejecutables generados. Este soporte permite preparar Windows, pero la aceptación física y prolongada sigue pendiente.
 
 [Comprobación real y límite de conectividad observado](../docs/evidence/saul-log-balance-2026-10-27/cloudflared.md). Que el proceso se registre no garantiza HTTPS público disponible. AUTO conserva la vía LAN si la comprobación externa falla.
 
@@ -50,3 +50,18 @@ Los tiempos y la recuperación AUTO se ampliaron con los ajustes de la rama del 
 ## Teléfono y persistencia
 
 Los siete juegos publican presentación v2 sobre IPC/RTC, con métricas reales disponibles; PWA y Companion la muestran sin decidir la simulación. Registro opcional en SQLite y arranque del Player usan los procesos privados empaquetados. [Implementación, build y validación](../docs/03-development/MOBILE_STACK_INTEGRATION.md).
+
+
+## Presentación retenida y referencias
+
+La UI de producto (conexión, selección, siete juegos, portero y pausa/cámara) usa `JunglePanel`/`UIDocument` de UI Toolkit. `JungleRetainedUI` reutiliza elementos y traduce los rectángulos y estilos existentes para conservar el arte; `GUIStyle` queda como datos de compatibilidad, sin ejecutar `OnGUI`. La presentación se actualiza una vez por frame, también con el juego pausado. Las pantallas técnicas de Bootstrap/IPC conservan IMGUI para diagnóstico.
+
+`BowlingController` y `BoxingController` tienen ciclos de vida, entrada y estado independientes. El GUID del controlador anterior se conserva para boliche; la escena de boxeo enlaza su propio script. Se eliminó el menú antiguo del controlador compartido.
+
+El arte vive en `Assets/RuntimeContent`. `JungleAssetReference` guarda referencias serializadas a los assets y subassets; `JungleAssets` resuelve sus claves estables mediante registros individuales en `Resources/JungleAssetReferences`. Renombrar o mover el arte preservando su `.meta` mantiene los enlaces. Queda una única llamada central a `Resources.Load` para cargar estos registros bajo demanda; no se introducen Addressables ni un catálogo que retenga todo el arte en memoria. Estos registros y sus dependencias siguen formando parte del build: esta migración no acredita una reducción de tamaño ni de draw calls sin medir un Player.
+
+`JungleSceneBindings` guarda los objetos de boliche, incluidos los inactivos, sin búsquedas por nombre en ejecución. Para añadir contenido o regenerar referencias: **Gorilla Escape > Migrate presentation references**. Ejecutar este comando con las escenas guardadas; las claves ya asignadas sobreviven a los cambios de nombre. El procesador de escenas también guarda los enlaces al construir.
+
+La conexión precalienta los 24 clips procedurales, un clip por frame, empezando por el ambiente. Ambos accesos al menú esperan a que termine. Abrir directamente una escena de juego conserva la síntesis diferida como respaldo.
+
+Pruebas añadidas: `JunglePresentationTests` (árbol retenido, espejo de cámara, renombrado y recursos) y `JunglePresentationPlayModeTests` (navegación Toolkit, una actualización por frame y reutilización de clips). La apariencia final y el rendimiento requieren comprobación gráfica y perfilado en el dispositivo objetivo.

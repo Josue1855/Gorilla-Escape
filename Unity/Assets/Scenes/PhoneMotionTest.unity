@@ -2542,6 +2542,8 @@ GameObject:
   - component: {fileID: 1029634427}
   - component: {fileID: 1029634426}
   - component: {fileID: 1029634425}
+  - component: {fileID: 1029634430}
+  - component: {fileID: 1029634429}
   m_Layer: 0
   m_Name: Coco y controlador del juego
   m_TagString: Untagged
@@ -2655,6 +2657,155 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029634423}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1029634429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029634423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f6118d08b74834d9761d7acf966ed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GorillaEscape.Runtime::JungleSceneBindings
+  entries:
+  - key: Main Camera
+    target: {fileID: 393164242}
+  - key: Directional Light
+    target: {fileID: 171901461}
+  - key: ESCENARIO EDITABLE
+    target: {fileID: 2109131452}
+  - key: 01 - Pista y arquitectura
+    target: {fileID: 2004189252}
+  - key: Pista
+    target: {fileID: 1526554726}
+  - key: Franja central
+    target: {fileID: 139633659}
+  - key: Canal izquierdo
+    target: {fileID: 32480004}
+  - key: Canal derecho
+    target: {fileID: 722519715}
+  - key: Pared fondo
+    target: {fileID: 1434513336}
+  - key: Marca 1
+    target: {fileID: 450002126}
+  - key: Marca 2
+    target: {fileID: 1421856072}
+  - key: Marca 3
+    target: {fileID: 1359347046}
+  - key: Marca 4
+    target: {fileID: 1261471137}
+  - key: Marca 5
+    target: {fileID: 1352908825}
+  - key: Marca 6
+    target: {fileID: 1071078667}
+  - key: Marca 7
+    target: {fileID: 2132588143}
+  - key: 02 - Arboles editables
+    target: {fileID: 66260859}
+  - key: Arbol izquierdo -5
+    target: {fileID: 1305758185}
+  - key: Tronco
+    target: {fileID: 1643393000}
+  - key: Copa
+    target: {fileID: 1438989008}
+  - key: Arbol izquierdo -2
+    target: {fileID: 543020686}
+  - key: Tronco
+    target: {fileID: 2038087369}
+  - key: Copa
+    target: {fileID: 1053907594}
+  - key: Arbol izquierdo 10
+    target: {fileID: 1833108944}
+  - key: Tronco
+    target: {fileID: 1979027825}
+  - key: Copa
+    target: {fileID: 1645522694}
+  - key: Arbol derecho -5
+    target: {fileID: 60427121}
+  - key: Tronco
+    target: {fileID: 1733295163}
+  - key: Copa
+    target: {fileID: 957729905}
+  - key: Arbol derecho -2
+    target: {fileID: 1752245215}
+  - key: Tronco
+    target: {fileID: 1881309801}
+  - key: Copa
+    target: {fileID: 694086491}
+  - key: Arbol derecho 1
+    target: {fileID: 575565687}
+  - key: Tronco
+    target: {fileID: 1928152262}
+  - key: Copa
+    target: {fileID: 602888512}
+  - key: Arbol derecho 4
+    target: {fileID: 213969790}
+  - key: Tronco
+    target: {fileID: 1623594666}
+  - key: Copa
+    target: {fileID: 1136804401}
+  - key: Arbol derecho 7
+    target: {fileID: 1339820933}
+  - key: Tronco
+    target: {fileID: 1777382215}
+  - key: Copa
+    target: {fileID: 2054892424}
+  - key: Arbol derecho 10
+    target: {fileID: 1028012701}
+  - key: Tronco
+    target: {fileID: 53786579}
+  - key: Copa
+    target: {fileID: 883222431}
+  - key: 03 - Zona del gorila
+    target: {fileID: 618427585}
+  - key: Plataforma del gorila
+    target: {fileID: 109513065}
+  - key: Punto del gorila
+    target: {fileID: 1114552617}
+  - key: Pinos editables
+    target: {fileID: 957693866}
+  - key: Pino 1
+    target: {fileID: 1910142060}
+  - key: Pino 2
+    target: {fileID: 1317098904}
+  - key: Pino 3
+    target: {fileID: 923369760}
+  - key: Pino 4
+    target: {fileID: 1498557103}
+  - key: Pino 5
+    target: {fileID: 59219064}
+  - key: Pino 6
+    target: {fileID: 183399418}
+  - key: Pino 7
+    target: {fileID: 245110064}
+  - key: Pino 8
+    target: {fileID: 1153681822}
+  - key: Pino 9
+    target: {fileID: 961943233}
+  - key: Pino 10
+    target: {fileID: 1920909592}
+  - key: Coco y controlador del juego
+    target: {fileID: 1029634423}
+  - key: Visual del coco
+    target: {fileID: 757733445}
+  - key: 04 - Fondo editable
+    target: {fileID: 2122917838}
+  - key: Punto del fondo isla
+    target: {fileID: 1602727394}
+--- !u!114 &1029634430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029634423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84074e4436811db47b0fa4311b81aed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GorillaEscape.Runtime::JunglePanel
 --- !u!1 &1053907594
 GameObject:
   m_ObjectHideFlags: 0

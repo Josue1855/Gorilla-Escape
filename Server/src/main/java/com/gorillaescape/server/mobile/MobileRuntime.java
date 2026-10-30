@@ -48,6 +48,7 @@ public final class MobileRuntime implements DisposableBean {
     }
     private volatile tools.jackson.databind.JsonNode gameContext;
     private volatile long gameContextAt;
+    public final MobileUiCommands uiCommands=new MobileUiCommands(System::currentTimeMillis);
     public void presentGame(tools.jackson.databind.JsonNode context)throws IOException {
         GamePresentation.validate(context);
         gameContext=context.deepCopy();gameContextAt=System.nanoTime();
@@ -56,7 +57,7 @@ public final class MobileRuntime implements DisposableBean {
         return System.nanoTime()-gameContextAt<3_000_000_000L?gameContext:null;
     }
     public final PhoneInputHub inputs=new PhoneInputHub();
-    private final TechnicalSession session=new TechnicalSession(System::nanoTime,30_000_000_000L,5_000_000_000L,30_000_000_000L,System.getenv("GORILLA_ROOM_CODE"));
+    private final TechnicalSession session=new TechnicalSession(System::nanoTime,30_000_000_000L,5_000_000_000L,1_800_000_000_000L,System.getenv("GORILLA_ROOM_CODE"));
     private final Map<String,Peer> peers=new HashMap<>();
     private final PeerConnectionFactory factory=new PeerConnectionFactory();
     private final ScheduledThreadPoolExecutor expiry=new ScheduledThreadPoolExecutor(1,r->{Thread t=new Thread(r,"mobile-liveness");t.setDaemon(true);return t;});
@@ -103,7 +104,11 @@ public final class MobileRuntime implements DisposableBean {
     public synchronized Answer reconnect(String sid,int player,String resume,String offer)throws Exception{
         qaReconnectAttempts.incrementAndGet();
         if(closed||offer==null||offer.length()>65536||!offer.startsWith("v=0")||offer.contains("m=audio")||offer.contains("m=video"))throw new IOException("SIGNAL_INVALID");
-        localOffer(offer);var joined=session.reconnect(sid,player,resume);
+        localOffer(offer);
+        // An authenticated foreground resume may replace a stale peer before its liveness timeout.
+        for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(p.joined.playerId()==player&&p.joined.sessionId().equals(sid)&&resume!=null
+            &&java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8),resume.getBytes(java.nio.charset.StandardCharsets.UTF_8))){it.remove();p.close();}}
+        var joined=session.reconnect(sid,player,resume);
         // Retire the prior peer before allocating the resumed epoch, even at capacity.
         for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(p.joined.playerId()==player){it.remove();p.close();}}
         return connect(joined,offer,attempt(),false);
@@ -194,6 +199,11 @@ public final class MobileRuntime implements DisposableBean {
                     if(type.equals("DISCONNECT")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
                     if(ch.getBufferedAmount()<8192){var ack=n.deepCopy();ack.put("messageType","ACK");var ackPayload=GorillaProtocol.JSON.createObjectNode();
                     if(type.equals("HEARTBEAT")){var game=currentGame();if(game!=null)ackPayload.set("gameContext",game);}
+                    if(type.equals("UI_COMMAND")){
+                        if(!helloConfirmed)throw new IOException("COMMAND_AUTHORITY");
+                        var payload=n.path("payload");var result=uiCommands.offer(new MobileUiCommands.Request(payload.path("requestId").asString(),payload.path("contextId").asString(),payload.path("action").asString(),payload.path("target").asString()),currentGame(),joined);
+                        ackPayload.set("uiCommand",GorillaProtocol.JSON.valueToTree(result));
+                    }
                     ack.set("payload",ackPayload);send(ch,GorillaProtocol.JSON.writeValueAsBytes(ack));}
                 }catch(Exception e){inputs.reject();error=e.getMessage();}
                 if(error!=null&&ch.getBufferedAmount()<8192){var reply=GorillaProtocol.JSON.createObjectNode();reply.put("protocolVersion",1);reply.put("messageType","ERROR");reply.put("sessionId",joined.sessionId());reply.put("playerId",joined.playerId());reply.put("deviceSessionId",joined.sessionDeviceId());reply.putNull("sequence");reply.putNull("clientTimestamp");reply.put("serverReceiveTimestamp",System.currentTimeMillis());reply.set("capabilities",GorillaProtocol.JSON.createArrayNode());reply.putNull("quality");var payload=GorillaProtocol.JSON.createObjectNode();payload.put("code","INVALID_INPUT");reply.set("payload",payload);send(ch,GorillaProtocol.JSON.writeValueAsBytes(reply));}

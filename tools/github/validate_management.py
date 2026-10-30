@@ -3,7 +3,7 @@ import json,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def validate():
- data=json.loads((ROOT/'docs/github/backlog.json').read_text());items=data['items'];by={x['key']:x for x in items}
+ data=json.loads((ROOT/'docs/github/backlog.json').read_text(encoding='utf-8'));items=data['items'];by={x['key']:x for x in items}
  assert len(by)==len(items),'Duplicate backlog keys'
  for x in items:
   assert x['type'] in {'Epic','Feature','Task','Bug','Spike','Documentation'}
@@ -25,7 +25,7 @@ def validate():
  links=0
  for p in ROOT.rglob('*.md'):
   if set(p.relative_to(ROOT).parts) & {'.git','node_modules','target','dist','Library','Temp','Logs'}:continue
-  text=p.read_text();assert text.strip(),str(p)
+  text=p.read_text(encoding='utf-8');assert text.strip(),str(p)
   # Strip fenced examples, which may contain placeholders intentionally.
   assert len(re.findall(r'^```',text,re.M))%2==0,str(p)
   clean=re.sub(r'```.*?```','',text,flags=re.S)

@@ -52,7 +52,7 @@ namespace GorillaEscape.CameraTracking
             try {
                 child=new Process{StartInfo=new ProcessStartInfo{FileName=python,Arguments=Quote(script)+" --mode "+Quote(mode)+" --fixture "+Quote(fixture??"")+" --model "+Quote(model??"")+" --device "+Quote(device??"/dev/video0"),UseShellExecute=false,RedirectStandardInput=true,RedirectStandardOutput=true,RedirectStandardError=true,CreateNoWindow=true}};
                 child.Start();Pid=child.Id;stdout=ReadOutput(child.StandardOutput);stderr=Drain(child.StandardError);
-                var clock=Stopwatch.StartNew();while(!ready){token.ThrowIfCancellationRequested();if(Error!=null||child.HasExited)throw new IOException(Error??"VISION_EXITED");if(clock.ElapsedMilliseconds>=10000)throw new TimeoutException("CAMERA_STARTUP_TIMEOUT");await Task.Delay(10,token);}
+                var clock=Stopwatch.StartNew();while(!ready){token.ThrowIfCancellationRequested();if(Error!=null||child.HasExited)throw new IOException(Error??"VISION_EXITED");if(clock.ElapsedMilliseconds>=30000)throw new TimeoutException("CAMERA_STARTUP_TIMEOUT");await Task.Delay(10,token);}
                 State="RUNNING";
             }catch(Exception e){Error=e is OperationCanceledException?"CAMERA_CANCELLED":e is TimeoutException?"CAMERA_STARTUP_TIMEOUT":Error??"CAMERA_UNAVAILABLE";State="FAILED";await StopAsync();throw;}
         }

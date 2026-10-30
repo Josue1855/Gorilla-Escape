@@ -17,7 +17,9 @@ Uri? controllerLink(String text) {
         uri.host.isEmpty ||
         uri.userInfo.isNotEmpty ||
         uri.query.isNotEmpty ||
-        uri.path != '/') {
+        (uri.path != '/' &&
+            !(uri.host == 'play.gorillas.run' &&
+                RegExp(r'^/[a-z0-9]{4,8}/?$').hasMatch(uri.path)))) {
       return null;
     }
     final fields = Uri(query: uri.fragment).queryParametersAll;
@@ -118,6 +120,69 @@ class MotionStore {
   };
 }
 
+const controllerGames = <String, String>{
+  'bowling': 'BANANA BOWLING',
+  'boxing': 'BOXEO CON GORILA',
+  'baseball': 'JUNGLE BASEBALL',
+  'drums': 'JUNGLE DRUMS',
+  'coconut-slice': 'COCONUT SLICE',
+  'jungle-keeper': 'PORTERO DE LA JUNGLA',
+  'whack': 'GORILLA WHACK',
+  'log-balance': 'DESAFÍO DEL TRONCO',
+};
+
+class GameControlProfile {
+  final String game, screen, hand;
+  final String? contextId;
+  final bool valid, phoneRequired, canNavigate;
+  const GameControlProfile(
+    this.game,
+    this.screen,
+    this.hand,
+    this.contextId,
+    this.valid,
+    this.phoneRequired,
+    this.canNavigate,
+  );
+  static GameControlProfile fromContext(
+    Map<String, dynamic>? context,
+    int? player,
+  ) {
+    final id = context?['gameId'],
+        screen = context?['screen'],
+        hand = context?['hand'],
+        token = context?['contextId'];
+    final owner = context?['playerId'];
+    final valid =
+        context?['version'] == 3 &&
+        token is String &&
+        RegExp(r'^[a-f0-9]{32}$').hasMatch(token) &&
+        ['menu', 'connection', 'game'].contains(screen) &&
+        ['left', 'right'].contains(hand) &&
+        context?['phoneRequired'] is bool &&
+        (id == 'lobby'
+            ? owner == 0 && screen != 'game'
+            : controllerGames.containsKey(id) &&
+                  screen == 'game' &&
+                  owner is int &&
+                  owner >= 1 &&
+                  owner <= 4);
+    final game = controllerGames.containsKey(id) ? id as String : 'lobby';
+    return GameControlProfile(
+      game,
+      valid ? screen as String : 'unknown',
+      valid ? hand as String : 'right',
+      valid ? token : null,
+      valid,
+      valid
+          ? context!['phoneRequired'] as bool
+          : game != 'lobby' &&
+                !['coconut-slice', 'jungle-keeper'].contains(game),
+      valid && player == 1,
+    );
+  }
+}
+
 class GameView {
   final String id, phase, title, heading, instruction;
   final bool myTurn;
@@ -138,7 +203,20 @@ class GameView {
     false,
   );
   static GameView fromContext(Map<String, dynamic>? context, int? player) {
-    if (context?['version'] == 2) {
+    final profile = GameControlProfile.fromContext(context, player);
+    if (profile.valid && profile.game == 'lobby') {
+      return GameView(
+        'lobby',
+        'Ready',
+        'JUNGLE PARTY',
+        'Elige tu desafío',
+        player == 1
+            ? 'Elige un juego aquí o en la PC.'
+            : 'El jugador 1 elige la próxima prueba.',
+        false,
+      );
+    }
+    if (context?['version'] == 2 || context?['version'] == 3) {
       const games = {
         'bowling': ['BANANA BOWLING', 'Apunta y realiza un lanzamiento suave.'],
         'boxing': [
@@ -150,6 +228,10 @@ class GameView {
         'coconut-slice': [
           'COCONUT SLICE',
           'Corta con tus manos y evita obstáculos.',
+        ],
+        'jungle-keeper': [
+          'PORTERO DE LA JUNGLA',
+          'Detén los tiros con las manos y el torso frente a la cámara.',
         ],
         'whack': ['GORILLA WHACK', 'Apunta y realiza un golpe hacia abajo.'],
         'log-balance': [
@@ -185,6 +267,8 @@ class GameView {
         mine
             ? (phase == 'Paused'
                   ? 'Revisa la PC, la cámara y la conexión.'
+                  : id == 'bowling'
+                  ? 'Sujeta el teléfono con la mano ${profile.hand == 'left' ? 'izquierda' : 'derecha'}. Muestra solo esa mano y lanza suavemente.'
                   : games[id]![1])
             : 'Otro náufrago está jugando. Mira la PC.',
         mine,
@@ -244,7 +328,7 @@ class GameStats {
   double operator [](String key) => values[key]!;
   static GameStats? fromContext(Map<String, dynamic>? context) {
     final stats = context?['stats'];
-    if (context?['version'] == 2) {
+    if (context?['version'] == 2 || context?['version'] == 3) {
       if (GameView.fromContext(context, context?['playerId']).id == 'lobby' ||
           stats is! Map ||
           stats.length != 10) {

@@ -76,4 +76,11 @@ button:disabled { cursor: wait; opacity: .7; }
 .score-center {left:50%;width:2px;top:4px;bottom:4px;background:#ffffff66}
 .score-tendency {width:4px;top:5px;bottom:5px;background:#ffbd59}
 .score-support {width:8px;top:0;bottom:0;background:white}
-.game-score h2 {font-size:24px;margin:16px 0 8px}.game-score progress{width:100%;accent-color:#63d5a0}.game-score p{line-height:1.6}
+.game-score h2 {font-size:24px;margin:16px 0 8px}.game-score progress,.game-score meter{width:100%;accent-color:#63d5a0}.game-score p{line-height:1.6}
+.tilt-meter {margin:14px 0;padding:10px 14px;border-radius:12px;background:#102920}
+.tilt-track {position:relative;height:8px;border-radius:4px;background:#265344}
+.tilt-track::after {content:'';position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:#fff3d488}
+.tilt-track span {position:absolute;top:-4px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--core-orange);transition:left 80ms linear}
+.control-actions {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.control-actions button {min-height:60px;font-weight:800}
+.game-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:24px 0}.game-card{display:flex;flex-direction:column;gap:9px;padding:20px 12px;min-height:110px;text-align:left;background:#1b4034;color:#fff2ce;border:1px solid #72985d;border-radius:18px}.game-card span{font-size:.8rem;color:#c9ddc4}.hand-choice{border:0;padding:14px 0;display:flex;gap:12px}.hand-choice legend{padding:0 0 8px}.hand-choice button{flex:1;min-height:48px}.hand-choice [aria-pressed=true]{background:#f0bb58;color:#142a21;outline:2px solid #f0bb58}.camera-only{background:#173c32;padding:20px;border-radius:20px;margin:20px 0}.control-hint{font-size:.9rem;opacity:.85}.sensor-recovery{margin:20px 0}.balance-control .score-labels{padding-top:10px}.game-card:focus-visible{outline:3px solid #ffd381;outline-offset:3px}

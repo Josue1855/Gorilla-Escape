@@ -15,6 +15,8 @@ public final class LanInterface {
                 || n.getName().matches("(?i)^(tun|tap|wg|vpn|docker|veth|virbr|vmnet|vboxnet|tailscale|zt|br[-0-9]).*")) continue;
             if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("linux")
                 && !Files.exists(Path.of("/sys/class/net", n.getName(), "device"))) continue;
+            if (System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("windows") && n.getDisplayName() != null
+                && n.getDisplayName().matches("(?i).*(hyper-v|vethernet|virtualbox|vmware|wsl|loopback|tap-|wireguard|tailscale|zerotier|vpn|virtual|bluetooth|wan miniport).*")) continue;
             for (var ip : Collections.list(n.getInetAddresses()))
                 if (ip instanceof Inet4Address && MobileHttpsSettings.privateIpv4(ip.getHostAddress()))
                     candidates.add(new Candidate(n.getName(), ip.getHostAddress()));

@@ -36,6 +36,9 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
     private float lastBackgroundAspect = -1f;
     private float lastBackgroundFov = -1f;
 
+    private JungleSceneBindings bindings;
+    public void Bind(JungleSceneBindings value) => bindings = value;
+
     private void Start()
     {
         Build();
@@ -87,7 +90,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         HidePreviousBackground();
         root = new GameObject("AMBIENTE HÍBRIDO - Cascada y naturaleza");
 
-        Texture2D background = Resources.Load<Texture2D>("Jungle/bowling_waterfall_background");
+        Texture2D background = JungleAssets.Load<Texture2D>("Jungle/bowling_waterfall_background");
         if (background != null)
         {
             GameObject plate = new GameObject("Fondo curvo 2D de acuarela");
@@ -97,8 +100,11 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
             plate.AddComponent<MeshFilter>();
             plate.AddComponent<MeshRenderer>();
             FitBackgroundToCamera();
-            Material material = new Material(Shader.Find("Unlit/Texture"));
+            Shader unlit = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Texture");
+            Material material = new Material(unlit);
             material.mainTexture = background;
+            if (material.HasProperty("_BaseMap")) material.SetTexture("_BaseMap", background);
+            if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", Color.white);
             // La cascada del arte original está ligeramente a la derecha del centro.
             // Desplazar el muestreo la alinea con el eje de la pista y los pinos.
             material.mainTextureOffset = new Vector2(.03f, 0f);
@@ -185,10 +191,13 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
 
     private void CreateNaturalBanks()
     {
-        Texture2D groundTexture = Resources.Load<Texture2D>("Jungle/bowling_jungle_ground");
-        Material paintedGround = new Material(Shader.Find("Unlit/Texture"));
+        Texture2D groundTexture = JungleAssets.Load<Texture2D>("Jungle/bowling_jungle_ground");
+        Shader unlitGround = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Texture");
+        Material paintedGround = new Material(unlitGround);
         paintedGround.mainTexture = groundTexture;
+        if (paintedGround.HasProperty("_BaseMap")) paintedGround.SetTexture("_BaseMap", groundTexture);
         paintedGround.color = Color.white;
+        if (paintedGround.HasProperty("_BaseColor")) paintedGround.SetColor("_BaseColor", Color.white);
         paintedGround.mainTextureScale = new Vector2(.8f, 1.45f);
         for (int side = -1; side <= 1; side += 2)
         {
@@ -261,7 +270,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         GameObject panel = GameObject.CreatePrimitive(PrimitiveType.Quad);
         panel.name = "Gorila en primer plano junto al jugador";
         panel.transform.SetParent(bowlingCamera.transform, false);
-        panel.GetComponent<Collider>().enabled = false;
+        JungleStageBuilder.StripCollider(panel);
         Material material = new Material(Shader.Find("Sprites/Default"));
         material.mainTexture = foregroundNeutral;
         material.color = Color.white;
@@ -272,7 +281,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         GameObject blendPanel = GameObject.CreatePrimitive(PrimitiveType.Quad);
         blendPanel.name = "Transición suave del gorila";
         blendPanel.transform.SetParent(bowlingCamera.transform, false);
-        blendPanel.GetComponent<Collider>().enabled = false;
+        JungleStageBuilder.StripCollider(blendPanel);
         Material blendMaterial = new Material(Shader.Find("Sprites/Default"));
         blendMaterial.mainTexture = foregroundNeutral;
         blendMaterial.color = new Color(1f, 1f, 1f, 0f);
@@ -287,7 +296,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         Texture2D[] frames = new Texture2D[count];
         for (int i = 0; i < frames.Length; i++)
         {
-            frames[i] = Resources.Load<Texture2D>(folder + "/frame_" + i.ToString("00"));
+            frames[i] = JungleAssets.Load<Texture2D>(folder + "/frame_" + i.ToString("00"));
             if (frames[i] == null) return null;
         }
         return frames;
@@ -319,17 +328,16 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         string[] groups = { "02 - Arboles editables", "04 - Fondo editable" };
         foreach (string groupName in groups)
         {
-            GameObject group = GameObject.Find(groupName);
+            GameObject group = bindings?.Get(groupName);
             if (group != null) group.SetActive(false);
         }
 
-        foreach (Transform item in FindObjectsByType<Transform>(FindObjectsSortMode.None))
+        if (bindings != null) foreach (var entry in bindings.Entries)
         {
-            if (item.name == "Pared fondo" || item.name == "Tronco selva" || item.name == "Copa selva")
-                item.gameObject.SetActive(false);
+            if (entry.target != null && (entry.key == "Pared fondo" || entry.key == "Tronco selva" || entry.key == "Copa selva")) entry.target.SetActive(false);
         }
 
-        GameObject stage = GameObject.Find("Plataforma del gorila");
+        GameObject stage = bindings?.Get("Plataforma del gorila");
         if (stage != null)
         {
             Renderer renderer = stage.GetComponent<Renderer>();
@@ -344,7 +352,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         mist.transform.SetParent(root.transform);
         mist.transform.position = position;
         mist.transform.localScale = new Vector3(2.7f, .52f, .28f);
-        mist.GetComponent<Collider>().enabled = false;
+        JungleStageBuilder.StripCollider(mist);
         mist.GetComponent<Renderer>().sharedMaterial = TransparentMaterial(new Color(.88f, .97f, 1f, .16f));
         waterStrips.Add(new DriftItem { transform = mist.transform, origin = position, speed = .28f, phase = phase });
     }
@@ -362,7 +370,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
             puff.transform.SetParent(cloud.transform, false);
             puff.transform.localPosition = new Vector3((i - 1) * .65f, i == 1 ? .20f : 0f, 0f);
             puff.transform.localScale = new Vector3(1.45f, .68f, .22f);
-            puff.GetComponent<Collider>().enabled = false;
+            JungleStageBuilder.StripCollider(puff);
             puff.GetComponent<Renderer>().sharedMaterial = cloudMaterial;
         }
         clouds.Add(new DriftItem { transform = cloud.transform, origin = position, speed = speed, phase = phase });
@@ -387,8 +395,10 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
 
     private Material OpaqueMaterial(Color color)
     {
-        Material material = new Material(Shader.Find("Unlit/Color"));
+        Shader unlitColor = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color") ?? Shader.Find("Universal Render Pipeline/Lit");
+        Material material = new Material(unlitColor);
         material.color = color;
+        if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
         return material;
     }
 

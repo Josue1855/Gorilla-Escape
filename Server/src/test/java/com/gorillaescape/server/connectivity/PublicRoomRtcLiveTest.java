@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 class PublicRoomRtcLiveTest {
  @Test @Timeout(100) void publicPageConnectsRealLocalRtc() throws Exception {
   DnsRetryPolicy.configure();String owner=UUID.randomUUID().toString();
-  String secret=Files.readString(Path.of(System.getProperty("user.home"),".config/gorilla-escape/room-registration-secret")).trim();
+  String secret=Files.readString(registrationSecretPath()).trim();
   var client=HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();var mobile=new MobileRuntime();
   try(var ingress=PublicIngress.forRuntime(mobile);var tunnel=new CloudflaredSupervisor(Path.of(System.getenv("GORILLA_REAL_TUNNEL")))) {
    URI origin=tunnel.start(ingress.origin(),ConnectionBootstrap.DEFAULT_STARTUP_MS);ingress.publicOrigin(URI.create("https://play.gorillas.run"));
@@ -32,5 +32,14 @@ class PublicRoomRtcLiveTest {
     assertEquals("Jugador prueba",mobile.lobby().players().get(0).displayName());
    } finally {if(process.isAlive())process.destroyForcibly();}
   } finally {mobile.destroy();}
+ }
+
+ private static Path registrationSecretPath() {
+  String appData=System.getenv("APPDATA");
+  if(appData!=null&&!appData.isBlank()) {
+   Path windows=Path.of(appData,"Gorilla Escape","room-registration-secret");
+   if(Files.isRegularFile(windows))return windows;
+  }
+  return Path.of(System.getProperty("user.home"),".config","gorilla-escape","room-registration-secret");
  }
 }
