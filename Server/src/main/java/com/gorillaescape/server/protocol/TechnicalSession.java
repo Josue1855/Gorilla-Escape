@@ -9,17 +9,19 @@ public final class TechnicalSession {
     public enum State { CONNECTED, ACTIVE, DISCONNECTED }
     public enum LobbyPhase { OPEN, STARTING, STARTED }
     public record LobbyPlayer(int playerId, String deviceSessionId, long connectionEpoch,
-                              String connectionState, boolean networkReady, boolean inputReady, boolean playerReady) {}
+                              String connectionState, boolean networkReady, boolean inputReady, boolean playerReady, String displayName) {}
     public record LobbySnapshot(int lobbyVersion, String sessionId, String phase, List<LobbyPlayer> players) {}
     private static final long INPUT_FRESHNESS_NANOS=2_000_000_000L;
     public record Admission(String sessionId, String token, long expiresAtNanos) {}
     public record Joined(String sessionId, int playerId, String sessionDeviceId, String resumeToken, long epoch) {}
     private static final class Client {
-        final int player; final String device; String resume;
+        final int player; final String device; String resume,displayName="";
         long lastSeen,epoch=1,inputSeen; boolean networkReady,inputAvailable,playerReady; State state=State.CONNECTED;
         Client(int player,String device,String resume,long now){this.player=player;this.device=device;this.resume=resume;lastSeen=now;}
     }
+    private static final String ROOM_CHARS="abcdefghjkmnpqrstuvwxyz23456789";
     private final String session=UUID.randomUUID().toString();
+    private final String roomCode;
     private final LongSupplier clock;
     private final SecureRandom random=new SecureRandom();
     private final Map<String,Long> admissions=new HashMap<>();
@@ -28,9 +30,20 @@ public final class TechnicalSession {
     private boolean closed;
     private LobbyPhase phase=LobbyPhase.OPEN;
     public TechnicalSession(LongSupplier clock,long admissionTtl,long liveness,long resumeTtl){
+        this(clock,admissionTtl,liveness,resumeTtl,null);
+    }
+    public TechnicalSession(LongSupplier clock,long admissionTtl,long liveness,long resumeTtl,String explicitRoomCode){
         if(admissionTtl<=0||liveness<=0||resumeTtl<liveness)throw new IllegalArgumentException("SESSION_CONFIG");
         this.clock=clock;this.admissionTtl=admissionTtl;this.liveness=liveness;this.resumeTtl=resumeTtl;
+        if(explicitRoomCode!=null&&explicitRoomCode.matches("[a-z0-9]{4,8}")){
+            this.roomCode=explicitRoomCode;
+        }else{
+            char[] code=new char[4];
+            for(int i=0;i<4;i++)code[i]=ROOM_CHARS.charAt(random.nextInt(ROOM_CHARS.length()));
+            this.roomCode=new String(code);
+        }
     }
+    public String roomCode(){return roomCode;}
     private String token(){byte[] b=new byte[32];random.nextBytes(b);return Base64.getUrlEncoder().withoutPadding().encodeToString(b);}
     private void live(){if(closed)throw new IllegalStateException("SESSION_CLOSED");expire();}
     private void expire(){long now=clock.getAsLong();admissions.values().removeIf(end->now>=end);
@@ -104,7 +117,12 @@ public final class TechnicalSession {
     public synchronized LobbySnapshot lobby(){
         live();return new LobbySnapshot(1,session,phase.name(),clients.values().stream().sorted(Comparator.comparingInt(c->c.player))
             .map(c->{boolean input=inputReady(c);if(!input)c.playerReady=false;
-                return new LobbyPlayer(c.player,c.device,c.epoch,c.state.name(),c.networkReady,input,c.playerReady);}).toList());
+                return new LobbyPlayer(c.player,c.device,c.epoch,c.state.name(),c.networkReady,input,c.playerReady,c.displayName);}).toList());
+    }
+    public synchronized void setDisplayName(Joined joined,String name){
+        Client c=owned(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());
+        if(c.state==State.DISCONNECTED)throw new IllegalStateException("CLIENT_DISCONNECTED");
+        c.displayName=name;
     }
     public synchronized State state(int pid){live();Client c=clients.get(pid);if(c==null)throw new IllegalArgumentException("PLAYER_ABSENT");return c.state;}
     public synchronized int retainedClients(){live();return clients.size();}

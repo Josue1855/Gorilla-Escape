@@ -1,7 +1,67 @@
-# Juego Unity
+# Jungle Party / Gorilla Escape — integración de Saúl con Fase 0
 
-Estado vigente y separación entre proyectos: [índice único](../docs/README.md) y [registro de estado](../docs/00-product/DEVELOPMENT_STATUS.md). Los resultados antiguos de este README conservan su alcance Software/Lab.
+Estado: **integración de código; aceptación física pendiente**. Esta rama conserva las escenas y recursos del alpha de Saúl e incorpora `develop` y el runtime de Fase 0. No se ha integrado esta rama hacia `develop` ni `main`.
 
-Unity 6000.3.23f1; fuentes C#, assembly definitions, tuning ScriptableObject, contratos de input y pruebas. Abrir Unity/ con Unity Hub/licencia válida. Ejecutar menú Gorilla Escape → Create Foundation Scene para generar escena Bootstrap/configuración sin sobrescribir una escena ya creada.
+## Proyecto y versión
 
-Guía: [TEAM_START](../docs/TEAM_START.md). Foundation, IPC, PhoneInput y CameraInput/Player Lock/alineación/Fusion infrastructure están validados en Linux Software/Lab. La licencia y los diagnósticos iniciales quedan históricos en TEST_REPORT. Minijuegos, validación física y Windows siguen pendientes. [Auditoría final](../docs/PHASE0_FINAL_AUDIT.md).
+Abrir esta carpeta `Unity/` con **Unity 6000.6.0f1**, la versión ya utilizada por las escenas de Saúl. No se degradaron las escenas a 6000.3.23f1. El pin histórico de Fase 0 era 6000.3.23f1; aceptar ambas versiones en el validador de metadatos no demuestra compatibilidad del motor.
+
+Se conservan `Connection`, `MainMenu`, `BananaBowling`, `GorillaBoxing`, `JungleBaseball`, `JungleDrums`, `CoconutSlice` y `WhackAMole`, junto con `LogBalance` (Desafío del Tronco), además del Bootstrap técnico restaurado en `Assets/_Project/Scenes/Bootstrap/`.
+
+## Conexión vigente
+
+Los juegos consumen `MotionSession`, que delega en `PortableServiceHost`. Este componente utiliza `JavaProbeSupervisor` y `VisionSupervisor` de Fase 0. El teléfono utiliza la PWA oficial, WebRTC y el Java supervisado; Unity recibe contratos Shared por IPC autenticado en loopback. La cámara utiliza el adaptador oficial y sus pipes privados.
+
+Los scripts antiguos `CameraTracker/`, `MotionRelay/` y `PREPARAR_MODULO.ps1` se conservan como referencia del alpha. **El flujo migrado no los ejecuta**, no prepara dependencias por PowerShell ni crea su propio túnel. El QR se dibuja localmente a partir de los módulos enviados por Java; no utiliza servicios externos de generación de QR.
+
+## Desarrollo local
+
+1. Ejecutar `npm --prefix PWA ci`, `npm --prefix PWA run build` y `Server/mvnw -B -f Server/pom.xml verify` desde la raíz del repositorio.
+2. Preparar los runtimes y variables de Fase 0. Para el editor puede usarse `tools/integration/run-jungle-editor.sh /ruta/al/Editor/Unity`. Requiere JDK 21 instalado sólo en la máquina de desarrollo; la distribución final usa el Java empaquetado.
+3. Para cámara, proporcionar el paquete oficial `Vision` mediante `GORILLA_PACKAGE_ROOT` o configurar las variables de laboratorio documentadas en [integración](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La cámara no usa el rastreador antiguo del alpha.
+4. Usar **Gorilla Escape → Play Gorilla Escape**. Este comando prepara las rutas locales de Java/JAR, registra las diez escenas y abre `Assets/Scenes/Connection.unity` antes de activar Play. **Open Bootstrap** abre solamente el diagnóstico técnico. También puede abrirse Connection manualmente usando el launcher; el arranque físico exige opt-in y permiso del test runner. Los tests y la edición ordinaria no arrancan servicios.
+5. Autorizar la red local si el sistema lo solicita. Usar Paso 1 para preparación del certificado cuando corresponda y Paso 2 para unirse. El código aleatorio de cuatro letras del prototipo ya no se usa.
+6. Conceder permisos de sensores en la PWA. Confirmar/lanzar y recentrar se transmiten como zonas de contacto dentro del contrato oficial. El alpha utiliza el jugador 1; no anuncia soporte multijugador migrado.
+
+No abrir simultáneamente la sesión técnica Bootstrap y la sesión de juegos: cada flujo tiene su propietario y la integración impide iniciar un segundo supervisor cuando el diagnóstico está activo.
+
+## InputFusion en los siete juegos
+
+Las mecánicas consumen ahora una muestra fusionada tipada y requieren autorización de gesto. La pérdida de seguimiento pausa tiempo y física; el ratón y el teléfono sin cámara no son vías alternativas de puntuación. [Reglas por juego, rearme y pruebas](../docs/02-gameplay/JUNGLE_FUSED_INPUT.md).
+
+## Validación y límites
+
+[Resultados, comandos reproducibles y pendientes](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La compilación completa/importación en Unity, las pruebas físicas de controles y la distribución Windows están pendientes. La cámara oficial conserva las limitaciones Windows de Fase 0; esta migración no las resuelve ni declara un instalador final.
+
+Corrección del punto de entrada y verificaciones: [detalle](../docs/03-development/SAUL_PRODUCT_ENTRY.md).
+
+El séptimo juego conserva el modelo físico y el náufrago del tronco, y reutiliza la selva, los gorilas y el tema de Saúl. [Integración, créditos y prueba pendiente](../docs/02-gameplay/LOG_BALANCE_SAUL.md).
+
+## Cloudflared del paquete de Fase 0
+
+El menú del Editor y `run-jungle-editor.sh` reutilizan `Unity/Builds/FoundationLinux` si contiene Vision y el helper de firewall. Cloudflared se busca en el paquete seleccionado, en `Tools/cloudflared` del repositorio o en aquel paquete preparado; una ruta explícita `GORILLA_CLOUDFLARED_PATH` tiene prioridad. Se mantiene `AUTO` salvo configuración explícita. Java verifica el SHA-256 fijado antes de ejecutarlo; Play no descarga ni instala herramientas.
+
+En la PC Linux original existía el binario revisado dentro del paquete preparado. Un checkout nuevo necesita los artefactos de distribución: `python tools/t063/package-cloudflared.py <binario-revisado> <paquete> <plataforma>` incluye binario, licencia y manifiesto. Las plataformas admitidas son `linux-amd64` (valor predeterminado) y `windows-amd64`; Windows genera `Tools/cloudflared.exe` y usa un pin independiente. No se versionan copias de los ejecutables generados. Este soporte permite preparar Windows, pero la aceptación física y prolongada sigue pendiente.
+
+[Comprobación real y límite de conectividad observado](../docs/evidence/saul-log-balance-2026-10-27/cloudflared.md). Que el proceso se registre no garantiza HTTPS público disponible. AUTO conserva la vía LAN si la comprobación externa falla.
+
+Los tiempos y la recuperación AUTO se ampliaron con los ajustes de la rama del tronco: [política vigente y pruebas](../docs/03-development/CLOUDFLARED_RECOVERY.md). Arranque de 30 s por defecto, configurable hasta 60 s; reintento tras 20 s sin jugadores y con limpieza completa.
+
+## Teléfono y persistencia
+
+Los siete juegos publican presentación v2 sobre IPC/RTC, con métricas reales disponibles; PWA y Companion la muestran sin decidir la simulación. Registro opcional en SQLite y arranque del Player usan los procesos privados empaquetados. [Implementación, build y validación](../docs/03-development/MOBILE_STACK_INTEGRATION.md).
+
+
+## Presentación retenida y referencias
+
+La UI de producto (conexión, selección, siete juegos, portero y pausa/cámara) usa `JunglePanel`/`UIDocument` de UI Toolkit. `JungleRetainedUI` reutiliza elementos y traduce los rectángulos y estilos existentes para conservar el arte; `GUIStyle` queda como datos de compatibilidad, sin ejecutar `OnGUI`. La presentación se actualiza una vez por frame, también con el juego pausado. Las pantallas técnicas de Bootstrap/IPC conservan IMGUI para diagnóstico.
+
+`BowlingController` y `BoxingController` tienen ciclos de vida, entrada y estado independientes. El GUID del controlador anterior se conserva para boliche; la escena de boxeo enlaza su propio script. Se eliminó el menú antiguo del controlador compartido.
+
+El arte vive en `Assets/RuntimeContent`. `JungleAssetReference` guarda referencias serializadas a los assets y subassets; `JungleAssets` resuelve sus claves estables mediante registros individuales en `Resources/JungleAssetReferences`. Renombrar o mover el arte preservando su `.meta` mantiene los enlaces. Queda una única llamada central a `Resources.Load` para cargar estos registros bajo demanda; no se introducen Addressables ni un catálogo que retenga todo el arte en memoria. Estos registros y sus dependencias siguen formando parte del build: esta migración no acredita una reducción de tamaño ni de draw calls sin medir un Player.
+
+`JungleSceneBindings` guarda los objetos de boliche, incluidos los inactivos, sin búsquedas por nombre en ejecución. Para añadir contenido o regenerar referencias: **Gorilla Escape > Migrate presentation references**. Ejecutar este comando con las escenas guardadas; las claves ya asignadas sobreviven a los cambios de nombre. El procesador de escenas también guarda los enlaces al construir.
+
+La conexión precalienta los 24 clips procedurales, un clip por frame, empezando por el ambiente. Ambos accesos al menú esperan a que termine. Abrir directamente una escena de juego conserva la síntesis diferida como respaldo.
+
+Pruebas añadidas: `JunglePresentationTests` (árbol retenido, espejo de cámara, renombrado y recursos) y `JunglePresentationPlayModeTests` (navegación Toolkit, una actualización por frame y reutilización de clips). La apariencia final y el rendimiento requieren comprobación gráfica y perfilado en el dispositivo objetivo.

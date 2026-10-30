@@ -15,14 +15,15 @@ namespace GorillaEscape.CameraTracking
         {
             var env=environment??Environment.GetEnvironmentVariable;
             var root=Path.Combine(Path.GetFullPath(productDirectory),"Vision");
+            bool windows=Environment.OSVersion.Platform==PlatformID.Win32NT;
             bool lab=env("GORILLA_CAMERA_LAB")=="1";
             string Pick(string name,string fallback) => lab&&!string.IsNullOrEmpty(env(name))?env(name):fallback;
             var paths=new CameraRuntimePaths {
-                Python=Pick("GORILLA_CAMERA_PYTHON",Path.Combine(root,"python")),
+                Python=Pick("GORILLA_CAMERA_PYTHON",Path.Combine(root,windows?"python.exe":"python")),
                 Worker=Pick("GORILLA_CAMERA_SCRIPT",Path.Combine(root,"worker.py")),
                 Model=Pick("GORILLA_CAMERA_MODEL",Path.Combine(root,"pose_landmarker_lite-v1.task")),
                 Fixture=Pick("GORILLA_CAMERA_FIXTURE",Path.Combine(root,"corpus-v1.json")),
-                Device=env("GORILLA_CAMERA_DEVICE")??"/dev/video0",
+                Device=env("GORILLA_CAMERA_DEVICE")??(windows?"0":"/dev/video0"),
                 Mode=Pick("GORILLA_CAMERA_MODE","physical")
             };
             if(!File.Exists(paths.Python))throw new FileNotFoundException("CAMERA_RUNTIME_MISSING");

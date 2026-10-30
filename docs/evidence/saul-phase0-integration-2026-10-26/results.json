@@ -1,0 +1,68 @@
+{
+  "recordedAtUtc": "2026-10-27T01:35:39.295426+00:00",
+  "branch": "feature/saul-jungle-party-alpha",
+  "saulBase": "43ef0b962705a03b02102d1a5e6462b3c9f6bcb3",
+  "developMerged": "851e8dc3943129ec89210743c6cc0e494836d610",
+  "javaCleanVerify": {
+    "tests": 112,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "javaSkipped": [
+    {
+      "test": "com.gorillaescape.server.hosting.MobileHttpsTest.incorrectSanAndPasswordFailBeforeOpeningServer",
+      "reason": "System property [gorilla.test.lanAddress] does not exist"
+    },
+    {
+      "test": "com.gorillaescape.server.hosting.MobileHttpsTest.invalidOriginAndMissingHostnameFailWithOtherwiseValidConfiguration",
+      "reason": "System property [gorilla.test.lanAddress] does not exist"
+    },
+    {
+      "test": "com.gorillaescape.server.connectivity.RealQuickTunnelTest.publicHttpsBootstrapOnly",
+      "reason": "Environment variable [GORILLA_REAL_TUNNEL] does not exist"
+    },
+    {
+      "test": "com.gorillaescape.server.connectivity.BootstrapRtcLabTest.oneTwoFourPeersSurviveBootstrapLoss",
+      "reason": "Environment variable [GORILLA_TEST_NODE] does not exist"
+    }
+  ],
+  "pwa": {
+    "passed": 71,
+    "failed": 0,
+    "build": "PASS",
+    "productionAuditVulnerabilities": 0
+  },
+  "pureCSharpAdapter": {
+    "passed": 15,
+    "failed": 0,
+    "fixtures": "synthetic, not physical evidence"
+  },
+  "unityReferenceTypeCheck": {
+    "Editor": "PASS",
+    "Player": "PASS",
+    "sourceCounts": {
+      "contracts": 6,
+      "runtime": 24,
+      "facade": 5
+    },
+    "excludes": "full Editor import, scenes, glTFast, unchanged gameplay, engine tests and Player build"
+  },
+  "foundation": "PASS",
+  "management": "PASS",
+  "firewall": {
+    "passed": 11,
+    "failed": 0,
+    "elevationUsed": false
+  },
+  "lfs": "fsck OK",
+  "saulVisualAssetsUnchanged": true,
+  "phase0SupervisorsUnchanged": true,
+  "unityEngineValidation": {
+    "status": "PENDING_USER_DEFERRED",
+    "observedExitCode": 198,
+    "reason": "No valid Unity Editor license found"
+  },
+  "physicalGameAcceptance": "NOT RUN",
+  "finalInstaller": "PENDING"
+}

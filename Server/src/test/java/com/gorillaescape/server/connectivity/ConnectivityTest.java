@@ -10,6 +10,12 @@ import java.util.*;
 import java.util.concurrent.*;
 
 class ConnectivityTest {
+    @Test void publicTunnelDoesNotRequireLanFirewallButCabinStillDoes(){
+        assertTrue(ConnectivityService.firewallAllowsAdmission(false,true,"CLOUDFLARED"));
+        assertFalse(ConnectivityService.firewallAllowsAdmission(false,true,"CABIN"));
+        assertFalse(ConnectivityService.firewallAllowsAdmission(false,false,"CLOUDFLARED"));
+        assertTrue(ConnectivityService.firewallAllowsAdmission(true,true,"CABIN"));
+    }
     @TempDir Path temp;
     static class Fake implements Tunnel {
         State state=State.STOPPED;boolean clean=true;int starts,closes;String failure;
@@ -36,12 +42,14 @@ class ConnectivityTest {
     }
     @Test void onlyExactTemporaryOriginAccepted(){
         assertEquals("honest-tunnel.trycloudflare.com",CloudflaredSupervisor.validatePublicOrigin("https://honest-tunnel.trycloudflare.com").getHost());
-        for(String s:List.of("http://foo.trycloudflare.com","https://foo.trycloudflare.com.evil.org","https://x@foo.trycloudflare.com","https://foo.trycloudflare.com/","https://foo.trycloudflare.com:443","https://foo.trycloudflare.com?secret=x","https://"+"x".repeat(500)+".trycloudflare.com","https://foo;touch-pwn.trycloudflare.com"))assertThrows(IllegalArgumentException.class,()->CloudflaredSupervisor.validatePublicOrigin(s));
+        assertEquals("play.gorillas.run",CloudflaredSupervisor.validatePublicOrigin("https://play.gorillas.run").getHost());
+        assertEquals("gorillas.run",CloudflaredSupervisor.validatePublicOrigin("https://gorillas.run").getHost());
+        for(String s:List.of("http://foo.trycloudflare.com","https://foo.trycloudflare.com.evil.org","https://x@foo.trycloudflare.com","https://foo.trycloudflare.com/","https://foo.trycloudflare.com:443","https://foo.trycloudflare.com?secret=x","https://"+"x".repeat(500)+".trycloudflare.com","https://foo;touch-pwn.trycloudflare.com","http://play.gorillas.run","https://play.gorillas.run.evil.org","https://evilgorillas.run"))assertThrows(IllegalArgumentException.class,()->CloudflaredSupervisor.validatePublicOrigin(s));
         assertNull(CloudflaredSupervisor.parseOrigin("https://foo.trycloudflare.com.evil.org"));assertNull(CloudflaredSupervisor.parseOrigin("x".repeat(2049)));
+        assertEquals("https://play.gorillas.run",CloudflaredSupervisor.parseOrigin("Registered tunnel connection connIndex=0 event=0 https://play.gorillas.run").toASCIIString());
     }
     Path script(String scenario)throws Exception{
-        var p=temp.resolve("cloudflared "+UUID.randomUUID());
-        Files.writeString(p,"#!/bin/sh\nif [ \"$1\" = '--version' ]; then echo 'cloudflared version 2026.10.0'; exit 0; fi\n"+scenario);p.toFile().setExecutable(true);return p;
+        return TestCloudflaredFixture.create(temp,scenario);
     }
     @Test void ownedProcessReadyTimeoutInvalidOutputDeathAndCleanup()throws Exception{
         for(String output:List.of("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nexec sleep 20\n","echo 'https://qa-test.trycloudflare.com.evil.org'\necho 'Registered tunnel connection'\nexec sleep 20\n","exec sleep 20\n","exit 1\n")){
@@ -58,11 +66,11 @@ class ConnectivityTest {
     @Test void ingressExactAllowlistNoPrivateHandlersCacheOrOversize()throws Exception{
         var calls=new java.util.concurrent.atomic.AtomicInteger();
         try(var ingress=new PublicIngress((path,body)->{calls.incrementAndGet();return Map.of("state","REJECTED_TEST");})){var client=HttpClient.newHttpClient();assertEquals("127.0.0.1",ingress.origin().getHost());
-            for(String path:List.of("/mobile/admission","/mobile/diagnostics","/mobile/end","/api/health","/actuator","/ipc","/qa/preview","/camera/preview","/prepare","/ca.key","/trust","/filesystem","/metrics","/mobile-lab/index.html","/assets/../application.properties","/%2e%2e/application.properties","/mobile/join?admission=secret")){
+            for(String path:List.of("/mobile/admission","/mobile/diagnostics","/mobile/end","/api/health","/api/players","/actuator","/ipc","/qa/preview","/camera/preview","/prepare","/ca.key","/trust","/filesystem","/metrics","/mobile-lab/index.html","/assets/../application.properties","/%2e%2e/application.properties","/mobile/join?admission=secret")){
                 for(String method:List.of("GET","POST")){var request=HttpRequest.newBuilder(ingress.origin().resolve(path));if(method.equals("POST"))request.header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}"));else request.GET();var r=client.send(request.build(),HttpResponse.BodyHandlers.ofString());assertEquals(404,r.statusCode(),method+" "+path);}
             }
             for(String path:PublicIngress.SIGNAL){var r=client.send(HttpRequest.newBuilder(ingress.origin().resolve(path)).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build(),HttpResponse.BodyHandlers.ofString());assertEquals(200,r.statusCode());assertTrue(r.headers().firstValue("Cache-Control").orElseThrow().contains("no-store"));}
-            assertEquals(3,calls.get());var large=client.send(HttpRequest.newBuilder(ingress.origin().resolve("/mobile/join")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("x".repeat(PublicIngress.MAX_BODY+1))).build(),HttpResponse.BodyHandlers.ofString());assertEquals(413,large.statusCode());assertEquals(3,calls.get());
+            assertEquals(PublicIngress.SIGNAL.size(),calls.get());var large=client.send(HttpRequest.newBuilder(ingress.origin().resolve("/mobile/join")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("x".repeat(PublicIngress.MAX_BODY+1))).build(),HttpResponse.BodyHandlers.ofString());assertEquals(413,large.statusCode());assertEquals(PublicIngress.SIGNAL.size(),calls.get());
             var foreign=client.send(HttpRequest.newBuilder(ingress.origin().resolve("/mobile/join")).header("Origin","https://evil.org").header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build(),HttpResponse.BodyHandlers.ofString());assertEquals(403,foreign.statusCode());
         }
     }
@@ -77,12 +85,12 @@ class ConnectivityTest {
         assertNull(link.getRawQuery());assertTrue(link.getRawFragment().contains("admission="));assertFalse(link.toString().split("#")[0].contains(next.token()));
     }
     @Test void startupBudgetRejectsUnboundedValues(){
-        for(long value:new long[]{0,99,15001,Long.MAX_VALUE})assertThrows(IllegalArgumentException.class,()->new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),new Fake(),value));
+        for(long value:new long[]{0,99,60001,Long.MAX_VALUE})assertThrows(IllegalArgumentException.class,()->new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),new Fake(),value));
     }
     @Test void httpHealthFailureCannotCreateReadyAndVersionTimeoutCleansOwnedChild()throws Exception{
         var binary=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nexec sleep 20\n");
         try(var supervisor=new CloudflaredSupervisor(binary,(origin,budget)->false)){assertThrows(Exception.class,()->supervisor.start(URI.create("http://127.0.0.1:9"),200));assertTrue(supervisor.cleanupComplete());assertEquals(Tunnel.State.FAILED,supervisor.state());}
-        var hung=temp.resolve("hung-version");Files.writeString(hung,"#!/bin/sh\nexec sleep 20\n");hung.toFile().setExecutable(true);
+        var hung=TestCloudflaredFixture.create(temp,"HANG_VERSION");
         try(var supervisor=new CloudflaredSupervisor(hung,(origin,budget)->true)){assertThrows(Exception.class,()->supervisor.start(URI.create("http://127.0.0.1:9"),100));assertTrue(supervisor.cleanupComplete());}
     }
 
@@ -113,6 +121,39 @@ class ConnectivityTest {
             assertTrue(service.qa(false).modules().isEmpty(),"No second raster without explicit request");
         }finally{release.countDown();mobile.destroy();}
     }
+    @Test void roomCredentialSupportsFlatpakAndStandardConfig()throws Exception{
+        var home=temp.resolve("home");var sandbox=temp.resolve("flatpak");
+        Files.createDirectories(home.resolve(".config/gorilla-escape"));
+        Files.writeString(home.resolve(".config/gorilla-escape/room-registration-secret"),"standard-secret");
+        assertEquals("standard-secret",ConnectivityService.registrationSecret(null,sandbox.toString(),null,home.toString()));
+        Files.createDirectories(sandbox.resolve("gorilla-escape"));
+        Files.writeString(sandbox.resolve("gorilla-escape/room-registration-secret"),"flatpak-secret");
+        assertEquals("flatpak-secret",ConnectivityService.registrationSecret(null,sandbox.toString(),null,home.toString()));
+        assertEquals("explicit-secret",ConnectivityService.registrationSecret("explicit-secret",sandbox.toString(),null,home.toString()));
+        var appData=temp.resolve("AppData/Roaming");Files.createDirectories(appData.resolve("Gorilla Escape"));
+        Files.writeString(appData.resolve("Gorilla Escape/room-registration-secret"),"windows-secret");
+        assertEquals("windows-secret",ConnectivityService.registrationSecret(null,null,appData.toString(),home.toString()));
+    }
+
+    @Test void publicIngressAllowsBundledFontsOnlyUnderAssets(){
+        assertTrue(PublicIngress.allowed("GET","/assets/LilitaOne-a1.ttf"));
+        assertFalse(PublicIngress.allowed("GET","/private/secret.ttf"));
+        assertFalse(PublicIngress.allowed("POST","/assets/LilitaOne-a1.ttf"));
+    }
+
+    @Test void precomputedFirstQrIsOnlyHandedOutOnceAfterReady()throws Exception{
+        var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
+        try(var b=new ConnectionBootstrap(ConnectionBootstrap.Mode.CABIN,URI.create("https://192.168.1.2:8443/"),new Fake(),1000)){
+            var service=new ConnectivityService(mobile,"","127.0.0.1",true);
+            var field=ConnectivityService.class.getDeclaredField("bootstrap");field.setAccessible(true);field.set(service,b);
+            service.prepareFirstQr();assertEquals("CONNECTION_NOT_READY",service.qa(false).state());
+            b.start(null);waitReady(b);service.prepareFirstQr();
+            assertTrue(service.qa(false).modules().isEmpty());
+            var first=service.qa(true);assertEquals("AVAILABLE",first.state());assertFalse(first.modules().isEmpty());
+            assertTrue(service.qa(false).modules().isEmpty());assertFalse(service.qa(true).modules().isEmpty());
+        }finally{mobile.destroy();}
+    }
+
     @Test void replacementRequestAlsoWaitsAcrossSubsequentPolls()throws Exception{
         var release=new CountDownLatch(1);var fake=new Fake(){public URI start(URI ingress,long budget)throws Exception{release.await(1,TimeUnit.SECONDS);return super.start(ingress,budget);}};
         var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
@@ -137,10 +178,19 @@ class ConnectivityTest {
         }finally{mobile.destroy();}
     }
 
+    @Test void lostRegistrationTriggersTunnelFailureAndCleanup()throws Exception{
+        var binary=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nexec sleep 20\n");
+        try(var supervisor=new CloudflaredSupervisor(binary,(origin,budget)->true)){
+            supervisor.start(URI.create("http://127.0.0.1:9"),500);supervisor.registrationLost();
+            assertEquals(Tunnel.State.FAILED,supervisor.state());assertEquals("ROOM_REGISTRATION_LOST",supervisor.failureReason());
+            supervisor.close();assertTrue(supervisor.cleanupComplete());
+        }
+    }
+
     @Test void actualRunningProcessDeathIsDetectedAndMalformedOutputIsBounded()throws Exception{
         var dying=script("echo 'https://qa-test.trycloudflare.com'\necho 'Registered tunnel connection'\nsleep 0.1\n");
         try(var tunnel=new CloudflaredSupervisor(dying,(origin,budget)->true)){
-            tunnel.start(URI.create("http://127.0.0.1:9"),500);long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(1);
+            tunnel.start(URI.create("http://127.0.0.1:9"),500);long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(5);
             while(tunnel.state()==Tunnel.State.RUNNING&&System.nanoTime()<end)Thread.sleep(10);assertEquals(Tunnel.State.FAILED,tunnel.state());tunnel.close();assertTrue(tunnel.cleanupComplete());
         }
         var bad=script("printf '%s\\n' 'https://qa-test.trycloudflare.com;$(touch should-never-exist)'\necho 'Registered tunnel connection'\nexec sleep 20\n");
@@ -177,7 +227,7 @@ class ConnectivityTest {
             assertEquals("TUNNEL_CLEANUP_INCOMPLETE",bootstrap.snapshot().get("fallbackReason"));
         }
     }
-    @Test void serviceDoesNotRevokePlayersOrReplacePublicQrOnWanLoss()throws Exception{
+    @Test void serviceReplacesPublicQrWithoutRevokingPlayersOnWanLoss()throws Exception{
         var fake=new Fake();var mobile=new com.gorillaescape.server.mobile.MobileRuntime();
         try(var b=new ConnectionBootstrap(ConnectionBootstrap.Mode.AUTO,URI.create("https://192.168.1.2:8443/"),fake,1000)){
             var service=new ConnectivityService(mobile,"","127.0.0.1",true);
@@ -187,11 +237,13 @@ class ConnectivityTest {
             var first=session.createAdmission();session.join(first.sessionId(),first.token());var before=session.lobby();
             b.start(URI.create("http://127.0.0.1:9"));waitReady(b);
             assertEquals("AVAILABLE",service.qa(true).state());
-            var frozenField=ConnectivityService.class.getDeclaredField("admissionPage");frozenField.setAccessible(true);var frozen=frozenField.get(service);
+            var frozenField=ConnectivityService.class.getDeclaredField("admissionPage");frozenField.setAccessible(true);
+            var pending=session.createAdmission();
             fake.state=Tunnel.State.FAILED;service.snapshot();
-            assertEquals("AVAILABLE",service.qa(false).state());assertEquals(frozen,frozenField.get(service));
+            assertThrows(IllegalArgumentException.class,()->session.join(pending.sessionId(),pending.token()));
+            var replacement=service.qa(false);assertEquals("AVAILABLE",replacement.state());assertFalse(replacement.modules().isEmpty());
             assertEquals(before,session.lobby());assertTrue(service.qa(false).modules().isEmpty());
-            assertEquals("AVAILABLE",service.qa(true).state());assertEquals("192.168.1.2",((URI)frozenField.get(service)).getHost());
+            assertEquals("192.168.1.2",((URI)frozenField.get(service)).getHost());
             assertEquals(before,session.lobby());
         }finally{mobile.destroy();}
     }

@@ -24,9 +24,13 @@ export function sanitizeCandidate(candidate){
  return {type,protocol,addressKind,port};
 }
 export class MobileClient {
- constructor({source='synthetic',fetcher=fetch}={}){
+ constructor({source='synthetic',fetcher=null}={}){
   if(!['synthetic','replay','emulator','physical'].includes(source))throw Error('evidence source');
-  this.source=source;this.fetcher=(...args)=>fetcher(...args);this.sequence=0;this.pending=new Map();this.motionTelemetry=new Map();this.latest=null;this.flushScheduled=false;this.state='STOPPED';
+  const request=fetcher??globalThis.fetch.bind(globalThis);
+  this.source=source;this.fetcher=(path,...args)=>{
+   const loc=globalThis.location;const match=loc?.hostname==='play.gorillas.run' && loc.pathname.match(/^\/([a-z0-9]{4,8})(?:\/|$)/i);
+   return request(match && typeof path==='string' && path.startsWith('/') ? '/'+match[1]+path : path,...args);
+  };this.sequence=0;this.pending=new Map();this.motionTelemetry=new Map();this.latest=null;this.flushScheduled=false;this.state='STOPPED';
   this.metrics={sent:0,received:0,errors:0,overwritten:0,motionSubmitted:0,motionSent:0,motionAck:0,motionErrors:0,motionAckMiss:0,motionPendingTelemetry:0,motionBufferedDrop:0,rtt:[]};
  }
  diagnosticEvent(event,value){
@@ -45,13 +49,16 @@ export class MobileClient {
     this.trace.rejectionCode=allowed.includes(reply?.code)?reply.code:'SIGNAL_FAILED_OTHER';throw Error('JOIN_E04_SIGNAL_REJECTED');
    }
    return await r.json();
+  }catch(error){
+   if(this.trace.httpStatus===null)this.trace.fetchFailure=['AbortError','TimeoutError','SecurityError','TypeError'].includes(error?.name)?error.name:'NETWORK_ERROR';
+   throw error;
   }finally{clearTimeout(timer);}
  }
  async connect(joinUrl,resume=null){
   if(this.pc)await this.close(false);
   const generation=this.generation=(this.generation||0)+1;
-  this.started=performance.now();this.trace={stage:'START',code:null,postExecuted:false,httpStatus:null,rejectionCode:null,remoteDescription:'NOT RUN',candidates:[],events:[]};
-  this.state='CONNECTING';let code='JOIN_E01_OFFER';let rejectIce;
+  this.started=performance.now();this.trace={stage:'START',code:null,postExecuted:false,httpStatus:null,rejectionCode:null,fetchFailure:null,remoteDescription:'NOT RUN',candidates:[],events:[]};
+  this.gameContext=null;this.gameContextExpires=0;this.state='CONNECTING';let code='JOIN_E01_OFFER';let rejectIce;
   const iceFailed=new Promise((_,reject)=>{rejectIce=reject;});iceFailed.catch(()=>{});
   try{
    this.pc=new RTCPeerConnection({iceServers:[]});this.channels={};
@@ -75,7 +82,7 @@ export class MobileClient {
    const fragment=new URLSearchParams(new URL(joinUrl,location.href).hash.slice(1));
    code='JOIN_E03_SIGNAL_HTTP';this.stage('SIGNALING_POST');
    const reply=resume?await this.signal('/mobile/reconnect',{sessionId:resume.sessionId,playerId:resume.playerId,resumeToken:resume.resumeToken,offer:this.pc.localDescription.sdp}):await this.signal('/mobile/join',{protocolVersion:1,messageType:'JOIN',sessionId:fragment.get('sessionId'),admission:fragment.get('admission'),offer:this.pc.localDescription.sdp});
-   this.identity=reply;this.sequence=0;
+   this.identity=reply;this.onIdentity?.(reply);this.sequence=0;
    code='JOIN_E05_REMOTE_SDP';this.stage('REMOTE_DESCRIPTION');await this.pc.setRemoteDescription({type:'answer',sdp:reply.answer});this.trace.remoteDescription='PASS';
    this.stage('ICE_CONNECTING');code='JOIN_E06_ICE_FAILED';
    await Promise.race([iceFailed,Promise.all(Object.entries(this.channels).map(([label,ch])=>{
@@ -84,7 +91,7 @@ export class MobileClient {
     return opened.then(()=>this.stage(label==='control'?'CONTROL_OPEN':'MOTION_OPEN'));
    }))]);
    code='JOIN_E09_HELLO_TIMEOUT';this.stage('HELLO_ACK');this.state='RUNNING';await this.send('HELLO',{});
-   this.stage('READY');this.heartbeat=setInterval(()=>{this.send('HEARTBEAT',this.qaTelemetry?.()||{}).catch(()=>{this.metrics.errors++;});},1000);
+   this.lastHeartbeatAck=performance.now();this.stage('READY');this.heartbeat=setInterval(()=>{this.send('HEARTBEAT',this.qaTelemetry?.()||{}).catch(()=>{this.metrics.errors++;if(performance.now()-this.lastHeartbeatAck>3000&&this.state==='RUNNING')this.state='DISCONNECTED';});},200);
    return {playerId:reply.playerId,connectionEpoch:reply.connectionEpoch};
   }catch(e){
    const known=/^JOIN_E(?:01_OFFER|02_LOCAL_SDP|02_ICE_GATHER|03_SIGNAL_HTTP|04_SIGNAL_REJECTED|05_REMOTE_SDP|06_ICE_FAILED|07_CONTROL_TIMEOUT|08_MOTION_TIMEOUT|09_HELLO_TIMEOUT)$/;
@@ -132,6 +139,7 @@ export class MobileClient {
    this.metrics.motionAck++;this.metrics.received++;if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-motion.started);return;
   }
   const p=this.pending.get(n.sequence);if(!p)return;clearTimeout(p.timer);this.pending.delete(n.sequence);this.metrics.received++;
+  if(p.type==='HEARTBEAT'){this.lastHeartbeatAck=performance.now();this.gameContext=n.payload?.gameContext||null;this.gameContextExpires=performance.now()+2500;}
   if(this.metrics.rtt.length<4096)this.metrics.rtt.push(performance.now()-p.started);p.resolve(n);
  }
  motion(payload,clientTimestamp=Date.now()){
@@ -147,7 +155,7 @@ export class MobileClient {
   if(notify&&identity)await this.signal('/mobile/disconnect',{peerId:identity.peerId,resumeToken:identity.resumeToken});
  }
 }
-export function bindCapture(capture,client,{onEmit=()=>{},maximumHz=null}={}) {
+export function bindCapture(capture,client,{onEmit=()=>{},maximumHz=null,getTouch=()=>null}={}) {
  if(maximumHz!==null&&(!Number.isFinite(maximumHz)||maximumHz<=0))throw new RangeError('maximumHz');
  let last='',generation=null,nextDue=null,emitted=0,budgetDropped=0;
  const bind=snapshot=>{
@@ -168,7 +176,7 @@ export function bindCapture(capture,client,{onEmit=()=>{},maximumHz=null}={}) {
    nextDue=nextDue===null?at+step:nextDue+step;
    if(nextDue<=at)nextDue=at+step;
   }
-  client.motion(normalizeMotion(motion||{},orientation||{},latest?.screenAngleDegrees),latest?.receiptUtcMs??Date.now());
+  client.motion(normalizeMotion(motion||{},orientation||{},latest?.screenAngleDegrees,getTouch()),latest?.receiptUtcMs??Date.now());
   emitted++;onEmit();
  };
  bind.metrics=()=>({maximumHz,emitted,budgetDropped,policy:'real-event discard; latest values at accepted event; no timer'});

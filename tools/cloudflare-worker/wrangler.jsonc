@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gorilla-room-router",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-27",
+  "routes": [
+    {
+      "pattern": "play.gorillas.run/*",
+      "zone_name": "gorillas.run"
+    }
+  ],
+  "workers_dev": false,
+  "durable_objects": {
+    "bindings": [{ "name": "ROOM_REGISTRY", "class_name": "RoomRegistry" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RoomRegistry"] }]
+}

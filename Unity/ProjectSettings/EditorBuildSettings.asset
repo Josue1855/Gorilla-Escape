@@ -6,7 +6,34 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Connection.unity
+    guid: 49f1d97f56b2d22428118f8d5d919268
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 684035963396782458ea4c4e7ca96d8f
+  - enabled: 1
+    path: Assets/Scenes/BananaBowling.unity
+    guid: 6dd46c22c29c62447b78c11955a88560
+  - enabled: 1
+    path: Assets/Scenes/GorillaBoxing.unity
+    guid: 7a2488f7f3cd0b5448deeba8aa64e323
+  - enabled: 1
+    path: Assets/Scenes/JungleBaseball.unity
+    guid: 7e2f886a441e7d547b85f9f774dbd00f
+  - enabled: 1
+    path: Assets/Scenes/JungleDrums.unity
+    guid: 4947c0fff89d89049a1d7a6d1d53d524
+  - enabled: 1
+    path: Assets/Scenes/CoconutSlice.unity
+    guid: d2b671c40b5155a46aecaebd17f212db
+  - enabled: 1
+    path: Assets/Scenes/WhackAMole.unity
+    guid: c23deae6b101e15469ad84d36e05d72c
+  - enabled: 1
+    path: Assets/Scenes/LogBalance.unity
+    guid: c6ad059ae2cb4e108a82654e8874b4f0
+  - enabled: 1
     path: Assets/_Project/Scenes/Bootstrap/Bootstrap.unity
     guid: 7cbbe2b8a1ac10c569cc7500257c1e7a
-  m_configObjects: {}
-  m_UseUCBPForAssetBundles: 0
+  m_configObjects:
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}

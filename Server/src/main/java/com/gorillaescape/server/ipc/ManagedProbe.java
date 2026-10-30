@@ -78,7 +78,7 @@ public final class ManagedProbe implements DisposableBean {
                 int sequence = 1; boolean phone=false;
                 while (running.get()) {
                     String body=readFrame(socket);
-                    tools.jackson.databind.JsonNode lobbyCommand=null;
+                    tools.jackson.databind.JsonNode lobbyCommand=null,gameContext=null;
                     var extension=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
                     var extendedPayload=extension.get("payload");
                     boolean negotiateLobby=false,negotiateQa=false,regenerateQa=false;
@@ -109,6 +109,10 @@ public final class ManagedProbe implements DisposableBean {
                         if(!lobby||connection==null)throw new IOException("IPC_LOBBY_AUTHORITY");
                         lobbyCommand=((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("lobbyCommand");
                     }
+                    if(extendedPayload!=null&&extendedPayload.has("gameContext")) {
+                        if(!phone||connection==null||mobile==null)throw new IOException("IPC_GAME_AUTHORITY");
+                        gameContext=((tools.jackson.databind.node.ObjectNode)extendedPayload).remove("gameContext");
+                    }
                     body=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(extension);
                     if(connection==null && mobile!=null) {
                         var root=com.gorillaescape.server.protocol.GorillaProtocol.JSON.readTree(body);
@@ -123,6 +127,7 @@ public final class ManagedProbe implements DisposableBean {
                             sequence, connection == null ? token : null);
                     connection = ping.connectionId();
                     // Extensions execute only AFTER instance/token/connection/sequence validation.
+                    if(gameContext!=null)mobile.presentGame(gameContext);
                     if(negotiateLobby)lobby=true;
                     if(negotiateQa)qa=true;
                     if(requestedMode!=null&&connectivity!=null)connectivity.request(requestedMode);
@@ -146,6 +151,7 @@ public final class ManagedProbe implements DisposableBean {
                             pongPayload.set("qa",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity==null?mobile.qa(qaPage,lab,regenerateQa):connectivity.qa(regenerateQa)));
                             if(connectivity!=null)pongPayload.set("qaConnection",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(connectivity.snapshot()));
                             pongPayload.set("qaPhones",mobile.qaPhones());pongPayload.set("qaMetrics",com.gorillaescape.server.protocol.GorillaProtocol.JSON.valueToTree(mobile.qaMetrics()));}
+                        var uiCommand=mobile.uiCommands.drain();if(uiCommand!=null)pongPayload.set("uiCommand",uiCommand);
                         int overhead=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsBytes(root).length;
                         pongPayload.set("phoneInputs",mobile.inputs.drain(Math.min(3500,ProbeCodec.MAX_FRAME-overhead-20)));
                         pong=com.gorillaescape.server.protocol.GorillaProtocol.JSON.writeValueAsString(root);}

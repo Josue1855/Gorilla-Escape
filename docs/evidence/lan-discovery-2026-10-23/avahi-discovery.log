@@ -1,0 +1,4 @@
++;wlp0s20f3;IPv4;Gorilla\032Escape\0325329023e;_gorillaescape._tcp;local
+=;wlp0s20f3;IPv4;Gorilla\032Escape\0325329023e;_gorillaescape._tcp;local;192-168-100-15.local;192.168.100.15;8443;"origin=https://local-discovery-test.trycloudflare.com" "game=gorilla-escape" "v=1"
+-;wlp0s20f3;IPv4;Gorilla\032Escape\0325329023e;_gorillaescape._tcp;local
+Got SIGTERM, quitting.

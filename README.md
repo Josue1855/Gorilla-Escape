@@ -1,5 +1,9 @@
 # Gorilla Escape: Gorilimpiadas
 
+> Integración en la rama de Saúl (PR #131, pendiente de revisión): siete juegos con InputFusion y [red, PWA, SQLite, Flutter nativo y preparación del ejecutable](docs/03-development/MOBILE_STACK_INTEGRATION.md). Este estado de rama no implica un merge a develop ni una release validada.
+
+Estado de esta rama: integración Jungle Party de Saúl con Fase 0 desde `develop`, conservando escenas/arte y restaurando los contratos y supervisores oficiales. Usa Unity **6000.6.0f1**; las menciones 6000.3.23f1 describen el baseline de Fase 0. El alpha está implementado pero **no tiene aceptación física ni compilación completa de Unity verificada** en esta integración. [Resultados y pendientes](docs/03-development/SAUL_PHASE0_INTEGRATION.md).
+
 Guía de entrada reconciliada el 2026-10-26 con las instrucciones de `develop` del 2026-10-20. La revisión documental no cambia el alcance de la evidencia ni cierra pruebas pendientes.
 
 **Base del equipo:** `develop`. El PO autoriza iniciar el desarrollo de juegos, PWA y cliente Flutter en ramas de tarea desde esta base, mientras se completa la validación física pendiente. [Cómo empezar y límites](docs/TEAM_START.md#arranque-del-equipo-autorizado-2026-10-16).

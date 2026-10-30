@@ -1,0 +1,22 @@
+GORILA - IMAGE TO 3D / MULTI-VIEW
+
+Usa como imágenes de referencia, en este orden:
+1. gorilla_front.png
+2. gorilla_profile_left.png
+3. gorilla_back.png
+4. gorilla_three_quarter.png
+
+PROMPT DE GEOMETRÍA
+Create a production-ready stylized full-body gorilla game character that exactly matches the supplied multi-view references. Preserve the same facial identity, heavy brow, broad pale muzzle, short upright crest hair, enormous rounded shoulders, long massive forearms, compact powerful legs, wide hands and planted feet. Neutral symmetrical A-pose, arms slightly separated from the torso, hands relaxed, feet flat and parallel. Clean readable silhouette from every angle. Model the pale face, muzzle, chest and belly as natural anatomical regions, not clothing. Keep the character friendly but imposing. Watertight manifold mesh, centered at world origin, realistic bilateral symmetry, clean joints suitable for humanoid-style rigging and procedural animation. No base, no scenery, no props, no clothes, no text, no extra fingers, no extra limbs, no fused arms, no distorted face, no open holes, no exaggerated realistic fur strands.
+
+PROMPT DE TEXTURA
+Hand-painted stylized watercolor texture matching the references: dark desaturated blue-gray body, pale cool-gray face, muzzle, chest, belly, hands and feet, subtle uneven watercolor pigment, sparse black ink-like contour accents and very restrained electric-blue accent strokes along parts of the silhouette. Matte surface with soft roughness, simple game-readable color regions, handmade illustrated appearance. Preserve facial features clearly. No photorealistic fur, no glossy plastic, no metallic material, no baked directional shadows, no text, no logo, no clothing.
+
+AJUSTES RECOMENDADOS
+- Modo: Multi-Image to 3D
+- Pose: A-pose / neutral
+- Simetría: activada
+- Target: 30k-50k polígonos antes de retopología final
+- Textura: 2K o 4K
+- PBR: Roughness alta, Metallic 0
+- Después: Auto-Rig y exportar como FBX o GLB

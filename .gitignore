@@ -18,9 +18,43 @@ __pycache__/
 /Unity/[Oo]bj/
 /Unity/[Ll]ogs/
 /Unity/[Uu]ser[Ss]ettings/
+/Unity/.vs/
 /Unity/Builds/
 /Unity/*.csproj
 /Unity/*.sln
+/Unity/*.slnx
+/Unity/CameraTracker/.venv/
+/Unity/CameraTracker/vendor/
+/Unity/CameraTracker/.runtime/
+/Unity/CameraTracker/.downloads/
+/Unity/MotionRelay/cloudflared.exe
+/Tools/cloudflared*
+/tools/cloudflared*
+/Unity/python-install*.log
+/Unity/*-compile.log
+/Unity/Assets/_Recovery/
+/Unity/Assets/_Recovery.meta
+
+# La biblioteca compartida conserva fuentes, no residuos de herramientas.
+/assets/**/__pycache__/
+
+# Prototipo alpha aislado de Josue
+/Prototypes/JosueAlpha/Unity/[Ll]ibrary/
+/Prototypes/JosueAlpha/Unity/[Tt]emp/
+/Prototypes/JosueAlpha/Unity/[Oo]bj/
+/Prototypes/JosueAlpha/Unity/[Ll]ogs/
+/Prototypes/JosueAlpha/Unity/[Uu]ser[Ss]ettings/
+/Prototypes/JosueAlpha/Unity/[Bb]uild/
+/Prototypes/JosueAlpha/Unity/[Bb]uilds/
+/Prototypes/JosueAlpha/Unity/Assets/_Recovery/
+/Prototypes/JosueAlpha/Unity/*.csproj
+/Prototypes/JosueAlpha/Unity/*.sln*
+/Prototypes/JosueAlpha/CameraTracker/.venv/
+/Prototypes/JosueAlpha/CameraTracker/vendor/
+/Prototypes/JosueAlpha/CameraTracker/.runtime/
+/Prototypes/JosueAlpha/CameraTracker/.downloads/
+/Prototypes/JosueAlpha/MotionRelay/cloudflared.exe
+/Prototypes/JosueAlpha/unity-*.log
 # Regenerated defaults for unused systems, or local editor/UI state.
 /Unity/ProjectSettings/PackageManagerSettings.asset
 /Unity/ProjectSettings/Packages/com.unity.ai.assistant/
@@ -47,3 +81,10 @@ __pycache__/
 # DEC-016 private trust material is outside the checkout; defense in depth.
 *.key
 *.pem
+
+# Isolated CI dependency checkouts
+/.ci-backend/
+/.ci-flutter/
+
+# Wrangler local artifacts
+.wrangler/

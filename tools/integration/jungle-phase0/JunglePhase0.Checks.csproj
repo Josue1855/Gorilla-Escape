@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><ImplicitUsings>disable</ImplicitUsings><Nullable>disable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="MobileChecks.cs" />
+    <Compile Include="../../../Shared/CSharp/Runtime/GamePresentationWire.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Core/PackagedRuntimeEnvironment.cs" />
+    <Compile Include="GameplayChecks.cs" />
+    <Compile Include="LogBalanceChecks.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceModel.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceArtCatalog.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/LogBalanceFusedControl.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/JunglePauseLease.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/ShotMechanics.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/CameraInput.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/PhoneInputStore.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/OfficialActionLedger.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/Fusion/InputFusion.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/JungleGameplayInput.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Core/ProductScenes.cs" />
+    <Compile Include="../../../Shared/CSharp/Runtime/PhoneInputWire.cs" />
+    <Compile Include="../../../Shared/CSharp/Runtime/LobbyWire.cs" />
+    <Compile Include="../../../Shared/CSharp/Runtime/CameraInputWire.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/CameraTracking/CameraInputStore.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/Fusion/PlayerLock.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/JungleInputAdapter.cs" />
+  </ItemGroup>
+</Project>

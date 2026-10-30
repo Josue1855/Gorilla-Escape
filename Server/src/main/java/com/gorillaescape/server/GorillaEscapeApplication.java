@@ -30,8 +30,11 @@ public class GorillaEscapeApplication {
             bootstrapError(busy ? "ALREADY_RUNNING" : "LOCK_UNAVAILABLE");
             System.exit(busy ? 73 : 74); return;
         }
-        try (guard) {
-            parent = new ParentLifetime();
+        try (guard; var lifetime = new ParentLifetime()) {
+            parent = lifetime;
+            // A parent can disappear before Java reaches main. Avoid booting native
+            // services when its pipe is already closed. Normal starts wait at most 50 ms.
+            if (lifetime.eofWithin(50)) return;
             try (var context = start(args)) {
                 parent.awaitEof();
             }

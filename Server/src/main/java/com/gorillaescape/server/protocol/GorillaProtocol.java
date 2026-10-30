@@ -14,8 +14,8 @@ import tools.jackson.databind.node.ObjectNode;
 /** Mobile v1 validation. No gameplay interpretation; clock and budgets are injectable. */
 public final class GorillaProtocol {
     public static final int MAX_BYTES=2048;
-    public static final Set<String> TYPES=Set.of("HELLO","JOIN","JOIN_ACK","MOTION_SAMPLE","TOUCH","HEARTBEAT","CLIENT_STATE","DISCONNECT","ERROR");
-    private static final Set<String> CLIENT_TYPES=Set.of("HELLO","MOTION_SAMPLE","TOUCH","HEARTBEAT","CLIENT_STATE","DISCONNECT");
+    public static final Set<String> TYPES=Set.of("HELLO","JOIN","JOIN_ACK","MOTION_SAMPLE","TOUCH","HEARTBEAT","CLIENT_STATE","DISCONNECT","ERROR","UI_COMMAND");
+    private static final Set<String> CLIENT_TYPES=Set.of("HELLO","MOTION_SAMPLE","TOUCH","HEARTBEAT","CLIENT_STATE","DISCONNECT","UI_COMMAND");
     private static final Set<String> ROOT=Set.of("protocolVersion","messageType","sessionId","playerId","deviceSessionId","sequence","clientTimestamp","serverReceiveTimestamp","capabilities","quality","payload");
     public static final JsonMapper JSON=JsonMapper.builder(JsonFactory.builder()
         .streamReadConstraints(StreamReadConstraints.builder().maxNestingDepth(8).maxStringLength(512).maxNumberLength(32).build()).build())
@@ -65,6 +65,11 @@ public final class GorillaProtocol {
                 group(payload.get("screenOrientation"),Set.of("angle"));group(payload.get("touch"),Set.of("x","y","pressed"));
             }else if(type.equals("TOUCH")){exact(payload,Set.of("touch"));group(payload.get("touch"),Set.of("x","y","pressed"));}
             else if(type.equals("CLIENT_STATE")){exact(payload,Set.of("state"));if(!Set.of("active","suspended").contains(text(payload,"state")))throw bad("STATE");}
+            else if(type.equals("UI_COMMAND")){
+                exact(payload,Set.of("requestId","contextId","action","target"));
+                if(!text(payload,"requestId").matches("[a-f0-9]{32}")||!text(payload,"contextId").matches("[a-f0-9]{32}")
+                    ||!Set.of("select-game","menu","restart","set-hand","start").contains(text(payload,"action"))||text(payload,"target").length()>24)throw bad("UI_COMMAND");
+            }
             else if(type.equals("HEARTBEAT") && payload != null && payload.has("qaVersion")) {
                 exact(payload,Set.of("qaVersion","motionHz","orientationHz","emissionHz","rttP50","rttP95"));
                 if(!payload.get("qaVersion").isInt() || payload.get("qaVersion").intValue()!=1)throw bad("QA_VERSION");

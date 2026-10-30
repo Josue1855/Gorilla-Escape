@@ -8,6 +8,7 @@ def main():
  p=argparse.ArgumentParser()
  for name in ['vision','player','materials','jar','jdk','jdk-sources','output']:p.add_argument('--'+name,type=Path,required=True)
  p.add_argument('--cloudflared',type=Path,required=True)
+ p.add_argument('--players-backend',type=Path,help='Include the separately built local SQLite backend')
  p.add_argument('--resume-prepared',action='store_true',help='Complete an existing finalize_distribution output; do not overwrite runtimes')
  a=p.parse_args();root=a.output.resolve();repo=Path(__file__).resolve().parents[2]
  sys.path.insert(0,str(repo/'tools/t016'));from finalize_distribution import assemble
@@ -32,6 +33,8 @@ def main():
  if (runtime/'bin/javac').exists() or (runtime/'jmods').exists():raise ValueError('SDK_MUST_NOT_BE_DISTRIBUTED')
  version=subprocess.run([str(runtime/'bin/java'),'-version'],capture_output=True,text=True,check=True).stderr.strip()
  if '21.0.12.1' not in version:raise ValueError('SUPPLIER_RUNTIME_VERSION_CHANGED_REVIEW_REQUIRED')
+ if a.players_backend:
+  subprocess.run([sys.executable,str(repo/'tools/prepare_players_backend.py'),'--jar',str(a.players_backend),'--package',str(root)],check=True)
  shutil.copy2(a.jar,java/'server.jar');sources=java/'SOURCES_OR_SOURCE_INFO/openjdk21';sources.mkdir(parents=True,exist_ok=True)
  # apt-get source --download-only verifies supplier archives; retain exact source/distro patches.
  archives=list(a.jdk_sources.glob('openjdk-21*'));dscs=[f for f in archives if f.suffix=='.dsc']

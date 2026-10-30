@@ -1,23 +1,44 @@
 import { SensorCapture, RateWindow } from '../input/sensors/capture.js';
 import { MobileClient, bindCapture } from '../input/mobileClient.js';
 import { permissionCapabilities, requestControlPermissions, permissionState } from './permissions.js';
+import { controlProfile } from './gamePresentation.js';
 
 export class ControllerSession {
   constructor({ win = window, url = win.location.href, client = new MobileClient({ source: 'physical' }), notify = () => {}, doc = win.document, now = () => performance.now() } = {}) {
+    this.doc = doc; this.wakeWanted = false; this.wakeLock = null; this.wakePending = false;
+    this.visibilityWake = () => { if (doc.visibilityState !== 'hidden') { void this.keepAwake(); void this.recover(); } else this.background(); };
+    doc.addEventListener('visibilitychange', this.visibilityWake);
     this.win = win; this.now = now; this.url = url; this.client = client; this.notify = notify;
     const fragment = new URLSearchParams(new URL(url).hash.slice(1));
+    const host = new URL(url).hostname;
+    this.publicTunnel = host.endsWith('.trycloudflare.com') || host === 'gorillas.run' || host.endsWith('.gorillas.run');
     this.hasAdmission = Boolean(fragment.get('sessionId') && fragment.get('admission'));
     this.state = this.hasAdmission ? 'CONNECT' : 'NO_ADMISSION';
+    this.actionPressed = false; this.action = 'confirm';
+    this.connectionCheck = null; this.controlTilt = 0; this.controlNeutral = null; this.lastControlPublish = -Infinity;
+    this.lastHapticPhase = null; this.lastHapticScore = null;
     this.network = 'NOT_CONNECTED'; this.attempted = false; this.disposed = false;
     this.capabilities = permissionCapabilities(win); this.permissions = null;
-    this.pagehide = () => {
-      if (!this.disposed) { this.network = 'DISCONNECTED'; this.state = 'DISCONNECTED'; this.publish(); }
-      void this.dispose().catch(() => {});
-    };
+    this.resumeKey='gorilla-resume:'+new URL(url).pathname+':'+(fragment.get('sessionId')||'');
+    try { const saved=JSON.parse(win.sessionStorage?.getItem(this.resumeKey)||'null');
+      if(saved?.sessionId===fragment.get('sessionId')&&typeof saved.resumeToken==='string'&&saved.resumeToken.length===43)this.savedResume=saved;
+    } catch {}
+    this.client.onIdentity=identity=>{this.savedResume=identity;try{win.sessionStorage?.setItem(this.resumeKey,JSON.stringify({sessionId:identity.sessionId,playerId:identity.playerId,resumeToken:identity.resumeToken}));}catch{}};
+    this.pagehide = () => this.background();
+    this.pageshow = () => { void this.recover(); };
     this.win.addEventListener('pagehide', this.pagehide);
+    this.win.addEventListener('pageshow', this.pageshow);
     this.emissionRate = new RateWindow(); this.measurement = null; this.measureTimer = null;
     this.capture = new SensorCapture({ win, doc, now, notify: () => this.updateInput(),
-      onSample: snapshot => { this.emitSample(snapshot); this.updateInput(); } });
+      onSample: snapshot => {
+        this.emitSample(snapshot); this.updateInput();
+        const gamma = snapshot.channels?.orientation?.latest?.angles?.gamma;
+        if (this.state === 'INPUT_READY' && Number.isFinite(gamma)) {
+          this.controlNeutral ??= gamma;
+          this.controlTilt = Math.max(-1, Math.min(1, (gamma - this.controlNeutral) / 30));
+          if (this.now() - this.lastControlPublish >= 60) { this.lastControlPublish = this.now(); this.publish(); }
+        }
+      } });
     // Reuse acquisition/emission measurements; only bounded aggregates cross the control channel.
     this.client.qaTelemetry = () => {
       const metrics = this.capture.metrics(), rtt = [...(this.client.metrics?.rtt || [])].sort((a,b) => a-b);
@@ -27,34 +48,170 @@ export class ControllerSession {
         rttP50: rtt.length ? rtt[Math.ceil(rtt.length * .5)-1] : null,
         rttP95: rtt.length ? rtt[Math.ceil(rtt.length * .95)-1] : null };
     };
-    this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, onEmit: () => this.emissionRate.add(now()) });
+    this.emitSample = bindCapture(this.capture, client, { maximumHz: 50, getTouch: () => ({ x: this.action === 'recenter' ? 1 : 0, y: .5, pressed: this.actionPressed }), onEmit: () => this.emissionRate.add(now()) });
   }
-  snapshot() { return { state: this.state, network: this.network, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
-  publish() { if (!this.disposed) this.notify(this.snapshot()); }
+  vibrate(pattern) {
+    if (this.disposed || this.doc.visibilityState === 'hidden') return;
+    try { this.win.navigator?.vibrate?.(pattern); } catch {}
+  }
+  snapshot() { return { gameContext: this.client.gameContextExpires >= performance.now() ? this.client.gameContext || null : null, playerId: this.client.identity?.playerId || null, state: this.state, network: this.network, commandPending: Boolean(this.commandPending), commandStatus: this.commandStatus || '', connectionCheck: this.connectionCheck, publicTunnel: this.publicTunnel, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
+  publish() {
+    if (this.disposed) return;
+    const snap = this.snapshot();
+    const ctx = snap.gameContext;
+    if (ctx && typeof ctx.phase === 'string') {
+      if (this.lastHapticPhase !== null && ctx.phase !== this.lastHapticPhase) {
+        if (ctx.phase === 'Won') this.vibrate([25, 40, 35]);
+        else if (ctx.phase === 'Lost' || ctx.phase === 'Fell') this.vibrate(45);
+        else if (ctx.phase === 'Playing' || ctx.phase === 'Crossing') this.vibrate(20);
+      }
+      this.lastHapticPhase = ctx.phase;
+    }
+    const score = ctx?.stats?.hasScore ? ctx.stats.score : (Number.isFinite(ctx?.stats?.score) ? ctx.stats.score : null);
+    if (Number.isFinite(score)) {
+      if (this.lastHapticScore !== null && score > this.lastHapticScore) this.vibrate(14);
+      this.lastHapticScore = score;
+    }
+    this.notify(snap);
+  }
   async connect() {
     if (this.disposed || this.attempted || !this.hasAdmission) return;
     this.attempted = true; this.state = 'CONNECTING'; this.publish();
     try {
-      await this.client.connect(this.url);
+      await this.client.connect(this.url,this.savedResume||null);
       if (this.disposed) { await this.client.close(false); return; }
       this.network = 'NETWORK_READY'; this.state = 'PERMISSION_REQUIRED'; this.publish();
-      // Observe the existing transport, without implementing reconnection or sensor lifecycle.
-      this.monitor = this.win.setInterval(() => {
-        if (this.client.state === 'DISCONNECTED' || this.client.state === 'FAILED') {
-          this.network = 'DISCONNECTED'; this.state = 'DISCONNECTED'; this.capture.stop(); this.cancelMeasurement();
-          this.win.clearInterval(this.monitor); this.publish();
-          void this.client.close(false).catch(() => {});
-        }
-      }, 500);
+      this.startMonitor();
     } catch {
       if (!this.disposed) { this.state = 'ERROR'; this.network = 'NOT_CONNECTED'; this.publish(); }
     }
+  }
+  startMonitor() {
+    this.win.clearInterval(this.monitor);
+    this.monitor=this.win.setInterval(()=>{
+      if(['DISCONNECTED','FAILED'].includes(this.client.state)) {
+        this.network='DISCONNECTED';this.state='DISCONNECTED';this.capture.stop();this.cancelMeasurement();
+        this.actionPressed=false;this.publish();this.win.clearInterval(this.monitor);
+        if(this.client.identity?.resumeToken&&this.doc.visibilityState!=='hidden')void this.reconnect();
+        else void this.client.close(false).catch(()=>{});
+      } else { this.syncProfile();this.publish(); }
+    },500);
+  }
+  syncProfile() {
+    const context=this.snapshot().gameContext,profile=controlProfile(context,this.client.identity?.playerId);
+    const changed=context?.contextId!==this.profileContext;
+    this.profileContext=context?.contextId;
+    const wanted=profile.valid&&profile.phoneRequired;
+    if(changed){this.actionPressed=false;this.controlNeutral=null;this.controlTilt=0;this.lastHapticScore=null;this.lastHapticPhase=null;}
+    if(profile.valid&&!wanted){
+      this.capture.stop();this.wakeWanted=false;void this.wakeLock?.release().catch(()=>{});
+    } else if(wanted&&changed&&this.permissions&&this.capture.state==='STOPPED'&&this.doc.visibilityState!=='hidden') {
+      this.wakeWanted=true;void this.keepAwake();
+      void this.capture.start({permissions:this.permissions}).then(()=>this.updateInput());
+    }
+  }
+  background() {
+    if(this.disposed)return;
+    this.actionPressed=false;this.client.latest=null;this.capture.suspend(true);this.cancelMeasurement();
+    void this.wakeLock?.release().catch(()=>{});
+    if(this.client.state==='RUNNING')void this.client.send?.('CLIENT_STATE',{state:'suspended'}).catch(()=>{});
+  }
+  async recover() {
+    if(this.disposed||!this.attempted||this.doc.visibilityState==='hidden')return;
+    if(this.client.state!=='RUNNING'||(this.client.lastHeartbeatAck!=null&&performance.now()-this.client.lastHeartbeatAck>2500))return this.reconnect();
+    const profile=controlProfile(this.snapshot().gameContext,this.client.identity?.playerId);
+    if(profile.phoneRequired&&this.permissions){this.capture.stop();await this.capture.start({permissions:this.permissions});this.updateInput();}
+    this.syncProfile();this.publish();
+  }
+  async reconnect() {
+    if(this.disposed||this.reconnecting||this.doc.visibilityState==='hidden'||!this.client.identity?.resumeToken&&!this.savedResume)return;
+    this.reconnecting=true;this.win.clearTimeout(this.retryTimer);this.win.clearInterval(this.monitor);
+    this.capture.stop();this.actionPressed=false;this.client.latest=null;
+    this.network='RECONNECTING';this.state='RECONNECTING';this.publish();
+    try {
+      await this.client.connect(this.url,this.client.identity||this.savedResume);
+      if(this.disposed){await this.client.close(false);return;}
+      this.retryCount=0;this.network='NETWORK_READY';this.state='PERMISSION_REQUIRED';this.profileContext=null;
+      this.syncProfile();this.startMonitor();this.publish();
+    } catch {
+      if(!this.disposed){this.network='DISCONNECTED';this.state='DISCONNECTED';this.publish();
+        if((this.retryCount=(this.retryCount||0)+1)<=3)this.retryTimer=this.win.setTimeout(()=>void this.reconnect(),this.retryCount*1500);
+      }
+    } finally {this.reconnecting=false;}
+  }
+  async command(action,target='') {
+    const profile=controlProfile(this.snapshot().gameContext,this.client.identity?.playerId);
+    if(this.commandPending||!profile.canNavigate||this.network!=='NETWORK_READY')return false;
+    this.commandPending=true;this.commandStatus='Enviando…';this.publish();
+    try {
+      const requestId=globalThis.crypto.randomUUID().replaceAll('-','');
+      await this.client.send('UI_COMMAND',{requestId,contextId:profile.contextId,action,target});
+      this.commandStatus='Solicitud enviada a la PC.';return true;
+    } catch {this.commandStatus='La PC no confirmó la solicitud. Inténtalo de nuevo.';return false;}
+    finally {this.commandPending=false;this.publish();}
+  }
+  async setPlayerName(displayName) {
+    if (this.disposed || this.network !== 'NETWORK_READY') return 'UNAVAILABLE';
+    const name = displayName.normalize('NFC').trim();
+    if (!name || name.length > 40 || !/^[\p{L}\p{M}\p{N} _.'-]+$/u.test(name)) return 'INVALID';
+    try {
+      const { peerId, resumeToken } = this.client.identity;
+      const response = await this.client.fetcher('/mobile/name', { method: 'POST', cache: 'no-store', signal: AbortSignal.timeout(6500),
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ peerId, resumeToken, displayName: name }) });
+      if (!response.ok) return 'UNAVAILABLE';
+      return (await response.json()).displayName === name ? 'SAVED' : 'UNAVAILABLE';
+    } catch { return 'UNAVAILABLE'; }
+  }
+  async createProfile(displayName) {
+    if (this.disposed || this.network !== 'NETWORK_READY' || this.profileAttempted) return 'UNAVAILABLE';
+    const name = displayName.normalize('NFC').trim();
+    if (!name || name.length > 40 || !/^[\p{L}\p{M}\p{N} _.'-]+$/u.test(name)) return 'INVALID';
+    this.profileAttempted = true;
+    const abort = new AbortController(); const timer = this.win.setTimeout(() => abort.abort(), 6500);
+    try {
+      const { peerId, resumeToken } = this.client.identity;
+      const response = await this.client.fetcher('/mobile/profile', { method: 'POST', cache: 'no-store', signal: abort.signal,
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ peerId, resumeToken, displayName: name }) });
+      if (response.status === 503) { this.profileAttempted=false; return 'UNAVAILABLE'; }
+      if (!response.ok) return 'UNCONFIRMED';
+      const result = await response.json();
+      return typeof result.id === 'string' ? 'SAVED' : 'UNCONFIRMED';
+    } catch { return 'UNCONFIRMED'; }
+    finally { this.win.clearTimeout(timer); }
+  }
+  async checkConnection() {
+    if (this.disposed || this.connectionCheck === 'CHECKING') return;
+    if (!this.win.isSecureContext) { this.connectionCheck = 'INSECURE'; this.publish(); return; }
+    this.connectionCheck = 'CHECKING'; this.publish();
+    const abort = new AbortController(); const timeout = this.win.setTimeout(() => abort.abort(), 5000);
+    try {
+      const response = await this.client.fetcher(this.publicTunnel ? '/' : '/api/health', { cache: 'no-store', signal: abort.signal });
+      let ready = false;
+      if (response.ok && this.publicTunnel) ready = (await response.text()).includes('Gorilla Escape');
+      else if (response.ok) {
+        const health = await response.json();
+        ready = health?.status === 'ok' && health?.service === 'gorilla-escape-local' && health?.secure === true;
+      }
+      this.connectionCheck = ready ? 'READY' : 'UNREACHABLE';
+    } catch { this.connectionCheck = 'UNREACHABLE'; }
+    finally { this.win.clearTimeout(timeout); if (!this.disposed) this.publish(); }
+  }
+  async keepAwake() {
+    if (!this.wakeWanted || this.disposed || this.doc.visibilityState === 'hidden' || this.wakePending || (this.wakeLock && !this.wakeLock.released)) return;
+    this.wakePending = true;
+    try {
+      const lock = await this.win.navigator?.wakeLock?.request('screen');
+      if (this.disposed || this.doc.visibilityState === 'hidden' || !this.wakeWanted) await lock?.release(); else this.wakeLock = lock;
+    } catch { /* Unsupported or denied: sensors still work while visible. */ }
+    finally { this.wakePending = false; }
   }
   activate() {
     if (this.disposed || this.network !== 'NETWORK_READY' || this.requesting ||
       !['PERMISSION_REQUIRED', 'PERMISSION_DENIED', 'SENSOR_UNAVAILABLE', 'NO_SENSOR_INPUT', 'INPUT_LIMITED', 'ERROR'].includes(this.state)) return;
     this.requesting = true;
-    const request = requestControlPermissions(this.win); // Invoke BEFORE notifying/rendering/awaiting.
+    this.wakeWanted = true; void this.keepAwake();
+    const request = this.permissions && !Object.values(this.permissions).some(p => ['denied', 'permission-error'].includes(p)) && Object.values(this.permissions).some(p => ['granted', 'not-required-by-api'].includes(p))
+      ? Promise.resolve({secure: this.win.isSecureContext, permissions: this.permissions, capabilities: this.capabilities}) : requestControlPermissions(this.win); // Invoke BEFORE notifying/rendering/awaiting.
     this.state = 'REQUESTING_PERMISSION'; this.publish();
     return request.then(async report => {
       if (this.disposed || this.network !== 'NETWORK_READY') return;
@@ -73,10 +230,25 @@ export class ControllerSession {
     if (this.disposed || this.network !== 'NETWORK_READY' || !['RUNNING', 'SUSPENDED'].includes(this.capture.state)) return;
     const state = this.capture.inputState();
     if (state === 'CONTROL_SUSPENDED') {
+      this.actionPressed = false; this.controlNeutral = null; this.controlTilt = 0;
       this.cancelMeasurement();
       this.client.latest = null; // Discard unsent pre-background input, leave an already-sent frame alone.
     }
     if (this.state !== state) { this.state = state; this.publish(); }
+  }
+  setActionPressed(pressed, action = 'confirm') {
+    if (!['confirm', 'recenter'].includes(action)) return false;
+    this.actionPressed = Boolean(pressed) && !this.disposed && this.network === 'NETWORK_READY' && this.capture.state === 'RUNNING';
+    this.action = action;
+    if (this.actionPressed) {
+      if (action === 'recenter') {
+        this.controlNeutral = null;
+        this.controlTilt = 0;
+        this.publish();
+      }
+      this.vibrate(16);
+    }
+    return this.actionPressed;
   }
   transportCounters() {
     const m = this.client.metrics || {};
@@ -112,7 +284,11 @@ export class ControllerSession {
   }
   async dispose() {
     if (this.disposed) return;
-    this.disposed = true; this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
+    this.actionPressed = false; this.wakeWanted = false;
+    this.disposed = true; this.doc.removeEventListener('visibilitychange', this.visibilityWake);
+    void this.wakeLock?.release().catch(() => {});
+    this.win.clearTimeout(this.retryTimer);this.client.onIdentity=null;
+    this.client.qaTelemetry = null; this.win.removeEventListener('pagehide', this.pagehide);this.win.removeEventListener('pageshow',this.pageshow); this.win.clearInterval(this.monitor); this.capture.stop(); this.cancelMeasurement();
     return this.client.close(false); // Owned transport cleanup only; no new lifecycle policy.
   }
 }

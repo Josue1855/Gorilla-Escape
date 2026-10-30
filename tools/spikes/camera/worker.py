@@ -4,8 +4,16 @@ One capture thread/one pending owned frame; one detector/writer, at most two sub
 """
 import argparse,json,os,sys,threading,time,signal
 from pathlib import Path
-from pipeline import CapturePump, Metrics
-from camera_controls import CameraSession
+from pipeline import CapturePump, Metrics, recent_subjects, predicted_center
+if os.name == 'nt':
+    class CameraSession:
+        """Windows capture owns no global DirectShow controls, so there is nothing to restore."""
+        def __init__(self,device,profile='original',dynamic=None,snapshot_callback=None):
+            self.before={};self.restored=True
+        def describe(self,value=None):return {'platform':'windows','mutated':False}
+        def close(self):self.restored=True
+else:
+    from camera_controls import CameraSession
 
 def now(): return time.time_ns()//1_000_000
 
@@ -25,6 +33,10 @@ def main():
     a=p.parse_args()
     if a.warmup<0 or a.duration<0:raise ValueError('CAMERA_DURATION_INVALID')
     if a.buffers not in [None,1,2,3]:raise ValueError('CAMERA_BUFFER_INVALID')
+    # Load native libraries before the parent-pipe reader starts. On Windows,
+    # starting that thread first can deadlock native module initialization.
+    if a.mode=='physical':
+        import cv2,mediapipe as mp
     stop=threading.Event()
     if threading.current_thread() is threading.main_thread():
         signal.signal(signal.SIGTERM,lambda *_:stop.set())
@@ -55,20 +67,22 @@ def main():
             corpus=json.loads(Path(a.fixture).read_text());cases=corpus['cameraCases'];origin=now()
         else:
             if not Path(a.model).is_file():raise RuntimeError("CAMERA_MODEL_MISSING")
-            import cv2,mediapipe as mp
             session=CameraSession(a.device,a.profile,a.dynamic_framerate,snapshot_callback=lambda snapshot:emit('CAMERA_CONTROL_SNAPSHOT',snapshot))
             controls_before=session.describe(session.before)
             buffers=a.buffers or (2 if a.profile=='candidate' else 1)
-            capture=cv2.VideoCapture(a.device,cv2.CAP_V4L2)
+            windows=os.name=='nt'
+            source=int(a.device) if windows and str(a.device).isdigit() else a.device
+            capture=cv2.VideoCapture(source,cv2.CAP_DSHOW if windows else cv2.CAP_V4L2)
             capture.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'));capture.set(cv2.CAP_PROP_FRAME_WIDTH,640);capture.set(cv2.CAP_PROP_FRAME_HEIGHT,480);capture.set(cv2.CAP_PROP_FPS,30);capture.set(cv2.CAP_PROP_BUFFERSIZE,buffers)
             if not capture.isOpened():raise RuntimeError('CAMERA_UNAVAILABLE')
             detector=mp.tasks.vision.PoseLandmarker.create_from_options(mp.tasks.vision.PoseLandmarkerOptions(base_options=mp.tasks.BaseOptions(model_asset_path=a.model),running_mode=mp.tasks.vision.RunningMode.VIDEO,num_poses=2))
             fourcc=int(capture.get(cv2.CAP_PROP_FOURCC))
             configuration=dict(backend=capture.getBackendName(),device=a.device,width=capture.get(cv2.CAP_PROP_FRAME_WIDTH),height=capture.get(cv2.CAP_PROP_FRAME_HEIGHT),fourcc=''.join(chr((fourcc>>(8*i))&255) for i in range(4)),requestedFps=30,reportedFps=capture.get(cv2.CAP_PROP_FPS),reportedBuffer=capture.get(cv2.CAP_PROP_BUFFERSIZE),numPoses=2)
-            configuration.update(profile=a.profile,controlsBefore=controls_before,controlsApplied=session.describe(),acquisitionTimestampSource='OpenCV V4L2 CAP_PROP_POS_MSEC / kernel timestamp; validated monotonic range, not optical ground truth',staleBudgetMs=100)
-            previous=[];next_id=1;origin=now();mono=time.monotonic_ns();last_detector_time=-1;last_measured_ids=None
+            configuration.update(profile=a.profile,controlsBefore=controls_before,controlsApplied=session.describe(),acquisitionTimestampSource='read-complete (Windows DirectShow)' if windows else 'OpenCV V4L2 CAP_PROP_POS_MSEC / kernel timestamp; validated monotonic range, not optical ground truth',staleBudgetMs=100)
+            previous=[];older=[];previous_seen=older_seen=None;next_id=1;origin=now();mono=time.monotonic_ns();last_detector_time=-1;last_measured_ids=None
             metrics=Metrics(a.warmup,enabled=a.telemetry=='enabled')
-            pump=CapturePump(capture,stop,metrics,acquisition_clock=lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6),preview=preview);pump.start()
+            acquisition_clock=(lambda:None) if windows else (lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6))
+            pump=CapturePump(capture,stop,metrics,acquisition_clock=acquisition_clock,preview=preview,release_before_join=windows);pump.start()
             if a.duration:
                 timer=threading.Timer(a.warmup+a.duration,stop.set);timer.daemon=True;timer.start()
         emit('CAMERA_READY')
@@ -101,11 +115,18 @@ def main():
                     if age>100:skipped+=1;metrics.event('staleSkipped');continue
                 dt=max(last_detector_time+1,(captured.monotonic_ns-mono)//1_000_000);last_detector_time=dt
                 result=detector.detect_for_video(mp.Image(image_format=mp.ImageFormat.SRGB,data=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)),dt)
+                previous=recent_subjects(previous,previous_seen,captured.monotonic_ns)
                 subjects=[];used=set()
                 for landmarks in result.pose_landmarks[:2]:
                     cx=(landmarks[11].x+landmarks[12].x)/2;cy=(landmarks[11].y+landmarks[12].y)/2
                     # Ephemeral spatial continuity; ambiguity/loss never implies biometric identity.
-                    matches=[s for s in previous if (s['centerX']-cx)**2+(s['centerY']-cy)**2<.04]
+                    # Predict only the association center for a single, briefly missing subject.
+                    # The emitted pose always comes from the current camera image.
+                    if len(previous)==len(older)==len(result.pose_landmarks)==1:
+                        match_x,match_y=predicted_center(previous[0],older[0],previous_seen,older_seen,captured.monotonic_ns)
+                        matches=[s for s in previous if (match_x-cx)**2+(match_y-cy)**2<.04]
+                    else:
+                        matches=[s for s in previous if (s['centerX']-cx)**2+(s['centerY']-cy)**2<.04]
                     ambiguous=len(matches)>1
                     if len(matches)==1 and matches[0]['subjectId'] not in used:sid=matches[0]['subjectId']
                     else:sid=next_id;next_id+=1;ambiguous=ambiguous or len(matches)>0
@@ -114,7 +135,9 @@ def main():
                         l=landmarks[index];v=float(l.visibility);presence=float(l.presence)
                         points.append(dict(name=name,x=float(l.x),y=float(l.y),z=float(l.z),visibility=v,presence=presence,visible=min(v,presence)>=.5))
                     conf=min(min(l['visibility'],l['presence']) for l in points[:6]);subjects.append(dict(subjectId=sid,centerX=max(0,min(1,cx)),centerY=max(0,min(1,cy)),confidence=conf,ambiguous=ambiguous,landmarks=points))
-                previous=subjects
+                if subjects:
+                    older,older_seen=previous,previous_seen
+                    previous=subjects;previous_seen=captured.monotonic_ns
                 frame=dict(version=1,width=image.shape[1],height=image.shape[0],source='physical-webcam',quality='observed',clockDomain='pc-unix-ms',captureTimeSource='read-complete',captureTimestamp=stamp,processTimestamp=now(),subjects=subjects,trackingState='TRACKING' if subjects else 'LOST')
             processing_ms=(time.monotonic_ns()-processing_started)/1e6
             frames+=1;frame['frameSequence']=captured.sequence if a.mode=='physical' else frames;emit('CAMERA_FRAME',frame)
@@ -165,7 +188,7 @@ def main():
             report.update(staleSkipped=skipped,acquisitionTimestampUnavailable=pump.timestamp_unavailable,controlsRestored=session.restored,clockCorrelation='Worker latency monotonic; CameraInput UTC timestamps unchanged',humanQualityAcceptance='NOT PROVEN by presence/confidence aggregates alone')
             present=report.get('framesWithSubjectFrames',0);absent=report.get('framesWithoutSubjectFrames',0)
             report.update(framesWithSubject=present,framesWithoutSubject=absent,detectionRatio=present/(present+absent) if present+absent else None,trackingFrames=report.get('trackingFrames',0),trackingGaps=report.get('trackingGapFrames',0),ambiguousFrames=report.get('ambiguousFrames',0),subjectIdChanges=report.get('subjectIdChangesFrames',0),productEligibleFrames=report.get('productEligibleFrames',0),subjectIdChangesScope='Detected ID-set changes between nonempty measured frames, including return after a gap; ephemeral spatial IDs, not biometric identities',productThresholds=dict(minCameraConfidence=.6,roiMinX=.2,roiMaxX=.8,visibilityPresence=.5))
-            if preview is not None:report.update(previewEnabled=True,previewMaxBytes=65536,previewMaxWidth=320,previewMaxHeight=240,previewMaxFps=5,previewSlotCapacity=1,previewOverwritten=preview.slot.overwritten,previewErrors=preview.errors,previewThreadsJoined=all(not t.is_alive() for t in preview.threads),previewBufferCleared=preview.latest is None)
+            if preview is not None:report.update(previewEnabled=True,previewMaxBytes=65536,previewMaxWidth=320,previewMaxHeight=240,previewMaxFps=preview.max_fps,previewSlotCapacity=1,previewOverwritten=preview.slot.overwritten,previewErrors=preview.errors,previewThreadsJoined=all(not t.is_alive() for t in preview.threads),previewBufferCleared=preview.latest is None)
             else:report.update(previewEnabled=False,previewWasEnabled=preview_ever,previewOverwritten=preview_overwritten,previewErrors=preview_errors,previewThreadsJoined=True,previewBufferCleared=True)
             emit('CAMERA_SUMMARY',report)
         elif frames:

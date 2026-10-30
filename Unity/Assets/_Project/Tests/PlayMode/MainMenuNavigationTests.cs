@@ -37,7 +37,7 @@ public class MainMenuNavigationTests
         {
             UnityEngine.SceneManagement.SceneManager.SetActiveScene(bootstrap);
             MainMenuController.TryLaunchForCurrentScene();
-            Assert.IsNull(UnityEngine.Object.FindFirstObjectByType<MainMenuController>(),"Even the product scene must not auto-launch inside a test run");
+            Assert.IsNull(UnityEngine.Object.FindAnyObjectByType<MainMenuController>(),"Even the product scene must not auto-launch inside a test run");
         }
         finally { UnityEngine.SceneManagement.SceneManager.SetActiveScene(previous); }
         yield return UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(bootstrap);
@@ -46,7 +46,7 @@ public class MainMenuNavigationTests
     [UnityTest] public IEnumerator NonProductSceneDoesNotAutoLaunchAndEditorBackendStaysIdle()
     {
         MainMenuController.TryLaunchForCurrentScene();
-        Assert.IsNull(UnityEngine.Object.FindFirstObjectByType<MainMenuController>());
+        Assert.IsNull(UnityEngine.Object.FindAnyObjectByType<MainMenuController>());
         var host=new GameObject("Explicit editor navigation fixture");
         var menu=host.AddComponent<MainMenuController>();
         bool previousBackground=Application.runInBackground;
