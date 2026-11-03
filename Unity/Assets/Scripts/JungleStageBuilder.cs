@@ -44,6 +44,7 @@ public static class JungleStageBuilder
     }
     private static readonly Dictionary<MaterialKey, Material> sharedMaterials = new Dictionary<MaterialKey, Material>();
     private static Shader cachedLitShader;
+    private static Shader cachedUnlitShader;
     private static Shader cachedStandardShader;
     private static Material cachedBowlingGorillaMaterial;
     private static GameObject cachedBowlingGorillaPrefab;
@@ -57,6 +58,7 @@ public static class JungleStageBuilder
     {
         sharedMaterials.Clear();
         cachedLitShader = null;
+        cachedUnlitShader = null;
         cachedStandardShader = null;
         cachedBowlingGorillaMaterial = null;
         gorillaClipsLoaded = false;
@@ -67,6 +69,15 @@ public static class JungleStageBuilder
         cachedLitShader != null
             ? cachedLitShader
             : (cachedLitShader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard") ?? Shader.Find("Diffuse"));
+
+    public static Shader UnlitShader =>
+        cachedUnlitShader != null
+            ? cachedUnlitShader
+            : (cachedUnlitShader = Shader.Find("Universal Render Pipeline/Unlit")
+                ?? Shader.Find("Unlit/Texture")
+                ?? Shader.Find("Sprites/Default")
+                ?? LitShader
+                ?? Shader.Find("Standard"));
 
     public static Shader StandardShader => LitShader;
     public static Material GetSharedMaterial(Color color, float metallic = 0f, float smoothness = .25f, bool preferStandard = false)
@@ -150,17 +161,40 @@ public static class JungleStageBuilder
         bool keepCollider = false,
         float metallic = 0f,
         float smoothness = .25f,
-        bool preferStandard = false)
+        bool preferStandard = false,
+        bool isLocal = false)
     {
         GameObject item = GameObject.CreatePrimitive(type);
         item.name = name;
-        if (parent != null) item.transform.SetParent(parent);
-        item.transform.position = position;
+        if (parent != null)
+        {
+            item.transform.SetParent(parent, false);
+            if (isLocal)
+                item.transform.localPosition = position;
+            else
+                item.transform.position = position;
+        }
+        else
+        {
+            item.transform.position = position;
+        }
         item.transform.localScale = scale;
         item.GetComponent<Renderer>().sharedMaterial = GetSharedMaterial(color, metallic, smoothness, preferStandard);
         if (!keepCollider) StripCollider(item);
         return item;
     }
+    public static GameObject CreateLocalPrimitive(
+        PrimitiveType type,
+        string name,
+        Vector3 localPosition,
+        Vector3 scale,
+        Color color,
+        Transform parent,
+        bool keepCollider = false,
+        float metallic = 0f,
+        float smoothness = .25f,
+        bool preferStandard = false)
+        => CreatePrimitive(type, name, localPosition, scale, color, parent, keepCollider, metallic, smoothness, preferStandard, isLocal: true);
     public static Bounds CombinedBounds(Renderer[] renderers)
     {
         Bounds bounds = renderers[0].bounds;

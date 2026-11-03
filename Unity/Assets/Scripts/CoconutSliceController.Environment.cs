@@ -192,7 +192,7 @@ public sealed partial class CoconutSliceController
         camera.backgroundColor = new Color(.025f, .16f, .12f);
 
         Texture2D jungleBackground = JungleAssets.Load<Texture2D>("Jungle/CoconutSlice/JungleSkyBackground");
-        Material backgroundMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Texture") ?? Shader.Find("Universal Render Pipeline/Lit"));
+        Material backgroundMaterial = new Material(JungleStageBuilder.UnlitShader);
         if (backgroundMaterial.HasProperty("_BaseMap")) backgroundMaterial.SetTexture("_BaseMap", jungleBackground);
         if (backgroundMaterial.HasProperty("_BaseColor")) backgroundMaterial.SetColor("_BaseColor", Color.white);
         backgroundMaterial.name = "Fondo pintado de Coconut Slice";

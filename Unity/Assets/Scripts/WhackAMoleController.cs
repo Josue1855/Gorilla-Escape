@@ -87,7 +87,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         bg.transform.position = new(0, 1.2f, 7.2f);
         bg.transform.localScale = new(31, 17.4f, 1);
         if (bg.TryGetComponent<Collider>(out var bgCol)) { bgCol.enabled = false; Destroy(bgCol); }
-        var unlitShader = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Texture");
+        var unlitShader = JungleStageBuilder.UnlitShader;
         var bm = new Material(unlitShader);
         var bgTex = JungleAssets.Load<Texture2D>("Jungle/NewModels/WhackAMole/WhackAMoleBackground");
         bm.mainTexture = bgTex;

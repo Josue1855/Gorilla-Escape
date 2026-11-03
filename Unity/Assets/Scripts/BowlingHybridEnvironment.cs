@@ -100,7 +100,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
             plate.AddComponent<MeshFilter>();
             plate.AddComponent<MeshRenderer>();
             FitBackgroundToCamera();
-            Shader unlit = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Texture");
+            Shader unlit = JungleStageBuilder.UnlitShader;
             Material material = new Material(unlit);
             material.mainTexture = background;
             if (material.HasProperty("_BaseMap")) material.SetTexture("_BaseMap", background);
@@ -192,7 +192,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
     private void CreateNaturalBanks()
     {
         Texture2D groundTexture = JungleAssets.Load<Texture2D>("Jungle/bowling_jungle_ground");
-        Shader unlitGround = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Texture");
+        Shader unlitGround = JungleStageBuilder.UnlitShader;
         Material paintedGround = new Material(unlitGround);
         paintedGround.mainTexture = groundTexture;
         if (paintedGround.HasProperty("_BaseMap")) paintedGround.SetTexture("_BaseMap", groundTexture);
@@ -271,7 +271,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         panel.name = "Gorila en primer plano junto al jugador";
         panel.transform.SetParent(bowlingCamera.transform, false);
         JungleStageBuilder.StripCollider(panel);
-        Material material = new Material(Shader.Find("Sprites/Default"));
+        Material material = new Material(Shader.Find("Sprites/Default") ?? JungleStageBuilder.UnlitShader);
         material.mainTexture = foregroundNeutral;
         material.color = Color.white;
         foregroundGorillaRenderer = panel.GetComponent<Renderer>();
@@ -282,7 +282,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
         blendPanel.name = "Transición suave del gorila";
         blendPanel.transform.SetParent(bowlingCamera.transform, false);
         JungleStageBuilder.StripCollider(blendPanel);
-        Material blendMaterial = new Material(Shader.Find("Sprites/Default"));
+        Material blendMaterial = new Material(Shader.Find("Sprites/Default") ?? JungleStageBuilder.UnlitShader);
         blendMaterial.mainTexture = foregroundNeutral;
         blendMaterial.color = new Color(1f, 1f, 1f, 0f);
         foregroundBlendRenderer = blendPanel.GetComponent<Renderer>();
@@ -395,7 +395,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
 
     private Material OpaqueMaterial(Color color)
     {
-        Shader unlitColor = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color") ?? Shader.Find("Universal Render Pipeline/Lit");
+        Shader unlitColor = JungleStageBuilder.UnlitShader;
         Material material = new Material(unlitColor);
         material.color = color;
         if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
@@ -404,7 +404,7 @@ public sealed class BowlingHybridEnvironment : MonoBehaviour
 
     private Material TransparentMaterial(Color color)
     {
-        Shader shader = Shader.Find("Sprites/Default") ?? Shader.Find("Unlit/Transparent");
+        Shader shader = Shader.Find("Sprites/Default") ?? Shader.Find("Unlit/Transparent") ?? JungleStageBuilder.UnlitShader;
         Material material = new Material(shader);
         material.color = color;
         return material;

@@ -78,6 +78,30 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         SetupAudio();
         BuildHighStrikerScene();
         stateAt = Time.time;
+        StartCoroutine(AutoScreenshotRoutine());
+    }
+
+    private System.Collections.IEnumerator AutoScreenshotRoutine()
+    {
+        string screenshotDir = System.Environment.GetEnvironmentVariable("GORILLA_AUTO_SCREENSHOT_DIR");
+        string autoFlow = System.Environment.GetEnvironmentVariable("GORILLA_AUTO_FLOW");
+        if (string.IsNullOrEmpty(screenshotDir) && string.IsNullOrEmpty(autoFlow))
+            yield break;
+        if (string.IsNullOrEmpty(screenshotDir))
+            screenshotDir = System.IO.Path.Combine(Application.dataPath, "../../Reports/QA/Screenshots");
+        System.IO.Directory.CreateDirectory(screenshotDir);
+
+        yield return new WaitForSeconds(0.6f);
+        ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(screenshotDir, "evidence_09_transition_gameplay.png"));
+
+        yield return new WaitForSeconds(0.6f);
+        ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(screenshotDir, "evidence_10_reopen_verification.png"));
+
+        if (System.Environment.GetEnvironmentVariable("GORILLA_AUTO_QUIT") == "1")
+        {
+            yield return new WaitForSeconds(0.5f);
+            Application.Quit();
+        }
     }
 
     private void SetupAudio()
@@ -109,7 +133,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         bg.transform.localScale = new Vector3(32f, 18f, 1f);
         if (bg.TryGetComponent<Collider>(out var bgCol)) Destroy(bgCol);
 
-        var unlitShader = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Texture");
+        var unlitShader = JungleStageBuilder.UnlitShader;
         var bgMat = new Material(unlitShader);
         var bgTex = JungleAssets.Load<Texture2D>("Jungle/NewModels/WhackAMole/WhackAMoleBackground");
         if (bgTex != null)
