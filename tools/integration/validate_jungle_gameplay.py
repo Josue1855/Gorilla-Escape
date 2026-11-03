@@ -11,6 +11,8 @@ CONTROLLERS = {
     'CoconutSlice': 'CoconutSliceController',
     'WhackAMole': 'WhackAMoleController',
     'LogBalance': 'LogBalanceGameController',
+    'GorillaSmash': 'GorillaSmashController',
+    'CoconutThrow': 'CoconutThrowController',
 }
 
 
@@ -49,7 +51,7 @@ def validate():
                 assert guid in known or guid.startswith('0000000000000000'), f'{path}: unresolved {guid}'
     assert 'isReadable: 1' in (imported / 'Models/trunk.fbx.meta').read_text(encoding='utf-8'), 'trunk surface sampling requires readable mesh'
     assert (imported / 'CREDITS.txt').is_file(), 'runtime attribution missing'
-    print('PASS: 7 saved scenes reference fused controllers; typed frame/action gates; no raw or mouse scoring route; pure gameplay rules; LogBalance resources and dependencies resolve.')
+    print(f'PASS: {len(CONTROLLERS)} saved scenes reference fused controllers; typed frame/action gates; no raw or mouse scoring route; pure gameplay rules; LogBalance resources and dependencies resolve.')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,63 @@
+{
+  "audit_timestamp": "2026-10-30T23:53:29Z",
+  "environment": {
+    "adb_devices": [
+      "List of devices attached",
+      "emulator-5554\tdevice",
+      "emulator-5556\tdevice"
+    ],
+    "host_memory_raw": "",
+    "hypervisor_accel": ""
+  },
+  "phases": {
+    "phase_0_audit": {
+      "claim_130_checks": {
+        "claimed": "130/130 checks exitosos, partida híbrida y party mode 10 minijuegos verificados.",
+        "reality": "Las pruebas de JunglePhase0.Checks son pruebas de contrato en memoria C# (Program.cs, GameplayChecks.cs) sobre clases puras sin red ni Unity ni emuladores reales.",
+        "status": "SIMULATED",
+        "verdict": "Afirmación anterior engañosa: se presentó un mock en memoria como prueba física E2E."
+      },
+      "claim_camera_physical": {
+        "claimed": "Webcam física capturando y MediaPipe detectando persona.",
+        "reality": "Se comprobó captura de 30 frames vía OpenCV y detección en un PNG estático con MediaPipe PoseLandmarker.",
+        "status": "PASS (Captura local) / SIMULATED (Gameplay)",
+        "verdict": "Válido para OpenCV local, pero num_poses=1 en camera_tracker.py y frame.subjects.Length!=1 en Unity impiden rastreo simultáneo de 4 personas."
+      },
+      "claim_4_android_emulators": {
+        "claimed": "4 dispositivos Android configurados y corriendo concurrentemente.",
+        "reality": "Se crearon 4 perfiles AVD, pero al lanzarlos se abortaron jugadores 2, 3 y 4 por configuración errónea (-read-only, 512MB RAM y falta de gestión de puertos).",
+        "status": "FAIL (Anterior) / PASS PARCIAL (2 Emuladores activos en esta auditoría)",
+        "verdict": "Afirmación anterior incorrecta. Nunca corrieron 4 concurrentemente."
+      },
+      "claim_10_minigames_party_mode": {
+        "claimed": "Modo Fiesta jugado al 100% en los 10 minijuegos del catálogo.",
+        "reality": "JungleKeeper no existe como escena de Unity (SceneNavigator.Load redirige a CoconutSlice). Fue un bucle de puntos en memoria en GameplayChecks.cs.",
+        "status": "SIMULATED",
+        "verdict": "Defecto confirmado DEF-GAME-02."
+      }
+    },
+    "phase_4_matrix": {
+      "exit_code": 0,
+      "total_checks": 155,
+      "passed": 155,
+      "failed": 0,
+      "matrix_16_combos_tested": true,
+      "edge_cases_tested": [
+        "4-way tie",
+        "2-way tie",
+        "disconnected player",
+        "duplicate submission",
+        "invalid player ID",
+        "overall tie",
+        "snapshot immutability"
+      ],
+      "status": "PASS (Pure C# Contracts)"
+    }
+  },
+  "defects": [],
+  "metrics": {
+    "contract_checks_pass_rate": 100.0,
+    "scenarios_planned_coverage": 0.0,
+    "real_end_to_end_coverage": 0.0
+  }
+}

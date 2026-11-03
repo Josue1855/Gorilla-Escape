@@ -3,6 +3,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="MobileChecks.cs" />
+    <Compile Include="AdversarialMatrixChecks.cs" />
     <Compile Include="../../../Shared/CSharp/Runtime/GamePresentationWire.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Core/PackagedRuntimeEnvironment.cs" />
     <Compile Include="GameplayChecks.cs" />
@@ -12,6 +13,7 @@
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/LogBalanceFusedControl.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/JunglePauseLease.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/ShotMechanics.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/GorillaPointsLedger.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/CameraInput.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/PhoneInputStore.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/OfficialActionLedger.cs" />

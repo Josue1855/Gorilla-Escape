@@ -39,3 +39,23 @@ test('room routes reach their tunnel without a referrer and only allow public en
     assert.deepEqual(seen, ['https://test.trycloudflare.com/', 'https://test.trycloudflare.com/mobile/join', 'https://test.trycloudflare.com/assets/LilitaOne-a1.ttf']);
   } finally { globalThis.fetch = original; }
 });
+test('assetlinks.json responds with valid Android App Links configuration', async () => {
+  const env = environment();
+  const resp = await worker.fetch(new Request('https://play.gorillas.run/.well-known/assetlinks.json'), env);
+  assert.equal(resp.status, 200);
+  assert.equal(resp.headers.get('content-type'), 'application/json');
+  const body = await resp.json();
+  assert.equal(body[0].target.package_name, 'com.gorillaescape.gorilla_companion');
+  assert.equal(body[0].target.sha256_cert_fingerprints[0], '9F:F5:56:BF:06:8A:02:2B:E4:FD:1D:48:44:4C:48:ED:D2:D9:15:47:52:12:6B:70:0A:1E:FD:C7:6E:EC:37:56');
+});
+test('join route redirects or proxies to room correctly', async () => {
+  const env = environment(); await worker.fetch(register({ roomCode:'abcd', targetUrl:'https://test.trycloudflare.com', owner }), env);
+  const original = globalThis.fetch;
+  globalThis.fetch = async request => new Response('<html><head></head><body>Jungle</body></html>', {headers:{'content-type':'text/html'}});
+  try {
+    const resp = await worker.fetch(new Request('https://play.gorillas.run/join/abcd?v=1&sessionId=11111111-1111-1111-1111-111111111111&admission=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'), env);
+    assert.equal(resp.status, 200);
+    const html = await resp.text();
+    assert.match(html, /<base href="\/abcd\/">/);
+  } finally { globalThis.fetch = original; }
+});

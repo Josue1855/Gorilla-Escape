@@ -83,8 +83,8 @@ def main():
             metrics=Metrics(a.warmup,enabled=a.telemetry=='enabled')
             acquisition_clock=(lambda:None) if windows else (lambda:int(capture.get(cv2.CAP_PROP_POS_MSEC)*1e6))
             pump=CapturePump(capture,stop,metrics,acquisition_clock=acquisition_clock,preview=preview,release_before_join=windows);pump.start()
-            if a.duration:
-                timer=threading.Timer(a.warmup+a.duration,stop.set);timer.daemon=True;timer.start()
+        if a.duration:
+            timer=threading.Timer(a.warmup+a.duration,stop.set);timer.daemon=True;timer.start()
         emit('CAMERA_READY')
         if a.mode=='failure': raise RuntimeError('VISION_FAILURE_FIXTURE')
         if a.mode=='malformed': print('CAMERA_FRAME {',flush=True);stop.wait();return
@@ -131,7 +131,7 @@ def main():
                     if len(matches)==1 and matches[0]['subjectId'] not in used:sid=matches[0]['subjectId']
                     else:sid=next_id;next_id+=1;ambiguous=ambiguous or len(matches)>0
                     used.add(sid);points=[]
-                    for name,index in [('left-shoulder',11),('right-shoulder',12),('left-elbow',13),('right-elbow',14),('left-wrist',15),('right-wrist',16),('left-hand',19),('right-hand',20)]:
+                    for name,index in [('left-shoulder',11),('right-shoulder',12),('left-elbow',13),('right-elbow',14),('left-wrist',15),('right-wrist',16),('left-hand',19),('right-hand',20),('left-hip',23),('right-hip',24)]:
                         l=landmarks[index];v=float(l.visibility);presence=float(l.presence)
                         points.append(dict(name=name,x=float(l.x),y=float(l.y),z=float(l.z),visibility=v,presence=presence,visible=min(v,presence)>=.5))
                     conf=min(min(l['visibility'],l['presence']) for l in points[:6]);subjects.append(dict(subjectId=sid,centerX=max(0,min(1,cx)),centerY=max(0,min(1,cy)),confidence=conf,ambiguous=ambiguous,landmarks=points))

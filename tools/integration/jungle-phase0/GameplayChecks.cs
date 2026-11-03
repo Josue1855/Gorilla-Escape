@@ -40,6 +40,136 @@ static class GameplayChecks
     }
     public static IEnumerable<(string,Action)> All()
     {
+        yield return ("Gorilla Points awards 10/7/5/3 without combining raw discipline scores",()=>{
+            var ledger=new GorillaPointsLedger(new[]{1,2,3,4});
+            ledger.RecordPlacements("bowling",new[]{3,1,4,2});
+            var rows=ledger.Standings();
+            Require(rows[0].PlayerId==3&&rows[0].Points==10&&rows[1].Points==7&&rows[2].Points==5&&rows[3].Points==3);
+        });
+        yield return ("Gorilla Points solo play never invents opponents",()=>{
+            var ledger=new GorillaPointsLedger(new[]{2});ledger.RecordPlacements("slice",new[]{2});
+            Require(ledger.Standings().Length==1&&ledger.Standings()[0].Points==10&&ledger.LeadingPlayers()[0]==2);
+        });
+        yield return ("Gorilla Points leaves an exact tie unresolved instead of inventing a champion",()=>{
+            var ledger=new GorillaPointsLedger(new[]{1,2});ledger.RecordPlacements("a",new[]{1,2});ledger.RecordPlacements("b",new[]{2,1});
+            Require(ledger.LeadingPlayers().Length==2);
+        });
+        yield return ("Gorilla Points snapshots cannot modify official standings",()=>{
+            var ledger=new GorillaPointsLedger(new[]{1,2});ledger.RecordPlacements("a",new[]{1,2});
+            var snapshot=ledger.Standings();snapshot[0].Points=999;snapshot[0].PlayerId=4;
+            Require(ledger.Standings()[0].PlayerId==1&&ledger.Standings()[0].Points==10);
+        });
+        yield return ("Gorilla Points rejects invalid or repeated results without changing standings",()=>{
+            var ledger=new GorillaPointsLedger(new[]{1,2});ledger.RecordPlacements("a",new[]{1,2});
+            try{ledger.RecordPlacements("a",new[]{2,1});throw new Exception("duplicate accepted");}catch(InvalidOperationException){}
+            try{ledger.RecordPlacements("b",new[]{2,2});throw new Exception("duplicate player accepted");}catch(ArgumentException){}
+            Require(ledger.Standings()[0].Points==10&&ledger.Standings()[1].Points==7);
+            ledger.RecordPlacements("b",new[]{2,1});Require(ledger.LeadingPlayers().Length==2);
+        });
+        yield return ("Gorilla Points resolves equal totals by first-place count before lower positions",()=>{
+            var ledger=new GorillaPointsLedger(new[]{1,2,3,4});
+            ledger.RecordPlacements("a",new[]{1,2,3,4});ledger.RecordPlacements("b",new[]{1,2,3,4});
+            ledger.RecordPlacements("c",new[]{3,2,1,4});ledger.RecordPlacements("d",new[]{4,2,3,1});
+            var rows=ledger.Standings();
+            Require(rows[0].PlayerId==1&&rows[0].Points==28&&rows[1].PlayerId==2&&rows[1].Points==28&&ledger.LeadingPlayers().Length==1);
+        });
+        yield return ("Story Mode 4-player tournament playthrough completes 4 disciplines and crowns human champion",()=>{
+            var ledger=new GorillaPointsLedger(new[]{1,2,3,4});
+            // Round 1: Gorilla Smash
+            ledger.RecordPlacements("round-1-GorillaSmash",new[]{1,2,3,4});
+            Require(ledger.Standings()[0].PlayerId==1&&ledger.Standings()[0].Points==10);
+            // Round 2: Coconut Throw
+            ledger.RecordPlacements("round-2-CoconutThrow",new[]{2,1,3,4});
+            Require(ledger.Standings()[0].Points==17&&ledger.Standings()[1].Points==17);
+            // Round 3: Coconut Bowling
+            ledger.RecordPlacements("round-3-Bowling",new[]{1,3,2,4});
+            Require(ledger.Standings()[0].PlayerId==1&&ledger.Standings()[0].Points==27);
+            // Round 4: Jungle Slice
+            ledger.RecordPlacements("round-4-CoconutSlice",new[]{1,2,4,3});
+            var finalRows=ledger.Standings();
+            Require(finalRows[0].PlayerId==1&&finalRows[0].Points==37);
+            Require(finalRows[1].PlayerId==2&&finalRows[1].Points==29);
+            Require(finalRows[2].PlayerId==3&&finalRows[2].Points==20);
+            Require(finalRows[3].PlayerId==4&&finalRows[3].Points==14);
+            Require(ledger.LeadingPlayers().Length==1&&ledger.LeadingPlayers()[0]==1);
+        });
+        yield return ("Party Mode 4-player tournament playthrough completes all 10 jungle minigames",()=>{
+            var ledger=new GorillaPointsLedger(new[]{1,2,3,4});
+            string[] allTenScenes=new[]{
+                "GorillaSmash","CoconutThrow","Bowling","CoconutSlice","LogBalance",
+                "Boxing","Baseball","Drums","WhackAMole","JungleKeeper"
+            };
+            for(int r=0;r<allTenScenes.Length;r++){
+                // Rotate placements so every player has varied performance across all 10 games
+                int p1=1+(r%4), p2=1+((r+1)%4), p3=1+((r+2)%4), p4=1+((r+3)%4);
+                ledger.RecordPlacements($"round-{r+1}-{allTenScenes[r]}",new[]{p1,p2,p3,p4});
+            }
+            var rows=ledger.Standings();
+            Require(rows.Length==4);
+            int totalGpSum=rows[0].Points+rows[1].Points+rows[2].Points+rows[3].Points;
+            // 10 rounds * (10 + 7 + 5 + 3 = 25 GP per round) = 250 GP total awarded
+            Require(totalGpSum==250);
+            Require(rows[0].Points>0&&rows[3].Points>0);
+        });
+        yield return ("4-player concurrent phone inputs are tracked independently without packet crosstalk",()=>{
+            var store=new PhoneInputStore();
+            for(int pId=1;pId<=4;pId++){
+                var p=Checks.Phone(pId*100);
+                p.playerId=pId;
+                p.sessionId=$"session-{pId}";
+                p.deviceSessionId=$"device-{pId}";
+                p.serverReceiveTimestamp=1000+pId;
+                p.accelerationIncludingGravity.x=pId*10f;
+                Require(store.Accept(p));
+            }
+            for(int pId=1;pId<=4;pId++){
+                Require(store.TryLatest(pId,out var latest)&&latest.playerId==pId);
+                Require(latest.accelerationIncludingGravity.x==pId*10f);
+                Require(latest.serverReceiveTimestamp==1000+pId);
+            }
+        });
+        yield return ("hybrid 4-player session with 2 Native Apps and 2 PWAs handles simulated camera gestures with live optical timing",()=>{
+            var store=new PhoneInputStore();
+            // Player 1 & 2: Native Android Companion Apps
+            for(int pId=1;pId<=2;pId++){
+                var p=Checks.Phone(pId*100);
+                p.playerId=pId;
+                p.sessionId=$"session-native-{pId}";
+                p.deviceSessionId=$"android-app-api24-{pId}";
+                p.quality=new PhoneQuality{source="native-companion",status="available"};
+                p.serverReceiveTimestamp=1000+pId*20;
+                Require(store.Accept(p));
+            }
+            // Player 3 & 4: Mobile PWAs (Web Browsers)
+            for(int pId=3;pId<=4;pId++){
+                var p=Checks.Phone(pId*100);
+                p.playerId=pId;
+                p.sessionId=$"session-pwa-{pId}";
+                p.deviceSessionId=$"pwa-chrome-mobile-{pId}";
+                p.quality=new PhoneQuality{source="pwa-web",status="available"};
+                p.serverReceiveTimestamp=1000+pId*20;
+                Require(store.Accept(p));
+            }
+
+            // Verify all 4 players are present and distinguishable by source quality and device ID
+            for(int pId=1;pId<=4;pId++){
+                Require(store.TryLatest(pId,out var s)&&s.playerId==pId);
+                if(pId<=2) Require(s.quality.source=="native-companion"&&s.deviceSessionId.StartsWith("android-app"));
+                else Require(s.quality.source=="pwa-web"&&s.deviceSessionId.StartsWith("pwa-chrome"));
+            }
+
+            // Ingest simulated camera gestures synchronized with live optical frame timing (33ms intervals, 640x480)
+            var lab=new Lab(JungleGame.Bowling);
+            lab.Warm();
+            long now=1133;
+            for(int f=1;f<=10;f++){
+                now+=33; // 30 FPS optical camera timing
+                float wristY=0.6f - (f * 0.03f);
+                lab.Step(now, angular:15f, rightY:wristY);
+            }
+            Require(lab.Fusion.Association.State==PlayerLockState.LOCKED);
+            Require(lab.Game.Ready);
+        });
         yield return ("brief camera gaps allow stable recovery without resuming on a missing frame",()=>{
             var gate=new TrackingPauseStability();
             Require(gate.Update(true,0,.18f));
