@@ -1,15 +1,71 @@
+import { useState } from 'react';
 import { controlProfile, games, gamePresentation, gameStats } from './gamePresentation.js';
 
-export default function ReadyControl({ view, copyDiagnostic, copyStatus, diagnostic, actions, onCommand, onActivate }) {
+export default function ReadyControl({ view, copyDiagnostic, copyStatus, diagnostic, actions, onCommand, onActivate, playerName, onSetName, onForfeit, onToggleAway }) {
   const game=gamePresentation(view.gameContext,view.playerId),stats=gameStats(view.gameContext);
   const profile=controlProfile(view.gameContext,view.playerId);
   const balance=game.game==='log-balance',cameraOnly=profile.valid&&profile.screen==='game'&&!profile.phoneRequired;
   const ready=view.state==='INPUT_READY';
   const command=(action,target='')=>void onCommand?.(action,target);
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState(playerName || '');
+  const [isSavingName, setIsSavingName] = useState(false);
+  const [nameFeedback, setNameFeedback] = useState('');
+
   return <main className="controller-shell" data-game={game.game} data-phase={game.phase || 'Ready'}>
     <header className="brand"><div><p className="eyebrow">GORILLA ESCAPE · {view.playerId ? `JUGADOR ${view.playerId}` : 'CONTROL CONECTADO'}</p><h1>{game.title}</h1></div></header>
+    <div className="player-identity-bar">
+      <span className="player-badge">👤 {playerName || `Jugador ${view.playerId || 1}`}</span>
+      <div className="identity-actions">
+        <button type="button" className="edit-name-pill" onClick={() => { setEditingName(!editingName); setNameInput(playerName || ''); setNameFeedback(''); }}>
+          {editingName ? 'Cerrar' : 'Editar nombre'}
+        </button>
+        {profile.screen === 'game' && (
+          <button type="button" className="pause-pill-btn" onClick={() => command(game.phase === 'Paused' ? 'resume' : 'pause')}>
+            {game.phase === 'Paused' ? '▶️ Reanudar' : '⏸️ Pausa'}
+          </button>
+        )}
+      </div>
+    </div>
+    {editingName && <form className="inline-name-edit" onSubmit={async e => {
+      e.preventDefault();
+      const trimmed = (nameInput || '').normalize('NFC').trim();
+      if (!trimmed) return;
+      setIsSavingName(true);
+      const res = await onSetName?.(trimmed);
+      setIsSavingName(false);
+      if (res === 'SAVED') {
+        setNameFeedback('✓ Guardado en la PC');
+        setTimeout(() => setEditingName(false), 800);
+      } else {
+        setNameFeedback('No se pudo guardar.');
+      }
+    }}>
+      <input value={nameInput} maxLength={40} placeholder="Tu nombre" onChange={e => setNameInput(e.target.value)} disabled={isSavingName} autoFocus />
+      <button className="primary" type="submit" disabled={!nameInput.trim() || isSavingName}>
+        {isSavingName ? '...' : 'Guardar'}
+      </button>
+      {nameFeedback && <p role="status" className="name-feedback">{nameFeedback}</p>}
+    </form>}
     <section className="connection-panel" aria-labelledby="game-heading">
       <div role="status" aria-live="polite"><h2 id="game-heading">{game.heading}</h2><p>{game.instruction}</p></div>
+      {profile.screen === 'game' && game.phase === 'Paused' && (
+        <aside className="mobile-pause-overlay-card" role="dialog" aria-modal="true" aria-label="Juego en pausa">
+          <h3>⏸️ JUEGO EN PAUSA</h3>
+          <p>La partida está detenida. Puedes reanudar, reiniciar o volver al menú desde aquí.</p>
+          <div className="control-actions">
+            <button className="primary" disabled={view.commandPending} onClick={() => command('resume')}>▶️ REANUDAR</button>
+            <button className="secondary" disabled={view.commandPending} onClick={() => command('restart')}>🔄 REINICIAR</button>
+            <button className="secondary" disabled={view.commandPending} onClick={() => command('menu')}>🏠 VOLVER AL MENÚ</button>
+          </div>
+        </aside>
+      )}
+      {view.playerId && view.gameContext?.playerId && view.playerId !== view.gameContext.playerId && (
+        <aside className="waiting-turn-card" aria-label="Turno de juego">
+          <strong>TURNO ACTUAL: JUGADOR {view.gameContext.playerId}</strong>
+          <p>Prueba en curso: {game.title} · Tu turno: Siguiente</p>
+        </aside>
+      )}
       {profile.valid&&profile.game==='lobby'&&<>
         {profile.canNavigate&&<nav className="game-menu" aria-label="Elegir juego en la PC">{Object.entries(games).map(([id,[title]])=><button key={id} className="game-card" disabled={view.commandPending} onClick={()=>command('select-game',id)}><strong>{title}</strong><span>{id==='log-balance'?'Solo celular':['coconut-slice','jungle-keeper'].includes(id)?'Solo cámara':'Celular + cámara'}</span></button>)}</nav>}
         <p className="control-hint">El menú funciona sin activar sensores. Puedes elegir el próximo desafío desde aquí.</p>
@@ -31,6 +87,10 @@ export default function ReadyControl({ view, copyDiagnostic, copyStatus, diagnos
       {ready&&['bowling','baseball'].includes(game.game)&&<div className="control-actions">{actions}</div>}
       {profile.canNavigate&&game.phase==='Ready'&&['log-balance','coconut-slice','jungle-keeper','whack'].includes(game.game)&&<button className="primary" disabled={view.commandPending||(profile.phoneRequired&&!ready)} onClick={()=>command('start')}>COMENZAR PRUEBA</button>}
       {profile.canNavigate&&profile.screen==='game'&&<div className="control-actions"><button className="secondary" disabled={view.commandPending} onClick={()=>command('menu')}>VOLVER AL MENÚ</button><button className="secondary" disabled={view.commandPending} onClick={()=>command('restart')}>NUEVA PARTIDA</button></div>}
+      <div className="control-actions" style={{display:'flex',gap:'8px',justifyContent:'center',marginTop:'12px',flexWrap:'wrap'}}>
+        <button className="secondary" type="button" onClick={onToggleAway}>{view.isAway?'▶️ VOLVER A LA PARTIDA':'⏸️ ESTARÉ AUSENTE'}</button>
+        <button className="secondary" type="button" style={{color:'#ff6b6b'}} onClick={()=>{if(window.confirm('¿Seguro que deseas salir de la partida? Tus puntos se guardarán pero tu turno será reemplazado.'))onForfeit?.();}}>🚪 SALIR DE LA PARTIDA</button>
+      </div>
       <p role="status">{view.commandStatus}</p>
       {profile.phoneRequired&&<aside className="safety"><strong>Sujeta firmemente tu teléfono.</strong><span>Mueve la mano con suavidad y mira la PC.</span></aside>}
     </section>

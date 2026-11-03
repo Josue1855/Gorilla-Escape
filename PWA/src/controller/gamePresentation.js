@@ -1,12 +1,14 @@
 export const games = {
-  bowling: ['BANANA BOWLING','Apunta con el teléfono y realiza un lanzamiento suave.'],
-  boxing: ['BOXEO CON GORILA','Mantén ambas manos visibles y realiza los golpes frente a la cámara.'],
+  bowling: ['COCONUT BOWLING','Apunta con el teléfono y realiza un lanzamiento suave.'],
+  boxing: ['GORILLA BOXING','Mantén ambas manos visibles y realiza los golpes frente a la cámara.'],
   baseball: ['JUNGLE BASEBALL','Espera la pelota y realiza el movimiento de bateo.'],
   drums: ['JUNGLE DRUMS','Sigue el ritmo con ambas manos visibles.'],
-  'coconut-slice': ['COCONUT SLICE','Corta con tus manos y evita los obstáculos.'],
-  'jungle-keeper': ['PORTERO DE LA JUNGLA','Detén los tiros con las manos y el torso frente a la cámara.'],
+  'coconut-slice': ['JUNGLE SLICE','Corta con tus manos y evita los obstáculos.'],
+  'jungle-keeper': ['JUNGLE KEEPER','Detén los tiros con las manos y el torso frente a la cámara.'],
   whack: ['GORILLA WHACK','Apunta con la mano y realiza un golpe hacia abajo.'],
-  'log-balance': ['DESAFÍO DEL TRONCO','Inclina suavemente el teléfono y frena la inercia.'],
+  'log-balance': ['JUNGLE BALANCE','Inclina suavemente el teléfono y frena la inercia.'],
+  'gorilla-smash': ['GORILLA SMASH','Sujeta el teléfono y asesta un golpe descendente con fuerza hacia la plataforma.'],
+  'coconut-throw': ['COCONUT THROW','Apunta a ~45° y realiza el lanzamiento hacia adelante con potencia.'],
 };
 const displayPhases = { Ready:'Prepárate', Countdown:'La prueba comienza', Playing:'¡A jugar!', Paused:'Juego en pausa', Won:'¡Prueba superada!', Lost:'Inténtalo de nuevo', Finished:'Prueba terminada' };
 function validV2(context) {
@@ -44,7 +46,7 @@ export function gamePresentation(context, playerId) {
   }
   const [heading, instruction] = phases[context.phase];
   const spectator = context.playerId !== playerId;
-  return { game: 'log-balance', title: 'DESAFÍO\nDEL TRONCO', heading: spectator ? 'Observa la prueba' : heading,
+  return { game: 'log-balance', title: 'JUNGLE\nBALANCE', heading: spectator ? 'Observa la prueba' : heading,
     instruction: spectator ? 'Otro náufrago está jugando. Espera tu turno en la PC.' : instruction,
     active: !spectator && context.phase === 'Crossing', phase: context.phase };
 }

@@ -16,20 +16,21 @@ Uri? controllerLink(String text) {
         (!lab && uri.scheme != 'https') ||
         uri.host.isEmpty ||
         uri.userInfo.isNotEmpty ||
-        uri.query.isNotEmpty ||
         (uri.path != '/' &&
-            !(uri.host == 'play.gorillas.run' &&
-                RegExp(r'^/[a-z0-9]{4,8}/?$').hasMatch(uri.path)))) {
+            !((uri.host == 'play.gorilla.run' || uri.host == 'play.gorillas.run') &&
+                RegExp(r'^/(?:join/)?[a-z0-9]{4,8}/?$').hasMatch(uri.path)))) {
       return null;
     }
-    final fields = Uri(query: uri.fragment).queryParametersAll;
-    if (fields.length != 3 ||
-        fields.values.any((v) => v.length != 1) ||
-        fields['v']?.single != '1' ||
+    Map<String, List<String>> fields = Uri(query: uri.fragment).queryParametersAll;
+    if (fields.isEmpty || fields['v'] == null) {
+      fields = uri.queryParametersAll;
+    }
+    if (fields.length < 3 ||
+        fields['v']?.first != '1' ||
         !RegExp(r'^[a-f0-9-]{36}$')
-            .hasMatch(fields['sessionId']?.single ?? '') ||
+            .hasMatch(fields['sessionId']?.first ?? '') ||
         !RegExp(r'^[A-Za-z0-9_-]{43}$')
-            .hasMatch(fields['admission']?.single ?? '')) {
+            .hasMatch(fields['admission']?.first ?? '')) {
       return null;
     }
     return uri;
@@ -121,14 +122,14 @@ class MotionStore {
 }
 
 const controllerGames = <String, String>{
-  'bowling': 'BANANA BOWLING',
-  'boxing': 'BOXEO CON GORILA',
+  'bowling': 'COCONUT BOWLING',
+  'boxing': 'GORILLA BOXING',
   'baseball': 'JUNGLE BASEBALL',
   'drums': 'JUNGLE DRUMS',
-  'coconut-slice': 'COCONUT SLICE',
-  'jungle-keeper': 'PORTERO DE LA JUNGLA',
+  'coconut-slice': 'JUNGLE SLICE',
+  'jungle-keeper': 'JUNGLE KEEPER',
   'whack': 'GORILLA WHACK',
-  'log-balance': 'DESAFÍO DEL TRONCO',
+  'log-balance': 'JUNGLE BALANCE',
 };
 
 class GameControlProfile {
@@ -218,24 +219,24 @@ class GameView {
     }
     if (context?['version'] == 2 || context?['version'] == 3) {
       const games = {
-        'bowling': ['BANANA BOWLING', 'Apunta y realiza un lanzamiento suave.'],
+        'bowling': ['COCONUT BOWLING', 'Apunta y realiza un lanzamiento suave.'],
         'boxing': [
-          'BOXEO CON GORILA',
+          'GORILLA BOXING',
           'Mantén ambas manos visibles y realiza los golpes.',
         ],
         'baseball': ['JUNGLE BASEBALL', 'Espera la pelota y realiza el bateo.'],
         'drums': ['JUNGLE DRUMS', 'Sigue el ritmo con ambas manos.'],
         'coconut-slice': [
-          'COCONUT SLICE',
+          'JUNGLE SLICE',
           'Corta con tus manos y evita obstáculos.',
         ],
         'jungle-keeper': [
-          'PORTERO DE LA JUNGLA',
+          'JUNGLE KEEPER',
           'Detén los tiros con las manos y el torso frente a la cámara.',
         ],
         'whack': ['GORILLA WHACK', 'Apunta y realiza un golpe hacia abajo.'],
         'log-balance': [
-          'DESAFÍO DEL TRONCO',
+          'JUNGLE BALANCE',
           'Inclina suavemente y frena la inercia.',
         ],
       };
@@ -313,7 +314,7 @@ class GameView {
     return GameView(
       'log-balance',
       context['phase'],
-      'DESAFÍO\nDEL TRONCO',
+      'JUNGLE\nBALANCE',
       turn ? copy[0] : 'Espera tu turno',
       turn ? copy[1] : 'Otro náufrago está jugando. Mira la PC.',
       turn,

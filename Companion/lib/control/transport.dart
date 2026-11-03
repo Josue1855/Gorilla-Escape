@@ -34,7 +34,7 @@ Future<Map<String, dynamic>> postControllerJson(
 ) async {
   final request = await client
       .postUrl(endpoint)
-      .timeout(const Duration(seconds: 6));
+      .timeout(const Duration(seconds: 12));
   request.followRedirects = false;
   request.headers.contentType = ContentType.json;
   request.headers.set(HttpHeaders.cacheControlHeader, 'no-store');
@@ -70,7 +70,14 @@ class NativeTransport extends ChangeNotifier {
   Map<String, dynamic>? _context;
   Uri? _origin;
   final HttpClient _http = HttpClient()
-    ..connectionTimeout = const Duration(seconds: 5);
+    ..connectionTimeout = const Duration(seconds: 10)
+    ..badCertificateCallback = (cert, host, port) =>
+        kDebugMode &&
+        (host == 'play.gorilla.run' ||
+            host == 'play.gorillas.run' ||
+            host == '127.0.0.1' ||
+            host == '10.0.2.2' ||
+            host.endsWith('.trycloudflare.com'));
   final Stopwatch clock = Stopwatch()..start();
   Timer? _heartbeat;
   int _generation = 0, _sequence = 0, _contextAt = -10000;
@@ -79,9 +86,10 @@ class NativeTransport extends ChangeNotifier {
   final Set<int> _motionPending = {};
   String state = 'idle', stage = 'idle', code = '';
   bool _disposed = false, profileAttempted = false, _motionSending = false;
-  bool _connecting = false;
+  bool _connecting = false, _heartbeatSending = false, degraded = false;
+  int missedHeartbeats = 0;
   bool get needsRecovery =>
-      state != 'connected' || clock.elapsedMilliseconds - lastAckMs > 2500;
+      state != 'connected' || clock.elapsedMilliseconds - lastAckMs > 5000;
   bool get canResume => _identity != null;
   int? get playerId => _identity?['playerId'];
   Map<String, dynamic>? get gameContext =>
@@ -130,13 +138,16 @@ class NativeTransport extends ChangeNotifier {
       host: link.host,
       port: link.hasPort ? link.port : null,
       path:
-          link.host == 'play.gorillas.run' &&
+          (link.host == 'play.gorilla.run' || link.host == 'play.gorillas.run') &&
               RegExp(r'^/[a-z0-9]{4,8}/?$').hasMatch(link.path)
           ? '${link.path.replaceAll(RegExp(r'/$'), '')}/'
           : '/',
     );
     try {
-      final pc = await createPeerConnection({'iceServers': <dynamic>[]});
+      final iceServers = <Map<String, dynamic>>[
+        {'urls': 'stun:stun.l.google.com:19302'},
+      ];
+      final pc = await createPeerConnection({'iceServers': iceServers});
       if (_disposed || generation != _generation) {
         await pc.close();
         await pc.dispose();
@@ -206,7 +217,9 @@ class NativeTransport extends ChangeNotifier {
           !gathered.isCompleted) {
         gathered.complete();
       }
-      await gathered.future.timeout(const Duration(seconds: 10));
+      try {
+        await gathered.future.timeout(const Duration(milliseconds: 2500));
+      } catch (_) {}
       check(generation);
       stage = 'signaling';
       changed();
@@ -261,17 +274,33 @@ class NativeTransport extends ChangeNotifier {
       stage = 'ready';
       lastAckMs = clock.elapsedMilliseconds;
       changed();
-      _heartbeat = Timer.periodic(const Duration(milliseconds: 200), (_) async {
-        if (state != 'connected') return;
+      _heartbeat = Timer.periodic(const Duration(milliseconds: 1000), (_) async {
+        if (state != 'connected' || _heartbeatSending) return;
+        _heartbeatSending = true;
         try {
           await control('HEARTBEAT', {});
-        } catch (_) {
-          if (generation == _generation &&
-              clock.elapsedMilliseconds - lastAckMs > 3000) {
-            state = 'disconnected';
-            code = 'CONNECTION_LOST';
-            changed();
+          if (generation == _generation) {
+            missedHeartbeats = 0;
+            if (degraded) {
+              degraded = false;
+              changed();
+            }
           }
+        } catch (_) {
+          if (generation == _generation) {
+            missedHeartbeats++;
+            if (missedHeartbeats >= 2 && !degraded) {
+              degraded = true;
+              changed();
+            }
+            if (missedHeartbeats >= 4 || clock.elapsedMilliseconds - lastAckMs > 5000) {
+              state = 'disconnected';
+              code = 'CONNECTION_LOST';
+              changed();
+            }
+          }
+        } finally {
+          _heartbeatSending = false;
         }
       });
     } catch (error) {
@@ -419,6 +448,20 @@ class NativeTransport extends ChangeNotifier {
     } catch (_) {
       errors++;
     }
+  }
+
+  Future<void> forfeit() async {
+    try {
+      if (_identity != null) {
+        await request('/mobile/forfeit', {
+          'peerId': _identity!['peerId'],
+          'resumeToken': _identity!['resumeToken'],
+        });
+      }
+    } catch (_) {}
+    await _release();
+    state = 'forfeited';
+    changed();
   }
 
   Future<String> saveProfile(String displayName) async {

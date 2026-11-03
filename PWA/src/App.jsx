@@ -27,13 +27,43 @@ function Controller() {
   const [view, setView] = useState(null);
   const [diagnostic, setDiagnostic] = useState(null);
   const [copyStatus, setCopyStatus] = useState('');
-  const [displayName, setDisplayName] = useState('');
+  const [displayName, setDisplayName] = useState(() => {
+    try { return localStorage.getItem('gorilla-player-name') || ''; } catch { return ''; }
+  });
   const [nameStatus, setNameStatus] = useState(null);
+
+  const savePlayerName = async (name) => {
+    const trimmed = (name || '').normalize('NFC').trim();
+    if (!trimmed) return 'INVALID';
+    setNameStatus('SAVING');
+    const status = await model.current?.setPlayerName(trimmed);
+    setNameStatus(status);
+    if (status === 'SAVED') {
+      setDisplayName(trimmed);
+      try { localStorage.setItem('gorilla-player-name', trimmed); } catch {}
+    }
+    return status;
+  };
+
+  useEffect(() => {
+    if (view?.network === 'NETWORK_READY' && displayName.trim() && nameStatus === null && model.current) {
+      void savePlayerName(displayName.trim());
+    }
+  }, [view?.network, displayName, nameStatus]);
+
   useEffect(() => {
     const session = new ControllerSession({ notify: setView });
-    model.current = session; setView(session.snapshot());
-    if(session.savedResume)void session.connect();
-    return () => { model.current = null; void session.dispose().catch(() => {}); };
+    model.current = session;
+    window.controller = session;
+    window.client = session.client;
+    setView(session.snapshot());
+    if(session.savedResume || session.hasAdmission) void session.connect();
+    return () => {
+      window.controller = null;
+      window.client = null;
+      model.current = null;
+      void session.dispose().catch(() => {});
+    };
   }, []);
   const state = view?.state || 'NO_ADMISSION';
   const [title, description, label, feedback] = screens[state]||screens.ERROR;
@@ -44,7 +74,9 @@ function Controller() {
     catch { setCopyStatus('Copia el diagnóstico que aparece abajo.'); }
   }
   const canRetryPermission = state === 'ERROR' && view?.network === 'NETWORK_READY';
-  if(view?.network==='NETWORK_READY'&&(state==='INPUT_READY'||controlProfile(view.gameContext,view.playerId).valid))return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} onCommand={(action,target)=>model.current?.command(action,target)} onActivate={()=>void model.current?.activate()} actions={<GameAction session={model} action="recenter">CENTRAR APUNTADO</GameAction>}/>;
+  const hasSavedName = nameStatus === 'SAVED' || (displayName.trim().length > 0 && nameStatus !== 'INVALID' && nameStatus !== 'UNAVAILABLE');
+  if(hasSavedName && view?.network==='NETWORK_READY'&&(state==='INPUT_READY'||controlProfile(view.gameContext,view.playerId).valid))
+    return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} playerName={displayName} onSetName={savePlayerName} onCommand={(action,target)=>model.current?.command(action,target)} onActivate={()=>void model.current?.activate()} onForfeit={()=>void model.current?.forfeit()} onToggleAway={()=>void model.current?.setAway(!view?.isAway)} actions={<GameAction session={model} action="recenter">CENTRAR APUNTADO</GameAction>}/>;
   return <main className="controller-shell">
     <header className="brand"><GorillaMark/><div><p className="eyebrow">GORILIMPIADAS</p><h1>GORILLA<br/>ESCAPE</h1></div></header>
     <p className="edition">GORILLA CORE · TU TELÉFONO, TU CONTROL</p>
@@ -60,22 +92,29 @@ function Controller() {
         {['UNREACHABLE', 'INSECURE'].includes(view?.connectionCheck) && <p role="status">Este navegador no pudo verificar la conexión. Comprueba la misma Wi-Fi y que el juego siga abierto. Si usas conexión local, revisa la confianza del certificado; la PC ofrece Configurar este teléfono.</p>}
         {!view?.publicTunnel && <a className="prepare-link" href="/prepare" target="_blank" rel="noreferrer">Ver preparación de este teléfono</a>}
       </div>}
-      {state === 'PERMISSION_REQUIRED' && nameStatus !== 'SAVED' && <form className="profile-setup" onSubmit={async event => {
-        event.preventDefault(); setNameStatus('SAVING');
-        setNameStatus(await model.current.setPlayerName(displayName));
+      {view?.network === 'NETWORK_READY' && !hasSavedName && <form className="profile-setup" onSubmit={async event => {
+        event.preventDefault();
+        await savePlayerName(displayName);
       }}>
-        <label>¿Cómo te llamas?<input value={displayName} maxLength={40} autoComplete="nickname" onChange={e => setDisplayName(e.target.value)} disabled={nameStatus === 'SAVING'}/></label>
-        <button className="primary" type="submit" disabled={!displayName.trim() || nameStatus === 'SAVING'}>{nameStatus === 'SAVING' ? 'GUARDANDO…' : 'CONTINUAR'}</button>
+        <label>¿Cómo te llamas en la partida?<input value={displayName} maxLength={40} autoComplete="nickname" autoFocus placeholder="Escribe tu nombre o apodo" onChange={e => setDisplayName(e.target.value)} disabled={nameStatus === 'SAVING'}/></label>
+        <button className="primary" type="submit" disabled={!displayName.trim() || nameStatus === 'SAVING'}>{nameStatus === 'SAVING' ? 'GUARDANDO…' : 'ENTRAR AL JUEGO'}</button>
         <p role="status">{nameStatus === 'INVALID' ? 'Usa hasta 40 letras, números o signos simples.' : nameStatus === 'UNAVAILABLE' ? 'No se pudo guardar tu nombre. Comprueba la conexión e inténtalo de nuevo.' : 'Tu nombre aparecerá en la pantalla del juego.'}</p>
       </form>}
       <aside className="safety" aria-label="Seguridad"><strong>Sujeta firmemente tu teléfono.</strong><span>No lo sueltes ni lo lances durante el juego.</span></aside>
-      {(label || canRetryPermission) && !(state === 'PERMISSION_REQUIRED' && nameStatus !== 'SAVED') && <button className="primary" onClick={() => {
+      {(label || canRetryPermission) && (state === 'CONNECT' || hasSavedName) && <button className="primary" onClick={() => {
         setDiagnostic(null); setCopyStatus('');
         if (state === 'CONNECT') void model.current.connect();
         else void model.current.activate();
       }}>{label || 'REINTENTAR PERMISO'}</button>}
     </section>
-    <footer><p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
+    <footer>
+      {/android/i.test(navigator.userAgent) && (
+        <a className="secondary open-in-app" style={{ display: 'block', textAlign: 'center', margin: '8px 0', textDecoration: 'none', padding: '10px', background: 'rgba(229, 189, 117, 0.15)', borderRadius: '8px', color: '#e5bd75' }}
+           href={`intent://${location.host}${location.pathname}${location.search}${location.hash}#Intent;scheme=https;package=com.gorillaescape.gorilla_companion;end`}>
+          Abrir en Gorilla Companion (APK)
+        </a>
+      )}
+      <p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
       <button className="secondary" onClick={copyDiagnostic}>Copiar diagnóstico</button>
       {view?.network === 'NETWORK_READY' && <details><summary>Medición técnica de sensores</summary>
         <p>Sujeta el teléfono. No lo lances ni lo agites con fuerza.</p>

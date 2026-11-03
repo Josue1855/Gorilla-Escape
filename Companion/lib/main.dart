@@ -41,9 +41,35 @@ class IslandHome extends StatefulWidget {
 }
 
 class _IslandHomeState extends State<IslandHome> {
+  static const _linkChannel = MethodChannel('com.gorillaescape/app_links');
   final link = TextEditingController();
   String? message;
   bool opening = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initAppLinks();
+  }
+
+  void _initAppLinks() async {
+    _linkChannel.setMethodCallHandler((call) async {
+      if (call.method == 'onLinkReceived') {
+        final rawLink = call.arguments as String?;
+        if (rawLink != null && mounted) {
+          await open(rawLink);
+        }
+      }
+    });
+
+    try {
+      final initialLink = await _linkChannel.invokeMethod<String>('getInitialLink');
+      if (initialLink != null && mounted) {
+        await open(initialLink);
+      }
+    } catch (_) {}
+  }
+
   @override
   void dispose() {
     link.dispose();
@@ -165,14 +191,17 @@ class _IslandHomeState extends State<IslandHome> {
               const SizedBox(height: 20),
               ExpansionTile(
                 title: const Text('Tengo un enlace de partida'),
+                childrenPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 children: [
                   TextField(
                     controller: link,
                     autocorrect: false,
-                    enableSuggestions: false,
-                    obscureText: true,
+                    enableSuggestions: true,
+                    obscureText: false,
+                    scrollPadding: const EdgeInsets.all(80),
                     decoration: const InputDecoration(
                       labelText: 'Enlace HTTPS del QR',
+                      hintText: 'https://...',
                     ),
                     keyboardType: TextInputType.url,
                   ),
@@ -181,16 +210,23 @@ class _IslandHomeState extends State<IslandHome> {
                     onPressed: opening ? null : () => open(link.text),
                     child: const Text('ABRIR CONTROL'),
                   ),
+                  if (message != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 4),
+                      child: Semantics(
+                        liveRegion: true,
+                        child: Text(
+                          message!,
+                          style: const TextStyle(
+                            color: Color(0xffffa07a),
+                            fontWeight: FontWeight.w600,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
-              if (message != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Semantics(
-                    liveRegion: true,
-                    child: Text(message!, style: const TextStyle(height: 1.5)),
-                  ),
-                ),
               const SizedBox(height: 16),
               const Text(
                 'Sujeta el teléfono con ambas manos.\nNo lo lances ni lo agites.',

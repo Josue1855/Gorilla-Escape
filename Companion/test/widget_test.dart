@@ -68,4 +68,33 @@ void main() {
     expect(find.text('ESCANEAR QR DE LA PC'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
   });
+
+  testWidgets('manual link field is readable, not obscured, and handles errors with keyboard', (
+    tester,
+  ) async {
+    // Set 480x800 compact mobile screen
+    tester.view.physicalSize = const Size(480, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    await tester.pumpWidget(const GorillaCompanion());
+    // Scroll down to find and expand manual link section
+    final expansionFinder = find.text('Tengo un enlace de partida');
+    await tester.scrollUntilVisible(expansionFinder, 300);
+    await tester.tap(expansionFinder);
+    await tester.pumpAndSettle();
+
+    final textFieldFinder = find.byType(TextField);
+    expect(textFieldFinder, findsOneWidget);
+
+    final textField = tester.widget<TextField>(textFieldFinder);
+    expect(textField.obscureText, isFalse, reason: 'Room URL field must NOT be obscured');
+
+    // Tap ABRIR CONTROL with empty input
+    await tester.tap(find.text('ABRIR CONTROL'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Este enlace no es un QR de partida válido. Escanea el QR de la PC.'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }

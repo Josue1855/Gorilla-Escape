@@ -9,10 +9,14 @@ export class ControllerSession {
     this.visibilityWake = () => { if (doc.visibilityState !== 'hidden') { void this.keepAwake(); void this.recover(); } else this.background(); };
     doc.addEventListener('visibilitychange', this.visibilityWake);
     this.win = win; this.now = now; this.url = url; this.client = client; this.notify = notify;
-    const fragment = new URLSearchParams(new URL(url).hash.slice(1));
-    const host = new URL(url).hostname;
-    this.publicTunnel = host.endsWith('.trycloudflare.com') || host === 'gorillas.run' || host.endsWith('.gorillas.run');
-    this.hasAdmission = Boolean(fragment.get('sessionId') && fragment.get('admission'));
+    const parsed = new URL(url);
+    const fragment = new URLSearchParams(parsed.hash.slice(1));
+    const query = parsed.searchParams;
+    const host = parsed.hostname;
+    this.publicTunnel = host.endsWith('.trycloudflare.com') || host === 'gorilla.run' || host.endsWith('.gorilla.run') || host === 'gorillas.run' || host.endsWith('.gorillas.run');
+    const sid = fragment.get('sessionId') || query.get('sessionId');
+    const adm = fragment.get('admission') || query.get('admission');
+    this.hasAdmission = Boolean(sid && adm);
     this.state = this.hasAdmission ? 'CONNECT' : 'NO_ADMISSION';
     this.actionPressed = false; this.action = 'confirm';
     this.connectionCheck = null; this.controlTilt = 0; this.controlNeutral = null; this.lastControlPublish = -Infinity;
@@ -54,7 +58,7 @@ export class ControllerSession {
     if (this.disposed || this.doc.visibilityState === 'hidden') return;
     try { this.win.navigator?.vibrate?.(pattern); } catch {}
   }
-  snapshot() { return { gameContext: this.client.gameContextExpires >= performance.now() ? this.client.gameContext || null : null, playerId: this.client.identity?.playerId || null, state: this.state, network: this.network, commandPending: Boolean(this.commandPending), commandStatus: this.commandStatus || '', connectionCheck: this.connectionCheck, publicTunnel: this.publicTunnel, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
+  snapshot() { return { isAway: Boolean(this.isAway), gameContext: this.client.gameContextExpires >= performance.now() ? this.client.gameContext || null : null, playerId: this.client.identity?.playerId || null, state: this.state, network: this.network, commandPending: Boolean(this.commandPending), commandStatus: this.commandStatus || '', connectionCheck: this.connectionCheck, publicTunnel: this.publicTunnel, controlTilt: this.controlTilt, capabilities: { ...this.capabilities }, permissions: this.permissions && { ...this.permissions }, measurement: this.measurement && { mode: this.measurement.mode, status: this.measurement.status } }; }
   publish() {
     if (this.disposed) return;
     const snap = this.snapshot();
@@ -135,9 +139,39 @@ export class ControllerSession {
       this.syncProfile();this.startMonitor();this.publish();
     } catch {
       if(!this.disposed){this.network='DISCONNECTED';this.state='DISCONNECTED';this.publish();
-        if((this.retryCount=(this.retryCount||0)+1)<=3)this.retryTimer=this.win.setTimeout(()=>void this.reconnect(),this.retryCount*1500);
+        this.retryCount=(this.retryCount||0)+1;
+        const baseMs=Math.min(12000,1000*Math.pow(2,Math.min(this.retryCount-1,3)));
+        const jitter=Math.floor(Math.random()*500);
+        this.retryTimer=this.win.setTimeout(()=>void this.reconnect(),baseMs+jitter);
       }
     } finally {this.reconnecting=false;}
+  }
+  async forfeit() {
+    if(this.disposed)return;
+    this.capture.stop();
+    try {
+      if(this.client.identity?.peerId) {
+        await this.client.fetcher('/mobile/forfeit',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({peerId:this.client.identity.peerId,resumeToken:this.client.identity.resumeToken})
+        });
+      }
+    } catch {}
+    await this.client.close(false);
+    this.network='FORFEITED';this.state='FORFEITED';this.publish();
+  }
+  async setAway(away) {
+    if(this.disposed)return;
+    this.isAway=Boolean(away);
+    if(this.isAway){
+      this.capture.stop();
+      await this.client.send?.('CLIENT_STATE',{state:'away'}).catch(()=>{});
+    }else{
+      await this.client.send?.('CLIENT_STATE',{state:'active'}).catch(()=>{});
+      if(this.network==='NETWORK_READY')this.syncProfile();
+    }
+    this.publish();
   }
   async command(action,target='') {
     const profile=controlProfile(this.snapshot().gameContext,this.client.identity?.playerId);

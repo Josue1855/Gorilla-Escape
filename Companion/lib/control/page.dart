@@ -41,6 +41,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   bool? wakeDesired;
   String commandStatus = '', profileContext = '';
   double? neutralGamma;
+  bool isAway = false;
   @override
   void initState() {
     super.initState();
@@ -121,19 +122,56 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
   }
 
   void scheduleRecovery() {
-    if (recoveryTimer != null ||
-        recoveryAttempts >= 3 ||
-        !mounted ||
-        !foreground) {
-      return;
-    }
+    if (recoveryTimer != null || !mounted || !foreground) return;
+    final baseMs = math.min(12000, 1000 * (1 << math.min(recoveryAttempts, 4)));
+    final jitterMs = math.Random().nextInt(500);
+    final delayMs = baseMs + jitterMs;
     recoveryTimer = Timer(
-      Duration(milliseconds: 1000 * (recoveryAttempts + 1)),
+      Duration(milliseconds: delayMs),
       () {
         recoveryTimer = null;
         unawaited(recoverSession());
       },
     );
+  }
+
+  Future<void> toggleAway() async {
+    setState(() => isAway = !isAway);
+    if (isAway) {
+      await stopSensors();
+      await stateMessage('away');
+    } else {
+      await stateMessage('active');
+      if (transport.state == 'connected') unawaited(startSensors());
+    }
+  }
+
+  Future<void> confirmForfeit() async {
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('¿Salir de la partida?'),
+        content: const Text(
+          'Si sales, tus puntos confirmados se conservarán, pero tu turno será reemplazado para que los demás náufragos puedan continuar la partida.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('CANCELAR'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('SALIR'),
+          ),
+        ],
+      ),
+    );
+    if (leave == true && mounted) {
+      await stopSensors();
+      await stateMessage('forfeit');
+      await transport.forfeit();
+      if (mounted) Navigator.pop(context);
+    }
   }
 
   Future<void> recoverSession() async {
@@ -452,7 +490,36 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
                     ),
                   ),
                 if (sensorError.isNotEmpty) Text(sensorError),
-                const SizedBox(height: 20),
+                if (transport.degraded && connected)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Text('⚠️ Señal inestable. Mantén el teléfono en mano.', style: TextStyle(color: Colors.amber)),
+                  ),
+                if (isAway)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Text('⏸️ Modo ausente activo. Toca volver cuando estés listo.', style: TextStyle(color: Colors.blue)),
+                  ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 8,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    if (connected)
+                      OutlinedButton.icon(
+                        onPressed: toggleAway,
+                        icon: Icon(isAway ? Icons.play_arrow : Icons.pause),
+                        label: Text(isAway ? 'VOLVER A LA PARTIDA' : 'ESTARÉ AUSENTE'),
+                      ),
+                    TextButton.icon(
+                      onPressed: confirmForfeit,
+                      icon: const Icon(Icons.exit_to_app, color: Colors.redAccent),
+                      label: const Text('SALIR DE LA PARTIDA', style: TextStyle(color: Colors.redAccent)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
                 const Text(
                   'Sujeta el teléfono con ambas manos. El control se ajusta automáticamente; el panel muestra el estado de la partida.',
                   textAlign: TextAlign.center,

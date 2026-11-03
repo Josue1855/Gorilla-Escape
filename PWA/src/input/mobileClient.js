@@ -28,7 +28,7 @@ export class MobileClient {
   if(!['synthetic','replay','emulator','physical'].includes(source))throw Error('evidence source');
   const request=fetcher??globalThis.fetch.bind(globalThis);
   this.source=source;this.fetcher=(path,...args)=>{
-   const loc=globalThis.location;const match=loc?.hostname==='play.gorillas.run' && loc.pathname.match(/^\/([a-z0-9]{4,8})(?:\/|$)/i);
+   const loc=globalThis.location;const match=(loc?.hostname==='play.gorilla.run' || loc?.hostname==='play.gorillas.run') && loc.pathname.match(/^\/([a-z0-9]{4,8})(?:\/|$)/i);
    return request(match && typeof path==='string' && path.startsWith('/') ? '/'+match[1]+path : path,...args);
   };this.sequence=0;this.pending=new Map();this.motionTelemetry=new Map();this.latest=null;this.flushScheduled=false;this.state='STOPPED';
   this.metrics={sent:0,received:0,errors:0,overwritten:0,motionSubmitted:0,motionSent:0,motionAck:0,motionErrors:0,motionAckMiss:0,motionPendingTelemetry:0,motionBufferedDrop:0,rtt:[]};
@@ -61,7 +61,7 @@ export class MobileClient {
   this.gameContext=null;this.gameContextExpires=0;this.state='CONNECTING';let code='JOIN_E01_OFFER';let rejectIce;
   const iceFailed=new Promise((_,reject)=>{rejectIce=reject;});iceFailed.catch(()=>{});
   try{
-   this.pc=new RTCPeerConnection({iceServers:[]});this.channels={};
+   this.pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});this.channels={};
    for(const key of ['signalingState','iceGatheringState','iceConnectionState','connectionState']){
     const observe=()=>{this.diagnosticEvent(key,this.pc[key]);if(key==='iceConnectionState'){
      if(['connected','completed'].includes(this.pc[key]))this.diagnosticEvent('stage','ICE_CONNECTED');
@@ -91,7 +91,7 @@ export class MobileClient {
     return opened.then(()=>this.stage(label==='control'?'CONTROL_OPEN':'MOTION_OPEN'));
    }))]);
    code='JOIN_E09_HELLO_TIMEOUT';this.stage('HELLO_ACK');this.state='RUNNING';await this.send('HELLO',{});
-   this.lastHeartbeatAck=performance.now();this.stage('READY');this.heartbeat=setInterval(()=>{this.send('HEARTBEAT',this.qaTelemetry?.()||{}).catch(()=>{this.metrics.errors++;if(performance.now()-this.lastHeartbeatAck>3000&&this.state==='RUNNING')this.state='DISCONNECTED';});},200);
+   this.lastHeartbeatAck=performance.now();this.missedHeartbeats=0;this.degraded=false;this.heartbeatSending=false;this.stage('READY');this.heartbeat=setInterval(()=>{if(this.heartbeatSending||this.state!=='RUNNING')return;this.heartbeatSending=true;this.send('HEARTBEAT',this.qaTelemetry?.()||{}).then(()=>{this.missedHeartbeats=0;this.degraded=false;}).catch(()=>{this.metrics.errors++;this.missedHeartbeats=(this.missedHeartbeats||0)+1;if(this.missedHeartbeats>=2)this.degraded=true;if((this.missedHeartbeats>=4||performance.now()-this.lastHeartbeatAck>5000)&&this.state==='RUNNING')this.state='DISCONNECTED';}).finally(()=>{this.heartbeatSending=false;});},1000);
    return {playerId:reply.playerId,connectionEpoch:reply.connectionEpoch};
   }catch(e){
    const known=/^JOIN_E(?:01_OFFER|02_LOCAL_SDP|02_ICE_GATHER|03_SIGNAL_HTTP|04_SIGNAL_REJECTED|05_REMOTE_SDP|06_ICE_FAILED|07_CONTROL_TIMEOUT|08_MOTION_TIMEOUT|09_HELLO_TIMEOUT)$/;

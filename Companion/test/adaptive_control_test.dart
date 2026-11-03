@@ -70,8 +70,8 @@ void main() {
         ),
       ),
     );
-    expect(find.text('BANANA BOWLING'), findsOneWidget);
-    await tester.tap(find.text('BANANA BOWLING'));
+    expect(find.text('COCONUT BOWLING'), findsOneWidget);
+    await tester.tap(find.text('COCONUT BOWLING'));
     expect(commands, ['select-game:bowling']);
     expect(find.text('Inclinación de tu teléfono'), findsNothing);
     expect(tester.takeException(), isNull);
