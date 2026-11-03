@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public static class SceneNavigator
 {
+    public const string Splash = "Splash";
     public const string Connection = "Connection";
     public const string MainMenu = "MainMenu";
     public const string Bowling = "BananaBowling";
