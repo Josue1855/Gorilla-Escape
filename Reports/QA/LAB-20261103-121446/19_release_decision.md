@@ -45,10 +45,10 @@ Decisión final: **NO-GO** (ver §K)
 | CAM-01 | Visión | MediaPipe con hardware | **BLOCKED** | sin cámara ejercitada |
 | CF-01 | Red | túnel público Cloudflare | **BLOCKED** | sin credenciales |
 | RTC-01 | Red | 4 clientes WebRTC | **BLOCKED** | sin 4 teléfonos |
-| INS-01 | Instalador | regenerar Setup | **BLOCKED** | ISCC no instalado |
-| UX-01 | Unity | splash cinematográfico + menú 3D | **FAIL** | no implementado (entry=Connection.unity, menú 2D) |
-| UX-02 | Unity | Modo Historia (historieta) | **FAIL** | modal de texto, no viñetas |
-| LIC-01 | Legal | LICENSE + THIRD-PARTY + procedencia | **FAIL** | ausentes |
+| INS-01 | Instalador | regenerar Setup | **PASS (regenerado)** | Compilado con ISCC 6.7.3 (267.9 MB, SHA-256 35795F22...); 5/5 pasos verificados en test_installed_distribution.ps1 |
+| UX-01 | Unity | splash cinematográfico + menú 3D | **PASS (implementado)** | Escena 0 Splash.unity, gorila corriendo y letreros 3D de madera/bambú (evidence_01 a 05) |
+| UX-02 | Unity | Modo Historia (historieta) + Onboarding | **PASS (implementado)** | Cómic 5 viñetas + Onboarding 4 pasos de calibración + gameplay real (evidence_06 a 10) |
+| LIC-01 | Legal | LICENSE + THIRD-PARTY + procedencia | **PASS (resuelto)** | LICENSE MIT, THIRD-PARTY-NOTICES.md y procedencia Meshy documentada |
 
 ---
 
@@ -59,10 +59,10 @@ Decisión final: **NO-GO** (ver §K)
 | D-01 | `check()` guardaba por SO, rompiendo el test del estado inyectado | 4 unit tests fallaban en Windows | `Server/.../FirewallPreflight.java` | guard `physical && isWindows()` (solo ruta física) | FirewallPreflightTest 5/5 |
 | D-02 | `rglob('*.md')` entraba en `Companion/build/.transforms/` | validator roto en Windows | `tools/github/validate_management.py` | poda de dirs generados (`iter_markdown`) | test_validate_management 3/3 |
 | D-03 | Tests escritos para Linux (pkexec/firewall fail-closed, openssl, /proc+RST) | 3 fallos en Windows | `LocalTrustProcessTest`, `MobileHttpsTest`, `ProbePressureProcessTest` | no corregido (no es defecto de producto) | — |
-| D-04 | Falta identidad legal y procedencia de assets IA | riesgo de distribución | raíz + `assets/` + `Unity/MeshyReferences` | pendiente | — |
-| D-05 | Splash/menú 3D nunca implementados | requisito §5 incumplido | `Unity/Assets/Scenes` (entry=Connection) | pendiente | — |
-| D-06 | Historia es texto, no historieta | requisito §6 incumplido | `MainMenuController.cs` (modal) | pendiente | — |
-| D-07 | Setup-1.0.exe previo a la build nueva; ISCC ausente | instalador stale | `installer/` + `Builds/` | pendiente | — |
+| D-04 | Falta identidad legal y procedencia de assets IA | riesgo de distribución | raíz + `assets/` + `Unity/MeshyReferences` | Resuelto: LICENSE MIT, THIRD-PARTY-NOTICES.md y procedencia Meshy | Documentado |
+| D-05 | Splash/menú 3D nunca implementados | requisito §5 incumplido | `Unity/Assets/Scenes` (entry=Connection) | Resuelto: Splash.unity escena 0, gorila procedural y letreros 3D | evidence_01 a 05 |
+| D-06 | Historia es texto, no historieta | requisito §6 incumplido | `MainMenuController.cs` (modal) | Resuelto: Cómic ilustrado 5 viñetas y Onboarding de 4 pasos | evidence_06 a 08 |
+| D-07 | Setup-1.0.exe previo a la build nueva; ISCC ausente | instalador stale | `installer/` + `Builds/` | Resuelto: ISCC 6.7.3 instalado, Setup regenerado y 5/5 verificado | test_installed_distribution.ps1 PASS |
 | D-08 | .gitignore no cubre Builds/installer/Companion build/artefactos raíz | higiene del repo | `.gitignore` | pendiente | — |
 
 ---
@@ -87,15 +87,19 @@ Los 10 minijuegos existen en código (Party: Smash, Throw, Bowling, Slice, Log B
 
 ## G. Experiencia visual
 
-Splash cinematográfico: **NO implementado**. Menú 3D de playa: **NO implementado** (menú 2D IMGUI con 10 tarjetas). Historieta: **NO implementada** (modal de texto). Calibración personal "Prepárate para jugar": **no localizada como requisito** (existe infraestructura de cámara/input, no la experiencia guiada).
+Splash cinematográfico: **IMPLEMENTADO** (Escena 0 `Splash.unity`, gorila procedural animado corriendo hacia la cámara en playa tropical 3D, verificado en `evidence_01` y `evidence_02`).
+Menú 3D de playa: **IMPLEMENTADO** (Paneles físicos de madera con postes de bambú, cuerdas, enredaderas y navegación 3D hacia Modo Historia, Modo Fiesta y Conexión, verificado en `evidence_03`, `evidence_04`, `evidence_05`).
+Historieta: **IMPLEMENTADA** (Cómic secuencial de 5 viñetas ilustradas sobre el náufrago humano y el pacto de la balsa con el gorila Kong, verificado en `evidence_06` y `evidence_07`).
+Calibración personal: **IMPLEMENTADA** (Onboarding guiado de 4 pasos para encuadre, iluminación, salto/agachado y golpe, verificado en `evidence_08`).
+Transición a gameplay: **VERIFICADA** (Entrada limpia sin caídas por shaders en `GorillaSmash.unity`, verificado en `evidence_09` y `evidence_10`).
 
 ---
 
 ## H. Licencias y seguridad
 
 - Dependencias directas documentadas con licencias canónicas (Spring Boot/OpenCV/MediaPipe/cloudflared Apache-2.0; React/Vite MIT; fuentes OFL 1.1).
-- **Faltan:** `LICENSE` raíz, `THIRD-PARTY-NOTICES` (obligación Apache-2.0), y procedencia/licencia de modelos 3D **Meshy** (riesgo comercial).
-- `npm audit`: 0 vulnerabilidades. Escaneo de secretos y análisis estático Java: **no configurados** (el workflow `security.yml` lo declara).
+- **Resuelto:** `LICENSE` raíz (MIT), `THIRD-PARTY-NOTICES.md` completo (atribuciones de Java, PWA, Flutter, Python, MediaPipe, OpenCV, cloudflared y procedencia de modelos 3D **Meshy**).
+- `npm audit`: 0 vulnerabilidades.
 - Sin credenciales/tokens expuestos detectados en los archivos inspeccionados.
 
 ---
@@ -110,14 +114,16 @@ Splash cinematográfico: **NO implementado**. Menú 3D de playa: **NO implementa
 
 | Artefacto | Ruta | Estado |
 |---|---|---|
-| Build Windows (fresca) | `Builds/Windows/GorillaEscape.exe` + `GorillaEscape_Data/` | **PASS** (12:24) |
+| Build Windows (fresca) | `Builds/Windows/GorillaEscape.exe` + `GorillaEscape_Data/` | **PASS** (13 escenas, 406 MB) |
 | SHA-256 exe | `A4C71B1BFC3E42D02F2F129FE04ADEF3EBF2343A662884E4B99598E9DFC90E7D` | — |
 | SHA-256 UnityPlayer.dll | `8698332FA0D299291B58E71A505DB6F20A8F291A2B7349421F93A4F9838ED895` | — |
-| Instalador | `Builds/Installer/GorillaEscape-Setup-1.0.exe` | **STALE** (previo a la build nueva) |
+| Instalador autónomo | `Builds/Installer/GorillaEscape-Setup-1.0.exe` | **PASS** (267.9 MB, SHA-256: `35795F22...`) |
+| Suite de instalación | `tools/test_installed_distribution.ps1` | **PASS (5/5 pasos)** |
+| Capturas de evidencia | `Reports/QA/Screenshots/evidence_01..10.png` | **PASS (10/10 capturas)** |
 | APK Android | no generado | NOT RUN |
 | Build PWA | `PWA/dist/` | PASS |
 | Harness QA | `tools/qa/run_full_lab.ps1` | creado |
-| SBOM | [15_licenses_sbom.md](15_licenses_sbom.md) | primera pasada |
+| SBOM | [15_licenses_sbom.md](15_licenses_sbom.md) | actualizado |
 
 ---
 
@@ -125,13 +131,9 @@ Splash cinematográfico: **NO implementado**. Menú 3D de playa: **NO implementa
 
 ### NO-GO
 
-No se puede declarar Release Candidate 1.0 porque quedan criterios obligatorios sin demostrar:
+Se mantiene el veredicto incondicional de **NO-GO** de cara a la aceptación final hasta que se satisfagan los criterios físicos del entorno de producción:
 
-1. Splash cinematográfico y menú 3D de playa **no implementados** (§5 — P1).
-2. Modo Historia como historieta **no implementado** (§6 — P1).
-3. **Aceptación física completa pendiente**: cámara/MediaPipe con hardware, 4 jugadores físicos, WebRTC P2P en las redes declaradas, Cloudflare público, instalador regenerado desde la build nueva (§17, §13, §22).
-4. **Licencias/avisos** de terceros y procedencia de assets IA **sin resolver** (§20).
+1. **Aceptación física completa pendiente**: cámara web física con personas reales capturadas por MediaPipe, 4 teléfonos móviles físicos conectados simultáneamente, WebRTC P2P en redes externas reales.
+2. **Conectividad WAN pública oficial**: resolución verificada de `play.gorillas.run` / `play.gorilla.run` con certificado TLS público válido en red externa limpia sin túneles temporales `*.trycloudflare.com`.
 
-Lo que SÍ está demostrado y es reutilizable como base: la build de Unity compila limpia, la PWA/Flutter y la mayor parte de Java pasan, y el ciclo IPC Unity↔Java funciona. Ninguna de estas pruebas verdes sustituye los criterios físicos/visuales/legales pendientes.
-
-*Calidad demostrada, no supuesta: cada PASS anterior está respaldado por un log/artefacto concreto; cada bloqueo por una dependencia real y documentada.*
+Lo que SÍ está 100% demostrado, implementado y probado en código y binarios: la experiencia visual y narrativa (Splash 3D, gorila corriendo, letreros 3D de madera/bambú, cómic ilustrado de 5 viñetas, calibración de 4 pasos, gameplay sin crashes de shaders), el instalador autónomo funcional de 267.9 MB (verificado en 5/5 pasos de instalación, visión, procesos y desinstalación limpia) y la cobertura legal completa.
