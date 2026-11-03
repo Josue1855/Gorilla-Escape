@@ -135,6 +135,16 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
         }
         if(finished)
         {
+            if (TournamentSession.IsActive)
+            {
+                TournamentSession.RecordRoundResult(score);
+                Vector2 normCursor = new Vector2(0.5f, 0.5f);
+                string handLabel = "MANO";
+                bool handRaised = false, handClosed = false, forwardPush = false;
+                if (session != null) session.TryCameraCursor(out normCursor, out handLabel, out handRaised, out handClosed, out forwardPush);
+                TournamentSession.DrawTournamentOverlay(w, h, normCursor, handLabel, handRaised, handClosed, forwardPush, session != null && session.PhoneTouchTriggered);
+                return;
+            }
             if(score!=cachedFinalScore){cachedFinalScore=score;cachedFinalText=$"CANCIÓN TERMINADA · {score}";}
             JungleUITheme.DrawPanel(new Rect(w*.28f,h*.31f,w*.44f,h*.25f));JungleUITheme.DrawShadowedLabel(new Rect(w*.30f,h*.35f,w*.40f,h*.08f),cachedFinalText,title,2.5f);if(JungleRetainedUI.Button(new Rect(w*.39f,h*.47f,w*.22f,h*.065f),"REPETIR",JungleUITheme.Button)){JungleAudioBank.PlayUiClick();SceneNavigator.Load(SceneNavigator.Drums);}
         }

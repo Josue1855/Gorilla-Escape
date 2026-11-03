@@ -186,6 +186,16 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         JungleUITheme.DrawShadowedLabel(calloutRect,message,title,2.5f);
         if(state==PlayState.GameOver)
         {
+            if (TournamentSession.IsActive)
+            {
+                TournamentSession.RecordRoundResult(score);
+                Vector2 normCursor = new Vector2(0.5f, 0.5f);
+                string handLabel = "MANO";
+                bool handRaised = false, handClosed = false, forwardPush = false;
+                if (session != null) session.TryCameraCursor(out normCursor, out handLabel, out handRaised, out handClosed, out forwardPush);
+                TournamentSession.DrawTournamentOverlay(w, h, normCursor, handLabel, handRaised, handClosed, forwardPush, session != null && session.PhoneTouchTriggered);
+                return;
+            }
             if (score != cachedFinalScore) { cachedFinalScore = score; cachedFinalText = $"PARTIDA TERMINADA · {score} PUNTOS"; }
             JungleUITheme.DrawPanel(new Rect(w*.27f,h*.34f,w*.46f,h*.25f));
             JungleUITheme.DrawShadowedLabel(new Rect(w*.29f,h*.37f,w*.42f,h*.08f),cachedFinalText,title,2.5f);

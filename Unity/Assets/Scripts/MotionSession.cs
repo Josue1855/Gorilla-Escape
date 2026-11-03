@@ -29,6 +29,18 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         handRaised = false;
         return serviceHost != null && serviceHost.TryCameraCursor(out screenNormalized, out handLabel, out handRaised);
     }
+    public bool TryCameraCursor(out Vector2 screenNormalized, out string handLabel, out bool handRaised, out bool handClosed, out bool forwardPush)
+    {
+        screenNormalized = new Vector2(.5f, .5f);
+        handLabel = "MANO DER";
+        handRaised = false;
+        handClosed = false;
+        forwardPush = false;
+        return serviceHost != null && serviceHost.TryCameraCursor(out screenNormalized, out handLabel, out handRaised, out handClosed, out forwardPush);
+    }
+    public bool PhoneTouchTriggered => serviceHost != null && serviceHost.PhoneTouchTriggered;
+    public bool PhoneTouchPressed => serviceHost != null && serviceHost.PhoneTouchPressed;
+    public string PlayerName => (serviceHost?.Lobby?.players != null && serviceHost.Lobby.players.Length > 0 && !string.IsNullOrWhiteSpace(serviceHost.Lobby.players[0]?.displayName)) ? serviceHost.Lobby.players[0].displayName : "Tú";
     public HandTrackingMode HandMode { get; private set; } = HandTrackingMode.RightOnly;
     public bool UsesLeftHand => HandMode != HandTrackingMode.RightOnly;
     public bool UsesRightHand => HandMode != HandTrackingMode.LeftOnly;
@@ -49,9 +61,15 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         ProcessPhoneNavigation();
         if(serviceHost==null||Time.unscaledTime<nextPresentation)return;
         presentation.hand=serviceHost.LeftHanded?"left":"right";
+        if (TournamentSession.IsActive)
+        {
+            presentation.playerId = TournamentSession.CurrentTurnPlayerId;
+            if (serviceHost.Lobby?.players != null)
+                TournamentSession.UpdatePlayerStates(serviceHost.Lobby.players);
+        }
         nextPresentation=Time.unscaledTime+.2f;
         var context=presentation.Copy();
-        if(context.gameId!="lobby"&&(!IsInputReady||trackingPause.Paused||Time.timeScale==0)&&context.phase!="Won"&&context.phase!="Lost"&&context.phase!="Finished")context.phase="Paused";
+        if(context.gameId!="lobby"&&(InGamePauseActive||!IsInputReady||trackingPause.Paused||Time.timeScale==0)&&context.phase!="Won"&&context.phase!="Lost"&&context.phase!="Finished")context.phase="Paused";
         serviceHost.PresentPhoneGame(context);
     }
     private static readonly (string A, string B)[] SkeletonBonePairs =
@@ -70,10 +88,36 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
     readonly TrackingPauseStability trackingPause=new TrackingPauseStability();
     readonly HandDwellNavigator pauseNavigator=new HandDwellNavigator();
     readonly HandDwellTarget[] reacquireTargets=new HandDwellTarget[1];
+    readonly HandDwellTarget[] pauseTargets=new HandDwellTarget[1];
     bool gameplayActive=true;
     bool pipMinimized;
+    public static bool InGamePauseActive { get; private set; }
+    public static void SetInGamePause(bool paused)
+    {
+        if (InGamePauseActive == paused) return;
+        InGamePauseActive = paused;
+        if (Instance != null) Instance.RefreshPause();
+    }
+    public static void ToggleInGamePause() => SetInGamePause(!InGamePauseActive);
+
+    public static string GetGameDisplayName(JungleGame game) => game switch
+    {
+        JungleGame.Bowling => "BOLICHE SELVÁTICO",
+        JungleGame.Boxing => "BOXEO SALVAJE",
+        JungleGame.Baseball => "BÉISBOL TROPICAL",
+        JungleGame.Drums => "RITMO DE LA SELVA",
+        JungleGame.CoconutSlice => SceneNavigator.IsJungleKeeper ? "GUARDIÁN DE LA SELVA" : "CORTE DE COCO",
+        JungleGame.Whack => "TOPO DE LA SELVA",
+        JungleGame.LogBalance => "DESAFÍO DEL TRONCO",
+        JungleGame.GorillaSmash => "GOLPE AL GORILA",
+        JungleGame.CoconutThrow => "LANZAMIENTO DE COCO",
+        _ => "GORILLA ESCAPE"
+    };
+
     GUIStyle pauseTitleStyle, pauseBodyStyle, pausePreviewWaitStyle, pauseHintStyle;
     GUIStyle pipBadgeStyle, pipToggleStyle, pipWaitStyle, pipHintNormalStyle, pipHintRaisedStyle;
+    GUIStyle headerTitleStyle, headerBadgeStyle, headerPauseButtonStyle;
+    GUIStyle pauseSectionStyle, pauseItemStyle, pauseMiniButtonStyle, pauseBigButtonStyle, pauseBigButtonSelectedStyle;
 
     void EnsureSessionStyles()
     {
@@ -88,6 +132,16 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         pipWaitStyle = new GUIStyle(JungleRetainedUI.skin.label) { font = JungleUITheme.TextFont, fontSize = 11, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = new Color(.94f, .88f, .74f) } };
         pipHintNormalStyle = new GUIStyle(JungleRetainedUI.skin.label) { font = JungleUITheme.TextFont, fontSize = 11, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = new Color(.95f, .90f, .76f) } };
         pipHintRaisedStyle = new GUIStyle(JungleRetainedUI.skin.label) { font = JungleUITheme.TextFont, fontSize = 11, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = new Color(1f, .86f, .25f) } };
+
+        headerTitleStyle = new GUIStyle(JungleRetainedUI.skin.label) { font = JungleUITheme.TitleFont, fontSize = 18, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleLeft, normal = { textColor = new Color(1f, 0.86f, 0.25f) } };
+        headerBadgeStyle = new GUIStyle(JungleRetainedUI.skin.label) { font = JungleUITheme.TextFont, fontSize = 12, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(0.98f, 0.95f, 0.88f) } };
+        headerPauseButtonStyle = new GUIStyle(JungleUITheme.Button) { font = JungleUITheme.TitleFont, fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+
+        pauseSectionStyle = new GUIStyle(JungleRetainedUI.skin.label) { font = JungleUITheme.TitleFont, fontSize = 16, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, 0.84f, 0.22f) } };
+        pauseItemStyle = new GUIStyle(JungleRetainedUI.skin.label) { font = JungleUITheme.TextFont, fontSize = 14, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleLeft, normal = { textColor = new Color(0.98f, 0.94f, 0.82f) } };
+        pauseMiniButtonStyle = new GUIStyle(JungleUITheme.Button) { font = JungleUITheme.TextFont, fontSize = 12, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+        pauseBigButtonStyle = new GUIStyle(JungleUITheme.Button) { font = JungleUITheme.TitleFont, fontSize = 16, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+        pauseBigButtonSelectedStyle = new GUIStyle(JungleUITheme.ButtonSelected) { font = JungleUITheme.TitleFont, fontSize = 16, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
     }
     public void SetGameplayActive(bool active)
     {
@@ -112,6 +166,7 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if(scene!=SceneManager.GetActiveScene())return;
+        InGamePauseActive=false;
         ConfigureForScene(scene.name);
         serviceHost.SelectGame(JungleGameplayInput.ForScene(scene.name),true);
         delivered=-1;
@@ -120,10 +175,11 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
     }
     public void ConfigureForScene(string sceneName)
     {
-        gameplayActive=sceneName!=SceneNavigator.CoconutSlice&&sceneName!=SceneNavigator.WhackAMole;
+        gameplayActive=sceneName!=SceneNavigator.CoconutSlice&&sceneName!=SceneNavigator.WhackAMole&&sceneName!=SceneNavigator.GorillaSmash&&sceneName!=SceneNavigator.CoconutThrow;
         presentation.gameId=JungleGameplayInput.ForScene(sceneName) switch {
             JungleGame.Bowling=>"bowling",JungleGame.Boxing=>"boxing",JungleGame.Baseball=>"baseball",JungleGame.Drums=>"drums",
-            JungleGame.CoconutSlice=>"coconut-slice",JungleGame.Whack=>"whack",JungleGame.LogBalance=>"log-balance",_=>"lobby"};
+            JungleGame.CoconutSlice=>"coconut-slice",JungleGame.Whack=>"whack",JungleGame.LogBalance=>"log-balance",
+            JungleGame.GorillaSmash=>"gorilla-smash",JungleGame.CoconutThrow=>"coconut-throw",_=>"lobby"};
         presentation.playerId=presentation.gameId=="lobby"?0:1;
         if(presentation.gameId=="coconut-slice"&&SceneNavigator.IsJungleKeeper)presentation.gameId="jungle-keeper";
         presentation.screen=presentation.gameId!="lobby"?"game":sceneName==SceneNavigator.Connection?"connection":"menu";
@@ -131,7 +187,7 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         presentation.contextId=System.Guid.NewGuid().ToString("N");
         PresentGame("Ready");nextPresentation=0;
         HandMode = sceneName == SceneNavigator.Boxing || sceneName == SceneNavigator.Drums || sceneName == SceneNavigator.CoconutSlice || sceneName == SceneNavigator.LogBalance
-            ? HandTrackingMode.Both : sceneName==SceneNavigator.Bowling&&serviceHost.LeftHanded?HandTrackingMode.LeftOnly:HandTrackingMode.RightOnly;
+            ? HandTrackingMode.Both : (sceneName==SceneNavigator.Bowling||sceneName==SceneNavigator.CoconutThrow||sceneName==SceneNavigator.GorillaSmash)&&serviceHost.LeftHanded?HandTrackingMode.LeftOnly:HandTrackingMode.RightOnly;
         serviceHost.SelectGame(JungleGameplayInput.ForScene(sceneName));
         delivered=-1;
     }
@@ -148,20 +204,26 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
                 FindAnyObjectByType<CoconutSliceController>()?.BeginFromPhone();
                 FindAnyObjectByType<WhackAMoleController>()?.BeginFromPhone();
                 FindAnyObjectByType<LogBalanceGameController>()?.BeginFromPhone();
+                FindAnyObjectByType<GorillaSmashController>()?.BeginFromPhone();
+                FindAnyObjectByType<CoconutThrowController>()?.BeginFromPhone();
                 continue;
             }
             if(command.action=="set-hand")
             {
                 serviceHost.SetDominantHand(command.target=="left");
-                if(presentation.gameId=="bowling")HandMode=command.target=="left"?HandTrackingMode.LeftOnly:HandTrackingMode.RightOnly;
+                if(presentation.gameId=="bowling"||presentation.gameId=="coconut-throw"||presentation.gameId=="gorilla-smash")HandMode=command.target=="left"?HandTrackingMode.LeftOnly:HandTrackingMode.RightOnly;
                 presentation.hand=command.target;delivered=-1;trackingPause.Reset();nextPresentation=0;
                 continue;
             }
-            if(command.action=="menu"){SceneNavigator.Load(SceneNavigator.MainMenu);return;}
-            if(command.action=="restart"){SceneNavigator.Load(presentation.gameId=="jungle-keeper"?SceneNavigator.JungleKeeper:UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);return;}
+            if(command.action=="pause"){SetInGamePause(true);continue;}
+            if(command.action=="resume"){SetInGamePause(false);continue;}
+            if(command.action=="toggle-pause"){ToggleInGamePause();continue;}
+            if(command.action=="menu"){SetInGamePause(false);SceneNavigator.Load(SceneNavigator.MainMenu);return;}
+            if(command.action=="restart"){SetInGamePause(false);SceneNavigator.Load(presentation.gameId=="jungle-keeper"?SceneNavigator.JungleKeeper:UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);return;}
             string scene=command.target switch {"bowling"=>SceneNavigator.Bowling,"boxing"=>SceneNavigator.Boxing,"baseball"=>SceneNavigator.Baseball,
                 "drums"=>SceneNavigator.Drums,"coconut-slice"=>SceneNavigator.CoconutSlice,"jungle-keeper"=>SceneNavigator.JungleKeeper,
-                "whack"=>SceneNavigator.WhackAMole,"log-balance"=>SceneNavigator.LogBalance,_=>null};
+                "whack"=>SceneNavigator.WhackAMole,"log-balance"=>SceneNavigator.LogBalance,
+                "gorilla-smash"=>SceneNavigator.GorillaSmash,"coconut-throw"=>SceneNavigator.CoconutThrow,_=>null};
             if(scene!=null){SetCameraOnly(command.target=="coconut-slice"||command.target=="jungle-keeper");SceneNavigator.Load(scene);return;}
         }
     }
@@ -183,75 +245,329 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         estimate=null;
         return serviceHost!=null&&!trackingPause.Paused&&serviceHost.TryPhoneVisualEstimate(out estimate);
     }
-    void Update() => RefreshPause();
+    void Update()
+    {
+        var sceneGame = JungleGameplayInput.ForScene(SceneManager.GetActiveScene().name);
+        if (sceneGame != JungleGame.None)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
+            {
+                JungleAudioBank.PlayUiClick();
+                ToggleInGamePause();
+            }
+        }
+        RefreshPause();
+    }
     void RefreshPause()
     {
-        var sceneGame=JungleGameplayInput.ForScene(SceneManager.GetActiveScene().name);
-        bool active=gameplayActive&&serviceHost!=null&&sceneGame!=JungleGame.None&&serviceHost.Game==sceneGame;
-        bool paused=active&&trackingPause.Update(IsInputReady,Time.unscaledTime,serviceHost.CameraLossGraceAllowed ? .18f : 0f);
-        float current=Time.timeScale;
-        float desired=pause.Apply(paused,current);
-        if(desired!=current)Time.timeScale=desired;
+        var sceneGame = JungleGameplayInput.ForScene(SceneManager.GetActiveScene().name);
+        bool active = gameplayActive && serviceHost != null && sceneGame != JungleGame.None && serviceHost.Game == sceneGame;
+        float lossGrace = serviceHost != null ? serviceHost.InputLossGraceSeconds : 0.40f;
+        bool technicalPause = active && trackingPause.Update(IsInputReady, Time.unscaledTime, lossGrace);
+        bool paused = InGamePauseActive || technicalPause;
+        float current = Time.timeScale;
+        float desired = pause.Apply(paused, current);
+        if (desired != current) Time.timeScale = desired;
     }
-    public bool BlocksSceneInput => trackingPause.Paused;
+    public bool BlocksSceneInput => trackingPause.Paused || InGamePauseActive;
     public void RenderUI()
     {
-        var activeSceneName=SceneManager.GetActiveScene().name;
-        var sceneGame=JungleGameplayInput.ForScene(activeSceneName);
-        bool showPauseNotice=gameplayActive&&serviceHost!=null&&sceneGame!=JungleGame.None&&serviceHost.Game==sceneGame&&trackingPause.ShowNotice(Time.unscaledTime);
-        if(!showPauseNotice)
+        var activeSceneName = SceneManager.GetActiveScene().name;
+        var sceneGame = JungleGameplayInput.ForScene(activeSceneName);
+        if (sceneGame != JungleGame.None)
         {
-            pauseNavigator.Reset();
-            DrawCameraPip(activeSceneName,sceneGame);
+            DrawGlobalHeader(activeSceneName, sceneGame);
+        }
+
+        if (InGamePauseActive && sceneGame != JungleGame.None)
+        {
+            DrawInGamePauseOverlay(activeSceneName, sceneGame);
             return;
         }
-        EnsureSessionStyles();
-        int depth=JungleRetainedUI.depth;JungleRetainedUI.depth=-100;
-        float width=Mathf.Min(Screen.width-40,760);
-        bool canReacquire=JungleGameplayInput.RequiresCamera(serviceHost.Game)&&serviceHost.CameraConnected;
-        bool showHelp=serviceHost.ShowCameraHelp;
-        var framing=serviceHost.CameraFraming;
-        float previewHeight=showHelp?Mathf.Min(260,Mathf.Max(100,Screen.height*.38f)):0;
-        float height=(canReacquire?205:140)+(showHelp?previewHeight+38:0);
-        float top=Mathf.Max(5,(Screen.height-height)/2);
-        JungleUITheme.DrawPanel(new Rect((Screen.width-width)/2,top,width,height),true);
-        JungleUITheme.DrawShadowedLabel(new Rect((Screen.width-width)/2+20,top+8,width-40,34),"JUEGO EN PAUSA",pauseTitleStyle);
-        string message=serviceHost.PauseMessage;
-        JungleUITheme.DrawShadowedLabel(new Rect((Screen.width-width)/2+20,top+43,width-40,60),message,pauseBodyStyle);
-        if(showHelp)
+
+        bool showPauseNotice = gameplayActive && serviceHost != null && sceneGame != JungleGame.None && serviceHost.Game == sceneGame && trackingPause.ShowNotice(Time.unscaledTime);
+        if (!showPauseNotice)
         {
-            float imageWidth=Mathf.Min(width-40,previewHeight*4f/3f);
-            Rect picture=new Rect((Screen.width-imageWidth)/2,top+108,imageWidth,previewHeight);
-            JungleRetainedUI.DrawTexture(picture,Texture2D.blackTexture);
-            var texture=serviceHost.CameraHelpTexture;
-            if(texture!=null){JungleRetainedUI.DrawTextureWithTexCoords(picture,texture,new Rect(1,0,-1,1));}
-            else JungleRetainedUI.Label(picture,"PREPARANDO VISTA DE CÁMARA",pausePreviewWaitStyle);
-            DrawSafeZoneBrackets(picture,framing.Status);
-            DrawCameraGuides(picture,serviceHost.CameraHelpFrame);
-            JungleRetainedUI.Label(new Rect((Screen.width-width)/2+20,picture.yMax+3,width-40,25),
-                framing.Badge+" · "+framing.Hint,pauseHintStyle);
+            pauseNavigator.Reset();
+            DrawCameraPip(activeSceneName, sceneGame);
+            return;
         }
-        if(canReacquire)
-        {
-            Rect reacquireRect=new Rect((Screen.width-width)/2+width*.18f,top+height-56,width*.64f,44);
-            bool handTriggered=pauseNavigator.ObserveRaiseHand(framing.HandRaised,Time.unscaledTime,.75f);
-            if(TryCameraCursor(out var normCursor,out var handLabel,out var raised))
-            {
-                Vector2 cursorPx=new Vector2(normCursor.x*Screen.width,normCursor.y*Screen.height);
-                reacquireTargets[0]=new HandDwellTarget(0,reacquireRect.x,reacquireRect.y,reacquireRect.width,reacquireRect.height);
-                if(pauseNavigator.ObserveCursor(true,cursorPx.x,cursorPx.y,Time.unscaledTime,reacquireTargets,out int hit,.95f)&&hit==0)
-                    handTriggered=true;
-            }
-            if(JungleRetainedUI.Button(reacquireRect,"VOLVER A DETECTAR JUGADOR (O LEVANTA LA MANO)",JungleUITheme.ButtonSelected)||handTriggered)
-            {
-                if(serviceHost.ReacquireCamera()){delivered=-1;pauseNavigator.Reset();}
-            }
-            float reacquireProgress=Mathf.Max(pauseNavigator.Progress,pauseNavigator.RaiseHandProgress);
-            if(reacquireProgress>.02f)
-                JungleUITheme.DrawDwellOverlay(reacquireRect,reacquireProgress,"DETECTANDO MANO ARRIBA...");
-        }
-        JungleRetainedUI.depth=depth;
+
+        DrawTechnicalPauseNotice(activeSceneName, sceneGame);
     }
+
+    void DrawGlobalHeader(string activeSceneName, JungleGame sceneGame)
+    {
+        EnsureSessionStyles();
+        int prevDepth = JungleRetainedUI.depth;
+        JungleRetainedUI.depth = -95;
+        float w = Screen.width;
+        float h = 46f;
+        Rect bar = new Rect(0, 0, w, h);
+
+        JungleRetainedUI.DrawTexture(bar, JungleUITheme.DarkHud);
+        JungleRetainedUI.DrawTexture(new Rect(0, h - 2f, w, 2f), JungleUITheme.Gold);
+
+        string title = "🌴 " + GetGameDisplayName(sceneGame);
+        if (TournamentSession.IsActive && TournamentSession.HumanPlayerCount > 1)
+        {
+            title += $" · TURNO: {TournamentSession.CurrentTurnPlayerName.ToUpperInvariant()}";
+        }
+        JungleUITheme.DrawShadowedLabel(new Rect(16, 6, 380, 32), title, headerTitleStyle, 1.5f);
+
+        float trayX = Mathf.Max(350f, w - 480f);
+
+        // Celular Badge
+        string phoneText;
+        if (PhoneConnected)
+        {
+            phoneText = "📶 " + (string.IsNullOrWhiteSpace(PlayerName) || PlayerName == "Tú" ? "CELULAR OK" : PlayerName.ToUpperInvariant());
+        }
+        else if (CameraOnly)
+        {
+            phoneText = "📱 MANOS LIBRES";
+        }
+        else
+        {
+            phoneText = "📱 SIN CELULAR";
+        }
+        Rect phoneBadgeRect = new Rect(trayX, 8, 160, 30);
+        JungleUITheme.DrawBadge(phoneBadgeRect, phoneText, PhoneConnected);
+
+        // Cámara Badge
+        string camText;
+        bool camReq = JungleGameplayInput.RequiresCamera(sceneGame);
+        if (camReq)
+        {
+            if (CameraConnected)
+            {
+                var f = CameraFraming;
+                camText = f.Status == CameraFramingStatus.Optimal ? "📷 CÁMARA OK" : "📷 ENCUADRE";
+            }
+            else camText = "📷 SIN CÁMARA";
+        }
+        else camText = "📷 OPCIONAL";
+
+        Rect camBadgeRect = new Rect(trayX + 166, 8, 150, 30);
+        JungleUITheme.DrawBadge(camBadgeRect, camText, CameraConnected && camReq);
+
+        // Pause Button
+        Rect pauseBtnRect = new Rect(w - 124, 6, 110, 34);
+        if (JungleRetainedUI.Button(pauseBtnRect, InGamePauseActive ? "▶️ SEGUIR" : "⏸️ PAUSA", headerPauseButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            ToggleInGamePause();
+        }
+
+        JungleRetainedUI.depth = prevDepth;
+    }
+
+    void DrawInGamePauseOverlay(string activeSceneName, JungleGame sceneGame)
+    {
+        EnsureSessionStyles();
+        int depth = JungleRetainedUI.depth;
+        JungleRetainedUI.depth = -200;
+
+        float sw = Screen.width, sh = Screen.height;
+
+        Color prevColor = JungleRetainedUI.color;
+        JungleRetainedUI.color = new Color(0.04f, 0.05f, 0.03f, 0.82f);
+        JungleRetainedUI.DrawTexture(new Rect(0, 0, sw, sh), Texture2D.whiteTexture);
+        JungleRetainedUI.color = prevColor;
+
+        float pw = Mathf.Min(sw - 40, 640);
+        float ph = Mathf.Min(sh - 40, 500);
+        float px = (sw - pw) / 2;
+        float py = (sh - ph) / 2;
+        Rect modalRect = new Rect(px, py, pw, ph);
+
+        JungleUITheme.DrawPanel(modalRect, true);
+
+        JungleUITheme.DrawShadowedLabel(new Rect(px + 20, py + 14, pw - 40, 36), "⏸️ JUEGO EN PAUSA", pauseTitleStyle, 2f);
+        JungleUITheme.DrawShadowedLabel(new Rect(px + 20, py + 48, pw - 40, 24), GetGameDisplayName(sceneGame), pauseHintStyle, 1.2f);
+
+        float audioY = py + 76;
+        float audioH = 195;
+        Rect audioCard = new Rect(px + 24, audioY, pw - 48, audioH);
+        JungleUITheme.DrawSubPanel(audioCard);
+
+        JungleUITheme.DrawShadowedLabel(new Rect(audioCard.x, audioCard.y + 8, audioCard.width, 24), "AJUSTES DE AUDIO DE LA SELVA", pauseSectionStyle, 1.5f);
+
+        // Master Volume
+        float row1Y = audioCard.y + 38;
+        JungleRetainedUI.Label(new Rect(audioCard.x + 16, row1Y, 190, 28), $"🔊 General: {Mathf.RoundToInt(JungleAudioBank.MasterVolume * 100)}%", pauseItemStyle);
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 210, row1Y, 40, 28), "-", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetMasterVolume(Mathf.Max(0f, JungleAudioBank.MasterVolume - 0.1f));
+        }
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 256, row1Y, 40, 28), "+", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetMasterVolume(Mathf.Min(1f, JungleAudioBank.MasterVolume + 0.1f));
+        }
+        bool masterMuted = JungleAudioBank.MasterVolume <= 0.01f;
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 304, row1Y, audioCard.width - 318, 28), masterMuted ? "ACTIVAR AUDIO" : "SILENCIAR TODO", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetMasterVolume(masterMuted ? 1.0f : 0f);
+        }
+
+        // Music & Ambience Volume
+        float row2Y = audioCard.y + 84;
+        JungleRetainedUI.Label(new Rect(audioCard.x + 16, row2Y, 190, 28), $"🎵 Música: {Mathf.RoundToInt(JungleAudioBank.AmbienceVolume * 100)}%", pauseItemStyle);
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 210, row2Y, 40, 28), "-", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetAmbienceVolume(Mathf.Max(0f, JungleAudioBank.AmbienceVolume - 0.1f));
+        }
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 256, row2Y, 40, 28), "+", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetAmbienceVolume(Mathf.Min(1f, JungleAudioBank.AmbienceVolume + 0.1f));
+        }
+        bool ambMuted = JungleAudioBank.AmbienceVolume <= 0.01f;
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 304, row2Y, audioCard.width - 318, 28), ambMuted ? "ACTIVAR MÚSICA" : "MUTEAR MÚSICA", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetAmbienceVolume(ambMuted ? 0.6f : 0f);
+        }
+
+        // SFX Volume
+        float row3Y = audioCard.y + 130;
+        JungleRetainedUI.Label(new Rect(audioCard.x + 16, row3Y, 190, 28), $"🔔 Efectos: {Mathf.RoundToInt(JungleAudioBank.SfxVolume * 100)}%", pauseItemStyle);
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 210, row3Y, 40, 28), "-", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetSfxVolume(Mathf.Max(0f, JungleAudioBank.SfxVolume - 0.1f));
+        }
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 256, row3Y, 40, 28), "+", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetSfxVolume(Mathf.Min(1f, JungleAudioBank.SfxVolume + 0.1f));
+        }
+        bool sfxMuted = JungleAudioBank.SfxVolume <= 0.01f;
+        if (JungleRetainedUI.Button(new Rect(audioCard.x + 304, row3Y, audioCard.width - 318, 28), sfxMuted ? "ACTIVAR SFX" : "MUTEAR SFX", pauseMiniButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            JungleAudioBank.SetSfxVolume(sfxMuted ? 0.85f : 0f);
+        }
+
+        // Main Navigation Buttons
+        float btnY = py + ph - 195;
+        float btnW = pw - 60;
+        float btnX = px + 30;
+
+        Rect resumeRect = new Rect(btnX, btnY, btnW, 44);
+        if (JungleRetainedUI.Button(resumeRect, "▶️ REANUDAR PARTIDA (ESC)", pauseBigButtonSelectedStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            SetInGamePause(false);
+        }
+
+        Rect restartRect = new Rect(btnX, btnY + 52, btnW, 42);
+        if (JungleRetainedUI.Button(restartRect, "🔄 REINICIAR MINIJUEGO", pauseBigButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            SetInGamePause(false);
+            ResetRound();
+            SceneNavigator.Load(activeSceneName);
+        }
+
+        Rect menuRect = new Rect(btnX, btnY + 102, btnW, 42);
+        if (JungleRetainedUI.Button(menuRect, "🏠 VOLVER AL MENÚ PRINCIPAL", pauseBigButtonStyle))
+        {
+            JungleAudioBank.PlayUiClick();
+            SetInGamePause(false);
+            SceneNavigator.Load(SceneNavigator.MainMenu);
+        }
+
+        // Hand dwell support on Resume button
+        if (TryCameraCursor(out var normCursor, out var handLabel, out var raised))
+        {
+            Vector2 cursorPx = new Vector2(normCursor.x * Screen.width, normCursor.y * Screen.height);
+            pauseTargets[0] = new HandDwellTarget(0, resumeRect.x, resumeRect.y, resumeRect.width, resumeRect.height);
+            if (pauseNavigator.ObserveCursor(true, cursorPx.x, cursorPx.y, Time.unscaledTime, pauseTargets, out int hit, 0.95f) && hit == 0)
+            {
+                JungleAudioBank.PlayUiClick();
+                SetInGamePause(false);
+            }
+            if (pauseNavigator.Progress > 0.02f)
+                JungleUITheme.DrawDwellOverlay(resumeRect, pauseNavigator.Progress, "REANUDANDO...");
+        }
+
+        JungleRetainedUI.depth = depth;
+    }
+
+    void DrawTechnicalPauseNotice(string activeSceneName, JungleGame sceneGame)
+    {
+        EnsureSessionStyles();
+        int depth = JungleRetainedUI.depth;
+        JungleRetainedUI.depth = -100;
+        float width = Mathf.Min(Screen.width - 40, 760);
+        bool canReacquire = JungleGameplayInput.RequiresCamera(serviceHost.Game) && serviceHost.CameraConnected;
+        bool showHelp = serviceHost.ShowCameraHelp;
+        var framing = serviceHost.CameraFraming;
+        float previewHeight = showHelp ? Mathf.Min(260, Mathf.Max(100, Screen.height * .38f)) : 0;
+        float height = (canReacquire ? 205 : 140) + (showHelp ? previewHeight + 38 : 0);
+        float top = Mathf.Max(5, (Screen.height - height) / 2);
+
+        JungleUITheme.DrawPanel(new Rect((Screen.width - width) / 2, top, width, height), true);
+        JungleUITheme.DrawShadowedLabel(new Rect((Screen.width - width) / 2 + 20, top + 8, width - 40, 34), "ESPERANDO SEÑAL", pauseTitleStyle);
+        string message = serviceHost.PauseMessage;
+        if (string.IsNullOrWhiteSpace(message) || message.Contains("Pausa técnica"))
+        {
+            message = JungleGameplayInput.RequiresCamera(sceneGame)
+                ? "Colócate frente a la cámara dentro del área visible para continuar la partida."
+                : "Mantén tu teléfono vertical y quieto para estabilizar la conexión.";
+        }
+        JungleUITheme.DrawShadowedLabel(new Rect((Screen.width - width) / 2 + 20, top + 43, width - 40, 60), message, pauseBodyStyle);
+        if (showHelp)
+        {
+            float imageWidth = Mathf.Min(width - 40, previewHeight * 4f / 3f);
+            Rect picture = new Rect((Screen.width - imageWidth) / 2, top + 108, imageWidth, previewHeight);
+            JungleRetainedUI.DrawTexture(picture, Texture2D.blackTexture);
+            var texture = serviceHost.CameraHelpTexture;
+            if (texture != null) { JungleRetainedUI.DrawTextureWithTexCoords(picture, texture, new Rect(1, 0, -1, 1)); }
+            else JungleRetainedUI.Label(picture, "BUSCANDO JUGADOR...", pausePreviewWaitStyle);
+            DrawSafeZoneBrackets(picture, framing.Status);
+            DrawCameraGuides(picture, serviceHost.CameraHelpFrame);
+            string friendlyBadge = GetFriendlyFramingBadge(framing.Status);
+            JungleRetainedUI.Label(new Rect((Screen.width - width) / 2 + 20, picture.yMax + 3, width - 40, 25),
+                friendlyBadge + " · " + framing.Hint, pauseHintStyle);
+        }
+        if (canReacquire)
+        {
+            Rect reacquireRect = new Rect((Screen.width - width) / 2 + width * .18f, top + height - 56, width * .64f, 44);
+            bool handTriggered = pauseNavigator.ObserveRaiseHand(framing.HandRaised, Time.unscaledTime, .75f);
+            if (TryCameraCursor(out var normCursor, out var handLabel, out var raised))
+            {
+                Vector2 cursorPx = new Vector2(normCursor.x * Screen.width, normCursor.y * Screen.height);
+                reacquireTargets[0] = new HandDwellTarget(0, reacquireRect.x, reacquireRect.y, reacquireRect.width, reacquireRect.height);
+                if (pauseNavigator.ObserveCursor(true, cursorPx.x, cursorPx.y, Time.unscaledTime, reacquireTargets, out int hit, .95f) && hit == 0)
+                    handTriggered = true;
+            }
+            if (JungleRetainedUI.Button(reacquireRect, "BUSCAR CÁMARA NUEVAMENTE (O LEVANTA LA MANO)", JungleUITheme.ButtonSelected) || handTriggered)
+            {
+                if (serviceHost.ReacquireCamera()) { delivered = -1; pauseNavigator.Reset(); }
+            }
+            float reacquireProgress = Mathf.Max(pauseNavigator.Progress, pauseNavigator.RaiseHandProgress);
+            if (reacquireProgress > .02f)
+                JungleUITheme.DrawDwellOverlay(reacquireRect, reacquireProgress, "DETECTANDO MANO ARRIBA...");
+        }
+        JungleRetainedUI.depth = depth;
+    }
+
+    static string GetFriendlyFramingBadge(CameraFramingStatus status) => status switch
+    {
+        CameraFramingStatus.Optimal => "ÓPTIMO",
+        CameraFramingStatus.MissingHands => "LEVANTA LAS MANOS",
+        CameraFramingStatus.OutOfSafeZone => "CENTRA TU POSICIÓN",
+        CameraFramingStatus.NoPerson => "BUSCANDO JUGADOR",
+        CameraFramingStatus.NoSignal => "SIN SEÑAL",
+        CameraFramingStatus.MultipleOrAmbiguous => "SOLO 1 JUGADOR",
+        _ => "CALIBRANDO"
+    };
 
     void DrawCameraPip(string activeSceneName,JungleGame sceneGame)
     {
@@ -281,9 +597,10 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         JungleRetainedUI.DrawTexture(new Rect(card.x+10f,card.y+9f,10f,10f),Texture2D.whiteTexture);
         JungleRetainedUI.color=before;
 
-        JungleUITheme.DrawShadowedLabel(new Rect(card.x+25f,card.y+3f,card.width-66f,22f),"PIP · "+framing.Badge,pipBadgeStyle);
+        string pipBadge = GetFriendlyFramingBadge(framing.Status);
+        JungleUITheme.DrawShadowedLabel(new Rect(card.x+25f,card.y+3f,card.width-66f,22f),"VISTA EN VIVO · "+pipBadge,pipBadgeStyle);
 
-        if(JungleRetainedUI.Button(new Rect(card.xMax-36f,card.y+4f,30f,20f),pipMinimized?"+":"-",pipToggleStyle))
+        if(JungleRetainedUI.Button(new Rect(card.xMax-36f,card.y+4f,30f,20f),pipMinimized?"▲":"▼",pipToggleStyle))
         {
             pipMinimized=!pipMinimized;
             serviceHost.PipEnabled=!pipMinimized;

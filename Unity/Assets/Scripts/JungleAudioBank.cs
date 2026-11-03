@@ -86,6 +86,40 @@ public static class JungleAudioBank
     }
     private static AudioSource sharedUiSource;
 
+    // --- Control de Volumen y Categorías (v4 §30 AudioMixer) ---
+    public static float MasterVolume { get; set; } = 1.0f;
+    public static float MusicVolume { get; set; } = 0.8f;
+    public static float SfxVolume { get; set; } = 0.85f;
+    public static float UiVolume { get; set; } = 0.9f;
+    public static float CharacterVolume { get; set; } = 0.85f;
+    public static float AmbienceVolume { get; set; } = 0.6f;
+
+    public static void SetMasterVolume(float vol)
+    {
+        MasterVolume = Mathf.Clamp01(vol);
+        AudioListener.volume = MasterVolume;
+        UpdateAmbienceVolume();
+    }
+    public static void SetSfxVolume(float vol) => SfxVolume = Mathf.Clamp01(vol);
+    public static void SetAmbienceVolume(float vol)
+    {
+        AmbienceVolume = Mathf.Clamp01(vol);
+        UpdateAmbienceVolume();
+    }
+    public static void SetUiVolume(float vol) => UiVolume = Mathf.Clamp01(vol);
+
+    private static void UpdateAmbienceVolume()
+    {
+        var all = Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+        foreach (var src in all)
+        {
+            if (src != null && src.gameObject.name == "Ambiente Procedural Selva")
+            {
+                src.volume = 0.12f * MasterVolume * AmbienceVolume;
+            }
+        }
+    }
+
     public static AudioSource Attach2DSource(GameObject host, bool withAmbience = true)
     {
         AudioSource source = host.GetComponent<AudioSource>();
@@ -118,7 +152,7 @@ public static class JungleAudioBank
         if (ambSource == null) return;
         ambSource.spatialBlend = 0f;
         ambSource.loop = true;
-        ambSource.volume = 0.12f;
+        ambSource.volume = 0.12f * MasterVolume * AmbienceVolume;
         ambSource.clip = JungleAmbience;
         if (!ambSource.isPlaying)
             ambSource.Play();
@@ -126,10 +160,31 @@ public static class JungleAudioBank
             ambSource.gameObject.AddComponent<JungleBirdAmbience>();
     }
 
+    private static int lastDwellStep = -1;
+    public static void PlayDwellProgress(float progress)
+    {
+        if (progress <= 0.05f)
+        {
+            lastDwellStep = -1;
+            return;
+        }
+        int step = Mathf.FloorToInt(progress * 4f);
+        if (step > lastDwellStep && step > 0)
+        {
+            lastDwellStep = step;
+            if (sharedUiSource != null && CountdownTick != null)
+            {
+                sharedUiSource.pitch = 1f + (step * 0.16f);
+                sharedUiSource.PlayOneShot(CountdownTick, 0.22f + step * 0.05f);
+                sharedUiSource.pitch = 1f;
+            }
+        }
+    }
+
     public static void PlayUiClick(float volume = 0.45f)
     {
         if (sharedUiSource != null && UiClick != null)
-            sharedUiSource.PlayOneShot(UiClick, volume);
+            sharedUiSource.PlayOneShot(UiClick, volume * MasterVolume * UiVolume);
     }
 
 

@@ -50,7 +50,7 @@ namespace GorillaEscape.CameraTracking
             controlSnapshot=null;controlPython=python;controlScript=Path.Combine(Path.GetDirectoryName(script),"camera_controls.py");controlDevice=device??"/dev/video0";physical=mode=="physical";ControlsRestored=true;
             lock(gate){transit.Clear();transitCount=transitMax=invalidTransit=0;}
             try {
-                child=new Process{StartInfo=new ProcessStartInfo{FileName=python,Arguments=Quote(script)+" --mode "+Quote(mode)+" --fixture "+Quote(fixture??"")+" --model "+Quote(model??"")+" --device "+Quote(device??"/dev/video0"),UseShellExecute=false,RedirectStandardInput=true,RedirectStandardOutput=true,RedirectStandardError=true,CreateNoWindow=true}};
+                child=new Process{StartInfo=new ProcessStartInfo{FileName=python,Arguments=Quote(script)+" --mode "+Quote(mode)+" --fixture "+Quote(fixture??"")+" --model "+Quote(model??"")+" --device "+Quote(device??"/dev/video0"),WorkingDirectory=Path.GetDirectoryName(script),UseShellExecute=false,RedirectStandardInput=true,RedirectStandardOutput=true,RedirectStandardError=true,CreateNoWindow=true}};
                 child.Start();Pid=child.Id;stdout=ReadOutput(child.StandardOutput);stderr=Drain(child.StandardError);
                 var clock=Stopwatch.StartNew();while(!ready){token.ThrowIfCancellationRequested();if(Error!=null||child.HasExited)throw new IOException(Error??"VISION_EXITED");if(clock.ElapsedMilliseconds>=30000)throw new TimeoutException("CAMERA_STARTUP_TIMEOUT");await Task.Delay(10,token);}
                 State="RUNNING";

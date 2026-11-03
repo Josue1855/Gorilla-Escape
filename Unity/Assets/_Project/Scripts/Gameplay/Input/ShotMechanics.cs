@@ -132,7 +132,9 @@ namespace GorillaEscape.Gameplay.Input
             float now,
             HandDwellTarget[] targets,
             out int triggeredId,
-            float dwellSeconds = DefaultDwellSeconds)
+            float dwellSeconds = DefaultDwellSeconds,
+            bool actionTrigger = false,
+            bool chargeActive = true)
         {
             triggeredId = -1;
             if (!tracked || float.IsNaN(screenX) || float.IsInfinity(screenX) || float.IsNaN(screenY) || float.IsInfinity(screenY) || float.IsNaN(now) || float.IsInfinity(now))
@@ -193,7 +195,24 @@ namespace GorillaEscape.Gameplay.Input
                     latchedId = -1;
                     return false;
                 }
-                dwellElapsed += dt;
+                if (actionTrigger && now >= cooldownUntil)
+                {
+                    triggeredId = hitId;
+                    latchedId = hitId;
+                    cooldownUntil = now + CooldownSeconds;
+                    Progress = 1f;
+                    return true;
+                }
+
+                if (chargeActive)
+                {
+                    dwellElapsed += dt;
+                }
+                else
+                {
+                    dwellElapsed = Math.Max(0f, dwellElapsed - dt * 2.5f);
+                }
+
                 Progress = Math.Max(0f, Math.Min(1f, dwellElapsed / requiredDwell));
                 if (dwellElapsed >= requiredDwell && now >= cooldownUntil)
                 {

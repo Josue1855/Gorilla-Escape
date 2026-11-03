@@ -156,6 +156,14 @@ namespace GorillaEscape.Network
                     RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true, WorkingDirectory = Path.GetDirectoryName(jar) };
                 start.Arguments = "-Djava.net.preferIPv4Stack=true -XX:TieredStopAtLevel=1 -noverify -jar " + Quote(jar) + " --gorilla.ipc.managed=true --server.address=127.0.0.1 --server.port=0 --logging.config=classpath:ipc-logback.xml";
                 if(lobbyEnabled||Environment.GetEnvironmentVariable("GORILLA_PHONE_INPUT")=="1")start.Arguments+=" --gorilla.mobile.rtc-enabled=true";
+                foreach (System.Collections.DictionaryEntry entry in Environment.GetEnvironmentVariables())
+                {
+                    string key = entry.Key as string;
+                    if (key != null && key.StartsWith("GORILLA_"))
+                    {
+                        start.EnvironmentVariables[key] = entry.Value as string;
+                    }
+                }
                 start.EnvironmentVariables["GORILLA_IPC_INSTANCE"] = a.result.instanceId;
                 start.EnvironmentVariables["GORILLA_IPC_TOKEN"] = secret;
                 start.EnvironmentVariables["GORILLA_IPC_LOCK_DIR"] = DefaultLockDirectory;

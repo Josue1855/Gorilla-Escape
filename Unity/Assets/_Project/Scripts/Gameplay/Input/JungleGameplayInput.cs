@@ -6,11 +6,11 @@ using GorillaEscape.CameraTracking;
 
 namespace GorillaEscape.Gameplay.Input
 {
-    public enum JungleGame { None, Bowling, Boxing, Baseball, Drums, CoconutSlice, Whack, LogBalance }
+    public enum JungleGame { None, Bowling, Boxing, Baseball, Drums, CoconutSlice, Whack, LogBalance, GorillaSmash, CoconutThrow }
     [Flags] public enum JungleAction
     {
         None=0, Throw=1, PunchLeft=2, PunchRight=4, Recover=8, Swing=16,
-        DrumLeft=32, DrumRight=64, SliceLeft=128, SliceRight=256, Whack=512, Balance=1024, Save=2048
+        DrumLeft=32, DrumRight=64, SliceLeft=128, SliceRight=256, Whack=512, Balance=1024, Save=2048, Smash=4096
     }
     public enum JungleInputStatus { Menu, Waiting, TrackingLost, Unaligned, PartialInput, Reacquiring, Ready }
     public readonly struct JungleHand
@@ -76,7 +76,8 @@ namespace GorillaEscape.Gameplay.Input
         public static JungleGame ForScene(string scene) => scene=="BananaBowling"?JungleGame.Bowling
             :scene=="GorillaBoxing"?JungleGame.Boxing:scene=="JungleBaseball"?JungleGame.Baseball
             :scene=="JungleDrums"?JungleGame.Drums:scene=="CoconutSlice"?JungleGame.CoconutSlice
-            :scene=="WhackAMole"?JungleGame.Whack:scene=="LogBalance"?JungleGame.LogBalance:JungleGame.None;
+            :scene=="WhackAMole"?JungleGame.Whack:scene=="LogBalance"?JungleGame.LogBalance
+            :scene=="GorillaSmash"?JungleGame.GorillaSmash:scene=="CoconutThrow"?JungleGame.CoconutThrow:JungleGame.None;
         public void Select(JungleGame game,bool cameraOnly=false)
         {
             CameraOnly=cameraOnly;
@@ -224,6 +225,8 @@ namespace GorillaEscape.Gameplay.Input
             if(Game==JungleGame.LogBalance)result|=JungleAction.Balance;
             float whack=Math.Max(0,gravity-9.81f)*18+angular;
             if(Game==JungleGame.Whack&&first.Observe(right.VelocityY>.72f&&whack>235,right.VelocityY<.2f&&whack<150,now,220))result|=JungleAction.Whack;
+            if(Game==JungleGame.GorillaSmash&&first.Observe(right.VelocityY>.68f&&whack>210,right.VelocityY<.2f&&whack<130,now,250))result|=JungleAction.Smash|JungleAction.Whack;
+            if(Game==JungleGame.CoconutThrow&&first.Observe(power>280&&throwingHand.Speed>.35f,power<160&&throwingHand.Speed<.22f,now,500))result|=JungleAction.Throw;
             return result;
         }
         public bool Authorize(JungleAction action,long sourceRevision,long now)

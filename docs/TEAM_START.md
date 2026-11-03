@@ -2,6 +2,8 @@
 
 Última revisión: 2026-10-26; conserva las instrucciones de develop revisadas el 2026-10-20. Guía operativa del monorepo en `develop`; contrastada con sus manifiestos y fuentes. Los resultados de pruebas y sus límites se consultan en el [estado verificable](00-product/DEVELOPMENT_STATUS.md) y el [índice de evidencias](04-testing/EVIDENCE_INDEX.md). Esta revisión documental no ejecuta ni acredita pruebas físicas.
 
+**Nota para la rama `feature/saul-jungle-party-alpha` (2026-10-30):** esta guía describe la base `develop` de su fecha. La rama alpha usa Unity 6000.6.0f1 e incluye escenas de juegos y un cliente Flutter. Sus reglas y catálogo de torneo aún requieren acuerdo; la existencia de esas implementaciones no acredita aceptación física ni un build final. Consultar [integración de la rama](03-development/SAUL_PHASE0_INTEGRATION.md) y [plan de cierre](04-testing/PLAN_CIERRE_SOFTWARE_2026-10-30.md).
+
 ## Arranque del equipo autorizado 2026-10-16
 
 Está autorizado comenzar juegos, PWA y el cliente Flutter cuando se tome su tarea acordada, mientras continúa la validación física. La base compartida es `develop`: cada tarea se desarrolla en una rama pequeña y se entrega mediante PR hacia `develop`. `main` recibe promociones de entregas validadas y aprobadas.

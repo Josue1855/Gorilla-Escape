@@ -22,6 +22,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public bool CameraLossGraceAllowed => (CameraOnly||PhoneConnected)&&JungleGameplayInput.RequiresCamera(gameplay.Game)
         &&(fusion?.Cameras.Latest?.subjects==null||fusion.Cameras.Latest.subjects.Length<=1)
         &&(fusion?.Cameras.Latest?.subjects==null||fusion.Cameras.Latest.subjects.Length==0||!fusion.Cameras.Latest.subjects[0].ambiguous);
+    public float InputLossGraceSeconds => JungleGameplayInput.RequiresCamera(gameplay.Game) ? 0.22f : 0.40f;
     public void SetCameraOnly(bool enabled){CameraOnly=enabled;SelectGame(gameplay.Game,true);}
     public string Status { get; private set; } = "LISTO PARA CONECTAR";
     private string pregeneratedRoomCode;
@@ -59,6 +60,11 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public bool CleanupComplete => !shutdownFailed && (java?.CleanupComplete ?? true) && (vision?.CleanupComplete ?? true);
     public float LastPhonePacketAt { get; private set; } = -10;
     public float LastPosePacketAt { get; private set; } = -10;
+    public bool PhoneTouchPressed { get; private set; }
+    public bool PhoneTouchTriggered { get; private set; }
+    bool lastPhoneTouch;
+    float lastHandZ;
+    float lastHandZTime = -1f;
     public bool PhoneConnected => java?.State == IpcState.RUNNING && CurrentPhoneConnected()
         && Time.unscaledTime - LastPhonePacketAt < .25f;
     public bool TryPhoneVisualEstimate(out PhoneVisualEstimate estimate)
@@ -98,22 +104,32 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         return vision?.State=="RUNNING"&&fusion!=null&&fusion.Cameras.TryVisualLandmark(subject,name,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),out x,out y);
     }
     public bool TryCameraCursor(out Vector2 screenNormalized, out string handLabel, out bool handRaised)
+        => TryCameraCursor(out screenNormalized, out handLabel, out handRaised, out _, out _);
+
+    public bool TryCameraCursor(out Vector2 screenNormalized, out string handLabel, out bool handRaised, out bool handClosed, out bool forwardPush)
     {
         screenNormalized = new Vector2(.5f, .5f);
         handLabel = "DER";
-        var framing = CameraFraming;
-        handRaised = framing.HandRaised;
+        handRaised = false;
+        handClosed = false;
+        forwardPush = false;
         var frame = CameraHelpFrame;
         if (!CameraConnected || frame?.subjects == null || frame.subjects.Length != 1 || frame.subjects[0] == null || frame.subjects[0].ambiguous || frame.subjects[0].landmarks == null)
         { menuCursor.Reset();cursorSequence=-1;cursorSubject=-1;cursorHandChosen=false;return false; }
         var subject = frame.subjects[0];
-        CameraLandmark left = null, right = null;
+        CameraLandmark left = null, right = null, leftShoulder = null, rightShoulder = null, leftHand = null, rightHand = null, leftHip = null, rightHip = null;
         for (int i = 0; i < subject.landmarks.Length; i++)
         {
             var lm = subject.landmarks[i];
             if (lm == null) continue;
             if (lm.name == "left-wrist") left = lm;
             else if (lm.name == "right-wrist") right = lm;
+            else if (lm.name == "left-shoulder") leftShoulder = lm;
+            else if (lm.name == "right-shoulder") rightShoulder = lm;
+            else if (lm.name == "left-hand") leftHand = lm;
+            else if (lm.name == "right-hand") rightHand = lm;
+            else if (lm.name == "left-hip") leftHip = lm;
+            else if (lm.name == "right-hip") rightHip = lm;
         }
         bool leftOk = left != null && left.visible && left.visibility >= .6f && left.presence >= .6f && left.x >= 0f && left.x <= 1f && left.y >= 0f && left.y <= 1f;
         bool rightOk = right != null && right.visible && right.visibility >= .6f && right.presence >= .6f && right.x >= 0f && right.x <= 1f && right.y >= 0f && right.y <= 1f;
@@ -125,6 +141,43 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         if(cursorHandSwitchFrame==Time.frameCount)return false;
         bool useLeft = preferLeftCursor;
         var chosen = useLeft ? left : right;
+
+        float shoulderY = (leftShoulder != null && rightShoulder != null) ? (leftShoulder.y + rightShoulder.y) * 0.5f : (leftShoulder?.y ?? rightShoulder?.y ?? 0.38f);
+        float shoulderSpan = (leftShoulder != null && rightShoulder != null) ? Mathf.Abs(rightShoulder.x - leftShoulder.x) : 0.25f;
+        bool hasHips = (leftHip != null && leftHip.visible && leftHip.visibility >= 0.4f) || (rightHip != null && rightHip.visible && rightHip.visibility >= 0.4f);
+        float waistY = hasHips
+            ? ((leftHip != null && rightHip != null && leftHip.visible && rightHip.visible) ? (leftHip.y + rightHip.y) * 0.5f : (leftHip != null && leftHip.visible ? leftHip.y : rightHip.y))
+            : (shoulderY + Mathf.Clamp(shoulderSpan * 1.25f, 0.28f, 0.42f));
+
+        // Zona muerta de descanso (cintura / cadera): Si la muñeca está por debajo de la cintura/cadera, el cursor se apaga por completo
+        if (chosen.y > waistY)
+        {
+            menuCursor.Reset();
+            cursorSequence = -1;
+            return false;
+        }
+
+        handRaised = chosen.y < shoulderY - 0.02f;
+
+        var chosenHand = useLeft ? leftHand : rightHand;
+        if (chosenHand != null && chosenHand.visible && chosenHand.visibility >= 0.5f)
+        {
+            float knuckleDist = Vector2.Distance(new Vector2(chosen.x, chosen.y), new Vector2(chosenHand.x, chosenHand.y));
+            handClosed = knuckleDist < 0.052f;
+        }
+
+        if (lastHandZTime > 0f)
+        {
+            float dt = Time.unscaledTime - lastHandZTime;
+            if (dt > 0.02f && dt < 0.25f)
+            {
+                float zVel = (chosen.z - lastHandZ) / dt;
+                if (zVel < -0.85f) forwardPush = true;
+            }
+        }
+        lastHandZ = chosen.z;
+        lastHandZTime = Time.unscaledTime;
+
         if(frame.frameSequence!=cursorSequence){menuCursor.Observe(1f-chosen.x,chosen.y,0,0,Time.unscaledTime);cursorSequence=frame.frameSequence;}
         if(!menuCursor.TryPosition(Time.unscaledTime,out float x,out float y))return false;
         HandCursorMapping.Map(x,y,out float screenX,out float screenY);
@@ -196,6 +249,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         return (CameraOnly||PhoneConnected)&&(!JungleGameplayInput.RequiresCamera(gameplay.Game)||vision?.State=="RUNNING")&&gameplay.Authorize(action,revision,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
     }
     bool admissionRequested, replacementRequested, quitting, allowQuit, previousBackground, shutdownFailed;
+    float lastQaRegenerateAt = -10f;
     string lastConnectionDiagnostic;
 
     public static PortableServiceHost Ensure()
@@ -254,7 +308,20 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         refreshedFrame=-1;
         closing = null;
         admissionRequested = false; replacementRequested = false;
+        lastQaRegenerateAt = -10f;
         Status = "INICIANDO SERVIDOR LOCAL";
+        string localApp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string py312Candidate = Path.Combine(localApp, "Programs", "Python", "Python312", "python.exe");
+        if (Application.isEditor && File.Exists(py312Candidate))
+        {
+            Environment.SetEnvironmentVariable("GORILLA_CAMERA_LAB", "1");
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_CAMERA_PYTHON")))
+                Environment.SetEnvironmentVariable("GORILLA_CAMERA_PYTHON", py312Candidate);
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_CAMERA_SCRIPT")))
+                Environment.SetEnvironmentVariable("GORILLA_CAMERA_SCRIPT", Path.GetFullPath(Path.Combine(Application.dataPath, "../../tools/spikes/camera/worker.py")));
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_CAMERA_MODEL")))
+                Environment.SetEnvironmentVariable("GORILLA_CAMERA_MODEL", Path.GetFullPath(Path.Combine(Application.dataPath, "../CameraTracker/models/pose_landmarker_lite.task")));
+        }
         javaRun = RunJava(javaPath, jarPath);
         visionRun = Environment.GetEnvironmentVariable("GORILLA_CAMERA_ENABLED") == "0" ? Task.CompletedTask : RunVision(root);
         return true;
@@ -339,12 +406,20 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         }
         if(java.Qa?.state=="SCANNED/JOINED" && !replacementRequested && (java.Lobby.Snapshot?.players?.Length??0)<4){java.RegenerateQa();replacementRequested=true;}
         else if(java.Qa?.state=="AVAILABLE")replacementRequested=false;
-        if(!admissionRequested){java.RegenerateQa();admissionRequested=true;}
-        else if(!PhoneConnected&&java.QaConnection?.resolvedMode=="CLOUDFLARED"&&java.QaConnection?.admissionMode!="CLOUDFLARED")
+        bool qrNeeded = !PhoneConnected && java.QaConnection?.bootstrapState == "READY"
+            && (java.Qa == null || java.Qa.state != "AVAILABLE" || string.IsNullOrEmpty(java.Qa.modules)
+                || (java.QaConnection?.resolvedMode != null && java.QaConnection?.admissionMode != java.QaConnection?.resolvedMode));
+        if(!admissionRequested){java.RegenerateQa();admissionRequested=true;lastQaRegenerateAt=Time.unscaledTime;}
+        else if(qrNeeded && Time.unscaledTime - lastQaRegenerateAt > 0.5f)
         {
+            lastQaRegenerateAt = Time.unscaledTime;
             java.RegenerateQa();
         }
         java.PhoneInputs.TryLatest(1,out var phone);
+        bool touchDown = phone?.touch != null && phone.touch.hasPressed && phone.touch.pressed;
+        PhoneTouchTriggered = touchDown && !lastPhoneTouch;
+        lastPhoneTouch = touchDown;
+        PhoneTouchPressed = touchDown;
         if(phone!=null)
         {
             if(phone.sequence!=observedSequence||phone.connectionEpoch!=observedEpoch||phone.sessionId!=observedSession||phone.deviceSessionId!=observedDevice)

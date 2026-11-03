@@ -71,7 +71,7 @@ public sealed partial class BoxingController
         if (roundSec != cachedRoundSec) { cachedRoundSec = roundSec; cachedRoundSecText = roundSec.ToString(); }
 
         JungleUITheme.DrawPanel(new Rect(w * .16f, h * .025f, w * .68f, h * .15f));
-        JungleUITheme.DrawShadowedLabel(new Rect(w * .35f, h * .035f, w * .30f, h * .055f), "BOXEO CON GORILA", fightTitleStyle);
+        JungleUITheme.DrawShadowedLabel(new Rect(w * .35f, h * .035f, w * .30f, h * .055f), "GORILLA BOXING", fightTitleStyle);
         DrawHealthBar(new Rect(w * .19f, h * .105f, w * .26f, h * .035f), playerHealth, new Color(.1f, .75f, 1f), true);
         DrawHealthBar(new Rect(w * .55f, h * .105f, w * .26f, h * .035f), gorillaHealth, new Color(1f, .25f, .1f), false);
         JungleUITheme.DrawShadowedLabel(new Rect(w * .46f, h * .095f, w * .08f, h * .05f), cachedRoundSecText, fightTitleStyle);
@@ -88,6 +88,17 @@ public sealed partial class BoxingController
         }
         else if (state == GameState.BoxingOver)
         {
+            if (TournamentSession.IsActive)
+            {
+                int score = Mathf.RoundToInt(Mathf.Max(0, (100f - gorillaHealth) * 50f + playerHealth * 20f));
+                TournamentSession.RecordRoundResult(score);
+                Vector2 normCursor = new Vector2(0.5f, 0.5f);
+                string handLabel = "MANO";
+                bool handRaised = false, handClosed = false, forwardPush = false;
+                if (sharedSession != null) sharedSession.TryCameraCursor(out normCursor, out handLabel, out handRaised, out handClosed, out forwardPush);
+                TournamentSession.DrawTournamentOverlay(w, h, normCursor, handLabel, handRaised, handClosed, forwardPush, sharedSession != null && sharedSession.PhoneTouchTriggered);
+                return;
+            }
             JungleUITheme.DrawPanel(new Rect(w * .26f, h * .30f, w * .48f, h * .25f), true);
             string result = gorillaHealth <= 0f ? "¡GANASTE!" : playerHealth <= 0f ? "K.O. DEL GORILA" : playerHealth >= gorillaHealth ? "¡GANASTE POR PUNTOS!" : "EL GORILA GANA";
             JungleUITheme.DrawShadowedLabel(new Rect(w * .29f, h * .34f, w * .42f, h * .09f), result, fightTitleStyle);

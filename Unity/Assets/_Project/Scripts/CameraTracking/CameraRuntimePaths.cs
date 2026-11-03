@@ -17,7 +17,7 @@ namespace GorillaEscape.CameraTracking
             var root=Path.Combine(Path.GetFullPath(productDirectory),"Vision");
             bool windows=Environment.OSVersion.Platform==PlatformID.Win32NT;
             bool lab=env("GORILLA_CAMERA_LAB")=="1";
-            string Pick(string name,string fallback) => lab&&!string.IsNullOrEmpty(env(name))?env(name):fallback;
+            string Pick(string name,string fallback) => lab && !string.IsNullOrEmpty(env(name)) && File.Exists(env(name)) ? env(name) : fallback;
             var paths=new CameraRuntimePaths {
                 Python=Pick("GORILLA_CAMERA_PYTHON",Path.Combine(root,windows?"python.exe":"python")),
                 Worker=Pick("GORILLA_CAMERA_SCRIPT",Path.Combine(root,"worker.py")),

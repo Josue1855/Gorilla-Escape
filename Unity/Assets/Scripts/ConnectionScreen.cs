@@ -38,6 +38,7 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
     private string qrSignature;
     private bool showingPreparation;
     private bool showCameraSetup;
+    private float sceneReadyAt;
 
     private GUIStyle logoShadowStyle, logoStyle, taglineStyle;
     private GUIStyle shellPanelStyle, codeCardPanelStyle, qrCardPanelStyle, statusPanelStyle;
@@ -50,6 +51,7 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
 
     private void Awake()
     {
+        sceneReadyAt = Time.unscaledTime;
         StartCoroutine(JungleAudioBank.Prewarm());
         session = MotionSession.Ensure();
         services = PortableServiceHost.Ensure();
@@ -95,8 +97,31 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
         texture.anisoLevel = 2;
     }
 
+    private bool autoShotTaken;
     private void Update()
     {
+        if (!autoShotTaken && Time.unscaledTime >= sceneReadyAt + 2.5f)
+        {
+            autoShotTaken = true;
+            string autoShot = System.Environment.GetEnvironmentVariable("GORILLA_AUTO_SCREENSHOT");
+            if (!string.IsNullOrEmpty(autoShot))
+            {
+                ScreenCapture.CaptureScreenshot(autoShot);
+                Debug.Log("CAPTURED_AUTO_SCREENSHOT: " + autoShot);
+            }
+            string autoNav = System.Environment.GetEnvironmentVariable("GORILLA_AUTO_NAV");
+            if (autoNav == "MAIN_MENU" || autoNav == "PARTY" || autoNav == "STORY")
+            {
+                session.SetCameraOnly(true);
+                SceneNavigator.Load(SceneNavigator.MainMenu);
+                return;
+            }
+        }
+        if (System.Environment.GetEnvironmentVariable("GORILLA_AUTO_QUIT") == "1" && Time.unscaledTime >= sceneReadyAt + 5.5f)
+        {
+            Application.Quit(0);
+        }
+
         if (services.AdmissionMode == "CLOUDFLARED") showingPreparation = false;
         var qr = showingPreparation ? services.Preparation : services.Admission;
         bool available = qr != null && (showingPreparation || qr.state == "AVAILABLE") && !string.IsNullOrEmpty(qr.modules);
@@ -164,8 +189,8 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
         DrawBackground(w, h, time);
         DrawWind(w, h, time, scale);
 
-        JungleRetainedUI.Label(new Rect(w * .055f + 3 * scale, h * .055f + 4 * scale, w * .52f, 70 * scale), "JUNGLE PARTY", logoShadowStyle);
-        JungleRetainedUI.Label(new Rect(w * .055f, h * .055f, w * .52f, 70 * scale), "JUNGLE PARTY", logoStyle);
+        JungleRetainedUI.Label(new Rect(w * .055f + 3 * scale, h * .055f + 4 * scale, w * .52f, 70 * scale), "GORILLA ESCAPE", logoShadowStyle);
+        JungleRetainedUI.Label(new Rect(w * .055f, h * .055f, w * .52f, 70 * scale), "GORILLA ESCAPE", logoStyle);
         JungleRetainedUI.Label(new Rect(w * .058f, h * .055f + 62 * scale, w * .45f, 25 * scale), "MUEVE · JUEGA · CONQUISTA LA SELVA", taglineStyle);
 
         Rect shell = new Rect(w * .055f, h * .205f, Mathf.Min(w * .56f, 1030 * scale), h * .715f);
@@ -190,7 +215,7 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
         string displayCode = hasRoom ? currentRoom.ToUpperInvariant() : "...";
         JungleRetainedUI.Label(new Rect(codeCard.x, codeCard.y + 6 * scale, codeCard.width, 38 * scale), "SALA: " + displayCode, pinLabelStyle);
         string connectionLabel = services.AdmissionMode == "CLOUDFLARED" && hasRoom
-            ? "play.gorillas.run/" + currentRoom.ToLowerInvariant() + " · entra con el QR"
+            ? "play.gorilla.run/" + currentRoom.ToLowerInvariant() + " · entra con el QR"
             : services.AdmissionMode == "CABIN" ? (string.IsNullOrEmpty(services.ConnectionFallback) || services.ConnectionFallback == "NONE" ? "CONEXIÓN LOCAL · EL QR USA LA IP DE LA PC" : "TÚNEL NO DISPONIBLE · QR DE CONEXIÓN LOCAL")
             : "PREPARANDO CONEXIÓN Y QR";
         JungleRetainedUI.Label(new Rect(codeCard.x, codeCard.y + 44 * scale, codeCard.width, 24 * scale), connectionLabel, urlSubtextStyle);
@@ -240,7 +265,10 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
             qrLoadingLabelStyle.normal.textColor = Color.Lerp(new Color(.24f, .11f, .03f), new Color(.62f, .34f, .06f), pulse);
             int dotCount = 1 + ((int)(time * 2f) % 3);
             string dots = dotCount == 1 ? "." : dotCount == 2 ? ".." : "...";
-            JungleRetainedUI.Label(qrRect, "CONECTANDO CON\nTÚNEL SEGURO" + dots + "\n\nPREPARANDO QR", qrLoadingLabelStyle);
+            string loadingTitle = services.AdmissionMode == "CABIN" || (!string.IsNullOrEmpty(services.ConnectionFallback) && services.ConnectionFallback != "NONE")
+                ? "GENERANDO QR\nLOCAL" + dots
+                : "CONECTANDO CON\nTÚNEL SEGURO" + dots;
+            JungleRetainedUI.Label(qrRect, loadingTitle + "\n\nPREPARANDO QR", qrLoadingLabelStyle);
         }
 
         float buttonY = shell.yMax - pad - 50 * scale;
@@ -255,12 +283,14 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
             else services.RestartModule();
         }
         Rect enterRect = new Rect(right.x, buttonY, right.width, 50 * scale);
-        Rect cameraOnlyRect = new Rect(w * .70f, h * .84f, w * .26f, h * .065f);
+        Rect cameraOnlyRect = new Rect(w * .70f, h * .76f, w * .26f, h * .065f);
 
         Vector2 normCursor = new Vector2(.5f, .5f);
         string handLabel = "MANO DER";
         bool handRaised = false;
-        bool hasHand = !showCameraSetup && session.TryCameraCursor(out normCursor, out handLabel, out handRaised);
+        bool handClosed = false;
+        bool forwardPush = false;
+        bool hasHand = !showCameraSetup && session.TryCameraCursor(out normCursor, out handLabel, out handRaised, out handClosed, out forwardPush);
         Vector2 cursorPx = new Vector2(normCursor.x * w, normCursor.y * h);
         HandDwellTarget[] targets;
         if (canEnter)
@@ -274,8 +304,12 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
             targetsCameraOnly[0] = new HandDwellTarget(2, cameraOnlyRect.x, cameraOnlyRect.y, cameraOnlyRect.width, cameraOnlyRect.height);
             targets = targetsCameraOnly;
         }
-        bool dwellFired = handNavigator.ObserveCursor(hasHand, cursorPx.x, cursorPx.y, Time.unscaledTime, targets, out int triggeredId)
+        bool canInteract = hasHand && (Time.unscaledTime >= sceneReadyAt + 1.2f);
+        bool isCharging = session.CameraOnly ? (handClosed || handRaised) : (handClosed || session.PhoneTouchPressed);
+        bool actionTrigger = forwardPush || session.PhoneTouchTriggered;
+        bool dwellFired = handNavigator.ObserveCursor(canInteract, cursorPx.x, cursorPx.y, Time.unscaledTime, targets, out int triggeredId, 1.6f, actionTrigger, isCharging)
             && triggeredId > 0;
+        JungleAudioBank.PlayDwellProgress(handNavigator.Progress);
 
         if ((JungleRetainedUI.Button(enterRect, canEnter ? "ENTRAR A LA SELVA" : !JungleAudioBank.IsPrewarmed ? "PREPARANDO AUDIO" : session.PhoneConnected ? "ESPERANDO NOMBRE" : "ESPERANDO CELULAR", continueButton) || (dwellFired && handNavigator.HoveredId == 1)) && canEnter)
         {
@@ -297,10 +331,13 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
         if (handNavigator.HoveredId == 2 && handNavigator.Progress > .02f)
             JungleUITheme.DrawDwellOverlay(cameraOnlyRect, handNavigator.Progress, "MANTÉN LA MANO AQUÍ");
 
+        Rect safetyBannerRect = new Rect(w * .055f, h * .945f, w * .89f, 26 * scale);
+        JungleRetainedUI.Label(safetyBannerRect, "🛡️ SEGURIDAD Y PRIVACIDAD: Proceso 100% local en PC · Sin almacenamiento de video o fotos · Sin biometría · Sujeta tu teléfono y despeja tu área de juego", urlSubtextStyle);
+
         DrawForegroundLeaves(w, h, time, scale);
         JungleRetainedUI.enabled = wasEnabled;
         if (showCameraSetup) DrawCameraSetup(w, h, scale);
-        else JungleUITheme.DrawNavigatorHandCursor(handNavigator, handLabel, handRaised);
+        else JungleUITheme.DrawNavigatorHandCursor(handNavigator, handLabel, handRaised, handClosed);
     }
 
     private void DrawCameraSetup(float w, float h, float scale)

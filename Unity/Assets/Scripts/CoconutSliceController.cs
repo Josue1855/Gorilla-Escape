@@ -508,7 +508,7 @@ public sealed partial class CoconutSliceController : MonoBehaviour, IJungleScree
         }
 
         JungleUITheme.DrawPanel(new Rect(w * .015f, h * .02f, w * .97f, h * .108f));
-        JungleUITheme.DrawShadowedLabel(new Rect(w * .045f, h * .025f, w * .42f, h * .085f), keeperMode ? "PORTERO DE LA JUNGLA" : "COCONUT SLICE", JungleUITheme.HudTitle, 3f);
+        JungleUITheme.DrawShadowedLabel(new Rect(w * .045f, h * .025f, w * .42f, h * .085f), keeperMode ? "JUNGLE KEEPER" : "JUNGLE SLICE", JungleUITheme.HudTitle, 3f);
         JungleUITheme.DrawShadowedLabel(new Rect(w * .45f, h * .025f, w * .38f, h * .085f), cachedHudScoreText, JungleUITheme.HudScore, 2f);
         Rect menuRect = new Rect(w * .845f, h * .035f, w * .125f, h * .065f);
         if (JungleRetainedUI.Button(menuRect, "MENÚ", JungleUITheme.Button)) { JungleAudioBank.PlayUiClick(); SceneNavigator.Load(SceneNavigator.MainMenu); }
@@ -588,7 +588,7 @@ public sealed partial class CoconutSliceController : MonoBehaviour, IJungleScree
         JungleUITheme.DrawShadowedLabel(new Rect(w * .25f, h * .525f, w * .50f, h * .07f), keeperMode ? "CÁMARA DE CUERPO SUPERIOR · MANOS + TORSO" : "USA AMBAS MANOS · EVITA CACTUS Y GORILAS", JungleUITheme.HudBody, 2f);
 
         Rect readyRect = new Rect(w * .36f, h * .635f, w * .28f, h * .085f);
-        bool hasHand = session.TryCameraCursor(out Vector2 normCursor, out string handLabel, out bool handRaised);
+        bool hasHand = session.TryCameraCursor(out Vector2 normCursor, out string handLabel, out bool handRaised, out bool handClosed, out bool forwardPush);
         Vector2 cursorPx = new Vector2(normCursor.x * w, normCursor.y * h);
         dwellTargets[0] = new HandDwellTarget(1, readyRect.x, readyRect.y, readyRect.width, readyRect.height);
         dwellTargets[1] = new HandDwellTarget(2, menuRect.x, menuRect.y, menuRect.width, menuRect.height);
@@ -646,7 +646,7 @@ public sealed partial class CoconutSliceController : MonoBehaviour, IJungleScree
 
         Rect replayRect = new Rect(w * .31f, h * .63f, w * .22f, h * .085f);
         Rect menuBtnRect = new Rect(w * .55f, h * .63f, w * .14f, h * .085f);
-        bool hasHand = session.TryCameraCursor(out Vector2 normCursor, out string handLabel, out bool handRaised);
+        bool hasHand = session.TryCameraCursor(out Vector2 normCursor, out string handLabel, out bool handRaised, out bool handClosed, out bool forwardPush);
         Vector2 cursorPx = new Vector2(normCursor.x * w, normCursor.y * h);
         dwellTargets[0] = new HandDwellTarget(1, replayRect.x, replayRect.y, replayRect.width, replayRect.height);
         dwellTargets[1] = new HandDwellTarget(2, menuBtnRect.x, menuBtnRect.y, menuBtnRect.width, menuBtnRect.height);

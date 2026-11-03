@@ -559,31 +559,33 @@ public static class JungleUITheme
         }
     }
 
-    public static void DrawHandCursor(Vector2 screenPos, string handLabel, float dwellProgress, bool raised = false)
+    public static void DrawHandCursor(Vector2 screenPos, string handLabel, float dwellProgress, bool raised = false, bool closed = false)
     {
         Ensure();
         float size = Mathf.Clamp(Screen.height * .064f, 40f, 66f);
-        float pulse = 1f + Mathf.Sin(Time.unscaledTime * 7f) * .05f + Mathf.Clamp01(dwellProgress) * .18f;
+        float pulse = 1f + (closed ? Mathf.Sin(Time.unscaledTime * 10f) * .08f : Mathf.Sin(Time.unscaledTime * 7f) * .05f) + Mathf.Clamp01(dwellProgress) * .22f;
         float finalSize = size * pulse;
         Rect outer = new Rect(screenPos.x - finalSize * .5f, screenPos.y - finalSize * .5f, finalSize, finalSize);
         JungleRetainedUI.Box(new Rect(outer.x + 3f, outer.y + 5f, outer.width, outer.height), GUIContent.none, shadowBoxStyle);
-        JungleRetainedUI.Box(outer, GUIContent.none, raised || dwellProgress > .05f ? woodPanelSelectedBoxStyle : woodPanelBoxStyle);
+        JungleRetainedUI.Box(outer, GUIContent.none, closed || raised || dwellProgress > .05f ? woodPanelSelectedBoxStyle : woodPanelBoxStyle);
         if (dwellProgress > .01f)
         {
             Rect inner = new Rect(outer.x + 6f, outer.y + 6f, outer.width - 12f, outer.height - 12f);
             float fillH = inner.height * Mathf.Clamp01(dwellProgress);
-            JungleRetainedUI.DrawTexture(new Rect(inner.x, inner.yMax - fillH, inner.width, fillH), dwellProgress > .72f ? gold : green);
+            JungleRetainedUI.DrawTexture(new Rect(inner.x, inner.yMax - fillH, inner.width, fillH), dwellProgress > .6f ? gold : green);
         }
         cursorLabelStyle.fontSize = Mathf.Clamp(Mathf.RoundToInt(size * .24f), 10, 15);
-        DrawShadowedLabel(outer, string.IsNullOrEmpty(handLabel) ? "MANO" : handLabel.Replace("MANO ", ""), cursorLabelStyle, 1.5f);
+        string shortHand = string.IsNullOrEmpty(handLabel) ? "MANO" : handLabel.Replace("MANO ", "");
+        string tag = closed ? ("[P] " + shortHand) : (raised ? ("* " + shortHand) : shortHand);
+        DrawShadowedLabel(outer, tag, cursorLabelStyle, 1.5f);
     }
 
-    public static void DrawNavigatorHandCursor(HandDwellNavigator navigator, string handLabel, bool handRaised)
+    public static void DrawNavigatorHandCursor(HandDwellNavigator navigator, string handLabel, bool handRaised, bool handClosed = false)
     {
         if (navigator == null || !navigator.CursorVisible) return;
         int prevDepth = JungleRetainedUI.depth;
         JungleRetainedUI.depth = -150;
-        DrawHandCursor(new Vector2(navigator.CursorX, navigator.CursorY), handLabel, navigator.Progress, handRaised);
+        DrawHandCursor(new Vector2(navigator.CursorX, navigator.CursorY), handLabel, navigator.Progress, handRaised, handClosed);
         JungleRetainedUI.depth = prevDepth;
     }
 }

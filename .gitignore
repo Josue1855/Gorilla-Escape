@@ -5,8 +5,8 @@ Thumbs.db
 *.swp
 *.swo
 
-# Añadir ignores de Unity/.NET/frontend cuando existan esos proyectos.
 # Conservar Assets, .meta, Packages, ProjectSettings y configuraciones necesarias.
+# (Unity/.NET/frontend ya existen: sus salidas se ignoran más abajo.)
 
 # Herramientas Python de gestión
 __pycache__/
@@ -88,3 +88,22 @@ __pycache__/
 
 # Wrangler local artifacts
 .wrangler/
+
+# Keystore and signing credentials
+key.properties
+*.jks
+*.keystore
+*.p12
+
+# Salidas de build/empaquetado (raíz) y de Flutter Companion
+/Builds/
+/Companion/build/
+/Companion/.dart_tool/
+/Companion/.flutter-plugins-dependencies
+
+# Artefactos de depuración sueltos en la raíz
+/emulator*.png
+/test_*.png
+/unity_build_output.log
+/tools/*.png
+/unity_build_standalone.log

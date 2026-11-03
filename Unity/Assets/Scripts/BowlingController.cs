@@ -589,7 +589,7 @@ public sealed partial class BowlingController : MonoBehaviour, IJungleScreen
         float scale = Mathf.Clamp(Mathf.Min(w / 1920f, h / 1080f), .65f, 1.35f);
         Rect hud = new Rect(24 * scale, 20 * scale, Mathf.Min(w * .57f, 820 * scale), 162 * scale);
         JungleUITheme.DrawPanel(hud);
-        JungleRetainedUI.Label(new Rect(hud.x + 22 * scale, hud.y + 10 * scale, hud.width * .42f, 30 * scale), "BANANA BOWLING", hudBrandStyle);
+        JungleRetainedUI.Label(new Rect(hud.x + 22 * scale, hud.y + 10 * scale, hud.width * .42f, 30 * scale), "COCONUT BOWLING", hudBrandStyle);
 
         bool connected = Time.unscaledTime - lastPacketAt < 1f;
         if (!connected)
@@ -617,12 +617,34 @@ public sealed partial class BowlingController : MonoBehaviour, IJungleScreen
             : state == GameState.Rolling ? $"¡Bola en juego! · {shotLabel} · EFECTO {(bowlingSpin<-.1f?"IZQ":bowlingSpin>.1f?"DER":"RECTO")}" : $"Derribaste {lastPins} pinos";
         JungleRetainedUI.Label(new Rect(hud.x + 22 * scale, hud.y + 80 * scale, hud.width - 44 * scale, 28 * scale), message, hudMessageStyle);
 
-        float buttonY = hud.yMax - 44 * scale;
-        float gap = 10 * scale;
-        float buttonWidth = (hud.width - 44 * scale - gap * 2) / 3f;
-        if (JungleRetainedUI.Button(new Rect(hud.x + 22 * scale, buttonY, buttonWidth, 34 * scale), "CALIBRAR", hudButtonStyle)) { JungleAudioBank.PlayUiClick(); Calibrate(); }
-        if (JungleRetainedUI.Button(new Rect(hud.x + 22 * scale + buttonWidth + gap, buttonY, buttonWidth, 34 * scale), "NUEVA PARTIDA", hudButtonStyle)) { JungleAudioBank.PlayUiClick(); StartBowlingGame(); }
-        if (JungleRetainedUI.Button(new Rect(hud.x + 22 * scale + (buttonWidth + gap) * 2, buttonY, buttonWidth, 34 * scale), "MENÚ", hudButtonStyle)) { JungleAudioBank.PlayUiClick(); SceneNavigator.Load(SceneNavigator.MainMenu); }
+        if (bowlingGameOver && TournamentSession.IsActive)
+        {
+            TournamentSession.RecordRoundResult(GetDisplayedBowlingScore());
+            Vector2 normCursor = new Vector2(0.5f, 0.5f);
+            string handLabel = "MANO";
+            bool handRaised = false, handClosed = false, forwardPush = false;
+            if (sharedSession != null) sharedSession.TryCameraCursor(out normCursor, out handLabel, out handRaised, out handClosed, out forwardPush);
+            TournamentSession.DrawTournamentOverlay(Screen.width, Screen.height, normCursor, handLabel, handRaised, handClosed, forwardPush, sharedSession != null && sharedSession.PhoneTouchTriggered);
+            return;
+        }
+
+        if (bowlingGameOver && !TournamentSession.IsActive)
+        {
+            Rect overCard = new Rect(w * .30f, h * .36f, w * .40f, h * .28f);
+            JungleUITheme.DrawPanel(overCard, true);
+            JungleUITheme.DrawShadowedLabel(new Rect(overCard.x + 20, overCard.y + 16, overCard.width - 40, 42), "¡PARTIDA COMPLETADA!", JungleUITheme.Title);
+            JungleUITheme.DrawShadowedLabel(new Rect(overCard.x + 20, overCard.y + 64, overCard.width - 40, 36), $"TOTAL: {GetDisplayedBowlingScore()} PINOS", JungleUITheme.Heading);
+            if (JungleRetainedUI.Button(new Rect(overCard.x + overCard.width * .10f, overCard.y + overCard.height - 62, overCard.width * .38f, 44), "OTRA PARTIDA", JungleUITheme.ButtonSelected))
+            {
+                JungleAudioBank.PlayUiClick();
+                StartBowlingGame();
+            }
+            if (JungleRetainedUI.Button(new Rect(overCard.x + overCard.width * .52f, overCard.y + overCard.height - 62, overCard.width * .38f, 44), "MENÚ", JungleUITheme.Button))
+            {
+                JungleAudioBank.PlayUiClick();
+                SceneNavigator.Load(SceneNavigator.MainMenu);
+            }
+        }
     }
 
     private GUIStyle CrispLabel(int size, Color color, FontStyle weight, TextAnchor alignment)

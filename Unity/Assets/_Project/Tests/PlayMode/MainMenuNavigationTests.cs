@@ -134,15 +134,19 @@ public class MainMenuNavigationTests
     }
     [UnityTest] public IEnumerator PreviewControlCreatesAndClosesOnlyItsLoopbackListener()
     {
+        string bundle=Environment.GetEnvironmentVariable("GORILLA_TEST_CAMERA_BUNDLE");
+        string cameraScript=Environment.GetEnvironmentVariable("GORILLA_TEST_CAMERA_SCRIPT");
+        if(string.IsNullOrEmpty(bundle)||string.IsNullOrEmpty(cameraScript))
+            Assert.Ignore("Camera bundle and worker fixture paths missing: NOT RUN");
+        var paths=CameraRuntimePaths.Resolve(bundle,_=>null);
         string previous=Environment.GetEnvironmentVariable("GORILLA_QA_OVERLAY");
         Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY","1");
-        var paths=CameraRuntimePaths.Resolve(Environment.GetEnvironmentVariable("GORILLA_TEST_CAMERA_BUNDLE"),_=>null);
         using(var vision=new VisionSupervisor())
         {
             CameraPreviewClient preview=null;
             try
             {
-                var start=vision.StartAsync(paths.Python,Environment.GetEnvironmentVariable("GORILLA_TEST_CAMERA_SCRIPT"),"physical",paths.Fixture,paths.Model,paths.Device,CancellationToken.None);
+                var start=vision.StartAsync(paths.Python,cameraScript,"physical",paths.Fixture,paths.Model,paths.Device,CancellationToken.None);
                 var clock=System.Diagnostics.Stopwatch.StartNew();while(!start.IsCompleted&&clock.Elapsed.TotalSeconds<15)yield return null;
                 Assert.IsTrue(start.IsCompleted);Assert.IsFalse(start.IsFaulted,start.Exception?.ToString());Assert.AreEqual(0,vision.PreviewPort);
                 for(int repeat=0;repeat<2;repeat++)

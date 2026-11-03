@@ -17,7 +17,7 @@ namespace GorillaEscape.Contracts
                 &&(screen=="menu"||screen=="connection"||screen=="game")&&(gameId=="lobby"?screen!="game":screen=="game")
                 &&contextId!=null&&contextId.Length==32&&Guid.TryParseExact(contextId,"N",out _)&&(hand=="right"||hand=="left");
         }
-        public static bool KnownGame(string id)=>id=="bowling"||id=="boxing"||id=="baseball"||id=="drums"||id=="coconut-slice"||id=="jungle-keeper"||id=="whack"||id=="log-balance";
+        public static bool KnownGame(string id)=>id=="bowling"||id=="boxing"||id=="baseball"||id=="drums"||id=="coconut-slice"||id=="jungle-keeper"||id=="whack"||id=="log-balance"||id=="gorilla-smash"||id=="coconut-throw";
         public GamePresentationWire Copy()=>new GamePresentationWire{version=version,playerId=playerId,gameId=gameId,phase=phase,stats=stats.Copy(),screen=screen,contextId=contextId,hand=hand,phoneRequired=phoneRequired};
     }
     [Serializable] public sealed class MobileUiCommandWire
@@ -34,6 +34,7 @@ namespace GorillaEscape.Contracts
             return action=="select-game"&&context.gameId=="lobby"&&GamePresentationWire.KnownGame(target)
                 ||action=="menu"&&target==""||action=="restart"&&context.screen=="game"&&target==""
                 ||action=="start"&&context.screen=="game"&&context.phase=="Ready"&&target==""
+                ||(action=="pause"||action=="resume"||action=="toggle-pause")&&context.screen=="game"&&target==""
                 ||action=="set-hand"&&(context.gameId=="lobby"||context.gameId=="bowling")&&(target=="left"||target=="right");
         }
     }

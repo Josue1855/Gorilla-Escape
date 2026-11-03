@@ -13,6 +13,8 @@ public static class SceneNavigator
     public const string JungleKeeper = "JungleKeeper";
     public const string LogBalance = "LogBalance";
     public const string WhackAMole = "WhackAMole";
+    public const string GorillaSmash = "GorillaSmash";
+    public const string CoconutThrow = "CoconutThrow";
     public static bool IsJungleKeeper { get; private set; }
     public static void Load(string scene)
     {

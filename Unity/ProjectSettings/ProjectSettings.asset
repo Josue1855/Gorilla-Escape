@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: WiiPhonePrototype
+  companyName: Gorilla Escape Team
+  productName: Gorilla Escape
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.12156863, g: 0.12156863, b: 0.1254902, a: 1}
@@ -645,14 +645,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: WiiPhonePrototype
+  metroPackageName: Gorilla Escape
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: WiiPhonePrototype
+  metroApplicationDescription: Gorilla Escape
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -732,7 +732,7 @@ PlayerSettings:
   cloudProjectId: c96887a6-7238-440b-9915-30c753523098
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: WiiPhonePrototype
+  projectName: Gorilla Escape
   organizationId: unity_dad1b6777e8058e1ca3e
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

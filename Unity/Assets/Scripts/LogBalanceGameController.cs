@@ -91,7 +91,7 @@ public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
         }
         var title=titleStyle;var body=bodyStyle;var button=buttonStyle;
         JungleUITheme.DrawPanel(new Rect(w*.035f,h*.025f,w*.93f,h*.145f));
-        JungleUITheme.DrawShadowedLabel(new Rect(w*.06f,h*.035f,w*.56f,h*.06f),"DESAFÍO DEL TRONCO",title,3f);
+        JungleUITheme.DrawShadowedLabel(new Rect(w*.06f,h*.035f,w*.56f,h*.06f),"JUNGLE BALANCE",title,3f);
         JungleUITheme.DrawShadowedLabel(new Rect(w*.06f,h*.095f,w*.56f,h*.05f),"Cruza el río. Inclina suavemente el teléfono y frena la inercia.",body,1.5f);
         if(JungleRetainedUI.Button(new Rect(w*.66f,h*.065f,w*.135f,h*.062f),credits?"CERRAR":"CRÉDITOS",button))credits=!credits;
         if(JungleRetainedUI.Button(new Rect(w*.81f,h*.065f,w*.135f,h*.062f),"MENÚ",button))SceneNavigator.Load(SceneNavigator.MainMenu);
@@ -126,7 +126,19 @@ public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
         if(model.State==LogBalanceState.Ready)
         {JungleRetainedUI.enabled=enabled&&session.IsInputReady&&!preparing&&control.Calibrated;if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"COMENZAR",button))Begin();}
         else if(model.Result!=null)
-        {if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"OTRO INTENTO",button))Restart();}
+        {
+            if (TournamentSession.IsActive)
+            {
+                TournamentSession.RecordRoundResult(Mathf.RoundToInt(model.Progress * 100f));
+                Vector2 normCursor = new Vector2(0.5f, 0.5f);
+                string handLabel = "MANO";
+                bool handRaised = false, handClosed = false, forwardPush = false;
+                if (session != null) session.TryCameraCursor(out normCursor, out handLabel, out handRaised, out handClosed, out forwardPush);
+                TournamentSession.DrawTournamentOverlay(w, h, normCursor, handLabel, handRaised, handClosed, forwardPush, session != null && session.PhoneTouchTriggered);
+                return;
+            }
+            if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"OTRO INTENTO",button))Restart();
+        }
         else
         {JungleRetainedUI.enabled=enabled&&(!manualPause||control.Calibrated&&!preparing);if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),manualPause?"REANUDAR":"PAUSAR",button))manualPause=!manualPause;}
         JungleRetainedUI.enabled=enabled;JungleUITheme.DrawLeaves();

@@ -109,7 +109,8 @@ namespace GorillaEscape.Tests {
    Assert.That(gate.ShowNotice(.1f),Is.False);
    Assert.That(gate.Update(true,.1f),Is.True);
    Assert.That(gate.Update(false,.2f),Is.True);
-   Assert.That(gate.ShowNotice(.31f),Is.True);
+   // Recovery at .1 resets the loss timer; the new loss at .2 has lasted only .11 s.
+   Assert.That(gate.ShowNotice(.31f),Is.False);
    Assert.That(gate.Update(true,.35f),Is.True);
    Assert.That(gate.Update(true,.84f),Is.True);
    Assert.That(gate.Update(true,.86f),Is.False);
@@ -227,6 +228,20 @@ namespace GorillaEscape.Tests {
   }
   [Test]public void SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock(){foreach(var name in new[]{"second-person-enters","tracking-low-confidence","hand-occluded"}){var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera(seq:1));l.Observe(Camera(seq:2));l.Observe(Camera(name,seq:3));Assert.That(l.State,Is.EqualTo(name=="hand-occluded"?PlayerLockState.LOCKED:PlayerLockState.LOST),name);}var p=new PlayerLock(new FusionSettings());p.Ready(1);p.Observe(Camera(seq:1));p.Observe(Camera(seq:2));var f=Camera(seq:3);f.subjects[0].ambiguous=true;p.Observe(f);Assert.That(p.State,Is.EqualTo(PlayerLockState.LOST));}
   [Test]public void SpatialJumpAndStaleFramesDoNotRefreshLock(){var l=new PlayerLock(new FusionSettings());l.Ready(1);l.Observe(Camera(seq:1));l.Observe(Camera(seq:2));var f=Camera(seq:3);f.subjects[0].centerX=.75f;l.Observe(f);Assert.That(l.State,Is.EqualTo(PlayerLockState.LOST));l.Observe(Camera(seq:2));Assert.That(l.State,Is.EqualTo(PlayerLockState.LOST));}
+  [Test]public void FrozenFrameBufferDistinguishedFromMotionlessPersonDegradesTracking(){
+   var store=new CameraInputStore();
+   for(int i=1;i<=7;i++){
+    var f=Camera(seq:i);f.source="physical-webcam";f.quality="observed";
+    Assert.That(store.Accept(f,1000+i),Is.True);
+    Assert.That(store.IsFrozenFrame,Is.False);
+    Assert.That(f.trackingState,Is.EqualTo("TRACKING"));
+   }
+   var frozen=Camera(seq:8);frozen.source="physical-webcam";frozen.quality="observed";
+   Assert.That(store.Accept(frozen,1008),Is.True);
+   Assert.That(store.IsFrozenFrame,Is.True);
+   Assert.That(frozen.trackingState,Is.EqualTo("LOST"));
+   Assert.That(frozen.subjects.Length,Is.EqualTo(0));
+  }
   [TestCase(0,true)] [TestCase(-80,true)] [TestCase(80,true)] [TestCase(-150,false)] [TestCase(150,false)]
   public void EarlyLateBothDirectionsPreserveDelta(long delta,bool aligned){var s=new PhoneInputStore();var f=Ready(s,new FusionSettings{maxPhoneAge=400});Add(f,s,Phone(1000+delta));var r=f.Evaluate(1,1150);Assert.That(r.Aligned,Is.EqualTo(aligned));Assert.That(r.AlignmentDelta,Is.EqualTo(Math.Abs(delta)));Assert.That(r.SubjectId,Is.EqualTo(1));}
   [Test]public void StaleLostRecoveredAndFutureSamplesAreExplicit(){var s=new PhoneInputStore();var f=Ready(s);Add(f,s,Phone());Assert.That(f.Evaluate(1,1100).Eligible,Is.True);Assert.That(f.Evaluate(1,1400).Eligible,Is.False);Assert.That(f.Evaluate(1,1400).PhoneFresh,Is.False);Assert.That(f.Evaluate(1,1400).CameraFresh,Is.False);f.ObserveCamera(Camera(time:1500,seq:3),1501);f.ObserveCamera(Camera(time:1500,seq:4),1501);Add(f,s,Phone(1500,2));Assert.That(f.Evaluate(1,1501).Eligible,Is.True);Add(f,s,Phone(9000,3));Assert.That(f.Evaluate(1,1502).Phone.sequence,Is.EqualTo(2));}

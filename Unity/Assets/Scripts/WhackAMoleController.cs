@@ -238,7 +238,8 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         message = combo >= 4 ? $"¡COMBO x{combo}" : $"+{gain}";
     }
 
-    public void BeginFromPhone(){if(state==State.Intro)Begin();}    private void Begin()
+    public void BeginFromPhone(){if(state==State.Intro)Begin();}
+    private void Begin()
     {
         JungleAudioBank.PlayUiClick();
         session.SetGameplayActive(true);
@@ -315,6 +316,16 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         }
         else
         {
+            if (TournamentSession.IsActive)
+            {
+                TournamentSession.RecordRoundResult(score);
+                Vector2 normCursor = new Vector2(0.5f, 0.5f);
+                string handLabel = "MANO";
+                bool handRaised = false, handClosed = false, forwardPush = false;
+                if (session != null) session.TryCameraCursor(out normCursor, out handLabel, out handRaised, out handClosed, out forwardPush);
+                TournamentSession.DrawTournamentOverlay(w, h, normCursor, handLabel, handRaised, handClosed, forwardPush, session != null && session.PhoneTouchTriggered);
+                return;
+            }
             if (score != cachedResScore || hits != cachedResHits || misses != cachedResMisses || bestCombo != cachedResCombo)
             {
                 cachedResScore = score; cachedResHits = hits; cachedResMisses = misses; cachedResCombo = bestCombo;
