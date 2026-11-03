@@ -9,24 +9,27 @@ import java.util.concurrent.*;
 public final class FirewallPreflight implements AutoCloseable {
     @FunctionalInterface interface Runner {String run(boolean install, boolean recovery)throws Exception;}
     private final ExecutorService worker=Executors.newSingleThreadExecutor(r->{var t=new Thread(r,"firewall-preflight");t.setDaemon(true);return t;});
-    private final Runner runner;private final String address;private final Path helper;private final boolean lab;
+    private final Runner runner;private final String address;private final Path helper;private final boolean lab;private final boolean physical;
     private volatile String state="CHECKING";private volatile boolean closed,recovery;
     private volatile Process command,lease;
     private volatile long nextCheck;
     private Future<?> pending;private boolean recheck;
     public FirewallPreflight(boolean lab,String address,String packageRoot){
         this.lab=lab;this.address=address;helper=packageRoot==null?null:Path.of(packageRoot,"tools","setup-firewall.sh").toAbsolutePath();
-        runner=this::execute;
-        boolean windows=System.getProperty("os.name","").toLowerCase(Locale.ROOT).contains("win");
+        runner=this::execute;physical=true;
+        boolean windows=isWindows();
         if(lab||windows)state="NOT_REQUIRED";else check();
     }
-    FirewallPreflight(Runner runner){this.runner=runner;address="";helper=null;lab=false;check();}
+    FirewallPreflight(Runner runner){this.runner=runner;address="";helper=null;lab=false;physical=false;check();}
+    private static boolean isWindows(){return System.getProperty("os.name","").toLowerCase(Locale.ROOT).contains("win");}
     public String state(){return state;}
     public boolean ready(){return Set.of("READY","DISABLED","NOT_INSTALLED","NOT_REQUIRED").contains(state);}
     public synchronized void poll(){if(!closed&&pending!=null&&pending.isDone()&&!state.equals("NOT_REQUIRED")&&!state.equals("CANCELLED")&&System.nanoTime()>=nextCheck)submit(false);}
-    public synchronized void check(){if(closed||lab||System.getProperty("os.name","").toLowerCase(Locale.ROOT).contains("win"))return;state="CHECKING";if(pending!=null&&!pending.isDone()){recheck=true;return;}submit(false);}
+    // The OS guard applies only to the physical helper path. The injected-Runner
+    // state machine (unit tests) must run the same transitions on every platform.
+    public synchronized void check(){if(closed||lab||(physical&&isWindows()))return;state="CHECKING";if(pending!=null&&!pending.isDone()){recheck=true;return;}submit(false);}
     public synchronized void install(boolean forRecovery){
-        if(closed||lab||pending!=null&&!pending.isDone())return;
+        if(closed||lab||(physical&&isWindows())||pending!=null&&!pending.isDone())return;
         recovery=forRecovery;state="AUTHORIZING";submit(true);
     }
     private void submit(boolean install){
@@ -66,7 +69,7 @@ public final class FirewallPreflight implements AutoCloseable {
         if(result==null||!Set.of("READY","DISABLED","NOT_INSTALLED","NEEDS_PERMISSION","INSPECTION_REQUIRED","FAILED").contains(result.asString()))throw new IOException("FIREWALL_RESULT");
         return result.asString();
     }
-    public synchronized void requireRecovery(){recovery=true;nextCheck=0;check();}
+    public synchronized void requireRecovery(){if(physical&&isWindows())return;recovery=true;nextCheck=0;check();}
     public synchronized void endRecovery(){
         recovery=false;var child=lease;lease=null;
         if(child!=null)try{child.getOutputStream().close();}catch(IOException ignored){}

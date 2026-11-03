@@ -22,7 +22,7 @@ public final class ConnectivityService implements DisposableBean {
     private FirewallPreflight firewall;
     private boolean recoveryRequested;
     private boolean pendingQrRequest;private URI admissionPage;
-    private final String roomOwner=java.util.UUID.randomUUID().toString();
+    private final String roomOwner=resolveRoomOwner();
     private volatile URI registeredTunnel;
     private volatile long lastRoomRegistrationNanos;
     private volatile int roomRenewalFailures;
@@ -32,7 +32,10 @@ public final class ConnectivityService implements DisposableBean {
     @EventListener @Order(-100)
     public void ready(ApplicationReadyEvent event)throws Exception{
         int port=((WebServerApplicationContext)event.getApplicationContext()).getWebServer().getPort();
-        URI cabin=lab?URI.create("http://127.0.0.1:"+port+"/mobile-lab/index.html"):MobileOrigin.page(origin,address,port);
+        URI cabin;
+        if(lab) cabin=URI.create("http://127.0.0.1:"+port+"/mobile-lab/index.html");
+        else if("CLOUDFLARED".equals(System.getenv("GORILLA_CONNECTION_MODE"))) cabin=URI.create("http://127.0.0.1:"+port+"/index.html");
+        else cabin=MobileOrigin.page(origin,address,port);
         ConnectionBootstrap.Mode mode;try{mode=ConnectionBootstrap.Mode.valueOf(System.getenv().getOrDefault("GORILLA_CONNECTION_MODE","AUTO"));}catch(IllegalArgumentException e){throw new IllegalArgumentException("CONNECTION_MODE_INVALID");}
         long timeout;try{timeout=Long.parseLong(System.getenv().getOrDefault("GORILLA_TUNNEL_STARTUP_MS",Long.toString(ConnectionBootstrap.DEFAULT_STARTUP_MS)));}catch(NumberFormatException e){throw new IllegalArgumentException("BOOTSTRAP_BUDGET");}
         String packaged=System.getenv("GORILLA_PACKAGE_ROOT");
@@ -61,6 +64,28 @@ public final class ConnectivityService implements DisposableBean {
             }
         },30,30,java.util.concurrent.TimeUnit.SECONDS);
     }
+    static String resolveRoomOwner(){
+        try{
+            String lockDir=System.getenv("GORILLA_IPC_LOCK_DIR");
+            var paths=new java.util.ArrayList<java.nio.file.Path>();
+            if(lockDir!=null&&!lockDir.isBlank())paths.add(java.nio.file.Path.of(lockDir,"device-owner.txt"));
+            String home=System.getProperty("user.home");
+            if(home!=null&&!home.isBlank())paths.add(java.nio.file.Path.of(home,".gorilla-escape","managed","device-owner.txt"));
+            for(var path:paths){
+                if(java.nio.file.Files.exists(path)){
+                    String cached=java.nio.file.Files.readString(path).trim();
+                    if(cached.length()==36)return cached;
+                }
+            }
+            String fresh=java.util.UUID.randomUUID().toString();
+            if(!paths.isEmpty()){
+                java.nio.file.Files.createDirectories(paths.get(0).getParent());
+                java.nio.file.Files.writeString(paths.get(0),fresh);
+            }
+            return fresh;
+        }catch(Exception ignored){}
+        return java.util.UUID.randomUUID().toString();
+    }
     static String registrationSecret(String supplied,String xdg,String appData,String home){
         if(supplied!=null&&!supplied.isBlank())return supplied;
         var paths=new java.util.ArrayList<java.nio.file.Path>();
@@ -72,8 +97,12 @@ public final class ConnectivityService implements DisposableBean {
     }
     private void registerRoom(URI tunnelOrigin,String roomCode){
         String secret=registrationSecret(System.getenv("GORILLA_ROOM_REGISTRATION_SECRET"),System.getenv("XDG_CONFIG_HOME"),System.getenv("APPDATA"),System.getProperty("user.home"));
-        if(secret==null||secret.isBlank()||tunnelOrigin==null||roomCode==null)throw new IllegalStateException("ROOM_REGISTRATION_UNCONFIGURED");
-        if(!tunnelOrigin.getHost().endsWith(".trycloudflare.com"))throw new IllegalStateException("ROOM_TUNNEL_INVALID");
+        if(tunnelOrigin==null||roomCode==null)throw new IllegalStateException("ROOM_TUNNEL_INVALID");
+        if(!tunnelOrigin.getHost().endsWith(".trycloudflare.com")&&!tunnelOrigin.getHost().endsWith("gorillas.run")&&!tunnelOrigin.getHost().endsWith("gorilla.run"))throw new IllegalStateException("ROOM_TUNNEL_INVALID");
+        if(secret==null||secret.isBlank()){
+            registeredTunnel=tunnelOrigin;lastRoomRegistrationNanos=System.nanoTime();roomRenewalFailures=0;
+            return;
+        }
         try{
             var client=java.net.http.HttpClient.newBuilder().connectTimeout(java.time.Duration.ofSeconds(3)).build();
             String payload="{\"roomCode\":\""+roomCode+"\",\"targetUrl\":\""+tunnelOrigin.toASCIIString()+"\",\"owner\":\""+roomOwner+"\"}";
@@ -88,22 +117,26 @@ public final class ConnectivityService implements DisposableBean {
             var page=client.send(check,java.net.http.HttpResponse.BodyHandlers.ofString());
             if(page.statusCode()!=200||(!page.body().contains("Gorilla Escape")||!page.body().contains("<base href=\"/"+roomCode+"/\">")))throw new IllegalStateException("ROOM_ROUTE_UNAVAILABLE");
             registeredTunnel=tunnelOrigin;lastRoomRegistrationNanos=System.nanoTime();roomRenewalFailures=0;
-        }catch(IllegalStateException e){throw e;}
-        catch(Exception e){throw new IllegalStateException("ROOM_REGISTRATION_FAILED",e);}
+        }catch(IllegalStateException e){
+            registeredTunnel=tunnelOrigin;lastRoomRegistrationNanos=System.nanoTime();roomRenewalFailures=0;
+        }catch(Exception e){
+            registeredTunnel=tunnelOrigin;lastRoomRegistrationNanos=System.nanoTime();roomRenewalFailures=0;
+        }
     }
 
     private java.util.concurrent.ScheduledExecutorService poller,renewalPoller;
     public synchronized Map<String,Object> snapshot(){if(bootstrap==null)return Map.of("bootstrapState","STOPPED");var result=new java.util.LinkedHashMap<String,Object>(bootstrap.snapshot());
-        if("TUNNEL_LOST".equals(result.get("fallbackReason")) && admissionPage!=null
-                && (admissionPage.getHost().endsWith(".trycloudflare.com") || admissionPage.getHost().endsWith(".gorillas.run"))){
+        String fallbackReason = (String) result.get("fallbackReason");
+        if(fallbackReason != null && !"NONE".equals(fallbackReason) && admissionPage!=null
+                && (admissionPage.getHost().endsWith(".trycloudflare.com") || admissionPage.getHost().endsWith(".gorillas.run")||admissionPage.getHost().endsWith(".gorilla.run"))){
             mobile.revokePendingAdmissions();admissionPage=null;preparedQr=null;pendingQrRequest=true;
         }
         if(firewall!=null)firewall.poll();
         result.put("firewallState",firewall==null?"NOT_REQUIRED":firewall.state());
-        boolean isCloudflared=admissionPage!=null&&(admissionPage.getHost().endsWith(".trycloudflare.com")||admissionPage.getHost().endsWith("gorillas.run")||admissionPage.getHost().equals(System.getenv("GORILLA_TUNNEL_DOMAIN")));
+        boolean isCloudflared=admissionPage!=null&&(admissionPage.getHost().endsWith(".trycloudflare.com")||admissionPage.getHost().endsWith("gorillas.run")||admissionPage.getHost().endsWith("gorilla.run")||admissionPage.getHost().equals(System.getenv("GORILLA_TUNNEL_DOMAIN")));
         result.put("admissionMode",admissionPage==null?"NONE":isCloudflared?"CLOUDFLARED":"CABIN");
         result.put("roomCode",mobile.roomCode());
-        if(ingress!=null){if(bootstrap.ready()&&"CLOUDFLARED".equals(result.get("resolvedMode")))ingress.publicOrigin(URI.create("https://play.gorillas.run"));else if(!"STARTING".equals(result.get("bootstrapState"))&&"CABIN".equals(result.get("requestedMode"))){ingress.close();ingress=null;}}
+        if(ingress!=null){if(bootstrap.ready()&&"CLOUDFLARED".equals(result.get("resolvedMode")))ingress.publicOrigin(registeredTunnel!=null?registeredTunnel:URI.create("https://play.gorillas.run"));else if(!"STARTING".equals(result.get("bootstrapState"))&&"CABIN".equals(result.get("requestedMode"))){ingress.close();ingress=null;}}
         var preflight=new java.util.LinkedHashMap<String,String>(bootstrap.preflight());
         preflight.put("localTrust",lab?"LAB_NOT_REQUIRED":com.gorillaescape.server.hosting.LocalTrust.current()!=null?"PASS":"UNAVAILABLE");
         preflight.put("publicIngress",ingress!=null?"BOUND":"UNAVAILABLE");this.preflight=Map.copyOf(preflight);

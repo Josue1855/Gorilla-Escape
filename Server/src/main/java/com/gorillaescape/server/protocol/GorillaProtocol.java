@@ -68,7 +68,7 @@ public final class GorillaProtocol {
             else if(type.equals("UI_COMMAND")){
                 exact(payload,Set.of("requestId","contextId","action","target"));
                 if(!text(payload,"requestId").matches("[a-f0-9]{32}")||!text(payload,"contextId").matches("[a-f0-9]{32}")
-                    ||!Set.of("select-game","menu","restart","set-hand","start").contains(text(payload,"action"))||text(payload,"target").length()>24)throw bad("UI_COMMAND");
+                    ||!Set.of("select-game","menu","restart","set-hand","start","pause","resume","toggle-pause").contains(text(payload,"action"))||text(payload,"target").length()>24)throw bad("UI_COMMAND");
             }
             else if(type.equals("HEARTBEAT") && payload != null && payload.has("qaVersion")) {
                 exact(payload,Set.of("qaVersion","motionHz","orientationHz","emissionHz","rttP50","rttP95"));

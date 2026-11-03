@@ -21,10 +21,15 @@ public final class JoinQrPoc {
         if(roomCode!=null&&!roomCode.isBlank()){
             if(!roomCode.matches("[a-z0-9]{4,8}"))throw new IllegalArgumentException("QR_CONFIG");
             String customDomain=System.getenv("GORILLA_TUNNEL_DOMAIN");
-            String publicHost=(customDomain!=null&&!customDomain.isBlank())?customDomain.trim():"play.gorillas.run";
-            if(page.getHost().equals("play.gorillas.run")||page.getHost().endsWith(".gorillas.run")||page.getHost().equals("gorillas.run")
-                    ||page.getHost().endsWith(".trycloudflare.com")||page.getHost().equals(publicHost)){
-                base="https://"+publicHost+"/"+roomCode+"/";
+            if("DIRECT".equalsIgnoreCase(customDomain)||"TRYCLOUDFLARE".equalsIgnoreCase(customDomain)||"1".equals(System.getenv("GORILLA_DIRECT_TUNNEL"))){
+                base=page.toASCIIString();
+            } else {
+                String publicHost=(customDomain!=null&&!customDomain.isBlank())?customDomain.trim():"play.gorillas.run";
+                if(page.getHost().equals("play.gorilla.run")||page.getHost().endsWith(".gorilla.run")||page.getHost().equals("gorilla.run")
+                        ||page.getHost().equals("play.gorillas.run")||page.getHost().endsWith(".gorillas.run")||page.getHost().equals("gorillas.run")
+                        ||page.getHost().endsWith(".trycloudflare.com")||page.getHost().equals(publicHost)){
+                    base="https://"+publicHost+"/"+roomCode+"/";
+                }
             }
         }
         return URI.create(base+"#v=1&sessionId="+admission.sessionId()+"&admission="+admission.token());

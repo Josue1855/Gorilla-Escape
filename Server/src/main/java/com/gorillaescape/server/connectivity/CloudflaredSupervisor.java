@@ -46,7 +46,7 @@ public final class CloudflaredSupervisor implements Tunnel {
     CloudflaredSupervisor(Path binary,HealthProbe probe,boolean verifyBinary){this(binary,probe,verifyBinary,null);}
     private CloudflaredSupervisor(Path binary,HealthProbe probe,boolean verifyBinary,java.util.function.Consumer<URI> onRegistered){this.binary=binary;this.probe=probe;this.verifyBinary=verifyBinary;this.onRegistered=onRegistered;}
     private static final String DEFAULT_NAMED_HOST="play.gorillas.run";
-    private static final Pattern URL=Pattern.compile("(?<![A-Za-z0-9./_-])https://(?:[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com|(?:play\\.)?gorillas\\.run)(?=[\\s|]|$)");
+    private static final Pattern URL=Pattern.compile("(?<![A-Za-z0-9./_-])https://(?:[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com|(?:play\\.)?gorillas?\\.run)(?=[\\s|]|$)");
     private volatile int healthAttempts,lastHttpsStatus;
     private volatile java.net.http.HttpClient httpClient;
     private volatile String probeFailure="NONE";
@@ -80,7 +80,7 @@ public final class CloudflaredSupervisor implements Tunnel {
     public static URI validatePublicOrigin(String value){
         if(value==null||value.length()>253)throw new IllegalArgumentException("TUNNEL_ORIGIN_INVALID");
         boolean matchesQuick=value.matches("https://[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com");
-        boolean matchesCustom=value.matches("https://(?:play\\.)?gorillas\\.run");
+        boolean matchesCustom=value.matches("https://(?:play\\.)?gorillas?\\.run");
         String customDomain=System.getenv("GORILLA_TUNNEL_DOMAIN");
         if(customDomain!=null&&!customDomain.isBlank()&&value.equals("https://"+customDomain.trim()))matchesCustom=true;
         if(!matchesQuick&&!matchesCustom)throw new IllegalArgumentException("TUNNEL_ORIGIN_INVALID");
@@ -104,12 +104,12 @@ public final class CloudflaredSupervisor implements Tunnel {
             long left=deadline-System.nanoTime();if(left<=0)throw new IOException("TUNNEL_TIMEOUT");
 
             // Check if a named tunnel credentials file is available (in production / verified binary or explicit opt-in)
-            NamedTunnelSpec named=onRegistered==null&&System.getenv("GORILLA_TUNNEL_ID")!=null?resolveNamedTunnel(ingress):null;
+            NamedTunnelSpec named=resolveNamedTunnel(ingress);
             URI expectedOrigin=null;
             if(named!=null){
                 config=named.configFile;
                 expectedOrigin=named.origin;
-                launch(binary.toString(),"tunnel","--config",config.toString(),"--no-autoupdate","--metrics","127.0.0.1:0","run",named.tunnelId);
+                if(named.token!=null)launch(binary.toString(),"tunnel","run","--token",named.token,"--metrics","127.0.0.1:0");else launch(binary.toString(),"tunnel","--config",config.toString(),"--no-autoupdate","--metrics","127.0.0.1:0","run",named.tunnelId);
             }else{
                 config=Files.createTempFile("gorilla-quick-tunnel-",".yaml");Files.writeString(config,"# Isolated temporary QA tunnel; no account, token or named ingress.\n");
                 launch(binary.toString(),"tunnel","--config",config.toString(),"--no-autoupdate","--url",ingress.toASCIIString(),"--metrics","127.0.0.1:0");
@@ -191,9 +191,15 @@ public final class CloudflaredSupervisor implements Tunnel {
         builder.environment().keySet().removeIf(k->k.startsWith("GORILLA_")||k.startsWith("TUNNEL_")||k.startsWith("CLOUDFLARE_")||k.startsWith("CF_"));
         return builder;
     }
-    record NamedTunnelSpec(String tunnelId,Path configFile,URI origin){}
+    record NamedTunnelSpec(String tunnelId,Path configFile,URI origin,String token){}
     private static NamedTunnelSpec resolveNamedTunnel(URI ingress){
         try{
+
+            String domain=System.getenv("GORILLA_TUNNEL_DOMAIN");
+            String hostname=domain!=null&&!domain.isBlank()?domain.trim():DEFAULT_NAMED_HOST;
+            URI origin=validatePublicOrigin("https://"+hostname);
+            String token=System.getenv("GORILLA_TUNNEL_TOKEN");
+            if(token!=null&&!token.isBlank())return new NamedTunnelSpec(null,null,origin,token.trim());
             String tunnelId=System.getenv("GORILLA_TUNNEL_ID");
             String credPath=System.getenv("GORILLA_TUNNEL_CREDENTIALS");
             Path credFile=credPath!=null&&!credPath.isBlank()?Path.of(credPath):null;
@@ -216,9 +222,6 @@ public final class CloudflaredSupervisor implements Tunnel {
                 }
             }
             if(credFile==null||tunnelId==null||tunnelId.isBlank()||!Files.isRegularFile(credFile))return null;
-            String domain=System.getenv("GORILLA_TUNNEL_DOMAIN");
-            String hostname=domain!=null&&!domain.isBlank()?domain.trim():DEFAULT_NAMED_HOST;
-            URI origin=validatePublicOrigin("https://"+hostname);
             Path tempConfig=Files.createTempFile("gorilla-named-tunnel-",".yaml");
             StringBuilder yaml=new StringBuilder();
             yaml.append("tunnel: ").append(tunnelId).append("\n");
@@ -233,7 +236,7 @@ public final class CloudflaredSupervisor implements Tunnel {
             }
             yaml.append("  - service: http_status:404\n");
             Files.writeString(tempConfig,yaml.toString());
-            return new NamedTunnelSpec(tunnelId,tempConfig,origin);
+            return new NamedTunnelSpec(tunnelId,tempConfig,origin,null);
         }catch(Exception e){
             LOG.warn("Failed resolving named tunnel spec: {}",e.getMessage());
             return null;

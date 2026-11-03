@@ -59,7 +59,7 @@ public final class MobileRuntime implements DisposableBean {
     public final PhoneInputHub inputs=new PhoneInputHub();
     private final TechnicalSession session=new TechnicalSession(System::nanoTime,30_000_000_000L,5_000_000_000L,1_800_000_000_000L,System.getenv("GORILLA_ROOM_CODE"));
     private final Map<String,Peer> peers=new HashMap<>();
-    private final PeerConnectionFactory factory=new PeerConnectionFactory();
+    private final PeerConnectionFactory factory;
     private final ScheduledThreadPoolExecutor expiry=new ScheduledThreadPoolExecutor(1,r->{Thread t=new Thread(r,"mobile-liveness");t.setDaemon(true);return t;});
     private boolean closed;
     private final java.util.concurrent.atomic.AtomicLong qaJoinAttempts=new java.util.concurrent.atomic.AtomicLong(),qaJoinSucceeded=new java.util.concurrent.atomic.AtomicLong(),qaReconnectAttempts=new java.util.concurrent.atomic.AtomicLong(),qaReconnectSucceeded=new java.util.concurrent.atomic.AtomicLong();
@@ -84,9 +84,24 @@ public final class MobileRuntime implements DisposableBean {
     public synchronized List<Map<String,Object>> joinDiagnostics(){return attempts.stream().map(JoinDiagnostic::snapshot).toList();}
     private static JoinFailure failure(JoinDiagnostic d,JoinDiagnostic.Code code){d.fail(code);return new JoinFailure(code);}
 
-    public MobileRuntime(){expiry.setRemoveOnCancelPolicy(true);expiry.scheduleWithFixedDelay(this::expire,1,1,TimeUnit.SECONDS);}
+    @org.springframework.beans.factory.annotation.Autowired
+    public MobileRuntime(){this(new PeerConnectionFactory());}
+    // Package-local injection lets tests supply a headless factory without changing production audio.
+    MobileRuntime(PeerConnectionFactory factory){this.factory=Objects.requireNonNull(factory);expiry.setRemoveOnCancelPolicy(true);expiry.scheduleWithFixedDelay(this::expire,1,1,TimeUnit.SECONDS);}
     public synchronized void revokePendingAdmissions(){session.revokePendingAdmissions();qaAdmission.invalidate();}
-    public synchronized TechnicalSession.Admission admission(){if(closed)throw new IllegalStateException("SESSION_CLOSED");return session.createAdmission();}
+    public synchronized void revokeAdmission(String token){session.revokeAdmission(token);}
+    public synchronized TechnicalSession.Admission admission(){
+        if(closed)throw new IllegalStateException("SESSION_CLOSED");
+        try{
+            return session.createAdmission();
+        }catch(IllegalStateException e){
+            if("SESSION_FULL".equals(e.getMessage())&&session.retainedClients()<4&&qaAdmission.hasCurrent()){
+                qaAdmission.release(session);
+                return session.createAdmission();
+            }
+            throw e;
+        }
+    }
     public record Signal(int protocolVersion,String messageType,String sessionId,String admission,String offer) {}
     public record Answer(int protocolVersion,String messageType,String sessionId,int playerId,String deviceSessionId,String resumeToken,long connectionEpoch,String peerId,String answer) {}
     public synchronized Answer join(Signal signal)throws Exception{
@@ -114,14 +129,19 @@ public final class MobileRuntime implements DisposableBean {
         return connect(joined,offer,attempt(),false);
     }
     static void localOffer(String offer)throws IOException{
+        boolean cloudflared="CLOUDFLARED".equals(System.getenv("GORILLA_CONNECTION_MODE"))||System.getenv("GORILLA_STUN_SERVER")!=null;
         int count=0;
         for(String line:offer.split("\\r?\\n"))if(line.startsWith("a=candidate:")){
             if(++count>32)throw new IOException("ICE_BOUND");String[] fields=line.trim().split("\\s+");
-            if(fields.length<8||!fields[6].equals("typ")||!fields[7].equals("host"))throw new IOException("ICE_LOCAL_ONLY");
+            if(fields.length<8||!fields[6].equals("typ"))throw new IOException("ICE_LOCAL_ONLY");
+            if(!cloudflared&&!fields[7].equals("host"))throw new IOException("ICE_LOCAL_ONLY");
+            if(!Set.of("host","srflx","relay","prflx").contains(fields[7]))throw new IOException("ICE_LOCAL_ONLY");
             String address=fields[4];if(address.matches("[A-Za-z0-9-]{1,63}\\.local"))continue;
             if(!address.matches("[0-9.]+")&&!address.matches("[0-9a-fA-F:]+"))throw new IOException("ICE_LOCAL_ONLY");
-            var ip=java.net.InetAddress.getByName(address);byte[] raw=ip.getAddress();
-            if(!ip.isLoopbackAddress()&&!ip.isSiteLocalAddress()&&!ip.isLinkLocalAddress()&&!(raw.length==16&&(raw[0]&0xfe)==0xfc))throw new IOException("ICE_LOCAL_ONLY");
+            if(!cloudflared&&"host".equals(fields[7])){
+                var ip=java.net.InetAddress.getByName(address);byte[] raw=ip.getAddress();
+                if(!ip.isLoopbackAddress()&&!ip.isSiteLocalAddress()&&!ip.isLinkLocalAddress()&&!(raw.length==16&&(raw[0]&0xfe)==0xfc))throw new IOException("ICE_LOCAL_ONLY");
+            }
         }
     }
     private Answer connect(TechnicalSession.Joined joined,String offer,JoinDiagnostic d,boolean initial)throws Exception{
@@ -153,10 +173,21 @@ public final class MobileRuntime implements DisposableBean {
     private static long remaining(long deadline)throws IOException{long left=deadline-System.nanoTime();if(left<=0)throw new IOException("SIGNAL_TIMEOUT");return left;}
     private static SetSessionDescriptionObserver setter(CompletableFuture<Void> f){return new SetSessionDescriptionObserver(){public void onSuccess(){f.complete(null);}public void onFailure(String e){f.completeExceptionally(new IOException("SDP_FAILED"));}};}
     public synchronized void disconnect(String peerId,String resume)throws IOException{
-        Peer p=peers.get(peerId);if(p==null||!java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.US_ASCII),resume.getBytes(java.nio.charset.StandardCharsets.US_ASCII)))throw new IOException("PEER_IDENTITY");peers.remove(peerId);p.close();
+        Peer p=peers.get(peerId);if(p==null||!java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.US_ASCII),resume.getBytes(java.nio.charset.StandardCharsets.US_ASCII)))throw new IOException("PEER_IDENTITY");
+        session.disconnect(p.joined.sessionId(),p.joined.playerId(),p.joined.sessionDeviceId(),p.joined.epoch());
+        peers.remove(peerId);p.close();
+    }
+    public synchronized void forfeit(String peerId,String resume)throws IOException{
+        Peer p=peers.get(peerId);if(p==null||!java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.US_ASCII),resume.getBytes(java.nio.charset.StandardCharsets.US_ASCII)))throw new IOException("PEER_IDENTITY");
+        session.forfeit(p.joined.sessionId(),p.joined.playerId(),p.joined.sessionDeviceId(),p.joined.epoch());
+        peers.remove(peerId);p.close();
     }
     public synchronized int peerCount(){return peers.size();}
-    private synchronized void expire(){if(closed)return;for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(System.nanoTime()-p.lastSeen>5_000_000_000L){it.remove();p.close();}}}
+    private synchronized void expire(){
+        if(closed)return;
+        long timeoutNanos=Long.parseLong(System.getenv().getOrDefault("GORILLA_PEER_TIMEOUT_MS","20000"))*1_000_000L;
+        for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(System.nanoTime()-p.lastSeen>timeoutNanos){it.remove();p.close();}}
+    }
     // A real allocator bound, not an assumed ephemeral OS range. Four peers + resumes.
     public static final int RTC_MIN_PORT=50000, RTC_MAX_PORT=50031;
     public static PortAllocatorConfig rtcPorts(){
@@ -171,6 +202,17 @@ public final class MobileRuntime implements DisposableBean {
         final JoinDiagnostic diagnostic;final boolean initial;final Object profileLock=new Object();Map<String,Object> profile;boolean profileAttempted;volatile boolean helloConfirmed;
         Peer(TechnicalSession.Joined joined,JoinDiagnostic diagnostic,boolean initial){this.joined=joined;this.diagnostic=diagnostic;this.initial=initial;gate=new GorillaProtocol.Gate(new GorillaProtocol.Identity(joined.sessionId(),joined.playerId(),joined.sessionDeviceId()),System::currentTimeMillis,2000,250,120);
             var c=new RTCConfiguration();c.iceServers.clear();c.portAllocatorConfig=rtcPorts();
+            String stunServer=System.getenv().getOrDefault("GORILLA_STUN_SERVER","stun:stun.l.google.com:19302");
+            if(stunServer!=null&&!stunServer.isBlank()&&!"NONE".equalsIgnoreCase(stunServer)){
+                var s=new dev.onvoid.webrtc.RTCIceServer();s.urls.add(stunServer.trim());c.iceServers.add(s);
+            }
+            String turnServer=System.getenv("GORILLA_TURN_SERVER");
+            if(turnServer!=null&&!turnServer.isBlank()&&!"NONE".equalsIgnoreCase(turnServer)){
+                var t=new dev.onvoid.webrtc.RTCIceServer();t.urls.add(turnServer.trim());
+                String u=System.getenv("GORILLA_TURN_USERNAME");if(u!=null)t.username=u;
+                String p=System.getenv("GORILLA_TURN_CREDENTIAL");if(p!=null)t.password=p;
+                c.iceServers.add(t);
+            }
             pc=factory.createPeerConnection(c,new PeerConnectionObserver(){public void onIceCandidate(RTCIceCandidate candidate){diagnostic.candidate(candidate.sdp);}public void onIceGatheringChange(RTCIceGatheringState s){diagnostic.event("iceGatheringState",s.name());if(s==RTCIceGatheringState.COMPLETE)gathered.countDown();}public void onIceConnectionChange(RTCIceConnectionState s){diagnostic.event("iceConnectionState",s.name());}public void onConnectionChange(RTCPeerConnectionState s){diagnostic.event("connectionState",s.name());}public void onDataChannel(RTCDataChannel channel){attach(channel);}});
         }
         synchronized void attach(RTCDataChannel ch){if(stopped||channels.size()>=2||channels.stream().anyMatch(c->c.getLabel().equals(ch.getLabel()))||!Set.of("control","motion").contains(ch.getLabel())||ch.getLabel().equals("control")&&(!ch.isOrdered()||!ch.isReliable())||ch.getLabel().equals("motion")&&(ch.isOrdered()||ch.getMaxRetransmits()!=0)){ch.close();ch.dispose();return;}channels.add(ch);
@@ -195,8 +237,15 @@ public final class MobileRuntime implements DisposableBean {
                     }
                     if(type.equals("HELLO")){if(!helloConfirmed){if(initial)qaJoinSucceeded.incrementAndGet();else qaReconnectSucceeded.incrementAndGet();}helloConfirmed=true;session.networkReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());}
                     if(type.equals("MOTION_SAMPLE")||type.equals("TOUCH")){session.active(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastInput=n;inputs.accept(n,joined.epoch(),"ACTIVE");if(type.equals("MOTION_SAMPLE"))session.inputReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),usableMovement(n));}
-                    if(type.equals("CLIENT_STATE")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),n.get("payload").get("state").asString().equals("suspended")?"SUSPENDED":"CONNECTED");}
-                    if(type.equals("DISCONNECT")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
+                    if(type.equals("CLIENT_STATE")){
+                        String st=n.get("payload").path("state").asString();
+                        TechnicalSession.State target="suspended".equals(st)?TechnicalSession.State.BACKGROUND:
+                            "away".equals(st)?TechnicalSession.State.AWAY:
+                            "forfeit".equals(st)?TechnicalSession.State.FORFEITED:TechnicalSession.State.ACTIVE;
+                        session.setClientState(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),target);
+                        var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),target.name());
+                    }
+                    if(type.equals("DISCONNECT")){session.disconnect(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
                     if(ch.getBufferedAmount()<8192){var ack=n.deepCopy();ack.put("messageType","ACK");var ackPayload=GorillaProtocol.JSON.createObjectNode();
                     if(type.equals("HEARTBEAT")){var game=currentGame();if(game!=null)ackPayload.set("gameContext",game);}
                     if(type.equals("UI_COMMAND")){

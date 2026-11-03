@@ -27,6 +27,7 @@ public final class MobileUiCommands {
             case "select-game" -> lobby&&GamePresentation.GAMES.contains(target)&&!"lobby".equals(target);
             case "menu" -> "".equals(target);
             case "restart" -> !lobby&&"".equals(target);
+            case "pause", "resume", "toggle-pause" -> !lobby&&"".equals(target);
             case "start" -> !lobby&&context.path("phase").asString().equals("Ready")&&"".equals(target);
             case "set-hand" -> (lobby||context.path("gameId").asString().equals("bowling"))&&Set.of("left","right").contains(target==null?"":target);
             default -> false;

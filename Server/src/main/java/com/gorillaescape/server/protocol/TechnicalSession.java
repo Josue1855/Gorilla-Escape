@@ -6,7 +6,7 @@ import java.util.function.LongSupplier;
 
 /** Bounded technical admission only; Unity owns gameplay and competitive state. */
 public final class TechnicalSession {
-    public enum State { CONNECTED, ACTIVE, DISCONNECTED }
+    public enum State { CONNECTED, ACTIVE, BACKGROUND, AWAY, DISCONNECTED, FORFEITED }
     public enum LobbyPhase { OPEN, STARTING, STARTED }
     public record LobbyPlayer(int playerId, String deviceSessionId, long connectionEpoch,
                               String connectionState, boolean networkReady, boolean inputReady, boolean playerReady, String displayName) {}
@@ -48,10 +48,10 @@ public final class TechnicalSession {
     private void live(){if(closed)throw new IllegalStateException("SESSION_CLOSED");expire();}
     private void expire(){long now=clock.getAsLong();admissions.values().removeIf(end->now>=end);
         for(Client c:clients.values()) {
-            if(c.state!=State.DISCONNECTED&&now-c.lastSeen>=liveness){c.state=State.DISCONNECTED;clearReady(c);}
+            if(c.state!=State.DISCONNECTED&&c.state!=State.FORFEITED&&now-c.lastSeen>=liveness){c.state=State.DISCONNECTED;clearReady(c);}
             if(!inputReady(c))c.playerReady=false;
         }
-        clients.values().removeIf(c->c.state==State.DISCONNECTED&&now-c.lastSeen>=resumeTtl);
+        clients.values().removeIf(c->(c.state==State.DISCONNECTED||c.state==State.FORFEITED)&&now-c.lastSeen>=resumeTtl);
     }
     public synchronized Admission createAdmission(){live();admissionOpen();if(admissions.size()+clients.size()>=4)throw new IllegalStateException("SESSION_FULL");String t=token();long end=Math.addExact(clock.getAsLong(),admissionTtl);admissions.put(t,end);return new Admission(session,t,end);}
     public synchronized void revokePendingAdmissions(){live();admissions.clear();}
@@ -81,8 +81,21 @@ public final class TechnicalSession {
     public synchronized void heartbeat(String sid,int pid,String device,long epoch){Client c=owned(sid,pid,device,epoch);if(c.state==State.DISCONNECTED)throw new IllegalStateException("CLIENT_DISCONNECTED");c.lastSeen=clock.getAsLong();}
     public synchronized void disconnect(String sid,int pid,String device,long epoch){Client c=owned(sid,pid,device,epoch);c.state=State.DISCONNECTED;clearReady(c);c.lastSeen=clock.getAsLong();}
     public synchronized Joined reconnect(String sid,int pid,String resume){live();Client c=clients.get(pid);
-        if(!session.equals(sid)||c==null||resume==null||!c.resume.equals(resume)||c.state!=State.DISCONNECTED)throw new IllegalArgumentException("RESUME_INVALID");
+        if(!session.equals(sid)||c==null||resume==null||!c.resume.equals(resume))throw new IllegalArgumentException("RESUME_INVALID");
         c.epoch=Math.addExact(c.epoch,1);c.resume=token();c.state=State.CONNECTED;clearReady(c);c.lastSeen=clock.getAsLong();return joined(c);
+    }
+    public synchronized void setClientState(String sid,int pid,String device,long epoch,State newState){
+        Client c=owned(sid,pid,device,epoch);
+        if(c.state==State.FORFEITED)return;
+        c.state=newState;
+        c.lastSeen=clock.getAsLong();
+        if(newState==State.BACKGROUND||newState==State.AWAY||newState==State.DISCONNECTED||newState==State.FORFEITED){
+            c.inputAvailable=false;
+            c.playerReady=false;
+        }
+    }
+    public synchronized void forfeit(String sid,int pid,String device,long epoch){
+        setClientState(sid,pid,device,epoch,State.FORFEITED);
     }
     public synchronized void active(String sid,int pid,String device,long epoch){Client c=owned(sid,pid,device,epoch);if(c.state==State.DISCONNECTED)throw new IllegalStateException("CLIENT_DISCONNECTED");c.state=State.ACTIVE;c.lastSeen=clock.getAsLong();}
     private void admissionOpen(){if(phase!=LobbyPhase.OPEN)throw new IllegalStateException("LOBBY_ADMISSION_CLOSED");}

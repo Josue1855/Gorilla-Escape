@@ -26,5 +26,13 @@ public final class QaAdmission implements AutoCloseable {
             return new View(state,ttl,size,Base64.getEncoder().encodeToString(packed));
     }
     public synchronized void invalidate(){current=null;state="ORIGIN_CHANGED";}
+    public synchronized boolean hasCurrent(){return current!=null;}
+    public synchronized void release(TechnicalSession session){
+        if(current!=null){
+            session.revokeAdmission(current.token());
+            current=null;
+            state="NOT_REQUESTED";
+        }
+    }
     @Override public synchronized void close(){current=null;}
 }
