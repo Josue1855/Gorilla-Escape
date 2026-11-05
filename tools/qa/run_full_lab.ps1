@@ -19,7 +19,7 @@ param(
 )
 
 $ErrorActionPreference = 'Continue'
-$Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)   # repo root
+$Root = (Resolve-Path "$PSScriptRoot\..\..").Path   # repo root
 $LabId = 'LAB-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
 $Out = Join-Path $Root "Reports/QA/$LabId"
 $Logs = Join-Path $Out 'logs'
@@ -126,7 +126,7 @@ if (Test-Path $mvnw) {
 
 # --- Unity (build limpia, batchmode, con espera real) ------------------------
 Write-Output "== Unity (build Windows) =="
-if (Test-Path $unity -and -not $SkipExpensive) {
+if ((Test-Path $unity) -and (-not $SkipExpensive)) {
     $uLog = Join-Path $Logs 'unity_build.log'
     $uArgs = @('-batchmode','-quit','-projectPath',(Join-Path $Root 'Unity'),
         '-executeMethod','GorillaEscape.Editor.ProductPlayMode.BuildWindowsStandalone','-logFile',$uLog)

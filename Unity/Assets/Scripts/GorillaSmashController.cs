@@ -9,6 +9,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
 
     private MotionSession session;
     private State state = State.Intro;
+    private readonly GorillaMascotRig gorillaRig = new GorillaMascotRig();
 
     // Escenario 3D procedural
     private GameObject towerRoot;
@@ -250,6 +251,13 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
 
         // 7. Mazo 3D
         CreateHammer();
+
+        // 8. Gorila Meshy AI anfitrión al lado de la torre
+        var gorillaAnchor = new GameObject("05 Gorila Anfitrión").transform;
+        gorillaAnchor.SetParent(transform, false);
+        gorillaAnchor.position = new Vector3(-2.6f, 0f, 0.5f);
+        gorillaAnchor.rotation = Quaternion.Euler(0f, 25f, 0f);
+        gorillaRig.LoadMascot(gorillaAnchor, gorillaAnchor.position, gorillaAnchor.rotation, 2.5f, "Gorila Meshy AI Striker");
     }
 
     private void CreateHammer()
@@ -484,6 +492,8 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         {
             bellGlowLight.intensity = Mathf.Max(0f, bellGlowLight.intensity - 2.5f * Time.deltaTime);
         }
+
+        gorillaRig.Animate(false, 0, 0);
     }
 
     private void ExecuteSmash()
@@ -555,6 +565,11 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         float scoreRatio = currentScore / 10000f;
         puckTargetY = BaseY + scoreRatio * TowerHeight;
 
+        if (currentScore >= 7500)
+            gorillaRig.PlayCelebrationAnimation();
+        else if (currentScore < 5000)
+            gorillaRig.PlayAngryStompAnimation();
+
         bellRang = false;
         smashStartedAt = Time.time;
         state = State.Smashing;
@@ -570,6 +585,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
 
         if (bellGlowLight != null)
             bellGlowLight.intensity = 3.5f;
+        gorillaRig.PlayCelebrationAnimation();
     }
 
     private void ResetPuck()
@@ -725,5 +741,10 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
             Rect line = new Rect(r.x, y - 10f, r.width, 20f);
             JungleUITheme.DrawShadowedLabel(line, labels[i], meterLabelStyle, 1.5f);
         }
+    }
+
+    private void OnDestroy()
+    {
+        gorillaRig.Dispose();
     }
 }

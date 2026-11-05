@@ -1,0 +1,74 @@
+﻿[
+    {
+        "suite":  "inventory",
+        "check":  "validate_management.py",
+        "status":  "PASS",
+        "detail":  "PASS: 94 backlog records, acyclic dependencies, valid hierarchy, 1090 local links; no fake assignments/Sprints.",
+        "evidence":  "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Reports\\QA\\LAB-20261103-185243\\logs\\validate_management.log",
+        "at":  "2026-11-03T18:52:48.3441243-06:00"
+    },
+    {
+        "suite":  "inventory",
+        "check":  "validate_foundation.py",
+        "status":  "PASS",
+        "detail":  "PASS: local UPM, 710 unique meta GUIDs, engine-independent contracts, fixture, PWA icons and amended architecture.",
+        "evidence":  "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Reports\\QA\\LAB-20261103-185243\\logs\\validate_foundation.log",
+        "at":  "2026-11-03T18:53:04.1423064-06:00"
+    },
+    {
+        "suite":  "inventory",
+        "check":  "validate_management regression",
+        "status":  "PASS",
+        "detail":  "Ran 3 tests in 0.057s",
+        "evidence":  "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Reports\\QA\\LAB-20261103-185243\\logs\\validate_management_regression.log",
+        "at":  "2026-11-03T18:53:04.8263778-06:00"
+    },
+    {
+        "suite":  "pwa",
+        "check":  "npm ci+test+build",
+        "status":  "PASS",
+        "detail":  "ci=0 test=0 build=0",
+        "evidence":  "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Reports\\QA\\LAB-20261103-185243\\logs\\pwa.log",
+        "at":  "2026-11-03T18:53:40.0673750-06:00"
+    },
+    {
+        "suite":  "flutter",
+        "check":  "analyze + test",
+        "status":  "PASS",
+        "detail":  "analyze=0 test=0",
+        "evidence":  "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Reports\\QA\\LAB-20261103-185243\\logs\\flutter.log",
+        "at":  "2026-11-03T18:55:50.0921633-06:00"
+    },
+    {
+        "suite":  "java",
+        "check":  "mvnw verify",
+        "status":  "FAIL",
+        "detail":  "exit=1",
+        "evidence":  "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Reports\\QA\\LAB-20261103-185243\\logs\\server_mvn_verify.log",
+        "at":  "2026-11-03T18:58:09.5252915-06:00"
+    },
+    {
+        "suite":  "camera",
+        "check":  "MediaPipe pipeline",
+        "status":  "BLOCKED",
+        "detail":  "Requiere cÃ¡mara fÃ­sica y runtime Python 3.12 portÃ¡til; no se sustituye por replay",
+        "evidence":  "",
+        "at":  "2026-11-03T18:58:09.5765262-06:00"
+    },
+    {
+        "suite":  "cloudflare",
+        "check":  "tÃºnel pÃºblico + RoomRegistry",
+        "status":  "BLOCKED",
+        "detail":  "Requiere tÃºnel autenticado y credenciales de anfitriÃ³n; no se simula DNS",
+        "evidence":  "",
+        "at":  "2026-11-03T18:58:09.5770443-06:00"
+    },
+    {
+        "suite":  "webrtc",
+        "check":  "4 clientes fÃ­sicos",
+        "status":  "BLOCKED",
+        "detail":  "Requiere 4 telÃ©fonos fÃ­sicos + personas reales",
+        "evidence":  "",
+        "at":  "2026-11-03T18:58:09.5775929-06:00"
+    }
+]

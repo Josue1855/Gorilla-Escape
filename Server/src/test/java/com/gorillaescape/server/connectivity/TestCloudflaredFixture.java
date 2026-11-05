@@ -22,8 +22,12 @@ final class TestCloudflaredFixture {
             else if(scenario.contains("trycloudflare.com.evil.org")){lines.add("echo https://qa-test.trycloudflare.com.evil.org");lines.add("echo Registered tunnel connection");lines.add("ping -n 21 127.0.0.1 >nul");}
             else if(scenario.contains("should-never-exist")){lines.add("echo https://qa-test.trycloudflare.com;malformed");lines.add("echo Registered tunnel connection");lines.add("ping -n 21 127.0.0.1 >nul");}
             else {
-                var url=java.util.regex.Pattern.compile("https://[a-z-]+\\.trycloudflare\\.com").matcher(scenario);if(url.find())lines.add("echo "+url.group());
-                var registrations=java.util.regex.Pattern.compile("(?:Registered|Unregistered) tunnel connection(?: connIndex=[0-9]+)?").matcher(scenario);while(registrations.find())lines.add("echo "+registrations.group());
+                for(String raw:scenario.split("\\r?\\n")){
+                    var url=java.util.regex.Pattern.compile("https://[a-z-]+\\.trycloudflare\\.com").matcher(raw);
+                    if(url.find())lines.add("echo "+url.group());
+                    var reg=java.util.regex.Pattern.compile("(?:Registered|Unregistered) tunnel connection(?: connIndex=[0-9]+)?").matcher(raw);
+                    if(reg.find())lines.add("echo "+reg.group());
+                }
                 if(scenario.contains("sleep 0.1"))lines.add("powershell.exe -NoProfile -Command \"Start-Sleep -Milliseconds 200\"");else lines.add("ping -n 21 127.0.0.1 >nul");
             }
         }

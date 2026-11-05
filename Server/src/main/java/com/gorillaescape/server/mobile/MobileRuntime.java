@@ -62,6 +62,9 @@ public final class MobileRuntime implements DisposableBean {
     private final PeerConnectionFactory factory;
     private final ScheduledThreadPoolExecutor expiry=new ScheduledThreadPoolExecutor(1,r->{Thread t=new Thread(r,"mobile-liveness");t.setDaemon(true);return t;});
     private boolean closed;
+    private volatile boolean publicTunnel;
+    public void setPublicTunnel(boolean active){this.publicTunnel=active;}
+    public boolean isPublicTunnel(){return publicTunnel;}
     private final java.util.concurrent.atomic.AtomicLong qaJoinAttempts=new java.util.concurrent.atomic.AtomicLong(),qaJoinSucceeded=new java.util.concurrent.atomic.AtomicLong(),qaReconnectAttempts=new java.util.concurrent.atomic.AtomicLong(),qaReconnectSucceeded=new java.util.concurrent.atomic.AtomicLong();
     private final java.util.concurrent.ConcurrentHashMap<Integer,ObjectNode> qaPhones=new java.util.concurrent.ConcurrentHashMap<>();
     private final java.util.concurrent.atomic.AtomicInteger qaPhoneCursor=new java.util.concurrent.atomic.AtomicInteger();
@@ -108,7 +111,7 @@ public final class MobileRuntime implements DisposableBean {
         qaJoinAttempts.incrementAndGet();var d=attempt();d.stage(JoinDiagnostic.Stage.VALIDATION);
         if(closed||peers.size()>=4)throw failure(d,JoinDiagnostic.Code.SESSION_FULL);
         if(signal==null||signal.protocolVersion()!=1||!"JOIN".equals(signal.messageType())||signal.offer()==null||signal.offer().length()>65536||!signal.offer().startsWith("v=0")||signal.offer().contains("m=audio")||signal.offer().contains("m=video"))throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);
-        try{localOffer(signal.offer());}catch(Exception e){throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);}
+        try{localOffer(signal.offer(),publicTunnel||!"CABIN".equals(System.getenv("GORILLA_CONNECTION_MODE")));}catch(Exception e){throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);}
         d.stage(JoinDiagnostic.Stage.ADMISSION);
         TechnicalSession.Joined joined;
         try{joined=session.join(signal.sessionId(),signal.admission());}
@@ -119,7 +122,7 @@ public final class MobileRuntime implements DisposableBean {
     public synchronized Answer reconnect(String sid,int player,String resume,String offer)throws Exception{
         qaReconnectAttempts.incrementAndGet();
         if(closed||offer==null||offer.length()>65536||!offer.startsWith("v=0")||offer.contains("m=audio")||offer.contains("m=video"))throw new IOException("SIGNAL_INVALID");
-        localOffer(offer);
+        localOffer(offer,publicTunnel||!"CABIN".equals(System.getenv("GORILLA_CONNECTION_MODE")));
         // An authenticated foreground resume may replace a stale peer before its liveness timeout.
         for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(p.joined.playerId()==player&&p.joined.sessionId().equals(sid)&&resume!=null
             &&java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8),resume.getBytes(java.nio.charset.StandardCharsets.UTF_8))){it.remove();p.close();}}
@@ -129,7 +132,12 @@ public final class MobileRuntime implements DisposableBean {
         return connect(joined,offer,attempt(),false);
     }
     static void localOffer(String offer)throws IOException{
-        boolean cloudflared="CLOUDFLARED".equals(System.getenv("GORILLA_CONNECTION_MODE"))||System.getenv("GORILLA_STUN_SERVER")!=null;
+        localOffer(offer,false);
+    }
+    static void localOffer(String offer,boolean publicTunnel)throws IOException{
+        boolean cloudflared=publicTunnel
+            ||"CLOUDFLARED".equals(System.getenv("GORILLA_CONNECTION_MODE"))
+            ||System.getenv("GORILLA_STUN_SERVER")!=null;
         int count=0;
         for(String line:offer.split("\\r?\\n"))if(line.startsWith("a=candidate:")){
             if(++count>32)throw new IOException("ICE_BOUND");String[] fields=line.trim().split("\\s+");
@@ -191,7 +199,8 @@ public final class MobileRuntime implements DisposableBean {
     // A real allocator bound, not an assumed ephemeral OS range. Four peers + resumes.
     public static final int RTC_MIN_PORT=50000, RTC_MAX_PORT=50031;
     public static PortAllocatorConfig rtcPorts(){
-        var ports=new PortAllocatorConfig().setDisableStun(true).setDisableRelay(true).setDisableTcp(true);
+        boolean disableStun="CABIN".equals(System.getenv("GORILLA_CONNECTION_MODE"))||"NONE".equalsIgnoreCase(System.getenv("GORILLA_STUN_SERVER"));
+        var ports=new PortAllocatorConfig().setDisableStun(disableStun).setDisableRelay(true).setDisableTcp(true);
         ports.minPort=RTC_MIN_PORT;ports.maxPort=RTC_MAX_PORT;return ports;
     }
     private final class Peer {

@@ -28,7 +28,7 @@ export class MobileClient {
   if(!['synthetic','replay','emulator','physical'].includes(source))throw Error('evidence source');
   const request=fetcher??globalThis.fetch.bind(globalThis);
   this.source=source;this.fetcher=(path,...args)=>{
-   const loc=globalThis.location;const match=(loc?.hostname==='play.gorilla.run' || loc?.hostname==='play.gorillas.run') && loc.pathname.match(/^\/([a-z0-9]{4,8})(?:\/|$)/i);
+   const loc=globalThis.location;const match=(loc?.hostname==='play.gorilla.run' || loc?.hostname==='play.gorillas.run') && loc.pathname.match(/^(?:\/join)?\/([a-z0-9]{4,8})(?:\/|$)/i);
    return request(match && typeof path==='string' && path.startsWith('/') ? '/'+match[1]+path : path,...args);
   };this.sequence=0;this.pending=new Map();this.motionTelemetry=new Map();this.latest=null;this.flushScheduled=false;this.state='STOPPED';
   this.metrics={sent:0,received:0,errors:0,overwritten:0,motionSubmitted:0,motionSent:0,motionAck:0,motionErrors:0,motionAckMiss:0,motionPendingTelemetry:0,motionBufferedDrop:0,rtt:[]};
@@ -78,16 +78,20 @@ export class MobileClient {
    this.stage('CREATE_OFFER');const offer=await this.pc.createOffer();
    code='JOIN_E02_LOCAL_SDP';this.stage('LOCAL_DESCRIPTION');await this.pc.setLocalDescription(offer);
    code='JOIN_E02_ICE_GATHER';this.stage('ICE_GATHERING');
-   if(this.pc.iceGatheringState!=='complete')await deadline(new Promise(r=>{const done=()=>{if(this.pc.iceGatheringState==='complete'){this.pc.removeEventListener('icegatheringstatechange',done);r();}};this.pc.addEventListener('icegatheringstatechange',done);done();}),10000,code);
-   const fragment=new URLSearchParams(new URL(joinUrl,location.href).hash.slice(1));
+   if(this.pc.iceGatheringState!=='complete')await deadline(new Promise(r=>{const done=()=>{if(this.pc.iceGatheringState==='complete'){this.pc.removeEventListener('icegatheringstatechange',done);r();}};this.pc.addEventListener('icegatheringstatechange',done);done();}),15000,code);
+   const parsedJoinUrl=new URL(joinUrl,location.href);
+   const fragment=new URLSearchParams(parsedJoinUrl.hash.slice(1));
+   const query=parsedJoinUrl.searchParams;
+   const sessionId=fragment.get('sessionId')||query.get('sessionId');
+   const admission=fragment.get('admission')||query.get('admission');
    code='JOIN_E03_SIGNAL_HTTP';this.stage('SIGNALING_POST');
-   const reply=resume?await this.signal('/mobile/reconnect',{sessionId:resume.sessionId,playerId:resume.playerId,resumeToken:resume.resumeToken,offer:this.pc.localDescription.sdp}):await this.signal('/mobile/join',{protocolVersion:1,messageType:'JOIN',sessionId:fragment.get('sessionId'),admission:fragment.get('admission'),offer:this.pc.localDescription.sdp});
+   const reply=resume?await this.signal('/mobile/reconnect',{sessionId:resume.sessionId,playerId:resume.playerId,resumeToken:resume.resumeToken,offer:this.pc.localDescription.sdp}):await this.signal('/mobile/join',{protocolVersion:1,messageType:'JOIN',sessionId,admission,offer:this.pc.localDescription.sdp});
    this.identity=reply;this.onIdentity?.(reply);this.sequence=0;
    code='JOIN_E05_REMOTE_SDP';this.stage('REMOTE_DESCRIPTION');await this.pc.setRemoteDescription({type:'answer',sdp:reply.answer});this.trace.remoteDescription='PASS';
    this.stage('ICE_CONNECTING');code='JOIN_E06_ICE_FAILED';
    await Promise.race([iceFailed,Promise.all(Object.entries(this.channels).map(([label,ch])=>{
     const failure=label==='control'?'JOIN_E07_CONTROL_TIMEOUT':'JOIN_E08_MOTION_TIMEOUT';
-    const opened=ch.readyState==='open'?Promise.resolve():deadline(new Promise((r,j)=>{ch.onopen=r;ch.onerror=()=>j(Error(failure));}),10000,failure);
+    const opened=ch.readyState==='open'?Promise.resolve():deadline(new Promise((r,j)=>{ch.onopen=r;ch.onerror=()=>j(Error(failure));}),15000,failure);
     return opened.then(()=>this.stage(label==='control'?'CONTROL_OPEN':'MOTION_OPEN'));
    }))]);
    code='JOIN_E09_HELLO_TIMEOUT';this.stage('HELLO_ACK');this.state='RUNNING';await this.send('HELLO',{});

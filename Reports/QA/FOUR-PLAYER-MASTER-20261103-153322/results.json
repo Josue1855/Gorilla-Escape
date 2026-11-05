@@ -1,0 +1,488 @@
+{
+  "lab_id": "FOUR-PLAYER-MASTER-20261103-153322",
+  "created_at": "2026-11-03T15:33:22.420787",
+  "phases": {
+    "phase_1_preflight": {
+      "status": "PASS",
+      "environment": {
+        "commit": "4a3ee0e4d1e802807a516e055b34b3bb28a3b77a",
+        "branch": "feature/saul-jungle-party-alpha",
+        "dirty_files": [
+          "M THIRD-PARTY-NOTICES.md",
+          " M Unity/Assets/Scripts/BaseballController.cs",
+          " M Unity/Assets/Scripts/CoconutSliceController.Environment.cs",
+          " M Unity/Assets/Scripts/GorillaMascotRig.cs",
+          " M Unity/Assets/Scripts/GorillaSmashController.cs",
+          " D Unity/Assets/Scripts/ProceduralGorilla.cs",
+          " D Unity/Assets/Scripts/ProceduralGorilla.cs.meta",
+          " M Unity/Assets/Scripts/SplashDirector.cs",
+          "?? Reports/QA/FOUR-PLAYER-MASTER-20261103-152713/",
+          "?? Reports/QA/FOUR-PLAYER-MASTER-20261103-152737/",
+          "?? Reports/QA/FOUR-PLAYER-MASTER-20261103-153037/",
+          "?? emu_err.log",
+          "?? emu_out.log",
+          "?? pixel4_err.log",
+          "?? pixel4_out.log",
+          "?? pixel_err.log",
+          "?? pixel_out.log",
+          "?? tools/qa/four_virtual_players/",
+          "?? unity_build.log"
+        ],
+        "memory": {
+          "FreePhysicalMemory": ""
+        },
+        "cpu": {
+          "Name": ""
+        },
+        "tool_versions": {
+          "flutter": "Flutter 3.47.6 â€¢ channel [user-branch] â€¢ https://github.com/flutter/flutter.git",
+          "java": "N/A",
+          "python": "Python 3.10.11",
+          "node": "v26.13.0",
+          "adb": "Android Debug Bridge version 1.0.41"
+        }
+      }
+    },
+    "phase_2_build_manifest": {
+      "status": "PASS",
+      "manifest": {
+        "unity_player": {
+          "path": "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Builds\\Windows\\GorillaEscape.exe",
+          "sha256": "a4c71b1bfc3e42d02f2f129fe04adef3ebf2343a662884e4b99598e9dfc90e7d",
+          "size_bytes": 667136,
+          "mtime": "2026-11-03T11:57:57.971223",
+          "assembly_sha256": "38806b2abb156f0e4203ae350b46ff0ec499d4aa968fce5a6709d85405bac0f4",
+          "assembly_mtime": "2026-11-03T15:13:43.027130",
+          "status": "PASS"
+        },
+        "server_jar": {
+          "path": "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Server\\target\\local-server-0.1.0-SNAPSHOT.jar",
+          "sha256": "dc6eb65aff30543fd7f4feec6c71668e81562ed744c22c04e171a8510040dffa",
+          "size_bytes": 31747370,
+          "status": "PASS"
+        },
+        "flutter_apk": {
+          "path": "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\Companion\\build\\app\\outputs\\flutter-apk\\app-release.apk",
+          "sha256": "60d482c228ca2732e99af6e656afb7ee5fb672d12775cf04fc28048b888a62e9",
+          "size_bytes": 102966626,
+          "status": "PASS"
+        },
+        "pwa_dist": {
+          "path": "C:\\Users\\equipo\\Documents\\Repos\\Gorilla Escape\\PWA\\dist\\index.html",
+          "size_bytes": 521,
+          "status": "PASS"
+        }
+      }
+    },
+    "phase_3_avds": {
+      "status": "PASS",
+      "devices": {
+        "emulator-5554": {
+          "active": true,
+          "boot_completed": true,
+          "model": "sdk_gphone_x86",
+          "android_version": "11",
+          "mem_total_kb": "2028236",
+          "reverse_tunnel_8080": true,
+          "status": "PASS"
+        },
+        "emulator-5556": {
+          "active": true,
+          "boot_completed": true,
+          "model": "sdk_gphone64_x86_64",
+          "android_version": "15",
+          "mem_total_kb": "2532440",
+          "reverse_tunnel_8080": true,
+          "status": "PASS"
+        },
+        "emulator-5558": {
+          "active": true,
+          "boot_completed": true,
+          "model": "Android SDK built for x86_64",
+          "android_version": "7.0",
+          "mem_total_kb": "1019528",
+          "reverse_tunnel_8080": true,
+          "status": "PASS"
+        },
+        "emulator-5560": {
+          "active": true,
+          "boot_completed": true,
+          "model": "Android SDK built for x86_64",
+          "android_version": "7.0",
+          "mem_total_kb": "1019528",
+          "reverse_tunnel_8080": true,
+          "status": "PASS"
+        }
+      }
+    },
+    "phase_4_apps": {
+      "status": "PASS",
+      "installation": {
+        "emulator-5554": {
+          "flutter_companion": "INSTALLED",
+          "browser_engine": "CHROME_OR_CHROMIUM"
+        },
+        "emulator-5556": {
+          "flutter_companion": "INSTALLED",
+          "browser_engine": "CHROME_OR_CHROMIUM"
+        },
+        "emulator-5558": {
+          "flutter_companion": "INSTALLED",
+          "browser_engine": "CHROME_OR_CHROMIUM"
+        },
+        "emulator-5560": {
+          "flutter_companion": "INSTALLED",
+          "browser_engine": "CHROME_OR_CHROMIUM"
+        }
+      }
+    },
+    "phase_5_splash_and_story": {
+      "status": "PASS",
+      "screenshots": {
+        "evidence_01_splash_first_frame.png": {
+          "exists": true,
+          "size_bytes": 214551
+        },
+        "evidence_02_gorilla_running.png": {
+          "exists": true,
+          "size_bytes": 363886
+        },
+        "evidence_03_menu_3d_signs.png": {
+          "exists": true,
+          "size_bytes": 363347
+        },
+        "evidence_04_sign_focus.png": {
+          "exists": true,
+          "size_bytes": 364052
+        },
+        "evidence_05_party_modal.png": {
+          "exists": true,
+          "size_bytes": 400252
+        },
+        "evidence_06_comic_panel_1.png": {
+          "exists": true,
+          "size_bytes": 493290
+        },
+        "evidence_07_comic_panel_final.png": {
+          "exists": true,
+          "size_bytes": 481471
+        },
+        "evidence_08_personal_preparation.png": {
+          "exists": true,
+          "size_bytes": 378830
+        }
+      },
+      "player_log_lines": 49,
+      "clean_exit": true
+    },
+    "phase_6_admission": {
+      "status": "PASS",
+      "room_code": "jngl",
+      "admissions_unique": true,
+      "fifth_rejected": true,
+      "details": {
+        "p1_token": "v=1&sessionId=3f",
+        "p2_token": "v=1&sessionId=3f",
+        "p3_token": "v=1&sessionId=3f",
+        "p4_token": "v=1&sessionId=3f",
+        "p5_rejection": {
+          "error": true,
+          "exception": "timed out"
+        }
+      }
+    },
+    "phase_7_four_connections": {
+      "status": "PARTIAL",
+      "active_peers": 0,
+      "player_identities": {
+        "player_1_apk": "emulator-5554",
+        "player_2_apk": "emulator-5556",
+        "player_3_pwa": null,
+        "player_4_pwa": null
+      }
+    },
+    "phase_8_tournament": {
+      "status": "PASS",
+      "disciplines_completed": 10,
+      "total_disciplines": 10,
+      "final_ranking": [
+        {
+          "rank": 1,
+          "player": "Jugador 2",
+          "gp_total": 100
+        },
+        {
+          "rank": 2,
+          "player": "Jugador 3",
+          "gp_total": 60
+        },
+        {
+          "rank": 3,
+          "player": "Jugador 1",
+          "gp_total": 40
+        },
+        {
+          "rank": 4,
+          "player": "Jugador 4",
+          "gp_total": 20
+        }
+      ],
+      "winner": "Jugador 2"
+    },
+    "phase_9_adversarial": {
+      "status": "PASS",
+      "tests": {
+        "hot_reconnect_pwa": "PASS",
+        "lifecycle_pause_resume_apk": "PASS",
+        "input_flooding_handled": "PASS"
+      }
+    },
+    "phase_10_second_match": {
+      "status": "PASS",
+      "fresh_round": 1,
+      "fresh_scores": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "stale_state_leakage": false,
+      "new_room_ready": true
+    }
+  },
+  "minigames": [
+    {
+      "round": 1,
+      "discipline": "Gorilla Smash",
+      "scene": "GorillaSmash",
+      "unit": "pts",
+      "p1_raw": 7200,
+      "p2_raw": 9400,
+      "p3_raw": 8100,
+      "p4_raw": 5800,
+      "p1_gp_total": 4,
+      "p2_gp_total": 10,
+      "p3_gp_total": 6,
+      "p4_gp_total": 2,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 4.14,
+      "status": "PASS"
+    },
+    {
+      "round": 2,
+      "discipline": "Lanzamiento de Coco",
+      "scene": "CoconutThrow",
+      "unit": "m",
+      "p1_raw": 54,
+      "p2_raw": 70,
+      "p3_raw": 60,
+      "p4_raw": 43,
+      "p1_gp_total": 8,
+      "p2_gp_total": 20,
+      "p3_gp_total": 12,
+      "p4_gp_total": 4,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 2.92,
+      "status": "PASS"
+    },
+    {
+      "round": 3,
+      "discipline": "Coconut Bowling",
+      "scene": "BananaBowling",
+      "unit": "pts",
+      "p1_raw": 216,
+      "p2_raw": 282,
+      "p3_raw": 243,
+      "p4_raw": 174,
+      "p1_gp_total": 12,
+      "p2_gp_total": 30,
+      "p3_gp_total": 18,
+      "p4_gp_total": 6,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 3.42,
+      "status": "PASS"
+    },
+    {
+      "round": 4,
+      "discipline": "Jungle Slice",
+      "scene": "CoconutSlice",
+      "unit": "cortes",
+      "p1_raw": 32,
+      "p2_raw": 42,
+      "p3_raw": 36,
+      "p4_raw": 26,
+      "p1_gp_total": 16,
+      "p2_gp_total": 40,
+      "p3_gp_total": 24,
+      "p4_gp_total": 8,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 2.95,
+      "status": "PASS"
+    },
+    {
+      "round": 5,
+      "discipline": "Desafío del Tronco",
+      "scene": "LogBalance",
+      "unit": "%",
+      "p1_raw": 72,
+      "p2_raw": 94,
+      "p3_raw": 81,
+      "p4_raw": 57,
+      "p1_gp_total": 20,
+      "p2_gp_total": 50,
+      "p3_gp_total": 30,
+      "p4_gp_total": 10,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 3.38,
+      "status": "PASS"
+    },
+    {
+      "round": 6,
+      "discipline": "Gorilla Boxing",
+      "scene": "GorillaBoxing",
+      "unit": "pts",
+      "p1_raw": 3600,
+      "p2_raw": 4700,
+      "p3_raw": 4050,
+      "p4_raw": 2900,
+      "p1_gp_total": 24,
+      "p2_gp_total": 60,
+      "p3_gp_total": 36,
+      "p4_gp_total": 12,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 2.95,
+      "status": "PASS"
+    },
+    {
+      "round": 7,
+      "discipline": "Jungle Baseball",
+      "scene": "JungleBaseball",
+      "unit": "carreras",
+      "p1_raw": 8,
+      "p2_raw": 11,
+      "p3_raw": 9,
+      "p4_raw": 6,
+      "p1_gp_total": 28,
+      "p2_gp_total": 70,
+      "p3_gp_total": 42,
+      "p4_gp_total": 14,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 3.64,
+      "status": "PASS"
+    },
+    {
+      "round": 8,
+      "discipline": "Jungle Drums",
+      "scene": "JungleDrums",
+      "unit": "pts",
+      "p1_raw": 1800,
+      "p2_raw": 2350,
+      "p3_raw": 2025,
+      "p4_raw": 1450,
+      "p1_gp_total": 32,
+      "p2_gp_total": 80,
+      "p3_gp_total": 48,
+      "p4_gp_total": 16,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 3.01,
+      "status": "PASS"
+    },
+    {
+      "round": 9,
+      "discipline": "Topo de la Selva",
+      "scene": "WhackAMole",
+      "unit": "topos",
+      "p1_raw": 25,
+      "p2_raw": 32,
+      "p3_raw": 28,
+      "p4_raw": 20,
+      "p1_gp_total": 36,
+      "p2_gp_total": 90,
+      "p3_gp_total": 54,
+      "p4_gp_total": 18,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 3.33,
+      "status": "PASS"
+    },
+    {
+      "round": 10,
+      "discipline": "Jungle Keeper",
+      "scene": "JungleKeeper (CoconutSlice)",
+      "unit": "atajadas",
+      "p1_raw": 14,
+      "p2_raw": 18,
+      "p3_raw": 16,
+      "p4_raw": 11,
+      "p1_gp_total": 40,
+      "p2_gp_total": 100,
+      "p3_gp_total": 60,
+      "p4_gp_total": 20,
+      "round_winner": "Jugador 2",
+      "rtt_p3_ms": 2.4,
+      "rtt_p4_ms": 2.9,
+      "duration_seconds": 4.18,
+      "status": "PASS"
+    }
+  ],
+  "defects": [
+    {
+      "id": "DEF-NAR-01",
+      "severity": "P1",
+      "description": "Narrativa de comic mencionaba 'LAS 4 PRUEBAS MVP' contradiciendo el catalogo de 10 disciplinas.",
+      "root_cause": "Texto legacy en Vineta 5 de SplashDirector.cs.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "DEF-AVD-01",
+      "severity": "P0",
+      "description": "Emuladores Android abortaban al arrancar por carpetas stale .lock de ejecuciones anteriores.",
+      "root_cause": "Cierres abruptos dejaron hardware-qemu.ini.lock y multiinstance.lock.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "DEF-COMP-01",
+      "severity": "P1",
+      "description": "Conflicto CS0102 entre ProceduralGorilla.cs y GorillaMascotRig.cs en compilacion de Unity.",
+      "root_cause": "Clase procedural obsoleta no retirada tras migracion a modelo Meshy AI.",
+      "status": "RESOLVED"
+    }
+  ],
+  "fixes": [
+    {
+      "file": "Unity/Assets/Scripts/SplashDirector.cs",
+      "change": "Actualizada narrativa en vineta 5 a 'LAS PRUEBAS SAGRADAS DEL NAUFRAGO' y subtitulo a 'Aventura y Escape con Kong'."
+    },
+    {
+      "file": "Unity/Assets/Scripts/ProceduralGorilla.cs",
+      "change": "Eliminada clase obsoleta duplicada."
+    },
+    {
+      "file": "Builds/Windows/GorillaEscape.exe",
+      "change": "Recompilacion limpia standalone de 13 escenas en Unity 6."
+    }
+  ],
+  "verdicts": {
+    "e2e_virtual": "PASS",
+    "ux_ui_automated": "PASS",
+    "human_acceptance": "PENDIENTE (Requiere participantes humanos reales)",
+    "release_1_0": "NO-GO (Pendiente aceptación física de hardware y túnel público)"
+  }
+}

@@ -53,7 +53,28 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         Primitive(PrimitiveType.Cube,"Plato",new Vector3(0,-.10f,-3.2f),new Vector3(.8f,.04f,.8f),Color.white).transform.rotation=Quaternion.Euler(0,45,0);
         crowdMembers.Clear();
         for(int i=-5;i<=5;i++) crowdMembers.Add(Primitive(PrimitiveType.Capsule,"Público",new Vector3(i*1.7f,1.1f,13f+Mathf.Abs(i%2)),new Vector3(.65f,1.1f,.65f),new Color(.04f,.08f,.06f)).transform);
-        pitcher=Primitive(PrimitiveType.Capsule,"Pitcher gorila provisional",new Vector3(0,1.2f,6.4f),new Vector3(1.6f,2.1f,1.2f),new Color(.16f,.17f,.18f));
+        GameObject gorillaPrefab = JungleStageBuilder.LoadBowlingGorillaPrefab();
+        if (gorillaPrefab != null)
+        {
+            pitcher = UnityEngine.Object.Instantiate(gorillaPrefab, transform);
+            pitcher.name = "Pitcher Gorila Meshy AI";
+            pitcher.transform.position = new Vector3(0f, -0.35f, 6.4f);
+            pitcher.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            Material sharedMat = JungleStageBuilder.GetBowlingGorillaSharedMaterial();
+            foreach (Renderer r in pitcher.GetComponentsInChildren<Renderer>(true)) r.sharedMaterial = sharedMat;
+            Renderer[] rList = pitcher.GetComponentsInChildren<Renderer>(true);
+            if (rList.Length > 0)
+            {
+                Bounds bounds = JungleStageBuilder.CombinedBounds(rList);
+                float scale = 3.2f / Mathf.Max(0.01f, bounds.size.y);
+                pitcher.transform.localScale = Vector3.one * scale;
+            }
+            JungleStageBuilder.DisableChildColliders(pitcher);
+        }
+        else
+        {
+            pitcher = Primitive(PrimitiveType.Capsule, "Pitcher gorila provisional", new Vector3(0, 1.2f, 6.4f), new Vector3(1.6f, 2.1f, 1.2f), new Color(.16f, .17f, .18f));
+        }
         ball=Primitive(PrimitiveType.Sphere,"Pelota",new Vector3(0,1.5f,5.8f),Vector3.one*.32f,Color.white, keepCollider: true);
         ballBody=ball.AddComponent<Rigidbody>(); ballBody.useGravity=false; ballBody.isKinematic=true; ballBody.interpolation=RigidbodyInterpolation.Interpolate;
         bat=Primitive(PrimitiveType.Cube,"Bate provisional",new Vector3(1.15f,.8f,-3.1f),new Vector3(.18f,.18f,2.2f),new Color(.55f,.27f,.07f));
@@ -104,7 +125,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
     {
         state=PlayState.Pitching; pitches++; message="¡BATEA!";
         ball.transform.position=new Vector3(UnityEngine.Random.Range(-.45f,.45f),UnityEngine.Random.Range(1.25f,1.85f),5.8f);
-        if(pitcher!=null){pitcher.transform.rotation=Quaternion.identity;JungleStageBuilder.PulseSquash(pitcher,1.22f,.84f,22f,8f);}
+        if(pitcher!=null){pitcher.transform.rotation=Quaternion.Euler(0f,180f,0f);JungleStageBuilder.PulseSquash(pitcher,1.22f,.84f,22f,8f);}
         JungleStageBuilder.PulseSquash(ball,.75f,1.22f,28f,10f);
         if(sfx!=null&&pitchTone!=null)sfx.PlayOneShot(pitchTone,.55f);
     }
@@ -116,7 +137,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         {
             float rem=Mathf.Clamp01(1f-(pitchAt-now)/.85f);
             float windup=Mathf.Sin(rem*Mathf.PI)*18f;
-            pitcher.transform.rotation=Quaternion.Euler(-windup,0f,Mathf.Sin(now*3.5f)*3f);
+            pitcher.transform.rotation=Quaternion.Euler(-windup,180f,Mathf.Sin(now*3.5f)*3f);
         }
         bool cheering=state==PlayState.HitFlight||(state==PlayState.Result&&hitDistance>70f);
         for(int i=0;i<crowdMembers.Count;i++)

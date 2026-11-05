@@ -55,16 +55,15 @@ public sealed partial class CoconutSliceController
 
     private void LoadDistractorGorillas()
     {
-        const string runRoot = "Jungle/GorillaBowling/Meshy_AI_Gorilla_Guardian_biped/";
-        const string runAsset = runRoot + "Meshy_AI_Gorilla_Guardian_biped_Animation_Running_withSkin";
+        const string runAsset = JungleStageBuilder.BowlingGorillaAsset;
         const string fallRoot = "Jungle/NewModels/Slice/GorillaFall/Meshy_AI_Low_Poly_Gorilla_Embr_biped/";
         const string fallAsset = fallRoot + "Meshy_AI_Low_Poly_Gorilla_Embr_biped_Animation_Fall1_withSkin";
-        runningGorillaPrefab = JungleAssets.Load<GameObject>(runAsset);
+        runningGorillaPrefab = JungleStageBuilder.LoadBowlingGorillaPrefab();
         fallingGorillaPrefab = JungleAssets.Load<GameObject>(fallAsset);
         runningGorillaClip = FirstUsableClip(runAsset);
         fallingGorillaClip = FirstUsableClip(fallAsset);
-        runningGorillaMaterial = MakeTexturedMaterial(JungleAssets.Load<Texture2D>(runRoot + "Meshy_AI_Gorilla_Guardian_biped_texture_0"), "Gorila corredor");
-        fallingGorillaMaterial = MakeTexturedMaterial(JungleAssets.Load<Texture2D>(fallRoot + "GorillaFall_Albedo"), "Gorila que cae");
+        runningGorillaMaterial = JungleStageBuilder.GetBowlingGorillaSharedMaterial();
+        fallingGorillaMaterial = JungleStageBuilder.GetBowlingGorillaSharedMaterial();
         if (runningGorillaPrefab == null || fallingGorillaPrefab == null)
             Debug.LogWarning("Falta uno de los gorilas distractores de Coconut Slice.");
     }

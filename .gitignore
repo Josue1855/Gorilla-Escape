@@ -107,3 +107,8 @@ key.properties
 /unity_build_output.log
 /tools/*.png
 /unity_build_standalone.log
+
+# Local build/runtime logs; curated QA evidence remains versioned in Reports/QA.
+/unity_build.log
+/unity_run.log
+/tools/Reports/

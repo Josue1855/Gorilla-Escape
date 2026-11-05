@@ -87,6 +87,7 @@ function Controller() {
       {state==='DISCONNECTED'&&<button className="primary" onClick={()=>void model.current.reconnect()}>RECONECTAR MI SESIÓN</button>}
       {state === 'ERROR' && view?.network === 'NOT_CONNECTED' && <div className="connection-recovery">
         <p>La conexión falló antes de recibir una respuesta de la PC. Comprueba este navegador antes de volver a escanear.</p>
+        {model.current?.client?.trace?.code && <p className="diagnostic-badge" style={{ fontSize: '0.85em', opacity: 0.8, wordBreak: 'break-all' }}>Diagnóstico: {model.current.client.trace.code}{model.current.client.trace.rejectionCode ? ` (${model.current.client.trace.rejectionCode})` : ''}</p>}
         <button className="primary" disabled={view?.connectionCheck === 'CHECKING'} onClick={() => void model.current.checkConnection()}>{view?.connectionCheck === 'CHECKING' ? 'COMPROBANDO…' : 'COMPROBAR CONEXIÓN'}</button>
         {view?.connectionCheck === 'READY' && <p role="status">La PC responde desde este navegador. Cierra esta pestaña y escanea un QR nuevo en la PC.</p>}
         {['UNREACHABLE', 'INSECURE'].includes(view?.connectionCheck) && <p role="status">Este navegador no pudo verificar la conexión. Comprueba la misma Wi-Fi y que el juego siga abierto. Si usas conexión local, revisa la confianza del certificado; la PC ofrece Configurar este teléfono.</p>}

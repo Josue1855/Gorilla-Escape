@@ -1,0 +1,197 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< com.gorillaescape:local-server >-------------------
+[INFO] Building Gorilla Escape Local Server 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ local-server ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] Copying 9 resources from ..\PWA\dist to target\classes\static
+[INFO] Copying 2 resources from ..\Shared\Protocol\fixtures to target\classes\protocol-fixtures
+[INFO] Copying 4 resources from ..\Shared\Protocol\ipc to target\classes\ipc-fixtures
+[INFO] Copying 3 resources from ..\PWA\src\input to target\classes\static\mobile-lab
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ local-server ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ local-server ---
+[INFO] skip non existing resourceDirectory C:\Users\equipo\Documents\Repos\Gorilla Escape\Server\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ local-server ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ local-server ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.gorillaescape.server.connectivity.BootstrapRtcLabTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.018 s -- in com.gorillaescape.server.connectivity.BootstrapRtcLabTest
+[INFO] Running com.gorillaescape.server.connectivity.ConnectivityRecoveryTest
+18:56:36.073 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared health failed: consecutiveFailures=4 attempts=9 httpStatus=0 cause=NONE
+[ERROR] Tests run: 13, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.662 s <<< FAILURE! -- in com.gorillaescape.server.connectivity.ConnectivityRecoveryTest
+[ERROR] com.gorillaescape.server.connectivity.ConnectivityRecoveryTest.realReaderKeepsSurvivingConnection -- Time elapsed: 0.283 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <1> but was: <2>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+	at com.gorillaescape.server.connectivity.ConnectivityRecoveryTest.realReaderKeepsSurvivingConnection(ConnectivityRecoveryTest.java:124)
+
+[INFO] Running com.gorillaescape.server.connectivity.ConnectivityTest
+18:56:38.893 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_START_FAILED attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:39.196 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_START_FAILED attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:39.429 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_VERSION_TIMEOUT attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:40.373 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_START_FAILED attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:40.616 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_START_FAILED attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:40.875 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_START_FAILED attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:42.817 [main] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_SHA_INVALID attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:42.820 [connection-bootstrap] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_SHA_INVALID attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:42.887 [connection-bootstrap] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_UNAVAILABLE attempts=0 httpStatus=0 cause=NONE activeConnections=0
+18:56:42.894 [connection-bootstrap] WARN com.gorillaescape.server.connectivity.CloudflaredSupervisor -- Cloudflared startup failed: reason=TUNNEL_UNAVAILABLE attempts=0 httpStatus=0 cause=NONE activeConnections=0
+[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.520 s -- in com.gorillaescape.server.connectivity.ConnectivityTest
+[INFO] Running com.gorillaescape.server.connectivity.DnsRetryPolicyTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.419 s -- in com.gorillaescape.server.connectivity.DnsRetryPolicyTest
+[INFO] Running com.gorillaescape.server.connectivity.FirewallPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.125 s -- in com.gorillaescape.server.connectivity.FirewallPreflightTest
+[INFO] Running com.gorillaescape.server.connectivity.PublicRoomRtcLiveTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0 s -- in com.gorillaescape.server.connectivity.PublicRoomRtcLiveTest
+[INFO] Running com.gorillaescape.server.connectivity.QuickTunnelDnsProbeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.070 s -- in com.gorillaescape.server.connectivity.QuickTunnelDnsProbeTest
+[INFO] Running com.gorillaescape.server.connectivity.RealQuickTunnelTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0 s -- in com.gorillaescape.server.connectivity.RealQuickTunnelTest
+[INFO] Running com.gorillaescape.server.connectivity.RoomRouterLiveTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.001 s -- in com.gorillaescape.server.connectivity.RoomRouterLiveTest
+[INFO] Running com.gorillaescape.server.hosting.LocalTrustProcessTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.006 s -- in com.gorillaescape.server.hosting.LocalTrustProcessTest
+[INFO] Running com.gorillaescape.server.hosting.LocalTrustTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.89 s -- in com.gorillaescape.server.hosting.LocalTrustTest
+[INFO] Running com.gorillaescape.server.hosting.MobileHttpsTest
+[WARNING] Tests run: 8, Failures: 0, Errors: 0, Skipped: 6, Time elapsed: 0.273 s -- in com.gorillaescape.server.hosting.MobileHttpsTest
+[INFO] Running com.gorillaescape.server.hosting.TrustRecoveryTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.724 s -- in com.gorillaescape.server.hosting.TrustRecoveryTest
+[INFO] Running com.gorillaescape.server.ipc.LobbyIpcProcessTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.739 s -- in com.gorillaescape.server.ipc.LobbyIpcProcessTest
+[INFO] Running com.gorillaescape.server.ipc.ManagedLifecycleProcessTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.19 s -- in com.gorillaescape.server.ipc.ManagedLifecycleProcessTest
+[INFO] Running com.gorillaescape.server.ipc.ManagedProbeProcessTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.221 s -- in com.gorillaescape.server.ipc.ManagedProbeProcessTest
+[INFO] Running com.gorillaescape.server.ipc.ManagedProcessGuardTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in com.gorillaescape.server.ipc.ManagedProcessGuardTest
+[INFO] Running com.gorillaescape.server.ipc.ParentLifetimeTest
+mvnw.cmd : {"component":"ipc-java","event":"STDIN_EOF"}
+En C:\Users\equipo\Documents\Repos\Gorilla Escape\tools\qa\run_full_lab.ps1: 118 Carácter: 13
++     $jOut = & $mvnw -B -f pom.xml verify 2>&1; $jc = $LASTEXITCODE
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({"component":"i...t":"STDIN_EOF"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+{"component":"ipc-java","event":"STDIN_EOF"}
+{"component":"ipc-java","event":"SHUTDOWN_TIMEOUT"}
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.231 s -- in com.gorillaescape.server.ipc.ParentLifetimeTest
+[INFO] Running com.gorillaescape.server.ipc.ProbeCodecTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in com.gorillaescape.server.ipc.ProbeCodecTest
+[INFO] Running com.gorillaescape.server.ipc.ProbeCorpusTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in com.gorillaescape.server.ipc.ProbeCorpusTest
+[INFO] Running com.gorillaescape.server.ipc.ProbePressureProcessTest
+IPC_2C_PRESSURE {"initialRSS":-1,"finalRSS":-1,"peakObservedRSS":-1,"resources":{"component":"ipc-java","event":"RESOURCE_SUMMARY","validFrames":1101,"closedConnections":4,"maximumPendingDeadlines":1,"pendingDeadlines":0,"deadlineTerminated":true},"diagnostics":7}
+IPC_2C_PRESSURE {"initialRSS":-1,"finalRSS":-1,"peakObservedRSS":-1,"resources":{"component":"ipc-java","event":"RESOURCE_SUMMARY","validFrames":68,"closedConnections":131,"maximumPendingDeadlines":1,"pendingDeadlines":0,"deadlineTerminated":true},"diagnostics":134}
+IPC_2C_PRESSURE {"initialRSS":-1,"finalRSS":-1,"peakObservedRSS":-1,"resources":{"component":"ipc-java","event":"RESOURCE_SUMMARY","validFrames":2,"closedConnections":5,"maximumPendingDeadlines":1,"pendingDeadlines":0,"deadlineTerminated":true},"diagnostics":8}
+IPC_2C_PRESSURE {"initialRSS":-1,"finalRSS":-1,"peakObservedRSS":-1,"resources":{"component":"ipc-java","event":"RESOURCE_SUMMARY","validFrames":1,"closedConnections":202,"maximumPendingDeadlines":1,"pendingDeadlines":0,"deadlineTerminated":true},"diagnostics":205}
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 23.84 s -- in com.gorillaescape.server.ipc.ProbePressureProcessTest
+[INFO] Running com.gorillaescape.server.ipc.ProbeWriteDeadlineTest
+{"component":"ipc-java","event":"RESOURCE_SUMMARY","validFrames":0,"closedConnections":0,"maximumPendingDeadlines":1,"p
+endingDeadlines":0,"deadlineTerminated":true}
+{"component":"ipc-java","event":"SHUTDOWN","reason":"NONE","instanceId":"null"}
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.241 s -- in com.gorillaescape.server.ipc.ProbeWriteDeadlineTest
+[INFO] Running com.gorillaescape.server.mobile.GamePresentationTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in com.gorillaescape.server.mobile.GamePresentationTest
+[INFO] Running com.gorillaescape.server.mobile.JoinDiagnosticTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in com.gorillaescape.server.mobile.JoinDiagnosticTest
+[INFO] Running com.gorillaescape.server.mobile.LocalSignalingTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.gorillaescape.server.mobile.LocalSignalingTest
+[INFO] Running com.gorillaescape.server.mobile.MobileAdmissionConcurrencyTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.030 s -- in com.gorillaescape.server.mobile.MobileAdmissionConcurrencyTest
+[INFO] Running com.gorillaescape.server.mobile.MobileNavigationRtcLabTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0 s -- in com.gorillaescape.server.mobile.MobileNavigationRtcLabTest
+[INFO] Running com.gorillaescape.server.mobile.MobilePersistenceLabTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.013 s -- in com.gorillaescape.server.mobile.MobilePersistenceLabTest
+[INFO] Running com.gorillaescape.server.mobile.MobileUiCommandsTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.gorillaescape.server.mobile.MobileUiCommandsTest
+[INFO] Running com.gorillaescape.server.mobile.PlayersBackendTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.039 s -- in com.gorillaescape.server.mobile.PlayersBackendTest
+[INFO] Running com.gorillaescape.server.protocol.GorillaProtocolTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.092 s -- in com.gorillaescape.server.protocol.GorillaProtocolTest
+[INFO] Running com.gorillaescape.server.protocol.JoinQrPocTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.274 s -- in com.gorillaescape.server.protocol.JoinQrPocTest
+[INFO] Running com.gorillaescape.server.protocol.LobbyAdmissionTest
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 s -- in com.gorillaescape.server.protocol.LobbyAdmissionTest
+[INFO] Running com.gorillaescape.server.protocol.LobbyIpcTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.gorillaescape.server.protocol.LobbyIpcTest
+[INFO] Running com.gorillaescape.server.protocol.PhoneInputHubTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s -- in com.gorillaescape.server.protocol.PhoneInputHubTest
+[INFO] Running com.gorillaescape.server.protocol.QaAdmissionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in com.gorillaescape.server.protocol.QaAdmissionTest
+[INFO] Running com.gorillaescape.server.protocol.QaHostingContractTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.gorillaescape.server.protocol.QaHostingContractTest
+[INFO] Running com.gorillaescape.server.protocol.TechnicalSessionTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in com.gorillaescape.server.protocol.TechnicalSessionTest
+[INFO] Running com.gorillaescape.server.ProtocolContractTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in com.gorillaescape.server.ProtocolContractTest
+[INFO] Running com.gorillaescape.server.ServerIntegrationTest
+18:58:05.216 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.gorillaescape.server.ServerIntegrationTest]: ServerIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:58:05.364 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.gorillaescape.server.GorillaEscapeApplication for test class com.gorillaescape.server.ServerIntegrationTest
+18:58:05.483 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.gorillaescape.server.ServerIntegrationTest]: ServerIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:58:05.483 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.gorillaescape.server.GorillaEscapeApplication for test class com.gorillaescape.server.ServerIntegrationTest
+2026-11-03T18:58:05.922-06:00  INFO 7260 --- [gorilla-escape-local] [           main] c.g.server.ServerIntegrationTest         : Starting ServerIntegrationTest using Java 21.0.13.0.2 with PID 7260 (started by equipo in C:\Users\equipo\Documents\Repos\Gorilla Escape\Server)
+2026-11-03T18:58:05.924-06:00  INFO 7260 --- [gorilla-escape-local] [           main] c.g.server.ServerIntegrationTest         : No active profile set, falling back to 1 default profile: "default"
+2026-11-03T18:58:06.962-06:00  INFO 7260 --- [gorilla-escape-local] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-11-03T18:58:06.986-06:00  INFO 7260 --- [gorilla-escape-local] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-03T18:58:06.987-06:00  INFO 7260 --- [gorilla-escape-local] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-11-03T18:58:07.050-06:00  INFO 7260 --- [gorilla-escape-local] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1103 ms
+2026-11-03T18:58:07.218-06:00  INFO 7260 --- [gorilla-escape-local] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-11-03T18:58:07.576-06:00  INFO 7260 --- [gorilla-escape-local] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 50524 (http) with context path '/'
+2026-11-03T18:58:07.584-06:00  INFO 7260 --- [gorilla-escape-local] [           main] c.g.server.ServerIntegrationTest         : Started ServerIntegrationTest in 2.043 seconds (process running for 104.975)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of 
+the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: 
+https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically 
+(C:\Users\equipo\.m2\repository\net\bytebuddy\byte-buddy-agent\1.18.11\byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has 
+been appended
+2026-11-03T18:58:08.652-06:00  INFO 7260 --- [gorilla-escape-local] [1-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-03T18:58:08.652-06:00  INFO 7260 --- [gorilla-escape-local] [1-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-03T18:58:08.653-06:00  INFO 7260 --- [gorilla-escape-local] [1-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.736 s -- in com.gorillaescape.server.ServerIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   ConnectivityRecoveryTest.realReaderKeepsSurvivingConnection:124 expected: <1> but was: <2>
+[INFO] 
+[ERROR] Tests run: 164, Failures: 1, Errors: 0, Skipped: 15
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:05 min
+[INFO] Finished at: 2026-11-03T18:58:09-06:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.6:test (default-test) on project local-server: There are test failures.
+[ERROR] 
+[ERROR] See C:\Users\equipo\Documents\Repos\Gorilla Escape\Server\target\surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

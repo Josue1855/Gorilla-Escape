@@ -50,12 +50,13 @@ Generado: 2026-11-03. Debe incluirse junto al instalador Windows y los paquetes 
 - Inno Setup — software de empaquetado (licencia propia de Inno Setup; gratuito para uso y
   redistribución del instalador resultante). El compilador NO se redistribuye. https://jrsoftware.org
 
-## Nota sobre recursos de arte
+## Nota sobre recursos de arte y modelos 3D
 
-Los modelos 3D marcados como "Meshy" (`Unity/Assets/.../Meshy_AI_*`, `assets/models-and-textures`)
-tienen procedencia/licencia **pendiente de verificación** y NO se incluyen en la distribución pública
-hasta resolverla. El gorila del splash es **procedimental/original** (construido con primitivas de Unity)
-y no depende de esos recursos.
+- Modelo 3D canónico del gorila: `Meshy_AI_Low_Poly_Gorilla_Embr_biped` generado mediante Meshy AI (Creative Community / Commercial Evaluation).
+  - Utilizado de manera unificada y coherente en todas las disciplinas y pantallas del producto (Splash cinematográfico, Menú 3D principal, Coconut Bowling, Gorilla Boxing, Gorilla Smash / High Striker, Jungle Baseball y Coconut Slice).
+  - Animaciones esqueléticas oficiales vinculadas: Alert (idle), Angry_Ground_Stomp / Angry_Ground_Stomp_2, All_Night_Dance y Fall1.
+  - La procedencia comercial y los términos definitivos de distribución de Meshy AI permanecen en revisión legal previa a la publicación comercial en tiendas masivas.
+
 
 ## Texto de licencias
 

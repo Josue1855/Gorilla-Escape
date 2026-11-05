@@ -30,12 +30,16 @@ public sealed class SplashDirector : MonoBehaviour
 
     private float startedAt;
     private Camera cam;
-    private ProceduralGorilla gorilla;
+    private readonly GorillaMascotRig gorillaRig = new GorillaMascotRig();
     private Transform gorillaRoot;
     private Transform signsRoot;
     private readonly SignData[] signs = new SignData[3];
     private int selectedSign = 0;
     private int hoveredSign = -1;
+
+    private AudioSource sfxSource;
+    private float lastFootstepTime = -1f;
+    private int lastAudibleSign = -1;
 
     private int comicPanelIndex = 0;
     private int prepStepIndex = 0;
@@ -45,8 +49,8 @@ public sealed class SplashDirector : MonoBehaviour
     private bool bootstrapped = false;
 
     private const float CinematicDuration = 5.0f;
-    private const float GorillaStartZ = 24f;
-    private const float GorillaEndZ = 6.2f;
+    private const float GorillaStartZ = 22f;
+    private const float GorillaEndZ = 4.2f;
 
     // Texturas de ambientación
     private Texture2D texGorillaMenu;
@@ -102,15 +106,15 @@ public sealed class SplashDirector : MonoBehaviour
         {
             tag = "VIÑETA 4 DE 5",
             title = "EL DESAFÍO DE KONG",
-            narrative = "Kong golpea su pecho y proclama el reto: «Si demuestras tu fuerza y agilidad humana en nuestras 4 pruebas sagradas, mis gorilas construirán una balsa de bambú para tu regreso a casa».",
+            narrative = "Kong golpea su pecho y proclama el reto: «Si demuestras tu fuerza y agilidad humana en las pruebas sagradas de las Gorillolimpiadas, mis gorilas construirán una balsa de bambú para tu regreso a casa».",
             tip = "¡El náufrago acepta el reto de las Gorillolimpiadas!"
         },
         new ComicPanel
         {
             tag = "VIÑETA 5 DE 5",
-            title = "LAS 4 PRUEBAS MVP",
-            narrative = "1. Gorilla Smash: Fuerza con el mazo de la selva.\n2. Lanzamiento de Coco: Puntería y distancia máxima.\n3. Coconut Bowling: Tiro rodado contra pines tropicales.\n4. Jungle Slice: Reflejos rápidos cortando cocos al vuelo.",
-            tip = "¡Supera el torneo para ganar tu boleto de vuelta a casa!"
+            title = "LAS PRUEBAS SAGRADAS DEL NÁUFRAGO",
+            narrative = "1. Gorilla Smash: Mazo de fuerza y reflejos.\n2. Lanzamiento de Coco: Puntería y distancia máxima.\n3. Coconut Bowling: Tiro rodado contra pines tropicales.\n4. Jungle Slice: Reflejos rápidos cortando cocos al vuelo.\n¡Supera las pruebas de Kong para construir tu balsa y escapar!",
+            tip = "¡El náufrago debe conquistar la arena de Kong para volver a casa!"
         }
     };
 
@@ -124,7 +128,7 @@ public sealed class SplashDirector : MonoBehaviour
 
     private void Awake()
     {
-        startedAt = Time.unscaledTime;
+        startedAt = -1f;
         LoadAssets();
         EnsureLighting();
         BuildTropicalEnvironment();
@@ -141,6 +145,11 @@ public sealed class SplashDirector : MonoBehaviour
 
         // Hook para automatización de capturas si está configurado
         StartCoroutine(AutomationScreenshotHookRoutine());
+    }
+
+    private void OnDestroy()
+    {
+        gorillaRig.Dispose();
     }
 
     private void LoadAssets()
@@ -169,15 +178,18 @@ public sealed class SplashDirector : MonoBehaviour
             mainLight = lightGo.AddComponent<Light>();
             mainLight.type = LightType.Directional;
         }
-        mainLight.intensity = 1.45f;
+        mainLight.intensity = 1.22f;
         mainLight.color = new Color(1f, 0.96f, 0.88f);
-        mainLight.transform.rotation = Quaternion.Euler(42f, -28f, 0f);
+        mainLight.transform.rotation = Quaternion.Euler(38f, -32f, 0f);
+        mainLight.shadows = LightShadows.Soft;
+        mainLight.shadowStrength = 0.65f;
+        mainLight.shadowBias = 0.04f;
 
         RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
-        RenderSettings.ambientLight = new Color(0.70f, 0.75f, 0.82f);
-        RenderSettings.ambientSkyColor = new Color(0.65f, 0.82f, 0.98f);
-        RenderSettings.ambientEquatorColor = new Color(0.58f, 0.65f, 0.65f);
-        RenderSettings.ambientGroundColor = new Color(0.48f, 0.42f, 0.34f);
+        RenderSettings.ambientLight = new Color(0.55f, 0.65f, 0.75f);
+        RenderSettings.ambientSkyColor = new Color(0.55f, 0.70f, 0.90f);
+        RenderSettings.ambientEquatorColor = new Color(0.38f, 0.52f, 0.38f);
+        RenderSettings.ambientGroundColor = new Color(0.48f, 0.40f, 0.30f);
     }
 
     private IEnumerator AsyncBootstrapRoutine()
@@ -200,85 +212,251 @@ public sealed class SplashDirector : MonoBehaviour
             go.AddComponent<AudioListener>();
         }
         cam.clearFlags = CameraClearFlags.SolidColor;
-        cam.backgroundColor = new Color(0.42f, 0.75f, 0.95f, 1f);
+        cam.backgroundColor = new Color(0.38f, 0.70f, 0.94f, 1f);
         cam.nearClipPlane = 0.05f;
         cam.farClipPlane = 500f;
         cam.fieldOfView = 58f;
-        // Vista general hacia +Z
-        cam.transform.position = new Vector3(0f, 2.0f, -1.0f);
+        cam.transform.position = new Vector3(0f, 2.3f, 0.2f);
         cam.transform.rotation = Quaternion.Euler(6.5f, 0f, 0f);
+
+        sfxSource = cam.gameObject.GetComponent<AudioSource>();
+        if (sfxSource == null) sfxSource = cam.gameObject.AddComponent<AudioSource>();
+        sfxSource.spatialBlend = 0f;
+        sfxSource.playOnAwake = false;
+        JungleAudioBank.EnsureAmbience(cam.gameObject);
+    }
+
+    private static Material MakeMaterialWithTexture(Texture2D albedo, Color fallbackColor, string name, float smoothness = 0.15f, Texture2D normal = null, float bumpScale = 0.7f)
+    {
+        if (albedo != null)
+        {
+            var mat = JungleStageBuilder.CreateTexturedMaterial(albedo, name, smoothness, normal, bumpScale);
+            mat.color = fallbackColor;
+            if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", fallbackColor);
+            return mat;
+        }
+        return JungleStageBuilder.GetSharedMaterial(fallbackColor, 0f, smoothness);
+    }
+
+    private static GameObject PlaceGroundedProp(GameObject prefab, Transform parent, Material mat, string name, Vector3 pos, float height, float yaw, float pitch = 0f, float roll = 0f, float swayAngle = 2.0f, float swaySpeed = 1.4f)
+    {
+        if (prefab == null) return null;
+        var go = Instantiate(prefab, parent);
+        go.name = name;
+        Quaternion importedAxisCorrection = go.transform.localRotation;
+        go.transform.position = Vector3.zero;
+        go.transform.localRotation = Quaternion.Euler(pitch, yaw, roll) * importedAxisCorrection;
+        go.transform.localScale = Vector3.one;
+        JungleStageBuilder.DisableChildColliders(go);
+        var renderers = go.GetComponentsInChildren<Renderer>(true);
+        if (renderers.Length > 0)
+        {
+            Bounds b = JungleStageBuilder.CombinedBounds(renderers);
+            float scale = height / Mathf.Max(0.01f, b.size.y);
+            go.transform.localScale = Vector3.one * scale;
+            b = JungleStageBuilder.CombinedBounds(renderers);
+            go.transform.position += new Vector3(pos.x - b.center.x, pos.y - b.min.y, pos.z - b.center.z);
+            if (mat != null) JungleStageBuilder.ApplySharedMaterial(renderers, mat);
+        }
+        else
+        {
+            go.transform.position = pos;
+            go.transform.localScale = Vector3.one * height;
+        }
+        if (swayAngle > 0.05f)
+            JungleStageBuilder.AttachWindSway(go, swayAngle, swaySpeed);
+        return go;
+    }
+
+    private static Texture2D CreateProceduralSandTexture()
+    {
+        int size = 128;
+        var tex = new Texture2D(size, size, TextureFormat.RGB24, true)
+        {
+            name = "Arena Dorada Procedural",
+            wrapMode = TextureWrapMode.Repeat,
+            filterMode = FilterMode.Bilinear
+        };
+        Color sandDark = new Color(0.78f, 0.64f, 0.42f);
+        Color sandLight = new Color(0.92f, 0.81f, 0.58f);
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float n1 = Mathf.PerlinNoise(x * 0.15f, y * 0.15f);
+                float n2 = Mathf.PerlinNoise(x * 0.45f + 12f, y * 0.45f + 15f) * 0.35f;
+                float blend = Mathf.Clamp01(n1 + n2 - 0.15f);
+                tex.SetPixel(x, y, Color.Lerp(sandDark, sandLight, blend));
+            }
+        }
+        tex.Apply(true, true);
+        return tex;
     }
 
     private void BuildTropicalEnvironment()
     {
         var root = new GameObject("Escenario Tropical 3D").transform;
 
-        // Arena dorada
-        JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube, "Arena", new Vector3(0f, -0.2f, 22f),
-            new Vector3(65f, 0.4f, 75f), new Color(0.88f, 0.78f, 0.58f), root);
+        // 1. Cargar modelos 3D y texturas auténticas del proyecto
+        const string palmRoot = "Jungle/NewModels/Palm/Meshy_AI_Cartoon_Coconut_Palm_20261026_texture_fbx/";
+        GameObject palmPrefab = JungleAssets.Load<GameObject>(palmRoot + "Meshy_AI_Cartoon_Coconut_Palm_20261026_texture");
+        Texture2D palmAlbedo = JungleAssets.Load<Texture2D>(palmRoot + "Palm_Albedo");
+        Texture2D palmNormal = JungleAssets.Load<Texture2D>(palmRoot + "Meshy_AI_Cartoon_Coconut_Palm_20261026_texture_normal");
+        Material palmMat = MakeMaterialWithTexture(palmAlbedo, Color.white, "Palmera Tropical - Splash", 0.18f, palmNormal, 0.85f);
 
-        // Sendero central
-        JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube, "Sendero", new Vector3(0f, -0.15f, 22f),
-            new Vector3(5.5f, 0.1f, 70f), new Color(0.74f, 0.63f, 0.43f), root);
+        const string bushRoot = "Jungle/NewModels/Bush/Meshy_AI_Emerald_Canopy_20261026_texture_fbx/";
+        GameObject bushPrefab = JungleAssets.Load<GameObject>(bushRoot + "Meshy_AI_Emerald_Canopy_20261026_texture");
+        Texture2D bushAlbedo = JungleAssets.Load<Texture2D>(bushRoot + "Bush_Albedo");
+        Texture2D bushNormal = JungleAssets.Load<Texture2D>(bushRoot + "Meshy_AI_Emerald_Canopy_20261026_texture_normal");
+        Material bushMat = MakeMaterialWithTexture(bushAlbedo, Color.white, "Arbusto Selva - Splash", 0.22f, bushNormal, 0.75f);
+
+        const string coconutRoot = "Jungle/NewModels/Coconut/Meshy_AI_Coconut_Bowling_Ball_20261026_texture_fbx/";
+        GameObject coconutPrefab = JungleAssets.Load<GameObject>(coconutRoot + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture");
+        Texture2D coconutAlbedo = JungleAssets.Load<Texture2D>(coconutRoot + "Coconut_Albedo");
+        Texture2D coconutNormal = JungleAssets.Load<Texture2D>(coconutRoot + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture_normal");
+        Material coconutMat = MakeMaterialWithTexture(coconutAlbedo, Color.white, "Coco Suelo - Splash", 0.12f, coconutNormal, 0.8f);
+
+        GameObject trunkPrefab = JungleAssets.Load<GameObject>("LogBalance/Models/trunk") ?? JungleAssets.Load<GameObject>("LogBalance/Prefabs/trunk");
+        Material trunkMat = JungleAssets.Load<Material>("LogBalance/Materials/trunk_Color_C14") ?? JungleAssets.Load<Material>("LogBalance/Materials/trunk_Color_C09");
+
+        const string drumRoot = "Jungle/NewModels/WhackAMole/Meshy_AI_Wooden_War_Drum_20261026_texture_fbx/";
+        GameObject drumPrefab = JungleAssets.Load<GameObject>(drumRoot + "Meshy_AI_Wooden_War_Drum_20261026_texture");
+        Texture2D drumAlbedo = JungleAssets.Load<Texture2D>(drumRoot + "Meshy_AI_Wooden_War_Drum_20261026_texture");
+        Texture2D drumNormal = JungleAssets.Load<Texture2D>(drumRoot + "Meshy_AI_Wooden_War_Drum_20261026_texture_normal");
+        Material drumMat = MakeMaterialWithTexture(drumAlbedo, Color.white, "Tambor Tribal - Splash", 0.25f, drumNormal, 0.8f);
+
+        const string guardianRoot = "Jungle/BowlingPins/Meshy_AI_Banana_Guardian_20261024_texture_fbx/";
+        GameObject guardianPrefab = JungleAssets.Load<GameObject>(guardianRoot + "Meshy_AI_Banana_Guardian_20261024_texture");
+        Texture2D guardianAlbedo = JungleAssets.Load<Texture2D>(guardianRoot + "Meshy_AI_Banana_Guardian_20261024_albedo");
+        Texture2D guardianNormal = JungleAssets.Load<Texture2D>(guardianRoot + "Meshy_AI_Banana_Guardian_20261024_texture_normal");
+        Material guardianMat = MakeMaterialWithTexture(guardianAlbedo, Color.white, "Totem Guardian - Splash", 0.20f, guardianNormal, 0.8f);
+
+        Texture2D texGround = JungleAssets.Load<Texture2D>("Jungle/bowling_jungle_ground") ?? CreateProceduralSandTexture();
+        Material sandMat = MakeMaterialWithTexture(texGround, new Color(0.86f, 0.74f, 0.52f), "Arena Dorada - Splash", 0.05f);
+
+        Texture2D texBamboo = JungleAssets.Load<Texture2D>("Jungle/SurfaceTextures/BowlingLaneBamboo");
+        Material bambooMat = MakeMaterialWithTexture(texBamboo, new Color(0.85f, 0.70f, 0.42f), "Bambu Sendero - Splash", 0.25f);
+
+        // 2. Arena y relieve del terreno
+        var arena = JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube, "Arena Principal",
+            new Vector3(0f, -0.2f, 22f), new Vector3(75f, 0.4f, 80f), new Color(0.86f, 0.74f, 0.52f), root, smoothness: 0.05f);
+        arena.GetComponent<Renderer>().sharedMaterial = sandMat;
+
+        // Dunas naturales para romper la planicie
+        CreateDune(root, sandMat, "Duna_Izq_1", new Vector3(-8.5f, -0.15f, 7.0f), new Vector3(8f, 0.9f, 15f));
+        CreateDune(root, sandMat, "Duna_Izq_2", new Vector3(-10.5f, 0.1f, 19.0f), new Vector3(10f, 1.2f, 20f));
+        CreateDune(root, sandMat, "Duna_Der_1", new Vector3(8.5f, -0.15f, 7.5f), new Vector3(8f, 0.9f, 15f));
+        CreateDune(root, sandMat, "Duna_Der_2", new Vector3(10.5f, 0.1f, 20.0f), new Vector3(10f, 1.3f, 20f));
+
+        // Sendero central del gorila
+        var sendero = JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube, "Sendero del Gorila",
+            new Vector3(0f, -0.13f, 18f), new Vector3(5.6f, 0.10f, 44f), new Color(0.74f, 0.60f, 0.40f), root, smoothness: 0.06f);
+        sendero.GetComponent<Renderer>().sharedMaterial = bambooMat;
 
         // Océano al horizonte (+Z)
-        JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube, "Oceano", new Vector3(0f, -0.3f, 55f),
-            new Vector3(95f, 0.3f, 50f), new Color(0.16f, 0.52f, 0.76f), root);
+        var ocean = JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube, "Oceano Tropical",
+            new Vector3(0f, -0.30f, 65f), new Vector3(120f, 0.26f, 60f), new Color(0.12f, 0.52f, 0.78f), root, smoothness: 0.68f);
 
-        // Sol dorado
-        JungleStageBuilder.CreatePrimitive(PrimitiveType.Sphere, "Sol Dorado", new Vector3(10f, 20f, 58f),
-            Vector3.one * 5.5f, new Color(1f, 0.94f, 0.60f), root);
+        // Línea de espuma en la orilla
+        JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube, "Espuma Orilla",
+            new Vector3(0f, -0.16f, 35.5f), new Vector3(80f, 0.04f, 1.4f), new Color(0.94f, 0.98f, 1.0f), root, smoothness: 0.25f);
 
-        // Palmeras a los lados (separadas a +/- 7.5m para despejar la vista del sendero)
-        for (int i = 0; i < 10; i++)
-        {
-            float z = 4f + i * 5.5f;
-            float side = (i % 2 == 0) ? -7.8f : 7.8f;
-            BuildPalmTree(root, new Vector3(side + Random.Range(-0.5f, 0.5f), 0f, z));
-        }
+        // Sol tropical cálido
+        JungleStageBuilder.CreatePrimitive(PrimitiveType.Sphere, "Sol Dorado",
+            new Vector3(8f, 16f, 68f), Vector3.one * 5.8f, new Color(1f, 0.96f, 0.65f), root);
 
-        // Rocas de playa
+        // 3. Palmeras auténticas del proyecto con composición cinematográfica (Verticales y erguidas)
+        // Primer plano: Palmeras de encuadre (Framing)
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Framing_Izq", new Vector3(-6.2f, 0f, 2.5f), 7.6f, yaw: 35f, swayAngle: 1.8f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Framing_Der", new Vector3(6.2f, 0f, 2.8f), 7.8f, yaw: -30f, swayAngle: 1.8f);
+
+        // Arboleda izquierda (Midground & Dunes)
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Izq_1", new Vector3(-8.2f, 0.05f, 6.5f), 7.0f, yaw: 18f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Izq_2", new Vector3(-10.4f, 0.20f, 9.5f), 6.0f, yaw: 45f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Izq_3", new Vector3(-7.6f, 0.10f, 13.8f), 7.4f, yaw: -15f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Izq_4", new Vector3(-10.8f, 0.30f, 18.2f), 6.5f, yaw: 32f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Izq_5", new Vector3(-8.6f, 0.15f, 23.5f), 7.5f, yaw: -8f);
+
+        // Arboleda derecha (Midground & Dunes)
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Der_1", new Vector3(8.2f, 0.05f, 7.0f), 7.1f, yaw: -18f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Der_2", new Vector3(10.5f, 0.20f, 10.2f), 6.2f, yaw: -38f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Der_3", new Vector3(7.8f, 0.10f, 14.8f), 7.3f, yaw: 16f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Der_4", new Vector3(10.8f, 0.30f, 19.5f), 6.4f, yaw: -28f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Der_5", new Vector3(8.5f, 0.15f, 24.2f), 7.4f, yaw: 10f);
+
+        // Palmeras de fondo (Horizonte de selva)
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Fondo_1", new Vector3(-12.0f, 0.3f, 28.0f), 8.2f, yaw: 20f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Fondo_2", new Vector3(-5.5f, 0.2f, 31.0f), 7.0f, yaw: -12f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Fondo_3", new Vector3(5.5f, 0.2f, 31.5f), 7.2f, yaw: 14f);
+        PlaceGroundedProp(palmPrefab, root, palmMat, "Palmera_Fondo_4", new Vector3(12.0f, 0.3f, 28.5f), 8.0f, yaw: -22f);
+
+        // 4. Arbustos y sotobosque tropical (Emerald Canopy)
+        // Costado izquierdo
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Izq_1", new Vector3(-5.0f, 0f, 3.2f), 1.6f, 25f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Izq_2", new Vector3(-6.8f, 0.1f, 6.2f), 1.9f, -40f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Izq_3", new Vector3(-7.6f, 0.2f, 10.0f), 1.5f, 15f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Izq_4", new Vector3(-5.2f, 0.1f, 13.5f), 1.8f, -20f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Izq_5", new Vector3(-7.8f, 0.25f, 18.0f), 2.1f, 35f);
+
+        // Costado derecho
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Der_1", new Vector3(5.0f, 0f, 3.5f), 1.7f, -30f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Der_2", new Vector3(6.8f, 0.1f, 6.6f), 1.8f, 45f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Der_3", new Vector3(7.8f, 0.2f, 10.8f), 1.6f, -15f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Der_4", new Vector3(5.4f, 0.1f, 14.5f), 1.9f, 25f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Der_5", new Vector3(8.0f, 0.25f, 19.0f), 2.0f, -35f);
+
+        // Fondo de letreros
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Sign_Story", new Vector3(-4.8f, 0f, 5.8f), 2.3f, 10f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Sign_Party", new Vector3(4.8f, 0f, 5.8f), 2.3f, -10f);
+        PlaceGroundedProp(bushPrefab, root, bushMat, "Arbusto_Sign_Conn", new Vector3(2.5f, 0.5f, 10.2f), 2.2f, 0f);
+
+        // 5. Troncos de playa (Driftwood)
+        PlaceGroundedProp(trunkPrefab, root, trunkMat, "Tronco_Playa_Izq", new Vector3(-4.0f, 0.05f, 8.2f), 1.15f, yaw: 32f, pitch: 2f, roll: 8f, swayAngle: 0f);
+        PlaceGroundedProp(trunkPrefab, root, trunkMat, "Tronco_Playa_Der", new Vector3(4.3f, 0.05f, 12.6f), 1.25f, yaw: -38f, pitch: -3f, roll: -6f, swayAngle: 0f);
+
+        // 6. Cocos dispersos en la arena
+        PlaceGroundedProp(coconutPrefab, root, coconutMat, "Coco_1", new Vector3(-4.1f, 0.06f, 2.9f), 0.42f, 15f, swayAngle: 0f);
+        PlaceGroundedProp(coconutPrefab, root, coconutMat, "Coco_2", new Vector3(-4.5f, 0.06f, 3.3f), 0.38f, -40f, swayAngle: 0f);
+        PlaceGroundedProp(coconutPrefab, root, coconutMat, "Coco_3", new Vector3(-3.8f, 0.06f, 8.5f), 0.45f, 22f, swayAngle: 0f);
+        PlaceGroundedProp(coconutPrefab, root, coconutMat, "Coco_4", new Vector3(4.2f, 0.06f, 3.2f), 0.40f, -25f, swayAngle: 0f);
+        PlaceGroundedProp(coconutPrefab, root, coconutMat, "Coco_5", new Vector3(4.6f, 0.06f, 3.6f), 0.44f, 50f, swayAngle: 0f);
+        PlaceGroundedProp(coconutPrefab, root, coconutMat, "Coco_6", new Vector3(4.0f, 0.06f, 12.2f), 0.42f, -10f, swayAngle: 0f);
+
+        // 7. Tambores tribales y guardianes
+        PlaceGroundedProp(drumPrefab, root, drumMat, "Tambor_Story", new Vector3(-2.3f, 0f, 5.2f), 1.05f, yaw: 15f, swayAngle: 0f);
+        PlaceGroundedProp(drumPrefab, root, drumMat, "Tambor_Party", new Vector3(2.3f, 0f, 5.2f), 1.05f, yaw: -15f, swayAngle: 0f);
+        PlaceGroundedProp(drumPrefab, root, drumMat, "Tambor_Centro", new Vector3(0f, 0f, 7.8f), 1.18f, yaw: 0f, swayAngle: 0f);
+
+        PlaceGroundedProp(guardianPrefab, root, guardianMat, "Totem_Guardian_Izq", new Vector3(-5.4f, 0f, 4.8f), 2.3f, yaw: 24f, swayAngle: 0f);
+        PlaceGroundedProp(guardianPrefab, root, guardianMat, "Totem_Guardian_Der", new Vector3(5.4f, 0f, 4.8f), 2.3f, yaw: -24f, swayAngle: 0f);
+
+        // 8. Rocas costeras decorativas
         for (int i = 0; i < 8; i++)
         {
-            float rx = (i % 2 == 0 ? -1f : 1f) * Random.Range(4.5f, 15f);
-            float rz = Random.Range(3f, 35f);
-            JungleStageBuilder.CreatePrimitive(PrimitiveType.Sphere, "Roca " + i,
+            float rx = (i % 2 == 0 ? -1f : 1f) * UnityEngine.Random.Range(4.5f, 14f);
+            float rz = UnityEngine.Random.Range(4f, 32f);
+            var roca = JungleStageBuilder.CreatePrimitive(PrimitiveType.Sphere, "Roca_Playa_" + i,
                 new Vector3(rx, -0.05f, rz),
-                new Vector3(Random.Range(0.8f, 1.8f), Random.Range(0.5f, 1.0f), Random.Range(0.8f, 1.8f)),
-                new Color(0.48f, 0.44f, 0.40f), root);
+                new Vector3(UnityEngine.Random.Range(1.1f, 2.2f), UnityEngine.Random.Range(0.6f, 1.2f), UnityEngine.Random.Range(1.1f, 2.2f)),
+                new Color(0.46f, 0.42f, 0.38f), root, smoothness: 0.15f);
+            roca.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0f, 30f), UnityEngine.Random.Range(0f, 180f), 0f);
         }
     }
 
-    private static void BuildPalmTree(Transform parent, Vector3 pos)
+    private static void CreateDune(Transform parent, Material mat, string name, Vector3 pos, Vector3 scale)
     {
-        var palm = new GameObject("Palmera").transform;
-        palm.SetParent(parent, false);
-        palm.position = pos;
-
-        var trunk = JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder, "Tronco",
-            new Vector3(0f, 2.5f, 0f), new Vector3(0.42f, 2.5f, 0.42f), new Color(0.52f, 0.36f, 0.20f), palm).transform;
-        trunk.localRotation = Quaternion.Euler(Random.Range(-5f, 5f), 0f, Random.Range(-5f, 5f));
-
-        var crown = new GameObject("Corona").transform;
-        crown.SetParent(palm, false);
-        crown.localPosition = new Vector3(0f, 4.9f, 0f);
-
-        for (int f = 0; f < 8; f++)
-        {
-            float a = f * Mathf.PI * 2f / 8f;
-            var frond = JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cube, "Hoja",
-                new Vector3(Mathf.Cos(a) * 1.6f, 0f, Mathf.Sin(a) * 1.6f),
-                new Vector3(0.38f, 0.12f, 2.6f), new Color(0.18f, 0.60f, 0.26f), crown).transform;
-            frond.localRotation = Quaternion.Euler(22f, -a * Mathf.Rad2Deg, 0f);
-        }
+        var dune = JungleStageBuilder.CreatePrimitive(PrimitiveType.Sphere, name, pos, scale,
+            new Color(0.86f, 0.74f, 0.52f), parent, smoothness: 0.05f);
+        dune.GetComponent<Renderer>().sharedMaterial = mat;
     }
 
     private void BuildGorillaCharacter()
     {
-        gorillaRoot = new GameObject("Gorila Runner").transform;
+        gorillaRoot = new GameObject("Gorila Meshy AI Runner").transform;
         gorillaRoot.position = new Vector3(0f, 0f, GorillaStartZ);
-        gorilla = ProceduralGorilla.Build(gorillaRoot, 2.3f);
         gorillaRoot.rotation = Quaternion.LookRotation(Vector3.back); // Hacia la cámara
+        gorillaRig.LoadMascot(gorillaRoot, gorillaRoot.position, gorillaRoot.rotation, 3.2f, "Meshy_AI_Gorilla_Mascot");
+        gorillaRig.PlayRunAnimation(1.15f);
     }
 
     private void Build3DSigns()
@@ -286,16 +464,18 @@ public sealed class SplashDirector : MonoBehaviour
         signsRoot = new GameObject("Letreros 3D").transform;
 
         string[] titles = { "MODO HISTORIA", "MODO FIESTA", "SALA Y CONEXIÓN" };
-        string[] subs = { "Aventura con Kong (4 Pruebas)", "Torneo 1-4 Jugadores", "Escanear QR y Celulares" };
+        string[] subs = { "Aventura y Escape con Kong", "Torneo 10 Disciplinas", "Escanear QR y Celulares" };
         string[] actions = { "STORY", "PARTY", "CONNECTION" };
-        
-        // Disposición abierta: izquierda, derecha, y centro ligeramente al fondo
+
         Vector3[] positions = new Vector3[]
         {
-            new Vector3(-3.3f, 0f, 5.8f), // Modo Historia (Izquierda)
-            new Vector3(3.3f, 0f, 5.8f),  // Modo Fiesta (Derecha)
-            new Vector3(0f, 0.6f, 8.8f)   // Conexión QR (Centro al fondo detrás del gorila)
+            new Vector3(-4.4f, 0f, 6.2f), // Modo Historia (Izquierda)
+            new Vector3(4.4f, 0f, 6.2f),  // Modo Fiesta (Derecha)
+            new Vector3(0f, 0.85f, 9.2f)  // Conexión QR (Centro al fondo detrás del gorila)
         };
+
+        Texture2D texBamboo = JungleAssets.Load<Texture2D>("Jungle/SurfaceTextures/BowlingLaneBamboo");
+        Material bambooMat = MakeMaterialWithTexture(texBamboo, new Color(0.80f, 0.65f, 0.38f), "Bambu Postes", 0.25f);
 
         for (int i = 0; i < 3; i++)
         {
@@ -304,52 +484,66 @@ public sealed class SplashDirector : MonoBehaviour
             signObj.position = positions[i];
 
             // Orientar levemente hacia el centro de la cámara
-            float angleY = (i == 0) ? 18f : (i == 1) ? -18f : 0f;
+            float angleY = (i == 0) ? 20f : (i == 1) ? -20f : 0f;
             signObj.rotation = Quaternion.Euler(0f, angleY, 0f);
 
             // Postes de bambú gemelos
-            JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder, "Bambu_Izq",
-                new Vector3(-1.45f, 1.4f, 0f), new Vector3(0.13f, 1.4f, 0.13f), new Color(0.58f, 0.44f, 0.22f), signObj);
-            JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder, "Bambu_Der",
-                new Vector3(1.45f, 1.4f, 0f), new Vector3(0.13f, 1.4f, 0.13f), new Color(0.58f, 0.44f, 0.22f), signObj);
+            var p1 = JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder, "Bambu_Izq",
+                new Vector3(-1.50f, 1.45f, 0f), new Vector3(0.16f, 1.45f, 0.16f), new Color(0.60f, 0.46f, 0.24f), signObj);
+            p1.GetComponent<Renderer>().sharedMaterial = bambooMat;
 
-            // Cuerdas de soporte
+            var p2 = JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder, "Bambu_Der",
+                new Vector3(1.50f, 1.45f, 0f), new Vector3(0.16f, 1.45f, 0.16f), new Color(0.60f, 0.46f, 0.24f), signObj);
+            p2.GetComponent<Renderer>().sharedMaterial = bambooMat;
+
+            // Cuerdas de soporte diagonales
             var ropeL = JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder, "Cuerda_Izq",
-                new Vector3(-1.45f, 2.5f, 0f), new Vector3(0.04f, 0.5f, 0.04f), new Color(0.65f, 0.52f, 0.35f), signObj).transform;
+                new Vector3(-1.50f, 2.55f, 0f), new Vector3(0.045f, 0.52f, 0.045f), new Color(0.68f, 0.54f, 0.36f), signObj).transform;
             ropeL.localRotation = Quaternion.Euler(0f, 0f, 26f);
+
             var ropeR = JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder, "Cuerda_Der",
-                new Vector3(1.45f, 2.5f, 0f), new Vector3(0.04f, 0.5f, 0.04f), new Color(0.65f, 0.52f, 0.35f), signObj).transform;
+                new Vector3(1.50f, 2.55f, 0f), new Vector3(0.045f, 0.52f, 0.045f), new Color(0.68f, 0.54f, 0.36f), signObj).transform;
             ropeR.localRotation = Quaternion.Euler(0f, 0f, -26f);
 
             // Tabla de madera principal con collider
-            Color woodColor = new Color(0.60f, 0.42f, 0.24f);
+            Color woodColor = new Color(0.58f, 0.40f, 0.22f);
             var board = JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cube, "TablaMadera",
-                new Vector3(0f, 2.3f, 0f), new Vector3(3.0f, 1.20f, 0.16f), woodColor, signObj, keepCollider: true);
+                new Vector3(0f, 2.35f, 0f), new Vector3(3.2f, 1.25f, 0.18f), woodColor, signObj, keepCollider: true);
 
-            // Borde superior e inferior
+            // Marcos rústicos superior e inferior
             JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cube, "MarcoSup",
-                new Vector3(0f, 2.92f, 0f), new Vector3(3.1f, 0.10f, 0.20f), new Color(0.46f, 0.34f, 0.16f), signObj);
+                new Vector3(0f, 2.98f, 0f), new Vector3(3.3f, 0.12f, 0.22f), new Color(0.42f, 0.30f, 0.14f), signObj);
             JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cube, "MarcoInf",
-                new Vector3(0f, 1.68f, 0f), new Vector3(3.1f, 0.10f, 0.20f), new Color(0.46f, 0.34f, 0.16f), signObj);
+                new Vector3(0f, 1.72f, 0f), new Vector3(3.3f, 0.12f, 0.22f), new Color(0.42f, 0.30f, 0.14f), signObj);
 
-            // Follaje decorativo
+            // Follaje decorativo en las esquinas superiores
             JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Sphere, "FollajeL",
-                new Vector3(-1.60f, 2.8f, 0.05f), new Vector3(0.5f, 0.25f, 0.35f), new Color(0.20f, 0.58f, 0.25f), signObj);
+                new Vector3(-1.65f, 2.9f, 0.05f), new Vector3(0.55f, 0.30f, 0.40f), new Color(0.18f, 0.56f, 0.22f), signObj);
             JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Sphere, "FollajeR",
-                new Vector3(1.60f, 2.8f, 0.05f), new Vector3(0.5f, 0.25f, 0.35f), new Color(0.20f, 0.58f, 0.25f), signObj);
+                new Vector3(1.65f, 2.9f, 0.05f), new Vector3(0.55f, 0.30f, 0.40f), new Color(0.18f, 0.56f, 0.22f), signObj);
 
-            // Texto tallado en 3D
+            // Texto tallado en 3D con sombra profunda (anclado a signObj para escala 1:1)
+            var shadowTextGo = new GameObject("Texto3D_Sombra");
+            shadowTextGo.transform.SetParent(signObj, false);
+            shadowTextGo.transform.localPosition = new Vector3(0.015f, 2.37f, -0.12f);
+            var tmShadow = shadowTextGo.AddComponent<TextMesh>();
+            tmShadow.text = titles[i];
+            tmShadow.fontSize = 28;
+            tmShadow.characterSize = 0.070f;
+            tmShadow.anchor = TextAnchor.MiddleCenter;
+            tmShadow.alignment = TextAlignment.Center;
+            tmShadow.color = new Color(0.14f, 0.08f, 0.03f, 0.95f);
+
             var textGo = new GameObject("Texto3D");
-            textGo.transform.SetParent(board.transform, false);
-            textGo.transform.localPosition = new Vector3(0f, 0.05f, -0.10f);
-            textGo.transform.localRotation = Quaternion.identity;
+            textGo.transform.SetParent(signObj, false);
+            textGo.transform.localPosition = new Vector3(0f, 2.39f, -0.14f);
             var tm = textGo.AddComponent<TextMesh>();
             tm.text = titles[i];
             tm.fontSize = 28;
-            tm.characterSize = 0.06f;
+            tm.characterSize = 0.070f;
             tm.anchor = TextAnchor.MiddleCenter;
             tm.alignment = TextAlignment.Center;
-            tm.color = new Color(1f, 0.92f, 0.45f);
+            tm.color = new Color(1f, 0.94f, 0.42f);
 
             var rend = board.GetComponent<Renderer>();
 
@@ -363,13 +557,21 @@ public sealed class SplashDirector : MonoBehaviour
                 title = titles[i],
                 subtitle = subs[i],
                 action = actions[i],
-                cameraTargetPos = new Vector3(positions[i].x * 0.40f, 2.0f, 1.2f)
+                cameraTargetPos = new Vector3(positions[i].x * 0.35f, 2.05f, 1.35f)
             };
         }
+
+        // Los letreros inician inactivos durante la cinemática inicial y se revelan en TransitionToMenu3D
+        if (signsRoot != null)
+            signsRoot.gameObject.SetActive(false);
     }
 
     private void Update()
     {
+        if (startedAt < 0f)
+        {
+            startedAt = Time.unscaledTime;
+        }
         float elapsed = Time.unscaledTime - startedAt;
 
         switch (currentState)
@@ -404,14 +606,28 @@ public sealed class SplashDirector : MonoBehaviour
     {
         float progress = Mathf.Clamp01(elapsed / CinematicDuration);
 
-        // Gorila corre libremente por el sendero hacia la cámara
+        // Gorila Meshy AI corre libremente por el sendero hacia la cámara con zancada heroica
         float currentZ = Mathf.Lerp(GorillaStartZ, GorillaEndZ, progress);
-        gorillaRoot.position = new Vector3(0f, 0f, currentZ);
-        gorilla.SetRunCycle(elapsed * 9.5f, 1f);
+        Vector3 currentPos = new Vector3(0f, 0f, currentZ);
+        gorillaRoot.position = currentPos;
+        gorillaRig.SetPositionAndRotation(currentPos, Quaternion.LookRotation(Vector3.back));
+        gorillaRig.AnimateRun(elapsed, 1.25f);
 
-        // Suave avance de cámara hacia el gorila
-        cam.transform.position = Vector3.Lerp(new Vector3(0f, 2.3f, 0.5f), new Vector3(0f, 2.1f, 1.4f), progress);
-        cam.transform.rotation = Quaternion.Euler(Mathf.Lerp(7.0f, 5.0f, progress), 0f, 0f);
+        // Pasos procedurales rítmicos y pesados de Kong avanzando por la arena
+        if (elapsed - lastFootstepTime >= 0.31f)
+        {
+            lastFootstepTime = elapsed;
+            if (sfxSource != null)
+            {
+                float footstepVol = Mathf.Lerp(0.18f, 0.72f, progress);
+                sfxSource.pitch = UnityEngine.Random.Range(0.85f, 1.05f);
+                sfxSource.PlayOneShot(JungleAudioBank.LeftDrum, footstepVol);
+            }
+        }
+
+        // Suave avance de cámara cinematográfica: encuadre heroico y dinámico
+        cam.transform.position = Vector3.Lerp(new Vector3(0f, 2.3f, 0.2f), new Vector3(0f, 2.1f, 1.2f), progress);
+        cam.transform.rotation = Quaternion.Euler(Mathf.Lerp(6.5f, 4.5f, progress), 0f, 0f);
 
         if (progress >= 1f || CanSkipCinematic(elapsed))
         {
@@ -421,34 +637,85 @@ public sealed class SplashDirector : MonoBehaviour
 
     private void TransitionToMenu3D()
     {
-        gorilla.SetIdle();
-        gorillaRoot.position = new Vector3(0f, 0f, GorillaEndZ);
+        Vector3 menuPos = new Vector3(0f, 0f, GorillaEndZ);
+        gorillaRoot.position = menuPos;
+        gorillaRig.SetPositionAndRotation(menuPos, Quaternion.LookRotation(Vector3.back));
+        gorillaRig.PlayIdleAnimation();
         if (signsRoot != null)
             signsRoot.gameObject.SetActive(true);
+
+        // Golpe de pecho y redoble de tambores en la llegada
+        if (sfxSource != null)
+        {
+            sfxSource.pitch = 1.0f;
+            sfxSource.PlayOneShot(JungleAudioBank.LeftDrum, 0.85f);
+            sfxSource.PlayOneShot(JungleAudioBank.RightDrum, 0.90f);
+        }
+
         currentState = State.Menu3D;
     }
 
     private void UpdateMenu3D()
     {
-        if (IsAutomated) return;
+        gorillaRig.Animate(false, 0, 0);
 
-        // Navegación por teclado (Flechas / A-D)
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        if (!IsAutomated)
         {
-            selectedSign = (selectedSign - 1 + signs.Length) % signs.Length;
+            // Navegación por teclado (Flechas / A-D)
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+            {
+                selectedSign = (selectedSign - 1 + signs.Length) % signs.Length;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            {
+                selectedSign = (selectedSign + 1) % signs.Length;
+            }
+
+            UpdateMouseRaycast();
+
+            // Confirmación
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) ||
+                (hoveredSign >= 0 && Input.GetMouseButtonDown(0)))
+            {
+                TriggerSignAction((hoveredSign >= 0) ? hoveredSign : selectedSign);
+                return;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+
+        int activeIndex = Mathf.Clamp((hoveredSign >= 0) ? hoveredSign : selectedSign, 0, signs.Length - 1);
+
+        // Retroalimentación de audio y animación procedural de squash/stretch al cambiar de letrero
+        if (activeIndex != lastAudibleSign)
         {
-            selectedSign = (selectedSign + 1) % signs.Length;
+            if (lastAudibleSign >= 0 && sfxSource != null)
+            {
+                sfxSource.pitch = 1.25f;
+                sfxSource.PlayOneShot(JungleAudioBank.UiClick, 0.50f);
+            }
+            if (signs[activeIndex].root != null)
+            {
+                JungleStageBuilder.PulseSquash(signs[activeIndex].root.gameObject, 0.88f, 1.12f, 22f, 8f);
+            }
+            lastAudibleSign = activeIndex;
         }
 
-        UpdateMouseRaycast();
+        // Animación procedural de escala elástica en el letrero enfocado
+        float pulse = 1f + Mathf.Sin(Time.unscaledTime * 3.4f) * 0.035f;
+        for (int i = 0; i < signs.Length; i++)
+        {
+            if (signs[i].root != null)
+            {
+                float targetScale = (i == activeIndex) ? 1.05f * pulse : 1.0f;
+                signs[i].root.localScale = Vector3.Lerp(signs[i].root.localScale, Vector3.one * targetScale, Time.unscaledDeltaTime * 8f);
+            }
+        }
 
-        int activeIndex = (hoveredSign >= 0) ? hoveredSign : selectedSign;
-
-        // Suave movimiento de cámara hacia el letrero enfocado
+        // Suave movimiento de cámara hacia el letrero enfocado con oscilación sutil de brisa marina
         Vector3 targetCamPos = signs[activeIndex].cameraTargetPos;
-        cam.transform.position = Vector3.Lerp(cam.transform.position, targetCamPos, Time.unscaledDeltaTime * 4f);
+        float camDriftX = Mathf.Sin(Time.unscaledTime * 0.8f) * 0.018f;
+        float camDriftY = Mathf.Cos(Time.unscaledTime * 1.2f) * 0.012f;
+        Vector3 driftPos = targetCamPos + new Vector3(camDriftX, camDriftY, 0f);
+        cam.transform.position = Vector3.Lerp(cam.transform.position, driftPos, Time.unscaledDeltaTime * 4f);
         Quaternion targetCamRot = Quaternion.Euler(5.5f, signs[activeIndex].root.position.x * 2.2f, 0f);
         cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, targetCamRot, Time.unscaledDeltaTime * 4f);
 
@@ -465,13 +732,6 @@ public sealed class SplashDirector : MonoBehaviour
                 Color targetTextCol = (i == activeIndex) ? new Color(1f, 0.98f, 0.30f) : new Color(0.95f, 0.88f, 0.50f);
                 signs[i].textMesh.color = targetTextCol;
             }
-        }
-
-        // Confirmación
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) ||
-            (hoveredSign >= 0 && Input.GetMouseButtonDown(0)))
-        {
-            TriggerSignAction(activeIndex);
         }
     }
 
@@ -495,13 +755,22 @@ public sealed class SplashDirector : MonoBehaviour
 
     private void TriggerSignAction(int index)
     {
+        if (sfxSource != null)
+        {
+            sfxSource.pitch = 1.0f;
+            sfxSource.PlayOneShot(JungleAudioBank.CountdownGo, 0.80f);
+            sfxSource.PlayOneShot(JungleAudioBank.BatHit, 0.65f);
+        }
+
         switch (signs[index].action)
         {
             case "STORY":
                 comicPanelIndex = 0;
+                gorillaRig.PlayAngryStompAnimation();
                 currentState = State.ComicStory;
                 break;
             case "PARTY":
+                gorillaRig.PlayCelebrationAnimation();
                 currentState = State.PartyModal;
                 break;
             case "CONNECTION":
@@ -516,11 +785,13 @@ public sealed class SplashDirector : MonoBehaviour
         if (IsAutomated) return;
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
         {
+            if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.LogWin, 0.80f);
             TournamentSession.StartPartyMode();
             LoadTargetScene(SceneNavigator.Connection);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.UiClick, 0.50f);
             currentState = State.Menu3D;
         }
     }
@@ -530,14 +801,17 @@ public sealed class SplashDirector : MonoBehaviour
         if (IsAutomated) return;
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
+            if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.Pitch, 0.45f);
             AdvanceComic();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.Pitch, 0.45f);
             comicPanelIndex = Mathf.Max(0, comicPanelIndex - 1);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.UiClick, 0.50f);
             SkipComicToPrep();
         }
     }
@@ -646,49 +920,87 @@ public sealed class SplashDirector : MonoBehaviour
         {
             Rect titleRect = new Rect(0, sh * 0.06f, sw, 65);
             Rect shadowRect = new Rect(titleRect.x + 2, titleRect.y + 2, titleRect.width, titleRect.height);
-            var shadowStyle = new GUIStyle(titleStyle) { normal = { textColor = new Color(0f, 0f, 0f, 0.7f) } };
+            var shadowStyle = new GUIStyle(titleStyle) { normal = { textColor = new Color(0f, 0f, 0f, 0.75f) } };
             GUI.Label(shadowRect, "GORILLA ESCAPE", shadowStyle);
             GUI.Label(titleRect, "GORILLA ESCAPE", titleStyle);
 
-            GUI.Label(new Rect(0, sh * 0.88f, sw, 32), "Preparando la isla sagrada… [Espacio o Clic para omitir]", tipStyle);
+            // Contenedor semitransparente oscuro con alto contraste para texto inferior
+            float pillW = Mathf.Min(sw * 0.82f, 620f);
+            float pillH = 38f;
+            Rect pillRect = new Rect((sw - pillW) * 0.5f, sh * 0.88f, pillW, pillH);
+
+            GUI.color = new Color(0.06f, 0.05f, 0.03f, 0.82f);
+            GUI.DrawTexture(pillRect, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+
+            var tipShadow = new GUIStyle(tipStyle) { normal = { textColor = new Color(0f, 0f, 0f, 0.95f) } };
+            GUI.Label(new Rect(pillRect.x + 1, pillRect.y + 6, pillRect.width, 28), "Preparando la isla sagrada… [Espacio o Clic para omitir]", tipShadow);
+            var tipBright = new GUIStyle(tipStyle) { normal = { textColor = new Color(1f, 0.95f, 0.82f) } };
+            GUI.Label(new Rect(pillRect.x, pillRect.y + 5, pillRect.width, 28), "Preparando la isla sagrada… [Espacio o Clic para omitir]", tipBright);
         }
         else if (currentState == State.Menu3D)
         {
             Rect titleRect = new Rect(0, sh * 0.05f, sw, 55);
+            Rect shadowRect = new Rect(titleRect.x + 2, titleRect.y + 2, titleRect.width, titleRect.height);
+            var shadowStyle = new GUIStyle(titleStyle) { normal = { textColor = new Color(0f, 0f, 0f, 0.75f) } };
+            GUI.Label(shadowRect, "GORILLA ESCAPE", shadowStyle);
             GUI.Label(titleRect, "GORILLA ESCAPE", titleStyle);
+
+            // Indicador de estado de servicios en segundo plano (Servidor, QR y Cámara)
+            string netStatus = (services != null && services.CameraConnected) 
+                ? "● CÁMARA Y QR LISTOS" 
+                : ((services != null && services.IsRunning) ? "● SERVIDOR Y QR EN LÍNEA" : "● SERVICIOS EN SEGUNDO PLANO");
+            GUI.color = new Color(0.04f, 0.12f, 0.05f, 0.85f);
+            Rect statusRect = new Rect(sw - 230, 16, 214, 28);
+            GUI.DrawTexture(statusRect, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+            var statusStyle = new GUIStyle(tipStyle) { fontSize = 12, normal = { textColor = new Color(0.4f, 1f, 0.5f) } };
+            GUI.Label(statusRect, netStatus, statusStyle);
 
             for (int i = 0; i < signs.Length; i++)
             {
                 if (signs[i].board == null) continue;
-                Vector3 sp = cam.WorldToScreenPoint(signs[i].board.position + Vector3.up * 0.2f);
+                Vector3 sp = cam.WorldToScreenPoint(signs[i].board.position + Vector3.up * 0.15f);
                 if (sp.z < 0f) continue;
 
                 sp.y = sh - sp.y;
 
                 bool isFocused = (i == ((hoveredSign >= 0) ? hoveredSign : selectedSign));
 
-                var signHeaderStyle = new GUIStyle(titleStyle)
-                {
-                    fontSize = isFocused ? 26 : 22,
-                    normal = { textColor = isFocused ? new Color(1f, 0.95f, 0.35f) : new Color(0.95f, 0.85f, 0.55f) }
-                };
+                // Fondo contrastante para subtítulo de letrero
+                float subW = 320f;
+                float subH = 30f;
+                Rect subRect = new Rect(sp.x - subW * 0.5f, sp.y + 42f, subW, subH);
+
+                GUI.color = isFocused ? new Color(0.12f, 0.08f, 0.04f, 0.85f) : new Color(0.06f, 0.05f, 0.03f, 0.70f);
+                GUI.DrawTexture(subRect, Texture2D.whiteTexture);
+                GUI.color = Color.white;
 
                 var signSubStyle = new GUIStyle(subtitleStyle)
                 {
-                    fontSize = isFocused ? 15 : 13,
-                    normal = { textColor = isFocused ? Color.white : new Color(0.85f, 0.85f, 0.85f) }
+                    fontSize = isFocused ? 16 : 14,
+                    normal = { textColor = isFocused ? new Color(1f, 0.98f, 0.45f) : new Color(0.92f, 0.92f, 0.92f) }
                 };
 
-                Rect clickRect = new Rect(sp.x - 150, sp.y - 30, 300, 75);
+                Rect clickRect = new Rect(sp.x - 160, sp.y - 35, 320, 85);
                 if (GUI.Button(clickRect, GUIContent.none, GUIStyle.none))
                 {
                     TriggerSignAction(i);
                 }
 
-                GUI.Label(new Rect(sp.x - 160, sp.y + 40, 320, 26), signs[i].subtitle, signSubStyle);
+                GUI.Label(new Rect(subRect.x, subRect.y + 4, subW, 24), signs[i].subtitle, signSubStyle);
             }
 
-            GUI.Label(new Rect(0, sh * 0.92f, sw, 28), "Usa [←/→] o haz clic en un letrero para entrar", tipStyle);
+            // Barra inferior de navegación accesible
+            float navPillW = Mathf.Min(sw * 0.75f, 520f);
+            float navPillH = 36f;
+            Rect navPillRect = new Rect((sw - navPillW) * 0.5f, sh * 0.92f, navPillW, navPillH);
+            GUI.color = new Color(0.06f, 0.05f, 0.03f, 0.80f);
+            GUI.DrawTexture(navPillRect, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+
+            var navTipStyle = new GUIStyle(tipStyle) { fontSize = 15, normal = { textColor = new Color(1f, 0.95f, 0.82f) } };
+            GUI.Label(new Rect(navPillRect.x, navPillRect.y + 5, navPillW, 26), "Usa [←/→] o haz clic en un letrero para entrar", navTipStyle);
         }
         else if (currentState == State.PartyModal)
         {
@@ -923,9 +1235,11 @@ public sealed class SplashDirector : MonoBehaviour
         yield return null;
         yield return null;
 
-        // Transición suave al Menú 3D
+        // Transición suave al Menú 3D (Vista panorámica)
         TransitionToMenu3D();
-        selectedSign = 0;
+        selectedSign = 2; // Centro (Sala y Conexión)
+        cam.transform.position = new Vector3(0f, 2.1f, 1.2f);
+        cam.transform.rotation = Quaternion.Euler(4.5f, 0f, 0f);
         yield return new WaitForSeconds(0.8f);
 
         // 3. Evidencia 3: Menú 3D con letreros físicos integrados
@@ -934,8 +1248,10 @@ public sealed class SplashDirector : MonoBehaviour
         yield return null;
         yield return null;
 
-        // 4. Evidencia 4: Enfoque / selección de letrero
+        // 4. Evidencia 4: Enfoque / selección de letrero (Dolly hacia Modo Fiesta)
         selectedSign = 1; // Modo Fiesta enfocado
+        cam.transform.position = signs[1].cameraTargetPos;
+        cam.transform.rotation = Quaternion.Euler(5.5f, signs[1].root.position.x * 2.2f, 0f);
         yield return new WaitForSeconds(0.8f);
         yield return new WaitForEndOfFrame();
         ScreenCapture.CaptureScreenshot(Path.Combine(screenshotDir, "evidence_04_sign_focus.png"));
@@ -959,7 +1275,7 @@ public sealed class SplashDirector : MonoBehaviour
         yield return null;
         yield return null;
 
-        // 7. Evidencia 7: Historieta Pantalla Final (Las 4 Pruebas MVP)
+        // 7. Evidencia 7: Historieta Pantalla Final (Las Pruebas Sagradas del Náufrago)
         comicPanelIndex = ComicPanels.Length - 1;
         yield return new WaitForSeconds(0.6f);
         yield return new WaitForEndOfFrame();

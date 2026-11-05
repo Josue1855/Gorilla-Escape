@@ -30,7 +30,9 @@ public final class PublicIngress implements AutoCloseable {
         System.setProperty("jdk.httpserver.maxConnections","32");System.setProperty("sun.net.httpserver.maxReqTime","12");System.setProperty("sun.net.httpserver.maxRspTime","12");
         server=HttpServer.create(new InetSocketAddress(InetAddress.getByName("127.0.0.1"),0),16);server.setExecutor(workers);server.createContext("/",this::handle);server.start();
     }
-    public static PublicIngress forRuntime(MobileRuntime runtime)throws IOException{return new PublicIngress((path,body)->switch(path){
+    public static PublicIngress forRuntime(MobileRuntime runtime)throws IOException{
+        runtime.setPublicTunnel(true);
+        return new PublicIngress((path,body)->switch(path){
         case "/mobile/join" -> runtime.join(SIGNAL_JSON.readValue(body,MobileRuntime.Signal.class));
         case "/mobile/reconnect" -> {var r=SIGNAL_JSON.readValue(body,MobileController.Resume.class);yield runtime.reconnect(r.sessionId(),r.playerId(),r.resumeToken(),r.offer());}
         case "/mobile/disconnect" -> {var r=SIGNAL_JSON.readValue(body,MobileController.Leave.class);runtime.disconnect(r.peerId(),r.resumeToken());yield Map.of("state","DISCONNECTED");}
