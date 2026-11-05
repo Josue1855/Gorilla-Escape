@@ -51,6 +51,38 @@ class GameControlSurface extends StatelessWidget {
           view.instruction,
           style: const TextStyle(fontSize: 18, height: 1.5),
         ),
+        if (profile.screen == 'game' && view.phase == 'Paused')
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'JUEGO EN PAUSA',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const Text(
+                    'Revisa en la PC si falta cámara o sensores. Podrás reanudar cuando los dispositivos estén listos.',
+                  ),
+                  if (profile.canNavigate) ...[
+                    FilledButton(
+                      onPressed: busy ? null : () => onCommand('resume', ''),
+                      child: const Text('REANUDAR'),
+                    ),
+                    OutlinedButton(
+                      onPressed: busy ? null : () => onCommand('restart', ''),
+                      child: const Text('REINICIAR PRUEBA'),
+                    ),
+                    OutlinedButton(
+                      onPressed: busy ? null : () => onCommand('menu', ''),
+                      child: const Text('VOLVER AL MENÚ'),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
         if (profile.valid && view.id == 'lobby') ...[
           const SizedBox(height: 20),
           if (profile.canNavigate)
@@ -82,20 +114,27 @@ class GameControlSurface extends StatelessWidget {
                   ),
                 ),
               ),
-          const Text('Puedes elegir el próximo juego sin activar sensores.'),
+          Text(
+            profile.screen == 'connection'
+                ? 'Comprueba en la PC que la cámara y los controles estén listos.'
+                : 'Puedes elegir el próximo juego sin activar sensores.',
+          ),
         ],
         if (profile.canNavigate && ['lobby', 'bowling'].contains(view.id)) ...[
           const SizedBox(height: 20),
           const Text('Mano con la que lanzas'),
-          SegmentedButton<String>(
-            segments: const [
-              ButtonSegment(value: 'right', label: Text('Derecha')),
-              ButtonSegment(value: 'left', label: Text('Izquierda')),
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            children: [
+              for (final hand in ['right', 'left'])
+                ChoiceChip(
+                  label: Text(hand == 'right' ? 'Derecha' : 'Izquierda'),
+                  selected: profile.hand == hand,
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  onSelected: busy ? null : (_) => onCommand('set-hand', hand),
+                ),
             ],
-            selected: {profile.hand},
-            onSelectionChanged: busy
-                ? null
-                : (value) => onCommand('set-hand', value.single),
           ),
         ],
         if (balance) ...[
@@ -111,8 +150,10 @@ class GameControlSurface extends StatelessWidget {
               minHeight: 18,
             ),
           ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          const Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 12,
+            runSpacing: 8,
             children: [Text('Izquierda'), Text('Centro'), Text('Derecha')],
           ),
           if (!sensorsReady)
@@ -158,7 +199,9 @@ class GameControlSurface extends StatelessWidget {
                 : () => onCommand('start', ''),
             child: const Text('COMENZAR PRUEBA'),
           ),
-        if (profile.canNavigate && profile.screen == 'game') ...[
+        if (profile.canNavigate &&
+            profile.screen == 'game' &&
+            view.phase != 'Paused') ...[
           const SizedBox(height: 24),
           OutlinedButton(
             onPressed: busy ? null : () => onCommand('menu', ''),

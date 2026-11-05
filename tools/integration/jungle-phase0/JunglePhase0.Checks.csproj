@@ -7,6 +7,8 @@
     <Compile Include="../../../Shared/CSharp/Runtime/GamePresentationWire.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Core/PackagedRuntimeEnvironment.cs" />
     <Compile Include="GameplayChecks.cs" />
+    <Compile Include="MechanicsChecks.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/CompetitiveMechanics.cs" />
     <Compile Include="LogBalanceChecks.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceModel.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceArtCatalog.cs" />
@@ -22,6 +24,8 @@
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Core/ProductScenes.cs" />
     <Compile Include="../../../Shared/CSharp/Runtime/PhoneInputWire.cs" />
     <Compile Include="../../../Shared/CSharp/Runtime/LobbyWire.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Gameplay/Input/SessionPreparation.cs" />
+    <Compile Include="../../../Unity/Assets/_Project/Scripts/Network/LobbyAuthorityBridge.cs" />
     <Compile Include="../../../Shared/CSharp/Runtime/CameraInputWire.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/CameraTracking/CameraInputStore.cs" />
     <Compile Include="../../../Unity/Assets/_Project/Scripts/Input/Fusion/PlayerLock.cs" />

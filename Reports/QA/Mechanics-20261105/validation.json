@@ -1,0 +1,38 @@
+{
+  "csharp": {
+    "passed": 171,
+    "failed": 0
+  },
+  "unity_edit": {
+    "passed": 229,
+    "failed": 0
+  },
+  "unity_play": {
+    "passed": 13,
+    "failed": 0
+  },
+  "pwa": {
+    "passed": 95,
+    "failed": 0,
+    "build": "PASS"
+  },
+  "flutter": {
+    "passed": 26,
+    "failed": 0,
+    "analyze": "PASS"
+  },
+  "physical_phone": "NOT RUN",
+  "native_automated_exit": "OPEN",
+  "games": {
+    "Gorilla Smash": "Puntuación determinista por potencia, precisión y sincronía; retirada la autorización sin hardware y la potencia de teclado inventada.",
+    "Coconut Throw": "Puntuación y apuntado usan la muestra aceptada. Vuelo analítico y punto de impacto exacto sin dependencia de FPS.",
+    "Coconut Bowling": "La fuerza de curva comprueba la posición de la bola. Se mantienen el paso fijo, las bonificaciones y los reintentos.",
+    "Gorilla Boxing": "Autorización de golpes, cobertura, esquiva, caída y reloj revisados; empate y resultados corregidos en la pasada anterior.",
+    "Jungle Baseball": "Contador de lanzamientos corregido; velocidad de la pelota ajustada para que el vuelo corresponda a la distancia mostrada.",
+    "Jungle Drums": "Mismo margen de tiempo al juzgar el golpe y al caducar la nota, sin la discrepancia de 20 ms anterior.",
+    "Jungle Slice": "Revisados corte barrido, extremos del segmento, límite de combo, objetos peligrosos y cierre de ronda.",
+    "Jungle Keeper": "Revisadas zonas de atajada, manos/torso, caducidad de tiros y contabilización de objetos ya resueltos.",
+    "Gorilla Whack": "Revisados objetivo activo, radio de acierto, autorización, enfriamiento, escapes y límite del combo.",
+    "Jungle Balance": "Revisados subpasos fijos, inclinación, caída, victoria y resultados. Las referencias de modelos se repararon en la pasada anterior."
+  }
+}

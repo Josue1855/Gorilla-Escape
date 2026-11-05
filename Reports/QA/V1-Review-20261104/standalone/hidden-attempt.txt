@@ -1,0 +1,1 @@
+Hidden-window automated screenshots were black and are not visual acceptance. Batch-mode attempt could not capture screenshots. Native visible-window review follows.

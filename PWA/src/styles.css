@@ -100,3 +100,25 @@ button:disabled { cursor: wait; opacity: .7; }
 .mobile-pause-overlay-card { background: rgba(18, 49, 41, 0.95); border: 2px solid #f0bb58; border-radius: 16px; padding: 18px 16px; margin: 12px 0 16px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
 .mobile-pause-overlay-card h3 { margin: 0 0 8px; font-size: 1.25rem; color: #f0bb58; }
 .mobile-pause-overlay-card p { margin: 0 0 16px; font-size: 0.9rem; color: #e5dcc7; }
+
+/* Keep controls readable with long names, larger text and compact phones. */
+.controller-shell { padding-top: max(1.25rem, env(safe-area-inset-top)); }
+.brand > div, .player-badge, .identity-actions { min-width: 0; }
+.brand h1, .player-badge, .game-card strong { overflow-wrap: anywhere; }
+.player-identity-bar { flex-wrap: wrap; gap: .75rem; }
+.player-badge { flex: 1 1 9rem; }
+.identity-actions { flex-wrap: wrap; }
+.edit-name-pill, .pause-pill-btn { min-height: 48px; }
+.inline-name-edit input { width: 100%; min-width: 0; font-size: 1rem; }
+input:focus-visible { outline: 3px solid var(--core-orange); outline-offset: 3px; }
+@media (max-width: 380px) {
+  main { padding-inline: .875rem; }
+  .connection-panel { padding: 1rem; }
+  .brand { gap: .75rem; }
+  .gorilla-mark { width: 4.5rem; }
+  .game-menu, .control-actions { grid-template-columns: 1fr; }
+  .identity-actions { width: 100%; }
+  .identity-actions button { flex: 1; }
+}
+
+.mobile-pause-overlay-card .control-actions .primary { grid-column: 1 / -1; }

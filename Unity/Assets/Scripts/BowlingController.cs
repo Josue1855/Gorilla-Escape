@@ -278,7 +278,7 @@ public sealed partial class BowlingController : MonoBehaviour, IJungleScreen
 
     private void FixedUpdate()
     {
-        if(state!=GameState.Rolling||ballBody==null||ballBody.isKinematic||transform.position.y>1.2f||transform.position.z>10.7f)return;
+        if(state!=GameState.Rolling||ballBody==null||ballBody.isKinematic||ballBody.position.y>1.2f||ballBody.position.z>10.7f)return;
         ballBody.AddForce(Vector3.right*ShotMechanics.BowlingCurveAcceleration(bowlingSpin),ForceMode.Acceleration);
     }
 
@@ -576,6 +576,8 @@ public sealed partial class BowlingController : MonoBehaviour, IJungleScreen
         DrawBowlingHud();
         DrawBowlingDashboard();
         DrawCameraStatus();
+        if (!bowlingGameOver && JungleRetainedUI.Button(new Rect(Screen.width * .85f, 20f, Screen.width * .12f, 44f), "MENÚ", JungleUITheme.Button))
+            SceneNavigator.Load(SceneNavigator.MainMenu);
     }
 
     private static readonly string[] FrameNumberLabels = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10" };
@@ -591,7 +593,8 @@ public sealed partial class BowlingController : MonoBehaviour, IJungleScreen
         JungleUITheme.DrawPanel(hud);
         JungleRetainedUI.Label(new Rect(hud.x + 22 * scale, hud.y + 10 * scale, hud.width * .42f, 30 * scale), "COCONUT BOWLING", hudBrandStyle);
 
-        bool connected = Time.unscaledTime - lastPacketAt < 1f;
+        // A quiet phone is still connected, and results remain available after loss of signal.
+        bool connected = bowlingGameOver || sharedSession != null && sharedSession.PhoneConnected;
         if (!connected)
         {
             if (roomCode != cachedRoomCode) { cachedRoomCode = roomCode; cachedRoomCodeText = $"CÓDIGO  {roomCode}"; }

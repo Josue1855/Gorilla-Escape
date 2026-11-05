@@ -24,7 +24,7 @@ class GorillaCompanion extends StatelessWidget {
       useMaterial3: true,
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          minimumSize: const Size(double.infinity, 56),
+          minimumSize: const Size(0, 56),
           backgroundColor: const Color(0xffe5bd75),
           foregroundColor: const Color(0xff102b25),
         ),
@@ -44,7 +44,8 @@ class _IslandHomeState extends State<IslandHome> {
   static const _linkChannel = MethodChannel('com.gorillaescape/app_links');
   final link = TextEditingController();
   String? message;
-  bool opening = false;
+  bool opening = false, scanning = false, replacingLink = false;
+  String? activeLink;
 
   @override
   void initState() {
@@ -63,7 +64,9 @@ class _IslandHomeState extends State<IslandHome> {
     });
 
     try {
-      final initialLink = await _linkChannel.invokeMethod<String>('getInitialLink');
+      final initialLink = await _linkChannel.invokeMethod<String>(
+        'getInitialLink',
+      );
       if (initialLink != null && mounted) {
         await open(initialLink);
       }
@@ -72,11 +75,13 @@ class _IslandHomeState extends State<IslandHome> {
 
   @override
   void dispose() {
+    _linkChannel.setMethodCallHandler(null);
     link.dispose();
     super.dispose();
   }
 
   Future<void> open(String text) async {
+    if (!mounted) return;
     Uri? uri;
     try {
       uri = controllerLink(text);
@@ -89,8 +94,39 @@ class _IslandHomeState extends State<IslandHome> {
       );
       return;
     }
+    if (opening) {
+      if (replacingLink || activeLink == uri.toString()) return;
+      replacingLink = true;
+      final replace = await showDialog<bool>(
+        context: context,
+        builder: (dialog) => AlertDialog(
+          title: const Text('¿Usar otra sala?'),
+          content: const Text(
+            'Cerrarás este control para abrir el QR nuevo. La PC conservará los resultados ya confirmados.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialog, false),
+              child: const Text('SEGUIR AQUÍ'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(dialog, true),
+              child: const Text('ABRIR QR NUEVO'),
+            ),
+          ],
+        ),
+      );
+      replacingLink = false;
+      if (replace == true && mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        await Future<void>.delayed(Duration.zero);
+        if (mounted) await open(text);
+      }
+      return;
+    }
     setState(() {
       opening = true;
+      activeLink = uri.toString();
       message = null;
     });
     try {
@@ -107,13 +143,25 @@ class _IslandHomeState extends State<IslandHome> {
         );
       }
     } finally {
-      if (mounted) setState(() => opening = false);
+      if (mounted) {
+        setState(() {
+          opening = false;
+          activeLink = null;
+        });
+      }
     }
   }
 
   Future<void> scan() async {
-    final value = await Navigator.of(context)
-        .push<String>(MaterialPageRoute(builder: (_) => const ScanPage()));
+    if (opening || scanning) return;
+    setState(() => scanning = true);
+    String? value;
+    try {
+      value = await Navigator.of(context)
+          .push<String>(MaterialPageRoute(builder: (_) => const ScanPage()));
+    } finally {
+      if (mounted) setState(() => scanning = false);
+    }
     if (value != null && mounted) await open(value);
   }
 
@@ -131,7 +179,15 @@ class _IslandHomeState extends State<IslandHome> {
                 children: [
                   Icon(Icons.forest, color: Color(0xffe5bd75), size: 34),
                   SizedBox(width: 12),
-                  Text('GORILIMPIADAS', style: TextStyle(letterSpacing: 3)),
+                  Expanded(
+                    child: Text(
+                      'GORILLA ESCAPE',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 48),
@@ -151,7 +207,7 @@ class _IslandHomeState extends State<IslandHome> {
               ),
               const SizedBox(height: 24),
               FilledButton.icon(
-                onPressed: opening ? null : scan,
+                onPressed: opening || scanning ? null : scan,
                 icon: const Icon(Icons.qr_code_scanner),
                 label: const Text('ESCANEAR QR DE LA PC'),
               ),
@@ -168,7 +224,7 @@ class _IslandHomeState extends State<IslandHome> {
                     Icon(Icons.water, color: Color(0xff9bc6bd), size: 42),
                     SizedBox(height: 18),
                     Text(
-                      'SIETE PRUEBAS EN LA ISLA',
+                      'DIEZ PRUEBAS EN LA ISLA',
                       style: TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.w800,
@@ -185,18 +241,21 @@ class _IslandHomeState extends State<IslandHome> {
               const SizedBox(height: 28),
               const SizedBox(height: 14),
               const Text(
-                'Abre Gorilla Escape en la PC y elige jugar con teléfono. Mantén ambos equipos en la misma Wi-Fi.',
+                'Abre Gorilla Escape en la PC y elige jugar con teléfono. Usa el QR vigente de la PC. En conexión local, utiliza la misma Wi-Fi.',
                 style: TextStyle(height: 1.5),
               ),
               const SizedBox(height: 20),
               ExpansionTile(
                 title: const Text('Tengo un enlace de partida'),
-                childrenPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                childrenPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 8,
+                ),
                 children: [
                   TextField(
                     controller: link,
                     autocorrect: false,
-                    enableSuggestions: true,
+                    enableSuggestions: false,
                     obscureText: false,
                     scrollPadding: const EdgeInsets.all(80),
                     decoration: const InputDecoration(
@@ -229,7 +288,7 @@ class _IslandHomeState extends State<IslandHome> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Sujeta el teléfono con ambas manos.\nNo lo lances ni lo agites.',
+                'Sujeta el teléfono con firmeza. No lo sueltes ni lo lances.',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Color(0xffbfcec5), height: 1.5),
               ),
@@ -249,6 +308,7 @@ class ScanPage extends StatefulWidget {
 
 class _ScanPageState extends State<ScanPage> {
   bool accepted = false;
+  String? scanMessage;
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('QR de la PC')),
@@ -268,6 +328,14 @@ class _ScanPageState extends State<ScanPage> {
             if (accepted) return;
             for (final code in capture.barcodes) {
               final value = code.rawValue;
+              if (value != null && controllerLink(value) == null) {
+                if (scanMessage == null) {
+                  setState(
+                    () => scanMessage = 'Este QR no es una partida de Gorilla Escape. Apunta al QR vigente de la PC.',
+                  );
+                }
+                continue;
+              }
               if (value != null) {
                 accepted = true;
                 Navigator.pop(context, value);
@@ -276,7 +344,7 @@ class _ScanPageState extends State<ScanPage> {
             }
           },
         ),
-        const Positioned(
+        Positioned(
           left: 24,
           right: 24,
           bottom: 32,
@@ -284,7 +352,7 @@ class _ScanPageState extends State<ScanPage> {
             child: Padding(
               padding: EdgeInsets.all(20),
               child: Text(
-                'Apunta al QR que muestra Gorilla Escape.\nEl enlace de partida caduca: usa uno nuevo.',
+                scanMessage ?? 'Apunta al QR que muestra Gorilla Escape.\nEl enlace de partida caduca: usa uno nuevo.',
                 textAlign: TextAlign.center,
               ),
             ),

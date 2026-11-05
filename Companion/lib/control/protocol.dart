@@ -17,11 +17,13 @@ Uri? controllerLink(String text) {
         uri.host.isEmpty ||
         uri.userInfo.isNotEmpty ||
         (uri.path != '/' &&
-            !((uri.host == 'play.gorilla.run' || uri.host == 'play.gorillas.run') &&
+            !((uri.host == 'play.gorilla.run' ||
+                    uri.host == 'play.gorillas.run') &&
                 RegExp(r'^/(?:join/)?[a-z0-9]{4,8}/?$').hasMatch(uri.path)))) {
       return null;
     }
-    Map<String, List<String>> fields = Uri(query: uri.fragment).queryParametersAll;
+    Map<String, List<String>> fields = Uri(query: uri.fragment)
+        .queryParametersAll;
     if (fields.isEmpty || fields['v'] == null) {
       fields = uri.queryParametersAll;
     }
@@ -179,7 +181,7 @@ class GameControlProfile {
           ? context!['phoneRequired'] as bool
           : game != 'lobby' &&
                 !['coconut-slice', 'jungle-keeper'].contains(game),
-      valid && player == 1,
+      valid && player == 1 && screen != 'connection',
     );
   }
 }
@@ -209,9 +211,13 @@ class GameView {
       return GameView(
         'lobby',
         'Ready',
-        'JUNGLE PARTY',
-        'Elige tu desafío',
-        player == 1
+        'GORILLA ESCAPE',
+        profile.screen == 'connection'
+            ? 'Prepara tu control'
+            : 'Elige tu desafío',
+        profile.screen == 'connection'
+            ? 'Guarda tu nombre, activa los sensores y comprueba la cámara en la PC. Continúa desde la pantalla de conexión.'
+            : player == 1
             ? 'Elige un juego aquí o en la PC.'
             : 'El jugador 1 elige la próxima prueba.',
         false,
@@ -219,7 +225,10 @@ class GameView {
     }
     if (context?['version'] == 2 || context?['version'] == 3) {
       const games = {
-        'bowling': ['COCONUT BOWLING', 'Apunta y realiza un lanzamiento suave.'],
+        'bowling': [
+          'COCONUT BOWLING',
+          'Apunta y realiza un lanzamiento suave.',
+        ],
         'boxing': [
           'GORILLA BOXING',
           'Mantén ambas manos visibles y realiza los golpes.',

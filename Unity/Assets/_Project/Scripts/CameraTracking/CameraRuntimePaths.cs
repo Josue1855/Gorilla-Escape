@@ -24,8 +24,9 @@ namespace GorillaEscape.CameraTracking
                 Model=Pick("GORILLA_CAMERA_MODEL",Path.Combine(root,"pose_landmarker_lite-v1.task")),
                 Fixture=Pick("GORILLA_CAMERA_FIXTURE",Path.Combine(root,"corpus-v1.json")),
                 Device=env("GORILLA_CAMERA_DEVICE")??(windows?"0":"/dev/video0"),
-                Mode=Pick("GORILLA_CAMERA_MODE","physical")
+                Mode=lab && !string.IsNullOrEmpty(env("GORILLA_CAMERA_MODE")) ? env("GORILLA_CAMERA_MODE") : "physical"
             };
+            if(paths.Mode!="physical" && paths.Mode!="replay")throw new ArgumentException("CAMERA_MODE_INVALID");
             if(!File.Exists(paths.Python))throw new FileNotFoundException("CAMERA_RUNTIME_MISSING");
             if(!File.Exists(paths.Worker))throw new FileNotFoundException("CAMERA_WORKER_MISSING");
             if(paths.Mode=="physical"&&!File.Exists(paths.Model))throw new FileNotFoundException("CAMERA_MODEL_MISSING");

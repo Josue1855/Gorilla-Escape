@@ -100,7 +100,7 @@ public sealed partial class BoxingController
                 return;
             }
             JungleUITheme.DrawPanel(new Rect(w * .26f, h * .30f, w * .48f, h * .25f), true);
-            string result = gorillaHealth <= 0f ? "¡GANASTE!" : playerHealth <= 0f ? "K.O. DEL GORILA" : playerHealth >= gorillaHealth ? "¡GANASTE POR PUNTOS!" : "EL GORILA GANA";
+            string result = gorillaHealth <= 0f ? "¡GANASTE!" : playerHealth <= 0f ? "K.O. DEL GORILA" : Mathf.Abs(playerHealth-gorillaHealth)<.01f ? "EMPATE · ¡BUEN COMBATE!" : playerHealth > gorillaHealth ? "¡GANASTE POR PUNTOS!" : "EL GORILA GANA";
             JungleUITheme.DrawShadowedLabel(new Rect(w * .29f, h * .34f, w * .42f, h * .09f), result, fightTitleStyle);
             if (JungleRetainedUI.Button(new Rect(w * .38f, h * .45f, w * .24f, h * .065f), "REVANCHA", buttonStyle)) { JungleAudioBank.PlayUiClick(); StartBoxingGame(); }
         }

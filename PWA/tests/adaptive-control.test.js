@@ -44,3 +44,22 @@ test('commands use the active scene token and cannot be sent by a spectator or w
   f.client.identity={...f.client.identity,playerId:2};assert.equal(await f.model.command('menu'),false);
   f.client.identity.playerId=1;f.model.network='DISCONNECTED';assert.equal(await f.model.command('menu'),false);assert.equal(sent.length,1);await f.model.dispose();
 });
+
+
+test('connection prepares sensors without exposing game navigation',()=>{
+ const ctx={...context(),screen:'connection',phoneRequired:true};
+ assert.equal(controlProfile(ctx,1).canNavigate,false);
+ assert.equal(controlProfile(ctx,1).phoneRequired,true);
+ assert.match(gamePresentation(ctx,1).instruction,/sensores/);
+});
+test('away survives profile changes and foregrounding, then resumes fresh acquisition',async()=>{
+ const {model,client}=fixture();let starts=0;
+ client.gameContext=context('bowling');model.permissions={};model.updateInput=()=>{};
+ model.capture.stop=()=>{model.capture.state='STOPPED';};
+ model.capture.start=async()=>{starts++;model.capture.state='RUNNING';};
+ model.keepAwake=async()=>{};
+ await model.setAway(true);client.gameContext={...client.gameContext,contextId:'c'.repeat(32)};
+ model.syncProfile();await model.recover();assert.equal(starts,0);
+ await model.setAway(false);await Promise.resolve();assert.equal(starts,1);
+ await model.dispose();
+});

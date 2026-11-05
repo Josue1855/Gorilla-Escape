@@ -14,17 +14,19 @@ import 'game_surface.dart';
 
 class ControlPage extends StatefulWidget {
   final Uri link;
-  const ControlPage({super.key, required this.link});
+  final NativeTransport? transport;
+  const ControlPage({super.key, required this.link, this.transport});
   @override
   State<ControlPage> createState() => _ControlPageState();
 }
 
 class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
-  final transport = NativeTransport();
+  late final NativeTransport transport = widget.transport ?? NativeTransport();
   final motion = MotionStore();
   int emittedRevision = -1;
   final name = TextEditingController();
-  String profileStatus = '';
+  String profileStatus = '', savedPlayerName = '';
+  bool editingName = false, leaving = false;
   bool savingProfile = false;
   final List<StreamSubscription<dynamic>> subscriptions = [];
   Timer? timer;
@@ -66,8 +68,11 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       previousPhase = null;
       previousScore = null;
     }
-    if (connectedNow && foreground && profile.valid) {
-      if (profile.phoneRequired && subscriptions.isEmpty && !starting) {
+    if (connectedNow && foreground && !isAway && profile.valid) {
+      if (activated &&
+          profile.phoneRequired &&
+          subscriptions.isEmpty &&
+          !starting) {
         unawaited(startSensors());
       }
       if (!profile.phoneRequired && subscriptions.isNotEmpty) {
@@ -105,6 +110,25 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
     setState(() {});
   }
 
+  Future<void> saveName() async {
+    if (savingProfile) return;
+    setState(() => savingProfile = true);
+    final result = await transport.setPlayerName(name.text);
+    if (!mounted) return;
+    setState(() {
+      savingProfile = false;
+      if (result == 'SAVED') {
+        savedPlayerName = name.text.trim();
+        editingName = false;
+      }
+      profileStatus = result == 'SAVED'
+          ? 'Nombre confirmado en la PC.'
+          : result == 'INVALID'
+          ? 'Escribe de 1 a 40 letras, números o signos simples.'
+          : 'No se pudo confirmar el nombre. Comprueba la conexión y vuelve a intentarlo.';
+    });
+  }
+
   Future<void> stateMessage(String state) async {
     try {
       await transport.control('CLIENT_STATE', {'state': state});
@@ -126,13 +150,10 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
     final baseMs = math.min(12000, 1000 * (1 << math.min(recoveryAttempts, 4)));
     final jitterMs = math.Random().nextInt(500);
     final delayMs = baseMs + jitterMs;
-    recoveryTimer = Timer(
-      Duration(milliseconds: delayMs),
-      () {
-        recoveryTimer = null;
-        unawaited(recoverSession());
-      },
-    );
+    recoveryTimer = Timer(Duration(milliseconds: delayMs), () {
+      recoveryTimer = null;
+      unawaited(recoverSession());
+    });
   }
 
   Future<void> toggleAway() async {
@@ -142,7 +163,13 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       await stateMessage('away');
     } else {
       await stateMessage('active');
-      if (transport.state == 'connected') unawaited(startSensors());
+      if (transport.state == 'connected' &&
+          GameControlProfile.fromContext(
+            transport.gameContext,
+            transport.playerId,
+          ).phoneRequired) {
+        unawaited(startSensors());
+      }
     }
   }
 
@@ -152,7 +179,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       builder: (ctx) => AlertDialog(
         title: const Text('¿Salir de la partida?'),
         content: const Text(
-          'Si sales, tus puntos confirmados se conservarán, pero tu turno será reemplazado para que los demás náufragos puedan continuar la partida.',
+          'Dejarás de controlar esta partida. La PC conservará los resultados que ya confirmó.',
         ),
         actions: [
           TextButton(
@@ -170,7 +197,10 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       await stopSensors();
       await stateMessage('forfeit');
       await transport.forfeit();
-      if (mounted) Navigator.pop(context);
+      if (mounted) {
+        setState(() => leaving = true);
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -233,7 +263,9 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
     try {
       await stopSensors();
       final generation = sensorGeneration;
-      if (!mounted || !foreground || transport.state != 'connected') return;
+      if (!mounted || !foreground || isAway || transport.state != 'connected') {
+        return;
+      }
       activated = true;
       unawaited(keepAwake(true));
       sensorError = '';
@@ -333,6 +365,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       // The OS permission sheet may complete while the app is inactive.
       if (mounted &&
           foreground &&
+          !isAway &&
           transport.state == 'connected' &&
           activated &&
           subscriptions.isEmpty &&
@@ -355,6 +388,7 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       if (transport.canResume && transport.needsRecovery) {
         unawaited(recoverSession());
       } else if (activated &&
+          !isAway &&
           transport.state == 'connected' &&
           GameControlProfile.fromContext(
             transport.gameContext,
@@ -395,7 +429,9 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
       transport.playerId,
     );
     final gamma = motion.gamma(transport.clock.elapsedMilliseconds) ?? 0;
-    final status = !connected
+    final status = isAway
+        ? 'AUSENTE · CONTROL SUSPENDIDO'
+        : !connected
         ? (transport.state == 'connecting'
               ? 'Conectando con la isla…'
               : 'Conexión interrumpida')
@@ -408,179 +444,246 @@ class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
         : suspended
         ? 'Esperando movimiento reciente…'
         : 'CONTROL ACTIVO';
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          transport.playerId == null
-              ? 'Tu control'
-              : 'NÁUFRAGO ${transport.playerId}',
-        ),
-      ),
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 560),
-            child: ListView(
-              padding: const EdgeInsets.all(28),
-              children: [
-                Semantics(
-                  liveRegion: true,
-                  child: Text(
-                    status,
-                    style: const TextStyle(
-                      color: Color(0xffe5bd75),
-                      letterSpacing: 1.5,
-                    ),
-                  ),
+    return PopScope(
+      canPop: leaving || !connected,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) unawaited(confirmForfeit());
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            if (connected && profile.canNavigate && profile.screen == 'game')
+              IconButton(
+                tooltip: transport.gameContext?['phase'] == 'Paused'
+                    ? 'Reanudar partida'
+                    : 'Pausar partida',
+                icon: Icon(
+                  transport.gameContext?['phase'] == 'Paused'
+                      ? Icons.play_arrow
+                      : Icons.pause,
                 ),
-                const SizedBox(height: 30),
-                GameControlSurface(
-                  contextData: transport.gameContext,
-                  player: transport.playerId,
-                  sensorsReady: activated && !suspended && connected,
-                  tilt: ((gamma - (neutralGamma ?? gamma)) / 30).clamp(
-                    -1.0,
-                    1.0,
-                  ),
-                  busy: commandPending,
-                  onCommand: (action, target) =>
-                      unawaited(sendCommand(action, target)),
-                  scorePanel: stats == null
-                      ? null
-                      : GameScorePanel(stats: stats),
-                  recenter: Listener(
-                    onPointerDown: (_) {
-                      unawaited(HapticFeedback.selectionClick());
-                      motion.setAction(true, center: true);
-                    },
-                    onPointerUp: (_) => motion.setAction(false, center: true),
-                    onPointerCancel: (_) =>
-                        motion.setAction(false, center: true),
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: const Text('CENTRAR APUNTADO'),
-                    ),
-                  ),
-                ),
-                Text(commandStatus),
-                const SizedBox(height: 24),
-                if (connected &&
-                    profile.phoneRequired &&
-                    (!activated || sensorError.isNotEmpty))
-                  FilledButton(
-                    onPressed: startSensors,
-                    child: Text(
-                      activated ? 'REINTENTAR SENSORES' : 'ACTIVAR CONTROL',
-                    ),
-                  ),
-                if (!connected &&
-                    transport.state != 'connecting' &&
-                    transport.canResume)
-                  FilledButton(
-                    onPressed: () => unawaited(recoverSession()),
-                    child: const Text('RECONECTAR'),
-                  ),
-                if (!connected && transport.state != 'connecting')
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Text(
-                      transport.code == 'TLS_UNTRUSTED'
-                          ? 'El teléfono no confía en el certificado de la PC. Usa el QR HTTPS del túnel o configura la confianza del certificado local.'
-                          : 'Vuelve a la PC y escanea un QR nuevo si la conexión no se recupera.',
-                    ),
-                  ),
-                if (sensorError.isNotEmpty) Text(sensorError),
-                if (transport.degraded && connected)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text('⚠️ Señal inestable. Mantén el teléfono en mano.', style: TextStyle(color: Colors.amber)),
-                  ),
-                if (isAway)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text('⏸️ Modo ausente activo. Toca volver cuando estés listo.', style: TextStyle(color: Colors.blue)),
-                  ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 8,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    if (connected)
-                      OutlinedButton.icon(
-                        onPressed: toggleAway,
-                        icon: Icon(isAway ? Icons.play_arrow : Icons.pause),
-                        label: Text(isAway ? 'VOLVER A LA PARTIDA' : 'ESTARÉ AUSENTE'),
-                      ),
-                    TextButton.icon(
-                      onPressed: confirmForfeit,
-                      icon: const Icon(Icons.exit_to_app, color: Colors.redAccent),
-                      label: const Text('SALIR DE LA PARTIDA', style: TextStyle(color: Colors.redAccent)),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Sujeta el teléfono con ambas manos. El control se ajusta automáticamente; el panel muestra el estado de la partida.',
-                  textAlign: TextAlign.center,
-                ),
-                if (connected)
-                  ExpansionTile(
-                    title: const Text('Tu nombre en la isla (opcional)'),
-                    children: [
-                      TextField(
-                        controller: name,
-                        maxLength: 40,
-                        decoration: const InputDecoration(
-                          labelText: 'Nombre del náufrago',
+                onPressed: commandPending
+                    ? null
+                    : () => unawaited(
+                        sendCommand(
+                          transport.gameContext?['phase'] == 'Paused'
+                              ? 'resume'
+                              : 'pause',
+                          '',
                         ),
                       ),
-                      TextButton(
-                        onPressed: savingProfile || transport.profileAttempted
-                            ? null
-                            : () async {
-                                if (name.text.trim().isEmpty) return;
-                                setState(() => savingProfile = true);
-                                final result = await transport.saveProfile(
-                                  name.text,
-                                );
-                                if (!mounted) return;
-                                setState(() {
-                                  savingProfile = false;
-                                  profileStatus = result == 'SAVED'
-                                      ? 'Nombre guardado en esta PC.'
-                                      : result == 'INVALID'
-                                      ? 'Usa hasta 40 letras, números, espacios o signos simples.'
-                                      : result == 'UNAVAILABLE'
-                                      ? 'El registro aún no está disponible. Puedes intentarlo más tarde.'
-                                      : 'No pudimos confirmar el guardado. Puedes seguir jugando.';
-                                });
-                              },
-                        child: const Text('GUARDAR NOMBRE'),
+              ),
+          ],
+          title: Text(
+            transport.playerId == null
+                ? 'Tu control'
+                : savedPlayerName.isEmpty
+                ? 'JUGADOR ${transport.playerId}'
+                : savedPlayerName,
+          ),
+        ),
+        body: SafeArea(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: ListView(
+                padding: const EdgeInsets.all(28),
+                children: [
+                  Semantics(
+                    liveRegion: true,
+                    child: Text(
+                      status,
+                      style: const TextStyle(
+                        color: Color(0xffe5bd75),
+                        letterSpacing: 1.5,
                       ),
-                      if (profileStatus.isNotEmpty) Text(profileStatus),
+                    ),
+                  ),
+                  if (connected) ...[
+                    const SizedBox(height: 16),
+                    if (savedPlayerName.isEmpty || editingName)
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              TextField(
+                                controller: name,
+                                maxLength: 40,
+                                autocorrect: false,
+                                textInputAction: TextInputAction.done,
+                                decoration: const InputDecoration(
+                                  labelText: 'Tu nombre en la partida',
+                                  helperText: 'Este nombre aparecerá en la PC.',
+                                ),
+                                onSubmitted: (_) => unawaited(saveName()),
+                              ),
+                              FilledButton(
+                                onPressed: savingProfile ? null : saveName,
+                                child: Text(
+                                  savingProfile
+                                      ? 'GUARDANDO…'
+                                      : 'GUARDAR NOMBRE',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          onPressed: () => setState(() => editingName = true),
+                          icon: const Icon(Icons.edit),
+                          label: const Text('EDITAR NOMBRE'),
+                        ),
+                      ),
+                    if (profileStatus.isNotEmpty)
+                      Semantics(liveRegion: true, child: Text(profileStatus)),
+                  ],
+                  const SizedBox(height: 24),
+                  if (!connected)
+                    Text(
+                      transport.state == 'connecting'
+                          ? 'CONECTANDO CON LA PC'
+                          : 'RECUPERA TU CONEXIÓN',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  if (connected)
+                    GameControlSurface(
+                      contextData: transport.gameContext,
+                      player: transport.playerId,
+                      sensorsReady: activated && !suspended && connected,
+                      tilt: ((gamma - (neutralGamma ?? gamma)) / 30).clamp(
+                        -1.0,
+                        1.0,
+                      ),
+                      busy:
+                          commandPending ||
+                          !connected ||
+                          savedPlayerName.isEmpty,
+                      onCommand: (action, target) =>
+                          unawaited(sendCommand(action, target)),
+                      scorePanel: stats == null
+                          ? null
+                          : GameScorePanel(stats: stats),
+                      recenter: Listener(
+                        onPointerDown: (_) {
+                          unawaited(HapticFeedback.selectionClick());
+                          motion.setAction(true, center: true);
+                        },
+                        onPointerUp: (_) =>
+                            motion.setAction(false, center: true),
+                        onPointerCancel: (_) =>
+                            motion.setAction(false, center: true),
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: const Text('CENTRAR APUNTADO'),
+                        ),
+                      ),
+                    ),
+                  Text(commandStatus),
+                  const SizedBox(height: 24),
+                  if (connected &&
+                      !isAway &&
+                      profile.phoneRequired &&
+                      (!activated || sensorError.isNotEmpty))
+                    FilledButton(
+                      onPressed: startSensors,
+                      child: Text(
+                        activated ? 'REINTENTAR SENSORES' : 'ACTIVAR CONTROL',
+                      ),
+                    ),
+                  if (!connected &&
+                      transport.state != 'connecting' &&
+                      transport.canResume)
+                    FilledButton(
+                      onPressed: () => unawaited(recoverSession()),
+                      child: const Text('RECONECTAR'),
+                    ),
+                  if (!connected && transport.state != 'connecting')
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Text(
+                        transport.code == 'TLS_UNTRUSTED'
+                            ? 'El teléfono no confía en el certificado de la PC. Usa el QR HTTPS del túnel o configura la confianza del certificado local.'
+                            : 'Vuelve a la PC y escanea un QR nuevo si la conexión no se recupera.',
+                      ),
+                    ),
+                  if (sensorError.isNotEmpty) Text(sensorError),
+                  if (transport.degraded && connected)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        '⚠️ Señal inestable. Mantén el teléfono en mano.',
+                        style: TextStyle(color: Colors.amber),
+                      ),
+                    ),
+                  if (isAway)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        '⏸️ Modo ausente activo. Toca volver cuando estés listo.',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      if (connected)
+                        OutlinedButton.icon(
+                          onPressed: toggleAway,
+                          icon: Icon(isAway ? Icons.play_arrow : Icons.pause),
+                          label: Text(
+                            isAway ? 'VOLVER A LA PARTIDA' : 'ESTARÉ AUSENTE',
+                          ),
+                        ),
+                      TextButton.icon(
+                        onPressed: confirmForfeit,
+                        icon: const Icon(
+                          Icons.exit_to_app,
+                          color: Colors.redAccent,
+                        ),
+                        label: const Text(
+                          'SALIR DE LA PARTIDA',
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      ),
                     ],
                   ),
-                ExpansionTile(
-                  title: const Text('Ayuda de conexión'),
-                  onExpansionChanged: (open) {
-                    if (open) {
-                      setState(() => inspectedAcks = transport.motionAcks);
-                    }
-                  },
-                  children: [
-                    Text('Muestras confirmadas: $inspectedAcks'),
-                    if (transport.code.isNotEmpty)
-                      Text('Código: ${transport.code}'),
-                    TextButton(
-                      onPressed: () => Clipboard.setData(
-                        ClipboardData(text: jsonEncode(transport.diagnostic())),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Sujeta el teléfono con firmeza y sigue las instrucciones de la PC. No lo sueltes ni lo lances.',
+                    textAlign: TextAlign.center,
+                  ),
+                  ExpansionTile(
+                    title: const Text('Ayuda de conexión'),
+                    onExpansionChanged: (open) {
+                      if (open) {
+                        setState(() => inspectedAcks = transport.motionAcks);
+                      }
+                    },
+                    children: [
+                      Text('Muestras confirmadas: $inspectedAcks'),
+                      if (transport.code.isNotEmpty)
+                        Text('Código: ${transport.code}'),
+                      TextButton(
+                        onPressed: () => Clipboard.setData(
+                          ClipboardData(
+                            text: jsonEncode(transport.diagnostic()),
+                          ),
+                        ),
+                        child: const Text('COPIAR DIAGNÓSTICO'),
                       ),
-                      child: const Text('COPIAR DIAGNÓSTICO'),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

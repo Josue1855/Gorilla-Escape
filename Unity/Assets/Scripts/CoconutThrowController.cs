@@ -37,6 +37,8 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
     // Simulación del coco
     private Vector3 ballPosition;
     private Vector3 ballVelocity;
+    private Vector3 flightOrigin, initialVelocity;
+    private float landingTime, matchedTiming;
     private bool inAir;
     private float flightTime;
     private const float Gravity = -9.81f;
@@ -100,6 +102,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
             mainCamera.backgroundColor = new Color(0.08f, 0.18f, 0.12f);
         }
 
+        JungleArenaEnvironment.Build(transform,0f,25f,70f);
         throwFieldRoot = new GameObject("01 Campo Lanzamiento Coco");
         throwFieldRoot.transform.SetParent(transform, false);
 
@@ -281,7 +284,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         {
             handSpeed = phonePower = 0f;
             throwRequested = false;
-            CheckKeyboardFallback();
+            ReadKeyboardAim();
             UpdateVisuals();
             return;
         }
@@ -292,7 +295,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
             ReadInput(frame);
         }
 
-        CheckKeyboardFallback();
+        ReadKeyboardAim();
         UpdateVisuals();
 
         if (state == State.Countdown)
@@ -311,11 +314,6 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         }
         else if (state == State.Aiming)
         {
-            // Ajuste dinámico de ángulo basado en la orientación de mano y celular
-            float handElevation = Mathf.Clamp(VisualHand.y * 60f + 15f, 20f, 65f);
-            elevationAngle = Mathf.Lerp(elevationAngle, handElevation, 6f * Time.deltaTime);
-            lateralAngle = Mathf.Clamp((VisualHand.x - 0.5f) * 28f, -14f, 14f);
-
             if (throwRequested)
             {
                 ExecuteThrow();
@@ -347,9 +345,13 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
     private void ReadInput(JungleFusedFrame frame)
     {
         inputRevision = frame.Revision;
+        matchedTiming = CompetitiveMechanics.TimingQuality(frame.PhoneTimestamp,frame.CameraTimestamp);
         handSpeed = frame.Right.Speed;
         phonePower = frame.PhonePower;
         cursorViewport = new Vector2(frame.Right.X, 1f - frame.Right.Y);
+        // Score and trajectory use the accepted pose; prediction is only for drawing.
+        elevationAngle = Mathf.Clamp(cursorViewport.y*60f+15f,20f,65f);
+        lateralAngle = Mathf.Clamp((cursorViewport.x-.5f)*28f,-14f,14f);
 
         if (frame.NewPose || frame.Baseline)
             handVisual.Observe(cursorViewport.x, cursorViewport.y, frame.Right.VelocityX, -frame.Right.VelocityY, Time.unscaledTime);
@@ -358,22 +360,15 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
             throwRequested = true;
     }
 
-    private void CheckKeyboardFallback()
+    private void ReadKeyboardAim()
     {
-        // Teclas para apuntar y lanzar accesiblemente
+        // Apuntado por teclado; el lanzamiento sigue requiriendo una acción física autorizada.
         if (state == State.Aiming)
         {
             if (Input.GetKey(KeyCode.UpArrow)) elevationAngle = Mathf.Min(65f, elevationAngle + 20f * Time.deltaTime);
             if (Input.GetKey(KeyCode.DownArrow)) elevationAngle = Mathf.Max(20f, elevationAngle - 20f * Time.deltaTime);
             if (Input.GetKey(KeyCode.LeftArrow)) lateralAngle = Mathf.Max(-14f, lateralAngle - 15f * Time.deltaTime);
             if (Input.GetKey(KeyCode.RightArrow)) lateralAngle = Mathf.Min(14f, lateralAngle + 15f * Time.deltaTime);
-
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
-            {
-                handSpeed = UnityEngine.Random.Range(1.8f, 3.2f);
-                phonePower = UnityEngine.Random.Range(320f, 650f);
-                throwRequested = true;
-            }
         }
     }
 
@@ -392,7 +387,6 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         if (state != State.Aiming) return;
 
         bool authorized = session.TryAuthorize(JungleAction.Throw, inputRevision);
-        if (!authorized && !session.IsInputReady) authorized = true; // Permite fallback teclado
 
         if (!authorized) return;
 
@@ -404,12 +398,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         // ReleaseQuality = Timing
         // DirectionQuality = 1 - abs(Direction)
         // LaunchPower = Power * 0.60 + AngleQuality * 0.20 + ReleaseQuality * 0.15 + DirectionQuality * 0.05
-        float powerNormalized = Mathf.Clamp01(Mathf.Max(handSpeed / 2.6f, phonePower / 450f));
-        float angleQuality = 1f - Mathf.Clamp01(Mathf.Abs(elevationAngle - 43f) / 40f);
-        float releaseQuality = UnityEngine.Random.Range(0.85f, 1.0f);
-        float dirQuality = 1f - Mathf.Clamp01(Mathf.Abs(lateralAngle) / 18f);
-
-        float launchPower = powerNormalized * 0.60f + angleQuality * 0.20f + releaseQuality * 0.15f + dirQuality * 0.05f;
+        float launchPower = CompetitiveMechanics.ThrowPower(handSpeed,phonePower,elevationAngle,lateralAngle,matchedTiming);
 
         // Velocidad inicial física (m/s) entre 12 y 25 m/s
         float v0 = Mathf.Lerp(12f, 25.5f, launchPower);
@@ -424,6 +413,8 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         );
 
         ballPosition = coconutBall.transform.position;
+        flightOrigin = ballPosition; initialVelocity = ballVelocity;
+        landingTime = (float)CompetitiveMechanics.GroundTime(flightOrigin.y,initialVelocity.y,.25f,Gravity);
         inAir = true;
         flightTime = 0f;
         state = State.Flying;
@@ -435,11 +426,11 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         if (!inAir) return;
 
         float dt = Time.deltaTime;
-        flightTime += dt;
-
-        // Integración balística
-        ballVelocity.y += Gravity * dt;
-        ballPosition += ballVelocity * dt;
+        flightTime = Mathf.Min(landingTime,flightTime+dt);
+        ballPosition = new Vector3(
+            (float)CompetitiveMechanics.Position(flightOrigin.x,initialVelocity.x,0,flightTime),
+            (float)CompetitiveMechanics.Position(flightOrigin.y,initialVelocity.y,Gravity,flightTime),
+            (float)CompetitiveMechanics.Position(flightOrigin.z,initialVelocity.z,0,flightTime));
 
         if (coconutBall != null)
         {
@@ -456,7 +447,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         }
 
         // Impacto contra el suelo (y <= 0.25f)
-        if (ballPosition.y <= 0.25f && flightTime > 0.15f)
+        if (flightTime >= landingTime)
         {
             ballPosition.y = 0.25f;
             inAir = false;
@@ -604,7 +595,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
             Rect introCard = new Rect(w * 0.30f, h * 0.35f, w * 0.40f, h * 0.32f);
             JungleUITheme.DrawPanel(introCard);
             Rect introText = new Rect(introCard.x + 15f, introCard.y + 20f, introCard.width - 30f, h * 0.12f);
-            JungleUITheme.DrawShadowedLabel(introText, "Sujeta el teléfono firmemente.\nApunta a ~43° de elevación y realiza un movimiento de empuje fuerte hacia adelante.", subtitleStyle, 2f);
+            JungleUITheme.DrawShadowedLabel(introText, "Sujeta el teléfono firmemente.\nApunta a ~43° y haz un empuje controlado hacia adelante, sin soltar el teléfono.", subtitleStyle, 2f);
 
             Rect startBtn = new Rect(introCard.x + introCard.width * 0.15f, introCard.y + h * 0.18f, introCard.width * 0.70f, h * 0.08f);
             if (JungleRetainedUI.Button(startBtn, "¡INICIAR LANZAMIENTO!", JungleUITheme.ButtonSelected))

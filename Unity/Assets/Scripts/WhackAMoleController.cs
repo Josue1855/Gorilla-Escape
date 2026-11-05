@@ -76,6 +76,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
     private void BuildScene()
     {
         Camera c = Camera.main;
+        c.clearFlags=CameraClearFlags.SolidColor;
         c.orthographic = false;
         c.fieldOfView = 48;
         c.transform.position = new(0, 3.15f, -11.2f);
@@ -85,7 +86,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         bg.name = "01 Fondo";
         bg.transform.SetParent(transform, false);
         bg.transform.position = new(0, 1.2f, 7.2f);
-        bg.transform.localScale = new(31, 17.4f, 1);
+        JungleStageBuilder.FitCameraBackdrop(bg.transform,c,22f);
         if (bg.TryGetComponent<Collider>(out var bgCol)) { bgCol.enabled = false; Destroy(bgCol); }
         var unlitShader = JungleStageBuilder.UnlitShader;
         var bm = new Material(unlitShader);

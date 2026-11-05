@@ -32,6 +32,7 @@ public sealed partial class CoconutSliceController : MonoBehaviour, IJungleScree
     private MotionSession session;
     private bool keeperMode;
     private GameState state = GameState.Intro;
+    private float introUiStartedAt;
     private Vector2 leftHand = new Vector2(.32f, .52f), rightHand = new Vector2(.68f, .52f), torsoPos = new Vector2(.50f, .42f);
     private bool leftTracked, rightTracked, torsoTracked;
     private long latestRevision = -1, authorizedSaveRevision = -1;
@@ -80,6 +81,7 @@ public sealed partial class CoconutSliceController : MonoBehaviour, IJungleScree
         previousLeft = leftHand;
         previousRight = rightHand;
         stateStartedAt = Time.time;
+        introUiStartedAt = Time.unscaledTime;
     }
 
     private void Update()
@@ -578,7 +580,7 @@ public sealed partial class CoconutSliceController : MonoBehaviour, IJungleScree
 
     private void DrawIntro(float w, float h, Rect menuRect)
     {
-        float entrance = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((Time.time - stateStartedAt) / .75f));
+        float entrance = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((Time.unscaledTime - introUiStartedAt) / .75f));
         Rect panel = new Rect(w * (.50f - .28f * entrance), h * .185f, w * .56f * entrance, h * .60f);
         JungleUITheme.DrawPanel(panel);
         if (entrance < .65f) return;

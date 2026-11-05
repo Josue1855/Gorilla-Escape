@@ -88,6 +88,9 @@ namespace GorillaEscape.Editor
                 }
             }
             Environment.SetEnvironmentVariable("GORILLA_EDITOR_PHYSICAL_QA", "1");
+            // This explicit product launch includes the physical camera. Discard a camera-off
+            // override left in the Editor process by a previous diagnostic run.
+            Environment.SetEnvironmentVariable("GORILLA_CAMERA_ENABLED", "1");
             Environment.SetEnvironmentVariable("GORILLA_MAIN_MENU", "1");
             Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
             Environment.SetEnvironmentVariable("GORILLA_PHONE_INPUT", "1");

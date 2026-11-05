@@ -7,8 +7,8 @@ export const games = {
   'jungle-keeper': ['JUNGLE KEEPER','Detén los tiros con las manos y el torso frente a la cámara.'],
   whack: ['GORILLA WHACK','Apunta con la mano y realiza un golpe hacia abajo.'],
   'log-balance': ['JUNGLE BALANCE','Inclina suavemente el teléfono y frena la inercia.'],
-  'gorilla-smash': ['GORILLA SMASH','Sujeta el teléfono y asesta un golpe descendente con fuerza hacia la plataforma.'],
-  'coconut-throw': ['COCONUT THROW','Apunta a ~45° y realiza el lanzamiento hacia adelante con potencia.'],
+  'gorilla-smash': ['GORILLA SMASH','Sujeta el teléfono y realiza un movimiento descendente controlado, sin soltarlo.'],
+  'coconut-throw': ['COCONUT THROW','Apunta hacia delante y realiza un gesto de lanzamiento suave, sin soltar el teléfono.'],
 };
 const displayPhases = { Ready:'Prepárate', Countdown:'La prueba comienza', Playing:'¡A jugar!', Paused:'Juego en pausa', Won:'¡Prueba superada!', Lost:'Inténtalo de nuevo', Finished:'Prueba terminada' };
 function validV2(context) {
@@ -21,7 +21,7 @@ export function controlProfile(context, playerId) {
   const game=modern?context.gameId:validV2(context)?context.gameId:'lobby';
   return {game,valid:modern,screen:modern?context.screen:'unknown',hand:modern?context.hand:'right',
     phoneRequired:modern?context.phoneRequired:game!=='lobby'&&!['coconut-slice','jungle-keeper'].includes(game),
-    canNavigate:modern&&playerId===1,contextId:modern?context.contextId:null};
+    canNavigate:modern&&playerId===1&&context.screen!=='connection',contextId:modern?context.contextId:null};
 }
 const phases = {
   Ready: ['Prepara tu equilibrio', 'Sujeta el teléfono cómodamente. El control se prepara automáticamente.'],
@@ -33,7 +33,7 @@ const phases = {
 };
 export function gamePresentation(context, playerId) {
   const profile=controlProfile(context,playerId);
-  if(profile.valid&&profile.game==='lobby')return {game:'lobby',phase:'Ready',title:'JUNGLE PARTY',heading:profile.screen==='connection'?'Tu control está conectado':'Elige tu desafío',instruction:playerId===1?'Elige un juego aquí o en la PC.':'El jugador 1 elige el próximo juego.',active:false};
+  if(profile.valid&&profile.game==='lobby')return {game:'lobby',phase:'Ready',title:'GORILLA ESCAPE',heading:profile.screen==='connection'?'Prepara tu control':'Elige tu desafío',instruction:profile.screen==='connection'?'Guarda tu nombre, activa los sensores y comprueba la cámara en la PC. Continúa desde la pantalla de conexión.':playerId===1?'Elige un juego aquí o en la PC.':'El jugador 1 elige el próximo juego.',active:false};
   if(context?.version===2||context?.version===3){
     if(!validV2(context))return {game:'lobby',title:'GORILLA ESCAPE',heading:'Control preparado',instruction:'Elige una prueba en la PC.',active:false};
     const mine=context.playerId===playerId;

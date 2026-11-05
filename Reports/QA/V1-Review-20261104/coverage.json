@@ -1,0 +1,36 @@
+{
+  "scope": "Editor presentation fixtures with forced phases; real buttons activated. Not physical gameplay acceptance.",
+  "games": {
+    "GorillaSmash": "Instrucciones, intento activo, resultados, reintento y menú; fondo ajustado al encuadre.",
+    "CoconutThrow": "Instrucciones, apuntado, resultados, reintento y menú; perímetro tropical y materiales.",
+    "BananaBowling": "Conexión, apuntado, resultados, otra partida y menú; resultados disponibles al perder señal.",
+    "CoconutSlice": "Introducción, partida, resultado, otra ronda y menú; introducción independiente de la pausa.",
+    "LogBalance": "Preparación, cruce, victoria, otro intento y menú; mensaje final prioritario y referencias de prefabs reparadas.",
+    "GorillaBoxing": "Combate, caída, resultado, revancha y menú; empate correcto y rostro dentro del encuadre.",
+    "JungleBaseball": "Preparación, lanzamiento, resultado, otra partida y menú; bate compuesto y público Meshy.",
+    "JungleDrums": "Preparación, partida, resultado, repetir y menú; djembes procedurales y entorno tropical.",
+    "WhackAMole": "Introducción, partida, resultado, otra ronda y menú; fondo cubre el encuadre.",
+    "JungleKeeper": "Introducción, partida, resultado, otra ronda y menú; variantes propias del modo arquero."
+  },
+  "play_mode": {
+    "passed": 13,
+    "failed": 0
+  },
+  "edit_mode": {
+    "passed": 220,
+    "failed": 0,
+    "skipped": 0
+  },
+  "csharp_contracts": {
+    "passed": 159,
+    "failed": 0
+  },
+  "hardware_phone": "NOT RUN — user has no phone available in this session",
+  "native_exit": "OPEN — native Unity/UI Automation shutdown crash observed",
+  "server": {
+    "tests": 165,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 15
+  }
+}

@@ -20,6 +20,11 @@ public static class SceneNavigator
     public static void Load(string scene)
     {
         if (string.IsNullOrEmpty(scene)) return;
+        if (scene == MainMenu)
+        {
+            TournamentSession.ResetTournament();
+            MotionSession.SetInGamePause(false);
+        }
         if (scene == JungleKeeper)
         {
             IsJungleKeeper = true;

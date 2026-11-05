@@ -19,6 +19,9 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public static PortableServiceHost Instance { get; private set; }
     public bool IsRunning => java != null && (java.State == IpcState.STARTING || java.State == IpcState.CONNECTING || java.State == IpcState.RUNNING);
     public bool CameraOnly {get;private set;}
+    readonly SessionPreparation preparation = new SessionPreparation();
+    public void RememberPreparation() => preparation.Record(CameraConnected, Lobby);
+    public bool CanReusePreparation(bool bothDevices, int players) => IsRunning && preparation.CanReuse(Lobby, CameraActive, bothDevices, players);
     public bool CameraLossGraceAllowed => (CameraOnly||PhoneConnected)&&JungleGameplayInput.RequiresCamera(gameplay.Game)
         &&(fusion?.Cameras.Latest?.subjects==null||fusion.Cameras.Latest.subjects.Length<=1)
         &&(fusion?.Cameras.Latest?.subjects==null||fusion.Cameras.Latest.subjects.Length==0||!fusion.Cameras.Latest.subjects[0].ambiguous);
@@ -65,8 +68,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     bool lastPhoneTouch;
     float lastHandZ;
     float lastHandZTime = -1f;
-    public bool PhoneConnected => java?.State == IpcState.RUNNING && CurrentPhoneConnected()
-        && Time.unscaledTime - LastPhonePacketAt < .25f;
+    public bool PhoneConnected => java?.State == IpcState.RUNNING && java.Lobby.IsPhoneConnected(1);
     public bool TryPhoneVisualEstimate(out PhoneVisualEstimate estimate)
     {
         estimate=null;
@@ -75,7 +77,8 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     // Camera availability must not depend on a phone or on fusion alignment.
     public bool CameraConnected => vision?.State == "RUNNING" && fusion != null
         && fusion.Cameras.Fresh(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), 250, 50);
-    public string CameraStatus => vision?.State == "RUNNING" ? "CÁMARA LISTA" : vision?.Error ?? "CÁMARA SIN INICIAR";
+    public string CameraStatus => Environment.GetEnvironmentVariable("GORILLA_CAMERA_ENABLED")=="0" ? "CÁMARA DESACTIVADA" : CameraConnected ? "CÁMARA LISTA" : vision?.Error
+        ?? (vision?.State == "RUNNING" ? "ESPERANDO IMÁGENES DE LA CÁMARA" : vision?.State == "STARTING" ? "INICIANDO CÁMARA" : "CÁMARA SIN INICIAR");
     public string PhoneStatus => PhoneConnected ? "CELULAR CONECTADO" : Status;
 
     JavaProbeSupervisor java;
@@ -448,7 +451,6 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         }
         Status=NeedsNetworkPermission?"AUTORIZA EL ACCESO A LA RED LOCAL":PhoneConnected?"CELULAR CONECTADO":"ESPERANDO EL CELULAR";
     }
-    bool CurrentPhoneConnected() => java.PhoneInputs.TryLatest(1,out var input) && input.connectionState!="DISCONNECTED";
     public void PresentPhoneGame(GorillaEscape.Contracts.GamePresentationWire context) { if(java?.State==IpcState.RUNNING)java.PresentPhoneGame(context); }
     public void InstallNetwork() { if (java?.State == IpcState.RUNNING && NeedsNetworkPermission) java.RequestNetworkAction("INSTALL"); }
     public void RegenerateAdmission() { if (java?.State == IpcState.RUNNING) java.RegenerateQa(); }

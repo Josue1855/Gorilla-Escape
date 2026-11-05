@@ -218,7 +218,7 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
             JungleUITheme.DrawDwellOverlay(cameraModeRect, dwellProgress);
 
         bool tournamentHovered = hoveredId == 102;
-        if (JungleRetainedUI.Button(tournamentBtnRect, "🏝️ MODO HISTORIA: ESCAPA DE LA ISLA", tournamentHovered ? JungleUITheme.ButtonSelected : JungleUITheme.Button)
+        if (JungleRetainedUI.Button(tournamentBtnRect, " MODO HISTORIA: ESCAPA DE LA ISLA", tournamentHovered ? JungleUITheme.ButtonSelected : JungleUITheme.Button)
             || (dwellFired && hoveredId == 102))
         {
             JungleAudioBank.PlayUiClick(0.6f);
@@ -230,7 +230,7 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
             JungleUITheme.DrawDwellOverlay(tournamentBtnRect, dwellProgress, "MODO HISTORIA");
 
         bool partyHovered = hoveredId == 103;
-        string partyBtnLabel = TournamentSession.IsStoryModeCleared ? "🎉 MODO FIESTA · DESBLOQUEADO 👑" : "🎉 MODO FIESTA · ACCESO LIBRE ⭐";
+        string partyBtnLabel = TournamentSession.IsStoryModeCleared ? " MODO FIESTA · DESBLOQUEADO " : " MODO FIESTA · ACCESO LIBRE ";
         if (JungleRetainedUI.Button(partyBtnRect, partyBtnLabel, partyHovered ? JungleUITheme.ButtonSelected : JungleUITheme.Button)
             || (dwellFired && hoveredId == 103))
         {
@@ -251,7 +251,7 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
             JungleUITheme.DrawPanel(mRect, true);
 
             GUIStyle mTitle = new GUIStyle(JungleUITheme.Title) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.065f), 18, 25), alignment = TextAnchor.MiddleCenter };
-            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 20f, mRect.y + 14f, mRect.width - 40f, mH * 0.10f), "🏝️ MODO HISTORIA · ESCAPA DE LA ISLA", mTitle, 2.5f);
+            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 20f, mRect.y + 14f, mRect.width - 40f, mH * 0.10f), " MODO HISTORIA · ESCAPA DE LA ISLA", mTitle, 2.5f);
 
             GUIStyle mBody = new GUIStyle(JungleUITheme.Body) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.036f), 12, 16), alignment = TextAnchor.MiddleCenter, wordWrap = true };
             string desc = "Tras una tormenta en altamar tu barco naufragó en una isla remota habitada por gorilas pseudointeligentes. Su cacique Kong te reta a sus sagradas 'Gorilimpiadas': si logras vencerlos en las 4 pruebas del MVP (Mazo, Lanzamiento, Boliche y Corte), ¡te construirán una balsa de bambú y podrás escapar en libertad!\n\n¿Cuántos náufragos compiten por turnos?";
@@ -275,7 +275,7 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
             // Botón Comenzar
             float actY = mRect.yMax - mH * 0.28f;
             Rect startStoryBtn = new Rect(mRect.x + mRect.width * 0.12f, actY, mRect.width * 0.76f, mH * 0.12f);
-            if (JungleRetainedUI.Button(startStoryBtn, "🔥 ¡ACEPTAR DESAFÍO Y COMENZAR! ➔", JungleUITheme.ButtonSelected))
+            if (JungleRetainedUI.Button(startStoryBtn, " ¡ACEPTAR DESAFÍO Y COMENZAR! ", JungleUITheme.ButtonSelected))
             {
                 JungleAudioBank.PlayUiClick(0.6f);
                 showStoryIntroModal = false;
@@ -304,23 +304,24 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
             JungleUITheme.DrawPanel(mRect, true);
 
             GUIStyle mTitle = new GUIStyle(JungleUITheme.Title) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.075f), 18, 26), alignment = TextAnchor.MiddleCenter };
-            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 20f, mRect.y + 16f, mRect.width - 40f, mH * 0.11f), "🎉 MODO FIESTA · JUNGLE PARTY", mTitle, 2.5f);
+            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 20f, mRect.y + 16f, mRect.width - 40f, mH * 0.11f), " MODO FIESTA · JUNGLE PARTY", mTitle, 2.5f);
 
             GUIStyle mBody = new GUIStyle(JungleUITheme.Body) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.038f), 12, 16), alignment = TextAnchor.MiddleCenter, wordWrap = true };
             string desc = "¡Celebración en la Selva! Porque ya venciste a los gorilas (o estás en modo de acceso libre), la isla entera está de fiesta. Todos los 10 minijuegos están completamente disponibles sin restricciones.\n\nElige cómo deseas festejar:";
             JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 24f, mRect.y + mH * 0.14f, mRect.width - 48f, mH * 0.32f), desc, mBody, 1.8f);
 
             Rect gridPlayBtn = new Rect(mRect.x + mRect.width * 0.10f, mRect.y + mH * 0.48f, mRect.width * 0.80f, mH * 0.12f);
-            if (JungleRetainedUI.Button(gridPlayBtn, "🎯 ELEGIR MINIJUEGO LIBREMENTE (EN LA CUADRÍCULA)", JungleUITheme.ButtonSelected))
+            if (JungleRetainedUI.Button(gridPlayBtn, " ELEGIR MINIJUEGO LIBREMENTE (EN LA CUADRÍCULA)", JungleUITheme.ButtonSelected))
             {
                 JungleAudioBank.PlayUiClick();
                 showPartyModal = false;
                 handNavigator.Reset();
+                TournamentSession.RequestFreePlay(selectedPlayerCount);
                 return;
             }
 
             Rect fullTourneyBtn = new Rect(mRect.x + mRect.width * 0.10f, mRect.y + mH * 0.63f, mRect.width * 0.80f, mH * 0.12f);
-            if (JungleRetainedUI.Button(fullTourneyBtn, "🏆 INICIAR MARATÓN FIESTA (10 JUEGOS)", JungleUITheme.Button))
+            if (JungleRetainedUI.Button(fullTourneyBtn, " INICIAR MARATÓN FIESTA (10 JUEGOS)", JungleUITheme.Button))
             {
                 JungleAudioBank.PlayUiClick(0.6f);
                 showPartyModal = false;

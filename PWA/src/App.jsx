@@ -30,7 +30,9 @@ function Controller() {
   const [displayName, setDisplayName] = useState(() => {
     try { return localStorage.getItem('gorilla-player-name') || ''; } catch { return ''; }
   });
+  const initialName = useRef(displayName);
   const [nameStatus, setNameStatus] = useState(null);
+  const [savedName, setSavedName] = useState('');
 
   const savePlayerName = async (name) => {
     const trimmed = (name || '').normalize('NFC').trim();
@@ -39,6 +41,7 @@ function Controller() {
     const status = await model.current?.setPlayerName(trimmed);
     setNameStatus(status);
     if (status === 'SAVED') {
+      setSavedName(trimmed);
       setDisplayName(trimmed);
       try { localStorage.setItem('gorilla-player-name', trimmed); } catch {}
     }
@@ -46,10 +49,10 @@ function Controller() {
   };
 
   useEffect(() => {
-    if (view?.network === 'NETWORK_READY' && displayName.trim() && nameStatus === null && model.current) {
-      void savePlayerName(displayName.trim());
+    if (view?.network === 'NETWORK_READY' && initialName.current.trim() && nameStatus === null && model.current) {
+      void savePlayerName(initialName.current.trim());
     }
-  }, [view?.network, displayName, nameStatus]);
+  }, [view?.network, nameStatus]);
 
   useEffect(() => {
     const session = new ControllerSession({ notify: setView });
@@ -74,16 +77,16 @@ function Controller() {
     catch { setCopyStatus('Copia el diagnóstico que aparece abajo.'); }
   }
   const canRetryPermission = state === 'ERROR' && view?.network === 'NETWORK_READY';
-  const hasSavedName = nameStatus === 'SAVED' || (displayName.trim().length > 0 && nameStatus !== 'INVALID' && nameStatus !== 'UNAVAILABLE');
+  const hasSavedName = savedName.length > 0;
   if(hasSavedName && view?.network==='NETWORK_READY'&&(state==='INPUT_READY'||controlProfile(view.gameContext,view.playerId).valid))
-    return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} playerName={displayName} onSetName={savePlayerName} onCommand={(action,target)=>model.current?.command(action,target)} onActivate={()=>void model.current?.activate()} onForfeit={()=>void model.current?.forfeit()} onToggleAway={()=>void model.current?.setAway(!view?.isAway)} actions={<GameAction session={model} action="recenter">CENTRAR APUNTADO</GameAction>}/>;
+    return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} playerName={savedName} onSetName={savePlayerName} onCommand={(action,target)=>model.current?.command(action,target)} onActivate={()=>void model.current?.activate()} onForfeit={()=>void model.current?.forfeit()} onToggleAway={()=>void model.current?.setAway(!view?.isAway)} actions={<GameAction session={model} action="recenter">CENTRAR APUNTADO</GameAction>}/>;
   return <main className="controller-shell">
     <header className="brand"><GorillaMark/><div><p className="eyebrow">GORILIMPIADAS</p><h1>GORILLA<br/>ESCAPE</h1></div></header>
     <p className="edition">GORILLA CORE · TU TELÉFONO, TU CONTROL</p>
     <section className="connection-panel" data-feedback={feedback} aria-labelledby="connection-title">
       <div className="status-symbol" aria-hidden="true">{feedback === 'connecting' ? '…' : feedback === 'success' ? '✓' : feedback === 'error' ? '×' : '◆'}</div>
       <div role="status" aria-live="polite" aria-atomic="true"><h2 id="connection-title">{title}</h2><p>{description}</p></div>
-      {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión local establecida</p>}
+      {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión con la PC establecida</p>}
       {state==='DISCONNECTED'&&<button className="primary" onClick={()=>void model.current.reconnect()}>RECONECTAR MI SESIÓN</button>}
       {state === 'ERROR' && view?.network === 'NOT_CONNECTED' && <div className="connection-recovery">
         <p>La conexión falló antes de recibir una respuesta de la PC. Comprueba este navegador antes de volver a escanear.</p>
@@ -115,7 +118,7 @@ function Controller() {
           Abrir en Gorilla Companion (APK)
         </a>
       )}
-      <p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
+      <p>Usa el QR vigente de la PC.<br/>En conexión local, utiliza la misma Wi-Fi.</p>
       <button className="secondary" onClick={copyDiagnostic}>Copiar diagnóstico</button>
       {view?.network === 'NETWORK_READY' && <details><summary>Medición técnica de sensores</summary>
         <p>Sujeta el teléfono. No lo lances ni lo agites con fuerza.</p>

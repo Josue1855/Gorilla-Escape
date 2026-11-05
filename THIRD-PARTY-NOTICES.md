@@ -52,8 +52,10 @@ Generado: 2026-11-03. Debe incluirse junto al instalador Windows y los paquetes 
 
 ## Nota sobre recursos de arte y modelos 3D
 
+- Splash: el mismo modelo canónico `Meshy_AI_Low_Poly_Gorilla_Embr_biped` y texturas que los juegos. Carrera procedural sobre su propio esqueleto; no se sustituye el personaje.
+
 - Modelo 3D canónico del gorila: `Meshy_AI_Low_Poly_Gorilla_Embr_biped` generado mediante Meshy AI (Creative Community / Commercial Evaluation).
-  - Utilizado de manera unificada y coherente en todas las disciplinas y pantallas del producto (Splash cinematográfico, Menú 3D principal, Coconut Bowling, Gorilla Boxing, Gorilla Smash / High Striker, Jungle Baseball y Coconut Slice).
+  - Utilizado en las disciplinas del producto ( Coconut Bowling, Gorilla Boxing, Gorilla Smash / High Striker, Jungle Baseball y Coconut Slice).
   - Animaciones esqueléticas oficiales vinculadas: Alert (idle), Angry_Ground_Stomp / Angry_Ground_Stomp_2, All_Night_Dance y Fall1.
   - La procedencia comercial y los términos definitivos de distribución de Meshy AI permanecen en revisión legal previa a la publicación comercial en tiendas masivas.
 

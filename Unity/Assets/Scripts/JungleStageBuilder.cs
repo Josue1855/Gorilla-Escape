@@ -195,6 +195,13 @@ public static class JungleStageBuilder
         float smoothness = .25f,
         bool preferStandard = false)
         => CreatePrimitive(type, name, localPosition, scale, color, parent, keepCollider, metallic, smoothness, preferStandard, isLocal: true);
+    public static void FitCameraBackdrop(Transform backdrop, Camera camera, float distance)
+    {
+        backdrop.SetPositionAndRotation(camera.transform.position+camera.transform.forward*distance,camera.transform.rotation);
+        float height=2f*Mathf.Tan(camera.fieldOfView*Mathf.Deg2Rad*.5f)*distance*1.1f;
+        backdrop.localScale=new Vector3(height*camera.aspect,height,1f);
+    }
+
     public static Bounds CombinedBounds(Renderer[] renderers)
     {
         Bounds bounds = renderers[0].bounds;

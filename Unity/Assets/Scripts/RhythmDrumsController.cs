@@ -19,9 +19,12 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
     private long inputRevision;
     private const float Beat=.54545f;
     private GUIStyle titleStyle;
+    private GUIStyle laneLabelStyle;
     private int lastScreenHeight;
     private GameObject leftDrumBody,rightDrumBody,leftDrumHead,rightDrumHead;
     private readonly List<Transform> stageLights=new List<Transform>();
+    private readonly List<Mesh> drumMeshes = new List<Mesh>();
+    private void OnDestroy(){foreach(var mesh in drumMeshes)if(mesh!=null)Destroy(mesh);}
     private AudioSource sfx;
     private AudioClip leftDrumClip,rightDrumClip,missClip;
 
@@ -40,6 +43,7 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
         Camera cam=Camera.main;cam.transform.position=new Vector3(0,3.5f,-9f);cam.transform.LookAt(new Vector3(0,1.1f,1f));cam.backgroundColor=new Color(.018f,.035f,.05f);
         JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube,"Escenario",new Vector3(0,-.45f,2),new Vector3(14,.3f,15),new Color(.04f,.12f,.10f),parent:transform,preferStandard:false);
         leftDrumHead=CreateDrum("Tambor izquierdo",-1.7f,new Color(.05f,.65f,.9f),out leftDrumBody);rightDrumHead=CreateDrum("Tambor derecho",1.7f,new Color(1f,.35f,.08f),out rightDrumBody);
+        JungleArenaEnvironment.Build(transform, -.3f, 7f, 20f, night:true);
         stageLights.Clear();
         for(int i=-5;i<=5;i++)
         {
@@ -50,7 +54,25 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
 
     private GameObject CreateDrum(string name,float x,Color color,out GameObject body)
     {
-        body=JungleStageBuilder.CreatePrimitive(PrimitiveType.Cylinder,name,new Vector3(x,.35f,-.2f),new Vector3(1.25f,.65f,1.25f),color,parent:transform,preferStandard:false);
+        body=new GameObject(name);body.transform.SetParent(transform);body.transform.position=new Vector3(x,-.3f,-.2f);
+        var profile=new Vector2[]{new(0,.40f),new(.12f,.44f),new(.38f,.29f),new(.68f,.30f),new(.92f,.53f),new(1.3f,.62f)};
+        const int sides=24;
+        var vertices=new Vector3[profile.Length*(sides+1)];var uv=new Vector2[vertices.Length];
+        var triangles=new int[(profile.Length-1)*sides*6];int t=0;
+        for(int row=0;row<profile.Length;row++)for(int i=0;i<=sides;i++) {
+            float angle=i*Mathf.PI*2/sides;int n=row*(sides+1)+i;
+            vertices[n]=new Vector3(Mathf.Cos(angle)*profile[row].y,profile[row].x,Mathf.Sin(angle)*profile[row].y);uv[n]=new Vector2(i/(float)sides,profile[row].x);
+            if(row==profile.Length-1||i==sides)continue;
+            triangles[t++]=n;triangles[t++]=n+sides+1;triangles[t++]=n+1;
+            triangles[t++]=n+1;triangles[t++]=n+sides+1;triangles[t++]=n+sides+2;
+        }
+        var mesh=new Mesh{name="Cuerpo de djembe procedural",vertices=vertices,triangles=triangles,uv=uv};mesh.RecalculateNormals();mesh.RecalculateBounds();drumMeshes.Add(mesh);
+        body.AddComponent<MeshFilter>().sharedMesh=mesh;body.AddComponent<MeshRenderer>().sharedMaterial=JungleStageBuilder.GetSharedMaterial(new Color(.38f,.17f,.055f),smoothness:.2f);
+        for(int i=0;i<10;i++) {
+            float angle=i*Mathf.PI*2/10;
+            var rope=JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder,"Tensado de cuerda",new Vector3(Mathf.Cos(angle)*.49f,.95f,Mathf.Sin(angle)*.49f),new Vector3(.025f,.32f,.025f),new Color(.77f,.65f,.39f),body.transform);
+            rope.transform.localRotation=Quaternion.Euler(Mathf.Sin(angle)*-15,0,Mathf.Cos(angle)*15);
+        }
         return JungleStageBuilder.CreatePrimitive(PrimitiveType.Cylinder,"Parche",new Vector3(x,1.02f,-.2f),new Vector3(1.12f,.055f,1.12f),new Color(.92f,.82f,.58f),parent:transform,preferStandard:false);
     }
 
@@ -84,7 +106,7 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
         }
         if(!finished)
         {
-            foreach(Note note in notes)if(!note.judged&&now-note.time>.24f){note.judged=true;misses++;combo=0;callout="SE ESCAPÓ";calloutUntil=now+.45f;}
+            foreach(Note note in notes)if(!note.judged&&now-note.time>CompetitiveMechanics.DrumHitWindow){note.judged=true;misses++;combo=0;callout="SE ESCAPÓ";calloutUntil=now+.45f;}
             if(now>startTime+65*Beat)finished=true;
         }
     }
@@ -99,8 +121,8 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
     private void TryHit(bool left)
     {
         if(finished||Time.time<startTime||!session.TryAuthorize(left?JungleAction.DrumLeft:JungleAction.DrumRight,inputRevision))return;
-        Note best=null;float error=.26f;
-        foreach(Note n in notes)if(!n.judged&&n.left==left&&Mathf.Abs(Time.time-n.time)<error){best=n;error=Mathf.Abs(Time.time-n.time);}
+        Note best=null;float error=CompetitiveMechanics.DrumHitWindow;
+        foreach(Note n in notes)if(!n.judged&&n.left==left&&Mathf.Abs(Time.time-n.time)<=error){best=n;error=Mathf.Abs(Time.time-n.time);}
         if(best==null){combo=0;misses++;callout="¡DESTIEMPO!";calloutUntil=Time.time+.45f;if(sfx!=null&&missClip!=null)sfx.PlayOneShot(missClip,.5f);return;}
         best.judged=true;combo++;bestCombo=Mathf.Max(bestCombo,combo);
         int gained=error<.075f?1000:error<.15f?650:350;score+=gained+combo*12;
@@ -155,8 +177,10 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
     private void DrawLane(bool left,float x,float w,float h,GUIStyle style)
     {
         Texture2D accent = left ? JungleUITheme.Turquoise : JungleUITheme.Orange;
-        float laneW=w*.13f,targetY=h*.76f;JungleUITheme.DrawSubPanel(new Rect(x, h*.16f,laneW,h*.66f));JungleRetainedUI.DrawTexture(new Rect(x+4f,targetY,laneW-8f,h*.025f),accent);
+        float laneW=w*.13f,targetY=h*.76f;
+        if(laneLabelStyle==null)laneLabelStyle=new GUIStyle(style){wordWrap=false};
+        laneLabelStyle.fontSize=Mathf.Min(style.fontSize,Mathf.RoundToInt(laneW*.13f));JungleUITheme.DrawSubPanel(new Rect(x, h*.16f,laneW,h*.66f));JungleRetainedUI.DrawTexture(new Rect(x+4f,targetY,laneW-8f,h*.025f),accent);
         foreach(Note n in notes)if(!n.judged&&n.left==left){float seconds=n.time-Time.time;if(seconds<2.6f&&seconds>-.3f){float y=targetY-seconds*(h*.23f);JungleRetainedUI.DrawTexture(new Rect(x+laneW*.18f,y,laneW*.64f,h*.045f),accent);}}
-        bool flash=Time.time<(left?leftFlash:rightFlash);JungleUITheme.DrawPanel(new Rect(x-laneW*.05f,h*.80f,laneW*1.1f,h*.08f), selected: flash);JungleUITheme.DrawShadowedLabel(new Rect(x,h*.80f,laneW,h*.08f),left?"IZQUIERDA":"DERECHA",style,2f);
+        bool flash=Time.time<(left?leftFlash:rightFlash);JungleUITheme.DrawPanel(new Rect(x-laneW*.05f,h*.80f,laneW*1.1f,h*.08f), selected: flash);JungleUITheme.DrawShadowedLabel(new Rect(x,h*.80f,laneW,h*.08f),left?"IZQUIERDA":"DERECHA",laneLabelStyle,2f);
     }
 }

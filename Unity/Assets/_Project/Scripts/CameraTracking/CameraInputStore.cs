@@ -194,7 +194,7 @@ namespace GorillaEscape.CameraTracking
 
             foreach(var s in f.subjects){
 
-                if(s==null||s.subjectId<1||!ids.Add(s.subjectId)||!Unit(s.centerX)||!Unit(s.centerY)||!Unit(s.confidence)||s.landmarks==null||s.landmarks.Length>8)return false;
+                if(s==null||s.subjectId<1||!ids.Add(s.subjectId)||!Unit(s.centerX)||!Unit(s.centerY)||!Unit(s.confidence)||s.landmarks==null||s.landmarks.Length>10)return false;
 
                 var names=new HashSet<string>();
 
@@ -208,7 +208,7 @@ namespace GorillaEscape.CameraTracking
 
         }
 
-        static bool Known(string n){return n=="left-shoulder"||n=="right-shoulder"||n=="left-elbow"||n=="right-elbow"||n=="left-wrist"||n=="right-wrist"||n=="left-hand"||n=="right-hand";}
+        static bool Known(string n){return n=="left-shoulder"||n=="right-shoulder"||n=="left-elbow"||n=="right-elbow"||n=="left-wrist"||n=="right-wrist"||n=="left-hand"||n=="right-hand"||n=="left-hip"||n=="right-hip";}
 
         static bool Finite(float x)=>!float.IsNaN(x)&&!float.IsInfinity(x);
 

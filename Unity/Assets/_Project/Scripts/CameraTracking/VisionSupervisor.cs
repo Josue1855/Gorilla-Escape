@@ -51,7 +51,9 @@ namespace GorillaEscape.CameraTracking
             lock(gate){transit.Clear();transitCount=transitMax=invalidTransit=0;}
             try {
                 child=new Process{StartInfo=new ProcessStartInfo{FileName=python,Arguments=Quote(script)+" --mode "+Quote(mode)+" --fixture "+Quote(fixture??"")+" --model "+Quote(model??"")+" --device "+Quote(device??"/dev/video0"),WorkingDirectory=Path.GetDirectoryName(script),UseShellExecute=false,RedirectStandardInput=true,RedirectStandardOutput=true,RedirectStandardError=true,CreateNoWindow=true}};
-                child.Start();Pid=child.Id;stdout=ReadOutput(child.StandardOutput);stderr=Drain(child.StandardError);
+                // Pipe readers must drain independently of Unity's render/update loop.
+                // Marshaling each small read onto the main thread can age live frames past their freshness budget.
+                child.Start();Pid=child.Id;stdout=Task.Run(()=>ReadOutput(child.StandardOutput));stderr=Task.Run(()=>Drain(child.StandardError));
                 var clock=Stopwatch.StartNew();while(!ready){token.ThrowIfCancellationRequested();if(Error!=null||child.HasExited)throw new IOException(Error??"VISION_EXITED");if(clock.ElapsedMilliseconds>=30000)throw new TimeoutException("CAMERA_STARTUP_TIMEOUT");await Task.Delay(10,token);}
                 State="RUNNING";
             }catch(Exception e){Error=e is OperationCanceledException?"CAMERA_CANCELLED":e is TimeoutException?"CAMERA_STARTUP_TIMEOUT":Error??"CAMERA_UNAVAILABLE";State="FAILED";await StopAsync();throw;}

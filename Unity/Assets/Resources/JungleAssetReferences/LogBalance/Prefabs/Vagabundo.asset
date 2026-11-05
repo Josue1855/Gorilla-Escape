@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1366cfd0164648945b3b7ae599f97b2c, type: 3}
-  m_Name: Vagabundo
-  m_EditorClassIdentifier: GorillaEscape.Runtime::JungleAssetReference
+  m_Name: 
+  m_EditorClassIdentifier: 
   assets:
   - {fileID: 1012629842017201652, guid: c93a7ab18f73cda97b75d5a46cd70a98, type: 3}

@@ -30,8 +30,9 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
         gorillaRig.LoadAsync(anchor, MakeMaterial, null);
         var camera = Camera.main;
         if(camera != null) {
-            camera.transform.position = new Vector3(0,2.25f,-8f);
-            camera.transform.LookAt(new Vector3(0,2.55f,-3f));camera.fieldOfView=42f;
+            camera.clearFlags=CameraClearFlags.SolidColor;
+            camera.transform.position = new Vector3(0,2.9f,-9f);
+            camera.transform.LookAt(new Vector3(0,2.7f,-3f));camera.fieldOfView=46f;
             camera.backgroundColor=new Color(.012f,.018f,.022f);
         }
         StartBoxingGame();
@@ -40,7 +41,7 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
     private GameObject Box(string name,Vector3 position,Vector3 scale,Color color,Transform parent=null,bool keepCollider=true) => JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube,name,position,scale,color,parent,keepCollider:keepCollider,smoothness:.35f,preferStandard:false);
     private void Update()
     {
-        sharedSession.PresentGame(state==GameState.BoxingOver ? (gorillaHealth<=0 || playerHealth>0 && playerHealth>=gorillaHealth ? "Won":"Lost") : "Playing",score:Math.Round(100f-gorillaHealth),progress:Mathf.Clamp01(1f-boxingRoundTime/90f),balance:Mathf.Clamp((playerHealth-gorillaHealth)/100f,-1f,1f));
+        sharedSession.PresentGame(state==GameState.BoxingOver ? (gorillaHealth<=0 ? "Won" : playerHealth<=0 ? "Lost" : Mathf.Abs(playerHealth-gorillaHealth)<.01f ? "Finished" : playerHealth>gorillaHealth ? "Won":"Lost") : "Playing",score:Math.Round(100f-gorillaHealth),progress:Mathf.Clamp01(1f-boxingRoundTime/90f),balance:Mathf.Clamp((playerHealth-gorillaHealth)/100f,-1f,1f));
         if(!sharedSession.IsInputReady){poseDetected=false;leftVisual.Reset();rightVisual.Reset();return;}
         if(sharedSession.TryConsumeFrame(out var frame))
         {

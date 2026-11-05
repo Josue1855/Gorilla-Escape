@@ -118,7 +118,7 @@ public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
         JungleRetainedUI.DrawTexture(new Rect(bx+bw*position-4,by-4,8,30),Texture2D.whiteTexture);JungleRetainedUI.color=prior;
         int cdSec=Mathf.CeilToInt(model.Countdown);
         if(model.State==LogBalanceState.Countdown&&cdSec!=cachedCountdownSec){cachedCountdownSec=cdSec;cachedCountdownText=$"PREPÁRATE · {cdSec}";}
-        string message=preparing?control.Status:manualPause?"EN PAUSA":model.State==LogBalanceState.Countdown?cachedCountdownText
+        string message=model.State==LogBalanceState.Won?"¡CRUCE COMPLETADO!":model.State==LogBalanceState.Fell?"HAS CAÍDO. PUEDES VOLVER A INTENTARLO.":preparing?control.Status:manualPause?"EN PAUSA":model.State==LogBalanceState.Countdown?cachedCountdownText
             :model.State==LogBalanceState.Crossing?"IZQUIERDA ← CORRIGE CON SUAVIDAD → DERECHA"
             :model.State==LogBalanceState.Won?"¡CRUCE COMPLETADO!":model.State==LogBalanceState.Fell?"HAS CAÍDO. PUEDES VOLVER A INTENTARLO.":"Control listo. Pulsa comenzar.";
         JungleRetainedUI.Label(new Rect(x+20,y+ph*.40f,pw-40,ph*.28f),message,body);

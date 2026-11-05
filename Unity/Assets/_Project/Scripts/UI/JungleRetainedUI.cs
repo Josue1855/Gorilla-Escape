@@ -21,11 +21,12 @@ public static class JungleRetainedUI
     {
         public VisualElement element;
         public string kind, identity;
-        public bool clicked, hovered;
+        public bool clicked, hovered, focused;
         public string clickedIdentity;
         public Rect rect, clickedRect;
         public GUIStyle style;
         public Color tint;
+        public int lastActivationFrame = -10;
     }
     public static readonly StyleDefaults skin = new StyleDefaults();
     public static Color color = Color.white;
@@ -35,10 +36,16 @@ public static class JungleRetainedUI
     static VisualElement root;
     static List<Node> pool;
     static int index;
+    static Node mousePressedNode;
+    static string mousePressedIdentity;
+    static Rect mousePressedRect;
+    static int mousePressFrame = -1;
     public static void Begin(VisualElement target, List<Node> nodes)
     {
         root = target; pool = nodes; index = 0;
         color = Color.white; enabled = true; depth = 0; matrix = Matrix4x4.identity;
+        if (Input.GetMouseButtonDown(0) && mousePressFrame != Time.frameCount)
+        { mousePressFrame = Time.frameCount; mousePressedNode = null; }
     }
     public static void End()
     {
@@ -71,9 +78,14 @@ public static class JungleRetainedUI
             node.element.pickingMode = kind == "button" ? PickingMode.Position : PickingMode.Ignore;
             if (node.element is Button button)
             {
-                button.clicked += () => { node.clicked = true; node.clickedIdentity = node.identity; node.clickedRect = node.rect; };
+                button.clicked += () => {
+                    if (Time.frameCount <= node.lastActivationFrame + 1) return;
+                    node.clicked = true; node.clickedIdentity = node.identity; node.clickedRect = node.rect;
+                };
                 button.RegisterCallback<PointerEnterEvent>(_ => node.hovered = true);
                 button.RegisterCallback<PointerLeaveEvent>(_ => node.hovered = false);
+                button.RegisterCallback<FocusInEvent>(_ => node.focused = true);
+                button.RegisterCallback<FocusOutEvent>(_ => node.focused = false);
             }
             root.Insert(Mathf.Min(index - 1, root.childCount), node.element);
         }
@@ -94,7 +106,7 @@ public static class JungleRetainedUI
     {
         style = style ?? skin.label;
         var s = node.element.style;
-        var state = node.hovered && enabled ? style.hover : style.normal;
+        var state = (node.hovered || node.focused) && enabled ? style.hover : style.normal;
         // Some imported styles omit hover fields.
         Texture2D background = state.background != null ? state.background : style.normal.background;
         s.backgroundImage = background == null ? StyleKeyword.None : new StyleBackground(background);
@@ -118,8 +130,8 @@ public static class JungleRetainedUI
     }
     public static void Box(Rect rect, GUIContent content, GUIStyle style = null) => Box(rect, content.text, style);
     public static void Box(Rect rect, string text, GUIStyle style = null) => Label(rect, text, style ?? skin.box);
-    static int lastMouseClickFrame = -1;
     public static bool Button(Rect rect, GUIContent content, GUIStyle style = null) => Button(rect, content.text, style);
+    static int lastMouseReleaseFrame = -1;
     public static bool Button(Rect rect, string text, GUIStyle style = null)
     {
         var node = Acquire("button", rect, text);
@@ -127,21 +139,23 @@ public static class JungleRetainedUI
         bool clicked = enabled && node.clicked && node.clickedIdentity == text && node.clickedRect == rect;
         node.clicked = false;
 
-        if (enabled)
+        // The Editor's legacy input path also activates on release, never on press.
+        // Merge it with Toolkit delivery so one gesture cannot toggle twice.
+        Vector2 mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+        bool picked = enabled && node.element.panel != null && node.element.panel.Pick(mouse) == node.element;
+        if (picked && Input.GetMouseButtonDown(0))
+        { mousePressedNode = node; mousePressedIdentity = text; mousePressedRect = rect; }
+        if (mousePressedNode == node && Input.GetMouseButtonUp(0))
         {
-            Vector2 mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-            if (rect.Contains(mouse))
-            {
-                node.hovered = true;
-                Apply(node, style ?? skin.button);
-                if (Input.GetMouseButtonDown(0) && lastMouseClickFrame != Time.frameCount)
-                {
-                    lastMouseClickFrame = Time.frameCount;
-                    clicked = true;
-                }
-            }
+            if (picked && mousePressedIdentity == text && mousePressedRect == rect && lastMouseReleaseFrame != Time.frameCount)
+            { lastMouseReleaseFrame = Time.frameCount; clicked = true; }
+            mousePressedNode = null;
         }
-
+        if (clicked)
+        {
+            if (Time.frameCount <= node.lastActivationFrame + 1) return false;
+            node.lastActivationFrame = Time.frameCount;
+        }
         return clicked;
     }
     public static void DrawTexture(Rect rect, Texture texture, ScaleMode mode = ScaleMode.StretchToFill, bool alphaBlend = true)

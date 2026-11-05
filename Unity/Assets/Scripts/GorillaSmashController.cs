@@ -40,6 +40,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
     private float downSpeed;
     private float phonePower;
     private long inputRevision;
+    private float matchedTiming;
     private bool smashRequested;
     private float stateAt;
     private float smashStartedAt;
@@ -120,6 +121,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         if (c != null)
         {
             c.orthographic = false;
+            c.clearFlags=CameraClearFlags.SolidColor;
             c.fieldOfView = 50f;
             c.transform.position = new Vector3(0f, 2.8f, -9.5f);
             c.transform.LookAt(new Vector3(0f, 2.5f, 0f));
@@ -131,7 +133,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         bg.name = "01 Fondo Selva";
         bg.transform.SetParent(transform, false);
         bg.transform.position = new Vector3(0f, 3.2f, 8.5f);
-        bg.transform.localScale = new Vector3(32f, 18f, 1f);
+        JungleStageBuilder.FitCameraBackdrop(bg.transform,c,22f);
         if (bg.TryGetComponent<Collider>(out var bgCol)) Destroy(bgCol);
 
         var unlitShader = JungleStageBuilder.UnlitShader;
@@ -363,8 +365,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         {
             downSpeed = phonePower = 0f;
             smashRequested = false;
-            // Permitir avance accesible con teclado para pruebas
-            CheckKeyboardFallback();
+            // Sin señal válida no se generan acciones; la presentación sigue disponible.
             UpdateVisuals();
             return;
         }
@@ -375,7 +376,6 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
             ReadInput(frame);
         }
 
-        CheckKeyboardFallback();
         UpdateVisuals();
 
         if (state == State.Countdown)
@@ -447,6 +447,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
     private void ReadInput(JungleFusedFrame frame)
     {
         inputRevision = frame.Revision;
+        matchedTiming = CompetitiveMechanics.TimingQuality(frame.PhoneTimestamp,frame.CameraTimestamp);
         downSpeed = frame.Right.VelocityY;
         phonePower = frame.PhonePower;
         cursorViewport = new Vector2(frame.Right.X, 1f - frame.Right.Y);
@@ -457,17 +458,6 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         // Detectar acción Smash o Whack autorizada
         if ((frame.Actions & (JungleAction.Smash | JungleAction.Whack)) != 0)
             smashRequested = true;
-    }
-
-    private void CheckKeyboardFallback()
-    {
-        // Fallback accesible sin celular/cámara (Espacio o Enter)
-        if (state == State.Playing && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
-        {
-            downSpeed = UnityEngine.Random.Range(1.8f, 3.2f);
-            phonePower = UnityEngine.Random.Range(320f, 650f);
-            smashRequested = true;
-        }
     }
 
     private void UpdateVisuals()
@@ -504,12 +494,6 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         bool authorized = session.TryAuthorize(JungleAction.Smash, inputRevision)
                        || session.TryAuthorize(JungleAction.Whack, inputRevision);
 
-        // Si no hay hardware conectado pero se presionó teclado fallback, permitir
-        if (!authorized && !session.IsInputReady)
-        {
-            authorized = true;
-        }
-
         if (!authorized) return;
 
         // Efecto de impacto en plataforma
@@ -521,13 +505,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
 
         // Cálculo de técnica según Spec v4 Sección 17:
         // Technique = Power * 0.45 + DirectionAccuracy * 0.25 + Timing * 0.20 + GestureConfidence * 0.10
-        float powerNorm = Mathf.Clamp01(Mathf.Max(downSpeed / 2.6f, phonePower / 420f));
-        float dirAcc = Mathf.Clamp01(1f - Mathf.Abs(VisualHand.x - 0.5f) * 1.5f);
-        float timing = UnityEngine.Random.Range(0.85f, 1.0f);
-        float gestureConf = session.CameraConnected ? 0.95f : 0.80f;
-
-        float technique = powerNorm * 0.45f + dirAcc * 0.25f + timing * 0.20f + gestureConf * 0.10f;
-        currentScore = Mathf.Clamp(Mathf.RoundToInt(technique * 10000f), 200, 10000);
+        currentScore = CompetitiveMechanics.SmashScore(downSpeed,phonePower,cursorViewport.x,matchedTiming);
 
         if (currentScore > bestScore)
             bestScore = currentScore;
@@ -677,7 +655,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
             Rect introCard = new Rect(w * 0.32f, h * 0.35f, w * 0.36f, h * 0.30f);
             JungleUITheme.DrawPanel(introCard);
             Rect introText = new Rect(introCard.x + 15f, introCard.y + 20f, introCard.width - 30f, h * 0.12f);
-            JungleUITheme.DrawShadowedLabel(introText, "Sujeta el teléfono firmemente.\nLevanta la mano y asesta un golpe rápido hacia abajo contra la plataforma.", subtitleStyle, 2f);
+            JungleUITheme.DrawShadowedLabel(introText, "Sujeta el teléfono firmemente.\nLevanta la mano y haz el gesto hacia abajo, sin golpear objetos ni soltar el teléfono.", subtitleStyle, 2f);
 
             Rect startBtn = new Rect(introCard.x + introCard.width * 0.15f, introCard.y + h * 0.18f, introCard.width * 0.70f, h * 0.08f);
             if (JungleRetainedUI.Button(startBtn, "¡INICIAR PRUEBA!", JungleUITheme.ButtonSelected))

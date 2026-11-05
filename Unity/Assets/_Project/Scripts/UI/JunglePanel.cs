@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 [DefaultExecutionOrder(20000)]
 public sealed class JunglePanel : MonoBehaviour
 {
+    public static float GameplayHeaderHeight => Mathf.Clamp(Screen.height * .075f, 56f, 76f);
     UIDocument document;
     PanelSettings settings;
     static PanelSettings sharedSettings;
@@ -19,6 +20,7 @@ public sealed class JunglePanel : MonoBehaviour
         {
             sharedSettings = ScriptableObject.CreateInstance<PanelSettings>();
             sharedSettings.scaleMode = PanelScaleMode.ConstantPixelSize;
+            sharedSettings.themeStyleSheet = Resources.Load<ThemeStyleSheet>("JungleRuntimeTheme");
         }
         settings = sharedSettings;
         panelUsers++;
@@ -46,6 +48,17 @@ public sealed class JunglePanel : MonoBehaviour
         bool overlayPanel = false;
         foreach (var screen in screens) if (screen is IJungleModalScreen overlay) { overlayPanel = true; if (screen.isActiveAndEnabled && overlay.BlocksSceneInput) modal = true; }
         document.sortingOrder = overlayPanel ? 100 : 0;
+        // Reserve space for the session header without clipping the scene's bottom
+        // controls. Scale the complete visual tree uniformly, including hit targets.
+        bool gameplay = GorillaEscape.Gameplay.Input.JungleGameplayInput.ForScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name) != GorillaEscape.Gameplay.Input.JungleGame.None;
+        float inset = gameplay && !overlayPanel ? GameplayHeaderHeight : 0f;
+        float contentScale = Mathf.Max(.1f, (Screen.height - inset) / Mathf.Max(1f, Screen.height));
+        var root = document.rootVisualElement;
+        root.style.transformOrigin = new TransformOrigin(0, 0, 0);
+        root.style.scale = new Scale(new Vector3(contentScale, contentScale, 1));
+        root.style.left = (Screen.width - Screen.width * contentScale) * .5f;
+        root.style.top = inset;
         // HUD and session overlays share a panel: an empty fullscreen overlay must
         // not win panel picking and swallow input intended for scene buttons.
         for (var ancestor = document.rootVisualElement.parent; ancestor != null; ancestor = ancestor.parent)

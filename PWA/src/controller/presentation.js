@@ -1,7 +1,8 @@
 export const screens = {
+  FORFEITED: ['Has salido de la partida', 'Para volver a jugar, escanea un QR nuevo en la PC.', null, 'ready'],
   CONNECT: ['Partida encontrada', 'El enlace de tu QR está listo. Conecta con la PC para continuar.', 'CONECTAR', 'ready'],
   NO_ADMISSION: ['Escanea el QR de la PC', 'Abre Gorilla Escape en la PC y escanea un QR nuevo para incorporarte.', null, 'warning'],
-  CONNECTING: ['Conectando con la PC…', 'Mantén el teléfono en la misma Wi-Fi que la PC.', null, 'connecting'],
+  CONNECTING: ['Conectando con la PC…', 'Mantén esta pantalla abierta y comprueba la conexión a Internet o la Wi-Fi local de la PC.', null, 'connecting'],
   RECONNECTING: ['Recuperando tu sesión…','Estamos recuperando tu jugador y el juego actual. Mantén esta pantalla abierta.',null,'connecting'],
   PERMISSION_REQUIRED: ['Conectado. Activa tu control', 'Permite el acceso al movimiento y la orientación con el siguiente botón.', 'ACTIVAR CONTROL', 'success'],
   REQUESTING_PERMISSION: ['Esperando tu permiso…', 'Responde a la solicitud del navegador, si aparece.', null, 'connecting'],

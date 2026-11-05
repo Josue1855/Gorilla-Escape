@@ -105,7 +105,7 @@ export class ControllerSession {
     const context=this.snapshot().gameContext,profile=controlProfile(context,this.client.identity?.playerId);
     const changed=context?.contextId!==this.profileContext;
     this.profileContext=context?.contextId;
-    const wanted=profile.valid&&profile.phoneRequired;
+    const wanted=profile.valid&&profile.phoneRequired&&!this.isAway;
     if(changed){this.actionPressed=false;this.controlNeutral=null;this.controlTilt=0;this.lastHapticScore=null;this.lastHapticPhase=null;}
     if(profile.valid&&!wanted){
       this.capture.stop();this.wakeWanted=false;void this.wakeLock?.release().catch(()=>{});
@@ -121,7 +121,7 @@ export class ControllerSession {
     if(this.client.state==='RUNNING')void this.client.send?.('CLIENT_STATE',{state:'suspended'}).catch(()=>{});
   }
   async recover() {
-    if(this.disposed||!this.attempted||this.doc.visibilityState==='hidden')return;
+    if(this.disposed||!this.attempted||this.isAway||this.doc.visibilityState==='hidden')return;
     if(this.client.state!=='RUNNING'||(this.client.lastHeartbeatAck!=null&&performance.now()-this.client.lastHeartbeatAck>2500))return this.reconnect();
     const profile=controlProfile(this.snapshot().gameContext,this.client.identity?.playerId);
     if(profile.phoneRequired&&this.permissions){this.capture.stop();await this.capture.start({permissions:this.permissions});this.updateInput();}
@@ -165,10 +165,12 @@ export class ControllerSession {
     if(this.disposed)return;
     this.isAway=Boolean(away);
     if(this.isAway){
-      this.capture.stop();
+      this.actionPressed=false;this.client.latest=null;this.capture.stop();this.cancelMeasurement();
+      this.wakeWanted=false;await this.wakeLock?.release().catch(()=>{});
       await this.client.send?.('CLIENT_STATE',{state:'away'}).catch(()=>{});
     }else{
       await this.client.send?.('CLIENT_STATE',{state:'active'}).catch(()=>{});
+      this.profileContext=null;
       if(this.network==='NETWORK_READY')this.syncProfile();
     }
     this.publish();

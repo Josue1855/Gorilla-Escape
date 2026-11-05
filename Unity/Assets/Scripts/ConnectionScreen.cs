@@ -110,7 +110,7 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
                 Debug.Log("CAPTURED_AUTO_SCREENSHOT: " + autoShot);
             }
             string autoNav = System.Environment.GetEnvironmentVariable("GORILLA_AUTO_NAV");
-            if (autoNav == "MAIN_MENU" || autoNav == "PARTY" || autoNav == "STORY")
+            if ((autoNav == "MAIN_MENU" || autoNav == "PARTY" || autoNav == "STORY") && session.CameraConnected && !TournamentSession.ConnectionPending)
             {
                 session.SetCameraOnly(true);
                 SceneNavigator.Load(SceneNavigator.MainMenu);
@@ -224,7 +224,8 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
         DrawStatus(cameraRow, "CÁMARA · VER", session.CameraConnected ? "LISTA" : "SIN SEÑAL", session.CameraConnected, scale);
         if (JungleRetainedUI.Button(cameraRow, GUIContent.none, GUIStyle.none)) { showCameraSetup = true; services.SetCameraSetupVisible(true); }
         DrawStatus(new Rect(left.x, left.y + 328 * scale, left.width, 48 * scale), "CELULAR", session.PhoneConnected ? "CONECTADO" : "ESPERANDO", session.PhoneConnected, scale);
-        JungleRetainedUI.Label(new Rect(left.x + 5 * scale, left.y + 387 * scale, left.width - 10 * scale, 45 * scale), services.Status, bodyStyle);
+        string modeRequirement = TournamentSession.ConnectionRequirement(session.CameraConnected, services.Lobby);
+        JungleRetainedUI.Label(new Rect(left.x + 5 * scale, left.y + 387 * scale, left.width - 10 * scale, 45 * scale), modeRequirement ?? services.Status, bodyStyle);
         var players = services.Lobby?.players;
         JungleRetainedUI.Label(new Rect(left.x + 5 * scale, left.y + 430 * scale, left.width - 10 * scale, 24 * scale), "JUGADORES " + (players?.Length ?? 0) + "/4", playerHeaderStyle);
         if (players != null)
@@ -233,7 +234,10 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
             {
                 var player = players[i];
                 string playerName = string.IsNullOrWhiteSpace(player.displayName) ? "Escribiendo nombre…" : player.displayName;
-                string playerState = player.connectionState == "DISCONNECTED" ? "DESCONECTADO" : player.inputReady ? "LISTO" : "CONECTADO";
+                string playerState = player.connectionState == "DISCONNECTED" ? "DESCONECTADO"
+                    : player.connectionState == "FORFEITED" ? "RETIRADO"
+                    : player.connectionState == "BACKGROUND" || player.connectionState == "AWAY" ? "ABRE EL CONTROL EN EL CELULAR"
+                    : player.inputReady ? "LISTO" : player.networkReady ? "CONECTADO" : "CONECTANDO";
                 JungleRetainedUI.Label(new Rect(left.x + 5 * scale, left.y + (458 + i * 25) * scale, left.width - 10 * scale, 24 * scale), playerName + "  ·  " + playerState, playerLineStyle);
             }
         }
@@ -273,7 +277,7 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
 
         float buttonY = shell.yMax - pad - 50 * scale;
         bool namedPlayer = players != null && System.Array.Exists(players, p => p != null && p.connectionState != "DISCONNECTED" && !string.IsNullOrWhiteSpace(p.displayName));
-        bool canEnter = JungleAudioBank.IsPrewarmed && session.PhoneConnected && namedPlayer;
+        bool canEnter = JungleAudioBank.IsPrewarmed && session.PhoneConnected && namedPlayer && modeRequirement == null;
         GUIStyle continueButton = canEnter ? continueActiveStyle : continueDisabledStyle;
         if (services.AdmissionMode == "CABIN" && JungleRetainedUI.Button(new Rect(right.x, qrCard.yMax + 10 * scale, right.width, 40 * scale), showingPreparation ? "PASO 2: UNIRSE" : "PASO 1: PREPARAR", copyButtonStyle))
             showingPreparation = !showingPreparation;
@@ -311,19 +315,31 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
             && triggeredId > 0;
         JungleAudioBank.PlayDwellProgress(handNavigator.Progress);
 
-        if ((JungleRetainedUI.Button(enterRect, canEnter ? "ENTRAR A LA SELVA" : !JungleAudioBank.IsPrewarmed ? "PREPARANDO AUDIO" : session.PhoneConnected ? "ESPERANDO NOMBRE" : "ESPERANDO CELULAR", continueButton) || (dwellFired && handNavigator.HoveredId == 1)) && canEnter)
+        if ((JungleRetainedUI.Button(enterRect, canEnter ? "ENTRAR A LA SELVA" : !JungleAudioBank.IsPrewarmed ? "PREPARANDO AUDIO" : modeRequirement != null ? "PREPARA LOS DISPOSITIVOS" : session.PhoneConnected ? "ESPERANDO NOMBRE" : "ESPERANDO CELULAR", continueButton) || (dwellFired && handNavigator.HoveredId == 1)) && canEnter)
         {
             handNavigator.Reset();
             session.SetCameraOnly(false);
-            SceneNavigator.Load(SceneNavigator.MainMenu);
+            session.RememberPreparation();
+            if (TournamentSession.ConnectionPending)
+                TournamentSession.BeginRequestedMode(session.CameraConnected, services.Lobby);
+            else SceneNavigator.Load(SceneNavigator.MainMenu);
             return;
         }
         if (canEnter && handNavigator.HoveredId == 1 && handNavigator.Progress > .02f)
             JungleUITheme.DrawDwellOverlay(enterRect, handNavigator.Progress);
 
-        if (JungleAudioBank.IsPrewarmed && (JungleRetainedUI.Button(cameraOnlyRect, "JUEGOS SIN CELULAR", copyButtonStyle) || (dwellFired && handNavigator.HoveredId == 2)))
+        if (JungleAudioBank.IsPrewarmed && (JungleRetainedUI.Button(cameraOnlyRect, TournamentSession.RequiresBothDevices ? "VOLVER A ELEGIR MODO" : "JUEGOS SIN CELULAR", copyButtonStyle) || (dwellFired && handNavigator.HoveredId == 2)))
         {
             handNavigator.Reset();
+            if (TournamentSession.RequiresBothDevices)
+            {
+                TournamentSession.CancelRequestedMode();
+                SceneNavigator.Load(SceneNavigator.MainMenu);
+                return;
+            }
+            if (!session.CameraConnected) { showCameraSetup = true; services.SetCameraSetupVisible(true); return; }
+            session.RememberPreparation();
+            TournamentSession.CancelRequestedMode();
             session.SetCameraOnly(true);
             SceneNavigator.Load(SceneNavigator.MainMenu);
             return;
@@ -332,7 +348,7 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
             JungleUITheme.DrawDwellOverlay(cameraOnlyRect, handNavigator.Progress, "MANTÉN LA MANO AQUÍ");
 
         Rect safetyBannerRect = new Rect(w * .055f, h * .945f, w * .89f, 26 * scale);
-        JungleRetainedUI.Label(safetyBannerRect, "🛡️ SEGURIDAD Y PRIVACIDAD: Proceso 100% local en PC · Sin almacenamiento de video o fotos · Sin biometría · Sujeta tu teléfono y despeja tu área de juego", urlSubtextStyle);
+        JungleRetainedUI.Label(safetyBannerRect, " SEGURIDAD Y PRIVACIDAD: Proceso 100% local en PC · Sin almacenamiento de video o fotos · Sin biometría · Sujeta tu teléfono y despeja tu área de juego", urlSubtextStyle);
 
         DrawForegroundLeaves(w, h, time, scale);
         JungleRetainedUI.enabled = wasEnabled;
@@ -358,7 +374,7 @@ public sealed class ConnectionScreen : MonoBehaviour, IJungleScreen
         float y = preview.yMax + 12 * scale;
         JungleRetainedUI.Label(new Rect(panel.x + pad, y, panel.width - 2 * pad, 52 * scale), framing.Badge + " · " + services.CameraGuidance, camSetupBodyStyle);
         JungleRetainedUI.Label(new Rect(panel.x + pad, y + 56 * scale, panel.width - 2 * pad, 70 * scale),
-            (services.CameraActive ? "CÁMARA ACTIVA. " : "CÁMARA SIN INICIAR. ") + "La vista previa se procesa en esta PC y se transmite entre procesos locales. Evita contraluz y despeja el área.", camSetupBodyStyle);
+            services.CameraStatus + ". La vista previa se procesa en esta PC y se transmite entre procesos locales. Evita contraluz y despeja el área.", camSetupBodyStyle);
         if (JungleRetainedUI.Button(new Rect(panel.x + pad, panel.yMax - pad - 46 * scale, panel.width - 2 * pad, 46 * scale), "CONTINUAR A CONEXIÓN", camSetupButtonStyle))
         { showCameraSetup = false; services.SetCameraSetupVisible(false); }
     }

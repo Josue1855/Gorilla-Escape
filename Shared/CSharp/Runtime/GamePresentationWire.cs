@@ -27,7 +27,7 @@ namespace GorillaEscape.Contracts
         public long connectionEpoch,receivedAt;
         public bool Valid(GamePresentationWire context,LobbySnapshotWire lobby,long now)
         {
-            if(context==null||!context.Valid()||lobby?.players==null||contextId!=context.contextId||playerId!=1
+            if(context==null||!context.Valid()||context.screen=="connection"||lobby?.players==null||contextId!=context.contextId||playerId!=1
                 ||sessionId!=lobby.sessionId||now<receivedAt||now-receivedAt>2500)return false;
             var player=Array.Find(lobby.players,p=>p.playerId==playerId);
             if(player==null||!player.networkReady||player.connectionState=="DISCONNECTED"||player.deviceSessionId!=deviceSessionId||player.connectionEpoch!=connectionEpoch)return false;

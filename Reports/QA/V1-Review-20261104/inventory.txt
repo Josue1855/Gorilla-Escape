@@ -1,0 +1,270 @@
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow/Intro renderers=25 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=25 buttons=← MENÚ
+CoconutThrow/Results renderers=25 buttons=REINTENTAR | VOLVER AL MENÚ
+BananaBowling/Connecting renderers=47 buttons=CONECTAR
+BananaBowling/Aim renderers=47 buttons=CONECTAR
+BananaBowling/Results renderers=47 buttons=CONECTAR
+CoconutSlice/Intro renderers=5 buttons=MENÚ
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+JungleBaseball/Ready renderers=17 buttons=MENÚ
+JungleBaseball/Pitching renderers=17 buttons=MENÚ
+JungleBaseball/GameOver renderers=17 buttons=OTRA PARTIDA | MENÚ
+JungleDrums/ready renderers=16 buttons=MENÚ
+JungleDrums/playing renderers=16 buttons=MENÚ
+JungleDrums/finished renderers=16 buttons=REPETIR | MENÚ
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+JungleKeeper/Intro renderers=10 buttons=MENÚ
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow/Intro renderers=46 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=46 buttons=← MENÚ
+CoconutThrow/Results renderers=46 buttons=REINTENTAR | VOLVER AL MENÚ
+BananaBowling/Connecting renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Aim renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Results renderers=47 buttons=OTRA PARTIDA | MENÚ
+CoconutSlice/Intro renderers=5 buttons=MENÚ
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+JungleBaseball/Ready renderers=36 buttons=MENÚ
+JungleBaseball/Pitching renderers=36 buttons=MENÚ
+JungleBaseball/GameOver renderers=36 buttons=OTRA PARTIDA | MENÚ
+JungleDrums/ready renderers=37 buttons=MENÚ
+JungleDrums/playing renderers=37 buttons=MENÚ
+JungleDrums/finished renderers=37 buttons=REPETIR | MENÚ
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+JungleKeeper/Intro renderers=10 buttons=MENÚ
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow/Intro renderers=46 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=46 buttons=← MENÚ
+CoconutThrow/Results renderers=46 buttons=REINTENTAR | VOLVER AL MENÚ
+BananaBowling/Connecting renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Aim renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Results renderers=47 buttons=OTRA PARTIDA | MENÚ
+CoconutSlice/Intro renderers=5 buttons=MENÚ | ¡ESTOY LISTO!
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | OTRO INTENTO
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+JungleBaseball/Ready renderers=36 buttons=MENÚ
+JungleBaseball/Pitching renderers=36 buttons=MENÚ
+JungleBaseball/GameOver renderers=36 buttons=OTRA PARTIDA | MENÚ
+JungleDrums/ready renderers=57 buttons=MENÚ
+JungleDrums/playing renderers=57 buttons=MENÚ
+JungleDrums/finished renderers=57 buttons=REPETIR | MENÚ
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+JungleKeeper/Intro renderers=10 buttons=MENÚ | ¡ESTOY LISTO!
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow/Intro renderers=46 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=46 buttons=← MENÚ
+CoconutThrow/Results renderers=46 buttons=REINTENTAR | VOLVER AL MENÚ
+BananaBowling/Connecting renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Aim renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Results renderers=47 buttons=OTRA PARTIDA | MENÚ
+CoconutSlice/Intro renderers=5 buttons=MENÚ | ¡ESTOY LISTO!
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | OTRO INTENTO
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+JungleBaseball/Ready renderers=36 buttons=MENÚ
+JungleBaseball/Pitching renderers=36 buttons=MENÚ
+JungleBaseball/GameOver renderers=36 buttons=OTRA PARTIDA | MENÚ
+JungleDrums/ready renderers=57 buttons=MENÚ
+JungleDrums/playing renderers=57 buttons=MENÚ
+JungleDrums/finished renderers=57 buttons=REPETIR | MENÚ
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+JungleKeeper/Intro renderers=10 buttons=MENÚ | ¡ESTOY LISTO!
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow/Intro renderers=46 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=46 buttons=← MENÚ
+CoconutThrow/Results renderers=46 buttons=REINTENTAR | VOLVER AL MENÚ
+BananaBowling/Connecting renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Aim renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Results renderers=47 buttons=OTRA PARTIDA | MENÚ
+CoconutSlice/Intro renderers=5 buttons=MENÚ | ¡ESTOY LISTO!
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | OTRO INTENTO
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+JungleBaseball/Ready renderers=36 buttons=MENÚ
+JungleBaseball/Pitching renderers=36 buttons=MENÚ
+JungleBaseball/GameOver renderers=36 buttons=OTRA PARTIDA | MENÚ
+JungleDrums/ready renderers=57 buttons=MENÚ
+JungleDrums/playing renderers=57 buttons=MENÚ
+JungleDrums/finished renderers=57 buttons=REPETIR | MENÚ
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+JungleKeeper/Intro renderers=10 buttons=MENÚ | ¡ESTOY LISTO!
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+GorillaSmash replay=activated
+CoconutThrow/Intro renderers=46 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=46 buttons=← MENÚ
+CoconutThrow/Results renderers=46 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow replay=activated
+BananaBowling/Connecting renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Aim renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Results renderers=47 buttons=OTRA PARTIDA | MENÚ
+BananaBowling replay=activated
+CoconutSlice/Intro renderers=5 buttons=MENÚ | ¡ESTOY LISTO!
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+CoconutSlice replay=activated
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | OTRO INTENTO
+LogBalance replay=activated
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+GorillaBoxing replay=activated
+JungleBaseball/Ready renderers=36 buttons=MENÚ
+JungleBaseball/Pitching renderers=36 buttons=MENÚ
+JungleBaseball/GameOver renderers=36 buttons=OTRA PARTIDA | MENÚ
+JungleBaseball replay=activated
+JungleDrums/ready renderers=57 buttons=MENÚ
+JungleDrums/playing renderers=57 buttons=MENÚ
+JungleDrums/finished renderers=57 buttons=REPETIR | MENÚ
+JungleDrums replay=activated
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+WhackAMole replay=activated
+JungleKeeper/Intro renderers=10 buttons=MENÚ | ¡ESTOY LISTO!
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+JungleKeeper replay=activated
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+GorillaSmash replay=activated
+CoconutThrow/Intro renderers=46 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=46 buttons=← MENÚ
+CoconutThrow/Results renderers=46 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow replay=activated
+BananaBowling/Connecting renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Aim renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Results renderers=47 buttons=OTRA PARTIDA | MENÚ
+BananaBowling replay=activated
+CoconutSlice/Intro renderers=5 buttons=MENÚ | ¡ESTOY LISTO!
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+CoconutSlice replay=activated
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | OTRO INTENTO
+LogBalance replay=activated
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+GorillaBoxing replay=activated
+JungleBaseball/Ready renderers=36 buttons=MENÚ
+JungleBaseball/Pitching renderers=36 buttons=MENÚ
+JungleBaseball/GameOver renderers=36 buttons=OTRA PARTIDA | MENÚ
+JungleBaseball replay=activated
+JungleDrums/ready renderers=57 buttons=MENÚ
+JungleDrums/playing renderers=57 buttons=MENÚ
+JungleDrums/finished renderers=57 buttons=REPETIR | MENÚ
+JungleDrums replay=activated
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+WhackAMole replay=activated
+JungleKeeper/Intro renderers=10 buttons=MENÚ | ¡ESTOY LISTO!
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+JungleKeeper replay=activated
+GorillaSmash/Intro renderers=23 buttons=¡INICIAR PRUEBA! | ← MENÚ
+GorillaSmash/Playing renderers=23 buttons=← MENÚ
+GorillaSmash/Results renderers=23 buttons=REINTENTAR | VOLVER AL MENÚ
+GorillaSmash replay=activated
+CoconutThrow/Intro renderers=46 buttons=¡INICIAR LANZAMIENTO! | ← MENÚ
+CoconutThrow/Aiming renderers=46 buttons=← MENÚ
+CoconutThrow/Results renderers=46 buttons=REINTENTAR | VOLVER AL MENÚ
+CoconutThrow replay=activated
+BananaBowling/Connecting renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Aim renderers=47 buttons=CONECTAR | MENÚ
+BananaBowling/Results renderers=47 buttons=OTRA PARTIDA | MENÚ
+BananaBowling replay=activated
+CoconutSlice/Intro renderers=5 buttons=MENÚ | ¡ESTOY LISTO!
+CoconutSlice/Playing renderers=5 buttons=MENÚ
+CoconutSlice/Results renderers=5 buttons=MENÚ | OTRA RONDA | MENÚ
+CoconutSlice replay=activated
+LogBalance/Ready renderers=77 buttons=CRÉDITOS | MENÚ | COMENZAR
+LogBalance/Crossing renderers=77 buttons=CRÉDITOS | MENÚ | PAUSAR
+LogBalance/Won renderers=77 buttons=CRÉDITOS | MENÚ | OTRO INTENTO
+LogBalance replay=activated
+GorillaBoxing/Boxing renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingKnockdown renderers=29 buttons=MENÚ
+GorillaBoxing/BoxingOver renderers=29 buttons=REVANCHA | MENÚ
+GorillaBoxing replay=activated
+JungleBaseball/Ready renderers=36 buttons=MENÚ
+JungleBaseball/Pitching renderers=36 buttons=MENÚ
+JungleBaseball/GameOver renderers=36 buttons=OTRA PARTIDA | MENÚ
+JungleBaseball replay=activated
+JungleDrums/ready renderers=57 buttons=MENÚ
+JungleDrums/playing renderers=57 buttons=MENÚ
+JungleDrums/finished renderers=57 buttons=REPETIR | MENÚ
+JungleDrums replay=activated
+WhackAMole/Intro renderers=3 buttons=MENÚ | CENTRAR Y JUGAR
+WhackAMole/Playing renderers=3 buttons=MENÚ
+WhackAMole/Results renderers=3 buttons=MENÚ | OTRA RONDA
+WhackAMole replay=activated
+JungleKeeper/Intro renderers=10 buttons=MENÚ | ¡ESTOY LISTO!
+JungleKeeper/Playing renderers=10 buttons=MENÚ
+JungleKeeper/Results renderers=10 buttons=MENÚ | OTRA RONDA | MENÚ
+JungleKeeper replay=activated

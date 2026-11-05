@@ -49,8 +49,8 @@ public sealed class SplashDirector : MonoBehaviour
     private bool bootstrapped = false;
 
     private const float CinematicDuration = 5.0f;
-    private const float GorillaStartZ = 22f;
-    private const float GorillaEndZ = 4.2f;
+    private const float GorillaStartZ = 18f;
+    private const float GorillaEndZ = 8.5f;
 
     // Texturas de ambientación
     private Texture2D texGorillaMenu;
@@ -425,7 +425,7 @@ public sealed class SplashDirector : MonoBehaviour
         // 7. Tambores tribales y guardianes
         PlaceGroundedProp(drumPrefab, root, drumMat, "Tambor_Story", new Vector3(-2.3f, 0f, 5.2f), 1.05f, yaw: 15f, swayAngle: 0f);
         PlaceGroundedProp(drumPrefab, root, drumMat, "Tambor_Party", new Vector3(2.3f, 0f, 5.2f), 1.05f, yaw: -15f, swayAngle: 0f);
-        PlaceGroundedProp(drumPrefab, root, drumMat, "Tambor_Centro", new Vector3(0f, 0f, 7.8f), 1.18f, yaw: 0f, swayAngle: 0f);
+        PlaceGroundedProp(drumPrefab, root, drumMat, "Tambor_Lateral", new Vector3(-5.8f, 0f, 9.8f), 1.18f, yaw: 0f, swayAngle: 0f);
 
         PlaceGroundedProp(guardianPrefab, root, guardianMat, "Totem_Guardian_Izq", new Vector3(-5.4f, 0f, 4.8f), 2.3f, yaw: 24f, swayAngle: 0f);
         PlaceGroundedProp(guardianPrefab, root, guardianMat, "Totem_Guardian_Der", new Vector3(5.4f, 0f, 4.8f), 2.3f, yaw: -24f, swayAngle: 0f);
@@ -455,7 +455,7 @@ public sealed class SplashDirector : MonoBehaviour
         gorillaRoot = new GameObject("Gorila Meshy AI Runner").transform;
         gorillaRoot.position = new Vector3(0f, 0f, GorillaStartZ);
         gorillaRoot.rotation = Quaternion.LookRotation(Vector3.back); // Hacia la cámara
-        gorillaRig.LoadMascot(gorillaRoot, gorillaRoot.position, gorillaRoot.rotation, 3.2f, "Meshy_AI_Gorilla_Mascot");
+        gorillaRig.LoadMascot(gorillaRoot, gorillaRoot.position, gorillaRoot.rotation, 2.8f, "Gorila Meshy - personaje de los juegos", runner: true);
         gorillaRig.PlayRunAnimation(1.15f);
     }
 
@@ -626,8 +626,9 @@ public sealed class SplashDirector : MonoBehaviour
         }
 
         // Suave avance de cámara cinematográfica: encuadre heroico y dinámico
-        cam.transform.position = Vector3.Lerp(new Vector3(0f, 2.3f, 0.2f), new Vector3(0f, 2.1f, 1.2f), progress);
-        cam.transform.rotation = Quaternion.Euler(Mathf.Lerp(6.5f, 4.5f, progress), 0f, 0f);
+        cam.fieldOfView = Mathf.Lerp(48f, 38f, progress);
+        cam.transform.position = Vector3.Lerp(new Vector3(3.2f, 2.2f, .2f), new Vector3(2.2f, 1.9f, 1.2f), progress);
+        cam.transform.rotation = Quaternion.LookRotation(currentPos + Vector3.up * 1.4f - cam.transform.position);
 
         if (progress >= 1f || CanSkipCinematic(elapsed))
         {
@@ -637,6 +638,7 @@ public sealed class SplashDirector : MonoBehaviour
 
     private void TransitionToMenu3D()
     {
+        cam.fieldOfView = 58f;
         Vector3 menuPos = new Vector3(0f, 0f, GorillaEndZ);
         gorillaRoot.position = menuPos;
         gorillaRig.SetPositionAndRotation(menuPos, Quaternion.LookRotation(Vector3.back));
@@ -787,7 +789,7 @@ public sealed class SplashDirector : MonoBehaviour
         {
             if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.LogWin, 0.80f);
             TournamentSession.StartPartyMode();
-            LoadTargetScene(SceneNavigator.Connection);
+            currentState = State.Exiting;
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -868,7 +870,6 @@ public sealed class SplashDirector : MonoBehaviour
     {
         currentState = State.Exiting;
         TournamentSession.StartStoryMode();
-        LoadTargetScene(SceneNavigator.GorillaSmash);
     }
 
     private void LoadTargetScene(string sceneName)
@@ -1059,7 +1060,7 @@ public sealed class SplashDirector : MonoBehaviour
         if (GUI.Button(new Rect(cardRect.x + cardW - btnW - 50, btnY, btnW, btnH), "Crear Sala QR →"))
         {
             TournamentSession.StartPartyMode();
-            LoadTargetScene(SceneNavigator.Connection);
+            currentState = State.Exiting;
         }
     }
 
@@ -1296,6 +1297,6 @@ public sealed class SplashDirector : MonoBehaviour
         TournamentSession.StartStoryMode();
         currentState = State.Exiting;
         yield return new WaitForSeconds(0.4f);
-        SceneNavigator.Load(SceneNavigator.GorillaSmash);
+        // The automated story flow must also stop at the connection gate.
     }
 }

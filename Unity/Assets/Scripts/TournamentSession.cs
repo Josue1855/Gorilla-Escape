@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using GorillaEscape.Gameplay.Input;
+using GorillaEscape.Contracts;
 
 public static class TournamentSession
 {
@@ -10,6 +11,56 @@ public static class TournamentSession
     public static GameMode CurrentMode { get; private set; } = GameMode.Story;
 
     public static bool IsActive { get; private set; }
+    public static GameMode? RequestedMode { get; private set; }
+    public static int RequestedPlayers { get; private set; } = 1;
+    public static bool RequestedFreePlay { get; private set; }
+    public static bool ConnectionPending => RequestedMode.HasValue;
+    public static bool RequiresBothDevices => ConnectionPending && !RequestedFreePlay;
+
+    public static void RequestFreePlay(int humanCount = 1) => RequestMode(GameMode.Party, humanCount, true);
+    private static void RequestMode(GameMode mode, int humanCount, bool freePlay = false)
+    {
+        ResetTournament();
+        RequestedMode = mode;
+        RequestedPlayers = Mathf.Clamp(humanCount, 1, 4);
+        RequestedFreePlay = freePlay;
+        var session = MotionSession.Instance;
+        if (session != null && session.CanReusePreparation(!freePlay, RequestedPlayers))
+        {
+            session.SetCameraOnly(false);
+            CompleteModeRequest(session.Lobby);
+            return;
+        }
+        SceneNavigator.Load(SceneNavigator.Connection);
+    }
+    public static string ConnectionRequirement(bool cameraReady, LobbySnapshotWire lobby)
+    {
+        if (!ConnectionPending) return null;
+        int ready = lobby?.players == null ? 0 : lobby.players.Count(p => p != null &&
+            (p.connectionState == "ACTIVE" || p.connectionState == "CONNECTED") && p.networkReady && p.inputReady && !string.IsNullOrWhiteSpace(p.displayName));
+        if (RequestedFreePlay) return cameraReady || ready >= RequestedPlayers ? null : "Comprueba la cámara o conecta el celular y activa sus sensores antes de continuar.";
+        if (!cameraReady) return "Enciende la cámara y comprueba que recibes imagen antes de comenzar.";
+        return ready < RequestedPlayers ? $"Prepara {RequestedPlayers} celular(es): nombre, sensores activos y control abierto ({ready}/{RequestedPlayers})." : null;
+    }
+    public static bool BeginRequestedMode(bool cameraReady, LobbySnapshotWire lobby)
+    {
+        if (!ConnectionPending || ConnectionRequirement(cameraReady, lobby) != null) return false;
+        MotionSession.Instance?.RememberPreparation();
+        return CompleteModeRequest(lobby);
+    }
+    private static bool CompleteModeRequest(LobbySnapshotWire lobby)
+    {
+        var mode = RequestedMode.Value;
+        int count = RequestedPlayers;
+        bool free = RequestedFreePlay;
+        string name = lobby?.players?.FirstOrDefault(p => p.playerId == 1)?.displayName;
+        CancelRequestedMode();
+        if (free) SceneNavigator.Load(SceneNavigator.MainMenu);
+        else StartMode(mode, count, name);
+        return true;
+    }
+    public static void CancelRequestedMode() { RequestedMode = null; RequestedPlayers = 1; RequestedFreePlay = false; }
+
     public static int CurrentRound { get; private set; } // 1..TotalRounds
     public static bool RoundCompleted { get; private set; }
     public static bool IsTurnTransition { get; private set; }
@@ -197,12 +248,12 @@ public static class TournamentSession
 
     public static void StartStoryMode(int humanCount = 1, string humanName = null)
     {
-        StartMode(GameMode.Story, humanCount, humanName);
+        RequestMode(GameMode.Story, humanCount);
     }
 
     public static void StartPartyMode(int humanCount = 1, string humanName = null)
     {
-        StartMode(GameMode.Party, humanCount, humanName);
+        RequestMode(GameMode.Party, humanCount);
     }
 
     private static void StartMode(GameMode mode, int humanCount, string humanName)
@@ -401,6 +452,7 @@ public static class TournamentSession
 
     public static void ResetTournament()
     {
+        CancelRequestedMode();
         IsActive = false;
         CurrentRound = 0;
         CurrentTurnPlayerIndex = 0;

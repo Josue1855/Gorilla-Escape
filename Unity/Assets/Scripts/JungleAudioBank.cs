@@ -8,13 +8,11 @@ using UnityEngine;
 public static class JungleAudioBank
 {
     public static bool IsPrewarmed { get; private set; }
-    private static bool warming;
     public static System.Collections.IEnumerator Prewarm()
     {
-        while (warming && !IsPrewarmed) yield return null;
         if (IsPrewarmed) yield break;
-        warming = true;
-        try
+        // All getters cache synchronously on Unity's main thread. Concurrent callers
+        // may safely share them, and a destroyed coroutine owner cannot strand a lock.
         {
             // Let the connection view paint before synthesizing the long ambience.
             yield return null;
@@ -45,7 +43,6 @@ public static class JungleAudioBank
             _ = BoxingBell; yield return null;
             IsPrewarmed = true;
         }
-        finally { warming = false; }
     }
 
     private const int SampleRate = 22050;

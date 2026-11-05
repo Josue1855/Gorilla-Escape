@@ -138,7 +138,8 @@ class NativeTransport extends ChangeNotifier {
       host: link.host,
       port: link.hasPort ? link.port : null,
       path:
-          (link.host == 'play.gorilla.run' || link.host == 'play.gorillas.run') &&
+          (link.host == 'play.gorilla.run' ||
+                  link.host == 'play.gorillas.run') &&
               RegExp(r'^/[a-z0-9]{4,8}/?$').hasMatch(link.path)
           ? '${link.path.replaceAll(RegExp(r'/$'), '')}/'
           : '/',
@@ -274,7 +275,9 @@ class NativeTransport extends ChangeNotifier {
       stage = 'ready';
       lastAckMs = clock.elapsedMilliseconds;
       changed();
-      _heartbeat = Timer.periodic(const Duration(milliseconds: 1000), (_) async {
+      _heartbeat = Timer.periodic(const Duration(milliseconds: 1000), (
+        _,
+      ) async {
         if (state != 'connected' || _heartbeatSending) return;
         _heartbeatSending = true;
         try {
@@ -293,7 +296,8 @@ class NativeTransport extends ChangeNotifier {
               degraded = true;
               changed();
             }
-            if (missedHeartbeats >= 4 || clock.elapsedMilliseconds - lastAckMs > 5000) {
+            if (missedHeartbeats >= 4 ||
+                clock.elapsedMilliseconds - lastAckMs > 5000) {
               state = 'disconnected';
               code = 'CONNECTION_LOST';
               changed();
@@ -492,6 +496,28 @@ class NativeTransport extends ChangeNotifier {
       return 'UNCONFIRMED';
     } catch (_) {
       return 'UNCONFIRMED';
+    }
+  }
+
+  Future<String> setPlayerName(String displayName) async {
+    final value = displayName.trim();
+    if (value.isEmpty ||
+        value.length > 40 ||
+        !RegExp(r"^[\p{L}\p{M}\p{N} _.'-]+$", unicode: true).hasMatch(value)) {
+      return 'INVALID';
+    }
+    if (_disposed || state != 'connected' || _identity == null) {
+      return 'UNAVAILABLE';
+    }
+    try {
+      final result = await request('/mobile/name', {
+        'peerId': _identity!['peerId'],
+        'resumeToken': _identity!['resumeToken'],
+        'displayName': value,
+      });
+      return result['displayName'] == value ? 'SAVED' : 'UNAVAILABLE';
+    } catch (_) {
+      return 'UNAVAILABLE';
     }
   }
 

@@ -9,6 +9,21 @@ using UnityEngine.SceneManagement;
 public sealed class GorillaMascotRig : IDisposable
 {
     private GameObject gorillaMascot;
+    private bool dedicatedRunner;
+    private Vector3 placementOffset;
+    private Vector3 fittedRunnerScale = Vector3.one;
+    public const string RunnerAsset = JungleStageBuilder.BowlingGorillaAsset;
+    public bool HasAnimatedStride => dedicatedRunner && runLimbs.Count == 8;
+    private Transform runnerFootLeft, runnerFootRight;
+    private Quaternion runnerFootLeftRest, runnerFootRightRest;
+    private float runnerFootClearance, runnerGroundY;
+    private readonly System.Collections.Generic.List<RunLimb> runLimbs = new System.Collections.Generic.List<RunLimb>();
+    private sealed class RunLimb
+    {
+        public Transform bone;
+        public Quaternion restRotation;
+        public Vector3 restDirection;
+    }
     private GltfImport gorillaImport;
     private Transform gorillaHead, gorillaNeck, gorillaSpine, gorillaHipLeft, gorillaHipRight, gorillaKneeLeft, gorillaKneeRight;
     private Transform gorillaShoulderLeft, gorillaShoulderRight, gorillaElbowLeft, gorillaElbowRight, gorillaWristLeft, gorillaWristRight;
@@ -20,7 +35,7 @@ public sealed class GorillaMascotRig : IDisposable
     private int gorillaReaction;
     private int gorillaVariant, previousGorillaVariant = -1;
     private Animator bowlingGorillaAnimator;
-    private AnimationClip bowlingGorillaIdleClip, bowlingGorillaAngryClip, bowlingGorillaDanceClip, bowlingGorillaRunClip;
+    private AnimationClip bowlingGorillaIdleClip, bowlingGorillaAngryClip, bowlingGorillaDanceClip;
     private PlayableGraph bowlingGorillaGraph;
     private AnimationClipPlayable bowlingGorillaPlayable;
     private float bowlingGorillaClipStartedAt, bowlingGorillaClipDuration;
@@ -94,8 +109,9 @@ public sealed class GorillaMascotRig : IDisposable
         if (!boxingScene) SetupBowlingGorillaAnimations();
     }
 
-    public void LoadMascot(Transform parent, Vector3 position, Quaternion rotation, float height = 2.4f, string name = "Gorila Meshy AI")
+    public void LoadMascot(Transform parent, Vector3 position, Quaternion rotation, float height = 2.4f, string name = "Gorila Meshy AI", bool runner = false)
     {
+        dedicatedRunner = runner;
         GameObject prefab = JungleStageBuilder.LoadBowlingGorillaPrefab();
         if (prefab == null)
         {
@@ -111,13 +127,15 @@ public sealed class GorillaMascotRig : IDisposable
             animation.enabled = false;
 
         ApplyBowlingGorillaMaterials();
+        if (dedicatedRunner)
+            foreach (var animator in gorillaMascot.GetComponentsInChildren<Animator>(true)) animator.enabled = false;
 
         Renderer[] renderers = gorillaMascot.GetComponentsInChildren<Renderer>(true);
         if (renderers.Length > 0)
         {
             Bounds bounds = JungleStageBuilder.CombinedBounds(renderers);
             float scale = height / Mathf.Max(0.01f, bounds.size.y);
-            gorillaMascot.transform.localScale = Vector3.one * scale;
+            gorillaMascot.transform.localScale *= scale;
             bounds = JungleStageBuilder.CombinedBounds(renderers);
             gorillaMascot.transform.position += new Vector3(position.x - bounds.center.x, position.y - bounds.min.y, position.z - bounds.center.z);
         }
@@ -152,15 +170,19 @@ public sealed class GorillaMascotRig : IDisposable
         gorillaRestPosition = gorillaMascot.transform.position;
         gorillaRestRotation = gorillaMascot.transform.rotation;
 
-        SetupBowlingGorillaAnimations();
+        fittedRunnerScale = gorillaMascot.transform.localScale;
+        placementOffset = Quaternion.Inverse(rotation) * (gorillaMascot.transform.position - position);
+        if (dedicatedRunner) SetupCanonicalStride();
+        else SetupBowlingGorillaAnimations();
     }
 
     public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
     {
         if (gorillaMascot == null) return;
-        gorillaRestPosition = position;
+        runnerGroundY = position.y;
+        gorillaRestPosition = position + rotation * placementOffset;
         gorillaRestRotation = rotation;
-        gorillaMascot.transform.position = position;
+        gorillaMascot.transform.position = gorillaRestPosition;
         gorillaMascot.transform.rotation = rotation;
     }
 
@@ -168,18 +190,11 @@ public sealed class GorillaMascotRig : IDisposable
     {
         if (gorillaMascot == null) return;
 
-        // Si hay un clip de carrera importado activo en el PlayableGraph, solo ajustamos el leve rebote rítmico
-        float cycle = time * speed * 8.0f;
-        float sinLeg = Mathf.Sin(cycle);
-        float cosLeg = Mathf.Cos(cycle);
-        float bob = Mathf.Abs(sinLeg) * 0.045f;
-
-        gorillaMascot.transform.position = gorillaRestPosition + new Vector3(0f, bob, 0f);
-
-        if (bowlingGorillaRunClip != null && bowlingGorillaPlayable.IsValid())
-        {
-            return;
-        }
+        if (dedicatedRunner) { PoseCanonicalStride(time * speed, 1f); return; }
+        float cycle = time * speed * 8f;
+        float sinLeg = Mathf.Sin(cycle), cosLeg = Mathf.Cos(cycle);
+        float bob = Mathf.Abs(sinLeg) * .045f;
+        gorillaMascot.transform.position = gorillaRestPosition + Vector3.up * bob;
 
         // Zancada atlética de piernas hacia adelante y atrás sobre el eje X (sin saltitos laterales)
         SetBone(gorillaHipLeft, gorillaHipLeftRest, new Vector3(sinLeg * 42f, 0f, 0f), 1f);
@@ -200,18 +215,14 @@ public sealed class GorillaMascotRig : IDisposable
 
     public void PlayRunAnimation(float speed = 1.15f)
     {
-        if (bowlingGorillaRunClip != null)
-        {
-            PlayBowlingGorillaClip(bowlingGorillaRunClip, speed, true);
-        }
+        if (dedicatedRunner) PoseCanonicalStride(0f, 1f);
     }
 
     public void PlayIdleAnimation()
     {
+        if (dedicatedRunner) { PoseCanonicalStride(0f, 0f); return; }
         if (bowlingGorillaAnimator != null && (bowlingGorillaIdleClip != null || bowlingGorillaDanceClip != null))
-        {
-            PlayBowlingGorillaClip(bowlingGorillaIdleClip != null ? bowlingGorillaIdleClip : bowlingGorillaDanceClip, 1.0f, true);
-        }
+            PlayBowlingGorillaClip(bowlingGorillaIdleClip != null ? bowlingGorillaIdleClip : bowlingGorillaDanceClip, 1f, true);
     }
 
     public void PlayCelebrationAnimation()
@@ -263,6 +274,7 @@ public sealed class GorillaMascotRig : IDisposable
 
     public void Animate(bool isBoxingMode, int boxingGorillaAction, float gorillaAttackResolveAt)
     {
+        if (dedicatedRunner) { PoseCanonicalStride(Time.time, 0f); return; }
         if (gorillaMascot == null) return;
         if (isBoxingMode) { AnimateBoxingGorilla(boxingGorillaAction, gorillaAttackResolveAt); return; }
         if (bowlingGorillaUsingImportedAnimation)
@@ -455,21 +467,84 @@ public sealed class GorillaMascotRig : IDisposable
         JungleStageBuilder.ApplySharedMaterial(gorillaMascot.GetComponentsInChildren<Renderer>(true), material);
     }
 
+    // Pose the canonical Meshy skeleton in model space. Deriving each axis from
+    // its actual bind direction avoids assuming another character's bone axes.
+    private void SetupCanonicalStride()
+    {
+        runLimbs.Clear();
+        AddRunLimb(gorillaHipLeft, gorillaKneeLeft);
+        AddRunLimb(gorillaKneeLeft, FindBone("LeftFoot"));
+        AddRunLimb(gorillaHipRight, gorillaKneeRight);
+        AddRunLimb(gorillaKneeRight, FindBone("RightFoot"));
+        AddRunLimb(gorillaShoulderLeft, gorillaElbowLeft);
+        AddRunLimb(gorillaElbowLeft, gorillaWristLeft);
+        AddRunLimb(gorillaShoulderRight, gorillaElbowRight);
+        AddRunLimb(gorillaElbowRight, gorillaWristRight);
+        runnerFootLeft = FindBone("LeftFoot"); runnerFootRight = FindBone("RightFoot");
+        var root = gorillaMascot.transform;
+        runnerFootLeftRest = Quaternion.Inverse(root.rotation) * runnerFootLeft.rotation;
+        runnerFootRightRest = Quaternion.Inverse(root.rotation) * runnerFootRight.rotation;
+        var bounds = JungleStageBuilder.CombinedBounds(gorillaMascot.GetComponentsInChildren<Renderer>(true));
+        runnerGroundY = bounds.min.y;
+        // Imported renderer bounds can include the full animation range. Measure
+        // the actual standing sole once, instead of treating that padded box as a foot.
+        float soleY = float.PositiveInfinity;
+        var baked = new Mesh();
+        foreach (var skin in gorillaMascot.GetComponentsInChildren<SkinnedMeshRenderer>()) {
+            skin.BakeMesh(baked);
+            foreach (var vertex in baked.vertices) soleY = Mathf.Min(soleY, skin.transform.TransformPoint(vertex).y);
+        }
+        UnityEngine.Object.Destroy(baked);
+        float ankleY = Mathf.Min(runnerFootLeft.position.y, runnerFootRight.position.y);
+        runnerFootClearance = Mathf.Clamp(ankleY - soleY, 0f, bounds.size.y * .08f);
+        foreach (var skin in gorillaMascot.GetComponentsInChildren<SkinnedMeshRenderer>()) skin.updateWhenOffscreen = true;
+        PoseCanonicalStride(0f, 0f);
+    }
+    private void AddRunLimb(Transform bone, Transform child)
+    {
+        if (bone == null || child == null) return;
+        var root = gorillaMascot.transform;
+        runLimbs.Add(new RunLimb { bone = bone,
+            restRotation = Quaternion.Inverse(root.rotation) * bone.rotation,
+            restDirection = root.InverseTransformDirection(child.position - bone.position).normalized });
+    }
+    private void AimRunLimb(int index, Vector3 direction)
+    {
+        var limb = runLimbs[index];
+        limb.bone.rotation = gorillaMascot.transform.rotation *
+            Quaternion.FromToRotation(limb.restDirection, direction.normalized) * limb.restRotation;
+    }
+    private void PoseCanonicalStride(float time, float amount)
+    {
+        if (runLimbs.Count != 8) return;
+        float phase = time * Mathf.PI * 2.58f;
+        float stride = Mathf.Sin(phase) * amount;
+        float leftThigh = stride * 40f, rightThigh = -leftThigh;
+        float leftKnee = (12f + Mathf.Max(0f, -Mathf.Cos(phase)) * 66f) * amount;
+        float rightKnee = (12f + Mathf.Max(0f, Mathf.Cos(phase)) * 66f) * amount;
+        Vector3 Leg(float degrees) => Quaternion.AngleAxis(-degrees, Vector3.right) * Vector3.down;
+        gorillaMascot.transform.localScale = fittedRunnerScale;
+        gorillaMascot.transform.SetPositionAndRotation(gorillaRestPosition, gorillaRestRotation * Quaternion.Euler(9f * amount, 0f, 0f));
+        AimRunLimb(0, Leg(leftThigh)); AimRunLimb(1, Leg(leftThigh - leftKnee));
+        AimRunLimb(2, Leg(rightThigh)); AimRunLimb(3, Leg(rightThigh - rightKnee));
+        // Broad shoulders, relaxed elbows, opposite arm/leg swing; no T-pose.
+        AimRunLimb(4, new Vector3(-.22f, -1f, -.65f * stride));
+        AimRunLimb(5, new Vector3(-.12f, -.55f, .65f - .45f * stride));
+        AimRunLimb(6, new Vector3(.22f, -1f, .65f * stride));
+        AimRunLimb(7, new Vector3(.12f, -.55f, .65f + .45f * stride));
+        // Keep the soles level and the stance foot on the path instead of floating
+        // as bent knees shorten the original standing pose.
+        runnerFootLeft.rotation = gorillaRestRotation * runnerFootLeftRest;
+        runnerFootRight.rotation = gorillaRestRotation * runnerFootRightRest;
+        float soleY = Mathf.Min(runnerFootLeft.position.y, runnerFootRight.position.y) - runnerFootClearance;
+        gorillaMascot.transform.position += Vector3.up * (runnerGroundY - soleY + Mathf.Abs(Mathf.Sin(phase)) * .035f * amount);
+    }
+
     private void SetupBowlingGorillaAnimations()
     {
         bowlingGorillaAnimator = gorillaMascot.GetComponentInChildren<Animator>(true);
         if (bowlingGorillaAnimator == null) bowlingGorillaAnimator = gorillaMascot.AddComponent<Animator>();
         JungleStageBuilder.LoadBowlingGorillaClips(out bowlingGorillaIdleClip, out bowlingGorillaAngryClip, out bowlingGorillaDanceClip);
-
-        const string runAsset = "Jungle/GorillaBowling/Meshy_AI_Gorilla_Guardian_biped/Meshy_AI_Gorilla_Guardian_biped_Animation_Running_withSkin";
-        foreach (AnimationClip clip in JungleAssets.LoadAll<AnimationClip>(runAsset))
-        {
-            if (clip != null && !clip.name.StartsWith("__preview__"))
-            {
-                bowlingGorillaRunClip = clip;
-                break;
-            }
-        }
 
         bowlingGorillaUsingImportedAnimation = bowlingGorillaAnimator != null && bowlingGorillaAngryClip != null && bowlingGorillaDanceClip != null;
         if (!bowlingGorillaUsingImportedAnimation)

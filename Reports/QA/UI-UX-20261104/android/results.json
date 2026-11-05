@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "scope": "Android emulator; invalid room fixture, no physical sensors or WAN acceptance",
+  "system_tool_failures": 0,
+  "checks": [
+    "Home and brand visible on Android emulator",
+    "Invalid link stays on home with readable recovery text",
+    "Unreachable room produces recoverable connection screen",
+    "A new QR can replace an existing control after confirmation",
+    "Back from an unreachable room returns to home"
+  ]
+}

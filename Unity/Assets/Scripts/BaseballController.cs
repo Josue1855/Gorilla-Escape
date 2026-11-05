@@ -12,6 +12,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
     private PlayState state = PlayState.Ready;
     private GameObject ball, bat, pitcher;
     private readonly List<Transform> crowdMembers = new List<Transform>();
+    private readonly List<Vector3> crowdRestPositions = new List<Vector3>();
     private Rigidbody ballBody;
     private Vector2 rightHand = new Vector2(.62f,.58f);
     private readonly HandVisualPrediction rightVisual = new HandVisualPrediction();
@@ -51,33 +52,28 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         Primitive(PrimitiveType.Cube,"Campo",new Vector3(0,-.35f,4),new Vector3(22,.3f,25),new Color(.08f,.43f,.12f), keepCollider: true);
         Primitive(PrimitiveType.Cube,"Tierra",new Vector3(0,-.16f,1.5f),new Vector3(8,.04f,10),new Color(.48f,.25f,.08f)).transform.rotation=Quaternion.Euler(0,45,0);
         Primitive(PrimitiveType.Cube,"Plato",new Vector3(0,-.10f,-3.2f),new Vector3(.8f,.04f,.8f),Color.white).transform.rotation=Quaternion.Euler(0,45,0);
+        JungleArenaEnvironment.Build(transform,-.2f,12f,28f);
         crowdMembers.Clear();
-        for(int i=-5;i<=5;i++) crowdMembers.Add(Primitive(PrimitiveType.Capsule,"Público",new Vector3(i*1.7f,1.1f,13f+Mathf.Abs(i%2)),new Vector3(.65f,1.1f,.65f),new Color(.04f,.08f,.06f)).transform);
-        GameObject gorillaPrefab = JungleStageBuilder.LoadBowlingGorillaPrefab();
-        if (gorillaPrefab != null)
-        {
-            pitcher = UnityEngine.Object.Instantiate(gorillaPrefab, transform);
-            pitcher.name = "Pitcher Gorila Meshy AI";
-            pitcher.transform.position = new Vector3(0f, -0.35f, 6.4f);
-            pitcher.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            Material sharedMat = JungleStageBuilder.GetBowlingGorillaSharedMaterial();
-            foreach (Renderer r in pitcher.GetComponentsInChildren<Renderer>(true)) r.sharedMaterial = sharedMat;
-            Renderer[] rList = pitcher.GetComponentsInChildren<Renderer>(true);
-            if (rList.Length > 0)
-            {
-                Bounds bounds = JungleStageBuilder.CombinedBounds(rList);
-                float scale = 3.2f / Mathf.Max(0.01f, bounds.size.y);
-                pitcher.transform.localScale = Vector3.one * scale;
-            }
-            JungleStageBuilder.DisableChildColliders(pitcher);
+        for(int i=-3;i<=3;i++) {
+            var spectator=new GorillaMascotRig();
+            spectator.LoadMascot(transform,new Vector3(i*2.2f,-.2f,14f),Quaternion.Euler(0,180,0),1.5f,"Público gorila Meshy",runner:true);
+            if(spectator.MascotObject!=null){crowdMembers.Add(spectator.MascotObject.transform);crowdRestPositions.Add(spectator.MascotObject.transform.localPosition);}
         }
-        else
-        {
-            pitcher = Primitive(PrimitiveType.Capsule, "Pitcher gorila provisional", new Vector3(0, 1.2f, 6.4f), new Vector3(1.6f, 2.1f, 1.2f), new Color(.16f, .17f, .18f));
-        }
+        var pitcherRig=new GorillaMascotRig();
+        pitcherRig.LoadMascot(transform,new Vector3(0,-.2f,6.4f),Quaternion.Euler(0,180,0),3.2f,"Lanzador gorila Meshy",runner:true);
+        pitcher=pitcherRig.MascotObject;
         ball=Primitive(PrimitiveType.Sphere,"Pelota",new Vector3(0,1.5f,5.8f),Vector3.one*.32f,Color.white, keepCollider: true);
         ballBody=ball.AddComponent<Rigidbody>(); ballBody.useGravity=false; ballBody.isKinematic=true; ballBody.interpolation=RigidbodyInterpolation.Interpolate;
-        bat=Primitive(PrimitiveType.Cube,"Bate provisional",new Vector3(1.15f,.8f,-3.1f),new Vector3(.18f,.18f,2.2f),new Color(.55f,.27f,.07f));
+        bat=new GameObject("Bate de madera");bat.transform.SetParent(transform);bat.transform.position=new Vector3(1.15f,.8f,-3.1f);
+        BatPart("Barril",.115f,1.35f,.3f,new Color(.65f,.38f,.14f));
+        BatPart("Empuñadura",.05f,.75f,-.73f,new Color(.26f,.12f,.04f));
+        BatPart("Tope",.075f,.06f,-1.1f,new Color(.65f,.38f,.14f));
+    }
+
+    private void BatPart(string name,float radius,float length,float z,Color color)
+    {
+        var part=JungleStageBuilder.CreateLocalPrimitive(PrimitiveType.Cylinder,name,new Vector3(0,0,z),new Vector3(radius*2,length*.5f,radius*2),color,bat.transform);
+        part.transform.localRotation=Quaternion.Euler(90,0,0);
     }
 
     private void SchedulePitch(float delay)
@@ -146,7 +142,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
             if(member==null)continue;
             int idx=i-5;
             float hop=cheering?Mathf.Abs(Mathf.Sin(now*9.5f-idx*.55f))*(hitDistance>105f?.55f:.28f):Mathf.Sin(now*2.4f+i)*.04f;
-            member.localPosition=new Vector3(idx*1.7f,1.1f+hop,13f+Mathf.Abs(idx%2));
+            member.localPosition=crowdRestPositions[i]+Vector3.up*hop;
         }
     }
 
@@ -181,7 +177,10 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         JungleStageBuilder.PulseSquash(bat,.72f,1.26f,30f,10f);
         JungleStageBuilder.PulseSquash(ball,.68f,1.28f,28f,9f);
         JungleStageBuilder.ShakeCamera(hitDistance>105f?.16f:.085f,hitDistance>105f?.24f:.14f);
-        ballBody.isKinematic=false; ballBody.useGravity=true; ballBody.linearVelocity=new Vector3(direction*8f,8f+strength*7f,13f+strength*12f); stateUntil=Time.time+2.7f;
+        ballBody.isKinematic=false; ballBody.useGravity=true; const float flightSeconds=2.7f;
+        var horizontal=new Vector2(direction*.32f,1f).normalized*(hitDistance/flightSeconds);
+        float vertical=CompetitiveMechanics.VerticalVelocityForLanding(ball.transform.position.y,-.04f,Physics.gravity.y,flightSeconds);
+        ballBody.linearVelocity=new Vector3(horizontal.x,vertical,horizontal.y); stateUntil=Time.time+flightSeconds;
     }
 
     private void FinishHit() { ballBody.isKinematic=true; state=PlayState.Result; stateUntil=Time.time+1.5f; }
@@ -193,7 +192,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         float w=Screen.width,h=Screen.height;
         if(titleStyle==null||lastScreenHeight!=Screen.height){lastScreenHeight=Screen.height;titleStyle=new GUIStyle(JungleUITheme.Title){fontSize=Mathf.RoundToInt(h*.045f),normal={textColor=new Color(1f,.96f,.86f)}};}
         GUIStyle title=titleStyle;
-        int shownPitch = Mathf.Min(pitches + 1, 10);
+        int shownPitch = Mathf.Clamp(state==PlayState.Ready?pitches+1:pitches,1,10);
         if (shownPitch != cachedPitches || hits != cachedHits || homeRuns != cachedHomeRuns || score != cachedScore)
         {
             cachedPitches = shownPitch; cachedHits = hits; cachedHomeRuns = homeRuns; cachedScore = score;
