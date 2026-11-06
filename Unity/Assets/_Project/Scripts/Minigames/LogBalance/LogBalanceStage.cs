@@ -18,6 +18,7 @@ namespace GorillaEscape.Minigames.LogBalance
         Quaternion logRotation=Quaternion.identity;
         readonly LogBalanceCharacter character;
         readonly List<LogBalanceSpectator> spectators=new List<LogBalanceSpectator>();
+        readonly List<(Transform prop,Quaternion baseRot,float phase,float angle,float speed)> windProps=new List<(Transform,Quaternion,float,float,float)>();
         readonly float length;
         readonly LogBalanceAtmosphere atmosphere;
         readonly float[] deck=new float[65];
@@ -204,8 +205,9 @@ namespace GorillaEscape.Minigames.LogBalance
                 float x=(i-4)*5.5f;
                 if(Mathf.Abs(x)<3)continue;
                 float z=bank*(length/2+5+(float)random.NextDouble()*9);
-                SaulAsset(LogBalanceArtCatalog.Palm,LogBalanceArtCatalog.PalmTexture,"Palmera de Saúl",
+                var palm=SaulAsset(LogBalanceArtCatalog.Palm,LogBalanceArtCatalog.PalmTexture,"Palmera de Saúl",
                     new Vector3(x,.15f,z),5+(float)random.NextDouble()*2.5f,(float)random.NextDouble()*360);
+                windProps.Add((palm.transform,palm.transform.localRotation,Mathf.Abs(x*1.37f+z*2.11f)%6.28f,2.4f,1.35f));
             }
         }
         void PopulateGrass()
@@ -216,8 +218,9 @@ namespace GorillaEscape.Minigames.LogBalance
                 float x=(i-5.5f)*3.7f;
                 if(Mathf.Abs(x)<3)continue;
                 float z=bank*(length/2+1.5f+(float)random.NextDouble()*7);
-                SaulAsset(LogBalanceArtCatalog.Bush,LogBalanceArtCatalog.BushTexture,"Arbusto de Saúl",
+                var bush=SaulAsset(LogBalanceArtCatalog.Bush,LogBalanceArtCatalog.BushTexture,"Arbusto de Saúl",
                     new Vector3(x,.15f,z),.8f+(float)random.NextDouble()*.6f,(float)random.NextDouble()*360);
+                windProps.Add((bush.transform,bush.transform.localRotation,Mathf.Abs(x*1.91f+z*1.73f)%6.28f,3.1f,1.8f));
             }
         }
         void CreateSpectators()
@@ -266,6 +269,16 @@ namespace GorillaEscape.Minigames.LogBalance
                 var npc=spectators[i];var direction=human.position-npc.transform.position;direction.y=0;
                 if(direction.sqrMagnitude>.01f)npc.transform.rotation=Quaternion.LookRotation(direction);
                 npc.Pose(Time.unscaledTime,i*1.73f,balance,fell,fallSeconds,won);
+            }
+            float swayT=Time.unscaledTime;
+            for(int i=0;i<windProps.Count;i++)
+            {
+                var wp=windProps[i];
+                if(wp.prop==null)continue;
+                float t=swayT*wp.speed+wp.phase;
+                float pitch=Mathf.Sin(t)*wp.angle;
+                float roll=Mathf.Cos(t*.73f)*(wp.angle*.65f);
+                wp.prop.localRotation=wp.baseRot*Quaternion.Euler(pitch,0f,roll);
             }
             atmosphere.Present(Time.unscaledTime,balance,fell,fallSeconds,human.localPosition);
         }

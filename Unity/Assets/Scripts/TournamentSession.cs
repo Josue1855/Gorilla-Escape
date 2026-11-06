@@ -270,7 +270,7 @@ public static class TournamentSession
 
         string p1 = !string.IsNullOrWhiteSpace(humanName) ? humanName.Trim() : (humanCount > 1 ? "Náufrago 1" : "Náufrago");
         var list = new List<Competitor>();
-        string[] humanAvatars = { "👤", "🧭", "⚓", "🗺️" };
+        string[] humanAvatars = { "[J1]", "[J2]", "[J3]", "[J4]" };
 
         for (int i = 0; i < HumanPlayerCount; i++)
         {
@@ -289,9 +289,9 @@ public static class TournamentSession
 
         (string name, string avatar)[] gorillas =
         {
-            ("Kong (Cacique)", "🦧"),
-            ("Chimp (Veloz)", "🐒"),
-            ("Babu (Fuerte)", "🦍")
+            ("Kong (Cacique)", "[KONG]"),
+            ("Chimp (Veloz)", "[CHIMP]"),
+            ("Babu (Fuerte)", "[BABU]")
         };
 
         int gorillaIdx = 0;
@@ -494,14 +494,14 @@ public static class TournamentSession
         if (CurrentMode == GameMode.Story)
         {
             title = isFinal
-                ? (humanWon ? "🏆 ¡VICTORIA! ¡HAS ESCAPADO DE LA ISLA! ⛵🏝️" : "🍌 ¡KONG Y LOS GORILAS HAN GANADO! 🦍")
-                : $"🏝️ MODO HISTORIA · PRUEBA {CurrentRound} DE {TotalRounds} (MVP)";
+                ? (humanWon ? "¡VICTORIA! ¡HAS ESCAPADO DE LA ISLA!" : "¡KONG Y LOS GORILAS HAN GANADO!")
+                : $"MODO HISTORIA · PRUEBA {CurrentRound} DE {TotalRounds} (MVP)";
         }
         else
         {
             title = isFinal
-                ? "🏆 ¡GRAN FINAL DEL MODO FIESTA! 🎉"
-                : $"🎉 MODO FIESTA · RONDA {CurrentRound} DE {TotalRounds}";
+                ? "¡GRAN FINAL DEL MODO FIESTA!"
+                : $"MODO FIESTA · RONDA {CurrentRound} DE {TotalRounds}";
         }
 
         GUIStyle titleStyle = new GUIStyle(JungleUITheme.Title)
@@ -517,12 +517,12 @@ public static class TournamentSession
             if (CurrentMode == GameMode.Story)
             {
                 sub = humanWon
-                    ? "¡Los gorilas te construyeron una gran balsa de bambú! ¡Modo Fiesta Desbloqueado! 👑"
+                    ? "¡Los gorilas te construyeron una gran balsa de bambú! ¡Modo Fiesta Desbloqueado!"
                     : "No lograste la balsa de la libertad. ¡Vuelve a intentarlo para escapar de la isla!";
             }
             else
             {
-                sub = humanWon ? "¡Felicidades! Eres el Rey indiscutible de la Selva 👑" : "¡Gran fiesta en la selva! Gracias por jugar 🌴";
+                sub = humanWon ? "¡Felicidades! Eres el Rey indiscutible de la Selva" : "¡Gran fiesta en la selva! Gracias por jugar";
             }
         }
         else
@@ -550,7 +550,7 @@ public static class TournamentSession
 
             JungleUITheme.DrawPanel(rowRect, comp.IsHuman);
 
-            string medal = i == 0 ? "🥇" : i == 1 ? "🥈" : i == 2 ? "🥉" : "  4º";
+            string medal = i == 0 ? "1.º" : i == 1 ? "2.º" : i == 2 ? "3.º" : "4.º";
             string roleTag = comp.IsHuman ? " (NÁUFRAGO)" : " (GORILA)";
             string nameTag = $"{medal} {comp.Avatar} {comp.Name}{roleTag}";
             string unit = CurrentUnits[CurrentRound - 1];
@@ -587,7 +587,7 @@ public static class TournamentSession
         bool dwellFired = nav.ObserveCursor(true, cursorPx.x, cursorPx.y, Time.unscaledTime, targets, out int hitId, 1.6f, actionTrigger, isCharging) && hitId > 0;
         int hoverId = nav.HoveredId;
 
-        string continueLabel = isFinal ? "🏆 VOLVER AL MENÚ PRINCIPAL" : $"CONTINUAR A: {NextDisciplineName.ToUpperInvariant()} ➔";
+        string continueLabel = isFinal ? "VOLVER AL MENÚ PRINCIPAL" : $"CONTINUAR A: {NextDisciplineName.ToUpperInvariant()} >>";
         if (JungleRetainedUI.Button(continueBtn, continueLabel, hoverId == 10 ? JungleUITheme.ButtonSelected : JungleUITheme.Button) || (dwellFired && hoverId == 10))
         {
             JungleAudioBank.PlayUiClick(0.6f);
@@ -631,7 +631,7 @@ public static class TournamentSession
         JungleUITheme.DrawShadowedLabel(new Rect(card.x + 20, card.y + cH * 0.18f, card.width - 40, cH * 0.10f), scoreInfo, compStyle, 1.8f);
 
         GUIStyle nextStyle = new GUIStyle(JungleUITheme.Title) { fontSize = Mathf.Clamp(Mathf.RoundToInt(cH * 0.065f), 18, 24), alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.yellow } };
-        string nextText = $"👉 ¡SIGUIENTE TURNO: {nextComp.Avatar} {nextComp.Name.ToUpperInvariant()}!";
+        string nextText = $">> ¡SIGUIENTE TURNO: {nextComp.Avatar} {nextComp.Name.ToUpperInvariant()}!";
         JungleUITheme.DrawShadowedLabel(new Rect(card.x + 20, card.y + cH * 0.35f, card.width - 40, cH * 0.12f), nextText, nextStyle, 2.2f);
 
         GUIStyle tipStyle = new GUIStyle(JungleUITheme.Body) { fontSize = Mathf.Clamp(Mathf.RoundToInt(cH * 0.038f), 12, 16), alignment = TextAnchor.MiddleCenter, wordWrap = true };
@@ -666,8 +666,8 @@ public static class TournamentSession
         float elapsed = Time.unscaledTime - TurnStartedAt;
         float remaining = Mathf.Max(0, timeout - elapsed);
         string countdownNote = remaining < 10f ? $" (Auto en {Mathf.CeilToInt(remaining)}s)" : "";
-        string stateWarning = nextComp.IsAway ? " ⏸️ (Ausente)" : nextComp.IsBackground ? " 📱 (Segundo plano)" : nextComp.IsDisconnected ? " ⚠️ (Desconectado)" : "";
-        string btnText = $"▶️ COMENZAR TURNO: {nextComp.Name.ToUpperInvariant()}{stateWarning}{countdownNote}";
+        string stateWarning = nextComp.IsAway ? " [Ausente]" : nextComp.IsBackground ? " [Segundo plano]" : nextComp.IsDisconnected ? " [Desconectado]" : "";
+        string btnText = $">> COMENZAR TURNO: {nextComp.Name.ToUpperInvariant()}{stateWarning}{countdownNote}";
         if (JungleRetainedUI.Button(startNextBtn, btnText, JungleUITheme.ButtonSelected) || dwellFired || (remaining <= 0f && elapsed > 2f))
         {
             JungleAudioBank.PlayUiClick(0.6f);

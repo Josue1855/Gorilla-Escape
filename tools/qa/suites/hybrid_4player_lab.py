@@ -1,3 +1,5 @@
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 import subprocess, time, urllib.request, urllib.parse, json, os, shutil, re, sys, base64
 from cdp_pwa_client import MinimalCDPClient, open_pwa_tab
 
@@ -5,9 +7,9 @@ OPERATOR = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 ROOM_CODE = "jngl"
 BASE_URL = "http://127.0.0.1:8080"
 CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 JAR_PATH = os.path.join(REPO_ROOT, "Server", "target", "local-server-0.1.0-SNAPSHOT.jar")
-ARTIFACT_DIR = r"C:\Users\equipo\.gemini\antigravity\brain\2c221f95-4be5-4c9d-a5ca-eccb82e6b254"
+ARTIFACT_DIR = os.path.join(REPO_ROOT, "Reports", "QA", "Suites")
 
 def get_admission():
     req = urllib.request.Request(
@@ -32,6 +34,7 @@ def start_backend():
     env["GORILLA_MOBILE_OPERATOR"] = OPERATOR
     env["GORILLA_MOBILE_LAB"] = "1"
     env["GORILLA_ROOM_CODE"] = ROOM_CODE
+    env["GORILLA_STUN_SERVER"] = "NONE"
     cmd = [
         "java", "-jar",
         JAR_PATH,
@@ -39,7 +42,7 @@ def start_backend():
         "--gorilla.mobile.rtc-enabled=true",
         "--gorilla.mobile.lab-enabled=true"
     ]
-    proc = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    proc = subprocess.Popen(cmd, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     # Wait for health check
     for _ in range(30):
         time.sleep(0.5)
@@ -81,86 +84,32 @@ def connect_pwa(port, player_num):
         print(f"Saved PWA Player {player_num} screenshot to {out_path}")
     return client, identity
 
-def find_bounds(xml, pattern):
-    m = re.search(pattern, xml)
-    if m:
-        cx = (int(m.group(1)) + int(m.group(3))) // 2
-        cy = (int(m.group(2)) + int(m.group(4))) // 2
-        return cx, cy
-    return None
-
 def connect_emulator(device, player_num):
     print(f"--- Connecting APK Player {player_num} on {device} ---")
-    # Ensure adb reverse
     subprocess.run(["adb", "-s", device, "reverse", "tcp:8080", "tcp:8080"], check=True)
-    
+    subprocess.run(["adb", "-s", device, "shell", "input", "keyevent", "KEYCODE_WAKEUP"])
+    subprocess.run(["adb", "-s", device, "shell", "wm", "dismiss-keyguard"])
+    subprocess.run(["adb", "-s", device, "shell", "am", "force-stop", "com.gorillaescape.gorilla_companion"])
+    time.sleep(0.8)
+    # Warm-start MainActivity first so Flutter engine is ready before minting admission
+    subprocess.run(["adb", "-s", device, "shell", "am", "start", "-n", "com.gorillaescape.gorilla_companion/.MainActivity"])
+    time.sleep(4.0)
+
+    prior_peers = get_diagnostics().get("peers", 0)
     data = get_admission()
     frag = data["url"].split("#")[1]
     url = f"http://127.0.0.1:8080/#{frag}"
-    
-    # Ensure launcher clings / dialogs are dismissed
-    subprocess.run(["adb", "-s", device, "shell", "input", "keyevent", "KEYCODE_BACK"])
-    time.sleep(0.5)
 
-    # Restart app to reset UI state
-    subprocess.run(["adb", "-s", device, "shell", "am", "force-stop", "com.gorillaescape.gorilla_companion"])
-    time.sleep(1)
-    subprocess.run(["adb", "-s", device, "shell", "am", "start", "-n", "com.gorillaescape.gorilla_companion/.MainActivity"])
-    time.sleep(3)
+    p = subprocess.Popen(["adb", "-s", device, "shell"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    p.communicate(input=f"am start -n com.gorillaescape.gorilla_companion/.MainActivity -a android.intent.action.VIEW -d '{url}'\nexit\n")
+
+    for _ in range(20):
+        time.sleep(0.5)
+        if get_diagnostics().get("peers", 0) > prior_peers:
+            print(f"[{device}] Connected via App Link! Active peers: {get_diagnostics().get('peers')}")
+            break
+    time.sleep(1.5)
     
-    # Dump UI to find "Tengo un enlace de partida"
-    subprocess.run(["adb", "-s", device, "shell", "uiautomator", "dump", "/data/local/tmp/step1.xml"])
-    xml1 = subprocess.check_output(["adb", "-s", device, "shell", "cat", "/data/local/tmp/step1.xml"]).decode("utf-8", errors="ignore")
-    pt1 = find_bounds(xml1, r'(?:text|content-desc)="[^"]*Tengo un enlace de partida[^"]*"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"')
-    if pt1:
-        print(f"[{device}] Expanding tile at {pt1}")
-        subprocess.run(["adb", "-s", device, "shell", "input", "tap", str(pt1[0]), str(pt1[1])])
-        time.sleep(1)
-    else:
-        # Fallback scroll and try again
-        subprocess.run(["adb", "-s", device, "shell", "input", "swipe", "240", "650", "240", "350", "300"])
-        time.sleep(1)
-        subprocess.run(["adb", "-s", device, "shell", "uiautomator", "dump", "/data/local/tmp/step1b.xml"])
-        xml1b = subprocess.check_output(["adb", "-s", device, "shell", "cat", "/data/local/tmp/step1b.xml"]).decode("utf-8", errors="ignore")
-        pt1b = find_bounds(xml1b, r'(?:text|content-desc)="[^"]*Tengo un enlace de partida[^"]*"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"')
-        if pt1b:
-            print(f"[{device}] Expanding tile at {pt1b}")
-            subprocess.run(["adb", "-s", device, "shell", "input", "tap", str(pt1b[0]), str(pt1b[1])])
-            time.sleep(1)
-    
-    # Scroll to expose EditText
-    subprocess.run(["adb", "-s", device, "shell", "input", "swipe", "240", "650", "240", "250", "300"])
-    time.sleep(1)
-    subprocess.run(["adb", "-s", device, "shell", "uiautomator", "dump", "/data/local/tmp/step2.xml"])
-    xml2 = subprocess.check_output(["adb", "-s", device, "shell", "cat", "/data/local/tmp/step2.xml"]).decode("utf-8", errors="ignore")
-    pt2 = find_bounds(xml2, r'class="android.widget.EditText"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"')
-    if pt2:
-        print(f"[{device}] Tapping EditText at {pt2}")
-        subprocess.run(["adb", "-s", device, "shell", "input", "tap", str(pt2[0]), str(pt2[1])])
-        time.sleep(1)
-    
-    # Type URL via piped shell with communicate()
-    p = subprocess.Popen(["adb", "-s", device, "shell"], stdin=subprocess.PIPE, text=True)
-    try:
-        p.communicate(input=f"input text '{url}'\nexit\n", timeout=10)
-    except subprocess.TimeoutExpired:
-        p.kill()
-    time.sleep(1)
-    
-    # Dump UI to find "ABRIR CONTROL"
-    subprocess.run(["adb", "-s", device, "shell", "uiautomator", "dump", "/data/local/tmp/step3.xml"])
-    xml3 = subprocess.check_output(["adb", "-s", device, "shell", "cat", "/data/local/tmp/step3.xml"]).decode("utf-8", errors="ignore")
-    pt3 = find_bounds(xml3, r'(?:text|content-desc)="[^"]*ABRIR CONTROL[^"]*"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"')
-    if pt3:
-        print(f"[{device}] Tapping ABRIR CONTROL at {pt3}")
-        subprocess.run(["adb", "-s", device, "shell", "input", "tap", str(pt3[0]), str(pt3[1])])
-    else:
-        # Fallback click
-        print(f"[{device}] Fallback clicking ABRIR CONTROL at (240, 427)")
-        subprocess.run(["adb", "-s", device, "shell", "input", "tap", "240", "427"])
-    time.sleep(4)
-    
-    # Capture screenshot
     screen_remote = f"/data/local/tmp/{device}_screen.png"
     screen_local = os.path.join(ARTIFACT_DIR, f"companion_player{player_num}_{device}.png")
     subprocess.run(["adb", "-s", device, "shell", "screencap", "-p", screen_remote])

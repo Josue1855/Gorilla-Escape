@@ -12,7 +12,7 @@ import time
 import subprocess
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 EVIDENCE_DIR = REPO_ROOT / "docs" / "04-testing" / "evidence" / f"adversarial_audit_{int(time.time())}"
 EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
 

@@ -41,13 +41,13 @@ public sealed class JungleSquashStretch : MonoBehaviour
         targetStretchXZ = stretchXZ;
         freq = frequency;
         damp = damping;
-        triggeredAt = Time.time;
+        triggeredAt = Time.unscaledTime;
         enabled = true;
     }
 
     private void Update()
     {
-        float dt = Time.time - triggeredAt;
+        float dt = Time.unscaledTime - triggeredAt;
         if (dt > .55f)
         {
             transform.localScale = baseScale;

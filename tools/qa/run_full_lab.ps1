@@ -128,8 +128,8 @@ if (Test-Path $mvnw) {
 Write-Output "== Unity (build Windows) =="
 if ((Test-Path $unity) -and (-not $SkipExpensive)) {
     $uLog = Join-Path $Logs 'unity_build.log'
-    $uArgs = @('-batchmode','-quit','-projectPath',(Join-Path $Root 'Unity'),
-        '-executeMethod','GorillaEscape.Editor.ProductPlayMode.BuildWindowsStandalone','-logFile',$uLog)
+    $uProj = Join-Path $Root 'Unity'
+    $uArgs = "-batchmode -quit -projectPath `"$uProj`" -executeMethod GorillaEscape.Editor.ProductPlayMode.BuildWindowsStandalone -logFile `"$uLog`""
     $p = Start-Process -FilePath $unity -ArgumentList $uArgs -Wait -PassThru
     $uc = $p.ExitCode
     $ok = $uc -eq 0 -and (Select-String -Path $uLog -Pattern 'BUILD_WINDOWS_SUCCESS' -Quiet)

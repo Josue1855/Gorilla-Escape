@@ -15,7 +15,7 @@ Ejecuta de forma 100% reproducible:
 import sys, os, time, json, re, subprocess, urllib.request, urllib.error
 from datetime import datetime
 
-ARTIFACT_DIR = r"C:\Users\equipo\.gemini\antigravity\brain\2c221f95-4be5-4c9d-a5ca-eccb82e6b254"
+ARTIFACT_DIR = os.path.join(REPO_ROOT, "Reports", "QA", "Suites")
 REPO_ROOT = r"C:\Users\equipo\Documents\Repos\Gorilla Escape"
 SERVER_JAR = os.path.join(REPO_ROOT, "Server", "target", "local-server-0.1.0-SNAPSHOT.jar")
 CLOUDFLARED_EXE = os.path.join(REPO_ROOT, "tools", "cloudflared.exe")

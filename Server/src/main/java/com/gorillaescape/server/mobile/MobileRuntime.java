@@ -165,7 +165,8 @@ public final class MobileRuntime implements DisposableBean {
             d.stage(JoinDiagnostic.Stage.LOCAL_SDP);
             CompletableFuture<Void> local=new CompletableFuture<>();p.pc.setLocalDescription(description,setter(local));local.get(remaining(deadline),TimeUnit.NANOSECONDS);
             d.stage(JoinDiagnostic.Stage.SERVER_ICE);
-            if(!p.gathered.await(remaining(deadline),TimeUnit.NANOSECONDS))throw new IOException("ICE_TIMEOUT");
+            long gatherWait=Math.min(remaining(deadline),TimeUnit.MILLISECONDS.toNanos(1800));
+            if(!p.gathered.await(gatherWait,TimeUnit.NANOSECONDS)&&!p.hasCandidate.await(remaining(deadline),TimeUnit.NANOSECONDS))throw new IOException("ICE_TIMEOUT");
             p.lastSeen=System.nanoTime();d.stage(JoinDiagnostic.Stage.ANSWER_RETURNED);
             return new Answer(1,"JOIN_ACK",joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.resumeToken(),joined.epoch(),id,p.pc.getLocalDescription().sdp);
         }catch(Exception|Error e){
@@ -204,7 +205,7 @@ public final class MobileRuntime implements DisposableBean {
         ports.minPort=RTC_MIN_PORT;ports.maxPort=RTC_MAX_PORT;return ports;
     }
     private final class Peer {
-        final TechnicalSession.Joined joined;final GorillaProtocol.Gate gate;final CountDownLatch gathered=new CountDownLatch(1);
+        final TechnicalSession.Joined joined;final GorillaProtocol.Gate gate;final CountDownLatch gathered=new CountDownLatch(1),hasCandidate=new CountDownLatch(1);
         final List<RTCDataChannel> channels=new ArrayList<>();final RTCPeerConnection pc;
         volatile boolean statsPending;volatile long lastStats;
         volatile long lastSeen=System.nanoTime();volatile boolean stopped;volatile ObjectNode lastInput;
@@ -222,7 +223,7 @@ public final class MobileRuntime implements DisposableBean {
                 String p=System.getenv("GORILLA_TURN_CREDENTIAL");if(p!=null)t.password=p;
                 c.iceServers.add(t);
             }
-            pc=factory.createPeerConnection(c,new PeerConnectionObserver(){public void onIceCandidate(RTCIceCandidate candidate){diagnostic.candidate(candidate.sdp);}public void onIceGatheringChange(RTCIceGatheringState s){diagnostic.event("iceGatheringState",s.name());if(s==RTCIceGatheringState.COMPLETE)gathered.countDown();}public void onIceConnectionChange(RTCIceConnectionState s){diagnostic.event("iceConnectionState",s.name());}public void onConnectionChange(RTCPeerConnectionState s){diagnostic.event("connectionState",s.name());}public void onDataChannel(RTCDataChannel channel){attach(channel);}});
+            pc=factory.createPeerConnection(c,new PeerConnectionObserver(){public void onIceCandidate(RTCIceCandidate candidate){diagnostic.candidate(candidate.sdp);hasCandidate.countDown();}public void onIceGatheringChange(RTCIceGatheringState s){diagnostic.event("iceGatheringState",s.name());if(s==RTCIceGatheringState.COMPLETE)gathered.countDown();}public void onIceConnectionChange(RTCIceConnectionState s){diagnostic.event("iceConnectionState",s.name());}public void onConnectionChange(RTCPeerConnectionState s){diagnostic.event("connectionState",s.name());}public void onDataChannel(RTCDataChannel channel){attach(channel);}});
         }
         synchronized void attach(RTCDataChannel ch){if(stopped||channels.size()>=2||channels.stream().anyMatch(c->c.getLabel().equals(ch.getLabel()))||!Set.of("control","motion").contains(ch.getLabel())||ch.getLabel().equals("control")&&(!ch.isOrdered()||!ch.isReliable())||ch.getLabel().equals("motion")&&(ch.isOrdered()||ch.getMaxRetransmits()!=0)){ch.close();ch.dispose();return;}channels.add(ch);
             ch.registerObserver(new RTCDataChannelObserver(){public void onBufferedAmountChange(long a){}public void onStateChange(){diagnostic.event(ch.getLabel(),ch.getState().name());}public void onMessage(RTCDataChannelBuffer buffer){synchronized(Peer.this){

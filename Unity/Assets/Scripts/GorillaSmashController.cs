@@ -260,6 +260,29 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         gorillaAnchor.position = new Vector3(-2.6f, 0f, 0.5f);
         gorillaAnchor.rotation = Quaternion.Euler(0f, 25f, 0f);
         gorillaRig.LoadMascot(gorillaAnchor, gorillaAnchor.position, gorillaAnchor.rotation, 2.5f, "Gorila Meshy AI Striker");
+
+        // 9. Vegetación 3D con mecido procedural por viento (JungleWindSway)
+        CreateSmashJungleProps();
+    }
+
+    private void CreateSmashJungleProps()
+    {
+        const string palmPath = "Jungle/NewModels/Palm/Meshy_AI_Cartoon_Coconut_Palm_20261026_texture_fbx/";
+        const string bushPath = "Jungle/NewModels/Bush/Meshy_AI_Emerald_Canopy_20261026_texture_fbx/";
+        var palmPrefab = JungleAssets.Load<GameObject>(palmPath + "Meshy_AI_Cartoon_Coconut_Palm_20261026_texture");
+        var bushPrefab = JungleAssets.Load<GameObject>(bushPath + "Meshy_AI_Emerald_Canopy_20261026_texture");
+        var palmMat = JungleStageBuilder.CreateTexturedMaterial(
+            JungleAssets.Load<Texture2D>(palmPath + "Palm_Albedo"),
+            "Smash_Palmera", .15f,
+            JungleAssets.Load<Texture2D>(palmPath + "Meshy_AI_Cartoon_Coconut_Palm_20261026_texture_normal"), .6f);
+        var bushMat = JungleStageBuilder.CreateTexturedMaterial(
+            JungleAssets.Load<Texture2D>(bushPath + "Bush_Albedo"),
+            "Smash_Arbusto", .12f);
+
+        JungleStageBuilder.InstantiateGroundedProp(palmPrefab, transform, palmMat, "Palmera Izquierda", new Vector3(-4.8f, -1.55f, 2.4f), 6.2f, 20f);
+        JungleStageBuilder.InstantiateGroundedProp(palmPrefab, transform, palmMat, "Palmera Derecha", new Vector3(4.8f, -1.55f, 2.4f), 6.0f, -25f);
+        JungleStageBuilder.InstantiateGroundedProp(bushPrefab, transform, bushMat, "Arbusto Izquierdo", new Vector3(-3.8f, -1.55f, 1.2f), 1.4f, 40f);
+        JungleStageBuilder.InstantiateGroundedProp(bushPrefab, transform, bushMat, "Arbusto Derecho", new Vector3(3.8f, -1.55f, 1.2f), 1.4f, -35f);
     }
 
     private void CreateHammer()
@@ -432,6 +455,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
                 currentAttempt++;
                 if (currentAttempt >= MaxAttempts)
                 {
+                    session.SetGameplayActive(false);
                     state = State.Results;
                     stateAt = Time.time;
                 }
@@ -582,6 +606,8 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
 
     private void StartCountdown()
     {
+        session.SetGameplayActive(true);
+        session.ResetRound();
         state = State.Countdown;
         stateAt = Time.time;
         lastCountdownBeep = -1;
@@ -609,7 +635,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         string sub = state == State.Intro ? "MÁQUINA DE FUERZA DE FERIA · PREPARA TU GOLPE" :
                      state == State.Countdown ? "¡PREPÁRATE PARA GOLPEAR!" :
                      state == State.Results ? "¡TORNEO DE FUERZA COMPLETADO!" :
-                     $"INTENTO {currentAttempt + 1} DE {MaxAttempts} · ASES TA UN GOLPE CON FUERZA";
+                     $"INTENTO {currentAttempt + 1} DE {MaxAttempts} · ASESTA UN GOLPE CON FUERZA";
         JungleUITheme.DrawShadowedLabel(new Rect(headerRect.x, h * 0.088f, headerRect.width, h * 0.04f), sub, subtitleStyle, 2f);
 
         // Marcadores de la torre a la derecha

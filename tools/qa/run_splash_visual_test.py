@@ -6,7 +6,7 @@ from pathlib import Path
 
 repo_root = Path(r"C:\Users\equipo\Documents\Repos\Gorilla Escape")
 exe_path = repo_root / "Builds" / "Windows" / "GorillaEscape.exe"
-screenshot_dir = repo_root / "Reports" / "QA" / "P0_SPLASH_ASSETS" / "screenshots"
+screenshot_dir = repo_root / "Reports" / "QA" / "Screenshots"
 
 screenshot_dir.mkdir(parents=True, exist_ok=True)
 

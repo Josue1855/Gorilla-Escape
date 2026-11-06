@@ -93,8 +93,8 @@ public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
         JungleUITheme.DrawPanel(new Rect(w*.035f,h*.025f,w*.93f,h*.145f));
         JungleUITheme.DrawShadowedLabel(new Rect(w*.06f,h*.035f,w*.56f,h*.06f),"JUNGLE BALANCE",title,3f);
         JungleUITheme.DrawShadowedLabel(new Rect(w*.06f,h*.095f,w*.56f,h*.05f),"Cruza el río. Inclina suavemente el teléfono y frena la inercia.",body,1.5f);
-        if(JungleRetainedUI.Button(new Rect(w*.66f,h*.065f,w*.135f,h*.062f),credits?"CERRAR":"CRÉDITOS",button))credits=!credits;
-        if(JungleRetainedUI.Button(new Rect(w*.81f,h*.065f,w*.135f,h*.062f),"MENÚ",button))SceneNavigator.Load(SceneNavigator.MainMenu);
+        if(JungleRetainedUI.Button(new Rect(w*.66f,h*.065f,w*.135f,h*.062f),credits?"CERRAR":"CRÉDITOS",button)){JungleAudioBank.PlayUiClick();credits=!credits;}
+        if(JungleRetainedUI.Button(new Rect(w*.81f,h*.065f,w*.135f,h*.062f),"MENÚ",button)){JungleAudioBank.PlayUiClick();SceneNavigator.Load(SceneNavigator.MainMenu);}
         if(assetError!=null){JungleRetainedUI.Label(new Rect(w*.16f,h*.35f,w*.68f,h*.24f),assetError,body);return;}
         if(credits)
         {
@@ -124,7 +124,7 @@ public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
         JungleRetainedUI.Label(new Rect(x+20,y+ph*.40f,pw-40,ph*.28f),message,body);
         bool enabled=JungleRetainedUI.enabled;
         if(model.State==LogBalanceState.Ready)
-        {JungleRetainedUI.enabled=enabled&&session.IsInputReady&&!preparing&&control.Calibrated;if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"COMENZAR",button))Begin();}
+        {JungleRetainedUI.enabled=enabled&&session.IsInputReady&&!preparing&&control.Calibrated;if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"COMENZAR",button)){JungleAudioBank.PlayUiClick();Begin();}}
         else if(model.Result!=null)
         {
             if (TournamentSession.IsActive)
@@ -137,10 +137,10 @@ public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
                 TournamentSession.DrawTournamentOverlay(w, h, normCursor, handLabel, handRaised, handClosed, forwardPush, session != null && session.PhoneTouchTriggered);
                 return;
             }
-            if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"OTRO INTENTO",button))Restart();
+            if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),"OTRO INTENTO",button)){JungleAudioBank.PlayUiClick();Restart();}
         }
         else
-        {JungleRetainedUI.enabled=enabled&&(!manualPause||control.Calibrated&&!preparing);if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),manualPause?"REANUDAR":"PAUSAR",button))manualPause=!manualPause;}
+        {JungleRetainedUI.enabled=enabled&&(!manualPause||control.Calibrated&&!preparing);if(JungleRetainedUI.Button(new Rect(x+25,y+ph*.74f,pw-50,ph*.18f),manualPause?"REANUDAR":"PAUSAR",button)){JungleAudioBank.PlayUiClick();manualPause=!manualPause;}}
         JungleRetainedUI.enabled=enabled;JungleUITheme.DrawLeaves();
     }
     void OnDestroy()

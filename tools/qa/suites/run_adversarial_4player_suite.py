@@ -1,11 +1,13 @@
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 import subprocess, time, urllib.request, urllib.parse, json, os, re, sys, base64, socket, struct
 import numpy as np
 
 OPERATOR = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 ROOM_CODE = "jngl"
 BASE_URL = "http://127.0.0.1:8080"
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-ARTIFACT_DIR = r"C:\Users\equipo\.gemini\antigravity\brain\2c221f95-4be5-4c9d-a5ca-eccb82e6b254"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+ARTIFACT_DIR = os.path.join(REPO_ROOT, "Reports", "QA", "Suites")
 
 from cdp_pwa_client import MinimalCDPClient, open_pwa_tab
 

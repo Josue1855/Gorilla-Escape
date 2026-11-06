@@ -19,6 +19,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
     private Material boundaryMat;
     private Material coconutMat;
     private Material markerMat;
+    private readonly GorillaMascotRig gorillaJudge = new GorillaMascotRig();
 
     // Cámara cinemática
     private Camera mainCamera;
@@ -157,13 +158,42 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
             CreateDistanceArc(m);
         }
 
-        // 5. El Coco (Coconut Ball)
-        coconutBall = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        coconutBall.name = "Coco Balístico";
+        // 5. El Coco (Coconut Ball con malla 3D oficial Meshy AI)
+        coconutBall = new GameObject("Coco Balístico");
         coconutBall.transform.SetParent(throwFieldRoot.transform, false);
         coconutBall.transform.position = new Vector3(0f, 1.2f, 0.2f);
-        coconutBall.transform.localScale = new Vector3(0.55f, 0.65f, 0.55f);
-        coconutBall.GetComponent<Renderer>().sharedMaterial = coconutMat;
+        const string cocoFolder = "Jungle/NewModels/Coconut/Meshy_AI_Coconut_Bowling_Ball_20261026_texture_fbx/";
+        var cocoPrefab = JungleAssets.Load<GameObject>(cocoFolder + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture");
+        var cocoTex = JungleAssets.Load<Texture2D>(cocoFolder + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture");
+        var cocoNormal = JungleAssets.Load<Texture2D>(cocoFolder + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture_normal");
+        if (cocoPrefab != null)
+        {
+            var cocoModel = Instantiate(cocoPrefab, coconutBall.transform, false);
+            cocoModel.name = "Modelo Coco 3D";
+            JungleStageBuilder.DisableChildColliders(cocoModel);
+            var rs = cocoModel.GetComponentsInChildren<Renderer>(true);
+            if (rs.Length > 0)
+            {
+                Bounds b = JungleStageBuilder.CombinedBounds(rs);
+                float scale = 0.62f / Mathf.Max(0.01f, Mathf.Max(b.size.x, Mathf.Max(b.size.y, b.size.z)));
+                cocoModel.transform.localScale = Vector3.one * scale;
+                b = JungleStageBuilder.CombinedBounds(rs);
+                cocoModel.transform.position += coconutBall.transform.position - b.center;
+                if (cocoTex != null)
+                {
+                    coconutMat = JungleStageBuilder.CreateTexturedMaterial(cocoTex, "Coco Balístico 3D", 0.18f, cocoNormal, 0.7f);
+                    JungleStageBuilder.ApplySharedMaterial(rs, coconutMat);
+                }
+            }
+        }
+        else
+        {
+            var fallbackSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            fallbackSphere.transform.SetParent(coconutBall.transform, false);
+            fallbackSphere.transform.localScale = new Vector3(0.55f, 0.65f, 0.55f);
+            fallbackSphere.GetComponent<Renderer>().sharedMaterial = coconutMat;
+            JungleStageBuilder.StripCollider(fallbackSphere);
+        }
 
         // 6. Marcador de impacto en suelo
         trajectoryMarker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
@@ -173,6 +203,13 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         trajectoryMarker.transform.localScale = new Vector3(0.6f, 0.05f, 0.6f);
         trajectoryMarker.GetComponent<Renderer>().sharedMaterial = markerMat;
         trajectoryMarker.SetActive(false);
+
+        // 7. Gorila Juez / Espectador 3D al costado del círculo de lanzamiento
+        var judgeAnchor = new GameObject("07 Gorila Juez Lanzamiento").transform;
+        judgeAnchor.SetParent(throwFieldRoot.transform, false);
+        judgeAnchor.position = new Vector3(-3.2f, 0f, 1.8f);
+        judgeAnchor.rotation = Quaternion.Euler(0f, 35f, 0f);
+        gorillaJudge.LoadMascot(judgeAnchor, judgeAnchor.position, judgeAnchor.rotation, 2.5f, "Gorila Juez Coco");
     }
 
     private void CreateBoundaryLine(string name, Vector3 start, Vector3 end)
@@ -330,6 +367,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
                 currentAttempt++;
                 if (currentAttempt >= MaxAttempts)
                 {
+                    session.SetGameplayActive(false);
                     state = State.Results;
                     stateAt = Time.time;
                 }
@@ -380,6 +418,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
             float idleBob = Mathf.Sin(Time.time * 4f) * 0.05f;
             coconutBall.transform.position = new Vector3(0f, 1.2f + idleBob, 0.2f);
         }
+        gorillaJudge.Animate(false, 0, 0);
     }
 
     private void ExecuteThrow()
@@ -392,6 +431,8 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
 
         if (sfxSource != null && whackClip != null)
             sfxSource.PlayOneShot(whackClip, 0.85f);
+
+        JungleStageBuilder.PulseSquash(coconutBall, 0.72f, 1.25f, 26f, 10f);
 
         // Fórmula oficial Spec v4 Sección 18:
         // AngleQuality = 1 - normalizedDistanceFromOptimalAngle (óptimo ~43°)
@@ -473,6 +514,7 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         {
             currentDistance = 0f;
             lastFeedbackText = "¡FALTA! (FUERA DE SECTOR)";
+            gorillaJudge.PlayAngryStompAnimation();
         }
         else
         {
@@ -487,6 +529,9 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
                 lastFeedbackText = "¡GRAN POTENCIA! (GREAT)";
             else
                 lastFeedbackText = "¡BUEN LANZAMIENTO! (GOOD)";
+
+            if (currentDistance >= 25f)
+                gorillaJudge.PlayCelebrationAnimation();
         }
 
         attemptDistances[currentAttempt] = currentDistance;
@@ -496,7 +541,9 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         {
             trajectoryMarker.transform.position = new Vector3(ballPosition.x, 0.05f, ballPosition.z);
             trajectoryMarker.SetActive(true);
+            JungleStageBuilder.PulseSquash(trajectoryMarker, 0.65f, 1.35f, 24f, 9f);
         }
+        JungleStageBuilder.PulseSquash(coconutBall, 0.68f, 1.28f, 26f, 9f);
 
         state = State.Landed;
         stateAt = Time.time;
@@ -510,6 +557,8 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
 
     private void StartCountdown()
     {
+        session.SetGameplayActive(true);
+        session.ResetRound();
         state = State.Countdown;
         stateAt = Time.time;
         lastCountdownBeep = -1;
@@ -648,5 +697,10 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
                 SceneNavigator.Load(SceneNavigator.MainMenu);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        gorillaJudge.Dispose();
     }
 }

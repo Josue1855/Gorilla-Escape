@@ -104,6 +104,23 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         hitHead = Model(hitPrefab, hitMat, "03 Cabeza golpeada", World(slots[4], 10.35f), 1.52f, false, Quaternion.Euler(180, 180, 0));
         hitHeadPivot = hitHead.transform.Find("Pivote visual");
         hitHead.SetActive(false);
+
+        const string palmPath = "Jungle/NewModels/Palm/Meshy_AI_Cartoon_Coconut_Palm_20261026_texture_fbx/";
+        const string bushPath = "Jungle/NewModels/Bush/Meshy_AI_Emerald_Canopy_20261026_texture_fbx/";
+        var palmPrefab = JungleAssets.Load<GameObject>(palmPath + "Meshy_AI_Cartoon_Coconut_Palm_20261026_texture");
+        var bushPrefab = JungleAssets.Load<GameObject>(bushPath + "Meshy_AI_Emerald_Canopy_20261026_texture");
+        var palmMat = JungleStageBuilder.CreateTexturedMaterial(
+            JungleAssets.Load<Texture2D>(palmPath + "Palm_Albedo"),
+            "Whack_Palmera", .15f,
+            JungleAssets.Load<Texture2D>(palmPath + "Meshy_AI_Cartoon_Coconut_Palm_20261026_texture_normal"), .6f);
+        var bushMat = JungleStageBuilder.CreateTexturedMaterial(
+            JungleAssets.Load<Texture2D>(bushPath + "Bush_Albedo"),
+            "Whack_Arbusto", .12f);
+        JungleStageBuilder.InstantiateGroundedProp(palmPrefab, transform, palmMat, "05 Palmera Izq", new Vector3(-6.2f, -2.5f, 3.2f), 6.2f, 22f);
+        JungleStageBuilder.InstantiateGroundedProp(palmPrefab, transform, palmMat, "05 Palmera Der", new Vector3(6.2f, -2.5f, 3.2f), 6.0f, -24f);
+        JungleStageBuilder.InstantiateGroundedProp(bushPrefab, transform, bushMat, "06 Arbusto Izq", new Vector3(-5.0f, -2.5f, 1.8f), 1.5f, 35f);
+        JungleStageBuilder.InstantiateGroundedProp(bushPrefab, transform, bushMat, "06 Arbusto Der", new Vector3(5.0f, -2.5f, 1.8f), 1.5f, -35f);
+
         var l = FindAnyObjectByType<Light>();
         if (l != null) { l.intensity = 1.5f; l.transform.rotation = Quaternion.Euler(42, -25, 0); }
     }

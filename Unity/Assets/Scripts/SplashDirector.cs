@@ -13,7 +13,8 @@ using UnityEngine.SceneManagement;
 /// 5. Pantalla de preparación personal («Prepárate para jugar») con calibración comprensible.
 /// 6. Soporte para captura de evidencia automatizada (GORILLA_AUTO_SCREENSHOT).
 /// </summary>
-public sealed class SplashDirector : MonoBehaviour
+[RequireComponent(typeof(JunglePanel))]
+public sealed class SplashDirector : MonoBehaviour, IJungleScreen
 {
     public enum State
     {
@@ -128,6 +129,7 @@ public sealed class SplashDirector : MonoBehaviour
 
     private void Awake()
     {
+        if (GetComponent<JunglePanel>() == null) gameObject.AddComponent<JunglePanel>();
         startedAt = -1f;
         LoadAssets();
         EnsureLighting();
@@ -694,9 +696,9 @@ public sealed class SplashDirector : MonoBehaviour
                 sfxSource.pitch = 1.25f;
                 sfxSource.PlayOneShot(JungleAudioBank.UiClick, 0.50f);
             }
-            if (signs[activeIndex].root != null)
+            if (signs[activeIndex].board != null)
             {
-                JungleStageBuilder.PulseSquash(signs[activeIndex].root.gameObject, 0.88f, 1.12f, 22f, 8f);
+                JungleStageBuilder.PulseSquash(signs[activeIndex].board.gameObject, 0.88f, 1.12f, 22f, 8f);
             }
             lastAudibleSign = activeIndex;
         }
@@ -884,79 +886,65 @@ public sealed class SplashDirector : MonoBehaviour
     }
 
     // -------------------------------------------------------------
-    // RENDERIZADO VISUAL CON JUNGLE UI THEME
+    // RENDERIZADO VISUAL CON JUNGLE UI THEME (UI TOOLKIT)
     // -------------------------------------------------------------
-    private void OnGUI()
+    public void RenderUI()
     {
         if (cam == null) return;
+        JungleUITheme.Ensure();
 
         int sw = Screen.width;
         int sh = Screen.height;
 
-        var titleStyle = new GUIStyle(GUI.skin.label)
+        var titleStyle = new GUIStyle(JungleRetainedUI.skin.label)
         {
             font = JungleUITheme.TitleFont,
             fontSize = Mathf.Clamp(sh / 15, 32, 54),
             fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleCenter
+            alignment = TextAnchor.MiddleCenter,
+            normal = { textColor = new Color(1f, 0.88f, 0.20f) }
         };
-        titleStyle.normal.textColor = new Color(1f, 0.88f, 0.20f);
 
-        var subtitleStyle = new GUIStyle(GUI.skin.label)
+        var subtitleStyle = new GUIStyle(JungleRetainedUI.skin.label)
         {
             font = JungleUITheme.TextFont,
             fontSize = Mathf.Clamp(sh / 32, 16, 24),
             fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleCenter
+            alignment = TextAnchor.MiddleCenter,
+            normal = { textColor = Color.white }
         };
-        subtitleStyle.normal.textColor = Color.white;
 
         var tipStyle = new GUIStyle(subtitleStyle)
         {
             fontSize = Mathf.Clamp(sh / 38, 14, 18),
-            normal = { textColor = new Color(0.9f, 0.9f, 0.8f, 0.9f) }
+            normal = { textColor = new Color(0.95f, 0.92f, 0.82f, 0.95f) }
         };
 
         if (currentState == State.Cinematic)
         {
             Rect titleRect = new Rect(0, sh * 0.06f, sw, 65);
-            Rect shadowRect = new Rect(titleRect.x + 2, titleRect.y + 2, titleRect.width, titleRect.height);
-            var shadowStyle = new GUIStyle(titleStyle) { normal = { textColor = new Color(0f, 0f, 0f, 0.75f) } };
-            GUI.Label(shadowRect, "GORILLA ESCAPE", shadowStyle);
-            GUI.Label(titleRect, "GORILLA ESCAPE", titleStyle);
+            JungleUITheme.DrawShadowedLabel(titleRect, "GORILLA ESCAPE", titleStyle, 3f);
 
-            // Contenedor semitransparente oscuro con alto contraste para texto inferior
             float pillW = Mathf.Min(sw * 0.82f, 620f);
-            float pillH = 38f;
+            float pillH = 42f;
             Rect pillRect = new Rect((sw - pillW) * 0.5f, sh * 0.88f, pillW, pillH);
 
-            GUI.color = new Color(0.06f, 0.05f, 0.03f, 0.82f);
-            GUI.DrawTexture(pillRect, Texture2D.whiteTexture);
-            GUI.color = Color.white;
-
-            var tipShadow = new GUIStyle(tipStyle) { normal = { textColor = new Color(0f, 0f, 0f, 0.95f) } };
-            GUI.Label(new Rect(pillRect.x + 1, pillRect.y + 6, pillRect.width, 28), "Preparando la isla sagrada… [Espacio o Clic para omitir]", tipShadow);
+            JungleUITheme.DrawSubPanel(pillRect);
             var tipBright = new GUIStyle(tipStyle) { normal = { textColor = new Color(1f, 0.95f, 0.82f) } };
-            GUI.Label(new Rect(pillRect.x, pillRect.y + 5, pillRect.width, 28), "Preparando la isla sagrada… [Espacio o Clic para omitir]", tipBright);
+            JungleUITheme.DrawShadowedLabel(new Rect(pillRect.x, pillRect.y + 4f, pillRect.width, 32f), "Preparando la isla sagrada... [Espacio o Clic para omitir]", tipBright, 1.5f);
         }
         else if (currentState == State.Menu3D)
         {
             Rect titleRect = new Rect(0, sh * 0.05f, sw, 55);
-            Rect shadowRect = new Rect(titleRect.x + 2, titleRect.y + 2, titleRect.width, titleRect.height);
-            var shadowStyle = new GUIStyle(titleStyle) { normal = { textColor = new Color(0f, 0f, 0f, 0.75f) } };
-            GUI.Label(shadowRect, "GORILLA ESCAPE", shadowStyle);
-            GUI.Label(titleRect, "GORILLA ESCAPE", titleStyle);
+            JungleUITheme.DrawShadowedLabel(titleRect, "GORILLA ESCAPE", titleStyle, 3f);
 
-            // Indicador de estado de servicios en segundo plano (Servidor, QR y Cámara)
-            string netStatus = (services != null && services.CameraConnected) 
-                ? "● CÁMARA Y QR LISTOS" 
-                : ((services != null && services.IsRunning) ? "● SERVIDOR Y QR EN LÍNEA" : "● SERVICIOS EN SEGUNDO PLANO");
-            GUI.color = new Color(0.04f, 0.12f, 0.05f, 0.85f);
-            Rect statusRect = new Rect(sw - 230, 16, 214, 28);
-            GUI.DrawTexture(statusRect, Texture2D.whiteTexture);
-            GUI.color = Color.white;
+            string netStatus = (services != null && services.CameraConnected)
+                ? "CÁMARA Y QR LISTOS"
+                : ((services != null && services.IsRunning) ? "SERVIDOR Y QR EN LÍNEA" : "SERVICIOS EN SEGUNDO PLANO");
+            Rect statusRect = new Rect(sw - 246f, 16f, 230f, 32f);
+            JungleUITheme.DrawSubPanel(statusRect);
             var statusStyle = new GUIStyle(tipStyle) { fontSize = 12, normal = { textColor = new Color(0.4f, 1f, 0.5f) } };
-            GUI.Label(statusRect, netStatus, statusStyle);
+            JungleRetainedUI.Label(statusRect, "* " + netStatus, statusStyle);
 
             for (int i = 0; i < signs.Length; i++)
             {
@@ -965,75 +953,64 @@ public sealed class SplashDirector : MonoBehaviour
                 if (sp.z < 0f) continue;
 
                 sp.y = sh - sp.y;
-
                 bool isFocused = (i == ((hoveredSign >= 0) ? hoveredSign : selectedSign));
 
-                // Fondo contrastante para subtítulo de letrero
                 float subW = 320f;
-                float subH = 30f;
+                float subH = 32f;
                 Rect subRect = new Rect(sp.x - subW * 0.5f, sp.y + 42f, subW, subH);
 
-                GUI.color = isFocused ? new Color(0.12f, 0.08f, 0.04f, 0.85f) : new Color(0.06f, 0.05f, 0.03f, 0.70f);
-                GUI.DrawTexture(subRect, Texture2D.whiteTexture);
-                GUI.color = Color.white;
+                if (isFocused)
+                    JungleUITheme.DrawBadge(subRect, signs[i].subtitle, highlighted: true);
+                else
+                    JungleUITheme.DrawPlankLabel(subRect, signs[i].subtitle);
 
-                var signSubStyle = new GUIStyle(subtitleStyle)
-                {
-                    fontSize = isFocused ? 16 : 14,
-                    normal = { textColor = isFocused ? new Color(1f, 0.98f, 0.45f) : new Color(0.92f, 0.92f, 0.92f) }
-                };
-
-                Rect clickRect = new Rect(sp.x - 160, sp.y - 35, 320, 85);
-                if (GUI.Button(clickRect, GUIContent.none, GUIStyle.none))
+                Rect clickRect = new Rect(sp.x - 160f, sp.y - 35f, 320f, 85f);
+                if (JungleRetainedUI.Button(clickRect, "", GUIStyle.none))
                 {
                     TriggerSignAction(i);
                 }
-
-                GUI.Label(new Rect(subRect.x, subRect.y + 4, subW, 24), signs[i].subtitle, signSubStyle);
             }
 
-            // Barra inferior de navegación accesible
-            float navPillW = Mathf.Min(sw * 0.75f, 520f);
-            float navPillH = 36f;
-            Rect navPillRect = new Rect((sw - navPillW) * 0.5f, sh * 0.92f, navPillW, navPillH);
-            GUI.color = new Color(0.06f, 0.05f, 0.03f, 0.80f);
-            GUI.DrawTexture(navPillRect, Texture2D.whiteTexture);
-            GUI.color = Color.white;
-
+            float navPillW = Mathf.Min(sw * 0.75f, 540f);
+            float navPillH = 38f;
+            Rect navPillRect = new Rect((sw - navPillW) * 0.5f, sh * 0.915f, navPillW, navPillH);
+            JungleUITheme.DrawSubPanel(navPillRect);
             var navTipStyle = new GUIStyle(tipStyle) { fontSize = 15, normal = { textColor = new Color(1f, 0.95f, 0.82f) } };
-            GUI.Label(new Rect(navPillRect.x, navPillRect.y + 5, navPillW, 26), "Usa [←/→] o haz clic en un letrero para entrar", navTipStyle);
+            JungleUITheme.DrawShadowedLabel(new Rect(navPillRect.x, navPillRect.y + 4f, navPillW, 28f), "Usa [Izquierda / Derecha] o haz clic en un letrero para entrar", navTipStyle, 1.5f);
+            JungleUITheme.DrawLeaves();
         }
         else if (currentState == State.PartyModal)
         {
-            DrawPartyModal(sw, sh, titleStyle, subtitleStyle, tipStyle);
+            DrawPartyModal(sw, sh, titleStyle, subtitleStyle);
+            JungleUITheme.DrawLeaves();
         }
         else if (currentState == State.ComicStory)
         {
             DrawComicModal(sw, sh, titleStyle, subtitleStyle, tipStyle);
+            JungleUITheme.DrawLeaves();
         }
         else if (currentState == State.PersonalPrep)
         {
-            DrawPrepModal(sw, sh, titleStyle, subtitleStyle, tipStyle);
+            DrawPrepModal(sw, sh, titleStyle, subtitleStyle);
+            JungleUITheme.DrawLeaves();
         }
     }
 
-    private void DrawPartyModal(int sw, int sh, GUIStyle titleStyle, GUIStyle subtitleStyle, GUIStyle tipStyle)
+    private void DrawPartyModal(int sw, int sh, GUIStyle titleStyle, GUIStyle subtitleStyle)
     {
-        GUI.color = new Color(0f, 0f, 0f, 0.65f);
-        GUI.DrawTexture(new Rect(0, 0, sw, sh), Texture2D.whiteTexture);
-        GUI.color = Color.white;
+        Color prev = JungleRetainedUI.color;
+        JungleRetainedUI.color = new Color(0f, 0f, 0f, 0.65f);
+        JungleRetainedUI.DrawTexture(new Rect(0, 0, sw, sh), Texture2D.whiteTexture);
+        JungleRetainedUI.color = prev;
 
         float cardW = Mathf.Min(sw * 0.80f, 760f);
         float cardH = Mathf.Min(sh * 0.70f, 480f);
         Rect cardRect = new Rect((sw - cardW) * 0.5f, (sh - cardH) * 0.5f, cardW, cardH);
 
-        if (texBambooCard != null)
-            GUI.DrawTexture(cardRect, texBambooCard);
-        else
-            GUI.Box(cardRect, GUIContent.none);
+        JungleUITheme.DrawPanel(cardRect, selected: true);
 
         var partyTitleStyle = new GUIStyle(titleStyle) { fontSize = 32 };
-        GUI.Label(new Rect(cardRect.x, cardRect.y + 25, cardW, 45), "MODO FIESTA — GORILIMPIADAS", partyTitleStyle);
+        JungleUITheme.DrawShadowedLabel(new Rect(cardRect.x, cardRect.y + 25f, cardW, 45f), "MODO FIESTA — GORILIMPIADAS", partyTitleStyle, 2.5f);
 
         var bodyStyle = new GUIStyle(subtitleStyle)
         {
@@ -1046,19 +1023,22 @@ public sealed class SplashDirector : MonoBehaviour
                            "Cada jugador puede usar su teléfono como control de movimiento\n" +
                            "o jugar frente a la cámara web en pruebas de cuerpo entero.\n\n" +
                            "¡Conecta a tus amigos escaneando el código QR en la siguiente pantalla!";
-        GUI.Label(new Rect(cardRect.x + 40, cardRect.y + 85, cardW - 80, cardH * 0.50f), partyDesc, bodyStyle);
+        JungleUITheme.DrawSubPanel(new Rect(cardRect.x + 36f, cardRect.y + 84f, cardW - 72f, cardH * 0.50f));
+        JungleRetainedUI.Label(new Rect(cardRect.x + 48f, cardRect.y + 92f, cardW - 96f, cardH * 0.46f), partyDesc, bodyStyle);
 
-        float btnW = 180f;
-        float btnH = 46f;
-        float btnY = cardRect.y + cardH - 65f;
+        float btnW = 210f;
+        float btnH = 48f;
+        float btnY = cardRect.y + cardH - 68f;
 
-        if (GUI.Button(new Rect(cardRect.x + 50, btnY, btnW, btnH), "← Volver (ESC)"))
+        if (JungleRetainedUI.Button(new Rect(cardRect.x + 46f, btnY, btnW, btnH), "< Volver (ESC)", JungleUITheme.Button))
         {
+            JungleAudioBank.PlayUiClick();
             currentState = State.Menu3D;
         }
 
-        if (GUI.Button(new Rect(cardRect.x + cardW - btnW - 50, btnY, btnW, btnH), "Crear Sala QR →"))
+        if (JungleRetainedUI.Button(new Rect(cardRect.x + cardW - btnW - 46f, btnY, btnW, btnH), "Crear Sala QR >", JungleUITheme.ButtonSelected))
         {
+            JungleAudioBank.PlayUiClick();
             TournamentSession.StartPartyMode();
             currentState = State.Exiting;
         }
@@ -1066,18 +1046,16 @@ public sealed class SplashDirector : MonoBehaviour
 
     private void DrawComicModal(int sw, int sh, GUIStyle titleStyle, GUIStyle subtitleStyle, GUIStyle tipStyle)
     {
-        GUI.color = new Color(0f, 0f, 0f, 0.70f);
-        GUI.DrawTexture(new Rect(0, 0, sw, sh), Texture2D.whiteTexture);
-        GUI.color = Color.white;
+        Color prev = JungleRetainedUI.color;
+        JungleRetainedUI.color = new Color(0f, 0f, 0f, 0.70f);
+        JungleRetainedUI.DrawTexture(new Rect(0, 0, sw, sh), Texture2D.whiteTexture);
+        JungleRetainedUI.color = prev;
 
         float cardW = Mathf.Min(sw * 0.85f, 880f);
         float cardH = Mathf.Min(sh * 0.80f, 560f);
         Rect cardRect = new Rect((sw - cardW) * 0.5f, (sh - cardH) * 0.5f, cardW, cardH);
 
-        if (texBambooCard != null)
-            GUI.DrawTexture(cardRect, texBambooCard);
-        else
-            GUI.Box(cardRect, GUIContent.none);
+        JungleUITheme.DrawPanel(cardRect, selected: true);
 
         ComicPanel p = ComicPanels[comicPanelIndex];
 
@@ -1086,24 +1064,25 @@ public sealed class SplashDirector : MonoBehaviour
             fontSize = 15,
             normal = { textColor = new Color(1f, 0.85f, 0.35f) }
         };
-        GUI.Label(new Rect(cardRect.x, cardRect.y + 20, cardW, 25), p.tag, tagStyle);
+        JungleRetainedUI.Label(new Rect(cardRect.x, cardRect.y + 20f, cardW, 25f), p.tag, tagStyle);
 
         var panelTitleStyle = new GUIStyle(titleStyle)
         {
             fontSize = 32,
             normal = { textColor = new Color(1f, 0.92f, 0.30f) }
         };
-        GUI.Label(new Rect(cardRect.x, cardRect.y + 48, cardW, 45), p.title, panelTitleStyle);
+        JungleUITheme.DrawShadowedLabel(new Rect(cardRect.x, cardRect.y + 48f, cardW, 45f), p.title, panelTitleStyle, 2.5f);
 
-        Rect imgRect = new Rect(cardRect.x + 35, cardRect.y + 105, cardW * 0.38f, cardH * 0.50f);
+        Rect imgRect = new Rect(cardRect.x + 35f, cardRect.y + 105f, cardW * 0.38f, cardH * 0.50f);
         Texture2D panelTex = (comicPanelIndex >= 2) ? texGorillaAudience : texGorillaMenu;
         if (panelTex != null)
         {
-            GUI.DrawTexture(imgRect, panelTex, ScaleMode.ScaleToFit);
+            JungleUITheme.DrawSubPanel(new Rect(imgRect.x - 4f, imgRect.y - 4f, imgRect.width + 8f, imgRect.height + 8f));
+            JungleRetainedUI.DrawTexture(imgRect, panelTex, ScaleMode.ScaleToFit);
         }
 
-        float textX = (panelTex != null) ? (cardRect.x + cardW * 0.42f) : (cardRect.x + 40);
-        float textW = (panelTex != null) ? (cardW * 0.52f) : (cardW - 80);
+        float textX = (panelTex != null) ? (cardRect.x + cardW * 0.43f) : (cardRect.x + 40f);
+        float textW = (panelTex != null) ? (cardW * 0.52f) : (cardW - 80f);
         var narrativeStyle = new GUIStyle(subtitleStyle)
         {
             fontSize = 19,
@@ -1111,67 +1090,68 @@ public sealed class SplashDirector : MonoBehaviour
             alignment = TextAnchor.MiddleLeft,
             normal = { textColor = new Color(1f, 0.98f, 0.92f) }
         };
-        GUI.Label(new Rect(textX, cardRect.y + 105, textW, cardH * 0.48f), p.narrative, narrativeStyle);
+        JungleRetainedUI.Label(new Rect(textX, cardRect.y + 105f, textW, cardH * 0.48f), p.narrative, narrativeStyle);
 
         var contextStyle = new GUIStyle(tipStyle)
         {
             normal = { textColor = new Color(1f, 0.90f, 0.65f) },
             alignment = TextAnchor.MiddleCenter
         };
-        GUI.Label(new Rect(cardRect.x + 20, cardRect.y + cardH - 85, cardW - 40, 26), p.tip, contextStyle);
+        JungleRetainedUI.Label(new Rect(cardRect.x + 20f, cardRect.y + cardH - 88f, cardW - 40f, 26f), p.tip, contextStyle);
 
-        float btnW = 160f;
+        float btnW = 175f;
         float btnH = 44f;
-        float btnY = cardRect.y + cardH - 54f;
+        float btnY = cardRect.y + cardH - 56f;
 
         if (comicPanelIndex > 0)
         {
-            if (GUI.Button(new Rect(cardRect.x + 40, btnY, btnW, btnH), "← Anterior"))
+            if (JungleRetainedUI.Button(new Rect(cardRect.x + 40f, btnY, btnW, btnH), "< Anterior", JungleUITheme.Button))
             {
+                JungleAudioBank.PlayUiClick();
                 comicPanelIndex--;
             }
         }
 
-        string nextLabel = (comicPanelIndex >= ComicPanels.Length - 1) ? "¡Prepararse! →" : "Siguiente →";
-        if (GUI.Button(new Rect(cardRect.x + cardW - btnW - 40, btnY, btnW, btnH), nextLabel))
+        string nextLabel = (comicPanelIndex >= ComicPanels.Length - 1) ? "¡Prepararse! >" : "Siguiente >";
+        if (JungleRetainedUI.Button(new Rect(cardRect.x + cardW - btnW - 40f, btnY, btnW, btnH), nextLabel, JungleUITheme.ButtonSelected))
         {
+            JungleAudioBank.PlayUiClick();
             AdvanceComic();
         }
 
-        if (GUI.Button(new Rect(cardRect.x + (cardW - 130) * 0.5f, btnY, 130, btnH), "Omitir (ESC)"))
+        if (JungleRetainedUI.Button(new Rect(cardRect.x + (cardW - 150f) * 0.5f, btnY, 150f, btnH), "Omitir (ESC)", JungleUITheme.Button))
         {
+            JungleAudioBank.PlayUiClick();
             SkipComicToPrep();
         }
     }
 
-    private void DrawPrepModal(int sw, int sh, GUIStyle titleStyle, GUIStyle subtitleStyle, GUIStyle tipStyle)
+    private void DrawPrepModal(int sw, int sh, GUIStyle titleStyle, GUIStyle subtitleStyle)
     {
-        GUI.color = new Color(0f, 0f, 0f, 0.70f);
-        GUI.DrawTexture(new Rect(0, 0, sw, sh), Texture2D.whiteTexture);
-        GUI.color = Color.white;
+        Color prev = JungleRetainedUI.color;
+        JungleRetainedUI.color = new Color(0f, 0f, 0f, 0.70f);
+        JungleRetainedUI.DrawTexture(new Rect(0, 0, sw, sh), Texture2D.whiteTexture);
+        JungleRetainedUI.color = prev;
 
         float cardW = Mathf.Min(sw * 0.85f, 820f);
         float cardH = Mathf.Min(sh * 0.75f, 500f);
         Rect cardRect = new Rect((sw - cardW) * 0.5f, (sh - cardH) * 0.5f, cardW, cardH);
 
-        if (texBambooCard != null)
-            GUI.DrawTexture(cardRect, texBambooCard);
-        else
-            GUI.Box(cardRect, GUIContent.none);
+        JungleUITheme.DrawPanel(cardRect, selected: true);
 
         var prepTitleStyle = new GUIStyle(titleStyle)
         {
             fontSize = 30,
             normal = { textColor = new Color(1f, 0.90f, 0.25f) }
         };
-        GUI.Label(new Rect(cardRect.x, cardRect.y + 25, cardW, 40), "PREPARACIÓN PERSONAL", prepTitleStyle);
+        JungleUITheme.DrawShadowedLabel(new Rect(cardRect.x, cardRect.y + 25f, cardW, 40f), "PREPARACIÓN PERSONAL", prepTitleStyle, 2.5f);
 
         var stepHeaderStyle = new GUIStyle(subtitleStyle)
         {
             fontSize = 16,
             normal = { textColor = new Color(1f, 0.85f, 0.35f) }
         };
-        GUI.Label(new Rect(cardRect.x, cardRect.y + 70, cardW, 26), "Paso " + (prepStepIndex + 1) + " de " + PrepSteps.Length, stepHeaderStyle);
+        JungleRetainedUI.Label(new Rect(cardRect.x, cardRect.y + 70f, cardW, 26f), "Paso " + (prepStepIndex + 1) + " de " + PrepSteps.Length, stepHeaderStyle);
 
         var bodyStyle = new GUIStyle(subtitleStyle)
         {
@@ -1180,28 +1160,32 @@ public sealed class SplashDirector : MonoBehaviour
             alignment = TextAnchor.MiddleCenter,
             normal = { textColor = new Color(1f, 0.98f, 0.92f) }
         };
-        GUI.Label(new Rect(cardRect.x + 50, cardRect.y + 115, cardW - 100, cardH * 0.50f), PrepSteps[prepStepIndex], bodyStyle);
+        JungleUITheme.DrawSubPanel(new Rect(cardRect.x + 42f, cardRect.y + 112f, cardW - 84f, cardH * 0.50f));
+        JungleRetainedUI.Label(new Rect(cardRect.x + 54f, cardRect.y + 120f, cardW - 108f, cardH * 0.46f), PrepSteps[prepStepIndex], bodyStyle);
 
-        float btnW = 160f;
+        float btnW = 175f;
         float btnH = 44f;
         float btnY = cardRect.y + cardH - 58f;
 
         if (prepStepIndex > 0)
         {
-            if (GUI.Button(new Rect(cardRect.x + 40, btnY, btnW, btnH), "← Anterior"))
+            if (JungleRetainedUI.Button(new Rect(cardRect.x + 40f, btnY, btnW, btnH), "< Anterior", JungleUITheme.Button))
             {
+                JungleAudioBank.PlayUiClick();
                 prepStepIndex--;
             }
         }
 
-        string actionText = (prepStepIndex >= PrepSteps.Length - 1) ? "¡A Jugar! →" : "Siguiente →";
-        if (GUI.Button(new Rect(cardRect.x + cardW - btnW - 40, btnY, btnW, btnH), actionText))
+        string actionText = (prepStepIndex >= PrepSteps.Length - 1) ? "¡A Jugar! >" : "Siguiente >";
+        if (JungleRetainedUI.Button(new Rect(cardRect.x + cardW - btnW - 40f, btnY, btnW, btnH), actionText, JungleUITheme.ButtonSelected))
         {
+            JungleAudioBank.PlayUiClick();
             AdvancePrep();
         }
 
-        if (GUI.Button(new Rect(cardRect.x + (cardW - 130) * 0.5f, btnY, 130, btnH), "Omitir (ESC)"))
+        if (JungleRetainedUI.Button(new Rect(cardRect.x + (cardW - 150f) * 0.5f, btnY, 150f, btnH), "Omitir (ESC)", JungleUITheme.Button))
         {
+            JungleAudioBank.PlayUiClick();
             LaunchStoryDiscipline();
         }
     }

@@ -628,6 +628,16 @@ public sealed partial class CoconutSliceController : MonoBehaviour, IJungleScree
 
     private void DrawResults(float w, float h)
     {
+        if (TournamentSession.IsActive)
+        {
+            TournamentSession.RecordRoundResult(sliced);
+            Vector2 tNormCursor = new Vector2(0.5f, 0.5f);
+            string tHandLabel = "MANO";
+            bool tHandRaised = false, tHandClosed = false, tForwardPush = false;
+            if (session != null) session.TryCameraCursor(out tNormCursor, out tHandLabel, out tHandRaised, out tHandClosed, out tForwardPush);
+            TournamentSession.DrawTournamentOverlay(w, h, tNormCursor, tHandLabel, tHandRaised, tHandClosed, tForwardPush, session != null && session.PhoneTouchTriggered);
+            return;
+        }
         string rank = keeperMode
             ? (score >= 4500 ? "MURO DE LA SELVA" : score >= 2800 ? "PORTERO LEGENDARIO" : score >= 1400 ? "GUARDIÁN DEL ARCO" : "APRENDIZ DEL ARCO")
             : (score >= 5000 ? "REY DE LA SELVA" : score >= 3000 ? "NINJA GORILA" : score >= 1600 ? "CORTADOR TROPICAL" : "APRENDIZ DEL COCO");

@@ -179,7 +179,7 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
     }
     public void ConfigureForScene(string sceneName)
     {
-        if(sceneName==SceneNavigator.MainMenu){pipMinimized=true;if(serviceHost!=null)serviceHost.PipEnabled=false;}
+        if(sceneName==SceneNavigator.MainMenu||sceneName==SceneNavigator.Splash){pipMinimized=true;if(serviceHost!=null)serviceHost.PipEnabled=false;}
         gameplayActive=sceneName!=SceneNavigator.CoconutSlice&&sceneName!=SceneNavigator.WhackAMole&&sceneName!=SceneNavigator.GorillaSmash&&sceneName!=SceneNavigator.CoconutThrow;
         presentation.gameId=JungleGameplayInput.ForScene(sceneName) switch {
             JungleGame.Bowling=>"bowling",JungleGame.Boxing=>"boxing",JungleGame.Baseball=>"baseball",JungleGame.Drums=>"drums",
@@ -573,7 +573,7 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
 
     void DrawCameraPip(string activeSceneName,JungleGame sceneGame)
     {
-        if(serviceHost==null||activeSceneName==SceneNavigator.Connection)return;
+        if(serviceHost==null||activeSceneName==SceneNavigator.Connection||activeSceneName==SceneNavigator.Splash)return;
         bool relevant=serviceHost.CameraConnected||serviceHost.CameraOnly||activeSceneName==SceneNavigator.MainMenu||JungleGameplayInput.RequiresCamera(sceneGame);
         if(!relevant)return;
 
