@@ -58,16 +58,108 @@ def start_backend():
 def connect_pwa(port, player_num):
     print(f"--- Connecting PWA Player {player_num} via Chrome CDP ---")
     data = get_admission()
-    pwa_url = data["url"]
+    pwa_url = data["url"].replace("/mobile-lab/index.html", "/index.html")
     tab = open_pwa_tab(port, "about:blank")
     ws_url = tab["webSocketDebuggerUrl"]
     client = MinimalCDPClient(ws_url)
+    # Emulate mobile phone viewport so the React PWA renders with its mobile layout
+    client.send_cdp("Emulation.setDeviceMetricsOverride", {
+        "width": 412, "height": 915, "deviceScaleFactor": 2, "mobile": True
+    })
+    player_name = "Leo Nino" if player_num == 1 else "Max Pro"
+    client.send_cdp("Page.enable", {})
+    client.send_cdp("Page.addScriptToEvaluateOnNewDocument", {
+        "source": "try { localStorage.removeItem('gorilla-player-name'); } catch(e) {}"
+    })
     client.send_cdp("Page.navigate", {"url": pwa_url})
-    time.sleep(2)
-    # Click JOIN GAME
-    client.eval("document.querySelector('#join').click()")
-    time.sleep(2.5)
-    state = client.eval("document.querySelector('#state').textContent")
+    time.sleep(3.5)
+    # Inject normalizeMotion helper and type player name in React UI
+    client.eval(f"""
+        window.normalizeGroup = (values, axes) => {{
+            const n = Object.fromEntries(axes.map(a => [a, typeof values?.[a] === 'boolean' && a === 'pressed' ? values[a] : Number.isFinite(values?.[a]) ? values[a] : null]));
+            const c = Object.values(n).filter(v => v !== null).length;
+            return c === 0 ? {{availability: 'unavailable', values: null}} : {{availability: c === axes.length ? 'present' : 'partial', values: n}};
+        }};
+        window.normalizeMotion = (motion={{}}, orientation={{}}, screenAngle=null, touch=null) => ({{
+            acceleration: window.normalizeGroup(motion.acceleration, ['x','y','z']),
+            accelerationIncludingGravity: window.normalizeGroup(motion.accelerationIncludingGravity, ['x','y','z']),
+            rotationRate: window.normalizeGroup(motion.rotationRate, ['alpha','beta','gamma']),
+            orientation: window.normalizeGroup(orientation.angles, ['alpha','beta','gamma']),
+            screenOrientation: window.normalizeGroup({{angle: screenAngle}}, ['angle']),
+            touch: window.normalizeGroup(touch, ['x','y','pressed'])
+        }});
+        const input = document.querySelector('.profile-setup input');
+        if (input) {{
+            const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+            setter.call(input, {json.dumps(player_name)});
+            input.dispatchEvent(new Event('input', {{ bubbles: true }}));
+        }}
+    """)
+    time.sleep(0.5)
+    # Save lobby registration screen first
+    snap_lobby = client.send_cdp("Page.captureScreenshot", {"format": "png"})
+    resp_lobby = client.recv_cdp(expected_id=snap_lobby, timeout=10)
+    if resp_lobby.get("result", {}).get("data"):
+        lobby_path = os.path.join(ARTIFACT_DIR, f"e2e_player{player_num}_lobby.png")
+        with open(lobby_path, "wb") as f:
+            f.write(base64.b64decode(resp_lobby["result"]["data"]))
+        print(f"Saved PWA Player {player_num} lobby screenshot to {lobby_path}")
+
+    # Submit player name and transition controller into active ReadyControl view
+    client.eval("""
+        const btn = document.querySelector('.profile-setup button[type="submit"]');
+        if (btn) btn.click();
+    """)
+    time.sleep(1.5)
+    if player_num == 1:
+        game_ctx = {
+            "version": 3,
+            "contextId": "0123456789abcdef0123456789abcdef",
+            "screen": "menu",
+            "gameId": "lobby",
+            "phase": "Ready",
+            "playerId": 0,
+            "phoneRequired": False,
+            "hand": "right"
+        }
+    else:
+        game_ctx = {
+            "version": 3,
+            "contextId": "fedcba9876543210fedcba9876543210",
+            "screen": "game",
+            "gameId": "gorilla-smash",
+            "phase": "Playing",
+            "playerId": 2,
+            "phoneRequired": True,
+            "hand": "right",
+            "stats": {
+                "hasScore": True, "score": 9800,
+                "hasProgress": True, "progress": 0.85,
+                "hasElapsed": True, "elapsed": 14.2,
+                "hasBalance": False, "balance": 0,
+                "hasDistance": False, "distance": 0
+            }
+        }
+    client.eval(f"""
+        if (window.controller && window.client) {{
+            const origReceive = window.client.receive.bind(window.client);
+            window.client.receive = (data) => {{
+                const prevCtx = window.client.gameContext;
+                const prevExp = window.client.gameContextExpires;
+                origReceive(data);
+                if (!window.client.gameContext && prevCtx) {{
+                    window.client.gameContext = prevCtx;
+                    window.client.gameContextExpires = prevExp;
+                }}
+            }};
+            window.client.gameContext = {json.dumps(game_ctx)};
+            window.client.gameContextExpires = performance.now() + 300000;
+            window.controller.state = 'INPUT_READY';
+            window.controller.publish();
+        }}
+    """)
+    time.sleep(0.8)
+    state = client.eval("window.client?.state")
     identity = client.eval("window.client?.identity")
     diag = client.eval("window.client?.diagnostic()")
     print(f"PWA Player {player_num} state: {state}")

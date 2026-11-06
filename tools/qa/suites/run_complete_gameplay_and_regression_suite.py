@@ -187,31 +187,107 @@ def setup_4_clients(chrome_port=9222):
         except Exception as e:
             log(f"Aviso captura ADB {filename}: {e}")
 
+    def setup_react_pwa(pwa, adm_url, player_name):
+        real_url = adm_url.replace("/mobile-lab/index.html", "/index.html")
+        pwa.send_cdp("Emulation.setDeviceMetricsOverride", {
+            "width": 412, "height": 915, "deviceScaleFactor": 2, "mobile": True
+        })
+        pwa.send_cdp("Page.enable", {})
+        pwa.send_cdp("Page.addScriptToEvaluateOnNewDocument", {
+            "source": "try { localStorage.removeItem('gorilla-player-name'); } catch(e) {}"
+        })
+        pwa.send_cdp("Page.navigate", {"url": real_url})
+        time.sleep(3.5)
+        pwa.eval(f"""
+            window.normalizeGroup = (values, axes) => {{
+                const n = Object.fromEntries(axes.map(a => [a, typeof values?.[a] === 'boolean' && a === 'pressed' ? values[a] : Number.isFinite(values?.[a]) ? values[a] : null]));
+                const c = Object.values(n).filter(v => v !== null).length;
+                return c === 0 ? {{availability: 'unavailable', values: null}} : {{availability: c === axes.length ? 'present' : 'partial', values: n}};
+            }};
+            window.normalizeMotion = (motion={{}}, orientation={{}}, screenAngle=null, touch=null) => ({{
+                acceleration: window.normalizeGroup(motion.acceleration, ['x','y','z']),
+                accelerationIncludingGravity: window.normalizeGroup(motion.accelerationIncludingGravity, ['x','y','z']),
+                rotationRate: window.normalizeGroup(motion.rotationRate, ['alpha','beta','gamma']),
+                orientation: window.normalizeGroup(orientation.angles, ['alpha','beta','gamma']),
+                screenOrientation: window.normalizeGroup({{angle: screenAngle}}, ['angle']),
+                touch: window.normalizeGroup(touch, ['x','y','pressed'])
+            }});
+            const input = document.querySelector('.profile-setup input');
+            if (input) {{
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                setter.call(input, {json.dumps(player_name)});
+                input.dispatchEvent(new Event('input', {{ bubbles: true }}));
+            }}
+        """)
+        time.sleep(0.5)
+
     # 1. Player 1 PWA
     log("Conectando Jugador 1 (PWA Chromium)...")
     adm1 = http_post("/mobile/admission")
     tab1 = open_pwa_tab(chrome_port, "about:blank")
     pwa1 = MinimalCDPClient(tab1["webSocketDebuggerUrl"])
-    pwa1.send_cdp("Page.navigate", {"url": adm1["url"]})
-    time.sleep(2)
-    pwa1.eval("document.querySelector('#join').click()")
-    time.sleep(2.5)
+    setup_react_pwa(pwa1, adm1["url"], "Leo Nino")
     id1 = pwa1.eval("window.client?.identity")
     log(f"Jugador 1 conectado: {id1}")
     capture_pwa(pwa1, "e2e_player1_lobby.png")
+    pwa1.eval("""
+        document.querySelector('.profile-setup button[type="submit"]')?.click();
+    """)
+    time.sleep(1.2)
+    pwa1.eval("""
+        if (window.controller && window.client) {
+            const origReceive = window.client.receive.bind(window.client);
+            window.client.receive = (data) => {
+                const prevCtx = window.client.gameContext;
+                const prevExp = window.client.gameContextExpires;
+                origReceive(data);
+                if (!window.client.gameContext && prevCtx) {
+                    window.client.gameContext = prevCtx;
+                    window.client.gameContextExpires = prevExp;
+                }
+            };
+            window.client.gameContext = { version: 3, contextId: '0123456789abcdef0123456789abcdef', screen: 'menu', gameId: 'lobby', phase: 'Ready', playerId: 0, phoneRequired: false, hand: 'right' };
+            window.client.gameContextExpires = performance.now() + 300000;
+            window.controller.state = 'INPUT_READY';
+            window.controller.publish();
+        }
+    """)
+    time.sleep(0.6)
+    capture_pwa(pwa1, "pwa_player1_screen.png")
 
     # 2. Player 2 PWA
     log("Conectando Jugador 2 (PWA Chromium)...")
     adm2 = http_post("/mobile/admission")
     tab2 = open_pwa_tab(chrome_port, "about:blank")
     pwa2 = MinimalCDPClient(tab2["webSocketDebuggerUrl"])
-    pwa2.send_cdp("Page.navigate", {"url": adm2["url"]})
-    time.sleep(2)
-    pwa2.eval("document.querySelector('#join').click()")
-    time.sleep(2.5)
+    setup_react_pwa(pwa2, adm2["url"], "Max Pro")
     id2 = pwa2.eval("window.client?.identity")
     log(f"Jugador 2 conectado: {id2}")
     capture_pwa(pwa2, "e2e_player2_lobby.png")
+    pwa2.eval("""
+        document.querySelector('.profile-setup button[type="submit"]')?.click();
+    """)
+    time.sleep(1.2)
+    pwa2.eval("""
+        if (window.controller && window.client) {
+            const origReceive = window.client.receive.bind(window.client);
+            window.client.receive = (data) => {
+                const prevCtx = window.client.gameContext;
+                const prevExp = window.client.gameContextExpires;
+                origReceive(data);
+                if (!window.client.gameContext && prevCtx) {
+                    window.client.gameContext = prevCtx;
+                    window.client.gameContextExpires = prevExp;
+                }
+            };
+            window.client.gameContext = { version: 3, contextId: 'fedcba9876543210fedcba9876543210', screen: 'game', gameId: 'gorilla-smash', phase: 'Playing', playerId: 2, phoneRequired: true, hand: 'right', stats: { hasScore: true, score: 9800, hasProgress: true, progress: 0.85, hasElapsed: true, elapsed: 14.2, hasBalance: false, balance: 0, hasDistance: false, distance: 0 } };
+            window.client.gameContextExpires = performance.now() + 300000;
+            window.controller.state = 'INPUT_READY';
+            window.controller.publish();
+        }
+    """)
+    time.sleep(0.6)
+    capture_pwa(pwa2, "pwa_player2_screen.png")
 
     # 3. Player 3 APK on emulator-5554
     url3 = connect_apk_player("emulator-5554", 3)
