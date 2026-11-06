@@ -132,6 +132,8 @@ const controllerGames = <String, String>{
   'jungle-keeper': 'JUNGLE KEEPER',
   'whack': 'GORILLA WHACK',
   'log-balance': 'JUNGLE BALANCE',
+  'gorilla-smash': 'GORILLA SMASH',
+  'coconut-throw': 'COCONUT THROW',
 };
 
 class GameControlProfile {
@@ -181,7 +183,7 @@ class GameControlProfile {
           ? context!['phoneRequired'] as bool
           : game != 'lobby' &&
                 !['coconut-slice', 'jungle-keeper'].contains(game),
-      valid && player == 1 && screen != 'connection',
+      valid && screen != 'connection' && (player == 1 || (screen == 'game' && player == owner)),
     );
   }
 }
@@ -247,6 +249,14 @@ class GameView {
         'log-balance': [
           'JUNGLE BALANCE',
           'Inclina suavemente y frena la inercia.',
+        ],
+        'gorilla-smash': [
+          'GORILLA SMASH',
+          'Sujeta el teléfono y realiza un movimiento descendente controlado, sin soltarlo.',
+        ],
+        'coconut-throw': [
+          'COCONUT THROW',
+          'Apunta hacia delante y realiza un gesto de lanzamiento suave, sin soltar el teléfono.',
         ],
       };
       const phases = {

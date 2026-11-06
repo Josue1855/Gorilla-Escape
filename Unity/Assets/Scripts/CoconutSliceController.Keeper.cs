@@ -10,9 +10,12 @@ public sealed partial class CoconutSliceController
     };
 
     private GameObject leftGoalPost, rightGoalPost, topCrossbar;
+    private GorillaMascotRig keeperStriker;
 
     private void BuildKeeperGoalFrame()
     {
+        keeperStriker = new GorillaMascotRig();
+        keeperStriker.LoadMascot(transform, new Vector3(0f, -3.55f, 3.8f), Quaternion.Euler(0f, 180f, 0f), 2.1f, "Gorila tirador", runner: true);
         Color bamboo = new Color(.56f, .42f, .16f);
         Color rope = new Color(.82f, .74f, .48f);
         leftGoalPost = JungleStageBuilder.CreatePrimitive(PrimitiveType.Cylinder, "Poste izquierdo Portería", new Vector3(-6.35f, .15f, .4f), new Vector3(.34f, 3.85f, .34f), bamboo, transform);

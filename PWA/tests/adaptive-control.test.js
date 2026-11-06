@@ -16,7 +16,7 @@ function fixture(){
   return {model,client,win,doc,saved,timers};
 }
 test('menu and eight game profiles distinguish sensors, dominant hand and spectator navigation',()=>{
-  for(const id of ['lobby','bowling','boxing','baseball','drums','coconut-slice','jungle-keeper','whack','log-balance']){
+  for(const id of ['lobby','bowling','boxing','baseball','drums','coconut-slice','jungle-keeper','whack','log-balance','gorilla-smash','coconut-throw']){
     const c=context(id),profile=controlProfile(c,1);
     assert.equal(profile.valid,true);assert.equal(profile.hand,'left');assert.equal(profile.canNavigate,true);
     assert.equal(controlProfile(c,2).canNavigate,false);

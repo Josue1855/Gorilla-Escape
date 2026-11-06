@@ -68,11 +68,14 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     bool lastPhoneTouch;
     float lastHandZ;
     float lastHandZTime = -1f;
-    public bool PhoneConnected => java?.State == IpcState.RUNNING && java.Lobby.IsPhoneConnected(1);
+    int lastActivePlayer = 1;
+    int ActivePlayerId => TournamentSession.IsActive && TournamentSession.CurrentTurnPlayerId >= 1 && TournamentSession.CurrentTurnPlayerId <= 4 && java?.Lobby != null && java.Lobby.IsPhoneConnected(TournamentSession.CurrentTurnPlayerId)
+        ? TournamentSession.CurrentTurnPlayerId : 1;
+    public bool PhoneConnected => java?.State == IpcState.RUNNING && (java.Lobby.IsPhoneConnected(ActivePlayerId) || java.Lobby.IsPhoneConnected(1));
     public bool TryPhoneVisualEstimate(out PhoneVisualEstimate estimate)
     {
         estimate=null;
-        return PhoneConnected&&fusion!=null&&fusion.TryPhoneVisualEstimate(1,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),out estimate);
+        return PhoneConnected&&fusion!=null&&fusion.TryPhoneVisualEstimate(ActivePlayerId,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),out estimate);
     }
     // Camera availability must not depend on a phone or on fusion alignment.
     public bool CameraConnected => vision?.State == "RUNNING" && fusion != null
@@ -228,7 +231,8 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     {
         if(!force&&gameplay.Game==game)return;
         gameplay.Select(game,CameraOnly);
-        fusion?.Association.Ready(1);
+        lastActivePlayer = ActivePlayerId;
+        fusion?.Association.Ready(lastActivePlayer);
         refreshedFrame=-1;
     }
     // Explicit player action: discard the former association and require fresh acquisition.
@@ -236,7 +240,8 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     {
         RefreshInput();
         if(quitting||fusion==null||gameplay.Ready||!JungleGameplayInput.RequiresCamera(gameplay.Game)||!CameraConnected)return false;
-        fusion.Association.Ready(1);
+        lastActivePlayer = ActivePlayerId;
+        fusion.Association.Ready(lastActivePlayer);
         gameplay.Select(gameplay.Game,CameraOnly);
         LastPosePacketAt=-10;
         refreshedFrame=-1;
@@ -418,7 +423,15 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
             lastQaRegenerateAt = Time.unscaledTime;
             java.RegenerateQa();
         }
-        java.PhoneInputs.TryLatest(1,out var phone);
+        int activePlayer = ActivePlayerId;
+        if (activePlayer != lastActivePlayer)
+        {
+            lastActivePlayer = activePlayer;
+            fusion?.Association.Ready(activePlayer);
+            observedSequence = observedEpoch = -1;
+            observedSession = observedDevice = null;
+        }
+        java.PhoneInputs.TryLatest(activePlayer,out var phone);
         bool touchDown = phone?.touch != null && phone.touch.hasPressed && phone.touch.pressed;
         PhoneTouchTriggered = touchDown && !lastPhoneTouch;
         lastPhoneTouch = touchDown;
@@ -432,7 +445,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
                 if(adapter.TryMotion(phone,now,out _) || (gameplay.Game==JungleGame.LogBalance && adapter.TryTilt(phone,now,out _)))LastPhonePacketAt=Time.unscaledTime;
             }
         }
-        var candidate=fusion.EvaluateLatest(1,now);
+        var candidate=fusion.EvaluateLatest(activePlayer,now);
         if(gameplay.Game==JungleGame.LogBalance)gameplay.UpdatePhone(phone,now);
         else if(vision.State!="RUNNING")gameplay.Update(null,now);
         else gameplay.Update(candidate,now);

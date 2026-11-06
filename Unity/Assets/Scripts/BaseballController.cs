@@ -34,6 +34,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
     private void Awake()
     {
         session = MotionSession.Ensure();
+        session.ConfigureForScene(SceneNavigator.Baseball);
         BuildField();
         sfx = JungleAudioBank.Attach2DSource(gameObject);
         pitchTone = JungleAudioBank.Pitch;

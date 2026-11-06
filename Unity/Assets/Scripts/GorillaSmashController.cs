@@ -257,7 +257,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         // 8. Gorila Meshy AI anfitrión al lado de la torre
         var gorillaAnchor = new GameObject("05 Gorila Anfitrión").transform;
         gorillaAnchor.SetParent(transform, false);
-        gorillaAnchor.position = new Vector3(-2.6f, 0f, 0.5f);
+        gorillaAnchor.position = new Vector3(-1.65f, 0f, 0.5f);
         gorillaAnchor.rotation = Quaternion.Euler(0f, 25f, 0f);
         gorillaRig.LoadMascot(gorillaAnchor, gorillaAnchor.position, gorillaAnchor.rotation, 2.5f, "Gorila Meshy AI Striker");
 
@@ -472,12 +472,13 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
     {
         inputRevision = frame.Revision;
         matchedTiming = CompetitiveMechanics.TimingQuality(frame.PhoneTimestamp,frame.CameraTimestamp);
-        downSpeed = frame.Right.VelocityY;
+        var hand = session != null && session.HandMode == MotionSession.HandTrackingMode.LeftOnly ? frame.Left : frame.Right;
+        downSpeed = hand.VelocityY;
         phonePower = frame.PhonePower;
-        cursorViewport = new Vector2(frame.Right.X, 1f - frame.Right.Y);
+        cursorViewport = new Vector2(hand.X, 1f - hand.Y);
 
         if (frame.NewPose || frame.Baseline)
-            handVisual.Observe(cursorViewport.x, cursorViewport.y, frame.Right.VelocityX, -frame.Right.VelocityY, Time.unscaledTime);
+            handVisual.Observe(cursorViewport.x, cursorViewport.y, hand.VelocityX, -hand.VelocityY, Time.unscaledTime);
 
         // Detectar acción Smash o Whack autorizada
         if ((frame.Actions & (JungleAction.Smash | JungleAction.Whack)) != 0)

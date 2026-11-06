@@ -20,16 +20,17 @@ public final class MobileUiCommands {
     public synchronized Map<String,Object> offer(Request r,JsonNode context,TechnicalSession.Joined owner)throws IOException {
         long now=clock.getAsLong();seen.entrySet().removeIf(e->now-e.getValue()>30000);
         if(r==null||r.requestId()==null||!r.requestId().matches("[a-f0-9]{32}")||context==null||context.path("version").asInt()!=3
-            ||!Objects.equals(r.contextId(),context.path("contextId").asString())||owner.playerId()!=1)throw new IOException("COMMAND_CONTEXT");
+            ||!Objects.equals(r.contextId(),context.path("contextId").asString())
+            ||(owner.playerId()!=1&&!("game".equals(context.path("screen").asString())&&owner.playerId()==context.path("playerId").asInt(1))))throw new IOException("COMMAND_CONTEXT");
         if(seen.containsKey(r.requestId()))return Map.of("queued",true,"requestId",r.requestId());
         String target=r.target();boolean lobby=context.path("gameId").asString().equals("lobby");
         boolean valid=switch(r.action()==null?"":r.action()){
-            case "select-game" -> lobby&&GamePresentation.GAMES.contains(target)&&!"lobby".equals(target);
+            case "select-game" -> lobby&&owner.playerId()==1&&GamePresentation.GAMES.contains(target)&&!"lobby".equals(target);
             case "menu" -> "".equals(target);
             case "restart" -> !lobby&&"".equals(target);
             case "pause", "resume", "toggle-pause" -> !lobby&&"".equals(target);
             case "start" -> !lobby&&context.path("phase").asString().equals("Ready")&&"".equals(target);
-            case "set-hand" -> (lobby||context.path("gameId").asString().equals("bowling"))&&Set.of("left","right").contains(target==null?"":target);
+            case "set-hand" -> (lobby||Set.of("bowling","gorilla-smash","coconut-throw").contains(context.path("gameId").asString()))&&Set.of("left","right").contains(target==null?"":target);
             default -> false;
         };
         if(now-rateWindow>=1000){rateWindow=now;accepted=0;}

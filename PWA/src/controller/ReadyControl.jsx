@@ -71,7 +71,7 @@ export default function ReadyControl({ view, copyDiagnostic, copyStatus, diagnos
         {profile.canNavigate&&<nav className="game-menu" aria-label="Elegir juego en la PC">{Object.entries(games).map(([id,[title]])=><button key={id} className="game-card" disabled={view.commandPending} onClick={()=>command('select-game',id)}><strong>{title}</strong><span>{id==='log-balance'?'Solo celular':['coconut-slice','jungle-keeper'].includes(id)?'Solo cámara':'Celular + cámara'}</span></button>)}</nav>}
         <p className="control-hint">{profile.screen === 'connection' ? 'Comprueba en la PC que la cámara y los controles estén listos antes de comenzar.' : 'El menú funciona sin activar sensores. Puedes elegir el próximo desafío desde aquí.'}</p>
       </>}
-      {profile.canNavigate&&['lobby','bowling'].includes(game.game)&&<fieldset className="hand-choice"><legend>Mano con la que lanzas</legend>{['right','left'].map(hand=><button key={hand} className="secondary" aria-pressed={profile.hand===hand} disabled={view.commandPending} onClick={()=>command('set-hand',hand)}>{hand==='right'?'Derecha':'Izquierda'}</button>)}</fieldset>}
+      {profile.canNavigate&&['lobby','bowling','gorilla-smash','coconut-throw'].includes(game.game)&&<fieldset className="hand-choice"><legend>Mano con la que lanzas</legend>{['right','left'].map(hand=><button key={hand} className="secondary" aria-pressed={profile.hand===hand} disabled={view.commandPending} onClick={()=>command('set-hand',hand)}>{hand==='right'?'Derecha':'Izquierda'}</button>)}</fieldset>}
       {balance&&<section className="balance-control" aria-label="Control del equilibrio">
         <p>Inclinación de tu teléfono</p><div className="tilt-meter"><div className="tilt-track"><span style={{left:`${50+(ready?Math.max(-1,Math.min(1,view.controlTilt||0)):0)*42}%`}}/></div><div className="score-labels"><span>Izquierda</span><span>Centro</span><span>Derecha</span></div></div>
         {!ready&&<p role="status">Mantén el teléfono vertical y quieto para preparar el control.</p>}
@@ -86,7 +86,7 @@ export default function ReadyControl({ view, copyDiagnostic, copyStatus, diagnos
         {stats.distance!==undefined&&<p>Recorrido: {stats.distance.toFixed(1)} m</p>}
       </section>}
       {ready&&['bowling','baseball'].includes(game.game)&&<div className="control-actions">{actions}</div>}
-      {profile.canNavigate&&game.phase==='Ready'&&['log-balance','coconut-slice','jungle-keeper','whack'].includes(game.game)&&<button className="primary" disabled={view.commandPending||(profile.phoneRequired&&!ready)} onClick={()=>command('start')}>COMENZAR PRUEBA</button>}
+      {profile.canNavigate&&game.phase==='Ready'&&['log-balance','coconut-slice','jungle-keeper','whack','gorilla-smash','coconut-throw'].includes(game.game)&&<button className="primary" disabled={view.commandPending||(profile.phoneRequired&&!ready)} onClick={()=>command('start')}>COMENZAR PRUEBA</button>}
       {profile.canNavigate&&profile.screen==='game'&&<div className="control-actions"><button className="secondary" disabled={view.commandPending} onClick={()=>command('menu')}>VOLVER AL MENÚ</button><button className="secondary" disabled={view.commandPending} onClick={()=>command('restart')}>NUEVA PARTIDA</button></div>}
       <div className="control-actions" style={{display:'flex',gap:'8px',justifyContent:'center',marginTop:'12px',flexWrap:'wrap'}}>
         <button className="secondary" type="button" onClick={onToggleAway}>{view.isAway?'▶️ VOLVER A LA PARTIDA':'⏸️ ESTARÉ AUSENTE'}</button>

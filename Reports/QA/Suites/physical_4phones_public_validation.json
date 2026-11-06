@@ -1,0 +1,47 @@
+{
+  "test_id": "MP-PUBLIC-4PHONES-01",
+  "category": "physical_devices_public_internet",
+  "status": "BLOCKED",
+  "timestamp_utc": "2026-11-06T02:07:58Z",
+  "environment_probe": {
+    "adb_devices": {
+      "physical": [],
+      "emulators": [],
+      "error": null
+    },
+    "public_tunnel": {
+      "reachable": false,
+      "status_code": null,
+      "error": "HTTP Error 404: Not Found"
+    },
+    "local_server_diagnostics": {
+      "reachable": false,
+      "error": "<urlopen error [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión>"
+    },
+    "unity_standalone": {
+      "running": false,
+      "error": "Command '['powershell', '-NoProfile', '-Command', \"Get-Process -Name 'GorillaEscape' -ErrorAction SilentlyContinue | Select-Object Id, ProcessName | ConvertTo-Json\"]' returned non-zero exit status 1."
+    }
+  },
+  "blockers": [
+    "Se requieren 2 teléfonos físicos con Flutter Companion; detectados 0 físicos (emuladores detectados: [], que NO sustituyen teléfonos físicos).",
+    "El dominio público https://play.gorillas.run/mobile/health no tiene un túnel de sala activo en este momento (HTTP Error 404: Not Found).",
+    "GorillaEscape.exe (Unity Standalone Windows) no está en ejecución interactiva con operadores humanos.",
+    "Se requieren 4 teléfonos físicos conectados desde redes externas; peers activos actuales: 0."
+  ],
+  "acceptance_criteria": {
+    "1_topology": "2 teléfonos físicos reales en PWA (Safari iOS / Chrome Android) + 2 teléfonos físicos reales en Flutter APK + Unity Standalone Windows.",
+    "2_network": "Acceso mediante https://play.gorillas.run/<roomPrefix>/... desde al menos 2 redes externas distintas (p. ej. 4G/5G celular + Wi-Fi externo).",
+    "3_webrtc_signaling": "Admisión única (/mobile/admission), oferta/respuesta SDP e ICE vía TURN/STUN completados en < 4000 ms por teléfono.",
+    "4_sensor_cadence": "Frecuencia sostenida >= 30 Hz (óptimo 50-60 Hz) en los 4 dispositivos sin muestras sintéticas ni ceros fabricados.",
+    "5_turn_synchronization": "Rotación de turnos P1 -> P2 -> P3 -> P4 en las 10 disciplinas con comandos de UI móviles autorizados para el jugador en turno.",
+    "6_reconnection": "Suspensión de pantalla (5 s) y cambio de red recuperan la sesión con resumeToken sin duplicar slot ni perder Gorilla Points.",
+    "7_latency_budget": "RTT WebRTC P95 <= 120 ms en red móvil externa; 0 cierres de socket IPC (IPC_GAME_CONTEXT = 0 errores)."
+  },
+  "execution_instructions_when_hardware_available": [
+    "1. Iniciar GorillaEscape.exe en Windows con GORILLA_CONNECTION_MODE=INTERNET y túnel cloudflared activo hacia https://play.gorillas.run.",
+    "2. Conectar 2 teléfonos físicos Android/iOS a redes móviles 4G/5G y escanear el QR de la pantalla de Conexión con el navegador (PWA).",
+    "3. Conectar 2 teléfonos físicos con la app Flutter Companion instalada (Companion/build/app/outputs/flutter-apk/app-debug.apk) y escanear el QR.",
+    "4. Ejecutar `python tools/qa/suites/verify_physical_4phones_public.py` mientras los 4 teléfonos están en partida para registrar la telemetría."
+  ]
+}

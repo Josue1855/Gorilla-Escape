@@ -575,8 +575,9 @@ public sealed partial class BowlingController : MonoBehaviour, IJungleScreen
         if (hudFont != null) JungleRetainedUI.skin.font = hudFont;
         DrawBowlingHud();
         DrawBowlingDashboard();
+        DrawGorillaReaction();
         DrawCameraStatus();
-        if (!bowlingGameOver && JungleRetainedUI.Button(new Rect(Screen.width * .85f, 20f, Screen.width * .12f, 44f), "MENÚ", JungleUITheme.Button))
+        if (!bowlingGameOver && JungleRetainedUI.Button(new Rect(24f, Screen.height - 64f, 150f, 44f), "MENÚ", JungleUITheme.Button))
             SceneNavigator.Load(SceneNavigator.MainMenu);
     }
 

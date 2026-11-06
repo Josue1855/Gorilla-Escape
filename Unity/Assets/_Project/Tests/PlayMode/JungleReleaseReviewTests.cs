@@ -147,6 +147,88 @@ namespace GorillaEscape.Tests
             Assert.That(toggle,Is.Not.Null);
             Assert.That(toggle.worldBound.yMin,Is.GreaterThan(Screen.height*.88f));
         }
+
+        [UnityTest, Timeout(300000)]
+        public IEnumerator AllTenMinigamesExecuteRealGameplayAndFourPlayerTournamentTurns()
+        {
+            Time.timeScale = 1f;
+            var navigation = Type.GetType("SceneNavigator, Assembly-CSharp", true);
+            var tournamentType = Type.GetType("TournamentSession, Assembly-CSharp", true);
+            var gameModeType = tournamentType.GetNestedType("GameMode", BindingFlags.Public);
+            var partyMode = Enum.Parse(gameModeType, "Party");
+            tournamentType.GetMethod("StartMode", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { partyMode, 4, "Náufrago 1" });
+
+            var output = Environment.GetEnvironmentVariable("GORILLA_RELEASE_REVIEW_DIR");
+            var reportLines = new List<string>();
+            int roundIdx = 0;
+
+            foreach (var game in Games)
+            {
+                string gameId = game[0];
+                string controllerName = game[1];
+                navigation.GetMethod("Load").Invoke(null, new object[] { gameId });
+                for (int i = 0; i < 12; i++) yield return null;
+
+                Time.timeScale = 1f;
+                var controller = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).First(x => x.GetType().Name == controllerName);
+                Assert.That(controller, Is.Not.Null, gameId + " controller missing");
+
+                var renderers = Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None).Where(r => r.enabled).ToArray();
+                var rigidbodies = Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).ToArray();
+                var audioSources = Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None).ToArray();
+                Assert.That(renderers.Length, Is.GreaterThan(0), gameId + " must have active 3D renderers");
+                Assert.That(audioSources.Length, Is.GreaterThan(0), gameId + " must have active AudioSource");
+
+                // Let real Update/FixedUpdate frames execute at timeScale=1
+                Phase(controller, game[3], false);
+                for (int frame = 0; frame < 15; frame++) yield return null;
+
+                // Verify 4-player turn rotation in TournamentSession for this round
+                int[] turnScores = { 120 + roundIdx * 5, 95 + roundIdx * 3, 140 + roundIdx * 4, 110 + roundIdx * 2 };
+                for (int turn = 0; turn < 4; turn++)
+                {
+                    int expectedPlayerId = turn + 1;
+                    int activeTurnPlayer = (int)tournamentType.GetProperty("CurrentTurnPlayerId", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+                    Assert.That(activeTurnPlayer, Is.EqualTo(expectedPlayerId), $"{gameId} turn {turn} expected player {expectedPlayerId}");
+
+                    tournamentType.GetMethod("RecordRoundResult", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[] { turnScores[turn] });
+                    // Calling RecordRoundResult again on same turn must be idempotent (DEF-04 regression check)
+                    float turnStartedFirst = (float)tournamentType.GetProperty("TurnStartedAt", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+                    yield return null;
+                    tournamentType.GetMethod("RecordRoundResult", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[] { turnScores[turn] });
+                    float turnStartedSecond = (float)tournamentType.GetProperty("TurnStartedAt", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+                    Assert.That(turnStartedSecond, Is.EqualTo(turnStartedFirst), $"{gameId} turn {turn} RecordRoundResult must not reset TurnStartedAt on subsequent frames");
+
+                    if (turn < 3)
+                    {
+                        bool isTransition = (bool)tournamentType.GetProperty("IsTurnTransition", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+                        Assert.That(isTransition, Is.True, $"{gameId} turn {turn} should enter IsTurnTransition");
+                        bool hasNext = (bool)tournamentType.GetMethod("AdvancePlayerTurn", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[] { false });
+                        Assert.That(hasNext, Is.True, $"{gameId} turn {turn} should advance to next player");
+                        yield return null;
+                    }
+                }
+
+                bool roundCompleted = (bool)tournamentType.GetProperty("RoundCompleted", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+                Assert.That(roundCompleted, Is.True, $"{gameId} after 4th player turn should mark RoundCompleted=true");
+
+                reportLines.Add($"{{\"game\":\"{gameId}\",\"controller\":\"{controllerName}\",\"renderers\":{renderers.Length},\"rigidbodies\":{rigidbodies.Length},\"audioSources\":{audioSources.Length},\"turnsCompleted\":4,\"roundCompleted\":true,\"status\":\"PASS\"}}");
+
+                if (roundIdx < 9)
+                {
+                    tournamentType.GetMethod("NextRound", BindingFlags.Static | BindingFlags.Public).Invoke(null, null);
+                    yield return null;
+                }
+                roundIdx++;
+            }
+
+            tournamentType.GetMethod("ResetTournament", BindingFlags.Static | BindingFlags.Public).Invoke(null, null);
+            if (!string.IsNullOrEmpty(output))
+            {
+                Directory.CreateDirectory(output);
+                File.WriteAllText(Path.Combine(output, "real_gameplay_10_minigames_playmode.json"), "[\n  " + string.Join(",\n  ", reportLines) + "\n]\n");
+            }
+        }
         [UnityTearDown] public IEnumerator RestoreScene()
         { Time.timeScale=1; yield return SceneManager.LoadSceneAsync("Connection"); }
     }

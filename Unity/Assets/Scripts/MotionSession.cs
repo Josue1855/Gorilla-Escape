@@ -180,6 +180,8 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
     public void ConfigureForScene(string sceneName)
     {
         if(sceneName==SceneNavigator.MainMenu||sceneName==SceneNavigator.Splash){pipMinimized=true;if(serviceHost!=null)serviceHost.PipEnabled=false;}
+        if(serviceHost!=null&&TournamentSession.IsActive&&sceneName!=SceneNavigator.CoconutSlice&&sceneName!=SceneNavigator.JungleKeeper)
+            serviceHost.SetCameraOnly(false);
         gameplayActive=sceneName!=SceneNavigator.CoconutSlice&&sceneName!=SceneNavigator.WhackAMole&&sceneName!=SceneNavigator.GorillaSmash&&sceneName!=SceneNavigator.CoconutThrow;
         presentation.gameId=JungleGameplayInput.ForScene(sceneName) switch {
             JungleGame.Bowling=>"bowling",JungleGame.Boxing=>"boxing",JungleGame.Baseball=>"baseball",JungleGame.Drums=>"drums",
@@ -472,8 +474,9 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         {
             JungleAudioBank.PlayUiClick();
             SetInGamePause(false);
+            TournamentSession.ResetCurrentTurnForRestart();
             ResetRound();
-            SceneNavigator.Load(activeSceneName);
+            SceneNavigator.Load(SceneNavigator.IsJungleKeeper ? SceneNavigator.JungleKeeper : activeSceneName);
         }
 
         Rect menuRect = new Rect(btnX, btnY + 102, btnW, 42);

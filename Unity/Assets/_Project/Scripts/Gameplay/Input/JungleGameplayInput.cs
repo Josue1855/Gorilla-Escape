@@ -133,7 +133,7 @@ namespace GorillaEscape.Gameplay.Input
         public void UpdatePhone(PhoneInputWire phone,long now)
         {
             if(Game!=JungleGame.LogBalance){Break(JungleInputStatus.Waiting);return;}
-            if(phone==null || phone.playerId!=1 || phone.messageType!="MOTION_SAMPLE" || phone.connectionState!="ACTIVE" || !Fresh(phone.serverReceiveTimestamp,now))
+            if(phone==null || phone.playerId<1 || phone.playerId>4 || phone.messageType!="MOTION_SAMPLE" || phone.connectionState!="ACTIVE" || !Fresh(phone.serverReceiveTimestamp,now))
             {Break(JungleInputStatus.TrackingLost);return;}
             bool identity=session!=phone.sessionId || device!=phone.deviceSessionId || epoch!=phone.connectionEpoch;
             if(identity){Break(JungleInputStatus.Reacquiring);session=phone.sessionId;device=phone.deviceSessionId;epoch=phone.connectionEpoch;}
@@ -165,8 +165,9 @@ namespace GorillaEscape.Gameplay.Input
             if(!CameraInputStore.Valid(camera)||camera.trackingState!="TRACKING") {Break(JungleInputStatus.TrackingLost);return;}
             var person=Array.Find(camera.subjects,s=>s.subjectId==input.SubjectId);
             bool both=Game==JungleGame.Boxing||Game==JungleGame.Drums||Game==JungleGame.CoconutSlice||Game==JungleGame.LogBalance;
+            bool leftHandedGame=LeftHanded&&(Game==JungleGame.Bowling||Game==JungleGame.GorillaSmash||Game==JungleGame.CoconutThrow);
             if(person==null||person.ambiguous||(Game==JungleGame.Bowling?!CameraInputStore.SliceSubjectUsable(person):person.confidence<.6f)
-                ||!Wrist(person,Game==JungleGame.Bowling&&LeftHanded?"left-wrist":"right-wrist")||(both&&!Wrist(person,"left-wrist")))
+                ||!Wrist(person,leftHandedGame?"left-wrist":"right-wrist")||(both&&!Wrist(person,"left-wrist")))
             {Break(JungleInputStatus.TrackingLost);return;}
             bool identity=session!=p.sessionId||device!=p.deviceSessionId||epoch!=p.connectionEpoch||subject!=input.SubjectId;
             if(identity) {Break(JungleInputStatus.Reacquiring);session=p.sessionId;device=p.deviceSessionId;epoch=p.connectionEpoch;subject=input.SubjectId;}
@@ -181,7 +182,7 @@ namespace GorillaEscape.Gameplay.Input
                 bool derivative=!baseline&&pose!=null&&dt>=.008&&dt<=.25;
                 left=new JungleHand(next.leftWristX,next.leftWristY,derivative?(float)((next.leftWristX-pose.leftWristX)/dt):0,derivative?(float)((next.leftWristY-pose.leftWristY)/dt):0);
                 right=new JungleHand(next.rightWristX,next.rightWristY,derivative?(float)((next.rightWristX-pose.rightWristX)/dt):0,derivative?(float)((next.rightWristY-pose.rightWristY)/dt):0);
-                if(derivative&&((Game==JungleGame.Bowling&&LeftHanded?left.Speed:right.Speed)>MaximumHandSpeed||(both&&left.Speed>MaximumHandSpeed))){Break(JungleInputStatus.Reacquiring);return;}
+                if(derivative&&((leftHandedGame?left.Speed:right.Speed)>MaximumHandSpeed||(both&&left.Speed>MaximumHandSpeed))){Break(JungleInputStatus.Reacquiring);return;}
                 pose=next;poseTime=c.captureTimestamp;
             }
             broken=false;Status=JungleInputStatus.Ready;
@@ -225,7 +226,7 @@ namespace GorillaEscape.Gameplay.Input
             if(Game==JungleGame.LogBalance)result|=JungleAction.Balance;
             float whack=Math.Max(0,gravity-9.81f)*18+angular;
             if(Game==JungleGame.Whack&&first.Observe(right.VelocityY>.72f&&whack>235,right.VelocityY<.2f&&whack<150,now,220))result|=JungleAction.Whack;
-            if(Game==JungleGame.GorillaSmash&&first.Observe(right.VelocityY>.68f&&whack>210,right.VelocityY<.2f&&whack<130,now,250))result|=JungleAction.Smash|JungleAction.Whack;
+            if(Game==JungleGame.GorillaSmash&&first.Observe(throwingHand.VelocityY>.68f&&whack>210,throwingHand.VelocityY<.2f&&whack<130,now,250))result|=JungleAction.Smash|JungleAction.Whack;
             if(Game==JungleGame.CoconutThrow&&first.Observe(power>280&&throwingHand.Speed>.35f,power<160&&throwingHand.Speed<.22f,now,500))result|=JungleAction.Throw;
             return result;
         }

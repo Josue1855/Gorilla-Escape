@@ -150,7 +150,8 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
         targets[names.Length + 3] = new HandDwellTarget(103, partyBtnRect.x, partyBtnRect.y, partyBtnRect.width, partyBtnRect.height);
 
         Vector2 cursorPx = new Vector2(normCursor.x * w, normCursor.y * h);
-        bool canInteract = hasHand && (Time.unscaledTime >= sceneReadyAt + 1.2f);
+        bool modalOpen = showStoryIntroModal || showPartyModal;
+        bool canInteract = !modalOpen && hasHand && (Time.unscaledTime >= sceneReadyAt + 1.2f);
         bool isCharging = session.CameraOnly ? (handClosed || handRaised) : (handClosed || session.PhoneTouchPressed);
         bool actionTrigger = forwardPush || session.PhoneTouchTriggered;
         bool dwellFired = handNavigator.ObserveCursor(canInteract, cursorPx.x, cursorPx.y, Time.unscaledTime, targets, out int triggeredId, 1.6f, actionTrigger, isCharging)
@@ -297,20 +298,34 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
 
         if (showPartyModal)
         {
-            float mW = Mathf.Clamp(w * 0.68f, 500f, 800f);
-            float mH = Mathf.Clamp(h * 0.66f, 400f, 540f);
+            float mW = Mathf.Clamp(w * 0.72f, 540f, 860f);
+            float mH = Mathf.Clamp(h * 0.75f, 440f, 620f);
             Rect mRect = new Rect((w - mW) * 0.5f, (h - mH) * 0.5f, mW, mH);
             JungleRetainedUI.depth = -130;
             JungleUITheme.DrawPanel(mRect, true);
 
-            GUIStyle mTitle = new GUIStyle(JungleUITheme.Title) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.075f), 18, 26), alignment = TextAnchor.MiddleCenter };
-            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 20f, mRect.y + 16f, mRect.width - 40f, mH * 0.11f), " MODO FIESTA · JUNGLE PARTY", mTitle, 2.5f);
+            GUIStyle mTitle = new GUIStyle(JungleUITheme.Title) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.065f), 18, 25), alignment = TextAnchor.MiddleCenter };
+            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 20f, mRect.y + 14f, mRect.width - 40f, mH * 0.10f), " MODO FIESTA · JUNGLE PARTY", mTitle, 2.5f);
 
-            GUIStyle mBody = new GUIStyle(JungleUITheme.Body) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.038f), 12, 16), alignment = TextAnchor.MiddleCenter, wordWrap = true };
-            string desc = "¡Celebración en la Selva! Porque ya venciste a los gorilas (o estás en modo de acceso libre), la isla entera está de fiesta. Todos los 10 minijuegos están completamente disponibles sin restricciones.\n\nElige cómo deseas festejar:";
-            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 24f, mRect.y + mH * 0.14f, mRect.width - 48f, mH * 0.32f), desc, mBody, 1.8f);
+            GUIStyle mBody = new GUIStyle(JungleUITheme.Body) { fontSize = Mathf.Clamp(Mathf.RoundToInt(mH * 0.036f), 12, 16), alignment = TextAnchor.MiddleCenter, wordWrap = true };
+            string desc = "¡Celebración en la Selva! Todos los 10 minijuegos están completamente disponibles sin restricciones. Selecciona cuántos jugadores compiten por turnos:";
+            JungleUITheme.DrawShadowedLabel(new Rect(mRect.x + 24f, mRect.y + mH * 0.12f, mRect.width - 48f, mH * 0.24f), desc, mBody, 1.8f);
 
-            Rect gridPlayBtn = new Rect(mRect.x + mRect.width * 0.10f, mRect.y + mH * 0.48f, mRect.width * 0.80f, mH * 0.12f);
+            float selY = mRect.y + mH * 0.38f;
+            float btnW = (mRect.width - 60f) / 4f;
+            for (int p = 1; p <= 4; p++)
+            {
+                Rect pBtn = new Rect(mRect.x + 24f + (p - 1) * (btnW + 4f), selY, btnW, mH * 0.09f);
+                bool isSel = selectedPlayerCount == p;
+                string pLabel = p == 1 ? "1 JUGADOR" : $"{p} JUGADORES";
+                if (JungleRetainedUI.Button(pBtn, pLabel, isSel ? JungleUITheme.ButtonSelected : JungleUITheme.Button))
+                {
+                    JungleAudioBank.PlayUiClick();
+                    selectedPlayerCount = p;
+                }
+            }
+
+            Rect gridPlayBtn = new Rect(mRect.x + mRect.width * 0.10f, mRect.y + mH * 0.52f, mRect.width * 0.80f, mH * 0.11f);
             if (JungleRetainedUI.Button(gridPlayBtn, " ELEGIR MINIJUEGO LIBREMENTE (EN LA CUADRÍCULA)", JungleUITheme.ButtonSelected))
             {
                 JungleAudioBank.PlayUiClick();
@@ -320,7 +335,7 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
                 return;
             }
 
-            Rect fullTourneyBtn = new Rect(mRect.x + mRect.width * 0.10f, mRect.y + mH * 0.63f, mRect.width * 0.80f, mH * 0.12f);
+            Rect fullTourneyBtn = new Rect(mRect.x + mRect.width * 0.10f, mRect.y + mH * 0.66f, mRect.width * 0.80f, mH * 0.11f);
             if (JungleRetainedUI.Button(fullTourneyBtn, " INICIAR MARATÓN FIESTA (10 JUEGOS)", JungleUITheme.Button))
             {
                 JungleAudioBank.PlayUiClick(0.6f);
@@ -330,7 +345,7 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
                 return;
             }
 
-            Rect closeBtn = new Rect(mRect.x + mRect.width * 0.25f, mRect.yMax - mH * 0.15f, mRect.width * 0.50f, mH * 0.10f);
+            Rect closeBtn = new Rect(mRect.x + mRect.width * 0.25f, mRect.yMax - mH * 0.14f, mRect.width * 0.50f, mH * 0.09f);
             if (JungleRetainedUI.Button(closeBtn, "CERRAR", JungleUITheme.Button))
             {
                 JungleAudioBank.PlayUiClick();

@@ -336,7 +336,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         {
             if (TournamentSession.IsActive)
             {
-                TournamentSession.RecordRoundResult(score);
+                TournamentSession.RecordRoundResult(hits);
                 Vector2 normCursor = new Vector2(0.5f, 0.5f);
                 string handLabel = "MANO";
                 bool handRaised = false, handClosed = false, forwardPush = false;

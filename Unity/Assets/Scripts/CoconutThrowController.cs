@@ -207,8 +207,8 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         // 7. Gorila Juez / Espectador 3D al costado del círculo de lanzamiento
         var judgeAnchor = new GameObject("07 Gorila Juez Lanzamiento").transform;
         judgeAnchor.SetParent(throwFieldRoot.transform, false);
-        judgeAnchor.position = new Vector3(-3.2f, 0f, 1.8f);
-        judgeAnchor.rotation = Quaternion.Euler(0f, 35f, 0f);
+        judgeAnchor.position = new Vector3(-1.85f, 0f, 3.2f);
+        judgeAnchor.rotation = Quaternion.Euler(0f, 145f, 0f);
         gorillaJudge.LoadMascot(judgeAnchor, judgeAnchor.position, judgeAnchor.rotation, 2.5f, "Gorila Juez Coco");
     }
 
@@ -384,15 +384,16 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
     {
         inputRevision = frame.Revision;
         matchedTiming = CompetitiveMechanics.TimingQuality(frame.PhoneTimestamp,frame.CameraTimestamp);
-        handSpeed = frame.Right.Speed;
+        var hand = session != null && session.HandMode == MotionSession.HandTrackingMode.LeftOnly ? frame.Left : frame.Right;
+        handSpeed = hand.Speed;
         phonePower = frame.PhonePower;
-        cursorViewport = new Vector2(frame.Right.X, 1f - frame.Right.Y);
+        cursorViewport = new Vector2(hand.X, 1f - hand.Y);
         // Score and trajectory use the accepted pose; prediction is only for drawing.
         elevationAngle = Mathf.Clamp(cursorViewport.y*60f+15f,20f,65f);
         lateralAngle = Mathf.Clamp((cursorViewport.x-.5f)*28f,-14f,14f);
 
         if (frame.NewPose || frame.Baseline)
-            handVisual.Observe(cursorViewport.x, cursorViewport.y, frame.Right.VelocityX, -frame.Right.VelocityY, Time.unscaledTime);
+            handVisual.Observe(cursorViewport.x, cursorViewport.y, hand.VelocityX, -hand.VelocityY, Time.unscaledTime);
 
         if ((frame.Actions & JungleAction.Throw) != 0)
             throwRequested = true;

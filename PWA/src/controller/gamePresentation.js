@@ -21,7 +21,7 @@ export function controlProfile(context, playerId) {
   const game=modern?context.gameId:validV2(context)?context.gameId:'lobby';
   return {game,valid:modern,screen:modern?context.screen:'unknown',hand:modern?context.hand:'right',
     phoneRequired:modern?context.phoneRequired:game!=='lobby'&&!['coconut-slice','jungle-keeper'].includes(game),
-    canNavigate:modern&&playerId===1&&context.screen!=='connection',contextId:modern?context.contextId:null};
+    canNavigate:modern&&context.screen!=='connection'&&(playerId===1||(context.screen==='game'&&playerId===context.playerId)),contextId:modern?context.contextId:null};
 }
 const phases = {
   Ready: ['Prepara tu equilibrio', 'Sujeta el teléfono cómodamente. El control se prepara automáticamente.'],

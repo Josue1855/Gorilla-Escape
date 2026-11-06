@@ -27,15 +27,16 @@ namespace GorillaEscape.Contracts
         public long connectionEpoch,receivedAt;
         public bool Valid(GamePresentationWire context,LobbySnapshotWire lobby,long now)
         {
-            if(context==null||!context.Valid()||context.screen=="connection"||lobby?.players==null||contextId!=context.contextId||playerId!=1
+            if(context==null||!context.Valid()||context.screen=="connection"||lobby?.players==null||contextId!=context.contextId
+                ||(playerId!=1&&(context.screen!="game"||playerId!=context.playerId))
                 ||sessionId!=lobby.sessionId||now<receivedAt||now-receivedAt>2500)return false;
             var player=Array.Find(lobby.players,p=>p.playerId==playerId);
             if(player==null||!player.networkReady||player.connectionState=="DISCONNECTED"||player.deviceSessionId!=deviceSessionId||player.connectionEpoch!=connectionEpoch)return false;
-            return action=="select-game"&&context.gameId=="lobby"&&GamePresentationWire.KnownGame(target)
+            return action=="select-game"&&context.gameId=="lobby"&&playerId==1&&GamePresentationWire.KnownGame(target)
                 ||action=="menu"&&target==""||action=="restart"&&context.screen=="game"&&target==""
                 ||action=="start"&&context.screen=="game"&&context.phase=="Ready"&&target==""
                 ||(action=="pause"||action=="resume"||action=="toggle-pause")&&context.screen=="game"&&target==""
-                ||action=="set-hand"&&(context.gameId=="lobby"||context.gameId=="bowling")&&(target=="left"||target=="right");
+                ||action=="set-hand"&&(context.gameId=="lobby"||context.gameId=="bowling"||context.gameId=="gorilla-smash"||context.gameId=="coconut-throw")&&(target=="left"||target=="right");
         }
     }
     [Serializable] public sealed class GameDisplayStats

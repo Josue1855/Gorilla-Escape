@@ -120,7 +120,7 @@ class GameControlSurface extends StatelessWidget {
                 : 'Puedes elegir el próximo juego sin activar sensores.',
           ),
         ],
-        if (profile.canNavigate && ['lobby', 'bowling'].contains(view.id)) ...[
+        if (profile.canNavigate && ['lobby', 'bowling', 'gorilla-smash', 'coconut-throw'].contains(view.id)) ...[
           const SizedBox(height: 20),
           const Text('Mano con la que lanzas'),
           Wrap(
@@ -192,6 +192,8 @@ class GameControlSurface extends StatelessWidget {
               'coconut-slice',
               'jungle-keeper',
               'whack',
+              'gorilla-smash',
+              'coconut-throw',
             ].contains(view.id))
           FilledButton(
             onPressed: busy || (profile.phoneRequired && !sensorsReady)

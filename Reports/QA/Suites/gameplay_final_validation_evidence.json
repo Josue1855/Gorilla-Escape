@@ -2,13 +2,13 @@
   "prioridad_0_admisiones": {
     "concurrent_admissions": {
       "pass": true,
-      "token1": "P5TuHkYISQ",
-      "token2": "GYzHuniJjQ"
+      "token1": "at6DG7aC79",
+      "token2": "0J0dsgmDza"
     },
     "revocation": {
       "pass": true,
-      "token1": "P5TuHkYISQ",
-      "token2": "GYzHuniJjQ"
+      "token1": "at6DG7aC79",
+      "token2": "0J0dsgmDza"
     },
     "revoked_token_rejection": {
       "pass": true,
@@ -25,455 +25,455 @@
         "code": "ADMISSION_EXPIRED_OR_USED",
         "events": [
           {
-            "ms": 0.2578,
+            "event": "stage",
             "value": "VALIDATION",
-            "event": "stage"
+            "ms": 0.2399
           },
           {
-            "ms": 0.5273,
+            "event": "stage",
             "value": "ADMISSION",
-            "event": "stage"
+            "ms": 0.549
           }
         ],
         "candidates": []
       },
       {
         "selectedPair": {
+          "protocol": "udp",
           "serverPort": 50000,
-          "protocol": "udp",
-          "remoteType": "prflx",
+          "state": "SELECTED",
           "localType": "host",
-          "state": "SELECTED"
+          "remoteType": "prflx"
         },
         "stage": "ANSWER_RETURNED",
         "code": "NONE",
         "events": [
           {
-            "ms": 0.0038,
+            "event": "stage",
             "value": "VALIDATION",
-            "event": "stage"
+            "ms": 0.0064
           },
           {
-            "ms": 0.2769,
+            "event": "stage",
             "value": "ADMISSION",
-            "event": "stage"
+            "ms": 2.356
           },
           {
-            "ms": 1.4623,
+            "event": "stage",
             "value": "PEER_CREATE",
-            "event": "stage"
+            "ms": 3.2107
           },
           {
-            "ms": 39.9188,
+            "event": "stage",
             "value": "REMOTE_SDP",
-            "event": "stage"
+            "ms": 19.3974
           },
           {
-            "ms": 41.9863,
+            "event": "stage",
             "value": "ANSWER_CREATE",
-            "event": "stage"
+            "ms": 21.394
           },
           {
-            "ms": 43.5471,
+            "event": "stage",
             "value": "LOCAL_SDP",
-            "event": "stage"
+            "ms": 22.2007
           },
           {
-            "ms": 47.0993,
+            "event": "iceConnectionState",
             "value": "CHECKING",
-            "event": "iceConnectionState"
+            "ms": 24.8823
           },
           {
-            "ms": 47.1493,
+            "event": "iceGatheringState",
             "value": "GATHERING",
-            "event": "iceGatheringState"
+            "ms": 24.9106
           },
           {
-            "ms": 47.1732,
+            "event": "stage",
             "value": "SERVER_ICE",
-            "event": "stage"
+            "ms": 24.9239
           },
           {
-            "ms": 54.1964,
+            "event": "connectionState",
             "value": "CONNECTING",
-            "event": "connectionState"
+            "ms": 29.4176
           },
           {
-            "ms": 154.7502,
+            "event": "iceGatheringState",
             "value": "COMPLETE",
-            "event": "iceGatheringState"
+            "ms": 129.0331
           },
           {
-            "ms": 154.9352,
+            "event": "stage",
             "value": "ANSWER_RETURNED",
-            "event": "stage"
+            "ms": 129.2164
           },
           {
-            "ms": 204.2412,
+            "event": "connectionState",
             "value": "CONNECTED",
-            "event": "connectionState"
+            "ms": 175.5465
           },
           {
-            "ms": 204.3046,
+            "event": "iceConnectionState",
             "value": "CONNECTED",
-            "event": "iceConnectionState"
+            "ms": 175.5835
           },
           {
-            "ms": 215.0144,
+            "event": "control",
             "value": "OPEN",
-            "event": "control"
+            "ms": 180.1601
           },
           {
-            "ms": 229.8348,
+            "event": "motion",
             "value": "OPEN",
-            "event": "motion"
+            "ms": 186.9351
           }
         ],
         "candidates": [
           {
-            "port": 50000,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50000
           },
           {
-            "port": 50000,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50000
           }
         ]
       },
       {
         "selectedPair": {
+          "protocol": "udp",
           "serverPort": 50001,
-          "protocol": "udp",
-          "remoteType": "prflx",
+          "state": "SELECTED",
           "localType": "host",
-          "state": "SELECTED"
+          "remoteType": "prflx"
         },
         "stage": "ANSWER_RETURNED",
         "code": "NONE",
         "events": [
           {
-            "ms": 0.0065,
+            "event": "stage",
             "value": "VALIDATION",
-            "event": "stage"
+            "ms": 0.0035
           },
           {
-            "ms": 0.2911,
+            "event": "stage",
             "value": "ADMISSION",
-            "event": "stage"
+            "ms": 0.1474
           },
           {
-            "ms": 0.9972,
+            "event": "stage",
             "value": "PEER_CREATE",
-            "event": "stage"
+            "ms": 0.2411
           },
           {
-            "ms": 2.8971,
+            "event": "stage",
             "value": "REMOTE_SDP",
-            "event": "stage"
+            "ms": 1.3776
           },
           {
-            "ms": 3.2501,
+            "event": "stage",
             "value": "ANSWER_CREATE",
-            "event": "stage"
+            "ms": 1.7518
           },
           {
-            "ms": 3.4006,
+            "event": "stage",
             "value": "LOCAL_SDP",
-            "event": "stage"
+            "ms": 1.8928
           },
           {
-            "ms": 4.3745,
+            "event": "iceConnectionState",
             "value": "CHECKING",
-            "event": "iceConnectionState"
+            "ms": 2.6882
           },
           {
-            "ms": 4.4265,
-            "value": "GATHERING",
-            "event": "iceGatheringState"
-          },
-          {
-            "ms": 4.4468,
+            "event": "stage",
             "value": "SERVER_ICE",
-            "event": "stage"
+            "ms": 2.7028
           },
           {
-            "ms": 4.858,
+            "event": "iceGatheringState",
+            "value": "GATHERING",
+            "ms": 2.7192
+          },
+          {
+            "event": "connectionState",
             "value": "CONNECTING",
-            "event": "connectionState"
+            "ms": 2.7221
           },
           {
-            "ms": 109.4628,
+            "event": "iceGatheringState",
             "value": "COMPLETE",
-            "event": "iceGatheringState"
+            "ms": 104.5456
           },
           {
-            "ms": 109.5904,
+            "event": "stage",
             "value": "ANSWER_RETURNED",
-            "event": "stage"
+            "ms": 104.6488
           },
           {
-            "ms": 174.7453,
+            "event": "connectionState",
             "value": "CONNECTED",
-            "event": "connectionState"
+            "ms": 153.6713
           },
           {
-            "ms": 174.7969,
+            "event": "iceConnectionState",
             "value": "CONNECTED",
-            "event": "iceConnectionState"
+            "ms": 153.8448
           },
           {
-            "ms": 177.7751,
+            "event": "control",
             "value": "OPEN",
-            "event": "control"
+            "ms": 159.7154
           },
           {
-            "ms": 178.5897,
+            "event": "motion",
             "value": "OPEN",
-            "event": "motion"
+            "ms": 161.0855
           }
         ],
         "candidates": [
           {
-            "port": 50001,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50001
           },
           {
-            "port": 50001,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50001
           }
         ]
       },
       {
         "selectedPair": {
+          "protocol": "udp",
           "serverPort": 50002,
-          "protocol": "udp",
-          "remoteType": "prflx",
+          "state": "SELECTED",
           "localType": "host",
-          "state": "SELECTED"
+          "remoteType": "prflx"
         },
         "stage": "ANSWER_RETURNED",
         "code": "NONE",
         "events": [
           {
-            "ms": 0.0059,
+            "event": "stage",
             "value": "VALIDATION",
-            "event": "stage"
+            "ms": 0.007
           },
           {
-            "ms": 0.5155,
+            "event": "stage",
             "value": "ADMISSION",
-            "event": "stage"
+            "ms": 0.7124
           },
           {
-            "ms": 0.7733,
+            "event": "stage",
             "value": "PEER_CREATE",
-            "event": "stage"
+            "ms": 0.8639
           },
           {
-            "ms": 4.8732,
+            "event": "stage",
             "value": "REMOTE_SDP",
-            "event": "stage"
+            "ms": 2.8795
           },
           {
-            "ms": 5.4177,
+            "event": "stage",
             "value": "ANSWER_CREATE",
-            "event": "stage"
+            "ms": 3.3357
           },
           {
-            "ms": 5.5633,
+            "event": "stage",
             "value": "LOCAL_SDP",
-            "event": "stage"
+            "ms": 3.4116
           },
           {
-            "ms": 6.0659,
+            "event": "iceConnectionState",
             "value": "CHECKING",
-            "event": "iceConnectionState"
+            "ms": 4.1253
           },
           {
-            "ms": 6.1002,
+            "event": "iceGatheringState",
             "value": "GATHERING",
-            "event": "iceGatheringState"
+            "ms": 4.1697
           },
           {
-            "ms": 6.1134,
+            "event": "stage",
             "value": "SERVER_ICE",
-            "event": "stage"
+            "ms": 4.1836
           },
           {
-            "ms": 6.6188,
+            "event": "connectionState",
             "value": "CONNECTING",
-            "event": "connectionState"
+            "ms": 4.5396
           },
           {
-            "ms": 120.9493,
+            "event": "iceGatheringState",
             "value": "COMPLETE",
-            "event": "iceGatheringState"
+            "ms": 105.3946
           },
           {
-            "ms": 121.079,
+            "event": "stage",
             "value": "ANSWER_RETURNED",
-            "event": "stage"
+            "ms": 105.5071
           },
           {
-            "ms": 473.7292,
+            "event": "connectionState",
             "value": "CONNECTED",
-            "event": "connectionState"
+            "ms": 253.5131
           },
           {
-            "ms": 473.8207,
+            "event": "iceConnectionState",
             "value": "CONNECTED",
-            "event": "iceConnectionState"
+            "ms": 253.5786
           },
           {
-            "ms": 521.8534,
+            "event": "control",
             "value": "OPEN",
-            "event": "control"
+            "ms": 264.6224
           },
           {
-            "ms": 527.5338,
+            "event": "motion",
             "value": "OPEN",
-            "event": "motion"
+            "ms": 265.7774
           }
         ],
         "candidates": [
           {
-            "port": 50002,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50002
           },
           {
-            "port": 50002,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50002
           }
         ]
       },
       {
         "selectedPair": {
-          "serverPort": 50003,
           "protocol": "udp",
-          "remoteType": "prflx",
+          "serverPort": 50003,
+          "state": "SELECTED",
           "localType": "host",
-          "state": "SELECTED"
+          "remoteType": "prflx"
         },
         "stage": "ANSWER_RETURNED",
         "code": "NONE",
         "events": [
           {
-            "ms": 0.0165,
+            "event": "stage",
             "value": "VALIDATION",
-            "event": "stage"
+            "ms": 0.0044
           },
           {
-            "ms": 0.8388,
+            "event": "stage",
             "value": "ADMISSION",
-            "event": "stage"
+            "ms": 0.6496
           },
           {
-            "ms": 1.177,
+            "event": "stage",
             "value": "PEER_CREATE",
-            "event": "stage"
+            "ms": 0.7667
           },
           {
-            "ms": 8.9373,
+            "event": "stage",
             "value": "REMOTE_SDP",
-            "event": "stage"
+            "ms": 2.0325
           },
           {
-            "ms": 10.1343,
+            "event": "stage",
             "value": "ANSWER_CREATE",
-            "event": "stage"
+            "ms": 2.4683
           },
           {
-            "ms": 10.5259,
+            "event": "stage",
             "value": "LOCAL_SDP",
-            "event": "stage"
+            "ms": 2.5484
           },
           {
-            "ms": 11.9493,
+            "event": "iceConnectionState",
             "value": "CHECKING",
-            "event": "iceConnectionState"
+            "ms": 2.7774
           },
           {
-            "ms": 12.0707,
+            "event": "iceGatheringState",
             "value": "GATHERING",
-            "event": "iceGatheringState"
+            "ms": 2.8041
           },
           {
-            "ms": 12.1492,
+            "event": "stage",
             "value": "SERVER_ICE",
-            "event": "stage"
+            "ms": 2.8146
           },
           {
-            "ms": 13.2073,
+            "event": "connectionState",
             "value": "CONNECTING",
-            "event": "connectionState"
+            "ms": 3.048
           },
           {
-            "ms": 112.4009,
+            "event": "iceGatheringState",
             "value": "COMPLETE",
-            "event": "iceGatheringState"
+            "ms": 103.2541
           },
           {
-            "ms": 112.4738,
+            "event": "stage",
             "value": "ANSWER_RETURNED",
-            "event": "stage"
+            "ms": 103.3132
           },
           {
-            "ms": 261.642,
+            "event": "connectionState",
             "value": "CONNECTED",
-            "event": "connectionState"
+            "ms": 250.4739
           },
           {
-            "ms": 261.8954,
+            "event": "iceConnectionState",
             "value": "CONNECTED",
-            "event": "iceConnectionState"
+            "ms": 250.5314
           },
           {
-            "ms": 348.3541,
+            "event": "control",
             "value": "OPEN",
-            "event": "control"
+            "ms": 260.7845
           },
           {
-            "ms": 349.337,
+            "event": "motion",
             "value": "OPEN",
-            "event": "motion"
+            "ms": 260.941
           }
         ],
         "candidates": [
           {
-            "port": 50003,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50003
           },
           {
-            "port": 50003,
-            "type": "host",
+            "protocol": "udp",
             "addressKind": "IPV4",
-            "protocol": "udp"
+            "type": "host",
+            "port": 50003
           }
         ]
       }
     ],
+    "peers": 4,
     "inputs": {
-      "pendingSlots": 0,
       "overwritten": 0,
-      "forwarded": 0,
-      "received": 0,
-      "rejected": 0
-    },
-    "peers": 4
+      "pendingSlots": 1,
+      "rejected": 0,
+      "received": 1,
+      "forwarded": 0
+    }
   },
   "prioridad_1_torneo": {
     "tournament_log": [
@@ -650,35 +650,35 @@
       "scenarioId": "CAM-01",
       "name": "Persona inm\u00f3vil",
       "frameId": 1000,
-      "timestampMs": 1793928190354,
+      "timestampMs": 1793932082205,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
       "recognizedGesture": "NEUTRAL_AIM",
       "targetPlayerId": 1,
       "unityDecision": "AUTHORIZED_ACTIVE_PLAYER",
-      "latencyMs": 0.01,
+      "latencyMs": 0.0,
       "status": "PASS"
     },
     {
       "scenarioId": "CAM-02",
       "name": "Brazos arriba",
       "frameId": 1001,
-      "timestampMs": 1793928190387,
+      "timestampMs": 1793932082238,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
       "recognizedGesture": "ARMS_UP",
       "targetPlayerId": 1,
       "unityDecision": "AUTHORIZED_ACTIVE_PLAYER",
-      "latencyMs": 0.01,
+      "latencyMs": 0.0,
       "status": "PASS"
     },
     {
       "scenarioId": "CAM-03",
       "name": "Brazos abajo",
       "frameId": 1002,
-      "timestampMs": 1793928190420,
+      "timestampMs": 1793932082271,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -692,7 +692,7 @@
       "scenarioId": "CAM-04",
       "name": "Movimiento lateral",
       "frameId": 1003,
-      "timestampMs": 1793928190453,
+      "timestampMs": 1793932082304,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -706,7 +706,7 @@
       "scenarioId": "CAM-05",
       "name": "Movimiento r\u00e1pido",
       "frameId": 1004,
-      "timestampMs": 1793928190486,
+      "timestampMs": 1793932082337,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -720,7 +720,7 @@
       "scenarioId": "CAM-06",
       "name": "Movimiento lento",
       "frameId": 1005,
-      "timestampMs": 1793928190519,
+      "timestampMs": 1793932082370,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -734,7 +734,7 @@
       "scenarioId": "CAM-07",
       "name": "Gestos repetidos",
       "frameId": 1006,
-      "timestampMs": 1793928190552,
+      "timestampMs": 1793932082403,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -748,7 +748,7 @@
       "scenarioId": "CAM-08",
       "name": "Movimiento simult\u00e1neo (2 personas)",
       "frameId": 1007,
-      "timestampMs": 1793928190585,
+      "timestampMs": 1793932082436,
       "personsDetected": 2,
       "assignedSubjectId": 99,
       "confidence": 0.94,
@@ -762,7 +762,7 @@
       "scenarioId": "CAM-09",
       "name": "Cruce de personas",
       "frameId": 1008,
-      "timestampMs": 1793928190618,
+      "timestampMs": 1793932082469,
       "personsDetected": 2,
       "assignedSubjectId": 99,
       "confidence": 0.94,
@@ -776,7 +776,7 @@
       "scenarioId": "CAM-10",
       "name": "Oclusiones parciales",
       "frameId": 1009,
-      "timestampMs": 1793928190651,
+      "timestampMs": 1793932082502,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.35,
@@ -790,7 +790,7 @@
       "scenarioId": "CAM-11",
       "name": "P\u00e9rdida de seguimiento",
       "frameId": 1010,
-      "timestampMs": 1793928190684,
+      "timestampMs": 1793932082535,
       "personsDetected": 0,
       "assignedSubjectId": -1,
       "confidence": 0.0,
@@ -804,7 +804,7 @@
       "scenarioId": "CAM-12",
       "name": "Recuperaci\u00f3n de seguimiento",
       "frameId": 1011,
-      "timestampMs": 1793928190717,
+      "timestampMs": 1793932082568,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -818,7 +818,7 @@
       "scenarioId": "CAM-13",
       "name": "Fotogramas negros",
       "frameId": 1012,
-      "timestampMs": 1793928190750,
+      "timestampMs": 1793932082601,
       "personsDetected": 0,
       "assignedSubjectId": -1,
       "confidence": 0.0,
@@ -832,7 +832,7 @@
       "scenarioId": "CAM-14",
       "name": "Fotogramas congelados",
       "frameId": 1013,
-      "timestampMs": 1793928190783,
+      "timestampMs": 1793932082634,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -846,7 +846,7 @@
       "scenarioId": "CAM-15",
       "name": "Cambios de iluminaci\u00f3n extrema",
       "frameId": 1014,
-      "timestampMs": 1793928190816,
+      "timestampMs": 1793932082667,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.35,
@@ -860,7 +860,7 @@
       "scenarioId": "CAM-16",
       "name": "Ruido visual (Gaussian noise)",
       "frameId": 1015,
-      "timestampMs": 1793928190849,
+      "timestampMs": 1793932082700,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -874,7 +874,7 @@
       "scenarioId": "CAM-17",
       "name": "Desfase sensor m\u00f3vil vs c\u00e1mara",
       "frameId": 1016,
-      "timestampMs": 1793928190882,
+      "timestampMs": 1793932082733,
       "personsDetected": 1,
       "assignedSubjectId": 1,
       "confidence": 0.94,
@@ -909,6 +909,18 @@
       "action": "Suspensi\u00f3n de app y regreso a primer plano",
       "system_behavior": "El canal WebRTC se conserva en ventana de tolerancia sin desautenticar al jugador.",
       "status": "PASS"
+    },
+    {
+      "persona": "Adversarial Turnos & Cambio R\u00e1pido 10 Juegos",
+      "action": "Conmutaci\u00f3n r\u00e1pida de las 10 disciplinas (incluyendo gorilla-smash y coconut-throw) y validaci\u00f3n de autoridad por turno",
+      "system_behavior": "Jugador 2 habilitado en su turno (False) y bloqueado como espectador en turno ajeno (False).",
+      "status": "FAIL"
+    },
+    {
+      "persona": "Adversarial Ausencia y Reconexi\u00f3n",
+      "action": "Transici\u00f3n expl\u00edcita AWAY -> ACTIVE y reconexi\u00f3n durante resultados con resumeToken",
+      "system_behavior": "Controlador y canal WebRTC procesaron away=True (False) y away=False (False) manteniendo 4 peers activos.",
+      "status": "FAIL"
     }
   ],
   "prioridad_4_minijuegos": [
@@ -985,239 +997,257 @@
   ],
   "prioridad_5_rendimiento": {
     "rtt_latencies_ms": {
-      "p50": 1.28,
-      "p95": 2.26,
-      "p99": 2.58,
+      "p50": 1.87,
+      "p95": 2.89,
+      "p99": 3.26,
       "samples": 30
     },
     "system_resources": [
       {
         "pid": 1408,
         "name": "chrome",
-        "ram_mb": 246.01,
-        "cpu": 3.21875
+        "ram_mb": 238.93,
+        "cpu": 28.859375
       },
       {
-        "pid": 2684,
+        "pid": 2424,
         "name": "chrome",
-        "ram_mb": 172.25,
-        "cpu": 7.8125
+        "ram_mb": 394.82,
+        "cpu": 17.140625
       },
       {
-        "pid": 4732,
+        "pid": 3192,
         "name": "chrome",
-        "ram_mb": 72.01,
-        "cpu": 0.421875
+        "ram_mb": 10.42,
+        "cpu": 0.015625
       },
       {
-        "pid": 6180,
+        "pid": 5252,
         "name": "chrome",
-        "ram_mb": 65.2,
+        "ram_mb": 565.07,
+        "cpu": 110.40625
+      },
+      {
+        "pid": 7088,
+        "name": "chrome",
+        "ram_mb": 100.06,
+        "cpu": 0.65625
+      },
+      {
+        "pid": 9888,
+        "name": "chrome",
+        "ram_mb": 76.13,
         "cpu": 0.78125
-      },
-      {
-        "pid": 9880,
-        "name": "chrome",
-        "ram_mb": 18.14,
-        "cpu": 0.078125
       },
       {
         "pid": 10296,
         "name": "chrome",
-        "ram_mb": 238.54,
-        "cpu": 34.078125
+        "ram_mb": 238.42,
+        "cpu": 63.34375
       },
       {
-        "pid": 13788,
+        "pid": 11304,
         "name": "chrome",
-        "ram_mb": 33.38,
-        "cpu": 0.1875
+        "ram_mb": 96.95,
+        "cpu": 0.796875
       },
       {
-        "pid": 15276,
+        "pid": 14032,
         "name": "chrome",
-        "ram_mb": 156.95,
-        "cpu": 1.875
-      },
-      {
-        "pid": 15688,
-        "name": "chrome",
-        "ram_mb": 65.82,
-        "cpu": 0.421875
+        "ram_mb": 37.94,
+        "cpu": 0.46875
       },
       {
         "pid": 16576,
         "name": "chrome",
-        "ram_mb": 74.38,
-        "cpu": 0.9375
-      },
-      {
-        "pid": 17660,
-        "name": "chrome",
-        "ram_mb": 9.62,
-        "cpu": 0.015625
+        "ram_mb": 82.4,
+        "cpu": 10.609375
       },
       {
         "pid": 18296,
         "name": "chrome",
-        "ram_mb": 80.75,
-        "cpu": 0.640625
+        "ram_mb": 87.93,
+        "cpu": 1.28125
+      },
+      {
+        "pid": 20068,
+        "name": "chrome",
+        "ram_mb": 199.52,
+        "cpu": 1.484375
+      },
+      {
+        "pid": 20184,
+        "name": "chrome",
+        "ram_mb": 61.14,
+        "cpu": 0.390625
       },
       {
         "pid": 20368,
         "name": "chrome",
-        "ram_mb": 10.38,
-        "cpu": 0.03125
+        "ram_mb": 10.54,
+        "cpu": 0.0625
       },
       {
         "pid": 20496,
         "name": "chrome",
-        "ram_mb": 188.49,
-        "cpu": 9.640625
+        "ram_mb": 176.82,
+        "cpu": 31.546875
       },
       {
         "pid": 20576,
         "name": "chrome",
-        "ram_mb": 137.73,
-        "cpu": 1.328125
+        "ram_mb": 122.27,
+        "cpu": 4.5
+      },
+      {
+        "pid": 20660,
+        "name": "chrome",
+        "ram_mb": 158.01,
+        "cpu": 2.671875
+      },
+      {
+        "pid": 21004,
+        "name": "chrome",
+        "ram_mb": 33.9,
+        "cpu": 0.203125
+      },
+      {
+        "pid": 22080,
+        "name": "chrome",
+        "ram_mb": 30.75,
+        "cpu": 0.15625
+      },
+      {
+        "pid": 22240,
+        "name": "chrome",
+        "ram_mb": 21.47,
+        "cpu": 0.171875
       },
       {
         "pid": 22572,
         "name": "chrome",
-        "ram_mb": 59.63,
-        "cpu": 0.9375
+        "ram_mb": 65.16,
+        "cpu": 5.65625
       },
       {
         "pid": 25224,
         "name": "chrome",
-        "ram_mb": 19.8,
-        "cpu": 0.109375
+        "ram_mb": 20.54,
+        "cpu": 0.578125
       },
       {
         "pid": 26236,
         "name": "chrome",
-        "ram_mb": 191.89,
-        "cpu": 5.75
+        "ram_mb": 269.36,
+        "cpu": 34.328125
       },
       {
         "pid": 26464,
         "name": "chrome",
-        "ram_mb": 50.96,
-        "cpu": 3.46875
-      },
-      {
-        "pid": 26912,
-        "name": "chrome",
-        "ram_mb": 71.97,
-        "cpu": 0.453125
-      },
-      {
-        "pid": 27472,
-        "name": "chrome",
-        "ram_mb": 67.45,
-        "cpu": 0.3125
+        "ram_mb": 54.22,
+        "cpu": 35.71875
       },
       {
         "pid": 27636,
         "name": "chrome",
-        "ram_mb": 113.09,
-        "cpu": 0.828125
+        "ram_mb": 94.31,
+        "cpu": 1.265625
+      },
+      {
+        "pid": 28016,
+        "name": "chrome",
+        "ram_mb": 129.62,
+        "cpu": 1.59375
       },
       {
         "pid": 28592,
         "name": "chrome",
-        "ram_mb": 405.87,
-        "cpu": 27.03125
+        "ram_mb": 410.15,
+        "cpu": 207.46875
       },
       {
-        "pid": 28828,
+        "pid": 28988,
         "name": "chrome",
-        "ram_mb": 644.53,
-        "cpu": 29.078125
-      },
-      {
-        "pid": 29312,
-        "name": "chrome",
-        "ram_mb": 41.44,
-        "cpu": 1.1875
+        "ram_mb": 46.27,
+        "cpu": 0.078125
       },
       {
         "pid": 30344,
         "name": "chrome",
-        "ram_mb": 63.17,
-        "cpu": 0.375
+        "ram_mb": 106.33,
+        "cpu": 3.625
       },
       {
-        "pid": 31876,
+        "pid": 32188,
         "name": "chrome",
-        "ram_mb": 76.93,
-        "cpu": 0.640625
+        "ram_mb": 18.68,
+        "cpu": 0.0625
       },
       {
         "pid": 32716,
         "name": "chrome",
-        "ram_mb": 211.91,
-        "cpu": 6.59375
-      },
-      {
-        "pid": 32732,
-        "name": "chrome",
-        "ram_mb": 31.3,
-        "cpu": 0.078125
+        "ram_mb": 228.42,
+        "cpu": 11.421875
       },
       {
         "pid": 32872,
         "name": "chrome",
-        "ram_mb": 256.0,
-        "cpu": 5.875
+        "ram_mb": 211.51,
+        "cpu": 10.78125
       },
       {
-        "pid": 33228,
+        "pid": 33120,
         "name": "chrome",
-        "ram_mb": 44.66,
-        "cpu": 0.09375
+        "ram_mb": 85.41,
+        "cpu": 1.03125
+      },
+      {
+        "pid": 33368,
+        "name": "chrome",
+        "ram_mb": 55.6,
+        "cpu": 0.328125
       },
       {
         "pid": 33560,
         "name": "chrome",
-        "ram_mb": 187.27,
-        "cpu": 9.171875
+        "ram_mb": 175.71,
+        "cpu": 32.359375
       },
       {
         "pid": 33600,
         "name": "chrome",
-        "ram_mb": 165.45,
-        "cpu": 3.609375
+        "ram_mb": 264.68,
+        "cpu": 43.5625
       },
       {
-        "pid": 10064,
+        "pid": 5628,
         "name": "java",
-        "ram_mb": 9.63,
-        "cpu": 0.09375
+        "ram_mb": 9.64,
+        "cpu": 0.078125
       },
       {
-        "pid": 15960,
+        "pid": 22420,
         "name": "java",
-        "ram_mb": 291.62,
-        "cpu": 10.390625
+        "ram_mb": 274.95,
+        "cpu": 9.109375
       },
       {
-        "pid": 2372,
-        "name": "qemu-system-x86_64-headless",
-        "ram_mb": 1764.66,
-        "cpu": 542.6875
+        "pid": 15088,
+        "name": "qemu-system-x86_64",
+        "ram_mb": 1382.66,
+        "cpu": 25.4375
       },
       {
-        "pid": 20460,
-        "name": "qemu-system-x86_64-headless",
-        "ram_mb": 1768.91,
-        "cpu": 594.484375
+        "pid": 19320,
+        "name": "qemu-system-x86_64",
+        "ram_mb": 1415.36,
+        "cpu": 29.125
       },
       {
         "pid": 13812,
         "name": "Unity Hub",
-        "ram_mb": 212.74,
-        "cpu": 653.234375
+        "ram_mb": 211.5,
+        "cpu": 717.5
       },
       {
         "pid": 15300,
@@ -1228,27 +1258,53 @@
       {
         "pid": 15612,
         "name": "Unity Hub",
-        "ram_mb": 192.3,
-        "cpu": 10.625
+        "ram_mb": 192.24,
+        "cpu": 10.84375
       },
       {
         "pid": 15620,
         "name": "Unity Hub",
-        "ram_mb": 37.89,
-        "cpu": 8.140625
+        "ram_mb": 37.81,
+        "cpu": 9.65625
       },
       {
         "pid": 16024,
         "name": "Unity Hub",
-        "ram_mb": 127.94,
-        "cpu": 18.78125
+        "ram_mb": 135.59,
+        "cpu": 20.015625
       },
       {
         "pid": 3752,
         "name": "Unity.Licensing.Client",
-        "ram_mb": 97.18,
-        "cpu": 35.09375
+        "ram_mb": 97.69,
+        "cpu": 38.78125
       }
     ]
+  },
+  "clasificacion_estricta_de_evidencia": {
+    "unit_tests": {
+      "pwa_node_test": "PASS (95/95 tests en PWA/tests/*.test.js)",
+      "flutter_widget_and_unit_test": "PASS (26/26 tests en Companion/test/*_test.dart)",
+      "csharp_contracts_and_mechanics": "PASS (171/171 checks en tools/integration/jungle-phase0)",
+      "java_server_mobile_junit": "PASS (3/3 tests en GamePresentationTest incl. 10 disciplinas)",
+      "unity_editmode_tests": "PASS (229/229 tests en Reports/QA/ReleaseReview/editmode_results.xml)"
+    },
+    "unity_playmode_real_engine": {
+      "suite": "GorillaEscape.Tests.JungleReleaseReviewTests + JunglePresentationPlayModeTests",
+      "evidence_dir": "Reports/QA/ReleaseReview/",
+      "real_gameplay_4player_turns_json": "Reports/QA/ReleaseReview/real_gameplay_10_minigames_playmode.json",
+      "note": "Ejecutado dentro del motor Unity 6000.6.0f1 con f\u00edsica, renderizado 3D, UI Toolkit/IMGUI, audio procedural y rotaci\u00f3n de 4 turnos en las 10 disciplinas."
+    },
+    "automated_browsers_and_emulators_lab": {
+      "pwa_clients": "2 instancias reales de Chrome CDP ejecutando el bundle compilado de React PWA (/index.html)",
+      "flutter_clients": "2 instancias de Android Emulator (emulator-5554, emulator-5556) ejecutando Companion app-debug.apk",
+      "signaling_and_webrtc": "Servidor Java Spring Boot real en puerto 8080 con 4 sesiones WebRTC activas simult\u00e1neas",
+      "tournament_ledger_simulation_note": "La secci\u00f3n prioridad_1_torneo en este script env\u00eda tramas reales de sensores desde los 4 clientes y valida la matem\u00e1tica de Gorilla Points en Python; la ejecuci\u00f3n real de escenas y turnos en motor Unity est\u00e1 separada en Reports/QA/ReleaseReview/real_gameplay_10_minigames_playmode.json."
+    },
+    "physical_devices_and_public_internet_tunnel": {
+      "status": "BLOCKED",
+      "evidence_file": "Reports/QA/Suites/physical_4phones_public_validation.json",
+      "reason": "No hay 4 tel\u00e9fonos f\u00edsicos reales conectados desde redes externas ni t\u00fanel p\u00fablico activo en https://play.gorillas.run en este entorno. Los emuladores y navegadores locales NO sustituyen tel\u00e9fonos f\u00edsicos."
+    }
   }
 }

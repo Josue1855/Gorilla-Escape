@@ -44,15 +44,18 @@ static class MobileChecks
             }
             bridge.Reset();Require(!bridge.IsPhoneConnected(1));
         });
-        yield return ("mobile presentation validates all eight real games",()=>{foreach(var id in new[]{"bowling","boxing","baseball","drums","coconut-slice","jungle-keeper","whack","log-balance"})Require(new GamePresentationWire{gameId=id,screen="game",playerId=1,phase="Playing"}.Valid());});
+        yield return ("mobile presentation validates all ten real games",()=>{foreach(var id in new[]{"gorilla-smash","coconut-throw","bowling","boxing","baseball","drums","coconut-slice","jungle-keeper","whack","log-balance"})Require(new GamePresentationWire{gameId=id,screen="game",playerId=1,phase="Playing"}.Valid());});
         yield return ("display statistics reject nonfinite and out of bounds data",()=>{var c=new GamePresentationWire();c.stats.score=double.NaN;Require(!c.Valid());c.stats.score=0;c.stats.progress=2;Require(!c.Valid());});
-        yield return ("phone navigation rejects stale scenes, spectators and replaced connections",()=>{
-            var context=new GamePresentationWire();var lobby=new LobbySnapshotWire{sessionId="session",players=new[]{new LobbyPlayerWire{playerId=1,deviceSessionId="device",connectionEpoch=2,connectionState="CONNECTED",networkReady=true}}};
+        yield return ("phone navigation rejects stale scenes, spectators and replaced connections while allowing active turn player in game",()=>{
+            var context=new GamePresentationWire();var lobby=new LobbySnapshotWire{sessionId="session",players=new[]{new LobbyPlayerWire{playerId=1,deviceSessionId="device",connectionEpoch=2,connectionState="CONNECTED",networkReady=true},new LobbyPlayerWire{playerId=2,deviceSessionId="device2",connectionEpoch=3,connectionState="CONNECTED",networkReady=true}}};
             var command=new MobileUiCommandWire{action="select-game",target="bowling",contextId=context.contextId,playerId=1,sessionId="session",deviceSessionId="device",connectionEpoch=2,receivedAt=1000};
             Require(command.Valid(context,lobby,1001));Require(!command.Valid(context,lobby,3501));
             context.screen="connection";Require(!command.Valid(context,lobby,1001));context.screen="menu";
             command.connectionEpoch=1;Require(!command.Valid(context,lobby,1001));command.connectionEpoch=2;
             command.playerId=2;Require(!command.Valid(context,lobby,1001));command.playerId=1;
+            context.screen="game";context.gameId="gorilla-smash";context.playerId=2;
+            var turnCmd=new MobileUiCommandWire{action="start",target="",contextId=context.contextId,playerId=2,sessionId="session",deviceSessionId="device2",connectionEpoch=3,receivedAt=1000};
+            Require(turnCmd.Valid(context,lobby,1001));
             context.contextId=Guid.NewGuid().ToString("N");Require(!command.Valid(context,lobby,1001));
         });
         yield return ("display copies cannot mutate the original authoritative snapshot",()=>{var c=new GamePresentationWire();var copy=c.Copy();copy.stats.balance=1;Require(c.stats.balance==0);});

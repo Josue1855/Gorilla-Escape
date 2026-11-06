@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="14" result="Passed" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 02:16:41Z" end-time="2026-11-06 02:17:15Z" duration="34.0063696">
+  <test-suite type="TestSuite" id="1062" name="Gorilla Escape" fullname="Gorilla Escape" runstate="Runnable" testcasecount="44" result="Passed" start-time="2026-11-06 02:16:41Z" end-time="2026-11-06 02:17:15Z" duration="34.006370" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1057" name="GorillaEscape.PlayModeTests.dll" fullname="C:/Users/equipo/Documents/Repos/Gorilla Escape/Unity/Library/ScriptAssemblies/GorillaEscape.PlayModeTests.dll" runstate="Runnable" testcasecount="44" result="Passed" start-time="2026-11-06 02:16:41Z" end-time="2026-11-06 02:17:15Z" duration="33.991254" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="32680" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1058" name="GorillaEscape" fullname="GorillaEscape" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-06 02:16:41Z" end-time="2026-11-06 02:17:15Z" duration="33.979624" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1059" name="Tests" fullname="GorillaEscape.Tests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-06 02:16:41Z" end-time="2026-11-06 02:17:15Z" duration="33.957091" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1041" name="JunglePresentationPlayModeTests" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-06 02:16:41Z" end-time="2026-11-06 02:16:51Z" duration="9.534228" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1048" name="DynamicScreenRendersOncePerFrameAndUsesToolkitNavigation" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.DynamicScreenRendersOncePerFrameAndUsesToolkitNavigation" methodname="DynamicScreenRendersOncePerFrameAndUsesToolkitNavigation" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="2028963653" result="Passed" start-time="2026-11-06 02:16:41Z" end-time="2026-11-06 02:16:42Z" duration="0.281576" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1045" name="GameplayPausePersistsAfterClickAndHeaderLeavesRoomForHud" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.GameplayPausePersistsAfterClickAndHeaderLeavesRoomForHud" methodname="GameplayPausePersistsAfterClickAndHeaderLeavesRoomForHud" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="1557724417" result="Passed" start-time="2026-11-06 02:16:42Z" end-time="2026-11-06 02:16:43Z" duration="1.384133" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1042" name="ModeExitKeepsTheSameRoomAndItsPreparation" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.ModeExitKeepsTheSameRoomAndItsPreparation" methodname="ModeExitKeepsTheSameRoomAndItsPreparation" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="2014151430" result="Passed" start-time="2026-11-06 02:16:43Z" end-time="2026-11-06 02:16:44Z" duration="0.549126" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1047" name="PanelCanReenableInSameFrameWithoutDuplicatingDocument" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.PanelCanReenableInSameFrameWithoutDuplicatingDocument" methodname="PanelCanReenableInSameFrameWithoutDuplicatingDocument" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="365264987" result="Passed" start-time="2026-11-06 02:16:44Z" end-time="2026-11-06 02:16:44Z" duration="0.101996" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1049" name="PointerPickingReachesSceneButtonUnderSessionOverlay" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.PointerPickingReachesSceneButtonUnderSessionOverlay" methodname="PointerPickingReachesSceneButtonUnderSessionOverlay" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="200411826" result="Passed" start-time="2026-11-06 02:16:44Z" end-time="2026-11-06 02:16:44Z" duration="0.198115" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1046" name="PointerReleaseActivatesToggleOnceAndLeavesItActive" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.PointerReleaseActivatesToggleOnceAndLeavesItActive" methodname="PointerReleaseActivatesToggleOnceAndLeavesItActive" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="457633647" result="Passed" start-time="2026-11-06 02:16:44Z" end-time="2026-11-06 02:16:44Z" duration="0.186683" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1051" name="PrewarmBuildsAllClipsAndSubsequentCallsReuseThem" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.PrewarmBuildsAllClipsAndSubsequentCallsReuseThem" methodname="PrewarmBuildsAllClipsAndSubsequentCallsReuseThem" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="349056718" result="Passed" start-time="2026-11-06 02:16:44Z" end-time="2026-11-06 02:16:45Z" duration="0.721504" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1050" name="SavedProductScreensHaveVisibleToolkitTrees" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.SavedProductScreensHaveVisibleToolkitTrees" methodname="SavedProductScreensHaveVisibleToolkitTrees" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="1717544797" result="Passed" start-time="2026-11-06 02:16:45Z" end-time="2026-11-06 02:16:50Z" duration="4.861471" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[JUNGLE_ASSET_REFERENCE_MISSING: LogBalanceStage
+]]></output>
+            </test-case>
+            <test-case id="1044" name="SplashRunnerUsesMatchingSkinAndAnimatedStride" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.SplashRunnerUsesMatchingSkinAndAnimatedStride" methodname="SplashRunnerUsesMatchingSkinAndAnimatedStride" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="409103651" result="Passed" start-time="2026-11-06 02:16:50Z" end-time="2026-11-06 02:16:50Z" duration="0.671680" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Creating missing JunglePanel component for SplashDirector in SplashDirector.
+]]></output>
+            </test-case>
+            <test-case id="1043" name="StoryAndPartyWaitAtConnectionUntilRequiredDevicesAreReady" fullname="GorillaEscape.Tests.JunglePresentationPlayModeTests.StoryAndPartyWaitAtConnectionUntilRequiredDevicesAreReady" methodname="StoryAndPartyWaitAtConnectionUntilRequiredDevicesAreReady" classname="GorillaEscape.Tests.JunglePresentationPlayModeTests" runstate="Runnable" seed="1417592592" result="Passed" start-time="2026-11-06 02:16:50Z" end-time="2026-11-06 02:16:51Z" duration="0.544785" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1052" name="JungleReleaseReviewTests" fullname="GorillaEscape.Tests.JungleReleaseReviewTests" classname="GorillaEscape.Tests.JungleReleaseReviewTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-06 02:16:51Z" end-time="2026-11-06 02:17:15Z" duration="24.401864" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1053" name="AllGamesHaveUsablePhasesMaterialsAndMenuButtons" fullname="GorillaEscape.Tests.JungleReleaseReviewTests.AllGamesHaveUsablePhasesMaterialsAndMenuButtons" methodname="AllGamesHaveUsablePhasesMaterialsAndMenuButtons" classname="GorillaEscape.Tests.JungleReleaseReviewTests" runstate="Runnable" seed="99643016" result="Passed" start-time="2026-11-06 02:16:51Z" end-time="2026-11-06 02:17:07Z" duration="16.254831" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="300000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1056" name="AllTenMinigamesExecuteRealGameplayAndFourPlayerTournamentTurns" fullname="GorillaEscape.Tests.JungleReleaseReviewTests.AllTenMinigamesExecuteRealGameplayAndFourPlayerTournamentTurns" methodname="AllTenMinigamesExecuteRealGameplayAndFourPlayerTournamentTurns" classname="GorillaEscape.Tests.JungleReleaseReviewTests" runstate="Runnable" seed="1234228426" result="Passed" start-time="2026-11-06 02:17:07Z" end-time="2026-11-06 02:17:15Z" duration="7.451393" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="300000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1054" name="FinishedRoundReleasesTechnicalPauseAndKeepsResultsAccessible" fullname="GorillaEscape.Tests.JungleReleaseReviewTests.FinishedRoundReleasesTechnicalPauseAndKeepsResultsAccessible" methodname="FinishedRoundReleasesTechnicalPauseAndKeepsResultsAccessible" classname="GorillaEscape.Tests.JungleReleaseReviewTests" runstate="Runnable" seed="2045196670" result="Passed" start-time="2026-11-06 02:17:15Z" end-time="2026-11-06 02:17:15Z" duration="0.351159" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1055" name="MainMenuCameraPreviewStartsCollapsedBelowModeButtons" fullname="GorillaEscape.Tests.JungleReleaseReviewTests.MainMenuCameraPreviewStartsCollapsedBelowModeButtons" methodname="MainMenuCameraPreviewStartsCollapsedBelowModeButtons" classname="GorillaEscape.Tests.JungleReleaseReviewTests" runstate="Runnable" seed="2127596819" result="Passed" start-time="2026-11-06 02:17:15Z" end-time="2026-11-06 02:17:15Z" duration="0.332595" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/equipo/AppData/LocalLow/Gorilla Escape Team/Gorilla Escape\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -70,7 +70,7 @@ public sealed class LogBalanceGameController : MonoBehaviour, IJungleScreen
     void Begin()
     {
         if(model.State!=LogBalanceState.Ready||!session.IsInputReady||preparing||!control.Calibrated)return;
-        model.Begin(1);fallenTime=0;manualPause=false;
+        model.Begin(TournamentSession.IsActive ? TournamentSession.CurrentTurnPlayerId : 1);fallenTime=0;manualPause=false;
     }
     void Restart()
     {

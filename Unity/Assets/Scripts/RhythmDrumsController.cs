@@ -31,6 +31,7 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
     private void Awake()
     {
         session=MotionSession.Ensure();
+        session.ConfigureForScene(SceneNavigator.Drums);
         sfx=JungleAudioBank.Attach2DSource(gameObject);
         leftDrumClip=JungleAudioBank.LeftDrum;
         rightDrumClip=JungleAudioBank.RightDrum;

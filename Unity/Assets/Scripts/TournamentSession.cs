@@ -64,6 +64,8 @@ public static class TournamentSession
     public static int CurrentRound { get; private set; } // 1..TotalRounds
     public static bool RoundCompleted { get; private set; }
     public static bool IsTurnTransition { get; private set; }
+    private static int lastRecordedTurnIndex = -1;
+    private static int lastRecordedFrame = -1;
 
     public static int HumanPlayerCount { get; private set; } = 1;
     public static int CurrentTurnPlayerIndex { get; private set; } = 0; // 0..HumanPlayerCount-1
@@ -266,15 +268,21 @@ public static class TournamentSession
         TurnStartedAt = Time.unscaledTime;
         RoundCompleted = false;
         IsTurnTransition = false;
+        lastRecordedTurnIndex = -1;
+        lastRecordedFrame = -1;
         ledger = new GorillaPointsLedger(new[] { 1, 2, 3, 4 });
 
         string p1 = !string.IsNullOrWhiteSpace(humanName) ? humanName.Trim() : (humanCount > 1 ? "Náufrago 1" : "Náufrago");
+        var lobbyPlayers = MotionSession.Instance?.Lobby?.players;
         var list = new List<Competitor>();
         string[] humanAvatars = { "[J1]", "[J2]", "[J3]", "[J4]" };
 
         for (int i = 0; i < HumanPlayerCount; i++)
         {
-            string name = i == 0 ? p1 : $"Náufrago {i + 1}";
+            var lp = lobbyPlayers?.FirstOrDefault(p => p != null && p.playerId == i + 1);
+            string name = (lp != null && !string.IsNullOrWhiteSpace(lp.displayName))
+                ? lp.displayName.Trim()
+                : (i == 0 ? p1 : $"Náufrago {i + 1}");
             list.Add(new Competitor
             {
                 Id = i + 1,
@@ -316,7 +324,10 @@ public static class TournamentSession
 
     public static void RecordRoundResult(int humanScore)
     {
-        if (!IsActive || RoundCompleted || ledger == null || competitors == null) return;
+        if (!IsActive || RoundCompleted || IsTurnTransition || ledger == null || competitors == null) return;
+        if (lastRecordedTurnIndex == CurrentTurnPlayerIndex || Time.frameCount == lastRecordedFrame) return;
+        lastRecordedTurnIndex = CurrentTurnPlayerIndex;
+        lastRecordedFrame = Time.frameCount;
 
         int score = Mathf.Max(0, humanScore);
         competitors[CurrentTurnPlayerIndex].LastRawScore = score;
@@ -421,8 +432,8 @@ public static class TournamentSession
         }
         if (scene == SceneNavigator.Drums)
         {
-            int baseDrums = humanAvg > 10 ? humanAvg : 70;
-            return Mathf.Clamp(baseDrums + UnityEngine.Random.Range(-15, 10), 25, 110);
+            int baseDrums = humanAvg > 1000 ? humanAvg : 24000;
+            return Mathf.Clamp(baseDrums + UnityEngine.Random.Range(-4500, 3500) + variation * 120, 8000, 58000);
         }
         if (scene == SceneNavigator.WhackAMole)
         {
@@ -430,6 +441,35 @@ public static class TournamentSession
             return Mathf.Clamp(baseWhack + UnityEngine.Random.Range(-5, 4), 8, 36);
         }
         return Mathf.Clamp(humanAvg + variation, 10, 100);
+    }
+
+    public static void ResetCurrentTurnForRestart()
+    {
+        if (!IsActive || RoundCompleted) return;
+        IsTurnTransition = false;
+        lastRecordedTurnIndex = -1;
+        lastRecordedFrame = -1;
+        TurnStartedAt = Time.unscaledTime;
+    }
+
+    public static bool AdvancePlayerTurn(bool loadScene = false)
+    {
+        if (!IsActive || competitors == null) return false;
+        if (CurrentTurnPlayerIndex < HumanPlayerCount - 1)
+        {
+            nav.Reset();
+            CurrentTurnPlayerIndex++;
+            TurnStartedAt = Time.unscaledTime;
+            IsTurnTransition = false;
+            lastRecordedTurnIndex = -1;
+            lastRecordedFrame = Time.frameCount;
+            if (loadScene && CurrentRound >= 1 && CurrentRound <= TotalRounds)
+            {
+                SceneNavigator.Load(CurrentScenes[CurrentRound - 1]);
+            }
+            return true;
+        }
+        return false;
     }
 
     public static void NextRound()
@@ -441,6 +481,8 @@ public static class TournamentSession
             CurrentTurnPlayerIndex = 0;
             RoundCompleted = false;
             IsTurnTransition = false;
+            lastRecordedTurnIndex = -1;
+            lastRecordedFrame = -1;
             SceneNavigator.Load(CurrentScenes[CurrentRound - 1]);
         }
         else
@@ -459,6 +501,8 @@ public static class TournamentSession
         HumanPlayerCount = 1;
         RoundCompleted = false;
         IsTurnTransition = false;
+        lastRecordedTurnIndex = -1;
+        lastRecordedFrame = -1;
         competitors = null;
         ledger = null;
         nav.Reset();
@@ -647,14 +691,18 @@ public static class TournamentSession
 
         if (nextComp.IsForfeited)
         {
+            competitors[CurrentTurnPlayerIndex + 1].LastRawScore = 0;
             CurrentTurnPlayerIndex++;
             TurnStartedAt = Time.unscaledTime;
             if (CurrentTurnPlayerIndex < HumanPlayerCount - 1)
             {
-                SceneNavigator.Load(CurrentScenes[CurrentRound - 1]);
+                return;
             }
             else
             {
+                IsTurnTransition = false;
+                lastRecordedTurnIndex = -1;
+                lastRecordedFrame = -1;
                 RecordRoundResult(0);
             }
             return;
@@ -675,6 +723,8 @@ public static class TournamentSession
             CurrentTurnPlayerIndex++;
             TurnStartedAt = Time.unscaledTime;
             IsTurnTransition = false;
+            lastRecordedTurnIndex = -1;
+            lastRecordedFrame = Time.frameCount;
             SceneNavigator.Load(CurrentScenes[CurrentRound - 1]);
             return;
         }

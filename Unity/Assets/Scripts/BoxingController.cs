@@ -23,6 +23,7 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
     private void Awake()
     {
         sharedSession = MotionSession.Ensure();
+        sharedSession.ConfigureForScene(SceneNavigator.Boxing);
         sfxSource = JungleAudioBank.Attach2DSource(gameObject);
         BuildBoxingArena(); boxingArena.SetActive(true);
         var anchor = new GameObject("Boxing gorilla anchor").transform;
@@ -59,7 +60,7 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
             }else rightVisual.Reset();
             if(state==GameState.Boxing){
                 if(pose.leftDetected&&(frame.Actions&JungleAction.PunchLeft)!=0)TryBoxingPunch(false,boxingLeftSpeed,frame.PhonePower);
-                if((frame.Actions&JungleAction.PunchRight)!=0)TryBoxingPunch(true,boxingRightSpeed,frame.PhonePower);
+                if(pose.rightDetected&&(frame.Actions&JungleAction.PunchRight)!=0)TryBoxingPunch(true,boxingRightSpeed,frame.PhonePower);
             }else if(state==GameState.BoxingKnockdown&&(frame.Actions&JungleAction.Recover)!=0&&sharedSession.TryAuthorize(JungleAction.Recover,frame.Revision))
                 getUpEnergy=Mathf.Min(100f,getUpEnergy+Mathf.Clamp((frame.PhonePower-210f)*.12f,8f,24f));
         }
@@ -81,7 +82,12 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
         }
         DrawBoxing();
     }
-    private void OnDestroy()=>gorillaRig.Dispose();
+    private void OnDestroy()
+    {
+        if (gorillaRig.MascotObject != null) Destroy(gorillaRig.MascotObject);
+        gorillaRig.Dispose();
+        if (boxingArena != null) Destroy(boxingArena);
+    }
     private void BuildBoxingArena()
     {
         boxingArena = new GameObject("ARENA DE BOXEO");

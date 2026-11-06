@@ -18,7 +18,7 @@ class GamePresentationTest {
  }
 
  @Test void v2ValidatesAllSevenGamesAndRejectsExtraOrNonFiniteStats()throws Exception{
-   for(String game:java.util.List.of("bowling","boxing","baseball","drums","coconut-slice","whack","log-balance")){
+   for(String game:java.util.List.of("bowling","boxing","baseball","drums","coconut-slice","whack","log-balance","gorilla-smash","coconut-throw")){
      var context=GorillaProtocol.JSON.createObjectNode();context.put("version",2);context.put("gameId",game);context.put("phase","Playing");context.put("playerId",1);
      var stats=context.putObject("stats");for(String key:java.util.List.of("Score","Progress","Elapsed","Balance","Distance")){stats.put("has"+key,true);stats.put(Character.toLowerCase(key.charAt(0))+key.substring(1),0);}
      GamePresentation.validate(context);stats.put("score",Double.NaN);assertThrows(java.io.IOException.class,()->GamePresentation.validate(context));

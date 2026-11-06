@@ -5,7 +5,7 @@ import tools.jackson.databind.JsonNode;
 /** Bounded display context only. Unity retains gameplay/result authority. */
 public final class GamePresentation {
     private GamePresentation(){}
-    public static final Set<String> GAMES=Set.of("lobby","bowling","boxing","baseball","drums","coconut-slice","jungle-keeper","whack","log-balance");
+    public static final Set<String> GAMES=Set.of("lobby","bowling","boxing","baseball","drums","coconut-slice","jungle-keeper","whack","log-balance","gorilla-smash","coconut-throw");
     public static void validate(JsonNode n)throws IOException {
         if(n!=null&&n.path("version").asInt()==3){
             if(!n.isObject()||n.size()!=9||!GAMES.contains(n.path("gameId").asString())
@@ -34,7 +34,7 @@ public final class GamePresentation {
     }
     private static void validateV2(JsonNode n)throws IOException {
         if(!n.isObject()||n.size()!=5||!n.path("gameId").isTextual()
-            ||!Set.of("lobby","bowling","boxing","baseball","drums","coconut-slice","whack","log-balance").contains(n.path("gameId").asString())
+            ||!Set.of("lobby","bowling","boxing","baseball","drums","coconut-slice","whack","log-balance","gorilla-smash","coconut-throw").contains(n.path("gameId").asString())
             ||!Set.of("Ready","Countdown","Playing","Paused","Won","Lost","Finished").contains(n.path("phase").asString())
             ||!n.path("playerId").isInt()||n.path("playerId").intValue()<0||n.path("playerId").intValue()>4
             ||("lobby".equals(n.path("gameId").asString())?n.path("playerId").intValue()!=0:n.path("playerId").intValue()==0))throw new IOException("IPC_GAME_CONTEXT");
