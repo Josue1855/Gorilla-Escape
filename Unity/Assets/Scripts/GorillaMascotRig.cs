@@ -107,6 +107,12 @@ public sealed class GorillaMascotRig : IDisposable
         gorillaRestPosition = gorillaMascot.transform.position;
         gorillaRestRotation = gorillaMascot.transform.rotation;
         if (!boxingScene) SetupBowlingGorillaAnimations();
+        else {
+            foreach (var animator in gorillaMascot.GetComponentsInChildren<Animator>(true)) animator.enabled=false;
+            fittedRunnerScale=gorillaMascot.transform.localScale;
+            SetupCanonicalStride();
+            AttachBoxingGlove(gorillaWristLeft);AttachBoxingGlove(gorillaWristRight);
+        }
     }
 
     public void LoadMascot(Transform parent, Vector3 position, Quaternion rotation, float height = 2.4f, string name = "Gorila Meshy AI", bool runner = false)
@@ -370,26 +376,11 @@ public sealed class GorillaMascotRig : IDisposable
 
         // 2. Transición del ataque (1=Golpe, 2=Guardia alta, 3=Pecho territorial, 0=Stance)
         float attackProgress = boxingGorillaAction == 1
-            ? Mathf.Clamp01(1f - (gorillaAttackResolveAt - time) / 0.65f)
-            : 0f;
-        float punchThrust = 0f;
-        float punchWindup = 0f;
-        if (boxingGorillaAction == 1)
-        {
-            if (attackProgress < 0.42f)
-                punchWindup = Mathf.SmoothStep(0f, 1f, attackProgress / 0.42f);
-            else if (attackProgress < 0.70f)
-            {
-                punchWindup = 1f;
-                punchThrust = Mathf.SmoothStep(0f, 1f, (attackProgress - 0.42f) / 0.28f);
-            }
-            else
-            {
-                float recover = (attackProgress - 0.70f) / 0.30f;
-                punchThrust = Mathf.SmoothStep(1f, 0f, recover);
-                punchWindup = Mathf.SmoothStep(1f, 0f, recover);
-            }
-        }
+            ? Mathf.Clamp01(1f-(gorillaAttackResolveAt-time)/.85f) : 0f;
+        // The fist reaches full extension at the exact instant damage is resolved.
+        float punchWindup = boxingGorillaAction==1 ? Mathf.SmoothStep(0,1,Mathf.Clamp01(attackProgress/.65f)) : 0f;
+        float punchThrust = boxingGorillaAction==1 ? Mathf.SmoothStep(0,1,Mathf.Clamp01((attackProgress-.65f)/.35f))
+            * (1f-Mathf.Clamp01((time-gorillaAttackResolveAt)/.30f)) : 0f;
 
         float guard = boxingGorillaAction == 2 ? 1f : 0.32f;
         float territory = boxingGorillaAction == 3 ? 1f : 0f;
@@ -401,7 +392,7 @@ public sealed class GorillaMascotRig : IDisposable
 
         // Desplazamiento y rotación del cuerpo completo
         Vector3 rootPos = gorillaRestPosition
-            + new Vector3(boxerSwayX + hitShake * 0.14f, boxerBobY - hitRecoil * 0.1f, -hitRecoil);
+            + new Vector3(boxerSwayX + hitShake * 0.14f, boxerBobY, hitRecoil);
         gorillaMascot.transform.position = rootPos;
         gorillaMascot.transform.rotation = gorillaRestRotation
             * Quaternion.Euler(hitRecoil * 12f, (boxerSwayX * 18f) + (hitShake * 12f), -hitShake * 9f);
@@ -421,43 +412,29 @@ public sealed class GorillaMascotRig : IDisposable
         SetBone(gorillaKneeLeft, gorillaKneeLeftRest, new Vector3(0, 0, kneeFlex), 1f);
         SetBone(gorillaKneeRight, gorillaKneeRightRest, new Vector3(0, 0, -kneeFlex), 1f);
 
-        // Brazos y guantes
-        if (territory > 0f)
-        {
-            // Tamborileo furioso en el pecho alternando puños
-            float thumpLeft = Mathf.Max(0f, Mathf.Sin(time * 16f));
-            float thumpRight = Mathf.Max(0f, Mathf.Sin(time * 16f + Mathf.PI));
-            SetBone(gorillaShoulderLeft, gorillaLeftRest, new Vector3(-22f * thumpLeft, 14f, 26f + 36f * thumpLeft), 1f);
-            SetBone(gorillaShoulderRight, gorillaRightRest, new Vector3(22f * thumpRight, -14f, -26f - 36f * thumpRight), 1f);
-            SetBone(gorillaElbowLeft, gorillaElbowLeftRest, new Vector3(0, 0, 56f * thumpLeft + 22f), 1f);
-            SetBone(gorillaElbowRight, gorillaElbowRightRest, new Vector3(0, 0, -56f * thumpRight - 22f), 1f);
-        }
-        else if (boxingGorillaAction == 1) // Golpe pesado derecho con guardia izquierda
-        {
-            // Brazo izquierdo mantiene guardia firme protegiendo mentón
-            SetBone(gorillaShoulderLeft, gorillaLeftRest, new Vector3(-12f, -26f, 34f), 1f);
-            SetBone(gorillaElbowLeft, gorillaElbowLeftRest, new Vector3(0, 0, 50f), 1f);
-            SetBone(gorillaWristLeft, gorillaWristLeftRest, new Vector3(0, 16f, 0), 1f);
+        // Aim arm segments in model space instead of twisting unknown local axes.
+        if(runLimbs.Count==8) {
+            float lift=boxingGorillaAction==2 ? .30f : .08f;
+            AimRunLimb(0,new Vector3(-.10f,-1f,.12f));AimRunLimb(1,Vector3.down);
+            AimRunLimb(2,new Vector3(.10f,-1f,-.12f));AimRunLimb(3,Vector3.down);
+            AimRunLimb(4,new Vector3(-.35f,-.85f,.40f));
+            AimRunLimb(5,new Vector3(.12f,.45f+lift,.85f));
+            AimRunLimb(6,Vector3.Lerp(new Vector3(.35f,-.85f,.40f),new Vector3(.12f,-.10f,1f),punchThrust));
+            AimRunLimb(7,Vector3.Lerp(new Vector3(-.12f,.45f+lift,.85f),new Vector3(-.06f,.05f,1f),punchThrust));
+            runnerFootLeft.rotation=gorillaRestRotation*runnerFootLeftRest;
+            runnerFootRight.rotation=gorillaRestRotation*runnerFootRightRest;
+            float sole=Mathf.Min(runnerFootLeft.position.y,runnerFootRight.position.y)-runnerFootClearance;
+            gorillaMascot.transform.position+=Vector3.up*(runnerGroundY-sole+boxerBobY);
 
-            // Brazo derecho: carga hacia atrás y lanza recto explosivo hacia el jugador
-            float rShoulderPitch = -punchWindup * 38f + punchThrust * 68f;
-            float rShoulderYaw = punchWindup * 26f - punchThrust * 32f;
-            float rElbowBend = punchWindup * 58f - punchThrust * 52f;
-            SetBone(gorillaShoulderRight, gorillaRightRest, new Vector3(rShoulderYaw, 24f, -22f - rShoulderPitch), 1f);
-            SetBone(gorillaElbowRight, gorillaElbowRightRest, new Vector3(0, 0, -24f - rElbowBend), 1f);
-            SetBone(gorillaWristRight, gorillaWristRightRest, new Vector3(0, -punchThrust * 22f, 0), 1f);
         }
-        else // Postura de boxeo / Guardia alta (acción 2 o descanso)
-        {
-            float guardElevate = guard * 30f;
-            float guardTuck = guard * 34f;
-            SetBone(gorillaShoulderLeft, gorillaLeftRest, new Vector3(0, -24f * guard, 16f + guardElevate), 1f);
-            SetBone(gorillaShoulderRight, gorillaRightRest, new Vector3(0, 24f * guard, -16f - guardElevate), 1f);
-            SetBone(gorillaElbowLeft, gorillaElbowLeftRest, new Vector3(0, 0, 26f + guardTuck), 1f);
-            SetBone(gorillaElbowRight, gorillaElbowRightRest, new Vector3(0, 0, -26f - guardTuck), 1f);
-            SetBone(gorillaWristLeft, gorillaWristLeftRest, new Vector3(0, 12f * guard, 0), 1f);
-            SetBone(gorillaWristRight, gorillaWristRightRest, new Vector3(0, -12f * guard, 0), 1f);
-        }
+    }
+
+    private void AttachBoxingGlove(Transform wrist)
+    {
+        if(wrist==null)return;
+        var glove=JungleStageBuilder.CreatePrimitive(PrimitiveType.Sphere,"Guante del rival",wrist.position+gorillaMascot.transform.forward*.20f,
+            Vector3.one*.62f,new Color(.72f,.035f,.025f),keepCollider:false);
+        glove.transform.SetParent(wrist,true);
     }
 
     private void ApplyBowlingGorillaMaterials()

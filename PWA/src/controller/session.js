@@ -23,9 +23,9 @@ export class ControllerSession {
     this.lastHapticPhase = null; this.lastHapticScore = null;
     this.network = 'NOT_CONNECTED'; this.attempted = false; this.disposed = false;
     this.capabilities = permissionCapabilities(win); this.permissions = null;
-    this.resumeKey='gorilla-resume:'+new URL(url).pathname+':'+(fragment.get('sessionId')||'');
+    this.resumeKey='gorilla-resume:'+new URL(url).pathname+':'+(sid||'');
     try { const saved=JSON.parse(win.sessionStorage?.getItem(this.resumeKey)||'null');
-      if(saved?.sessionId===fragment.get('sessionId')&&typeof saved.resumeToken==='string'&&saved.resumeToken.length===43)this.savedResume=saved;
+      if(saved?.sessionId===sid&&typeof saved.resumeToken==='string'&&saved.resumeToken.length===43)this.savedResume=saved;
     } catch {}
     this.client.onIdentity=identity=>{this.savedResume=identity;try{win.sessionStorage?.setItem(this.resumeKey,JSON.stringify({sessionId:identity.sessionId,playerId:identity.playerId,resumeToken:identity.resumeToken}));}catch{}};
     this.pagehide = () => this.background();
@@ -109,7 +109,7 @@ export class ControllerSession {
     if(changed){this.actionPressed=false;this.controlNeutral=null;this.controlTilt=0;this.lastHapticScore=null;this.lastHapticPhase=null;}
     if(profile.valid&&!wanted){
       this.capture.stop();this.wakeWanted=false;void this.wakeLock?.release().catch(()=>{});
-    } else if(wanted&&changed&&this.permissions&&this.capture.state==='STOPPED'&&this.doc.visibilityState!=='hidden') {
+    } else if(wanted&&this.permissions&&this.capture.state==='STOPPED'&&this.doc.visibilityState!=='hidden') {
       this.wakeWanted=true;void this.keepAwake();
       void this.capture.start({permissions:this.permissions}).then(()=>this.updateInput());
     }
@@ -123,6 +123,7 @@ export class ControllerSession {
   async recover() {
     if(this.disposed||!this.attempted||this.isAway||this.doc.visibilityState==='hidden')return;
     if(this.client.state!=='RUNNING'||(this.client.lastHeartbeatAck!=null&&performance.now()-this.client.lastHeartbeatAck>2500))return this.reconnect();
+    await this.client.send?.('CLIENT_STATE',{state:'active'}).catch(()=>{});
     const profile=controlProfile(this.snapshot().gameContext,this.client.identity?.playerId);
     if(profile.phoneRequired&&this.permissions){this.capture.stop();await this.capture.start({permissions:this.permissions});this.updateInput();}
     this.syncProfile();this.publish();
@@ -136,6 +137,12 @@ export class ControllerSession {
       await this.client.connect(this.url,this.client.identity||this.savedResume);
       if(this.disposed){await this.client.close(false);return;}
       this.retryCount=0;this.network='NETWORK_READY';this.state='PERMISSION_REQUIRED';this.profileContext=null;
+      // Heartbeat context can arrive later. Restore previously granted acquisition now,
+      // then let syncProfile stop it for a camera-only game once its context arrives.
+      if(this.permissions && !this.isAway && this.doc.visibilityState!=='hidden') {
+        this.wakeWanted=true;void this.keepAwake();
+        await this.capture.start({permissions:this.permissions});this.updateInput();
+      }
       this.syncProfile();this.startMonitor();this.publish();
     } catch {
       if(!this.disposed){this.network='DISCONNECTED';this.state='DISCONNECTED';this.publish();

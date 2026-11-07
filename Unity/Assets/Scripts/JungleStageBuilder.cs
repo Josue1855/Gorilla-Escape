@@ -7,6 +7,25 @@ using UnityEngine;
 /// </summary>
 public static class JungleStageBuilder
 {
+    public const string GameHammerAsset = "Jungle/NewModels/WhackAMole/Meshy_AI_Wooden_War_Drum_20261026_texture_fbx/Meshy_AI_Wooden_War_Drum_20261026_texture";
+    public static GameObject CreateGameHammer(Transform parent, Vector3 position, float size, out Transform pivot)
+    {
+        var root=new GameObject("Mazo compartido Smash y Whack");root.transform.SetParent(parent,false);root.transform.position=position;
+        pivot=new GameObject("Pivote visual").transform;pivot.SetParent(root.transform,false);
+        var prefab=JungleAssets.Load<GameObject>(GameHammerAsset);
+        if(prefab==null){Debug.LogError("Falta el mazo existente de Whack");return root;}
+        var model=UnityEngine.Object.Instantiate(prefab,pivot,false);
+        model.transform.SetLocalPositionAndRotation(Vector3.zero,Quaternion.Euler(8,180,-38));model.transform.localScale=Vector3.one;
+        DisableChildColliders(model);
+        var rs=model.GetComponentsInChildren<Renderer>(true);
+        if(rs.Length==0)return root;
+        var bounds=CombinedBounds(rs);model.transform.localScale=Vector3.one*(size/Mathf.Max(.01f,Mathf.Max(bounds.size.x,bounds.size.y)));
+        bounds=CombinedBounds(rs);model.transform.position+=position-bounds.center;
+        var texture=JungleAssets.Load<Texture2D>(GameHammerAsset);
+        if(texture!=null)ApplySharedMaterial(rs,CreateTexturedMaterial(texture,"Mazo de madera compartido"));
+        return root;
+    }
+
     public const string BowlingGorillaFolder = "Jungle/GorillaBowling/Meshy_AI_Low_Poly_Gorilla_Embr_biped/";
     public const string BowlingGorillaAsset = BowlingGorillaFolder + "Meshy_AI_Low_Poly_Gorilla_Embr_biped_Meshy_Merged_Animations";
     private readonly struct MaterialKey : IEquatable<MaterialKey>

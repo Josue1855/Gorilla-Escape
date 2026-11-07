@@ -16,6 +16,16 @@ Los scripts antiguos `CameraTracker/`, `MotionRelay/` y `PREPARAR_MODULO.ps1` se
 
 ## Desarrollo local
 
+En una PC Windows nueva, instalar Unity **6000.6.0f1**, Git con LFS, Node 24 y JDK 21 o superior. Clonar el repositorio completo (también se necesita `Shared/`); no copiar solamente `Unity/`. Desde PowerShell ejecutar:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\prepare-editor-windows.ps1 -VerifyTunnel
+```
+
+Este paso descarga Cloudflared 2026.10.0 desde su release oficial, verifica el SHA-256 fijado, descarga recursos LFS, compila PWA/Server y ejecuta una prueba real de HTTPS público con limpieza del túnel. No requiere credenciales Cloudflare. La preparación se hace antes de Play; no instala el runtime de cámara. Cada PC crea su propio Quick Tunnel por defecto; un túnel con nombre requiere selección explícita mediante `GORILLA_TUNNEL_ID` o `GORILLA_TUNNEL_TOKEN`. No compartir estas credenciales entre PCs para ejecutar un mismo dominio.
+
+El túnel publica la página y señalización; no acredita por sí mismo la conexión WebRTC ni los sensores. Probar con teléfono en la misma red local, sin aislamiento entre clientes; firewall y restricciones de red pueden impedir la conexión. Un resultado aprobado en una PC no acredita otra red. El dominio corto de salas es opcional y requiere aprovisionamiento privado independiente; el Quick Tunnel puede usarse directamente sin ese secreto.
+
 1. Ejecutar `npm --prefix PWA ci`, `npm --prefix PWA run build` y `Server/mvnw -B -f Server/pom.xml verify` desde la raíz del repositorio.
 2. Preparar los runtimes y variables de Fase 0. Para el editor puede usarse `tools/integration/run-jungle-editor.sh /ruta/al/Editor/Unity`. Requiere JDK 21 instalado sólo en la máquina de desarrollo; la distribución final usa el Java empaquetado.
 3. Para cámara, proporcionar el paquete oficial `Vision` mediante `GORILLA_PACKAGE_ROOT` o configurar las variables de laboratorio documentadas en [integración](../docs/03-development/SAUL_PHASE0_INTEGRATION.md). La cámara no usa el rastreador antiguo del alpha.

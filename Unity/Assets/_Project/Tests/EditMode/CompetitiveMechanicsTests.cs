@@ -7,6 +7,24 @@ using GorillaEscape.Gameplay.Input;
 public sealed class CompetitiveMechanicsTests
 {
  const BindingFlags Flags=BindingFlags.Instance|BindingFlags.NonPublic;
+ [Test] public void PhonePowerAndCameraPrecisionRemainIndependent() {
+  Assert.That(CompetitiveMechanics.SmashScore(.5f,300,.5f,1),Is.EqualTo(CompetitiveMechanics.SmashScore(10,300,.5f,1)));
+  Assert.That(CompetitiveMechanics.SmashImpactScore(420,1,1),Is.EqualTo(10000));
+  Assert.That(CompetitiveMechanics.SmashImpactScore(420,0,1),Is.Zero);
+  Assert.That(CompetitiveMechanics.SmashImpactScore(300,1,1),Is.GreaterThan(CompetitiveMechanics.SmashImpactScore(300,.2f,1)));
+  Assert.That(CompetitiveMechanics.WhackScore(420,1,1),Is.GreaterThan(CompetitiveMechanics.WhackScore(180,1,1)));
+  Assert.That(CompetitiveMechanics.WhackScore(10000,1,1000),Is.EqualTo(260));
+  Assert.That(JungleGameplayInput.RequiresPhone(JungleGame.Whack),Is.True);
+ }
+ [Test] public void BaseballTimingIsCenteredAtThePlateAndIndependentOfPitchSpeed() {
+  Assert.That(CompetitiveMechanics.BaseballTiming(-3.2f,-3.2f,6.4f),Is.EqualTo(1));
+  Assert.That(CompetitiveMechanics.BaseballTiming(-3.2f+.12f*6.4f,-3.2f,6.4f),Is.EqualTo(.5f).Within(.0001));
+  Assert.That(CompetitiveMechanics.BaseballTiming(-3.2f-.12f*10f,-3.2f,10f),Is.EqualTo(.5f).Within(.0001));
+  Assert.That(CompetitiveMechanics.BaseballTiming(5.8f,-3.2f,6.4f),Is.Zero);
+  Assert.That(CompetitiveMechanics.BaseballDistance(1,2.5f),Is.EqualTo(135f));
+ }
+ [TestCase(JungleGame.Boxing)][TestCase(JungleGame.Baseball)][TestCase(JungleGame.Drums)][TestCase(JungleGame.CoconutSlice)]
+ public void CameraDisciplinesDoNotRequireAPhone(JungleGame game){Assert.That(JungleGameplayInput.RequiresPhone(game),Is.False);}
  [TestCase(10)][TestCase(15)][TestCase(30)][TestCase(60)][TestCase(120)][TestCase(240)]
  public void LandingDoesNotDependOnFrameRate(int fps){double at=CompetitiveMechanics.GroundTime(1.2,18,.25,-9.81),clock=0;while(clock<at)clock=Math.Min(at,clock+1d/fps);Assert.That(CompetitiveMechanics.Position(1.2,18,-9.81,clock),Is.EqualTo(.25).Within(1e-8));}
  [Test] public void MatchedStrengthAndTimingScoreRepeatably(){Assert.That(CompetitiveMechanics.SmashScore(2.6f,420,.5f,1),Is.EqualTo(10000));Assert.That(CompetitiveMechanics.TimingQuality(1000,1100),Is.EqualTo(.5));}

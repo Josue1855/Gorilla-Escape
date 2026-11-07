@@ -545,3 +545,7 @@ Esta autorización sustituye la prohibición de iniciar implementación del rest
 la deuda física de T019/T020 y los criterios de cierre de F05/E0 permanecen
 abiertos. No modifica resultados históricos, dependencias, autoridades,
 protecciones de ramas ni aceptación de una entrega. [Arranque del equipo](TEAM_START.md#arranque-del-equipo-autorizado-2026-10-16).
+
+## DEC-032 — Dispositivos y gestos elegidos por juego
+
+**2026-11-05, aceptada por instrucción explícita del usuario.** Se autoriza usar o prescindir del celular según mejore la experiencia de cada prueba, simplificar las mecánicas de los diez juegos y cambiar automáticamente de perfil dentro del modo historia. Box, béisbol y tambores pasan a cámara. Por aclaración del usuario del 2026-11-06, Whack conserva celular para potencia y cámara para una columna vertical sin profundidad. Smash usa cámara para precisión, celular para potencia y el mismo mazo de Whack; Coconut Throw reutiliza el coco existente. El teléfono debe recuperar la sesión al desbloquear sin volver a la pantalla del QR. Se conservan Unity autoritativa, transporte oficial y aceptación física pendiente. Criterio persistente y revisión por juego: [Controles y mecánicas](03-development/GAMEPLAY_CONTROLS.md).

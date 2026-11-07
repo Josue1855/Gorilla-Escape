@@ -95,7 +95,7 @@ namespace GorillaEscape.Editor
             Environment.SetEnvironmentVariable("GORILLA_QA_OVERLAY", "1");
             Environment.SetEnvironmentVariable("GORILLA_PHONE_INPUT", "1");
             Default("GORILLA_CONNECTION_MODE", "AUTO");
-            Environment.SetEnvironmentVariable("GORILLA_TUNNEL_STARTUP_MS", "15000");
+            Default("GORILLA_TUNNEL_STARTUP_MS", "30000");
             Default("GORILLA_TRUST_BOOTSTRAP_PORT", "8081");
             Default("GORILLA_HTTPS_PORT", "8443");
             Default("GORILLA_LOCAL_TRUST_DIR", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gorilla-escape/live-qa-trust"));

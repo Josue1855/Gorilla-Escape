@@ -242,6 +242,8 @@ public static class TournamentSession
 
     public static IReadOnlyList<Competitor> Competitors => competitors;
     public static string CurrentDisciplineName => (CurrentRound >= 1 && CurrentRound <= TotalRounds) ? CurrentNames[CurrentRound - 1] : "";
+    public static string ControlForScene(string scene) => JungleGameplayInput.RequiresPhone(JungleGameplayInput.ForScene(scene))
+        ? (scene==SceneNavigator.LogBalance ? "SOLO CELULAR" : "CELULAR + CÁMARA") : "SOLO CÁMARA";
     public static string NextDisciplineName => (CurrentRound >= 1 && CurrentRound < TotalRounds) ? CurrentNames[CurrentRound] : "";
     public static int CurrentTurnPlayerId => (competitors != null && CurrentTurnPlayerIndex >= 0 && CurrentTurnPlayerIndex < competitors.Length) ? competitors[CurrentTurnPlayerIndex].Id : 1;
     public static string CurrentTurnPlayerName => (competitors != null && CurrentTurnPlayerIndex >= 0 && CurrentTurnPlayerIndex < competitors.Length) ? competitors[CurrentTurnPlayerIndex].Name : "Tú";
@@ -571,7 +573,7 @@ public static class TournamentSession
         }
         else
         {
-            sub = $"TABLA DE PUNTOS ACUMULADA · SIGUIENTE PRUEBA: {NextDisciplineName.ToUpperInvariant()}";
+            sub = $"SIGUIENTE: {NextDisciplineName.ToUpperInvariant()} · {ControlForScene(CurrentScenes[CurrentRound])}";
         }
 
         GUIStyle subStyle = new GUIStyle(JungleUITheme.Heading)

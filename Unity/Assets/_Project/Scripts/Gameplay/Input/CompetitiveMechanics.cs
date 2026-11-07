@@ -10,10 +10,15 @@ namespace GorillaEscape.Gameplay.Input
             => phoneTimestamp<=0||cameraTimestamp<=0?0f:(float)Unit(1-Math.Abs((double)phoneTimestamp-cameraTimestamp)/200d);
         public static int SmashScore(float cameraSpeed,float phonePower,float handX,float timing)
         {
-            double power=Unit(Math.Max(cameraSpeed/2.6,phonePower/420d));
+            Number(cameraSpeed);double power=PhoneStrikePower(phonePower);
             double direction=Unit(1-Math.Abs(handX-.5)*1.5);
             return (int)Math.Max(200,Math.Min(10000,Math.Round((power*.45+direction*.25+Unit(timing)*.20+.10)*10000,MidpointRounding.AwayFromZero)));
         }
+        public static float PhoneStrikePower(float phonePower) => (float)Unit((Number(phonePower)-100)/320);
+        public static int SmashImpactScore(float phonePower,float accuracy,float timing)
+            => Unit(accuracy)<=0?0:(int)Math.Round((PhoneStrikePower(phonePower)*.45+Unit(accuracy)*.35+Unit(timing)*.20)*10000,MidpointRounding.AwayFromZero);
+        public static int WhackScore(float phonePower,float accuracy,int combo)
+            => 100+(int)Math.Round(40*Unit(accuracy)+60*PhoneStrikePower(phonePower))+Math.Min(6,Math.Max(0,combo))*10;
         public static float ThrowPower(float cameraSpeed,float phonePower,float elevation,float lateral,float timing)
             => (float)(Unit(Math.Max(cameraSpeed/2.6,phonePower/450d))*.60+(1-Unit(Math.Abs(elevation-43)/40d))*.20+Unit(timing)*.15+(1-Unit(Math.Abs(lateral)/18d))*.05);
         public static double GroundTime(double height,double verticalSpeed,double ground,double gravity)
@@ -31,5 +36,13 @@ namespace GorillaEscape.Gameplay.Input
             return (ground-origin-.5f*gravity*seconds*seconds)/seconds;
         }
         public const float DrumHitWindow=.24f;
+        public static float BaseballTiming(float ballZ,float plateZ,float speed)
+        {
+            Number(ballZ);Number(plateZ);Number(speed);
+            if(speed<=0)throw new ArgumentOutOfRangeException(nameof(speed));
+            return (float)Unit(1-Math.Abs(ballZ-plateZ)/speed/.24);
+        }
+        public static float BaseballDistance(float timing,float handSpeed)
+            => 25f+55f*(float)Unit(timing)+55f*(float)Unit((handSpeed-.5)/2);
     }
 }

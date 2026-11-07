@@ -4,7 +4,7 @@ using GorillaEscape.Gameplay.Input;
 [RequireComponent(typeof(JunglePanel))]
 public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
 {
-    private enum GameState { Boxing, BoxingKnockdown, BoxingOver }
+    private enum GameState { Ready, Boxing, BoxingKnockdown, BoxingOver }
     private GameState state;
     private readonly GorillaMascotRig gorillaRig = new GorillaMascotRig();
     private readonly HandVisualPrediction leftVisual = new HandVisualPrediction(), rightVisual = new HandVisualPrediction();
@@ -28,7 +28,6 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
         BuildBoxingArena(); boxingArena.SetActive(true);
         var anchor = new GameObject("Boxing gorilla anchor").transform;
         anchor.SetParent(boxingArena.transform,false);
-        gorillaRig.LoadAsync(anchor, MakeMaterial, null);
         var camera = Camera.main;
         if(camera != null) {
             camera.clearFlags=CameraClearFlags.SolidColor;
@@ -36,13 +35,15 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
             camera.transform.LookAt(new Vector3(0,2.7f,-3f));camera.fieldOfView=46f;
             camera.backgroundColor=new Color(.012f,.018f,.022f);
         }
+        gorillaRig.LoadAsync(anchor, MakeMaterial, null);
         StartBoxingGame();
     }
     private Material MakeMaterial(Color color,float metallic=0f,float smoothness=.35f) => JungleStageBuilder.GetSharedMaterial(color,metallic,smoothness,preferStandard:false);
     private GameObject Box(string name,Vector3 position,Vector3 scale,Color color,Transform parent=null,bool keepCollider=true) => JungleStageBuilder.CreatePrimitive(PrimitiveType.Cube,name,position,scale,color,parent,keepCollider:keepCollider,smoothness:.35f,preferStandard:false);
     private void Update()
     {
-        sharedSession.PresentGame(state==GameState.BoxingOver ? (gorillaHealth<=0 ? "Won" : playerHealth<=0 ? "Lost" : Mathf.Abs(playerHealth-gorillaHealth)<.01f ? "Finished" : playerHealth>gorillaHealth ? "Won":"Lost") : "Playing",score:Math.Round(100f-gorillaHealth),progress:Mathf.Clamp01(1f-boxingRoundTime/90f),balance:Mathf.Clamp((playerHealth-gorillaHealth)/100f,-1f,1f));
+        sharedSession.PresentGame(state==GameState.Ready ? "Countdown" : state==GameState.BoxingOver ? (gorillaHealth<=0 ? "Won" : playerHealth<=0 ? "Lost" : Mathf.Abs(playerHealth-gorillaHealth)<.01f ? "Finished" : playerHealth>gorillaHealth ? "Won":"Lost") : "Playing",score:Math.Round(100f-gorillaHealth),progress:Mathf.Clamp01(1f-boxingRoundTime/90f),balance:Mathf.Clamp((playerHealth-gorillaHealth)/100f,-1f,1f));
+        gorillaRig.Animate(true,boxingGorillaAction,gorillaAttackResolveAt);
         if(!sharedSession.IsInputReady){poseDetected=false;leftVisual.Reset();rightVisual.Reset();return;}
         if(sharedSession.TryConsumeFrame(out var frame))
         {
@@ -62,9 +63,9 @@ public sealed partial class BoxingController : MonoBehaviour, IJungleScreen
                 if(pose.leftDetected&&(frame.Actions&JungleAction.PunchLeft)!=0)TryBoxingPunch(false,boxingLeftSpeed,frame.PhonePower);
                 if(pose.rightDetected&&(frame.Actions&JungleAction.PunchRight)!=0)TryBoxingPunch(true,boxingRightSpeed,frame.PhonePower);
             }else if(state==GameState.BoxingKnockdown&&(frame.Actions&JungleAction.Recover)!=0&&sharedSession.TryAuthorize(JungleAction.Recover,frame.Revision))
-                getUpEnergy=Mathf.Min(100f,getUpEnergy+Mathf.Clamp((frame.PhonePower-210f)*.12f,8f,24f));
+                getUpEnergy=Mathf.Min(100f,getUpEnergy+25f);
         }
-        gorillaRig.Animate(true,boxingGorillaAction,gorillaAttackResolveAt);
+        if(state==GameState.Ready && Time.time>=resultAt) {state=GameState.Boxing;gorillaActionAt=Time.time+1.8f;}
         if(state==GameState.Boxing)UpdateBoxing();
         else if(state==GameState.BoxingKnockdown){
             if(getUpEnergy>=100f){playerHealth=45f;boxingGorillaAction=0;gorillaActionAt=Time.time+1.5f;state=GameState.Boxing;}

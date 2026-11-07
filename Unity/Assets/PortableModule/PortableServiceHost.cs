@@ -69,9 +69,9 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     float lastHandZ;
     float lastHandZTime = -1f;
     int lastActivePlayer = 1;
-    int ActivePlayerId => TournamentSession.IsActive && TournamentSession.CurrentTurnPlayerId >= 1 && TournamentSession.CurrentTurnPlayerId <= 4 && java?.Lobby != null && java.Lobby.IsPhoneConnected(TournamentSession.CurrentTurnPlayerId)
+    int ActivePlayerId => TournamentSession.IsActive && TournamentSession.CurrentTurnPlayerId >= 1 && TournamentSession.CurrentTurnPlayerId <= 4
         ? TournamentSession.CurrentTurnPlayerId : 1;
-    public bool PhoneConnected => java?.State == IpcState.RUNNING && (java.Lobby.IsPhoneConnected(ActivePlayerId) || java.Lobby.IsPhoneConnected(1));
+    public bool PhoneConnected => java?.State == IpcState.RUNNING && java.Lobby.IsPhoneConnected(ActivePlayerId);
     public bool TryPhoneVisualEstimate(out PhoneVisualEstimate estimate)
     {
         estimate=null;
@@ -392,7 +392,7 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         if(!quitting&&vision!=null&&fusion!=null)
         {
             vision.Poll();
-            if(vision.Take(out var frame,out var received))fusion.ObserveCamera(frame,received,(CameraOnly&&gameplay.Game==JungleGame.CoconutSlice)||gameplay.Game==JungleGame.None||gameplay.Game==JungleGame.Bowling);
+            if(vision.Take(out var frame,out var received))fusion.ObserveCamera(frame,received,(CameraOnly&&JungleGameplayInput.SupportsCameraOnly(gameplay.Game))||gameplay.Game==JungleGame.None||gameplay.Game==JungleGame.Bowling);
         }
         if(CameraOnly&&!quitting&&gameplay.Game!=JungleGame.None)
         {

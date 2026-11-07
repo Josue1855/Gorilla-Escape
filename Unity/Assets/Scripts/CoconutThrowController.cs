@@ -164,12 +164,13 @@ public sealed class CoconutThrowController : MonoBehaviour, IJungleScreen
         coconutBall.transform.position = new Vector3(0f, 1.2f, 0.2f);
         const string cocoFolder = "Jungle/NewModels/Coconut/Meshy_AI_Coconut_Bowling_Ball_20261026_texture_fbx/";
         var cocoPrefab = JungleAssets.Load<GameObject>(cocoFolder + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture");
-        var cocoTex = JungleAssets.Load<Texture2D>(cocoFolder + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture");
+        var cocoTex = JungleAssets.Load<Texture2D>(cocoFolder + "Coconut_Albedo");
         var cocoNormal = JungleAssets.Load<Texture2D>(cocoFolder + "Meshy_AI_Coconut_Bowling_Ball_20261026_texture_normal");
         if (cocoPrefab != null)
         {
             var cocoModel = Instantiate(cocoPrefab, coconutBall.transform, false);
             cocoModel.name = "Modelo Coco 3D";
+            cocoModel.transform.localScale = Vector3.one; // Measure after removing the FBX import scale.
             JungleStageBuilder.DisableChildColliders(cocoModel);
             var rs = cocoModel.GetComponentsInChildren<Renderer>(true);
             if (rs.Length > 0)

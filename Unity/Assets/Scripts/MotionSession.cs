@@ -180,8 +180,8 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
     public void ConfigureForScene(string sceneName)
     {
         if(sceneName==SceneNavigator.MainMenu||sceneName==SceneNavigator.Splash){pipMinimized=true;if(serviceHost!=null)serviceHost.PipEnabled=false;}
-        if(serviceHost!=null&&TournamentSession.IsActive&&sceneName!=SceneNavigator.CoconutSlice&&sceneName!=SceneNavigator.JungleKeeper)
-            serviceHost.SetCameraOnly(false);
+        if(serviceHost!=null && JungleGameplayInput.ForScene(sceneName)!=JungleGame.None)
+            serviceHost.SetCameraOnly(JungleGameplayInput.SupportsCameraOnly(JungleGameplayInput.ForScene(sceneName)));
         gameplayActive=sceneName!=SceneNavigator.CoconutSlice&&sceneName!=SceneNavigator.WhackAMole&&sceneName!=SceneNavigator.GorillaSmash&&sceneName!=SceneNavigator.CoconutThrow;
         presentation.gameId=JungleGameplayInput.ForScene(sceneName) switch {
             JungleGame.Bowling=>"bowling",JungleGame.Boxing=>"boxing",JungleGame.Baseball=>"baseball",JungleGame.Drums=>"drums",
@@ -190,7 +190,7 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         presentation.playerId=presentation.gameId=="lobby"?0:1;
         if(presentation.gameId=="coconut-slice"&&SceneNavigator.IsJungleKeeper)presentation.gameId="jungle-keeper";
         presentation.screen=presentation.gameId!="lobby"?"game":sceneName==SceneNavigator.Connection?"connection":"menu";
-        presentation.phoneRequired=presentation.screen=="connection" || presentation.gameId!="lobby"&&presentation.gameId!="coconut-slice"&&presentation.gameId!="jungle-keeper";
+        presentation.phoneRequired=presentation.screen=="connection" || JungleGameplayInput.RequiresPhone(JungleGameplayInput.ForScene(sceneName));
         presentation.contextId=System.Guid.NewGuid().ToString("N");
         PresentGame("Ready");nextPresentation=0;
         HandMode = sceneName == SceneNavigator.Boxing || sceneName == SceneNavigator.Drums || sceneName == SceneNavigator.CoconutSlice || sceneName == SceneNavigator.LogBalance
@@ -333,7 +333,7 @@ public sealed class MotionSession : MonoBehaviour, IJungleScreen, IJungleModalSc
         headerBadgeStyle.fontSize = Mathf.RoundToInt(11f * scale);
         headerPauseButtonStyle.fontSize = Mathf.RoundToInt(14f * scale);
         JungleUITheme.DrawShadowedLabel(new Rect(pad, 8f * scale, Mathf.Max(0, trayX - pad - gap), h - 16f * scale),
-            GetGameDisplayName(sceneGame), headerTitleStyle, 1.5f);
+            GetGameDisplayName(sceneGame)+"\n"+TournamentSession.ControlForScene(activeSceneName), headerTitleStyle, 1.5f);
 
         string playerName = TournamentSession.IsActive && TournamentSession.HumanPlayerCount > 1
             ? TournamentSession.CurrentTurnPlayerName : PlayerName;

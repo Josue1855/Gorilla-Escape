@@ -16,12 +16,11 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
     private Rigidbody ballBody;
     private Vector2 rightHand = new Vector2(.62f,.58f);
     private readonly HandVisualPrediction rightVisual = new HandVisualPrediction();
-    private float phonePower, pitchAt, stateUntil, hitDistance;
+    private float pitchAt, stateUntil, hitDistance;
     private long inputRevision;
-    private bool phoneCalibrated;
-    private float centerBeta, centerGamma;
-    private int lastRecenter;
-    private Quaternion batOrientation = Quaternion.Euler(15f, 0f, 0f);
+    private float swingSpeed, pitchStartedAt, swingAt = -10f;
+    private const float PitchSpeed = 6.4f, ContactZ = -3.2f;
+    private Vector3 pitchOrigin;
     private int pitches, strikes, hits, homeRuns, score;
     private int cachedPitches = -1, cachedHits = -1, cachedHomeRuns = -1, cachedScore = -1, cachedFinalScore = -1;
     private string cachedHudText = "", cachedFinalText = "";
@@ -41,7 +40,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         hitTone = JungleAudioBank.BatHit;
         homeRunTone = JungleAudioBank.HomeRun;
         strikeTone = JungleAudioBank.Strike;
-        SchedulePitch(1.2f);
+        SchedulePitch(4f);
     }
 
     private GameObject Primitive(PrimitiveType type, string name, Vector3 position, Vector3 scale, Color color, bool keepCollider = false) =>
@@ -79,34 +78,29 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
 
     private void SchedulePitch(float delay)
     {
-        state=PlayState.Ready; pitchAt=Time.time+delay; message="PREPÁRATE";
+        hitDistance=0; state=PlayState.Ready; pitchAt=Time.time+delay; message="PREPÁRATE";
         ballBody.isKinematic=true; ball.transform.position=new Vector3(0,1.5f,5.8f); ball.transform.localScale=Vector3.one*.32f;
     }
 
     private void Update()
     {
         session.PresentGame(state==PlayState.GameOver?"Finished":state==PlayState.Ready?"Ready":"Playing",score,Mathf.Clamp01(pitches/10f),distance:hitDistance>0?hitDistance:(float?)null);
-        if(!session.IsInputReady){phonePower=0;phoneCalibrated=false;rightVisual.Reset();return;}
+        if(!session.IsInputReady){rightVisual.Reset();return;}
         if(session.TryConsumeFrame(out var frame))ReadSensors(frame);
         Vector2 visualRight = rightVisual.TryPosition(Time.unscaledTime, out float vx, out float vy) ? new Vector2(vx, vy) : rightHand;
         Vector3 handPosition = new Vector3(Mathf.Lerp(-2.45f,2.45f,visualRight.x),Mathf.Lerp(2.75f,.30f,visualRight.y),-3.1f);
         bat.transform.position = Vector3.Lerp(bat.transform.position, handPosition, 22f * Time.deltaTime);
-        Quaternion visualOrientation=batOrientation;
-        if(phoneCalibrated&&session.TryPhoneVisualEstimate(out var visual)&&visual.Orientation!=null&&visual.Orientation.hasBeta&&visual.Orientation.hasGamma)
-        {
-            float visualUp=Mathf.Clamp(Mathf.DeltaAngle(centerBeta,visual.Orientation.beta),-70f,70f);
-            float visualSide=Mathf.Clamp(Mathf.DeltaAngle(centerGamma,visual.Orientation.gamma),-95f,95f);
-            visualOrientation=Quaternion.Euler(12f-visualUp*.95f,visualSide*.90f,-visualSide*.28f);
-        }
-        bat.transform.rotation = Quaternion.Slerp(bat.transform.rotation, visualOrientation, 22f * Time.deltaTime);
+        float swingPhase = Mathf.Clamp01((Time.time-swingAt)/.32f);
+        float sweep = Mathf.Sin(swingPhase*Mathf.PI)*105f;
+        bat.transform.rotation = Quaternion.Slerp(bat.transform.rotation, Quaternion.Euler(12f, -sweep, -18f), 1f-Mathf.Exp(-22f*Time.deltaTime));
         AnimateStageProps();
         if(state==PlayState.Ready && Time.time>=pitchAt) StartPitch();
         else if(state==PlayState.Pitching)
         {
-            ball.transform.position += new Vector3(0,-.05f,-8.2f)*Time.deltaTime;
+            ball.transform.position = pitchOrigin + Vector3.back * (PitchSpeed*(Time.time-pitchStartedAt));
             float z=ball.transform.position.z;
-            if(z<=1.1f&&z>=-3.6f&&message=="¡BATEA!")message="¡AHORA! ¡BATEA!";
-            if(z < -4.2f) FinishPitch(false,0);
+            message = Mathf.Abs(z-ContactZ)<=PitchSpeed*.22f ? "¡AHORA! ¡BATEA!" : "SIGUE LA PELOTA";
+            if(z < ContactZ-PitchSpeed*.28f) FinishPitch(false,0);
         }
         else if(state==PlayState.HitFlight)
         {
@@ -122,6 +116,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
     {
         state=PlayState.Pitching; pitches++; message="¡BATEA!";
         ball.transform.position=new Vector3(UnityEngine.Random.Range(-.45f,.45f),UnityEngine.Random.Range(1.25f,1.85f),5.8f);
+        pitchOrigin=ball.transform.position; pitchStartedAt=Time.time;
         if(pitcher!=null){pitcher.transform.rotation=Quaternion.Euler(0f,180f,0f);JungleStageBuilder.PulseSquash(pitcher,1.22f,.84f,22f,8f);}
         JungleStageBuilder.PulseSquash(ball,.75f,1.22f,28f,10f);
         if(sfx!=null&&pitchTone!=null)sfx.PlayOneShot(pitchTone,.55f);
@@ -150,16 +145,10 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
     private void ReadSensors(JungleFusedFrame frame)
     {
         inputRevision=frame.Revision;
-        if(frame.Baseline){phoneCalibrated=false;rightVisual.Reset();}
+        if(frame.Baseline){rightVisual.Reset();}
         rightHand=new Vector2(frame.Right.X,frame.Right.Y);
         if(frame.NewPose||frame.Baseline)rightVisual.Observe(rightHand.x,rightHand.y,frame.Right.VelocityX,frame.Right.VelocityY,Time.unscaledTime);
-        phonePower=frame.PhonePower;
-        var motion=frame.Motion;
-        if(!phoneCalibrated||motion.recenter!=lastRecenter)
-        {centerBeta=motion.beta;centerGamma=motion.gamma;lastRecenter=motion.recenter;phoneCalibrated=true;}
-        float tiltUp=Mathf.Clamp(Mathf.DeltaAngle(centerBeta,motion.beta),-70f,70f);
-        float tiltSide=Mathf.Clamp(Mathf.DeltaAngle(centerGamma,motion.gamma),-95f,95f);
-        batOrientation=Quaternion.Euler(12f-tiltUp*.95f,tiltSide*.90f,-tiltSide*.28f);
+        swingSpeed=frame.Right.Speed;
         if(state==PlayState.Pitching&&(frame.Actions&JungleAction.Swing)!=0)TrySwing();
     }
 
@@ -167,11 +156,12 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
     {
         if(state!=PlayState.Pitching||!session.TryAuthorize(JungleAction.Swing,inputRevision))return;
         float z=ball.transform.position.z;
-        if(z>1.1f || z<-3.6f) { message="SWING TEMPRANO"; return; }
-        float timing=1f-Mathf.Clamp01(Mathf.Abs(z+1.4f)/2.5f);
+        swingAt=Time.time;
+        float errorSeconds=Mathf.Abs(z-ContactZ)/PitchSpeed;
+        if(errorSeconds>.24f) { FinishPitch(false,0); message=z>ContactZ ? "MUY PRONTO · ESPERA AL PLATO" : "MUY TARDE"; return; }
+        float timing=CompetitiveMechanics.BaseballTiming(z,ContactZ,PitchSpeed);
         float direction=Mathf.Clamp((rightHand.x-.5f)*2.4f,-1f,1f);
-        float strength=Mathf.Clamp((phonePower-210f)/260f,.25f,1f);
-        hitDistance=25f+timing*55f+strength*55f;
+        hitDistance=CompetitiveMechanics.BaseballDistance(timing,swingSpeed);
         hits++; score += hitDistance>105f?4:hitDistance>72f?2:1; if(hitDistance>105f) homeRuns++;
         state=PlayState.HitFlight; message=hitDistance>105f?$"¡JONRÓN! · {hitDistance:F0} m":$"¡HIT! · {hitDistance:F0} m";
         if(sfx!=null)sfx.PlayOneShot(hitDistance>105f?homeRunTone:hitTone,.85f);
@@ -201,6 +191,12 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
         }
         JungleUITheme.DrawPanel(new Rect(w*.12f,h*.03f,w*.76f,h*.16f)); JungleUITheme.DrawShadowedLabel(new Rect(w*.14f,h*.04f,w*.72f,h*.065f),"JUNGLE BASEBALL",JungleUITheme.HudTitle,3f);
         JungleUITheme.DrawShadowedLabel(new Rect(w*.15f,h*.105f,w*.70f,h*.06f),cachedHudText,JungleUITheme.HudScore,2f);
+        float cue=Mathf.Clamp01((Time.time-pitchStartedAt)*PitchSpeed/(5.8f-ContactZ));
+        if(state==PlayState.Pitching) {
+            JungleUITheme.DrawSubPanel(new Rect(w*.30f,h*.77f,w*.40f,h*.055f));
+            JungleRetainedUI.DrawTexture(new Rect(w*.30f+w*.40f*.84f,h*.77f,w*.40f*.16f,h*.055f),JungleUITheme.Gold);
+            JungleRetainedUI.DrawTexture(new Rect(w*.30f+w*.40f*cue-4,h*.77f,8,h*.055f),JungleUITheme.Turquoise);
+        }
         Rect calloutRect = new Rect(w*.34f,h*.22f,w*.32f,h*.075f);
         if(message.Contains("STRIKE")) JungleRetainedUI.DrawTexture(calloutRect,JungleUITheme.Red);
         else JungleUITheme.DrawPanel(calloutRect, selected: message.Contains("JON")||message.Contains("AHORA")||message.Contains("HIT"));
@@ -223,7 +219,7 @@ public sealed class BaseballController : MonoBehaviour, IJungleScreen
             if(JungleRetainedUI.Button(new Rect(w*.38f,h*.49f,w*.24f,h*.07f),"OTRA PARTIDA",JungleUITheme.Button)){JungleAudioBank.PlayUiClick();session.ResetRound();pitches=strikes=hits=homeRuns=score=0;SchedulePitch(1f);}
         }
         if(JungleRetainedUI.Button(new Rect(w*.84f,h*.04f,w*.13f,h*.07f),"MENÚ",JungleUITheme.Button)){JungleAudioBank.PlayUiClick();SceneNavigator.Load(SceneNavigator.MainMenu);}
-        JungleUITheme.DrawShadowedLabel(new Rect(w*.18f,h*.88f,w*.64f,h*.06f),"SIGUE LA PELOTA · HAZ EL SWING CON EL CELULAR Y LA MANO DERECHA",JungleUITheme.HudBody,2f);
+        JungleUITheme.DrawShadowedLabel(new Rect(w*.18f,h*.88f,w*.64f,h*.06f),"SIN CELULAR · ESPERA «AHORA» Y CRUZA LA MANO DERECHA DE LADO A LADO",JungleUITheme.HudBody,2f);
         JungleUITheme.DrawLeaves();
     }
 }

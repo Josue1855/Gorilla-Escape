@@ -17,7 +17,7 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
     private string callout="";
     private bool finished;
     private long inputRevision;
-    private const float Beat=.54545f;
+    private const float Beat=.70f;
     private GUIStyle titleStyle;
     private GUIStyle laneLabelStyle;
     private int lastScreenHeight;
@@ -36,7 +36,7 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
         leftDrumClip=JungleAudioBank.LeftDrum;
         rightDrumClip=JungleAudioBank.RightDrum;
         missClip=JungleAudioBank.MissDrum;
-        BuildStage(); startTime=Time.time+2f; GenerateChart();
+        BuildStage(); startTime=Time.time+4f; GenerateChart();
     }
 
     private void BuildStage()
@@ -81,9 +81,10 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
     {
         for(int i=0;i<64;i++)
         {
-            bool both=i>8&&i%16==15;
-            notes.Add(new Note{left=i%4==0||i%4==3,time=startTime+i*Beat});
-            if(both)notes.Add(new Note{left=false,time=startTime+i*Beat});
+            // Start with a predictable left/right pulse; introduce pairs only after practice.
+            bool left=i%2==0;
+            notes.Add(new Note{left=left,time=startTime+i*Beat});
+            if(i>=32 && i%8==7)notes.Add(new Note{left=!left,time=startTime+i*Beat});
         }
     }
 
@@ -122,14 +123,15 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
     private void TryHit(bool left)
     {
         if(finished||Time.time<startTime||!session.TryAuthorize(left?JungleAction.DrumLeft:JungleAction.DrumRight,inputRevision))return;
+        if(sfx!=null)sfx.PlayOneShot(left?leftDrumClip:rightDrumClip,.75f);
+        if(left)leftFlash=Time.time+.14f;else rightFlash=Time.time+.14f;
         Note best=null;float error=CompetitiveMechanics.DrumHitWindow;
         foreach(Note n in notes)if(!n.judged&&n.left==left&&Mathf.Abs(Time.time-n.time)<=error){best=n;error=Mathf.Abs(Time.time-n.time);}
-        if(best==null){combo=0;misses++;callout="¡DESTIEMPO!";calloutUntil=Time.time+.45f;if(sfx!=null&&missClip!=null)sfx.PlayOneShot(missClip,.5f);return;}
+        if(best==null){callout="¡DESTIEMPO!";calloutUntil=Time.time+.45f;return;}
         best.judged=true;combo++;bestCombo=Mathf.Max(bestCombo,combo);
         int gained=error<.075f?1000:error<.15f?650:350;score+=gained+combo*12;
         callout=(error<.075f?"¡PERFECTO! ":error<.15f?"¡BIEN! ":"¡OK! ")+(combo>=3?$"· COMBO x{combo}":$"+{gained}");
         calloutUntil=Time.time+.55f;
-        if(sfx!=null)sfx.PlayOneShot(left?leftDrumClip:rightDrumClip,error<.075f?.95f:.75f);
         JungleStageBuilder.PulseSquash(left?leftDrumBody:rightDrumBody,.76f,1.22f,28f,10f);
         JungleStageBuilder.PulseSquash(left?leftDrumHead:rightDrumHead,.65f,1.18f,30f,11f);
         if(error<.075f)JungleStageBuilder.ShakeCamera(.055f,.10f);
@@ -148,6 +150,7 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
             cachedHudText=$"PUNTOS {score}    COMBO {combo}    MEJOR {bestCombo}    FALLOS {misses}";
         }
         JungleUITheme.DrawPanel(new Rect(w*.16f,h*.02f,w*.68f,h*.135f));JungleUITheme.DrawShadowedLabel(new Rect(w*.18f,h*.025f,w*.64f,h*.055f),"JUNGLE DRUMS",JungleUITheme.HudTitle,3f);JungleUITheme.DrawShadowedLabel(new Rect(w*.19f,h*.08f,w*.62f,h*.05f),cachedHudText,JungleUITheme.HudScore,2f);
+        JungleUITheme.DrawShadowedLabel(new Rect(w*.12f,h*.90f,w*.76f,h*.055f),Time.time<startTime ? "SIN CELULAR · BAJA LA MANO DEL COLOR CUANDO LA NOTA TOQUE LA LÍNEA" : "IZQUIERDA AZUL · DERECHA NARANJA · SUBE ENTRE GOLPES",JungleUITheme.HudBody,2f);
         DrawLane(true,w*.25f,w,h,title);DrawLane(false,w*.62f,w,h,title);
         if(Time.time<calloutUntil&&!string.IsNullOrEmpty(callout))
         {
@@ -181,7 +184,7 @@ public sealed class RhythmDrumsController : MonoBehaviour, IJungleScreen
         float laneW=w*.13f,targetY=h*.76f;
         if(laneLabelStyle==null)laneLabelStyle=new GUIStyle(style){wordWrap=false};
         laneLabelStyle.fontSize=Mathf.Min(style.fontSize,Mathf.RoundToInt(laneW*.13f));JungleUITheme.DrawSubPanel(new Rect(x, h*.16f,laneW,h*.66f));JungleRetainedUI.DrawTexture(new Rect(x+4f,targetY,laneW-8f,h*.025f),accent);
-        foreach(Note n in notes)if(!n.judged&&n.left==left){float seconds=n.time-Time.time;if(seconds<2.6f&&seconds>-.3f){float y=targetY-seconds*(h*.23f);JungleRetainedUI.DrawTexture(new Rect(x+laneW*.18f,y,laneW*.64f,h*.045f),accent);}}
+        foreach(Note n in notes)if(!n.judged&&n.left==left){float seconds=n.time-Time.time;if(seconds<2.6f&&seconds>-.3f){float y=targetY-seconds*(h*.23f);JungleRetainedUI.DrawTexture(new Rect(x+laneW*.18f,y-h*.0225f,laneW*.64f,h*.045f),accent);}}
         bool flash=Time.time<(left?leftFlash:rightFlash);JungleUITheme.DrawPanel(new Rect(x-laneW*.05f,h*.80f,laneW*1.1f,h*.08f), selected: flash);JungleUITheme.DrawShadowedLabel(new Rect(x,h*.80f,laneW,h*.08f),left?"IZQUIERDA":"DERECHA",laneLabelStyle,2f);
     }
 }

@@ -13,6 +13,31 @@ namespace GorillaEscape.Tests
     {
         static System.Type TournamentType => System.AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType("TournamentSession")).First(t => t != null);
         [UnityTest]
+        public IEnumerator DisciplinesSwitchDevicesAutomaticallyAndCoconutFitsItsVisibleSize()
+        {
+            loadedGameplayForPauseTest=true;
+            var navigation=System.Type.GetType("SceneNavigator, Assembly-CSharp",true);
+            Mesh hammerMesh=null;
+            foreach(var name in new[]{"GorillaBoxing","JungleBaseball","JungleDrums","WhackAMole","GorillaSmash","CoconutThrow","CoconutSlice"}) {
+                navigation.GetMethod("Load").Invoke(null,new object[]{name});yield return null;yield return null;
+                var session=Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).First(b=>b.GetType().Name=="MotionSession");
+                Assert.That(session.GetType().GetProperty("CameraOnly").GetValue(session),Is.EqualTo(name!="CoconutThrow"&&name!="WhackAMole"&&name!="GorillaSmash"),name);
+                if(name=="WhackAMole"||name=="GorillaSmash") {
+                    var controller=Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).First(b=>b.GetType().Name==(name=="WhackAMole"?"WhackAMoleController":"GorillaSmashController"));
+                    var hammer=(GameObject)controller.GetType().GetField("hammer",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(controller);
+                    var mesh=hammer.GetComponentInChildren<MeshFilter>().sharedMesh;
+                    if(hammerMesh!=null)Assert.That(mesh,Is.SameAs(hammerMesh));else hammerMesh=mesh;
+                }
+                if(name=="CoconutThrow") {
+                    var coco=GameObject.Find("Coco Balístico");Assert.That(coco,Is.Not.Null);
+                    var renderers=coco.GetComponentsInChildren<Renderer>();Assert.That(renderers.Length,Is.GreaterThan(0));
+                    var bounds=renderers[0].bounds;foreach(var r in renderers)bounds.Encapsulate(r.bounds);
+                    Assert.That(Mathf.Max(bounds.size.x,Mathf.Max(bounds.size.y,bounds.size.z)),Is.InRange(.55f,.70f));
+                    Assert.That(Vector3.Distance(bounds.center,coco.transform.position),Is.LessThan(.01f));
+                }
+            }
+        }
+        [UnityTest]
         public IEnumerator ModeExitKeepsTheSameRoomAndItsPreparation()
         {
             loadedGameplayForPauseTest = true;

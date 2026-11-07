@@ -100,7 +100,8 @@ namespace GorillaEscape.Gameplay.Input
             return p!=null&&p.visible&&p.visibility>=.6f&&p.presence>=.6f&&p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;
         }
         public static bool RequiresCamera(JungleGame game) => game!=JungleGame.None && game!=JungleGame.LogBalance;
-        public static bool SupportsCameraOnly(JungleGame game) => game==JungleGame.CoconutSlice;
+        public static bool SupportsCameraOnly(JungleGame game) => game==JungleGame.CoconutSlice||game==JungleGame.Boxing||game==JungleGame.Baseball||game==JungleGame.Drums;
+        public static bool RequiresPhone(JungleGame game) => game!=JungleGame.None&&!SupportsCameraOnly(game);
         public void UpdateCamera(CameraInputWire frame,PlayerLockState lockState,int subjectId,long now)
         {
             if(!CameraOnly||!SupportsCameraOnly(Game)||lockState!=PlayerLockState.LOCKED||!CameraInputStore.Valid(frame)
@@ -114,6 +115,9 @@ namespace GorillaEscape.Gameplay.Input
             if(frame.frameSequence<cameraSequence){Break(JungleInputStatus.Reacquiring);return;}
             if(frame.frameSequence==cameraSequence)return;
             if(!adapter.TryPose(frame,subjectId,now,out var next,true)){Break(JungleInputStatus.PartialInput);return;}
+            bool both=Game==JungleGame.Boxing||Game==JungleGame.Drums;
+            if(Game!=JungleGame.CoconutSlice&&(!next.rightDetected||(both&&!next.leftDetected)))
+            {Break(JungleInputStatus.TrackingLost);return;}
             double dt=(frame.captureTimestamp-poseTime)/1000.0;
             bool derivative=!baseline&&pose!=null&&dt>=.008&&dt<=.25;
             bool leftDerivative=derivative&&next.leftDetected&&pose.leftDetected,rightDerivative=derivative&&next.rightDetected&&pose.rightDetected;
@@ -121,6 +125,8 @@ namespace GorillaEscape.Gameplay.Input
             right=new JungleHand(next.rightWristX,next.rightWristY,rightDerivative?(float)((next.rightWristX-pose.rightWristX)/dt):0,rightDerivative?(float)((next.rightWristY-pose.rightWristY)/dt):0);
             if(leftDerivative&&left.Speed>MaximumHandSpeed){next.leftDetected=false;left=default;}
             if(rightDerivative&&right.Speed>MaximumHandSpeed){next.rightDetected=false;next.detected=false;right=default;}
+            if(Game!=JungleGame.CoconutSlice&&(!next.rightDetected||(both&&!next.leftDetected)))
+            {Break(JungleInputStatus.Reacquiring);return;}
             if(!next.leftDetected&&!next.rightDetected){Break(JungleInputStatus.Reacquiring);return;}
             pose=next;poseTime=frame.captureTimestamp;cameraSequence=frame.frameSequence;
             broken=false;Status=JungleInputStatus.Ready;
@@ -207,14 +213,14 @@ namespace GorillaEscape.Gameplay.Input
             if(Game==JungleGame.Boxing)
             {
                 if(poseChanged&&first.Observe(left.Speed>.72f,left.Speed<.25f,now,340))result|=JungleAction.PunchLeft;
-                if(second.Observe(power>215&&right.Speed>.72f,power<150&&right.Speed<.25f,now,340))result|=JungleAction.PunchRight;
-                if(recovery.Observe(power>245&&right.Speed>.35f,power<150&&right.Speed<.25f,now,300))result|=JungleAction.Recover;
+                if(poseChanged&&second.Observe(right.Speed>.72f&&(CameraOnly||power>215),right.Speed<.25f&&(CameraOnly||power<150),now,340))result|=JungleAction.PunchRight;
+                if(poseChanged&&recovery.Observe((CameraOnly?right.VelocityY<-.55f:power>245&&right.Speed>.35f),right.Speed<.25f&&(CameraOnly||power<150),now,300))result|=JungleAction.Recover;
             }
-            if(Game==JungleGame.Baseball&&first.Observe(power>260&&right.Speed>.55f,power<155&&right.Speed<.25f,now,200))result|=JungleAction.Swing;
+            if(Game==JungleGame.Baseball&&poseChanged&&first.Observe((CameraOnly?Math.Abs(right.VelocityX)>.65f:power>260&&right.Speed>.55f),(CameraOnly||power<155)&&right.Speed<.25f,now,350))result|=JungleAction.Swing;
             if(Game==JungleGame.Drums)
             {
                 if(poseChanged&&first.Observe(left.VelocityY>.62f,left.VelocityY<.20f,now,200))result|=JungleAction.DrumLeft;
-                if(second.Observe(right.VelocityY>.62f&&power>225,right.VelocityY<.20f&&power<150,now,200))result|=JungleAction.DrumRight;
+                if(poseChanged&&second.Observe(right.VelocityY>.62f&&(CameraOnly||power>225),right.VelocityY<.20f&&(CameraOnly||power<150),now,200))result|=JungleAction.DrumRight;
             }
             if(Game==JungleGame.CoconutSlice&&poseChanged)
             {
@@ -225,8 +231,8 @@ namespace GorillaEscape.Gameplay.Input
                 result|=JungleAction.Save;
             if(Game==JungleGame.LogBalance)result|=JungleAction.Balance;
             float whack=Math.Max(0,gravity-9.81f)*18+angular;
-            if(Game==JungleGame.Whack&&first.Observe(right.VelocityY>.72f&&whack>235,right.VelocityY<.2f&&whack<150,now,220))result|=JungleAction.Whack;
-            if(Game==JungleGame.GorillaSmash&&first.Observe(throwingHand.VelocityY>.68f&&whack>210,throwingHand.VelocityY<.2f&&whack<130,now,250))result|=JungleAction.Smash|JungleAction.Whack;
+            if(Game==JungleGame.Whack&&poseChanged&&right.VelocityY>.50f&&whack>100)result|=JungleAction.Whack;
+            if(Game==JungleGame.GorillaSmash&&poseChanged&&throwingHand.VelocityY>.50f&&whack>100)result|=JungleAction.Smash|JungleAction.Whack;
             if(Game==JungleGame.CoconutThrow&&first.Observe(power>280&&throwingHand.Speed>.35f,power<160&&throwingHand.Speed<.22f,now,500))result|=JungleAction.Throw;
             return result;
         }

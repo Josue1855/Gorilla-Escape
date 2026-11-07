@@ -25,7 +25,6 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
     private Material padMat;
     private Material puckMat;
     private Material bellMat;
-    private Material hammerMat;
 
     // Parámetros de la torre de feria (High Striker)
     private const float BaseY = -0.7f;
@@ -40,7 +39,10 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
     private float downSpeed;
     private float phonePower;
     private long inputRevision;
-    private float matchedTiming;
+    private float matchedTiming, impactAccuracy, impactPower;
+    private bool strokeArmed;
+    private Vector2 previousHand, impactPoint;
+    private Vector2 PadViewport => (Vector2)Camera.main.WorldToViewportPoint(platformPad.transform.position+Vector3.up*.08f);
     private bool smashRequested;
     private float stateAt;
     private float smashStartedAt;
@@ -51,7 +53,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
     // Intentos y puntuación (Spec v4 - Sección 17)
     private const int MaxAttempts = 3;
     private int currentAttempt = 0;
-    private readonly int[] attemptScores = new int[MaxAttempts];
+    private readonly int[] attemptScores = { -1, -1, -1 };
     private int bestScore = 0;
     private int currentScore = 0;
     private string currentRankLabel = "";
@@ -287,46 +289,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
 
     private void CreateHammer()
     {
-        hammer = new GameObject("04 Mazo del Gorila");
-        hammer.transform.SetParent(transform, false);
-        hammer.transform.position = new Vector3(1.5f, 0f, -1f);
-
-        var pivotObj = new GameObject("Pivote Visual");
-        pivotObj.transform.SetParent(hammer.transform, false);
-        hammerPivot = pivotObj.transform;
-
-        hammerMat = JungleStageBuilder.GetSharedMaterial(new Color(0.45f, 0.28f, 0.14f), 0.1f, 0.3f);
-        var metalBandMat = JungleStageBuilder.GetSharedMaterial(new Color(0.6f, 0.6f, 0.65f), 0.7f, 0.8f);
-
-        // Mango de madera
-        var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        handle.name = "Mango";
-        handle.transform.SetParent(hammerPivot, false);
-        handle.transform.localPosition = new Vector3(0f, 0.65f, 0f);
-        handle.transform.localScale = new Vector3(0.10f, 0.75f, 0.10f);
-        handle.GetComponent<Renderer>().sharedMaterial = hammerMat;
-
-        // Cabeza cilíndrica del mazo
-        var head = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        head.name = "Cabeza Mazo";
-        head.transform.SetParent(hammerPivot, false);
-        head.transform.localPosition = new Vector3(0f, 1.35f, 0f);
-        head.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
-        head.transform.localScale = new Vector3(0.45f, 0.55f, 0.45f);
-        head.GetComponent<Renderer>().sharedMaterial = hammerMat;
-
-        // Aros de refuerzo
-        var ring1 = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        ring1.transform.SetParent(head.transform, false);
-        ring1.transform.localPosition = new Vector3(0f, 0.38f, 0f);
-        ring1.transform.localScale = new Vector3(1.04f, 0.08f, 1.04f);
-        ring1.GetComponent<Renderer>().sharedMaterial = metalBandMat;
-
-        var ring2 = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        ring2.transform.SetParent(head.transform, false);
-        ring2.transform.localPosition = new Vector3(0f, -0.38f, 0f);
-        ring2.transform.localScale = new Vector3(1.04f, 0.08f, 1.04f);
-        ring2.GetComponent<Renderer>().sharedMaterial = metalBandMat;
+        hammer=JungleStageBuilder.CreateGameHammer(transform,new Vector3(1.5f,0f,-1f),1.65f,out hammerPivot);
     }
 
     private void EnsureStyles(float w, float h)
@@ -475,7 +438,10 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         var hand = session != null && session.HandMode == MotionSession.HandTrackingMode.LeftOnly ? frame.Left : frame.Right;
         downSpeed = hand.VelocityY;
         phonePower = frame.PhonePower;
+        previousHand=frame.Baseline?new Vector2(hand.X,1f-hand.Y):cursorViewport;
         cursorViewport = new Vector2(hand.X, 1f - hand.Y);
+        if(frame.Baseline)strokeArmed=false;
+        else if(downSpeed<-.20f)strokeArmed=true;
 
         if (frame.NewPose || frame.Baseline)
             handVisual.Observe(cursorViewport.x, cursorViewport.y, hand.VelocityX, -hand.VelocityY, Time.unscaledTime);
@@ -490,8 +456,9 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         // Mover mazo hacia la posición de la mano
         if (hammer != null)
         {
-            Vector3 targetHandPos = Camera.main.ViewportToWorldPoint(new Vector3(VisualHand.x, VisualHand.y, 7.5f));
-            targetHandPos.z = 0f;
+            var ray=Camera.main.ViewportPointToRay(new Vector3(VisualHand.x,VisualHand.y,0));
+            var plane=new Plane(Vector3.forward,new Vector3(0,0,.3f));
+            Vector3 targetHandPos=plane.Raycast(ray,out float depth)?ray.GetPoint(depth):hammer.transform.position;
             hammer.transform.position = Vector3.Lerp(hammer.transform.position, targetHandPos, 22f * Time.deltaTime);
 
             if (hammerPivot != null)
@@ -513,24 +480,35 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
 
     private void ExecuteSmash()
     {
-        if (state != State.Playing) return;
+        if (state != State.Playing || !strokeArmed) return;
+        Vector2 target=PadViewport;
+        // A downward sweep resolves at the pad's height, including low camera cadences.
+        if(previousHand.y<target.y || cursorViewport.y>target.y)return;
+        float fraction=Mathf.InverseLerp(previousHand.y,cursorViewport.y,target.y);
+        impactPoint=Vector2.Lerp(previousHand,cursorViewport,fraction);
+        float radius=Mathf.Max(.04f,Mathf.Abs(Camera.main.WorldToViewportPoint(platformPad.transform.position+Vector3.right*.60f).x-target.x));
+        impactAccuracy=Mathf.Clamp01(1f-Mathf.Abs(impactPoint.x-target.x)/radius);
+        impactPower=CompetitiveMechanics.PhoneStrikePower(phonePower);
 
         // Intentar autorizar con el supervisor oficial
         bool authorized = session.TryAuthorize(JungleAction.Smash, inputRevision)
                        || session.TryAuthorize(JungleAction.Whack, inputRevision);
 
         if (!authorized) return;
+        strokeArmed=false;
 
         // Efecto de impacto en plataforma
         if (sfxSource != null && whackClip != null)
             sfxSource.PlayOneShot(whackClip, 0.9f);
 
-        JungleStageBuilder.PulseSquash(platformPad, 1.35f, 0.7f, 25f, 10f);
-        JungleStageBuilder.ShakeCamera(0.22f, 0.18f);
+        if(impactAccuracy>0) {
+            JungleStageBuilder.PulseSquash(platformPad, 1.35f, 0.7f, 25f, 10f);
+            JungleStageBuilder.ShakeCamera(.08f+.14f*impactPower, .18f);
+        }
 
         // Cálculo de técnica según Spec v4 Sección 17:
-        // Technique = Power * 0.45 + DirectionAccuracy * 0.25 + Timing * 0.20 + GestureConfidence * 0.10
-        currentScore = CompetitiveMechanics.SmashScore(downSpeed,phonePower,cursorViewport.x,matchedTiming);
+        // Camera measures impact accuracy; only the phone supplies power.
+        currentScore = CompetitiveMechanics.SmashImpactScore(phonePower,impactAccuracy,matchedTiming);
 
         if (currentScore > bestScore)
             bestScore = currentScore;
@@ -538,7 +516,8 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         attemptScores[currentAttempt] = currentScore;
 
         // Clasificación de feedback oficial
-        if (currentScore < 2500)
+        if(currentScore==0){currentRankLabel="FUERA DEL BLANCO";currentRankColor=Color.red;}
+        else if (currentScore < 2500)
         {
             currentRankLabel = "¡GOLPE SUAVE! (WEAK)";
             currentRankColor = new Color(0.7f, 0.7f, 0.7f);
@@ -619,7 +598,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
         state = State.Playing;
         currentAttempt = 0;
         bestScore = 0;
-        for (int i = 0; i < MaxAttempts; i++) attemptScores[i] = 0;
+        for (int i = 0; i < MaxAttempts; i++) attemptScores[i] = -1;
         ResetPuck();
     }
 
@@ -656,7 +635,7 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
             bool isCurrent = (state == State.Playing || state == State.Smashing || state == State.AttemptResult) && currentAttempt == i;
             JungleUITheme.DrawPanel(attemptRow, isCurrent);
 
-            string scoreTxt = attemptScores[i] > 0 ? $"{attemptScores[i]:N0} PTS" : isCurrent ? "EN CURSO..." : "---";
+            string scoreTxt = attemptScores[i] >= 0 ? $"{attemptScores[i]:N0} PTS" : isCurrent ? "EN CURSO..." : "---";
             string labelTxt = $"INTENTO {i + 1}: {scoreTxt}";
             JungleUITheme.DrawShadowedLabel(attemptRow, labelTxt, subtitleStyle, 1.5f);
         }
@@ -676,13 +655,23 @@ public sealed class GorillaSmashController : MonoBehaviour, IJungleScreen
             JungleUITheme.DrawShadowedLabel(feedbackPanel, currentRankLabel, rankStyle, 2.5f);
         }
 
+        if(state==State.Playing) {
+            var pad=PadViewport;
+            JungleUITheme.DrawGameHandSquare(pad,JungleUITheme.Orange,invertY:true);
+            JungleUITheme.DrawGameHandSquare(VisualHand,JungleUITheme.Turquoise,invertY:true);
+            JungleUITheme.DrawShadowedLabel(new Rect(w*.30f,h*.88f,w*.65f,h*.06f),"BLANCO NARANJA · CÁMARA = PRECISIÓN · CELULAR = POTENCIA",JungleUITheme.HudBody,2f);
+        }
+        if(state==State.Smashing||state==State.AttemptResult) {
+            JungleUITheme.DrawGameHandSquare(impactPoint,impactAccuracy>0?JungleUITheme.Turquoise:JungleUITheme.Red,invertY:true);
+            JungleUITheme.DrawShadowedLabel(new Rect(w*.30f,h*.87f,w*.68f,h*.06f),$"PRECISIÓN {impactAccuracy:P0} · POTENCIA {impactPower:P0} · SINCRONÍA {matchedTiming:P0}",JungleUITheme.HudBody,2f);
+        }
         // Pantalla de Intro / Inicio
         if (state == State.Intro)
         {
             Rect introCard = new Rect(w * 0.32f, h * 0.35f, w * 0.36f, h * 0.30f);
             JungleUITheme.DrawPanel(introCard);
             Rect introText = new Rect(introCard.x + 15f, introCard.y + 20f, introCard.width - 30f, h * 0.12f);
-            JungleUITheme.DrawShadowedLabel(introText, "Sujeta el teléfono firmemente.\nLevanta la mano y haz el gesto hacia abajo, sin golpear objetos ni soltar el teléfono.", subtitleStyle, 2f);
+            JungleUITheme.DrawShadowedLabel(introText, "CÁMARA: apunta al blanco con el mazo.\nCELULAR: mide la potencia. Sube la mano y baja sobre el blanco sin soltarlo.", subtitleStyle, 2f);
 
             Rect startBtn = new Rect(introCard.x + introCard.width * 0.15f, introCard.y + h * 0.18f, introCard.width * 0.70f, h * 0.08f);
             if (JungleRetainedUI.Button(startBtn, "¡INICIAR PRUEBA!", JungleUITheme.ButtonSelected))

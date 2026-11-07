@@ -193,31 +193,27 @@ public final class CloudflaredSupervisor implements Tunnel {
     }
     record NamedTunnelSpec(String tunnelId,Path configFile,URI origin,String token){}
     private static NamedTunnelSpec resolveNamedTunnel(URI ingress){
+        return resolveNamedTunnel(ingress,System.getenv(),Path.of(System.getProperty("user.home")));
+    }
+    static NamedTunnelSpec resolveNamedTunnel(URI ingress,Map<String,String> environment,Path home){
         try{
-
-            String domain=System.getenv("GORILLA_TUNNEL_DOMAIN");
+            // Each host gets its own Quick Tunnel unless a named tunnel is explicitly selected.
+            // Never reuse an arbitrary credential from another Cloudflare project on this PC.
+            String token=environment.get("GORILLA_TUNNEL_TOKEN");
+            String tunnelId=environment.get("GORILLA_TUNNEL_ID");
+            if((token==null||token.isBlank())&&(tunnelId==null||tunnelId.isBlank()))return null;
+            String domain=environment.get("GORILLA_TUNNEL_DOMAIN");
             String hostname=domain!=null&&!domain.isBlank()?domain.trim():DEFAULT_NAMED_HOST;
             URI origin=validatePublicOrigin("https://"+hostname);
-            String token=System.getenv("GORILLA_TUNNEL_TOKEN");
             if(token!=null&&!token.isBlank())return new NamedTunnelSpec(null,null,origin,token.trim());
-            String tunnelId=System.getenv("GORILLA_TUNNEL_ID");
-            String credPath=System.getenv("GORILLA_TUNNEL_CREDENTIALS");
+            String credPath=environment.get("GORILLA_TUNNEL_CREDENTIALS");
             Path credFile=credPath!=null&&!credPath.isBlank()?Path.of(credPath):null;
             if(credFile==null||!Files.isRegularFile(credFile)){
-                Path defaultCloudflaredDir=Path.of(System.getProperty("user.home"),".cloudflared");
+                Path defaultCloudflaredDir=home.resolve(".cloudflared");
                 if(Files.isDirectory(defaultCloudflaredDir)){
                     if(tunnelId!=null&&!tunnelId.isBlank()){
                         Path candidate=defaultCloudflaredDir.resolve(tunnelId+".json");
                         if(Files.isRegularFile(candidate))credFile=candidate;
-                    }else{
-                        try(var stream=Files.list(defaultCloudflaredDir)){
-                            var list=stream.filter(p->p.getFileName().toString().endsWith(".json")).toList();
-                            if(!list.isEmpty()){
-                                credFile=list.get(0);
-                                String fn=credFile.getFileName().toString();
-                                tunnelId=fn.substring(0,fn.length()-5);
-                            }
-                        }
                     }
                 }
             }

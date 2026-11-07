@@ -10,7 +10,7 @@ public sealed partial class BoxingController
         playerHealth = 100f; gorillaHealth = 100f; boxingRoundTime = 90f; getUpEnergy = 0f;
         boxingGorillaAction = 0; gorillaActionAt = Time.time + 1.8f; boxingMessageCode = 0; boxingMessageUntil = 0;
         gorillaRig.ResetToRest(Vector3.zero);
-        state = GameState.Boxing;
+        state = GameState.Ready; resultAt=Time.time+4f; lastPunchAt=-10f;
         if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.BoxingBell, .75f);
     }
 
@@ -23,7 +23,7 @@ public sealed partial class BoxingController
             float roll = UnityEngine.Random.value;
             boxingGorillaAction = roll < .58f ? 1 : roll < .82f ? 2 : 3; // golpe, guardia, gesto territorial
             boxingAttackResolved = false;
-            gorillaAttackResolveAt = Time.time + (boxingGorillaAction == 1 ? .62f : 1.05f);
+            gorillaAttackResolveAt = Time.time + (boxingGorillaAction == 1 ? .85f : 1.05f);
             gorillaActionAt = Time.time + UnityEngine.Random.Range(1.7f, 2.6f);
         }
         if (boxingGorillaAction == 1 && !boxingAttackResolved && Time.time >= gorillaAttackResolveAt)
@@ -31,7 +31,7 @@ public sealed partial class BoxingController
             boxingAttackResolved = true;
             bool covering = boxingLeftHand.y < .49f && boxingRightHand.y < .49f;
             bool dodging = Mathf.Abs(poseBodyX - .5f) > .13f;
-            float damage = dodging ? 0f : covering ? 5f : UnityEngine.Random.Range(14f, 22f);
+            float damage = dodging ? 0f : covering ? 5f : 18f;
             playerHealth = Mathf.Max(0f, playerHealth - damage);
             boxingMessageCode = dodging ? 4 : covering ? 3 : 2; boxingMessageUntil = Time.time + .8f;
             if (sfxSource != null && damage > 0f) sfxSource.PlayOneShot(covering ? JungleAudioBank.BoxingBlock : JungleAudioBank.BoxingPunch, covering ? .55f : .85f);
@@ -47,7 +47,7 @@ public sealed partial class BoxingController
         if (inputFrame == null || !sharedSession.TryAuthorize(right ? JungleAction.PunchRight : JungleAction.PunchLeft, inputFrame.Revision)) return;
         lastPunchAt = Time.time;
         bool gorillaBlocking = boxingGorillaAction == 2;
-        float baseDamage = right ? Mathf.Clamp((phonePower - 180f) / 28f, 5f, 20f) : Mathf.Clamp(cameraSpeed * 4.2f, 3f, 10f);
+        float baseDamage = Mathf.Lerp(6f,16f,Mathf.Clamp01((cameraSpeed-.72f)/1.8f));
         float damage = gorillaBlocking ? baseDamage * .18f : baseDamage;
         gorillaHealth = Mathf.Max(0f, gorillaHealth - damage);
         boxingMessageCode = gorillaBlocking ? 5 : 1; boxingMessageUntil = Time.time + .55f;
@@ -56,7 +56,7 @@ public sealed partial class BoxingController
         gorillaRig.TriggerBoxingHitReaction(.38f);
         if (gorillaRig.MascotObject != null)
         {
-            JungleSquashStretch.Apply(gorillaRig.MascotObject, 1.12f, 0.88f, 0.28f);
+            JungleSquashStretch.Apply(gorillaRig.MascotObject, 1.025f, 0.975f, 0.16f);
         }
         if (gorillaHealth <= 0f) { state = GameState.BoxingOver; if (sfxSource != null) sfxSource.PlayOneShot(JungleAudioBank.BoxingBell, .85f); }
     }
@@ -82,7 +82,7 @@ public sealed partial class BoxingController
             if (kdSec != cachedKnockdownSec) { cachedKnockdownSec = kdSec; cachedKnockdownText = $"¡LEVÁNTATE!  {kdSec}"; }
             JungleUITheme.DrawPanel(new Rect(w * .25f, h * .28f, w * .50f, h * .32f), true);
             JungleUITheme.DrawShadowedLabel(new Rect(w * .28f, h * .31f, w * .44f, h * .10f), cachedKnockdownText, fightTitleStyle);
-            JungleUITheme.DrawShadowedLabel(new Rect(w * .29f, h * .41f, w * .42f, h * .07f), "AGITA EL CELULAR REPETIDAMENTE", fightTextStyle);
+            JungleUITheme.DrawShadowedLabel(new Rect(w * .29f, h * .41f, w * .42f, h * .07f), "SUBE Y BAJA LA MANO DERECHA 4 VECES", fightTextStyle);
             JungleRetainedUI.DrawTexture(new Rect(w * .31f, h * .51f, w * .38f, h * .035f), darkTexture);
             JungleRetainedUI.DrawTexture(new Rect(w * .31f, h * .51f, w * .38f * getUpEnergy / 100f, h * .035f), accentTexture);
         }
@@ -106,7 +106,7 @@ public sealed partial class BoxingController
         }
         else
         {
-            string action = boxingGorillaAction == 1 ? "¡ESQUIVA O CÚBRETE!" : boxingGorillaAction == 2 ? "EL GORILA SE CUBRE" : boxingGorillaAction == 3 ? "¡GOLPE TERRITORIAL!" : "MANOS ARRIBA";
+            string action = state==GameState.Ready ? "SIN CELULAR · GOLPEA Y REGRESA A GUARDIA" : boxingGorillaAction == 1 ? "¡ESQUIVA O CÚBRETE!" : boxingGorillaAction == 2 ? "EL GORILA SE CUBRE" : boxingGorillaAction == 3 ? "¡APROVECHA Y GOLPEA!" : "MANOS ARRIBA";
             if (Time.time < boxingMessageUntil) action = boxingMessageCode == 1 ? "¡BUEN GOLPE!" : boxingMessageCode == 2 ? "¡TE GOLPEÓ!" : boxingMessageCode == 3 ? "BLOQUEO" : boxingMessageCode == 4 ? "¡ESQUIVA!" : "GUARDIA DEL GORILA";
             JungleUITheme.DrawShadowedLabel(new Rect(w * .30f, h * .18f, w * .40f, h * .065f), action, fightTextStyle);
         }
@@ -115,7 +115,7 @@ public sealed partial class BoxingController
         Vector2 visualRight = CameraActive && rightVisual.TryPosition(Time.unscaledTime, out float rx, out float ry) ? new Vector2(rx, ry) : boxingRightHand;
         DrawBoxingGlove(visualLeft, new Color(.12f, .55f, 1f), "L");
         DrawBoxingGlove(visualRight, new Color(1f, .25f, .12f), "R");
-        JungleUITheme.DrawShadowedLabel(new Rect(w * .19f, h * .83f, w * .62f, h * .065f), "AMBAS MANOS ARRIBA = CUBRIRSE  ·  MUEVE EL CUERPO = ESQUIVAR  ·  CELULAR = PUÑO DERECHO", fightTextStyle);
+        JungleUITheme.DrawShadowedLabel(new Rect(w * .19f, h * .83f, w * .62f, h * .065f), "SIN CELULAR · MANOS ARRIBA = GUARDIA · CUERPO A UN LADO = ESQUIVA", fightTextStyle);
         if (JungleRetainedUI.Button(new Rect(w * .84f, h * .04f, w * .13f, h * .065f), "MENÚ", buttonStyle))
         {
             JungleAudioBank.PlayUiClick();

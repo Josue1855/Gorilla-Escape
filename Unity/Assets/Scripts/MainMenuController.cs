@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(JunglePanel))]
 public sealed class MainMenuController : MonoBehaviour, IJungleScreen
 {
-    private static readonly string[] CameraOnlyNames = { "JUNGLE\nSLICE", "JUNGLE\nKEEPER" };
-    private static readonly string[] CameraOnlyTags = { "CÁMARA · 2 MANOS", "CÁMARA · MANOS Y TORSO" };
+    private static readonly string[] CameraOnlyNames = { "JUNGLE\nSLICE", "JUNGLE\nKEEPER", "GORILLA\nBOXING", "JUNGLE\nBASEBALL", "JUNGLE\nDRUMS" };
+    private static readonly string[] CameraOnlyTags = { "CÁMARA · 2 MANOS", "CÁMARA · MANOS Y TORSO", "CÁMARA · 2 PUÑOS", "CÁMARA · BATEO", "CÁMARA · RITMO" };
 
     private static readonly string[] FullNames =
     {
@@ -16,10 +16,10 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
     private static readonly string[] FullTags =
     {
         "★ MVP · MAZO FERIA", "★ MVP · LANZAMIENTO", "★ MVP · BOLICHE", "★ MVP · CORTE NINJA", "SOLO CELULAR",
-        "CELULAR + CUERPO", "CELULAR + MANO", "CELULAR + 2 MANOS", "CELULAR + MANO", "CÁMARA · ARQUERO"
+        "CÁMARA · 2 PUÑOS", "CÁMARA · BATEO", "CÁMARA · RITMO", "CELULAR + ALTURA", "CÁMARA · ARQUERO"
     };
 
-    private static readonly string[] CameraOnlyScenes = { SceneNavigator.CoconutSlice, SceneNavigator.JungleKeeper };
+    private static readonly string[] CameraOnlyScenes = { SceneNavigator.CoconutSlice, SceneNavigator.JungleKeeper, SceneNavigator.Boxing, SceneNavigator.Baseball, SceneNavigator.Drums };
     private static readonly string[] FullScenes =
     {
         SceneNavigator.GorillaSmash, SceneNavigator.CoconutThrow, SceneNavigator.Bowling, SceneNavigator.CoconutSlice, SceneNavigator.LogBalance,
@@ -29,7 +29,7 @@ public sealed class MainMenuController : MonoBehaviour, IJungleScreen
     private MotionSession session;
     private readonly HandDwellNavigator handNavigator = new HandDwellNavigator();
     private readonly Rect[] cardRects = new Rect[10];
-    private readonly HandDwellTarget[] cameraOnlyTargets = new HandDwellTarget[6];
+    private readonly HandDwellTarget[] cameraOnlyTargets = new HandDwellTarget[9];
     private readonly HandDwellTarget[] fullTargets = new HandDwellTarget[16];
     private GUIStyle titleStyle;
     private GUIStyle subtitleStyle;

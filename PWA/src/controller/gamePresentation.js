@@ -1,13 +1,13 @@
 export const games = {
   bowling: ['COCONUT BOWLING','Apunta con el teléfono y realiza un lanzamiento suave.'],
-  boxing: ['GORILLA BOXING','Mantén ambas manos visibles y realiza los golpes frente a la cámara.'],
-  baseball: ['JUNGLE BASEBALL','Espera la pelota y realiza el movimiento de bateo.'],
-  drums: ['JUNGLE DRUMS','Sigue el ritmo con ambas manos visibles.'],
+  boxing: ['GORILLA BOXING','Sin celular: golpea con ambas manos y vuelve a la guardia. Levanta las dos manos para cubrirte.'],
+  baseball: ['JUNGLE BASEBALL','Sin celular: espera «Ahora» y cruza la mano derecha de lado a lado.'],
+  drums: ['JUNGLE DRUMS','Sin celular: baja la mano del color cuando la nota toque la línea y vuelve a subirla.'],
   'coconut-slice': ['JUNGLE SLICE','Corta con tus manos y evita los obstáculos.'],
   'jungle-keeper': ['JUNGLE KEEPER','Detén los tiros con las manos y el torso frente a la cámara.'],
-  whack: ['GORILLA WHACK','Apunta con la mano y realiza un golpe hacia abajo.'],
+  whack: ['GORILLA WHACK','Cámara: sube y baja la mano derecha. Celular: potencia del golpe; apunta antes de golpear.'],
   'log-balance': ['JUNGLE BALANCE','Inclina suavemente el teléfono y frena la inercia.'],
-  'gorilla-smash': ['GORILLA SMASH','Sujeta el teléfono y realiza un movimiento descendente controlado, sin soltarlo.'],
+  'gorilla-smash': ['GORILLA SMASH','Apunta al blanco naranja con el mazo: la cámara mide precisión y el celular potencia. Sube la mano y baja sin soltarlo.'],
   'coconut-throw': ['COCONUT THROW','Apunta hacia delante y realiza un gesto de lanzamiento suave, sin soltar el teléfono.'],
 };
 const displayPhases = { Ready:'Prepárate', Countdown:'La prueba comienza', Playing:'¡A jugar!', Paused:'Juego en pausa', Won:'¡Prueba superada!', Lost:'Inténtalo de nuevo', Finished:'Prueba terminada' };
@@ -20,7 +20,7 @@ export function controlProfile(context, playerId) {
     &&(context.gameId==='lobby'?context.playerId===0&&context.screen!=='game':validV2(context)&&context.screen==='game');
   const game=modern?context.gameId:validV2(context)?context.gameId:'lobby';
   return {game,valid:modern,screen:modern?context.screen:'unknown',hand:modern?context.hand:'right',
-    phoneRequired:modern?context.phoneRequired:game!=='lobby'&&!['coconut-slice','jungle-keeper'].includes(game),
+    phoneRequired:modern?context.phoneRequired:game!=='lobby'&&!['coconut-slice','jungle-keeper','boxing','baseball','drums'].includes(game),
     canNavigate:modern&&context.screen!=='connection'&&(playerId===1||(context.screen==='game'&&playerId===context.playerId)),contextId:modern?context.contextId:null};
 }
 const phases = {

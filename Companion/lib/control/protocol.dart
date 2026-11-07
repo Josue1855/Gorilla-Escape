@@ -182,7 +182,7 @@ class GameControlProfile {
       valid
           ? context!['phoneRequired'] as bool
           : game != 'lobby' &&
-                !['coconut-slice', 'jungle-keeper'].contains(game),
+                !['coconut-slice', 'jungle-keeper', 'boxing', 'baseball', 'drums'].contains(game),
       valid && screen != 'connection' && (player == 1 || (screen == 'game' && player == owner)),
     );
   }
@@ -233,10 +233,10 @@ class GameView {
         ],
         'boxing': [
           'GORILLA BOXING',
-          'Mantén ambas manos visibles y realiza los golpes.',
+          'Sin celular: golpea con ambas manos y vuelve a la guardia. Manos arriba para cubrirte.',
         ],
-        'baseball': ['JUNGLE BASEBALL', 'Espera la pelota y realiza el bateo.'],
-        'drums': ['JUNGLE DRUMS', 'Sigue el ritmo con ambas manos.'],
+        'baseball': ['JUNGLE BASEBALL', 'Sin celular: espera «Ahora» y cruza la mano derecha de lado a lado.'],
+        'drums': ['JUNGLE DRUMS', 'Sin celular: baja la mano del color cuando la nota toque la línea.'],
         'coconut-slice': [
           'JUNGLE SLICE',
           'Corta con tus manos y evita obstáculos.',
@@ -245,14 +245,14 @@ class GameView {
           'JUNGLE KEEPER',
           'Detén los tiros con las manos y el torso frente a la cámara.',
         ],
-        'whack': ['GORILLA WHACK', 'Apunta y realiza un golpe hacia abajo.'],
+        'whack': ['GORILLA WHACK', 'Cámara: altura y precisión. Celular: potencia. Sube y baja la mano derecha.'],
         'log-balance': [
           'JUNGLE BALANCE',
           'Inclina suavemente y frena la inercia.',
         ],
         'gorilla-smash': [
           'GORILLA SMASH',
-          'Sujeta el teléfono y realiza un movimiento descendente controlado, sin soltarlo.',
+          'Apunta al blanco naranja: cámara para precisión, celular para potencia. Baja la mano sin soltarlo.',
         ],
         'coconut-throw': [
           'COCONUT THROW',

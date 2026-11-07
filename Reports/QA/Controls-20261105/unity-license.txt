@@ -1,0 +1,6 @@
+Unity 6000.6.0f1 launch after the final changes:
+Batch mode: com.unity.editor.headless was not found.
+Normal editor: com.unity.editor.ui was not found.
+Both: No valid Unity Editor license found. Please activate your license.
+Exit code: 198.
+The final EditMode/PlayMode rerun and Windows player build could not be completed. No license or account settings were changed.

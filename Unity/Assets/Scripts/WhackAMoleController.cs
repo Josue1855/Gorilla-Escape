@@ -9,17 +9,15 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
 
     private readonly Vector2[] slots =
     {
-        new(.385f, .625f), new(.5f, .635f), new(.615f, .625f),
-        new(.38f, .485f),  new(.5f, .495f), new(.62f, .485f),
-        new(.372f, .34f),  new(.5f, .35f),  new(.628f, .34f)
+        new(.5f, .68f), new(.5f, .50f), new(.5f, .32f)
     };
 
     private MotionSession session;
     private State state;
     private GameObject table, hammer, head, hitHead;
     private Transform hammerPivot, hitHeadPivot;
-    private GameObject tablePrefab, headPrefab, hitPrefab, hammerPrefab;
-    private Material tableMat, headMat, hitMat, hammerMat;
+    private GameObject tablePrefab, headPrefab, hitPrefab;
+    private Material tableMat, headMat, hitMat;
     private Vector2 cursorViewport = new(.5f, .5f), activeSlot;
     private float downSpeed, phonePower, stateAt, endAt, nextHeadAt, headAt, headUntil, hitUntil, lastHit;
     private long inputRevision;
@@ -31,6 +29,8 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
     private string message = "";
     private AudioSource sfxSource;
     private AudioClip whackClip, popClip, tickClip, goClip;
+    private float previousHandY = .5f;
+    private bool strokeArmed;
     private Vector2 HandViewport => cursorViewport;
     private readonly HandVisualPrediction handVisual = new HandVisualPrediction();
     private Vector2 VisualHand => JungleUITheme.VisualHand(session, handVisual, cursorViewport);
@@ -61,16 +61,13 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         const string r = "Jungle/NewModels/WhackAMole/",
             tr = r + "Meshy_AI_model_20261026_texture_fbx/",
             hr = r + "Meshy_AI_Cheeky_Monkey_20261026_texture_fbx/",
-            ir = r + "Meshy_AI_Dizzy_Monkey_20261026_texture_fbx/",
-            mr = r + "Meshy_AI_Wooden_War_Drum_20261026_texture_fbx/";
+            ir = r + "Meshy_AI_Dizzy_Monkey_20261026_texture_fbx/";
         tablePrefab = JungleAssets.Load<GameObject>(tr + "Meshy_AI_model_20261026_texture");
         headPrefab = JungleAssets.Load<GameObject>(hr + "Meshy_AI_Cheeky_Monkey_20261026_texture");
         hitPrefab = JungleAssets.Load<GameObject>(ir + "Meshy_AI_Dizzy_Monkey_20261026_texture");
-        hammerPrefab = JungleAssets.Load<GameObject>(mr + "Meshy_AI_Wooden_War_Drum_20261026_texture");
         tableMat = Mat(JungleAssets.Load<Texture2D>(tr + "Meshy_AI_model_20261026_texture"), "Mesa");
         headMat = Mat(JungleAssets.Load<Texture2D>(hr + "Meshy_AI_Cheeky_Monkey_20261026_texture"), "Cabeza");
         hitMat = Mat(JungleAssets.Load<Texture2D>(ir + "Meshy_AI_Dizzy_Monkey_20261026_texture"), "Golpeado");
-        hammerMat = Mat(JungleAssets.Load<Texture2D>(mr + "Meshy_AI_Wooden_War_Drum_20261026_texture"), "Mazo");
     }
 
     private void BuildScene()
@@ -96,12 +93,20 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         if (bm.HasProperty("_BaseColor")) bm.SetColor("_BaseColor", Color.white);
         bg.GetComponent<Renderer>().sharedMaterial = bm;
 
-        table = Model(tablePrefab, tableMat, "02 Mesa cara superior", new Vector3(0, -.75f, .28f), 9.35f, true, Quaternion.Euler(117, 0, 0));
-        hammer = Model(hammerPrefab, hammerMat, "04 Mazo", World(HandViewport, 7.7f), 2.35f, false, Quaternion.Euler(8, 180, -38));
-        hammerPivot = hammer.transform.Find("Pivote visual");
-        head = Model(headPrefab, headMat, "03 Cabeza activa", World(slots[4], 10.45f), 1.42f, false, Quaternion.Euler(180, 180, 0));
+        table = Model(tablePrefab, tableMat, "02 Panel vertical", new Vector3(0, -.75f, .28f), 9.35f, true, Quaternion.Euler(117, 0, 0));
+        table.SetActive(false); // The old perspective grid suggested depth-based aiming.
+        foreach(var slot in slots) {
+            var marker=GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            marker.name="Nivel del topo"; marker.transform.SetParent(transform,false);
+            marker.transform.position=World(slot,10.65f);
+            marker.transform.localScale=new Vector3(1.55f,.15f,.5f);
+            marker.GetComponent<Renderer>().sharedMaterial=JungleStageBuilder.GetSharedMaterial(new Color(.18f,.32f,.23f));
+            JungleStageBuilder.StripCollider(marker);
+        }
+        hammer = JungleStageBuilder.CreateGameHammer(transform,World(HandViewport,7.7f),2.35f,out hammerPivot);
+        head = Model(headPrefab, headMat, "03 Cabeza activa", World(slots[1], 10.45f), 1.42f, false, Quaternion.Euler(180, 180, 0));
         head.SetActive(false);
-        hitHead = Model(hitPrefab, hitMat, "03 Cabeza golpeada", World(slots[4], 10.35f), 1.52f, false, Quaternion.Euler(180, 180, 0));
+        hitHead = Model(hitPrefab, hitMat, "03 Cabeza golpeada", World(slots[1], 10.35f), 1.52f, false, Quaternion.Euler(180, 180, 0));
         hitHeadPivot = hitHead.transform.Find("Pivote visual");
         hitHead.SetActive(false);
 
@@ -177,9 +182,12 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
     {
         inputRevision = frame.Revision;
         downSpeed = frame.Right.VelocityY;
+        if(frame.Baseline)strokeArmed=false;
+        else if(downSpeed<-.20f)strokeArmed=true;
         phonePower = frame.PhonePower;
-        cursorViewport = new Vector2(frame.Right.X, 1f - frame.Right.Y);
-        if (frame.NewPose || frame.Baseline) handVisual.Observe(cursorViewport.x, cursorViewport.y, frame.Right.VelocityX, -frame.Right.VelocityY, Time.unscaledTime);
+        previousHandY = frame.Baseline ? 1f-frame.Right.Y : cursorViewport.y;
+        cursorViewport = new Vector2(.5f, 1f - frame.Right.Y);
+        if (frame.NewPose || frame.Baseline) handVisual.Observe(cursorViewport.x, cursorViewport.y, 0, -frame.Right.VelocityY, Time.unscaledTime);
         whackRequested = (frame.Actions & JungleAction.Whack) != 0;
     }
 
@@ -201,7 +209,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         JungleStageBuilder.PulseSquash(head, 1.18f, .86f, 22f, 9f);
         headActive = true;
         headAt = Time.time;
-        headUntil = Time.time + 1.25f;
+        headUntil = Time.time + 1.65f;
         message = "¡AHORA!";
         if (sfxSource != null && popClip != null) sfxSource.PlayOneShot(popClip, .55f);
     }
@@ -233,10 +241,10 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
 
     private void TryHit()
     {
-        if (state != State.Playing || !headActive || Time.time - headAt < .14f || Vector2.Distance(HandViewport, activeSlot) > .105f) return;
+        if (state != State.Playing || !headActive || !strokeArmed || Time.time - headAt < .14f || (activeSlot.y < Mathf.Min(previousHandY, HandViewport.y)-.11f || activeSlot.y > Mathf.Max(previousHandY, HandViewport.y)+.11f)) return;
         if (!session.TryAuthorize(JungleAction.Whack, inputRevision)) return;
         if (sfxSource != null && whackClip != null) sfxSource.PlayOneShot(whackClip, .75f);
-        lastHit = Time.time;
+        lastHit = Time.time; strokeArmed=false;
         head.SetActive(false);
         headActive = false;
         hitHead.transform.position = World(activeSlot, 10.35f);
@@ -251,9 +259,11 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         hits++;
         combo++;
         bestCombo = Mathf.Max(bestCombo, combo);
-        int gain = 100 + Mathf.Min(combo, 12) * 20;
+        float nearestY=Mathf.Clamp(activeSlot.y,Mathf.Min(previousHandY,HandViewport.y),Mathf.Max(previousHandY,HandViewport.y));
+        float accuracy=Mathf.Clamp01(1f-Mathf.Abs(nearestY-activeSlot.y)/.11f);
+        int gain = CompetitiveMechanics.WhackScore(phonePower,accuracy,combo);
         score += gain;
-        message = combo >= 4 ? $"¡COMBO x{combo}" : $"+{gain}";
+        message = $"+{gain} · POTENCIA {CompetitiveMechanics.PhoneStrikePower(phonePower):P0}";
     }
 
     public void BeginFromPhone(){if(state==State.Intro)Begin();}
@@ -310,7 +320,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         {
             JungleUITheme.DrawPanel(new Rect(w * .24f, h * .22f, w * .52f, h * .49f));
             JungleUITheme.DrawShadowedLabel(new Rect(w * .28f, h * .26f, w * .44f, h * .09f), "¡ATRAPA AL GORILA!", JungleUITheme.HudTitle, 3f);
-            JungleUITheme.DrawPlankLabel(new Rect(w * .28f, h * .375f, w * .44f, h * .14f), "MUEVE LA MANO DERECHA PARA APUNTAR\nY BAJA EL CELULAR PARA GOLPEAR");
+            JungleUITheme.DrawPlankLabel(new Rect(w * .28f, h * .375f, w * .44f, h * .14f), "CÁMARA = ALTURA · CELULAR = POTENCIA\nSUBE LA MANO DERECHA Y BÁJALA SOBRE EL TOPO");
             if (JungleRetainedUI.Button(new Rect(w * .36f, h * .575f, w * .28f, h * .08f), "CENTRAR Y JUGAR", JungleUITheme.Button)) Begin();
         }
         else if (state == State.Countdown)
@@ -336,7 +346,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
         {
             if (TournamentSession.IsActive)
             {
-                TournamentSession.RecordRoundResult(hits);
+                TournamentSession.RecordRoundResult(score);
                 Vector2 normCursor = new Vector2(0.5f, 0.5f);
                 string handLabel = "MANO";
                 bool handRaised = false, handClosed = false, forwardPush = false;
@@ -354,6 +364,7 @@ public sealed class WhackAMoleController : MonoBehaviour, IJungleScreen
             JungleUITheme.DrawPlankLabel(new Rect(w * .31f, h * .38f, w * .38f, h * .15f), cachedResultText);
             if (JungleRetainedUI.Button(new Rect(w * .38f, h * .565f, w * .24f, h * .075f), "OTRA RONDA", JungleUITheme.Button)) Begin();
         }
+        if (state == State.Playing) JungleUITheme.DrawShadowedLabel(new Rect(w*.15f,h*.87f,w*.70f,h*.06f), "CÁMARA: SUBE Y BAJA · CELULAR: POTENCIA · APUNTA ANTES DE GOLPEAR", JungleUITheme.HudBody, 2f);
         if (state == State.Playing) JungleUITheme.DrawShadowedLabel(new Rect(w * .36f, h * .2f, w * .28f, h * .065f), message, JungleUITheme.HudBody, 2f);
         JungleUITheme.DrawGameHandSquare(VisualHand, JungleUITheme.Turquoise, invertY: true);
         JungleUITheme.DrawLeaves();
