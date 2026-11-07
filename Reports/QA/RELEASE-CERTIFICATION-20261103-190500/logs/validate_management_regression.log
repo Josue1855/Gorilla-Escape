@@ -1,0 +1,16 @@
+﻿python.exe : test_broken_link_in_tracked_docs_still_raises 
+(tools.github.test_validate_management.ValidateManagementRegressionTest) ... ok
+En C:\Users\equipo\Documents\Repos\Gorilla Escape\tools\qa\run_full_lab.ps1: 71 Carácter: 8
++ $reg = & $python -m unittest tools.github.test_validate_management -v ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_broken_lin...ionTest) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_empty_markdown_raises (tools.github.test_validate_management.ValidateManagementRegressionTest) ... ok
+test_generated_build_dirs_are_pruned (tools.github.test_validate_management.ValidateManagementRegressionTest) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.114s
+
+OK
+PASS: 0 backlog records, acyclic dependencies, valid hierarchy, 1 local links; no fake assignments/Sprints.

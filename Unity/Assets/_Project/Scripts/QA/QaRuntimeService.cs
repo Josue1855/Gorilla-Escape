@@ -74,7 +74,13 @@ namespace GorillaEscape.QA {
             var bytes=preview?.Take();if(bytes!=null){try{if(cameraTexture==null)cameraTexture=new Texture2D(2,2,TextureFormat.RGB24,false);if(!CameraPreviewClient.ValidJpeg(bytes)||!cameraTexture.LoadImage(bytes)||cameraTexture.width>320||cameraTexture.height>240){Destroy(cameraTexture);cameraTexture=null;error="PREVIEW INVALID";}}finally{Array.Clear(bytes,0,bytes.Length);}}
             if(vision.Take(out var frame,out var at)&&cameras.Accept(frame,at))fusion.ObserveCamera(frame,at);
             if(cameras.Latest!=null&&!cameras.Fresh(Now(),250,20))fusion.Association.MarkLost();
-            if((TestsActive||PhoneActive)&&java.State==IpcState.RUNNING&&!generated){generated=true;PrepareQr();java.RegenerateQa();}
+            if((TestsActive||PhoneActive)&&java.State==IpcState.RUNNING){
+                if(!generated){generated=true;PrepareQr();java.RegenerateQa();}
+                else if(!PhoneReady&&priorPlayers.Count==0&&(java.Lobby.Snapshot?.players?.Length??0)==0
+                    &&java.QaConnection?.resolvedMode=="CLOUDFLARED"&&java.QaConnection?.admissionMode!="CLOUDFLARED"){
+                    PrepareQr();java.RegenerateQa();
+                }
+            }
             var qr=java.Qa;if((TestsActive||PhoneActive)&&qr!=null){qrState=qr.state;if(!string.IsNullOrEmpty(qr.modules)){{ClearQr();try{qrTexture=DecodeQr(qr);qrVisible=0;joinEnd=0;joinClass=model.DeviceState;}catch(Exception){error="QR INVALID";}}qr.modules=null;}if(qr.state!="AVAILABLE")ClearQr();}
             if((TestsActive||PhoneActive)&&(java.State==IpcState.FAILED||java.State==IpcState.STOPPED)){ClearQr();qrState="BACKEND UNAVAILABLE";}
             var lobby=java.Lobby.Snapshot;if((TestsActive||PhoneActive)&&qrVisible>0&&joinEnd==0&&lobby?.players!=null)foreach(var p in lobby.players)if(!priorPlayers.Contains(PlayerKey(p))&&p.networkReady&&p.inputReady&&p.connectionEpoch==1){joinEnd=Now();break;}

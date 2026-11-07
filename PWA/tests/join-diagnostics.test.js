@@ -18,3 +18,13 @@ test('network exception maps to HTTP stage without reflecting its message',async
 test('unknown server error is sanitized',async()=>{setup();const c=new MobileClient({fetcher:async()=>({ok:false,status:400,json:async()=>({code:'SECRET-NATIVE-ERROR'})})});await assert.rejects(c.connect(url),/JOIN_E04_SIGNAL_REJECTED/);assert.equal(c.trace.rejectionCode,'SIGNAL_FAILED_OTHER');});
 
 test('official lobby admission closure keeps its sanitized rejection code',async()=>{setup();const c=new MobileClient({fetcher:async()=>({ok:false,status:400,json:async()=>({code:'LOBBY_ADMISSION_CLOSED'})})});await assert.rejects(c.connect(url),/JOIN_E04_SIGNAL_REJECTED/);assert.equal(c.trace.rejectionCode,'LOBBY_ADMISSION_CLOSED');});
+
+test('default browser fetch keeps its native global receiver', async () => {
+ setup();const saved=globalThis.fetch;
+ globalThis.fetch=function(){assert.equal(this,globalThis);return Promise.resolve({ok:true,status:200,json:async()=>({sessionId:'SECRET-SESSION',resumeToken:'SECRET-RESUME',answer:'SECRET-SDP'})});};
+ try{const c=new MobileClient();await c.connect(url);assert.equal(c.trace.stage,'READY');await c.close(false);}finally{globalThis.fetch=saved;}
+});
+test('fetch rejection records only an allowed failure category', async () => {
+ setup();const c=new MobileClient({fetcher:async()=>{throw new TypeError('PRIVATE-URL-AND-TOKEN');}});
+ await assert.rejects(c.connect(url),/JOIN_E03_SIGNAL_HTTP/);assert.equal(c.diagnostic().fetchFailure,'TypeError');assert.equal(JSON.stringify(c.diagnostic()).includes('PRIVATE'),false);
+});

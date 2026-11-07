@@ -1,0 +1,17 @@
+
+> gorilla-escape-controller@0.1.0 build
+> vite build && node tools/build-service-worker.js
+
+vite v8.3.2 building client environment for production...
+transforming...
+✓ 25 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                        0.52 kB │ gzip:  0.32 kB
+dist/assets/LilitaOne-DWEPn4H6.ttf    28.09 kB
+dist/assets/NunitoSans-BCTtbOSn.ttf  113.59 kB
+dist/assets/index-Czj-IYK4.css        12.17 kB │ gzip:  3.79 kB
+dist/assets/index-CRk46z8_.js        286.52 kB │ gzip: 89.80 kB
+
+✓ built in 1.33s
+Offline shell generated: gorilla-shell-fb3b55ef7c516ec9

@@ -1,0 +1,49 @@
+Mono path[0] = 'C:/Users/equipo/Documents/Repos/Gorilla Escape/Builds/Windows/GorillaEscape_Data/Managed'
+Mono config path = 'C:/Users/equipo/Documents/Repos/Gorilla Escape/Builds/Windows/MonoBleedingEdge/etc'
+CodeReloadManager initialized
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.6.0f1 (f7f8ed4d1e24)
+[EntityIdStore] init: VM path (explicit commit), pageSize=4096, blockCount=1048576, entitiesPerBlock=256, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path C:/Users/equipo/Documents/Repos/Gorilla Escape/Builds/Windows/GorillaEscape_Data/UnitySubsystems
+[D3D12 Device Filter] Vendor Name: Intel
+[D3D12 Device Filter] Device Name: Intel(R) Iris(R) Xe Graphics
+[D3D12 Device Filter] Driver Version: 32.0.101.7088
+[D3D12 Device Filter] Feature Level: 12.1
+[D3D12 Device Filter] Graphics Memory: 16218 MB
+[D3D12 Device Filter] Processor Count: 12
+[D3D12 Device Filter] Device Type: Integrated
+[D3D12 Device Filter] D3D12 API denied by user filter: {"Vendor": "Intel", "Device Type:": Integrated}
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) Iris(R) Xe Graphics (ID=0xa7a1)
+    Vendor:   Intel
+    VRAM:     16218 MB
+    Driver:   32.0.101.7088
+Begin MonoManager ReloadAssembly
+- Finished resetting the current domain, in  0.015 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+
+UnloadTime: 1.311700 ms
+No Theme Style Sheet set to PanelSettings , UI will not render properly
+{"component":"ipc-unity","event":"START_REQUESTED","state":"STARTING","instanceId":"09778a67-a403-447f-832b-b0bca2aaec81","generation":1,"pid":0,"exitCode":0,"shutdownMs":0,"readersMs":0,"forced":false,"launches":0,"cleanupComplete":false,"errorCode":"","cleanupError":""}
+{"component":"ipc-unity","event":"PROCESS_STARTED","state":"STARTING","instanceId":"09778a67-a403-447f-832b-b0bca2aaec81","generation":1,"pid":12976,"exitCode":0,"shutdownMs":0,"readersMs":0,"forced":false,"launches":1,"cleanupComplete":false,"errorCode":"","cleanupError":""}
+Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.807300 ms
+Unloading 25 unused Assets to reduce memory usage. Loaded Objects now: 2294.
+Total: 7.923800 ms (FindLiveObjects: 0.403100 ms CreateObjectMapping: 0.091200 ms MarkObjects: 6.799000 ms  DeleteObjects: 0.548700 ms)
+
+ICU Data not available: falling back to minimal text segmentation (basic line breaking rules only, emoji sequences may not render correctly). The data is automatically assigned to the PanelSettings in the editor if the advanced text option is enabled in the project settings. It will not be present on PanelSettings created at runtime, so make sure the build contains at least one PanelSettings asset to get full international text support.
+No ICU data provided. Falling back to minimal text segmentation (basic line breaking rules only, emoji sequences may not render correctly).
+{"component":"ipc-unity","event":"STOP_REQUESTED","state":"STOPPING","instanceId":"09778a67-a403-447f-832b-b0bca2aaec81","generation":1,"pid":12976,"exitCode":0,"shutdownMs":0,"readersMs":0,"forced":false,"launches":1,"cleanupComplete":false,"errorCode":"","cleanupError":""}

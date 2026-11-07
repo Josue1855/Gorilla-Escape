@@ -1,5 +1,7 @@
 # Transparent connectivity — Phase0
 
+> Actualización de esta rama, 2026-10-27: [tiempos y recuperación Cloudflared](03-development/CLOUDFLARED_RECOVERY.md) amplía el arranque a 30 s (máximo configurable 60 s) y añade recuperación AUTO. Las cifras anteriores de este documento se conservan como historial.
+
 > Follow-up PO policy, 2026-10-15: [T063 transparent AUTO](PHASE0_T063_TRANSPARENT_AUTO.md) supersedes the historical waiting, discovery, forced-protocol and automatic QR replacement behavior below. Historical evidence remains unchanged.
 
 PO instruction accepted 2026-10-14 in DEC-030. T063/#114 is an optional Phase0 enhancement under F41/#68, supporting F05/T019/T062 without adding an academic exit gate. T064/#115 hardens mobile motion; T065/#116 covers Editor development. Phase1 NOT STARTED; JUGAR disabled.

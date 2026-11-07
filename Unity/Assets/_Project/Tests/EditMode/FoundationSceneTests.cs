@@ -7,6 +7,15 @@ using UnityEditor.SceneManagement;
 public class FoundationSceneTests
 {
     [Test]
+    public void ProductEntryAndDiagnosticsAreBothIncludedWithConnectionFirst()
+    {
+        var scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
+        Assert.That(scenes[0], Is.EqualTo(ProductScenes.EntryScenePath));
+        Assert.That(scenes, Is.EqualTo(ProductScenes.BuildScenePaths()));
+        Assert.That(AssetDatabase.LoadAssetAtPath<SceneAsset>(ProductScenes.EntryScenePath), Is.Not.Null);
+    }
+
+    [Test]
     public void SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild()
     {
         const string path = "Assets/_Project/Scenes/Bootstrap/Bootstrap.unity";

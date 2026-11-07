@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import ReadyControl from './controller/ReadyControl.jsx';
 import HealthProbe from './connection/HealthProbe.jsx';
 import { ControllerSession } from './controller/session.js';
 import { screens } from './controller/presentation.js';
+import { controlProfile } from './controller/gamePresentation.js';
 
 function GorillaMark() {
   return <svg className="gorilla-mark" viewBox="0 0 120 100" aria-hidden="true">
@@ -10,18 +12,64 @@ function GorillaMark() {
     <path fill="var(--core-forest)" d="M41 42h11v7H41zm27 0h11v7H68zM49 61h22l-4 7H53zm-4 14h30v4H45z"/>
   </svg>;
 }
+function GameAction({ session, action, children }) {
+  const release = () => session.current?.setActionPressed(false, action);
+  return <button className="secondary" style={{ touchAction: 'none' }}
+    onPointerDown={event => { event.currentTarget.setPointerCapture(event.pointerId); session.current?.setActionPressed(true, action); }}
+    onPointerUp={release} onPointerCancel={release} onLostPointerCapture={release} onBlur={release}
+    onKeyDown={event => { if ([' ', 'Enter'].includes(event.key)) { event.preventDefault(); session.current?.setActionPressed(true, action); } }}
+    onKeyUp={event => { if ([' ', 'Enter'].includes(event.key)) { event.preventDefault(); release(); } }}>
+    {children}
+  </button>;
+}
 function Controller() {
   const model = useRef(null);
   const [view, setView] = useState(null);
   const [diagnostic, setDiagnostic] = useState(null);
   const [copyStatus, setCopyStatus] = useState('');
+  const [displayName, setDisplayName] = useState(() => {
+    try { return localStorage.getItem('gorilla-player-name') || ''; } catch { return ''; }
+  });
+  const initialName = useRef(displayName);
+  const [nameStatus, setNameStatus] = useState(null);
+  const [savedName, setSavedName] = useState('');
+
+  const savePlayerName = async (name) => {
+    const trimmed = (name || '').normalize('NFC').trim();
+    if (!trimmed) return 'INVALID';
+    setNameStatus('SAVING');
+    const status = await model.current?.setPlayerName(trimmed);
+    setNameStatus(status);
+    if (status === 'SAVED') {
+      setSavedName(trimmed);
+      setDisplayName(trimmed);
+      try { localStorage.setItem('gorilla-player-name', trimmed); } catch {}
+    }
+    return status;
+  };
+
+  useEffect(() => {
+    if (view?.network === 'NETWORK_READY' && initialName.current.trim() && nameStatus === null && model.current) {
+      void savePlayerName(initialName.current.trim());
+    }
+  }, [view?.network, nameStatus]);
+
   useEffect(() => {
     const session = new ControllerSession({ notify: setView });
-    model.current = session; setView(session.snapshot());
-    return () => { model.current = null; void session.dispose().catch(() => {}); };
+    model.current = session;
+    window.controller = session;
+    window.client = session.client;
+    setView(session.snapshot());
+    if(session.savedResume || session.hasAdmission) void session.connect();
+    return () => {
+      window.controller = null;
+      window.client = null;
+      model.current = null;
+      void session.dispose().catch(() => {});
+    };
   }, []);
   const state = view?.state || 'NO_ADMISSION';
-  const [title, description, label, feedback] = screens[state];
+  const [title, description, label, feedback] = screens[state]||screens.ERROR;
   async function copyDiagnostic() {
     const report = model.current.diagnostic();
     setDiagnostic(report);
@@ -29,21 +77,48 @@ function Controller() {
     catch { setCopyStatus('Copia el diagnóstico que aparece abajo.'); }
   }
   const canRetryPermission = state === 'ERROR' && view?.network === 'NETWORK_READY';
+  const hasSavedName = savedName.length > 0;
+  if(hasSavedName && view?.network==='NETWORK_READY'&&(state==='INPUT_READY'||controlProfile(view.gameContext,view.playerId).valid))
+    return <ReadyControl view={view} copyDiagnostic={copyDiagnostic} copyStatus={copyStatus} diagnostic={diagnostic} playerName={savedName} onSetName={savePlayerName} onCommand={(action,target)=>model.current?.command(action,target)} onActivate={()=>void model.current?.activate()} onForfeit={()=>void model.current?.forfeit()} onToggleAway={()=>void model.current?.setAway(!view?.isAway)} actions={<GameAction session={model} action="recenter">CENTRAR APUNTADO</GameAction>}/>;
   return <main className="controller-shell">
     <header className="brand"><GorillaMark/><div><p className="eyebrow">GORILIMPIADAS</p><h1>GORILLA<br/>ESCAPE</h1></div></header>
     <p className="edition">GORILLA CORE · TU TELÉFONO, TU CONTROL</p>
     <section className="connection-panel" data-feedback={feedback} aria-labelledby="connection-title">
       <div className="status-symbol" aria-hidden="true">{feedback === 'connecting' ? '…' : feedback === 'success' ? '✓' : feedback === 'error' ? '×' : '◆'}</div>
       <div role="status" aria-live="polite" aria-atomic="true"><h2 id="connection-title">{title}</h2><p>{description}</p></div>
-      {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión local establecida</p>}
+      {view?.network === 'NETWORK_READY' && <p className="connection-confirmation">Conexión con la PC establecida</p>}
+      {state==='DISCONNECTED'&&<button className="primary" onClick={()=>void model.current.reconnect()}>RECONECTAR MI SESIÓN</button>}
+      {state === 'ERROR' && view?.network === 'NOT_CONNECTED' && <div className="connection-recovery">
+        <p>La conexión falló antes de recibir una respuesta de la PC. Comprueba este navegador antes de volver a escanear.</p>
+        {model.current?.client?.trace?.code && <p className="diagnostic-badge" style={{ fontSize: '0.85em', opacity: 0.8, wordBreak: 'break-all' }}>Diagnóstico: {model.current.client.trace.code}{model.current.client.trace.rejectionCode ? ` (${model.current.client.trace.rejectionCode})` : ''}</p>}
+        <button className="primary" disabled={view?.connectionCheck === 'CHECKING'} onClick={() => void model.current.checkConnection()}>{view?.connectionCheck === 'CHECKING' ? 'COMPROBANDO…' : 'COMPROBAR CONEXIÓN'}</button>
+        {view?.connectionCheck === 'READY' && <p role="status">La PC responde desde este navegador. Cierra esta pestaña y escanea un QR nuevo en la PC.</p>}
+        {['UNREACHABLE', 'INSECURE'].includes(view?.connectionCheck) && <p role="status">Este navegador no pudo verificar la conexión. Comprueba la misma Wi-Fi y que el juego siga abierto. Si usas conexión local, revisa la confianza del certificado; la PC ofrece Configurar este teléfono.</p>}
+        {!view?.publicTunnel && <a className="prepare-link" href="/prepare" target="_blank" rel="noreferrer">Ver preparación de este teléfono</a>}
+      </div>}
+      {view?.network === 'NETWORK_READY' && !hasSavedName && <form className="profile-setup" onSubmit={async event => {
+        event.preventDefault();
+        await savePlayerName(displayName);
+      }}>
+        <label>¿Cómo te llamas en la partida?<input value={displayName} maxLength={40} autoComplete="nickname" autoFocus placeholder="Escribe tu nombre o apodo" onChange={e => setDisplayName(e.target.value)} disabled={nameStatus === 'SAVING'}/></label>
+        <button className="primary" type="submit" disabled={!displayName.trim() || nameStatus === 'SAVING'}>{nameStatus === 'SAVING' ? 'GUARDANDO…' : 'ENTRAR AL JUEGO'}</button>
+        <p role="status">{nameStatus === 'INVALID' ? 'Usa hasta 40 letras, números o signos simples.' : nameStatus === 'UNAVAILABLE' ? 'No se pudo guardar tu nombre. Comprueba la conexión e inténtalo de nuevo.' : 'Tu nombre aparecerá en la pantalla del juego.'}</p>
+      </form>}
       <aside className="safety" aria-label="Seguridad"><strong>Sujeta firmemente tu teléfono.</strong><span>No lo sueltes ni lo lances durante el juego.</span></aside>
-      {(label || canRetryPermission) && <button className="primary" onClick={() => {
+      {(label || canRetryPermission) && (state === 'CONNECT' || hasSavedName) && <button className="primary" onClick={() => {
         setDiagnostic(null); setCopyStatus('');
         if (state === 'CONNECT') void model.current.connect();
         else void model.current.activate();
       }}>{label || 'REINTENTAR PERMISO'}</button>}
     </section>
-    <footer><p>En la misma Wi-Fi que la PC.<br/>Sin instalar una aplicación.</p>
+    <footer>
+      {/android/i.test(navigator.userAgent) && (
+        <a className="secondary open-in-app" style={{ display: 'block', textAlign: 'center', margin: '8px 0', textDecoration: 'none', padding: '10px', background: 'rgba(229, 189, 117, 0.15)', borderRadius: '8px', color: '#e5bd75' }}
+           href={`intent://${location.host}${location.pathname}${location.search}${location.hash}#Intent;scheme=https;package=com.gorillaescape.gorilla_companion;end`}>
+          Abrir en Gorilla Companion (APK)
+        </a>
+      )}
+      <p>Usa el QR vigente de la PC.<br/>En conexión local, utiliza la misma Wi-Fi.</p>
       <button className="secondary" onClick={copyDiagnostic}>Copiar diagnóstico</button>
       {view?.network === 'NETWORK_READY' && <details><summary>Medición técnica de sensores</summary>
         <p>Sujeta el teléfono. No lo lances ni lo agites con fuerza.</p>

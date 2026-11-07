@@ -1,5 +1,7 @@
 # Estado verificable del producto
 
+Nota de la rama Jungle Party (2026-10-26): se preservan ocho escenas del alpha de Saúl y se adapta su entrada al transporte oficial de Fase 0. Este código aún no está integrado hacia `develop`. Los estados históricos siguientes pertenecen al baseline y no certifican estos minijuegos. [Matriz de integración](../03-development/SAUL_PHASE0_INTEGRATION.md).
+
 Última revisión: 2026-10-26; evidencia histórica S9/S10 y estado de integración S12. Fuentes: S1, S2, S3, S9 y S10; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
 
 Este es el registro vigente. Los resultados de tests se conservan en [evidencia](../04-testing/EVIDENCE_INDEX.md); S9/S10 añaden pruebas reales del backend y PWA del fork. Esta sincronización sólo verifica documentación; no repite ni cambia resultados históricos.
@@ -22,10 +24,12 @@ Este es el registro vigente. Los resultados de tests se conservan en [evidencia]
 | Backend jugadores: API y persistencia | IMPLEMENTADO Y VERIFICADO | S9: GET/POST /api/players, migración y SQLite real; 17 tests por plataforma Linux/Windows y harness PASS; PR #14 integrado a develop del backend; revisión remota S12 |
 | Backend: stack aprobado para jugadores | IMPLEMENTADO Y VERIFICADO | S9: Boot4.1.1/Java21, SQLite JDBC3.53.2.1/Flyway12.4.0; sin JPA ni PostgreSQL |
 | Cola durable/idempotencia de negocio | PROPUESTO | S10 tiene snapshot/borrador IndexedDB, no cola transaccional ni idempotencia; envío manual e intento incierto protegido |
-| Cuatro minijuegos Unity | PLANIFICADO | S3; inventario S1 sin escenas/clases de minijuegos y PlayEnabled=false |
+| Minijuegos Unity del alpha de Saúl | IMPLEMENTADO SIN VERIFICAR | Rama Jungle Party: escenas y mecánicas preservadas; mecánicas adaptadas a entrada fusionada/autorización y pausa técnica; pruebas C# de software ejecutadas; ejecución nativa y aceptación física pendientes |
 
 Etiquetas permitidas: IMPLEMENTADO Y VERIFICADO (código + prueba/log con alcance), IMPLEMENTADO SIN VERIFICAR (código sin prueba concluyente), EN DESARROLLO (parcial comprobado), PLANIFICADO (decisión autorizada), PROPUESTO (por decidir), BLOQUEADO (impedimento conocido), DESCONOCIDO (evidencia insuficiente). No se asigna EN DESARROLLO a juegos sólo por existir issues abiertos.
 
 Un ensayo físico anterior comunicado por el usuario no acredita la matriz del nuevo ejecutable. Un build, una API falsa, un ACK técnico o un `navigator.onLine=true` tampoco acreditan integración del producto.
 
 El laboratorio React/SQLite del fork está implementado y verificado en escritorio: GET2 → POST201/SQL3 → offline/recarga → POST manual online201/SQL4. [Dossier y límites](../04-testing/PWA_TEST_LAB.md). Tres capturas literales de DevTools y pruebas físicas pendientes. El upstream de Hiram no se modificó; backend y laboratorio del fork ya están integrados en sus develop. [Reconciliación S12](SOURCE_INVENTORY.md#s12--reconciliación-del-pr-130-2026-10-26).
+
+Revisión de mecánicas de Saúl (2026-10-27): [arquitectura y matriz vigente de InputFusion](../02-gameplay/JUNGLE_FUSED_INPUT.md). No se declara aceptación física por pasar pruebas sintéticas.

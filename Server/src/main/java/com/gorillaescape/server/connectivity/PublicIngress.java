@@ -14,7 +14,7 @@ public final class PublicIngress implements AutoCloseable {
     public static final int MAX_BODY=73728;
     // Signaling SDP has its own bounds; mobile sample JSON intentionally caps strings at512.
     private static final tools.jackson.databind.json.JsonMapper SIGNAL_JSON=tools.jackson.databind.json.JsonMapper.builder(tools.jackson.core.json.JsonFactory.builder().streamReadConstraints(tools.jackson.core.StreamReadConstraints.builder().maxNestingDepth(8).maxStringLength(65536).maxNumberLength(32).build()).build()).enable(tools.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION).enable(tools.jackson.databind.DeserializationFeature.FAIL_ON_TRAILING_TOKENS).build();
-    public static final Set<String> SIGNAL=Set.of("/mobile/join","/mobile/reconnect","/mobile/disconnect");
+    public static final Set<String> SIGNAL=Set.of("/mobile/join","/mobile/reconnect","/mobile/disconnect","/mobile/forfeit","/mobile/profile","/mobile/name");
     private static final Set<String> STATIC=Set.of("/","/index.html","/manifest.webmanifest","/sw.js","/icons/icon-192.png","/icons/icon-512.png");
     @FunctionalInterface public interface Signaling { Object apply(String path,byte[] body)throws Exception; }
     private final HttpServer server;
@@ -30,17 +30,31 @@ public final class PublicIngress implements AutoCloseable {
         System.setProperty("jdk.httpserver.maxConnections","32");System.setProperty("sun.net.httpserver.maxReqTime","12");System.setProperty("sun.net.httpserver.maxRspTime","12");
         server=HttpServer.create(new InetSocketAddress(InetAddress.getByName("127.0.0.1"),0),16);server.setExecutor(workers);server.createContext("/",this::handle);server.start();
     }
-    public static PublicIngress forRuntime(MobileRuntime runtime)throws IOException{return new PublicIngress((path,body)->switch(path){
+    public static PublicIngress forRuntime(MobileRuntime runtime)throws IOException{
+        runtime.setPublicTunnel(true);
+        return new PublicIngress((path,body)->switch(path){
         case "/mobile/join" -> runtime.join(SIGNAL_JSON.readValue(body,MobileRuntime.Signal.class));
         case "/mobile/reconnect" -> {var r=SIGNAL_JSON.readValue(body,MobileController.Resume.class);yield runtime.reconnect(r.sessionId(),r.playerId(),r.resumeToken(),r.offer());}
         case "/mobile/disconnect" -> {var r=SIGNAL_JSON.readValue(body,MobileController.Leave.class);runtime.disconnect(r.peerId(),r.resumeToken());yield Map.of("state","DISCONNECTED");}
+        case "/mobile/forfeit" -> {var r=SIGNAL_JSON.readValue(body,MobileController.Leave.class);runtime.forfeit(r.peerId(),r.resumeToken());yield Map.of("state","FORFEITED");}
+        case "/mobile/name" -> runtime.setDisplayName(SIGNAL_JSON.readValue(body,MobileRuntime.ProfileRequest.class));
+        case "/mobile/profile" -> runtime.createProfile(SIGNAL_JSON.readValue(body,MobileRuntime.ProfileRequest.class));
         default -> throw new IOException("ROUTE_DENIED");
     });}
     public URI origin(){return URI.create("http://127.0.0.1:"+server.getAddress().getPort());}
     public void publicOrigin(URI origin){publicOrigin=origin;}
+    public boolean isAllowedOrigin(String origin){
+        if(origin==null)return true;
+        if(publicOrigin!=null&&origin.equals(publicOrigin.toASCIIString()))return true;
+        if(origin.equals("https://play.gorilla.run")||origin.endsWith(".gorilla.run")||origin.equals("https://play.gorillas.run")||origin.endsWith(".gorillas.run"))return true;
+        if(origin.matches("https://[a-z0-9]+(?:-[a-z0-9]+)*\\.trycloudflare\\.com"))return true;
+        String customDomain=System.getenv("GORILLA_TUNNEL_DOMAIN");
+        if(customDomain!=null&&!customDomain.isBlank()&&origin.equals("https://"+customDomain.trim()))return true;
+        return false;
+    }
     public static boolean allowed(String method,String rawPath){
         if(rawPath==null||rawPath.length()>180||rawPath.contains("%")||rawPath.contains("..")||rawPath.contains("\\"))return false;
-        return "POST".equals(method)?SIGNAL.contains(rawPath):"GET".equals(method)&&(STATIC.contains(rawPath)||rawPath.matches("/assets/[A-Za-z0-9_-]{1,100}\\.(js|css)"));
+        return "POST".equals(method)?SIGNAL.contains(rawPath):"GET".equals(method)&&(STATIC.contains(rawPath)||rawPath.matches("/assets/[A-Za-z0-9_-]{1,100}\\.(js|css|ttf)"));
     }
     private synchronized boolean budget(){long now=System.nanoTime();if(now-window>=1_000_000_000L){window=now;requests=0;}return ++requests<=60;}
     private void handle(HttpExchange x)throws IOException{
@@ -51,17 +65,20 @@ public final class PublicIngress implements AutoCloseable {
             if(x.getRequestURI().getRawQuery()!=null||!allowed(x.getRequestMethod(),path)){reply(x,404,Map.of("error","NOT_FOUND"));return;}
             if(!budget()){reply(x,429,Map.of("error","RATE_BOUND"));return;}
             if("POST".equals(x.getRequestMethod())){
-                String origin=x.getRequestHeaders().getFirst("Origin");if(origin!=null&&(publicOrigin==null||!origin.equals(publicOrigin.toASCIIString()))){reply(x,403,Map.of("error","ORIGIN_DENIED"));return;}
+                String origin=x.getRequestHeaders().getFirst("Origin");if(!isAllowedOrigin(origin)){reply(x,403,Map.of("error","ORIGIN_DENIED"));return;}
                 String content=x.getRequestHeaders().getFirst("Content-Type");if(content==null||!content.toLowerCase(Locale.ROOT).matches("application/json(?:;\\s*charset=utf-8)?")){reply(x,415,Map.of("error","CONTENT_TYPE"));return;}
                 var body=x.getRequestBody().readNBytes(MAX_BODY+1);if(body.length>MAX_BODY){reply(x,413,Map.of("error","BODY_BOUND"));return;}
                 try{reply(x,200,signaling.apply(path,body));}catch(MobileRuntime.JoinFailure e){reply(x,400,Map.of("error","JOIN_REJECTED","code",e.code()));}
-                catch(Exception e){reply(x,400,Map.of("error","SIGNAL_REJECTED","code","SIGNAL_FAILED_OTHER"));}finally{Arrays.fill(body,(byte)0);}
+                catch(Exception e){
+                    boolean profile="/mobile/profile".equals(path);String code=profile&&Set.of("PLAYERS_UNAVAILABLE","PROFILE_NAME").contains(String.valueOf(e.getMessage()))?e.getMessage():"SIGNAL_FAILED_OTHER";
+                    reply(x,"PLAYERS_UNAVAILABLE".equals(code)?503:400,Map.of("error","SIGNAL_REJECTED","code",code));
+                }finally{Arrays.fill(body,(byte)0);}
             }else{
                 String resource="static"+(path.equals("/")?"/index.html":path);
                 try(var in=PublicIngress.class.getClassLoader().getResourceAsStream(resource)){
                     if(in==null){reply(x,404,Map.of("error","NOT_FOUND"));return;}
                     byte[] data=in.readNBytes(2_000_001);if(data.length>2_000_000){reply(x,404,Map.of("error","NOT_FOUND"));return;}
-                    h.set("Content-Type",path.endsWith(".js")?"text/javascript; charset=utf-8":path.endsWith(".css")?"text/css; charset=utf-8":path.endsWith(".png")?"image/png":path.endsWith(".webmanifest")?"application/manifest+json":"text/html; charset=utf-8");
+                    h.set("Content-Type",path.endsWith(".ttf")?"font/ttf":path.endsWith(".js")?"text/javascript; charset=utf-8":path.endsWith(".css")?"text/css; charset=utf-8":path.endsWith(".png")?"image/png":path.endsWith(".webmanifest")?"application/manifest+json":"text/html; charset=utf-8");
                     x.sendResponseHeaders(200,data.length);x.getResponseBody().write(data);
                 }
             }

@@ -23,7 +23,7 @@ namespace GorillaEscape.CameraTracking
             public long sequence,captureTimestamp,processTimestamp,unityReceiveTimestamp;public int width,height,subjects,visibleLandmarks;public string source,trackingState;public float confidence=-1;
             public CameraObservation(GorillaEscape.Contracts.CameraInputWire f){sequence=f.frameSequence;captureTimestamp=f.captureTimestamp;processTimestamp=f.processTimestamp;unityReceiveTimestamp=f.unityReceiveTimestamp;width=f.width;height=f.height;subjects=f.subjects.Length;source=f.source;trackingState=f.trackingState;foreach(var s in f.subjects){confidence=Math.Max(confidence,s.confidence);foreach(var l in s.landmarks)if(l.visible)visibleLandmarks++;}}
         }
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void Launch(){if(GorillaEscape.UI.MainMenuController.ProductFlow)return;if(Application.isEditor||Environment.GetEnvironmentVariable("GORILLA_CAMERA_LAB")!="1"&&Environment.GetEnvironmentVariable("GORILLA_CAMERA_ENABLED")!="1")return;var host=new GameObject("Camera fusion lab diagnostics");DontDestroyOnLoad(host);host.AddComponent<CameraFusionLabRunner>();}
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void Launch(){if(GorillaEscape.UI.MainMenuController.ProductFlow)return;if(GorillaEscape.UI.MainMenuController.IsJungleScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().path))return;if(Application.isEditor||Environment.GetEnvironmentVariable("GORILLA_CAMERA_LAB")!="1"&&Environment.GetEnvironmentVariable("GORILLA_CAMERA_ENABLED")!="1")return;var host=new GameObject("Camera fusion lab diagnostics");DontDestroyOnLoad(host);host.AddComponent<CameraFusionLabRunner>();}
         void Start(){previousBackground=Application.runInBackground;Application.runInBackground=true;vision=new VisionSupervisor();cancellation=new CancellationTokenSource();Application.wantsToQuit+=WantsToQuit;start=LaunchVision();}
         async Task LaunchVision(){try{await vision.StartPackagedAsync(Path.GetFullPath(Path.Combine(Application.dataPath,"..")),cancellation.Token);Debug.Log("CAMERA_LAB_READY");if(Environment.GetEnvironmentVariable("GORILLA_T018_MEASURE")=="1"){frameTiming=new FrameTimingWindow();double now=System.Diagnostics.Stopwatch.GetTimestamp()/(double)System.Diagnostics.Stopwatch.Frequency;measureStart=now+double.Parse(Environment.GetEnvironmentVariable("GORILLA_CAMERA_WARMUP")??"5",System.Globalization.CultureInfo.InvariantCulture);measureEnd=measureStart+double.Parse(Environment.GetEnvironmentVariable("GORILLA_T018_DURATION")??"61",System.Globalization.CultureInfo.InvariantCulture);previousFrame=now;}}catch(Exception){Debug.Log("CAMERA_LAB_ERROR "+vision.Error);}}
         void Update(){
@@ -35,7 +35,7 @@ namespace GorillaEscape.CameraTracking
             }
             if(allowQuit)return;
             if(quitting){if(start!=null&&!start.IsCompleted)return;if(stop==null)stop=vision.StopAsync();if(!stop.IsCompleted)return;allowQuit=true;LogCleanup();Application.Quit(vision.CleanupComplete?0:2);return;}
-            if(fusion==null){var ipc=FindFirstObjectByType<IpcProbeRunner>();if(ipc?.PhoneInputs!=null)fusion=new InputFusion(ipc.PhoneInputs,Settings());}
+            if(fusion==null){var ipc=FindAnyObjectByType<IpcProbeRunner>();if(ipc?.PhoneInputs!=null)fusion=new InputFusion(ipc.PhoneInputs,Settings());}
             if(vision.Take(out var captured,out var at)) {
                 if(CameraInputs.Accept(captured,at)) {
                     fusion?.ObserveCamera(captured,at);
@@ -48,7 +48,7 @@ namespace GorillaEscape.CameraTracking
             string path=Environment.GetEnvironmentVariable("GORILLA_FUSION_COMMAND");
             if(!string.IsNullOrEmpty(path)&&File.Exists(path))try{if(new FileInfo(path).Length<=1024){var c=JsonUtility.FromJson<Command>(File.ReadAllText(path));if(c!=null&&c.revision>revision&&c.playerId>=1&&c.playerId<=4){revision=c.revision;if(c.ready)fusion.Association.Ready(c.playerId);else fusion.Association.Release();Debug.Log("FUSION_COMMAND "+revision);}}}catch(IOException){}catch(ArgumentException){}
             // Four latest samples come from the previous, validated runtime. History is independently bounded.
-            var owner=FindFirstObjectByType<IpcProbeRunner>();for(int player=1;player<=4;player++)if(owner.PhoneInputs.TryLatest(player,out var p))fusion.ObservePhone(p);
+            var owner=FindAnyObjectByType<IpcProbeRunner>();for(int player=1;player<=4;player++)if(owner.PhoneInputs.TryLatest(player,out var p))fusion.ObservePhone(p);
 
             vision.Poll();if(vision.State=="FAILED"){fusion.Association.MarkLost();if(stop==null){Debug.Log("CAMERA_LAB_ERROR "+vision.Error);stop=vision.StopAsync();}}
             if(Time.unscaledTime>=nextLog){nextLog=Time.unscaledTime+.05f;long now=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();for(int player=1;player<=4;player++){var evaluated=fusion.Evaluate(player,now);if(CanLogFixtureObservation(evaluated))Debug.Log("FUSION_OBSERVED "+JsonUtility.ToJson(new Observation(evaluated)));}}

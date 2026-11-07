@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-27",
+  "sourceBranch": "feature/gameplay-desafio-del-tronco",
+  "sourceBaseline": "144da9af521f6b572a9a6012803b529ae4b93cd5",
+  "backendDevelopPin": "c83b8343f1e37c405b127304567e149a1416eddb",
+  "flutterSdkPin": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+  "pwaTests": 86,
+  "flutterTests": 13,
+  "pureCSharpTests": 106,
+  "launcherTests": 10,
+  "serverTests": {
+    "total": 132,
+    "executed": 127,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0
+  },
+  "backendTests": 17,
+  "packagedJre": "21.0.12.1",
+  "nativeUnity": "NOT RUN: isolated invocation exit 198; context does not recognize Hub Student license",
+  "physicalAcceptance": "NOT RUN",
+  "sourceSha256": {
+    "Shared/CSharp/Runtime/GamePresentationWire.cs": "49c518f9de4b9d5686484767472b7b7e1f5c12b0f5784e21dbadbbf1cc19ee15",
+    "Server/src/main/java/com/gorillaescape/server/mobile/PlayersBackend.java": "22745b861bd106933b2b27b6845bae49fdbfa15d6e0f94a5ab8c6fdf72c5fc2a",
+    "Server/src/main/java/com/gorillaescape/server/mobile/GamePresentation.java": "80afa059cbb62a7a56fbf57da7d87d503acbd3de67a23cadc80ef3ca15c7b455",
+    "Unity/Assets/Scripts/MotionSession.cs": "264fa64c33e17c8e103aa03540f7e66dc800d35aaa14f244f6367c513eed2aa7",
+    "tools/run_game.py": "ad5f40b6ac5e0f903154af8965aeae4a7e94f9c7b3f86613dd080ac0d9eaa9a9"
+  },
+  "androidDebugApk": {
+    "version": "1.4.0+10",
+    "sha256": "f5302155f17097ca4da153c00b78513fc571523b336c818083bdd0b0482e7c9f",
+    "bytes": 213290357
+  }
+}

@@ -10,8 +10,10 @@ public class ProductEntryPolicyTests
     [TestCase(true, true, true, false, MainMenuController.BootstrapScenePath, true, false)]
     [TestCase(true, true, false, true, MainMenuController.BootstrapScenePath, true, false)]
     [TestCase(true, false, false, false, MainMenuController.BootstrapScenePath, true, false)]
-    [TestCase(false, true, false, false, "", true, true)]
-    [TestCase(false, true, true, false, "", true, true)]
+    [TestCase(false, true, false, false, "", true, false)]
+    [TestCase(false, true, true, false, "", true, false)]
+    [TestCase(false, true, false, false, MainMenuController.BootstrapScenePath, true, true)]
+    [TestCase(false, true, false, false, "Assets/Scenes/Connection.unity", true, false)]
     [TestCase(false, true, false, false, MainMenuController.BootstrapScenePath, false, false)]
     public void EntryIsExplicit(bool editor, bool playing, bool batch, bool tests, string path, bool product, bool expected)
         => Assert.AreEqual(expected, MainMenuController.ShouldAutoLaunch(editor, playing, batch, tests, path, product));
@@ -23,4 +25,16 @@ public class ProductEntryPolicyTests
     [TestCase(true,false,true,MainMenuController.BootstrapScenePath,null,false)]
     public void PhysicalEditorServicesRequireExplicitProductOptIn(bool playing,bool batch,bool permitted,string path,string flag,bool expected)
         => Assert.AreEqual(expected,GorillaEscape.QA.QaRuntimeService.EditorServicesAllowed(playing,batch,permitted,path,flag));
+    [TestCase("Assets/Scenes/Connection.unity", true)]
+    [TestCase("Assets/Scenes/MainMenu.unity", true)]
+    [TestCase("Assets/Scenes/BananaBowling.unity", true)]
+    [TestCase("Assets/Scenes/GorillaBoxing.unity", true)]
+    [TestCase("Assets/Scenes/JungleBaseball.unity", true)]
+    [TestCase("Assets/Scenes/JungleDrums.unity", true)]
+    [TestCase("Assets/Scenes/CoconutSlice.unity", true)]
+    [TestCase("Assets/Scenes/WhackAMole.unity", true)]
+    [TestCase(MainMenuController.BootstrapScenePath, false)]
+    [TestCase("Assets/Temp/TestScene.unity", false)]
+    public void JungleScenesHaveTheirOwnPhase0Owner(string path, bool expected)
+        => Assert.AreEqual(expected, MainMenuController.IsJungleScene(path));
 }

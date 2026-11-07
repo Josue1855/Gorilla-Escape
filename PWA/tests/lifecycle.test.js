@@ -41,12 +41,33 @@ test('transport lost while hidden remains DISCONNECTED after return; no stale em
  const f=setup();await ready(f);f.visible('hidden');f.client.state='DISCONNECTED';for(const tick of [...f.intervals.values()])tick();f.visible('visible');f.send();
  assert.equal(f.model.state,'DISCONNECTED');assert.equal(f.model.capture.state,'STOPPED');await f.model.dispose();
 });
-test('pagehide disposes capture, timers, monitor, pending measurement and owned transport',async()=>{
+test('pagehide suspends samples but preserves the session for pageshow',async()=>{
  const f=setup();await ready(f);f.model.startMeasurement('gentle');f.win.dispatchEvent(new Event('pagehide'));
- assert.equal(f.model.state,'DISCONNECTED');assert.equal(f.model.capture.state,'STOPPED');assert.equal(f.model.measurement.status,'INTERRUPTED');assert.equal(f.timers.size,0);assert.equal(f.intervals.size,0);assert.equal(f.client.state,'STOPPED');
- for(const set of f.listeners.values())assert.equal(set.size,0);const count=f.client.metrics.motionSubmitted;f.send();assert.equal(f.client.metrics.motionSubmitted,count);
+ assert.equal(f.model.state,'CONTROL_SUSPENDED');assert.equal(f.model.capture.state,'STOPPED');assert.equal(f.model.measurement.status,'INTERRUPTED');assert.equal(f.timers.size,0);assert.equal(f.client.state,'RUNNING');assert.equal(f.model.disposed,false);
+ const count=f.client.metrics.motionSubmitted;f.send();assert.equal(f.client.metrics.motionSubmitted,count);await f.model.dispose();assert.equal(f.intervals.size,0);for(const set of f.listeners.values())assert.equal(set.size,0);
 });
 
 test('repeated disposal remains promise-compatible with React cleanup after pagehide',async()=>{
- const f=setup();await ready(f);f.win.dispatchEvent(new Event('pagehide'));const second=f.model.dispose();assert.equal(typeof second.then,'function');await second;assert.equal(f.model.state,'DISCONNECTED');assert.equal(f.intervals.size,0);
+ const f=setup();await ready(f);f.win.dispatchEvent(new Event('pagehide'));const second=f.model.dispose();assert.equal(typeof second.then,'function');await second;assert.equal(f.model.disposed,true);assert.equal(f.intervals.size,0);
+});
+
+test('unlock with a live transport announces active and reacquires fresh sensors',async()=>{
+ const f=setup();const sent=[];f.client.send=async(type,payload)=>sent.push({type,payload});
+ await ready(f);f.visible('hidden');await Promise.resolve();f.visible('visible');await Promise.resolve();await Promise.resolve();
+ assert.ok(sent.some(m=>m.type==='CLIENT_STATE'&&m.payload.state==='active'));
+ assert.equal(f.model.capture.channels.motion.latest,null);
+ for(let i=0;i<3;i++)f.send();assert.equal(f.model.state,'INPUT_READY');await f.model.dispose();
+});
+
+test('unlock after a lost transport resumes the same player without a new QR or permission click',async()=>{
+ const f=setup();await ready(f);
+ f.client.identity={sessionId:'fixture',playerId:1,resumeToken:'r'.repeat(43)};
+ let resumed,connects=0;
+ f.client.connect=async(url,resume)=>{connects++;resumed=resume;f.client.state='RUNNING';f.client.gameContext=null;};
+ f.visible('hidden');f.client.state='DISCONNECTED';for(const tick of [...f.intervals.values()])tick();
+ f.visible('visible');await Promise.resolve();await Promise.resolve();await Promise.resolve();
+ assert.equal(connects,1);assert.equal(resumed.playerId,1);assert.equal(resumed.resumeToken,'r'.repeat(43));
+ assert.equal(f.model.capture.channels.motion.latest,null);
+ for(let i=0;i<3;i++)f.send();assert.equal(f.model.state,'INPUT_READY');assert.equal(f.listeners.get('win:devicemotion').size,1);
+ await f.model.dispose();
 });

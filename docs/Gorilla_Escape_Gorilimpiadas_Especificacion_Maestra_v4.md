@@ -3983,3 +3983,7 @@ sin Internet se explica de forma humana, con arquitectura sólo en Detalles/QA.
 Cloudflared sirve exclusivamente PWA/HTTPS/signaling; gameplay sigue por RTC
 LAN directo → Java → IPC → Unity. T019/T020/F05/E0 no se cierran; JUGAR sigue
 deshabilitado y Phase1 no comienza. Gates/evidencia: PHASE0_T063_TRANSPARENT_AUTO.md.
+
+### Enmienda 2026-11-05 — control adecuado a cada prueba (DEC-032)
+
+Por instrucción explícita del usuario, el celular deja de ser obligatorio por defecto en todos los minijuegos. Cada prueba debe usar los dispositivos que hagan su gesto más claro y cómodo. Box, béisbol y tambores usan cámara. La aclaración del 2026-11-06 conserva celular para potencia en Whack, con cámara para una columna de alturas sin profundidad. Smash usa cámara para precisión y celular para potencia, compartiendo el mazo existente de Whack; el lanzamiento reutiliza el coco existente. Historia y fiesta cambian de perfil automáticamente y anuncian el control de la siguiente prueba. Tras desbloquear el teléfono debe recuperarse su sesión y captura sin volver al QR. El detalle vigente se conserva en [Controles y mecánicas](03-development/GAMEPLAY_CONTROLS.md); no implica aceptación física completada.

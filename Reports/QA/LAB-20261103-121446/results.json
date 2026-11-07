@@ -1,0 +1,49 @@
+{
+  "lab": "LAB-20261103-121446",
+  "date": "2026-11-03T12:40:00-06:00",
+  "branch": "feature/saul-jungle-party-alpha",
+  "commit": "fd35005",
+  "environment": {
+    "os": "Windows 11 (10.0.29698)",
+    "unity": "6000.6.0f1 (f7f8ed4d1e24), licencia Unity Student (Pro) headless OK",
+    "java": "OpenJDK 21.0.13 (JAVA_HOME); java en PATH es 27",
+    "node": "DSH 24.21.0 (sistema 26.13.0 es incompatible con engine-strict)",
+    "flutter": "3.47.6 / Dart 3.13.5",
+    "dotnet": "10.0.403",
+    "openssl": "3.5.9 (Git usr/bin, ausente en PATH nativo)",
+    "inno_setup": "NO instalado (no se puede regenerar instalador)",
+    "physical_camera": "Integrated Webcam presente (no ejercitada)",
+    "physical_phones": "0 (no disponible)",
+    "cloudflare_credentials": "no disponibles"
+  },
+  "results": [
+    {"suite":"inventory","check":"validate_foundation.py","status":"PASS","detail":"local UPM, 707 GUIDs, contratos, fixtures, iconos"},
+    {"suite":"inventory","check":"validate_management.py","status":"PASS","detail":"94 backlog, 1087 links (corregido: antes WinError 3 por build dirs)"},
+    {"suite":"inventory","check":"validate_management regression","status":"PASS","detail":"3/3 (test_validate_management.py)"},
+    {"suite":"pwa","check":"npm ci + test + build (Node 24)","status":"PASS","detail":"93/93 tests; vite build OK; SW generado"},
+    {"suite":"flutter","check":"analyze + test","status":"PASS","detail":"0 issues; 19/19 tests"},
+    {"suite":"java","check":"mvnw verify","status":"FAIL","detail":"164 tests: 2 fail + 1 error + 9 skip (3 Linux-specific; ver defects)"},
+    {"suite":"unity","check":"build Windows standalone (batchmode)","status":"PASS","detail":"Succeeded, Errors=0, 12 escenas, 406 MB, 31.2s"},
+    {"suite":"pwa_security","check":"npm audit --omit=dev","status":"PASS","detail":"0 vulnerabilities"},
+    {"suite":"camera","check":"MediaPipe pipeline con hardware","status":"BLOCKED","detail":"requiere cámara física + runtime Python 3.12; no se sustituye por replay"},
+    {"suite":"cloudflare","check":"túnel público + RoomRegistry","status":"BLOCKED","detail":"requiere credenciales de túnel; no se simula DNS"},
+    {"suite":"webrtc","check":"4 clientes físicos WebRTC","status":"BLOCKED","detail":"requiere 4 teléfonos + personas reales"},
+    {"suite":"installer","check":"regenerar instalador Inno","status":"BLOCKED","detail":"ISCC no instalado; el Setup existente empaqueta binario previo"},
+    {"suite":"android","check":"APK release firmado","status":"NOT RUN","detail":"no ejecutado (build debug/firma requiere keystore y SDK; no solicitado en este paso)"},
+    {"suite":"licenses","check":"SBOM + avisos terceros","status":"FAIL","detail":"falta LICENSE raíz, THIRD-PARTY-NOTICES y procedencia de modelos Meshy"},
+    {"suite":"splash_story","check":"splash cinematográfico + historieta","status":"FAIL","detail":"entry=Connection.unity; menú 2D IMGUI; historia = modal de texto (no 4-6 viñetas)"},
+    {"suite":"physical_devices","check":"matriz 4 teléfonos / redes / endurance","status":"BLOCKED","detail":"sin hardware físico disponible"}
+  ],
+  "defects": [
+    {"id":"D-01","severity":"P1","component":"Server (test)","title":"FirewallPreflight bloqueaba máquina de estados en Windows","fixed":true,"regression":"tools/github/test_validate_management.py + FirewallPreflightTest 5/5"},
+    {"id":"D-02","severity":"P2","component":"tools/github","title":"validate_management.py fallaba (WinError 3) al recorrer build/ de Flutter","fixed":true,"regression":"tools/github/test_validate_management.py 3/3"},
+    {"id":"D-03","severity":"P2","component":"Server (test)","title":"3 tests Linux-only fallan en Windows (LocalTrust 503/200, MobileHttps openssl, ProbePressure /proc+RST)","fixed":false,"note":"no son defectos de producto; requieren @EnabledOnOs(LINUX) o entorno Linux"},
+    {"id":"D-04","severity":"P1","component":"licencias","title":"Sin LICENSE raíz, sin THIRD-PARTY-NOTICES, sin procedencia de modelos Meshy","fixed":false},
+    {"id":"D-05","severity":"P1","component":"Unity UX","title":"Splash cinematográfico (gorila corriendo) y menú 3D de playa NO implementados; entrada es Connection.unity y menú 2D","fixed":false},
+    {"id":"D-06","severity":"P1","component":"Unity UX","title":"Modo Historia = modal de texto; falta historieta de 4-6 viñetas","fixed":false},
+    {"id":"D-07","severity":"P3","component":"instalador","title":"Setup existente (268 MB) empaqueta binario previo; ISCC ausente para regenerar","fixed":false},
+    {"id":"D-08","severity":"P3","component":"repo","title":"Sin .gitignore para Builds/installer/Companion build/PNGs y logs de debug en raíz","fixed":false}
+  ],
+  "decision": "NO-GO",
+  "decision_reason": "Build de Unity y suites de código verificadas (PWA/Flutter/Java mayoritario), pero faltan: splash/menú 3D e historia cinematográfica (P1), aceptación física (cámara, 4 teléfonos, Cloudflare, WebRTC P2P), instalador regenerado desde la build nueva, y cumplimiento de licencias. Sin esas evidencias no se puede declarar Release Candidate."
+}

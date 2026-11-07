@@ -1,0 +1,768 @@
+{
+  "timestamp": "2026-11-06T01:18:41Z",
+  "architecture": {
+    "room_code": "jngl",
+    "transport": "WebRTC DataChannels (control + motion) via UDP",
+    "backend": "Spring Boot / Java WebRTC runtime",
+    "player_1": "PWA (Headless Chrome Tab 1)",
+    "player_2": "PWA (Headless Chrome Tab 2)",
+    "player_3": "Native Flutter APK on Android Emulator 7.0 API 24 (emulator-5554)",
+    "player_4": "Native Flutter APK on Android Emulator 7.0 API 24 (emulator-5556)"
+  },
+  "admissions": [],
+  "connections": {
+    "player_1": {
+      "protocolVersion": 1,
+      "messageType": "JOIN_ACK",
+      "sessionId": "0fe8c790-7413-428b-a377-b35975d31eaa",
+      "playerId": 1,
+      "deviceSessionId": "6bcd8962-ef96-435e-b5e2-4906e056c05b",
+      "resumeToken": "FmBnyhBD7xysbCwpXy7x8StV5Y4j87JtVSIMG7ECq_k",
+      "connectionEpoch": 1,
+      "peerId": "7ebc89c4-12ce-4bb6-9971-33055e391bee",
+      "answer": "v=0\r\no=- 3397774995340463866 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 50000 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 172.20.64.1\r\na=candidate:939656444 1 udp 2122260223 172.20.64.1 50000 typ host generation 0 network-id 4\r\na=candidate:3652436185 1 udp 2122194687 10.1.124.132 50000 typ host generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:y/B/\r\na=ice-pwd:mrobGD8hGgfB1jj6LTlUpdrx\r\na=ice-options:trickle\r\na=fingerprint:sha-256 04:40:55:2D:4C:3A:61:4E:71:94:FD:22:95:79:84:37:32:D1:85:56:83:E4:87:C9:D6:1A:BD:79:2F:E3:0C:C6\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"
+    },
+    "player_2": {
+      "protocolVersion": 1,
+      "messageType": "JOIN_ACK",
+      "sessionId": "0fe8c790-7413-428b-a377-b35975d31eaa",
+      "playerId": 2,
+      "deviceSessionId": "8c9a879c-e8cd-453c-bb24-0f9682b144e2",
+      "resumeToken": "ZOuivl_Wx7z73nZ-L9Lwv6DHw0JpxGD-1SaWFfCviDk",
+      "connectionEpoch": 1,
+      "peerId": "a6a96723-dff2-4f8f-b8bd-46018c3d6af6",
+      "answer": "v=0\r\no=- 2877304814962065994 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 50001 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 172.20.64.1\r\na=candidate:3189642134 1 udp 2122260223 172.20.64.1 50001 typ host generation 0 network-id 4\r\na=candidate:4126897685 1 udp 2122194687 10.1.124.132 50001 typ host generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:EwKA\r\na=ice-pwd:esYljJ5mqw/LcRbiQRcftBQW\r\na=ice-options:trickle\r\na=fingerprint:sha-256 95:9A:EE:63:57:03:F2:56:B3:90:45:37:81:27:56:BB:65:45:32:AA:4F:60:19:81:1C:49:E4:4F:26:85:77:9D\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"
+    },
+    "player_3": {
+      "device": "emulator-5554",
+      "status": "CONNECTED"
+    },
+    "player_4": {
+      "device": "emulator-5556",
+      "status": "CONNECTED"
+    }
+  },
+  "adversarial_tests": {
+    "fifth_admission": "PASS_HTTP_500",
+    "reconnect_resume": {
+      "samePlayer": true,
+      "newEpoch": true,
+      "newEpochValue": 2,
+      "priorEpochValue": 1,
+      "state": "RUNNING"
+    }
+  },
+  "resource_usage": [
+    {
+      "pid": 3248,
+      "name": "chrome",
+      "ram_mb": 20.0,
+      "cpu": 0.046875
+    },
+    {
+      "pid": 6280,
+      "name": "chrome",
+      "ram_mb": 73.59,
+      "cpu": 1.140625
+    },
+    {
+      "pid": 7292,
+      "name": "chrome",
+      "ram_mb": 151.71,
+      "cpu": 1.140625
+    },
+    {
+      "pid": 7328,
+      "name": "chrome",
+      "ram_mb": 83.04,
+      "cpu": 0.5625
+    },
+    {
+      "pid": 12720,
+      "name": "chrome",
+      "ram_mb": 74.2,
+      "cpu": 0.296875
+    },
+    {
+      "pid": 14428,
+      "name": "chrome",
+      "ram_mb": 64.87,
+      "cpu": 0.59375
+    },
+    {
+      "pid": 14612,
+      "name": "chrome",
+      "ram_mb": 264.41,
+      "cpu": 6.421875
+    },
+    {
+      "pid": 15084,
+      "name": "chrome",
+      "ram_mb": 469.04,
+      "cpu": 7.84375
+    },
+    {
+      "pid": 17516,
+      "name": "chrome",
+      "ram_mb": 56.31,
+      "cpu": 0.125
+    },
+    {
+      "pid": 18264,
+      "name": "chrome",
+      "ram_mb": 219.38,
+      "cpu": 4.046875
+    },
+    {
+      "pid": 18804,
+      "name": "chrome",
+      "ram_mb": 75.49,
+      "cpu": 0.296875
+    },
+    {
+      "pid": 19596,
+      "name": "chrome",
+      "ram_mb": 62.58,
+      "cpu": 0.921875
+    },
+    {
+      "pid": 19864,
+      "name": "chrome",
+      "ram_mb": 10.37,
+      "cpu": 0.015625
+    },
+    {
+      "pid": 20992,
+      "name": "chrome",
+      "ram_mb": 34.13,
+      "cpu": 0.140625
+    },
+    {
+      "pid": 21640,
+      "name": "chrome",
+      "ram_mb": 79.55,
+      "cpu": 0.625
+    },
+    {
+      "pid": 22236,
+      "name": "chrome",
+      "ram_mb": 40.46,
+      "cpu": 1.09375
+    },
+    {
+      "pid": 22276,
+      "name": "chrome",
+      "ram_mb": 171.81,
+      "cpu": 6.703125
+    },
+    {
+      "pid": 22360,
+      "name": "chrome",
+      "ram_mb": 33.33,
+      "cpu": 0.0625
+    },
+    {
+      "pid": 22908,
+      "name": "chrome",
+      "ram_mb": 112.48,
+      "cpu": 0.84375
+    },
+    {
+      "pid": 23728,
+      "name": "chrome",
+      "ram_mb": 18.14,
+      "cpu": 0.046875
+    },
+    {
+      "pid": 25288,
+      "name": "chrome",
+      "ram_mb": 348.16,
+      "cpu": 21.859375
+    },
+    {
+      "pid": 25384,
+      "name": "chrome",
+      "ram_mb": 167.04,
+      "cpu": 9.453125
+    },
+    {
+      "pid": 25528,
+      "name": "chrome",
+      "ram_mb": 47.3,
+      "cpu": 0.09375
+    },
+    {
+      "pid": 25984,
+      "name": "chrome",
+      "ram_mb": 207.08,
+      "cpu": 10.921875
+    },
+    {
+      "pid": 26652,
+      "name": "chrome",
+      "ram_mb": 591.85,
+      "cpu": 40.3125
+    },
+    {
+      "pid": 28084,
+      "name": "chrome",
+      "ram_mb": 250.09,
+      "cpu": 5.65625
+    },
+    {
+      "pid": 28824,
+      "name": "chrome",
+      "ram_mb": 198.15,
+      "cpu": 7.078125
+    },
+    {
+      "pid": 30612,
+      "name": "chrome",
+      "ram_mb": 53.73,
+      "cpu": 5.03125
+    },
+    {
+      "pid": 32300,
+      "name": "chrome",
+      "ram_mb": 97.29,
+      "cpu": 1.15625
+    },
+    {
+      "pid": 32532,
+      "name": "chrome",
+      "ram_mb": 9.67,
+      "cpu": 0.0625
+    },
+    {
+      "pid": 32852,
+      "name": "chrome",
+      "ram_mb": 439.71,
+      "cpu": 31.703125
+    },
+    {
+      "pid": 33888,
+      "name": "chrome",
+      "ram_mb": 172.12,
+      "cpu": 9.53125
+    },
+    {
+      "pid": 34728,
+      "name": "chrome",
+      "ram_mb": 157.15,
+      "cpu": 1.734375
+    },
+    {
+      "pid": 34732,
+      "name": "chrome",
+      "ram_mb": 163.33,
+      "cpu": 3.4375
+    },
+    {
+      "pid": 9408,
+      "name": "java",
+      "ram_mb": 9.61,
+      "cpu": 0.046875
+    },
+    {
+      "pid": 22584,
+      "name": "java",
+      "ram_mb": 266.68,
+      "cpu": 9.578125
+    },
+    {
+      "pid": 2372,
+      "name": "qemu-system-x86_64-headless",
+      "ram_mb": 1761.5,
+      "cpu": 505.03125
+    },
+    {
+      "pid": 20460,
+      "name": "qemu-system-x86_64-headless",
+      "ram_mb": 1762.92,
+      "cpu": 544.9375
+    },
+    {
+      "pid": 13812,
+      "name": "Unity Hub",
+      "ram_mb": 212.35,
+      "cpu": 650.734375
+    },
+    {
+      "pid": 15300,
+      "name": "Unity Hub",
+      "ram_mb": 15.96,
+      "cpu": 0.109375
+    },
+    {
+      "pid": 15612,
+      "name": "Unity Hub",
+      "ram_mb": 192.3,
+      "cpu": 10.59375
+    },
+    {
+      "pid": 15620,
+      "name": "Unity Hub",
+      "ram_mb": 37.83,
+      "cpu": 7.90625
+    },
+    {
+      "pid": 16024,
+      "name": "Unity Hub",
+      "ram_mb": 126.74,
+      "cpu": 18.75
+    },
+    {
+      "pid": 3752,
+      "name": "Unity.Licensing.Client",
+      "ram_mb": 97.18,
+      "cpu": 35.0625
+    }
+  ],
+  "server_diagnostics": {
+    "peers": 4,
+    "joinAttempts": [
+      {
+        "selectedPair": {
+          "localType": "host",
+          "state": "SELECTED",
+          "serverPort": 50000,
+          "protocol": "udp",
+          "remoteType": "prflx"
+        },
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.4113,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 1.6292,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 3.5324,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 28.0289,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 30.2019,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 31.451,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 36.396,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 36.4715,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 36.4924,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 45.757,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 161.1892,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 161.3284,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 212.9483,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 213.0013,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 219.0857,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 231.9734,
+            "value": "OPEN",
+            "event": "motion"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 50000,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 50000,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
+        "selectedPair": {
+          "localType": "host",
+          "state": "SELECTED",
+          "serverPort": 50001,
+          "protocol": "udp",
+          "remoteType": "prflx"
+        },
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.0068,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.3029,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.5027,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 2.2444,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 2.578,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 2.7248,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 3.8057,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 3.8522,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 3.8695,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 4.1633,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 113.5122,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 113.5968,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 165.8813,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 165.9208,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 168.3298,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 169.3576,
+            "value": "OPEN",
+            "event": "motion"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 50001,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 50001,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
+        "selectedPair": {
+          "localType": "host",
+          "state": "SELECTED",
+          "serverPort": 50002,
+          "protocol": "udp",
+          "remoteType": "prflx"
+        },
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.0165,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 1.3366,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 1.7455,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 6.6986,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 7.6561,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 7.8886,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 9.1186,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 9.3351,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 9.3805,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 9.943,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 132.4061,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 132.5456,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 425.9551,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 426.0322,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 465.548,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 467.8692,
+            "value": "OPEN",
+            "event": "motion"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 50002,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 50002,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
+        "selectedPair": {
+          "localType": "host",
+          "state": "SELECTED",
+          "serverPort": 50003,
+          "protocol": "udp",
+          "remoteType": "prflx"
+        },
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.0127,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.6692,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 1.0832,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 6.3759,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 7.4424,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 7.7356,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 9.0864,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 9.1768,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 9.2199,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 9.6755,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 108.6597,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 108.7268,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 253.9195,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 253.9848,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 263.9613,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 264.2633,
+            "value": "OPEN",
+            "event": "motion"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 50003,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 50003,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          }
+        ]
+      }
+    ],
+    "inputs": {
+      "received": 0,
+      "rejected": 0,
+      "pendingSlots": 0,
+      "overwritten": 0,
+      "forwarded": 0
+    }
+  },
+  "inputs_streaming": {
+    "received": 63,
+    "rejected": 0,
+    "pendingSlots": 2,
+    "overwritten": 61,
+    "forwarded": 0
+  }
+}

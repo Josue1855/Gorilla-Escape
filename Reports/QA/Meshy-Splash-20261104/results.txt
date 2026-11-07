@@ -1,0 +1,3 @@
+RUNNING
+GorillaEscape.Tests.JunglePresentationPlayModeTests.SplashRunnerUsesMatchingSkinAndAnimatedStride Passed
+FINISHED passed=1 failed=0

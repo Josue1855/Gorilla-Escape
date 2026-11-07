@@ -5,6 +5,31 @@ import math
 import threading
 import time
 
+def recent_subjects(subjects, last_seen_ns, now_ns, max_gap_ns=500_000_000):
+    """Retain association candidates briefly; never synthesize an observation."""
+    if last_seen_ns is None or now_ns < last_seen_ns or now_ns - last_seen_ns > max_gap_ns:
+        return []
+    return subjects
+
+def predicted_center(previous, older, previous_ns, older_ns, now_ns):
+    """Bounded prediction for association only; never emit predicted landmarks."""
+    x, y = previous['centerX'], previous['centerY']
+    if (older is None or previous_ns is None or older_ns is None
+            or previous['subjectId'] != older['subjectId']
+            or previous.get('ambiguous') or older.get('ambiguous')):
+        return x, y
+    interval = previous_ns - older_ns
+    gap = now_ns - previous_ns
+    if interval <= 0 or gap <= 50_000_000 or gap > 150_000_000:
+        return x, y
+    dx = (x - older['centerX']) * gap / interval
+    dy = (y - older['centerY']) * gap / interval
+    distance = math.hypot(dx, dy)
+    if distance > .05:
+        dx *= .05 / distance
+        dy *= .05 / distance
+    return x + dx, y + dy
+
 @dataclass(frozen=True)
 class CapturedFrame:
     sequence: int
@@ -72,10 +97,11 @@ class LatestFrameSlot:
         with self.condition:self.closed=True;self.error=error if error is not None else self.error;self.pending=None;self.condition.notify_all()
 
 class CapturePump:
-    def __init__(self, capture, stop, metrics, clock=time.monotonic_ns, acquisition_clock=None, preview=None):
+    def __init__(self, capture, stop, metrics, clock=time.monotonic_ns, acquisition_clock=None, preview=None, release_before_join=False):
         self.preview=preview;self.capture=capture;self.stop=stop;self.metrics=metrics;self.clock=clock
         self.slot=LatestFrameSlot();self.frames=0;self.released=False
         self.thread=threading.Thread(target=self.run,name='camera-capture',daemon=True)
+        self.release_before_join=release_before_join
         self.acquisition_clock=acquisition_clock;self.previous_acquisition=None;self.timestamp_unavailable=0;self.previous_read=None
     def start(self):self.thread.start()
     def run(self):
@@ -105,5 +131,7 @@ class CapturePump:
             self.capture.release();self.released=True
     def close(self, timeout=2):
         self.stop.set();self.slot.close();self.thread.join(timeout)
+        if self.thread.is_alive() and self.release_before_join:
+            self.capture.release();self.thread.join(timeout)
         if self.thread.is_alive():raise RuntimeError('CAPTURE_JOIN_TIMEOUT')
         if self.slot.error is not None:raise RuntimeError(self.slot.error)

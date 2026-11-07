@@ -1,0 +1,38 @@
+{
+  "recordedAtUtc": "2026-10-27T14:20:03.456608+00:00",
+  "baseCommit": "095995f7d1eedbf4ac6b1707368fb860190f9ee8",
+  "branch": "feature/saul-jungle-party-alpha",
+  "pureCSharp": {
+    "passed": 71,
+    "failed": 0,
+    "fixtureClassification": "synthetic, not physical evidence",
+    "longRunSamples": 10000
+  },
+  "sceneWiring": {
+    "scenes": 6,
+    "status": "PASS"
+  },
+  "referenceCompilation": {
+    "editor": "PASS",
+    "player": "PASS",
+    "contractsSources": 6,
+    "runtimeSources": 29,
+    "gameplaySources": 14,
+    "phase0EditorSources": 3,
+    "alphaEditorSources": 3,
+    "scope": "C# type checking using imported Unity/glTFast references, not engine execution"
+  },
+  "foundation": "PASS",
+  "management": "PASS after documentation links resolved",
+  "unityEditMode": {
+    "status": "NOT_RUN_CLI_LICENSE_FAILURE",
+    "processExit": 198,
+    "testsExecuted": 0,
+    "reason": "CLI did not recognize a valid Editor license; user previously showed Student in Hub"
+  },
+  "physicalAcceptance": "NOT RUN",
+  "changedTransportContracts": false,
+  "changedSupervisors": false,
+  "changedSceneOrVisualAssets": false,
+  "windowsCameraAcceptance": "PENDING"
+}

@@ -21,7 +21,7 @@ namespace GorillaEscape.Network
         {
             // Editor product navigation never starts physical services, including inherited legacy flags.
             if (Application.isEditor) return;
-            if(GorillaEscape.UI.MainMenuController.ProductFlow)return;
+            if(GorillaEscape.UI.MainMenuController.ProductFlow)return;if(GorillaEscape.UI.MainMenuController.IsJungleScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().path))return;
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_IPC_JAVA"))
                 && string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GORILLA_IPC_JAR"))) return;
             var host = new GameObject("IPC development diagnostics");

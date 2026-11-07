@@ -5,6 +5,8 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import tools.jackson.databind.json.JsonMapper;
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,7 +84,9 @@ class ProbePressureProcessTest {
             }
         }finally{finish();}
     }
-    @Test void nonReadingProducerHasFinitePressureAndCleanup() throws Exception {
+    // Drains the kernel socket buffer after a forced close; on Windows the OS sends RST instead of FIN,
+    // and RSS metrics read /proc (Linux-only). The backpressure behavior itself is covered by the other tests.
+    @Test @EnabledOnOs(OS.LINUX) void nonReadingProducerHasFinitePressureAndCleanup() throws Exception {
         start();try {
             try(var s=connect()) {
                 var sender=Executors.newSingleThreadExecutor();try {

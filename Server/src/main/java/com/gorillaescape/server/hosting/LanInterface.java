@@ -4,7 +4,7 @@ import java.net.*;
 import java.nio.file.*;
 import java.util.*;
 
-/** Select only linked physical LAN adapters; ambiguity is an operator decision. */
+/** Select only linked physical LAN adapters; prefer the operating system route when several adapters are linked. */
 public final class LanInterface {
     public record Candidate(String name, String address) { }
     private LanInterface() { }
@@ -15,16 +15,32 @@ public final class LanInterface {
                 || n.getName().matches("(?i)^(tun|tap|wg|vpn|docker|veth|virbr|vmnet|vboxnet|tailscale|zt|br[-0-9]).*")) continue;
             if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("linux")
                 && !Files.exists(Path.of("/sys/class/net", n.getName(), "device"))) continue;
+            if (System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("windows") && n.getDisplayName() != null
+                && n.getDisplayName().matches("(?i).*(hyper-v|vethernet|virtualbox|vmware|wsl|loopback|tap-|wireguard|tailscale|zerotier|vpn|virtual|bluetooth|wan miniport).*")) continue;
             for (var ip : Collections.list(n.getInetAddresses()))
                 if (ip instanceof Inet4Address && MobileHttpsSettings.privateIpv4(ip.getHostAddress()))
                     candidates.add(new Candidate(n.getName(), ip.getHostAddress()));
         }
-        return choose(candidates, name, address);
+        return choose(candidates, name, address, routedAddress());
+    }
+    // UDP connect selects a route locally; no packet is sent or internet response required.
+    private static String routedAddress() {
+        try (var socket = new DatagramSocket()) {
+            socket.connect(InetAddress.getByAddress(new byte[]{(byte)192,0,2,1}), 9);
+            return socket.getLocalAddress().getHostAddress();
+        } catch (Exception unavailable) { return null; }
     }
     public static Candidate choose(List<Candidate> candidates, String name, String address) {
+        return choose(candidates, name, address, null);
+    }
+    static Candidate choose(List<Candidate> candidates, String name, String address, String routedAddress) {
         var matched = candidates.stream().filter(c -> MobileHttpsSettings.privateIpv4(c.address()))
             .filter(c -> name == null || name.isBlank() || name.equals(c.name()))
             .filter(c -> address == null || address.isBlank() || address.equals(c.address())).toList();
+        if (matched.size() > 1 && (name == null || name.isBlank()) && (address == null || address.isBlank())) {
+            var routed = matched.stream().filter(c -> c.address().equals(routedAddress)).toList();
+            if (routed.size() == 1) return routed.getFirst();
+        }
         if (matched.size() != 1) throw new IllegalArgumentException(matched.isEmpty() ? "LAN_NOT_AVAILABLE" : "LAN_SELECTION_REQUIRED");
         return matched.getFirst();
     }

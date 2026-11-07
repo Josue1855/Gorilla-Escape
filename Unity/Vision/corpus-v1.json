@@ -1,0 +1,1611 @@
+{
+  "version": 1,
+  "cameraCases": [
+    {
+      "name": "no-person",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "LOST",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": []
+      }
+    },
+    {
+      "name": "person-neutral",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "left-arm-up",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.1,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.1,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.1,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "right-arm-up",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.1,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.1,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.1,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "arm-descending",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.85,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.85,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "arm-moving",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.44999999999999996,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.75,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "hand-visible",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "hand-occluded",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.1,
+                "presence": 0.95,
+                "visible": false
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.1,
+                "presence": 0.95,
+                "visible": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "tracking-low-confidence",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.2,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "tracking-lost",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "LOST",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": []
+      }
+    },
+    {
+      "name": "tracking-recovered",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "second-person-enters",
+      "frame": {
+        "version": 1,
+        "width": 640,
+        "height": 480,
+        "frameSequence": 1,
+        "captureTimestamp": 1000,
+        "processTimestamp": 1005,
+        "unityReceiveTimestamp": 0,
+        "source": "synthetic",
+        "quality": "fixture",
+        "trackingState": "TRACKING",
+        "clockDomain": "pc-unix-ms",
+        "captureTimeSource": "fixture",
+        "subjects": [
+          {
+            "subjectId": 1,
+            "centerX": 0.5,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          },
+          {
+            "subjectId": 2,
+            "centerX": 0.55,
+            "centerY": 0.3,
+            "confidence": 0.95,
+            "ambiguous": false,
+            "landmarks": [
+              {
+                "name": "left-shoulder",
+                "x": 0.35,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-shoulder",
+                "x": 0.65,
+                "y": 0.3,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-elbow",
+                "x": 0.35,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-elbow",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-wrist",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-wrist",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "left-hand",
+                "x": 0.35,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              },
+              {
+                "name": "right-hand",
+                "x": 0.65,
+                "y": 0.7,
+                "z": 0,
+                "visibility": 0.95,
+                "presence": 0.95,
+                "visible": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "fusionCases": [
+    "phone-camera-aligned",
+    "phone-early",
+    "phone-late",
+    "camera-early",
+    "camera-late",
+    "phone-stale",
+    "camera-stale",
+    "both-stale",
+    "camera-lost",
+    "camera-recovered",
+    "phone-lost",
+    "phone-recovered",
+    "low-confidence",
+    "partial-capabilities",
+    "duplicate-phone",
+    "reordered-phone",
+    "duplicate-camera",
+    "player-mismatch",
+    "wrong-player",
+    "second-subject",
+    "recovery-after-loss"
+  ],
+  "conceptSequences": [
+    "neutral",
+    "preparation",
+    "slow-intentional",
+    "fast-intentional",
+    "accidental-jerk",
+    "walking-noise",
+    "arm-raise-only",
+    "arm-descending"
+  ],
+  "fusionScenarios": [
+    {
+      "name": "phone-camera-aligned",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "none"
+    },
+    {
+      "name": "phone-early",
+      "phoneTime": 850,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "phone-late",
+      "phoneTime": 1150,
+      "cameraTime": 1000,
+      "now": 1151,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "camera-early",
+      "phoneTime": 1150,
+      "cameraTime": 1000,
+      "now": 1151,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "camera-late",
+      "phoneTime": 850,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "phone-stale",
+      "phoneTime": 700,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "camera-stale",
+      "phoneTime": 1000,
+      "cameraTime": 700,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "both-stale",
+      "phoneTime": 700,
+      "cameraTime": 700,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "camera-lost",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "tracking-lost",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "camera-recovered",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "camera-loss-recover"
+    },
+    {
+      "name": "phone-lost",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "DISCONNECTED",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "phone-recovered",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "phone-loss-recover"
+    },
+    {
+      "name": "low-confidence",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "tracking-low-confidence",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "partial-capabilities",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "none"
+    },
+    {
+      "name": "duplicate-phone",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "duplicate-phone"
+    },
+    {
+      "name": "reordered-phone",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "reordered-phone"
+    },
+    {
+      "name": "duplicate-camera",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "duplicate-camera"
+    },
+    {
+      "name": "player-mismatch",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 2,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "wrong-player",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 2,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "second-subject",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "second-person-enters",
+      "expectedEligible": false,
+      "operation": "none"
+    },
+    {
+      "name": "recovery-after-loss",
+      "phoneTime": 1000,
+      "cameraTime": 1000,
+      "now": 1100,
+      "phonePlayer": 1,
+      "activePlayer": 1,
+      "connectionState": "ACTIVE",
+      "cameraCase": "person-neutral",
+      "expectedEligible": true,
+      "operation": "camera-loss-recover"
+    }
+  ],
+  "conceptualTraces": [
+    {
+      "name": "neutral",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        }
+      ]
+    },
+    {
+      "name": "preparation",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        }
+      ]
+    },
+    {
+      "name": "slow-intentional",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0,
+          "rotationAlpha": 0.0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": 0.2,
+          "rotationAlpha": 0.2,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 0.4,
+          "rotationAlpha": 0.4,
+          "cameraCase": "person-neutral"
+        }
+      ]
+    },
+    {
+      "name": "fast-intentional",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": 4,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 1,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        }
+      ]
+    },
+    {
+      "name": "accidental-jerk",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": 12,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        }
+      ]
+    },
+    {
+      "name": "walking-noise",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0.1,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": -0.1,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 0.1,
+          "rotationAlpha": 0,
+          "cameraCase": "person-neutral"
+        }
+      ]
+    },
+    {
+      "name": "arm-raise-only",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "left-arm-up"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "left-arm-up"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "left-arm-up"
+        }
+      ]
+    },
+    {
+      "name": "arm-descending",
+      "source": "synthetic",
+      "detectorExpected": "NOT IMPLEMENTED",
+      "samples": [
+        {
+          "relativeTimestamp": 0,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "arm-descending"
+        },
+        {
+          "relativeTimestamp": 33,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "arm-descending"
+        },
+        {
+          "relativeTimestamp": 66,
+          "accelerationX": 0,
+          "rotationAlpha": 0,
+          "cameraCase": "arm-descending"
+        }
+      ]
+    }
+  ]
+}

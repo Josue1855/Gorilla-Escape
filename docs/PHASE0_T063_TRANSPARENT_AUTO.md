@@ -1,5 +1,7 @@
 # T063 — transparent AUTO follow-up, 2026-10-15
 
+> Actualización de esta rama, 2026-10-27: [tiempos y recuperación Cloudflared](03-development/CLOUDFLARED_RECOVERY.md) amplía el arranque a 30 s (máximo configurable 60 s) y añade recuperación AUTO. Las cifras anteriores de este documento se conservan como historial.
+
 **Current UX policy:** [PO final decision, 2026-10-16](PHASE0_PHONE_CONNECTION_FINAL.md) supersedes the historical immediate-Cabin-QR behavior below. T063 remains closed Software/Lab after PR #120. Historical evidence is retained.
 
 Baseline: merged #118, `4c9bea4663a7c8a2544390db30dc0a83a43ce4d8`.

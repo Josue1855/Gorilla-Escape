@@ -1,0 +1,1725 @@
+{
+  "scope": "Synthetic browser presentation and interactions; no physical sensor or WAN acceptance",
+  "status": "PASS",
+  "checks": [
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLAESCAPE",
+        "Escanea el QR de la PC"
+      ],
+      "scenario": "no QR"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA ESCAPE",
+        "Prepara tu control"
+      ],
+      "scenario": "connection gate"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA ESCAPE",
+        "Elige tu desafío"
+      ],
+      "scenario": "menu 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Prepárate",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "¡A jugar!",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Juego en pausa",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Prueba terminada",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Ready 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Playing 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Paused 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Finished 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Espera tu turno",
+        "Puntos: 123"
+      ],
+      "scenario": "spectator 320x568"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA ESCAPE",
+        "Elige tu desafío"
+      ],
+      "scenario": "menu 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Prepárate",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "¡A jugar!",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Juego en pausa",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Prueba terminada",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Ready 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Playing 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Paused 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Finished 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 390,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Espera tu turno",
+        "Puntos: 123"
+      ],
+      "scenario": "spectator 390x844"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA ESCAPE",
+        "Elige tu desafío"
+      ],
+      "scenario": "menu 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Prepárate",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "¡A jugar!",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Juego en pausa",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT BOWLING",
+        "Prueba terminada",
+        "Pinos: 123"
+      ],
+      "scenario": "bowling Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA BOXING",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "boxing Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BASEBALL",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "baseball Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "drums Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE SLICE",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-slice Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE KEEPER",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "jungle-keeper Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA WHACK",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "whack Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE BALANCE",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "log-balance Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA SMASH",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "gorilla-smash Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Prepárate",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Ready 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "¡A jugar!",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Playing 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Juego en pausa",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Paused 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "COCONUT THROW",
+        "Prueba terminada",
+        "Puntos: 123"
+      ],
+      "scenario": "coconut-throw Finished 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 844,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "headings": [
+        "JUNGLE DRUMS",
+        "Espera tu turno",
+        "Puntos: 123"
+      ],
+      "scenario": "spectator 844x390"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLA ESCAPE",
+        "Elige tu desafío"
+      ],
+      "scenario": "menu 150% text"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLAESCAPE",
+        "Conexión interrumpida"
+      ],
+      "scenario": "DISCONNECTED"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLAESCAPE",
+        "Recuperando tu sesión…"
+      ],
+      "scenario": "RECONNECTING"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLAESCAPE",
+        "No se completó la preparación"
+      ],
+      "scenario": "ERROR"
+    },
+    {
+      "strayZeros": false,
+      "overflow": false,
+      "width": 320,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "headings": [
+        "GORILLAESCAPE",
+        "Has salido de la partida"
+      ],
+      "scenario": "FORFEITED"
+    }
+  ]
+}

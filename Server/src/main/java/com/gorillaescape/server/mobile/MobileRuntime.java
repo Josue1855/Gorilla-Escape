@@ -15,12 +15,56 @@ import org.springframework.beans.factory.DisposableBean;
 @Component
 @ConditionalOnProperty(name="gorilla.mobile.rtc-enabled",havingValue="true")
 public final class MobileRuntime implements DisposableBean {
+    @org.springframework.beans.factory.annotation.Autowired(required=false) private PlayersBackend playersBackend;
+    public record ProfileRequest(String peerId,String resumeToken,String displayName){}
+    public synchronized Map<String,Object> setDisplayName(ProfileRequest request)throws IOException {
+        if(request==null||request.peerId()==null||request.resumeToken()==null||request.resumeToken().length()>128)throw new IOException("NAME_AUTHORITY");
+        var peer=peers.get(request.peerId());
+        if(peer==null||peer.stopped||!peer.helloConfirmed||!java.security.MessageDigest.isEqual(peer.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8),request.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8)))throw new IOException("NAME_AUTHORITY");
+        String name=request.displayName()==null?null:java.text.Normalizer.normalize(request.displayName().strip(),java.text.Normalizer.Form.NFC);
+        if(name==null||name.isBlank()||name.length()>40||!name.matches("[\\p{L}\\p{M}\\p{N} _.'-]+"))throw new IOException("NAME_INVALID");
+        try{session.setDisplayName(peer.joined,name);}catch(Exception error){throw new IOException("NAME_AUTHORITY");}
+        return Map.of("displayName",name);
+    }
+    public Map<String,Object> createProfile(ProfileRequest request)throws Exception {
+        if(request==null||request.peerId()==null||request.resumeToken()==null||request.resumeToken().length()>128)throw new IOException("PROFILE_AUTHORITY");
+        Peer peer;
+        synchronized(this){
+            peer=peers.get(request.peerId());
+            if(peer==null||peer.stopped||!peer.helloConfirmed||request.resumeToken()==null
+                ||!java.security.MessageDigest.isEqual(peer.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8),request.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8)))throw new IOException("PROFILE_AUTHORITY");
+        }
+        synchronized(peer.profileLock){
+            if(peer.stopped)throw new IOException("PROFILE_AUTHORITY");
+            if(peer.profile!=null)return peer.profile;
+            if(peer.profileAttempted)throw new IOException("PROFILE_NOT_CONFIRMED");
+            String name=request.displayName()==null?null:java.text.Normalizer.normalize(request.displayName().strip(),java.text.Normalizer.Form.NFC);
+            if(name==null||name.isBlank()||name.length()>40||!name.matches("[\\p{L}\\p{M}\\p{N} _.'-]+"))throw new IOException("PROFILE_NAME");
+            if(playersBackend==null||!playersBackend.ready())throw new IOException("PLAYERS_UNAVAILABLE");
+            peer.profileAttempted=true; // An uncertain write must never be replayed automatically.
+            try{peer.profile=playersBackend.create(name);return peer.profile;}
+            catch(Exception uncertain){throw new IOException("PROFILE_NOT_CONFIRMED",uncertain);}
+        }
+    }
+    private volatile tools.jackson.databind.JsonNode gameContext;
+    private volatile long gameContextAt;
+    public final MobileUiCommands uiCommands=new MobileUiCommands(System::currentTimeMillis);
+    public void presentGame(tools.jackson.databind.JsonNode context)throws IOException {
+        GamePresentation.validate(context);
+        gameContext=context.deepCopy();gameContextAt=System.nanoTime();
+    }
+    private tools.jackson.databind.JsonNode currentGame(){
+        return System.nanoTime()-gameContextAt<3_000_000_000L?gameContext:null;
+    }
     public final PhoneInputHub inputs=new PhoneInputHub();
-    private final TechnicalSession session=new TechnicalSession(System::nanoTime,30_000_000_000L,5_000_000_000L,30_000_000_000L);
+    private final TechnicalSession session=new TechnicalSession(System::nanoTime,30_000_000_000L,5_000_000_000L,1_800_000_000_000L,System.getenv("GORILLA_ROOM_CODE"));
     private final Map<String,Peer> peers=new HashMap<>();
-    private final PeerConnectionFactory factory=new PeerConnectionFactory();
+    private final PeerConnectionFactory factory;
     private final ScheduledThreadPoolExecutor expiry=new ScheduledThreadPoolExecutor(1,r->{Thread t=new Thread(r,"mobile-liveness");t.setDaemon(true);return t;});
     private boolean closed;
+    private volatile boolean publicTunnel;
+    public void setPublicTunnel(boolean active){this.publicTunnel=active;}
+    public boolean isPublicTunnel(){return publicTunnel;}
     private final java.util.concurrent.atomic.AtomicLong qaJoinAttempts=new java.util.concurrent.atomic.AtomicLong(),qaJoinSucceeded=new java.util.concurrent.atomic.AtomicLong(),qaReconnectAttempts=new java.util.concurrent.atomic.AtomicLong(),qaReconnectSucceeded=new java.util.concurrent.atomic.AtomicLong();
     private final java.util.concurrent.ConcurrentHashMap<Integer,ObjectNode> qaPhones=new java.util.concurrent.ConcurrentHashMap<>();
     private final java.util.concurrent.atomic.AtomicInteger qaPhoneCursor=new java.util.concurrent.atomic.AtomicInteger();
@@ -43,16 +87,31 @@ public final class MobileRuntime implements DisposableBean {
     public synchronized List<Map<String,Object>> joinDiagnostics(){return attempts.stream().map(JoinDiagnostic::snapshot).toList();}
     private static JoinFailure failure(JoinDiagnostic d,JoinDiagnostic.Code code){d.fail(code);return new JoinFailure(code);}
 
-    public MobileRuntime(){expiry.setRemoveOnCancelPolicy(true);expiry.scheduleWithFixedDelay(this::expire,1,1,TimeUnit.SECONDS);}
+    @org.springframework.beans.factory.annotation.Autowired
+    public MobileRuntime(){this(new PeerConnectionFactory());}
+    // Package-local injection lets tests supply a headless factory without changing production audio.
+    MobileRuntime(PeerConnectionFactory factory){this.factory=Objects.requireNonNull(factory);expiry.setRemoveOnCancelPolicy(true);expiry.scheduleWithFixedDelay(this::expire,1,1,TimeUnit.SECONDS);}
     public synchronized void revokePendingAdmissions(){session.revokePendingAdmissions();qaAdmission.invalidate();}
-    public synchronized TechnicalSession.Admission admission(){if(closed)throw new IllegalStateException("SESSION_CLOSED");return session.createAdmission();}
+    public synchronized void revokeAdmission(String token){session.revokeAdmission(token);}
+    public synchronized TechnicalSession.Admission admission(){
+        if(closed)throw new IllegalStateException("SESSION_CLOSED");
+        try{
+            return session.createAdmission();
+        }catch(IllegalStateException e){
+            if("SESSION_FULL".equals(e.getMessage())&&session.retainedClients()<4&&qaAdmission.hasCurrent()){
+                qaAdmission.release(session);
+                return session.createAdmission();
+            }
+            throw e;
+        }
+    }
     public record Signal(int protocolVersion,String messageType,String sessionId,String admission,String offer) {}
     public record Answer(int protocolVersion,String messageType,String sessionId,int playerId,String deviceSessionId,String resumeToken,long connectionEpoch,String peerId,String answer) {}
     public synchronized Answer join(Signal signal)throws Exception{
         qaJoinAttempts.incrementAndGet();var d=attempt();d.stage(JoinDiagnostic.Stage.VALIDATION);
         if(closed||peers.size()>=4)throw failure(d,JoinDiagnostic.Code.SESSION_FULL);
         if(signal==null||signal.protocolVersion()!=1||!"JOIN".equals(signal.messageType())||signal.offer()==null||signal.offer().length()>65536||!signal.offer().startsWith("v=0")||signal.offer().contains("m=audio")||signal.offer().contains("m=video"))throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);
-        try{localOffer(signal.offer());}catch(Exception e){throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);}
+        try{localOffer(signal.offer(),publicTunnel||!"CABIN".equals(System.getenv("GORILLA_CONNECTION_MODE")));}catch(Exception e){throw failure(d,JoinDiagnostic.Code.SIGNAL_INVALID);}
         d.stage(JoinDiagnostic.Stage.ADMISSION);
         TechnicalSession.Joined joined;
         try{joined=session.join(signal.sessionId(),signal.admission());}
@@ -63,20 +122,34 @@ public final class MobileRuntime implements DisposableBean {
     public synchronized Answer reconnect(String sid,int player,String resume,String offer)throws Exception{
         qaReconnectAttempts.incrementAndGet();
         if(closed||offer==null||offer.length()>65536||!offer.startsWith("v=0")||offer.contains("m=audio")||offer.contains("m=video"))throw new IOException("SIGNAL_INVALID");
-        localOffer(offer);var joined=session.reconnect(sid,player,resume);
+        localOffer(offer,publicTunnel||!"CABIN".equals(System.getenv("GORILLA_CONNECTION_MODE")));
+        // An authenticated foreground resume may replace a stale peer before its liveness timeout.
+        for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(p.joined.playerId()==player&&p.joined.sessionId().equals(sid)&&resume!=null
+            &&java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.UTF_8),resume.getBytes(java.nio.charset.StandardCharsets.UTF_8))){it.remove();p.close();}}
+        var joined=session.reconnect(sid,player,resume);
         // Retire the prior peer before allocating the resumed epoch, even at capacity.
         for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(p.joined.playerId()==player){it.remove();p.close();}}
         return connect(joined,offer,attempt(),false);
     }
     static void localOffer(String offer)throws IOException{
+        localOffer(offer,false);
+    }
+    static void localOffer(String offer,boolean publicTunnel)throws IOException{
+        boolean cloudflared=publicTunnel
+            ||"CLOUDFLARED".equals(System.getenv("GORILLA_CONNECTION_MODE"))
+            ||System.getenv("GORILLA_STUN_SERVER")!=null;
         int count=0;
         for(String line:offer.split("\\r?\\n"))if(line.startsWith("a=candidate:")){
             if(++count>32)throw new IOException("ICE_BOUND");String[] fields=line.trim().split("\\s+");
-            if(fields.length<8||!fields[6].equals("typ")||!fields[7].equals("host"))throw new IOException("ICE_LOCAL_ONLY");
+            if(fields.length<8||!fields[6].equals("typ"))throw new IOException("ICE_LOCAL_ONLY");
+            if(!cloudflared&&!fields[7].equals("host"))throw new IOException("ICE_LOCAL_ONLY");
+            if(!Set.of("host","srflx","relay","prflx").contains(fields[7]))throw new IOException("ICE_LOCAL_ONLY");
             String address=fields[4];if(address.matches("[A-Za-z0-9-]{1,63}\\.local"))continue;
             if(!address.matches("[0-9.]+")&&!address.matches("[0-9a-fA-F:]+"))throw new IOException("ICE_LOCAL_ONLY");
-            var ip=java.net.InetAddress.getByName(address);byte[] raw=ip.getAddress();
-            if(!ip.isLoopbackAddress()&&!ip.isSiteLocalAddress()&&!ip.isLinkLocalAddress()&&!(raw.length==16&&(raw[0]&0xfe)==0xfc))throw new IOException("ICE_LOCAL_ONLY");
+            if(!cloudflared&&"host".equals(fields[7])){
+                var ip=java.net.InetAddress.getByName(address);byte[] raw=ip.getAddress();
+                if(!ip.isLoopbackAddress()&&!ip.isSiteLocalAddress()&&!ip.isLinkLocalAddress()&&!(raw.length==16&&(raw[0]&0xfe)==0xfc))throw new IOException("ICE_LOCAL_ONLY");
+            }
         }
     }
     private Answer connect(TechnicalSession.Joined joined,String offer,JoinDiagnostic d,boolean initial)throws Exception{
@@ -92,7 +165,8 @@ public final class MobileRuntime implements DisposableBean {
             d.stage(JoinDiagnostic.Stage.LOCAL_SDP);
             CompletableFuture<Void> local=new CompletableFuture<>();p.pc.setLocalDescription(description,setter(local));local.get(remaining(deadline),TimeUnit.NANOSECONDS);
             d.stage(JoinDiagnostic.Stage.SERVER_ICE);
-            if(!p.gathered.await(remaining(deadline),TimeUnit.NANOSECONDS))throw new IOException("ICE_TIMEOUT");
+            long gatherWait=Math.min(remaining(deadline),TimeUnit.MILLISECONDS.toNanos(1800));
+            if(!p.gathered.await(gatherWait,TimeUnit.NANOSECONDS)&&!p.hasCandidate.await(remaining(deadline),TimeUnit.NANOSECONDS))throw new IOException("ICE_TIMEOUT");
             p.lastSeen=System.nanoTime();d.stage(JoinDiagnostic.Stage.ANSWER_RETURNED);
             return new Answer(1,"JOIN_ACK",joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.resumeToken(),joined.epoch(),id,p.pc.getLocalDescription().sdp);
         }catch(Exception|Error e){
@@ -108,25 +182,48 @@ public final class MobileRuntime implements DisposableBean {
     private static long remaining(long deadline)throws IOException{long left=deadline-System.nanoTime();if(left<=0)throw new IOException("SIGNAL_TIMEOUT");return left;}
     private static SetSessionDescriptionObserver setter(CompletableFuture<Void> f){return new SetSessionDescriptionObserver(){public void onSuccess(){f.complete(null);}public void onFailure(String e){f.completeExceptionally(new IOException("SDP_FAILED"));}};}
     public synchronized void disconnect(String peerId,String resume)throws IOException{
-        Peer p=peers.get(peerId);if(p==null||!java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.US_ASCII),resume.getBytes(java.nio.charset.StandardCharsets.US_ASCII)))throw new IOException("PEER_IDENTITY");peers.remove(peerId);p.close();
+        Peer p=peers.get(peerId);if(p==null||!java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.US_ASCII),resume.getBytes(java.nio.charset.StandardCharsets.US_ASCII)))throw new IOException("PEER_IDENTITY");
+        session.disconnect(p.joined.sessionId(),p.joined.playerId(),p.joined.sessionDeviceId(),p.joined.epoch());
+        peers.remove(peerId);p.close();
+    }
+    public synchronized void forfeit(String peerId,String resume)throws IOException{
+        Peer p=peers.get(peerId);if(p==null||!java.security.MessageDigest.isEqual(p.joined.resumeToken().getBytes(java.nio.charset.StandardCharsets.US_ASCII),resume.getBytes(java.nio.charset.StandardCharsets.US_ASCII)))throw new IOException("PEER_IDENTITY");
+        session.forfeit(p.joined.sessionId(),p.joined.playerId(),p.joined.sessionDeviceId(),p.joined.epoch());
+        peers.remove(peerId);p.close();
     }
     public synchronized int peerCount(){return peers.size();}
-    private synchronized void expire(){if(closed)return;for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(System.nanoTime()-p.lastSeen>5_000_000_000L){it.remove();p.close();}}}
+    private synchronized void expire(){
+        if(closed)return;
+        long timeoutNanos=Long.parseLong(System.getenv().getOrDefault("GORILLA_PEER_TIMEOUT_MS","20000"))*1_000_000L;
+        for(var it=peers.entrySet().iterator();it.hasNext();){var p=it.next().getValue();if(System.nanoTime()-p.lastSeen>timeoutNanos){it.remove();p.close();}}
+    }
     // A real allocator bound, not an assumed ephemeral OS range. Four peers + resumes.
     public static final int RTC_MIN_PORT=50000, RTC_MAX_PORT=50031;
     public static PortAllocatorConfig rtcPorts(){
-        var ports=new PortAllocatorConfig().setDisableStun(true).setDisableRelay(true).setDisableTcp(true);
+        boolean disableStun="CABIN".equals(System.getenv("GORILLA_CONNECTION_MODE"))||"NONE".equalsIgnoreCase(System.getenv("GORILLA_STUN_SERVER"));
+        var ports=new PortAllocatorConfig().setDisableStun(disableStun).setDisableRelay(true).setDisableTcp(true);
         ports.minPort=RTC_MIN_PORT;ports.maxPort=RTC_MAX_PORT;return ports;
     }
     private final class Peer {
-        final TechnicalSession.Joined joined;final GorillaProtocol.Gate gate;final CountDownLatch gathered=new CountDownLatch(1);
+        final TechnicalSession.Joined joined;final GorillaProtocol.Gate gate;final CountDownLatch gathered=new CountDownLatch(1),hasCandidate=new CountDownLatch(1);
         final List<RTCDataChannel> channels=new ArrayList<>();final RTCPeerConnection pc;
         volatile boolean statsPending;volatile long lastStats;
         volatile long lastSeen=System.nanoTime();volatile boolean stopped;volatile ObjectNode lastInput;
-        final JoinDiagnostic diagnostic;final boolean initial;boolean helloConfirmed;
+        final JoinDiagnostic diagnostic;final boolean initial;final Object profileLock=new Object();Map<String,Object> profile;boolean profileAttempted;volatile boolean helloConfirmed;
         Peer(TechnicalSession.Joined joined,JoinDiagnostic diagnostic,boolean initial){this.joined=joined;this.diagnostic=diagnostic;this.initial=initial;gate=new GorillaProtocol.Gate(new GorillaProtocol.Identity(joined.sessionId(),joined.playerId(),joined.sessionDeviceId()),System::currentTimeMillis,2000,250,120);
             var c=new RTCConfiguration();c.iceServers.clear();c.portAllocatorConfig=rtcPorts();
-            pc=factory.createPeerConnection(c,new PeerConnectionObserver(){public void onIceCandidate(RTCIceCandidate candidate){diagnostic.candidate(candidate.sdp);}public void onIceGatheringChange(RTCIceGatheringState s){diagnostic.event("iceGatheringState",s.name());if(s==RTCIceGatheringState.COMPLETE)gathered.countDown();}public void onIceConnectionChange(RTCIceConnectionState s){diagnostic.event("iceConnectionState",s.name());}public void onConnectionChange(RTCPeerConnectionState s){diagnostic.event("connectionState",s.name());}public void onDataChannel(RTCDataChannel channel){attach(channel);}});
+            String stunServer=System.getenv().getOrDefault("GORILLA_STUN_SERVER","stun:stun.l.google.com:19302");
+            if(stunServer!=null&&!stunServer.isBlank()&&!"NONE".equalsIgnoreCase(stunServer)){
+                var s=new dev.onvoid.webrtc.RTCIceServer();s.urls.add(stunServer.trim());c.iceServers.add(s);
+            }
+            String turnServer=System.getenv("GORILLA_TURN_SERVER");
+            if(turnServer!=null&&!turnServer.isBlank()&&!"NONE".equalsIgnoreCase(turnServer)){
+                var t=new dev.onvoid.webrtc.RTCIceServer();t.urls.add(turnServer.trim());
+                String u=System.getenv("GORILLA_TURN_USERNAME");if(u!=null)t.username=u;
+                String p=System.getenv("GORILLA_TURN_CREDENTIAL");if(p!=null)t.password=p;
+                c.iceServers.add(t);
+            }
+            pc=factory.createPeerConnection(c,new PeerConnectionObserver(){public void onIceCandidate(RTCIceCandidate candidate){diagnostic.candidate(candidate.sdp);hasCandidate.countDown();}public void onIceGatheringChange(RTCIceGatheringState s){diagnostic.event("iceGatheringState",s.name());if(s==RTCIceGatheringState.COMPLETE)gathered.countDown();}public void onIceConnectionChange(RTCIceConnectionState s){diagnostic.event("iceConnectionState",s.name());}public void onConnectionChange(RTCPeerConnectionState s){diagnostic.event("connectionState",s.name());}public void onDataChannel(RTCDataChannel channel){attach(channel);}});
         }
         synchronized void attach(RTCDataChannel ch){if(stopped||channels.size()>=2||channels.stream().anyMatch(c->c.getLabel().equals(ch.getLabel()))||!Set.of("control","motion").contains(ch.getLabel())||ch.getLabel().equals("control")&&(!ch.isOrdered()||!ch.isReliable())||ch.getLabel().equals("motion")&&(ch.isOrdered()||ch.getMaxRetransmits()!=0)){ch.close();ch.dispose();return;}channels.add(ch);
             ch.registerObserver(new RTCDataChannelObserver(){public void onBufferedAmountChange(long a){}public void onStateChange(){diagnostic.event(ch.getLabel(),ch.getState().name());}public void onMessage(RTCDataChannelBuffer buffer){synchronized(Peer.this){
@@ -150,9 +247,23 @@ public final class MobileRuntime implements DisposableBean {
                     }
                     if(type.equals("HELLO")){if(!helloConfirmed){if(initial)qaJoinSucceeded.incrementAndGet();else qaReconnectSucceeded.incrementAndGet();}helloConfirmed=true;session.networkReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());}
                     if(type.equals("MOTION_SAMPLE")||type.equals("TOUCH")){session.active(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());lastInput=n;inputs.accept(n,joined.epoch(),"ACTIVE");if(type.equals("MOTION_SAMPLE"))session.inputReady(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),usableMovement(n));}
-                    if(type.equals("CLIENT_STATE")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),n.get("payload").get("state").asString().equals("suspended")?"SUSPENDED":"CONNECTED");}
-                    if(type.equals("DISCONNECT")){session.suspendInput(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
-                    if(ch.getBufferedAmount()<8192){var ack=n.deepCopy();ack.put("messageType","ACK");ack.set("payload",GorillaProtocol.JSON.createObjectNode());send(ch,GorillaProtocol.JSON.writeValueAsBytes(ack));}
+                    if(type.equals("CLIENT_STATE")){
+                        String st=n.get("payload").path("state").asString();
+                        TechnicalSession.State target="suspended".equals(st)?TechnicalSession.State.BACKGROUND:
+                            "away".equals(st)?TechnicalSession.State.AWAY:
+                            "forfeit".equals(st)?TechnicalSession.State.FORFEITED:TechnicalSession.State.ACTIVE;
+                        session.setClientState(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch(),target);
+                        var state=lastInput==null?n:lastInput.deepCopy();state.put("messageType","SERVER_STATE");inputs.accept(state,joined.epoch(),target.name());
+                    }
+                    if(type.equals("DISCONNECT")){session.disconnect(joined.sessionId(),joined.playerId(),joined.sessionDeviceId(),joined.epoch());inputs.accept(n,joined.epoch(),"DISCONNECTED");lastSeen=0;}
+                    if(ch.getBufferedAmount()<8192){var ack=n.deepCopy();ack.put("messageType","ACK");var ackPayload=GorillaProtocol.JSON.createObjectNode();
+                    if(type.equals("HEARTBEAT")){var game=currentGame();if(game!=null)ackPayload.set("gameContext",game);}
+                    if(type.equals("UI_COMMAND")){
+                        if(!helloConfirmed)throw new IOException("COMMAND_AUTHORITY");
+                        var payload=n.path("payload");var result=uiCommands.offer(new MobileUiCommands.Request(payload.path("requestId").asString(),payload.path("contextId").asString(),payload.path("action").asString(),payload.path("target").asString()),currentGame(),joined);
+                        ackPayload.set("uiCommand",GorillaProtocol.JSON.valueToTree(result));
+                    }
+                    ack.set("payload",ackPayload);send(ch,GorillaProtocol.JSON.writeValueAsBytes(ack));}
                 }catch(Exception e){inputs.reject();error=e.getMessage();}
                 if(error!=null&&ch.getBufferedAmount()<8192){var reply=GorillaProtocol.JSON.createObjectNode();reply.put("protocolVersion",1);reply.put("messageType","ERROR");reply.put("sessionId",joined.sessionId());reply.put("playerId",joined.playerId());reply.put("deviceSessionId",joined.sessionDeviceId());reply.putNull("sequence");reply.putNull("clientTimestamp");reply.put("serverReceiveTimestamp",System.currentTimeMillis());reply.set("capabilities",GorillaProtocol.JSON.createArrayNode());reply.putNull("quality");var payload=GorillaProtocol.JSON.createObjectNode();payload.put("code","INVALID_INPUT");reply.set("payload",payload);send(ch,GorillaProtocol.JSON.writeValueAsBytes(reply));}
             }}});
@@ -168,6 +279,7 @@ public final class MobileRuntime implements DisposableBean {
     public LobbyIpc.Result unityLobbyCommand(tools.jackson.databind.JsonNode command){return LobbyIpc.apply(command,session);}
     public void unityDisconnected(){session.unityDisconnected();}
     public TechnicalSession.LobbySnapshot lobby(){return session.lobby();}
+    public String roomCode(){return session.roomCode();}
     public void unityLobbyPhase(String sid,TechnicalSession.LobbyPhase phase){session.unityPhase(sid,phase);}
     public void unityPlayerReady(String sid,int player,String device,long epoch,boolean ready){session.unityPlayerReady(sid,player,device,epoch,ready);}
     private static void send(RTCDataChannel ch,byte[] bytes){try{ch.send(new RTCDataChannelBuffer(ByteBuffer.wrap(bytes),false));}catch(Exception ignored){ch.close();}}

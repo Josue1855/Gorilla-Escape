@@ -1,0 +1,731 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_rotation_sensor/flutter_rotation_sensor.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
+
+import 'protocol.dart';
+import 'transport.dart';
+import 'game_surface.dart';
+
+class ControlPage extends StatefulWidget {
+  final Uri link;
+  final NativeTransport? transport;
+  const ControlPage({super.key, required this.link, this.transport});
+  @override
+  State<ControlPage> createState() => _ControlPageState();
+}
+
+class _ControlPageState extends State<ControlPage> with WidgetsBindingObserver {
+  late final NativeTransport transport = widget.transport ?? NativeTransport();
+  final motion = MotionStore();
+  int emittedRevision = -1;
+  final name = TextEditingController();
+  String profileStatus = '', savedPlayerName = '';
+  bool editingName = false, leaving = false;
+  bool savingProfile = false;
+  final List<StreamSubscription<dynamic>> subscriptions = [];
+  Timer? timer;
+  bool activated = false, suspended = true, portrait = true;
+  String sensorError = '';
+  bool starting = false, foreground = true, permissionRequested = false;
+  String previousTransportState = "";
+  String? previousPhase;
+  double? previousScore;
+  int sensorGeneration = 0, renderTick = 0, inspectedAcks = 0;
+  Timer? recoveryTimer;
+  int recoveryAttempts = 0;
+  bool recovering = false, commandPending = false;
+  bool? wakeDesired;
+  String commandStatus = '', profileContext = '';
+  double? neutralGamma;
+  bool isAway = false;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    transport.addListener(refresh);
+    unawaited(
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+    );
+    unawaited(transport.connect(widget.link));
+  }
+
+  void refresh() {
+    if (!mounted) return;
+    final connectedNow = transport.state == 'connected';
+    previousTransportState = transport.state;
+    final ctx = transport.gameContext;
+    final profile = GameControlProfile.fromContext(ctx, transport.playerId);
+    if (profile.valid && profile.contextId != profileContext) {
+      profileContext = profile.contextId!;
+      motion.setAction(false);
+      neutralGamma = null;
+      previousPhase = null;
+      previousScore = null;
+    }
+    if (connectedNow && foreground && !isAway && profile.valid) {
+      if (activated &&
+          profile.phoneRequired &&
+          subscriptions.isEmpty &&
+          !starting) {
+        unawaited(startSensors());
+      }
+      if (!profile.phoneRequired && subscriptions.isNotEmpty) {
+        unawaited(stopSensors());
+      }
+      unawaited(keepAwake(profile.phoneRequired && activated));
+    }
+    if (!connectedNow &&
+        foreground &&
+        transport.canResume &&
+        transport.state != 'connecting' &&
+        !recovering) {
+      scheduleRecovery();
+    }
+    final phase = ctx?['phase'];
+    if (phase is String) {
+      if (previousPhase != null && phase != previousPhase && foreground) {
+        if (phase == 'Won' ||
+            phase == 'Lost' ||
+            phase == 'Fell' ||
+            phase == 'Playing') {
+          unawaited(HapticFeedback.mediumImpact());
+        }
+      }
+      previousPhase = phase;
+    }
+    final stats = GameStats.fromContext(ctx);
+    final score = stats?.values['score'];
+    if (score != null) {
+      if (previousScore != null && score > previousScore! && foreground) {
+        unawaited(HapticFeedback.lightImpact());
+      }
+      previousScore = score;
+    }
+    setState(() {});
+  }
+
+  Future<void> saveName() async {
+    if (savingProfile) return;
+    setState(() => savingProfile = true);
+    final result = await transport.setPlayerName(name.text);
+    if (!mounted) return;
+    setState(() {
+      savingProfile = false;
+      if (result == 'SAVED') {
+        savedPlayerName = name.text.trim();
+        editingName = false;
+      }
+      profileStatus = result == 'SAVED'
+          ? 'Nombre confirmado en la PC.'
+          : result == 'INVALID'
+          ? 'Escribe de 1 a 40 letras, números o signos simples.'
+          : 'No se pudo confirmar el nombre. Comprueba la conexión y vuelve a intentarlo.';
+    });
+  }
+
+  Future<void> stateMessage(String state) async {
+    try {
+      await transport.control('CLIENT_STATE', {'state': state});
+    } catch (_) {}
+  }
+
+  Future<void> keepAwake(bool enabled) async {
+    if (wakeDesired == enabled) return;
+    wakeDesired = enabled;
+    try {
+      await WakelockPlus.toggle(enable: enabled);
+    } catch (_) {
+      wakeDesired = null;
+    }
+  }
+
+  void scheduleRecovery() {
+    if (recoveryTimer != null || !mounted || !foreground) return;
+    final baseMs = math.min(12000, 1000 * (1 << math.min(recoveryAttempts, 4)));
+    final jitterMs = math.Random().nextInt(500);
+    final delayMs = baseMs + jitterMs;
+    recoveryTimer = Timer(Duration(milliseconds: delayMs), () {
+      recoveryTimer = null;
+      unawaited(recoverSession());
+    });
+  }
+
+  Future<void> toggleAway() async {
+    setState(() => isAway = !isAway);
+    if (isAway) {
+      await stopSensors();
+      await stateMessage('away');
+    } else {
+      await stateMessage('active');
+      if (transport.state == 'connected' &&
+          GameControlProfile.fromContext(
+            transport.gameContext,
+            transport.playerId,
+          ).phoneRequired) {
+        unawaited(startSensors());
+      }
+    }
+  }
+
+  Future<void> confirmForfeit() async {
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('¿Salir de la partida?'),
+        content: const Text(
+          'Dejarás de controlar esta partida. La PC conservará los resultados que ya confirmó.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('CANCELAR'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('SALIR'),
+          ),
+        ],
+      ),
+    );
+    if (leave == true && mounted) {
+      await stopSensors();
+      await stateMessage('forfeit');
+      await transport.forfeit();
+      if (mounted) {
+        setState(() => leaving = true);
+        Navigator.pop(context);
+      }
+    }
+  }
+
+  Future<void> recoverSession() async {
+    if (recovering || !mounted || !foreground || !transport.canResume) return;
+    recovering = true;
+    recoveryTimer?.cancel();
+    recoveryTimer = null;
+    await stopSensors();
+    await transport.connect(widget.link, resume: true);
+    recovering = false;
+    if (!mounted) return;
+    if (transport.state == 'connected') {
+      recoveryAttempts = 0;
+      profileContext = '';
+      refresh();
+    } else {
+      recoveryAttempts++;
+      scheduleRecovery();
+    }
+  }
+
+  Future<void> sendCommand(String action, String target) async {
+    if (commandPending) return;
+    setState(() {
+      commandPending = true;
+      commandStatus = 'Enviando…';
+    });
+    try {
+      await transport.command(action, target: target);
+      commandStatus = 'Solicitud enviada a la PC.';
+    } catch (_) {
+      commandStatus = 'La PC no confirmó la solicitud. Inténtalo de nuevo.';
+    } finally {
+      if (mounted) setState(() => commandPending = false);
+    }
+  }
+
+  Future<void> stopSensors() async {
+    ++sensorGeneration;
+    unawaited(keepAwake(false));
+    timer?.cancel();
+    timer = null;
+    motion.clear();
+    final old = List.of(subscriptions);
+    subscriptions.clear();
+    for (final subscription in old) {
+      try {
+        await subscription.cancel();
+      } catch (_) {}
+    }
+    suspended = true;
+    unawaited(keepAwake(false));
+    await stateMessage('suspended');
+  }
+
+  Future<void> startSensors() async {
+    if (starting) return;
+    starting = true;
+    try {
+      await stopSensors();
+      final generation = sensorGeneration;
+      if (!mounted || !foreground || isAway || transport.state != 'connected') {
+        return;
+      }
+      activated = true;
+      unawaited(keepAwake(true));
+      sensorError = '';
+      try {
+        if (!permissionRequested && RotationSensor.shouldRequestPermission) {
+          permissionRequested = true;
+          await RotationSensor.requestPermission();
+        }
+        if (!mounted || !foreground || generation != sensorGeneration) return;
+        RotationSensor.referenceFrame = ReferenceFrame.arbitrary;
+        RotationSensor.coordinateSystem = CoordinateSystem.device();
+        RotationSensor.samplingPeriod = const Duration(milliseconds: 20);
+        void failed(Object error) {
+          sensorError =
+              'No llegan datos de movimiento. Revisa el permiso de sensores.';
+          refresh();
+        }
+
+        void record(String group, Map<String, num> values) {
+          if (mounted && foreground && generation == sensorGeneration) {
+            motion.record(group, values, transport.clock.elapsedMilliseconds);
+            if (group == 'orientation') {
+              neutralGamma ??= values['gamma']?.toDouble();
+            }
+          }
+        }
+
+        subscriptions.add(
+          RotationSensor.orientationStream.listen(
+            (event) =>
+                record('orientation', deviceOrientation(event.rotationMatrix)),
+            onError: failed,
+          ),
+        );
+        subscriptions.add(
+          accelerometerEventStream(
+            samplingPeriod: const Duration(milliseconds: 20),
+          ).listen(
+            (e) => record('accelerationIncludingGravity', {
+              'x': e.x,
+              'y': e.y,
+              'z': e.z,
+            }),
+            onError: failed,
+          ),
+        );
+        subscriptions.add(
+          userAccelerometerEventStream(
+            samplingPeriod: const Duration(milliseconds: 20),
+          ).listen(
+            (e) => record('acceleration', {'x': e.x, 'y': e.y, 'z': e.z}),
+            onError: failed,
+          ),
+        );
+        subscriptions.add(
+          gyroscopeEventStream(samplingPeriod: const Duration(milliseconds: 20))
+              .listen(
+                (e) => record('rotationRate', {
+                  'alpha': e.z * 180 / math.pi,
+                  'beta': e.x * 180 / math.pi,
+                  'gamma': e.y * 180 / math.pi,
+                }),
+                onError: failed,
+              ),
+        );
+        timer = Timer.periodic(const Duration(milliseconds: 20), (_) {
+          if (!mounted || generation != sensorGeneration) return;
+          final now = transport.clock.elapsedMilliseconds;
+          final ready =
+              foreground &&
+              portrait &&
+              motion.ready(now) &&
+              transport.state == 'connected';
+          if (ready) {
+            if (suspended) {
+              suspended = false;
+              unawaited(stateMessage('active'));
+            }
+            if (motion.revision != emittedRevision) {
+              emittedRevision = motion.revision;
+              unawaited(transport.motion(motion.payload(now)));
+            }
+          } else if (!suspended) {
+            suspended = true;
+            unawaited(stateMessage('suspended'));
+          }
+          // Keep animation updates bounded independently of sensor delivery.
+          if (++renderTick % 5 == 0) refresh();
+        });
+      } catch (_) {
+        sensorError =
+            'No pudimos activar los sensores. Revisa sus permisos en Ajustes.';
+      }
+      refresh();
+    } finally {
+      starting = false;
+      // The OS permission sheet may complete while the app is inactive.
+      if (mounted &&
+          foreground &&
+          !isAway &&
+          transport.state == 'connected' &&
+          activated &&
+          subscriptions.isEmpty &&
+          sensorError.isEmpty) {
+        scheduleMicrotask(startSensors);
+      }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    foreground = state == AppLifecycleState.resumed;
+    if (!foreground) {
+      motion.setAction(false);
+      recoveryTimer?.cancel();
+      recoveryTimer = null;
+    }
+    if (state == AppLifecycleState.resumed) {
+      recoveryAttempts = 0;
+      if (transport.canResume && transport.needsRecovery) {
+        unawaited(recoverSession());
+      } else if (activated &&
+          !isAway &&
+          transport.state == 'connected' &&
+          GameControlProfile.fromContext(
+            transport.gameContext,
+            transport.playerId,
+          ).phoneRequired) {
+        unawaited(startSensors());
+      }
+    } else if (state != AppLifecycleState.inactive) {
+      unawaited(stopSensors());
+    }
+  }
+
+  @override
+  void dispose() {
+    ++sensorGeneration;
+    recoveryTimer?.cancel();
+    foreground = false;
+    unawaited(keepAwake(false));
+    WidgetsBinding.instance.removeObserver(this);
+    timer?.cancel();
+    for (final subscription in subscriptions) {
+      unawaited(subscription.cancel());
+    }
+    name.dispose();
+    transport.removeListener(refresh);
+    transport.dispose();
+    unawaited(SystemChrome.setPreferredOrientations([]));
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    portrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    final stats = GameStats.fromContext(transport.gameContext);
+    final connected = transport.state == 'connected';
+    final profile = GameControlProfile.fromContext(
+      transport.gameContext,
+      transport.playerId,
+    );
+    final gamma = motion.gamma(transport.clock.elapsedMilliseconds) ?? 0;
+    final status = isAway
+        ? 'AUSENTE · CONTROL SUSPENDIDO'
+        : !connected
+        ? (transport.state == 'connecting'
+              ? 'Conectando con la isla…'
+              : 'Conexión interrumpida')
+        : profile.valid && !profile.phoneRequired
+        ? 'CONECTADO · MANOS LIBRES'
+        : !activated
+        ? 'Conectado · activa el control'
+        : !portrait
+        ? 'Coloca el teléfono vertical'
+        : suspended
+        ? 'Esperando movimiento reciente…'
+        : 'CONTROL ACTIVO';
+    return PopScope(
+      canPop: leaving || !connected,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) unawaited(confirmForfeit());
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            if (connected && profile.canNavigate && profile.screen == 'game')
+              IconButton(
+                tooltip: transport.gameContext?['phase'] == 'Paused'
+                    ? 'Reanudar partida'
+                    : 'Pausar partida',
+                icon: Icon(
+                  transport.gameContext?['phase'] == 'Paused'
+                      ? Icons.play_arrow
+                      : Icons.pause,
+                ),
+                onPressed: commandPending
+                    ? null
+                    : () => unawaited(
+                        sendCommand(
+                          transport.gameContext?['phase'] == 'Paused'
+                              ? 'resume'
+                              : 'pause',
+                          '',
+                        ),
+                      ),
+              ),
+          ],
+          title: Text(
+            transport.playerId == null
+                ? 'Tu control'
+                : savedPlayerName.isEmpty
+                ? 'JUGADOR ${transport.playerId}'
+                : savedPlayerName,
+          ),
+        ),
+        body: SafeArea(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: ListView(
+                padding: const EdgeInsets.all(28),
+                children: [
+                  Semantics(
+                    liveRegion: true,
+                    child: Text(
+                      status,
+                      style: const TextStyle(
+                        color: Color(0xffe5bd75),
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                  ),
+                  if (connected) ...[
+                    const SizedBox(height: 16),
+                    if (savedPlayerName.isEmpty || editingName)
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              TextField(
+                                controller: name,
+                                maxLength: 40,
+                                autocorrect: false,
+                                textInputAction: TextInputAction.done,
+                                decoration: const InputDecoration(
+                                  labelText: 'Tu nombre en la partida',
+                                  helperText: 'Este nombre aparecerá en la PC.',
+                                ),
+                                onSubmitted: (_) => unawaited(saveName()),
+                              ),
+                              FilledButton(
+                                onPressed: savingProfile ? null : saveName,
+                                child: Text(
+                                  savingProfile
+                                      ? 'GUARDANDO…'
+                                      : 'GUARDAR NOMBRE',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          onPressed: () => setState(() => editingName = true),
+                          icon: const Icon(Icons.edit),
+                          label: const Text('EDITAR NOMBRE'),
+                        ),
+                      ),
+                    if (profileStatus.isNotEmpty)
+                      Semantics(liveRegion: true, child: Text(profileStatus)),
+                  ],
+                  const SizedBox(height: 24),
+                  if (!connected)
+                    Text(
+                      transport.state == 'connecting'
+                          ? 'CONECTANDO CON LA PC'
+                          : 'RECUPERA TU CONEXIÓN',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  if (connected)
+                    GameControlSurface(
+                      contextData: transport.gameContext,
+                      player: transport.playerId,
+                      sensorsReady: activated && !suspended && connected,
+                      tilt: ((gamma - (neutralGamma ?? gamma)) / 30).clamp(
+                        -1.0,
+                        1.0,
+                      ),
+                      busy:
+                          commandPending ||
+                          !connected ||
+                          savedPlayerName.isEmpty,
+                      onCommand: (action, target) =>
+                          unawaited(sendCommand(action, target)),
+                      scorePanel: stats == null
+                          ? null
+                          : GameScorePanel(stats: stats),
+                      recenter: Listener(
+                        onPointerDown: (_) {
+                          unawaited(HapticFeedback.selectionClick());
+                          motion.setAction(true, center: true);
+                        },
+                        onPointerUp: (_) =>
+                            motion.setAction(false, center: true),
+                        onPointerCancel: (_) =>
+                            motion.setAction(false, center: true),
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: const Text('CENTRAR APUNTADO'),
+                        ),
+                      ),
+                    ),
+                  Text(commandStatus),
+                  const SizedBox(height: 24),
+                  if (connected &&
+                      !isAway &&
+                      profile.phoneRequired &&
+                      (!activated || sensorError.isNotEmpty))
+                    FilledButton(
+                      onPressed: startSensors,
+                      child: Text(
+                        activated ? 'REINTENTAR SENSORES' : 'ACTIVAR CONTROL',
+                      ),
+                    ),
+                  if (!connected &&
+                      transport.state != 'connecting' &&
+                      transport.canResume)
+                    FilledButton(
+                      onPressed: () => unawaited(recoverSession()),
+                      child: const Text('RECONECTAR'),
+                    ),
+                  if (!connected && transport.state != 'connecting')
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Text(
+                        transport.code == 'TLS_UNTRUSTED'
+                            ? 'El teléfono no confía en el certificado de la PC. Usa el QR HTTPS del túnel o configura la confianza del certificado local.'
+                            : 'Vuelve a la PC y escanea un QR nuevo si la conexión no se recupera.',
+                      ),
+                    ),
+                  if (sensorError.isNotEmpty) Text(sensorError),
+                  if (transport.degraded && connected)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        '⚠️ Señal inestable. Mantén el teléfono en mano.',
+                        style: TextStyle(color: Colors.amber),
+                      ),
+                    ),
+                  if (isAway)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        '⏸️ Modo ausente activo. Toca volver cuando estés listo.',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      if (connected)
+                        OutlinedButton.icon(
+                          onPressed: toggleAway,
+                          icon: Icon(isAway ? Icons.play_arrow : Icons.pause),
+                          label: Text(
+                            isAway ? 'VOLVER A LA PARTIDA' : 'ESTARÉ AUSENTE',
+                          ),
+                        ),
+                      TextButton.icon(
+                        onPressed: confirmForfeit,
+                        icon: const Icon(
+                          Icons.exit_to_app,
+                          color: Colors.redAccent,
+                        ),
+                        label: const Text(
+                          'SALIR DE LA PARTIDA',
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Sujeta el teléfono con firmeza y sigue las instrucciones de la PC. No lo sueltes ni lo lances.',
+                    textAlign: TextAlign.center,
+                  ),
+                  ExpansionTile(
+                    title: const Text('Ayuda de conexión'),
+                    onExpansionChanged: (open) {
+                      if (open) {
+                        setState(() => inspectedAcks = transport.motionAcks);
+                      }
+                    },
+                    children: [
+                      Text('Muestras confirmadas: $inspectedAcks'),
+                      if (transport.code.isNotEmpty)
+                        Text('Código: ${transport.code}'),
+                      TextButton(
+                        onPressed: () => Clipboard.setData(
+                          ClipboardData(
+                            text: jsonEncode(transport.diagnostic()),
+                          ),
+                        ),
+                        child: const Text('COPIAR DIAGNÓSTICO'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GameScorePanel extends StatelessWidget {
+  final GameStats stats;
+  const GameScorePanel({super.key, required this.stats});
+  @override
+  Widget build(BuildContext context) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          if (stats.values.containsKey('score'))
+            Text(
+              'Puntos: ${stats['score'].round()}',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          if (stats.values.containsKey('progress')) ...[
+            Text('Progreso ${(stats['progress'] * 100).round()} %'),
+            LinearProgressIndicator(
+              value: stats['progress'],
+              semanticsLabel: 'Progreso del juego',
+            ),
+          ],
+          if (stats.values.containsKey('balance')) ...[
+            const Text('Equilibrio en la PC'),
+            LinearProgressIndicator(
+              value: (stats['balance'] + 1) / 2,
+              semanticsLabel: 'Equilibrio en la PC',
+            ),
+          ],
+          if (stats.values.containsKey('elapsed'))
+            Text('Tiempo ${stats['elapsed'].toStringAsFixed(1)} s'),
+          if (stats.values.containsKey('distance'))
+            Text('Recorrido ${stats['distance'].toStringAsFixed(1)} m'),
+        ],
+      ),
+    ),
+  );
+}

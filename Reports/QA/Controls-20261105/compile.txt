@@ -1,0 +1,7 @@
+Static C# compilation using Unity 6000.6.0f1 compiler, existing project response files and references.
+GorillaEscape.Runtime: exit 0
+Assembly-CSharp: exit 0 (repeated after final Smash/Whack cleanup)
+GorillaEscape.EditModeTests: exit 0, including CameraGameplayControlsTests
+GorillaEscape.PlayModeTests: exit 0
+Warnings remain, principally existing obsolete Unity APIs. This is not a Unity player build or execution of the Unity tests.
+Raw output remains local in Unity/Temp/ControlsCompile and Unity/Temp/ControlsEarlyEvidence.

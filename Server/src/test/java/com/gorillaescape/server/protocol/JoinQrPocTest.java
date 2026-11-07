@@ -22,4 +22,20 @@ class JoinQrPocTest {
   }
  }
  @Test void insecureOrSecretBearingOriginsRejected(){var s=new TechnicalSession(()->0L,30,3,60);var a=s.createAdmission();for(String url:java.util.List.of("http://192.168.1.1/join","https://user:pass@example.invalid/join","https://example.invalid/join?token=x","https://example.invalid/join#old"))assertThrows(IllegalArgumentException.class,()->JoinQrPoc.link(URI.create(url),a));}
+ @Test void roomCodeRoutingOnGorillasRunDomain() {
+  var session=new TechnicalSession(()->0L,30,3,60,"dtmf");
+  var admission=session.createAdmission();
+  var link=JoinQrPoc.link(URI.create("https://play.gorillas.run/"),admission,session.roomCode());
+  assertTrue(link.toASCIIString().startsWith("https://play.gorillas.run/dtmf/#v=1&sessionId="));
+  assertTrue(link.toASCIIString().contains("&admission="));
+  session.close();
+ }
+ @Test void roomCodeRoutingOnTrycloudflareDomain() {
+  var session=new TechnicalSession(()->0L,30,3,60,"dtmf");
+  var admission=session.createAdmission();
+  var link=JoinQrPoc.link(URI.create("https://custom-123.trycloudflare.com/"),admission,session.roomCode());
+  assertTrue(link.toASCIIString().startsWith("https://play.gorillas.run/dtmf/#v=1&sessionId="));
+  assertTrue(link.toASCIIString().contains("&admission="));
+  session.close();
+ }
 }

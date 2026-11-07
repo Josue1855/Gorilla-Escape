@@ -15,6 +15,13 @@ namespace GorillaEscape.Network
         private TaskCompletionSource<LobbyCommandResult> completion;
         private bool sent;
         public LobbySnapshotWire Snapshot { get { lock(gate)return Copy(latest); } }
+        public bool IsPhoneConnected(int player) {
+            lock(gate) {
+                var identity=latest?.players==null?null:Array.Find(latest.players,p=>p.playerId==player);
+                return identity!=null&&identity.networkReady
+                    &&(identity.connectionState=="CONNECTED"||identity.connectionState=="ACTIVE");
+            }
+        }
         public Task<LobbyCommandResult> SetPhaseAsync(string phase) {
             lock(gate) {
                 if(phase!="STARTING"&&phase!="STARTED")throw new ArgumentException("LOBBY_TRANSITION");
@@ -50,14 +57,14 @@ namespace GorillaEscape.Network
                 ||(s.phase!="OPEN"&&s.phase!="STARTING"&&s.phase!="STARTED"))throw new InvalidDataException("LOBBY_SNAPSHOT");
             var players=new HashSet<int>();var devices=new HashSet<string>();
             foreach(var p in s.players)if(p==null||p.playerId<1||p.playerId>4||!players.Add(p.playerId)||!Guid.TryParse(p.deviceSessionId,out _)
-                ||!devices.Add(p.deviceSessionId)||p.connectionEpoch<1||(p.connectionState!="CONNECTED"&&p.connectionState!="ACTIVE"&&p.connectionState!="DISCONNECTED")
+                ||!devices.Add(p.deviceSessionId)||p.connectionEpoch<1||(p.connectionState!="CONNECTED"&&p.connectionState!="ACTIVE"&&p.connectionState!="BACKGROUND"&&p.connectionState!="AWAY"&&p.connectionState!="FORFEITED"&&p.connectionState!="DISCONNECTED")
                 ||(p.inputReady&&!p.networkReady)||(p.playerReady&&!p.inputReady)||(p.connectionState=="DISCONNECTED"&&(p.networkReady||p.inputReady||p.playerReady)))throw new InvalidDataException("LOBBY_IDENTITY");
         }
         private static LobbySnapshotWire Copy(LobbySnapshotWire s){
             if(s==null)return null;
-            var copy=new LobbySnapshotWire{lobbyVersion=s.lobbyVersion,sessionId=s.sessionId,phase=s.phase,players=new LobbyPlayerWire[s.players.Length]};
+            var copy=new LobbySnapshotWire{lobbyVersion=s.lobbyVersion,sessionId=s.sessionId,phase=s.phase,roomCode=s.roomCode,players=new LobbyPlayerWire[s.players.Length]};
             for(int i=0;i<s.players.Length;i++){var p=s.players[i];copy.players[i]=new LobbyPlayerWire{playerId=p.playerId,deviceSessionId=p.deviceSessionId,connectionEpoch=p.connectionEpoch,
-                connectionState=p.connectionState,networkReady=p.networkReady,inputReady=p.inputReady,playerReady=p.playerReady};}return copy;
+                connectionState=p.connectionState,displayName=p.displayName,networkReady=p.networkReady,inputReady=p.inputReady,playerReady=p.playerReady};}return copy;
         }
     }
 }

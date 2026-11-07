@@ -1,0 +1,16 @@
+Native shutdown failure observed after automated inspection; cause not established. Full local log excluded from Git.
+Crash!!!
+0x00007FFE95A63B13 (UnityPlayer) UnityMain
+0x00007FFE95A2FBD8 (UnityPlayer) UnityMain
+0x00007FFE95812D2F (UnityPlayer) (function-name not available)
+0x00007FFE958141D2 (UnityPlayer) (function-name not available)
+0x00007FFF31CA8B47 (UIAutomationCore) WindowPattern_WaitForInputIdle
+0x00007FFF31C4D7AF (UIAutomationCore) UiaDisconnectAllProviders
+0x00007FFE9465FB34 (UnityPlayer) (function-name not available)
+0x00007FFE946F9937 (UnityPlayer) (function-name not available)
+0x00007FFE95A63EFB (UnityPlayer) UnityMain
+0x00007FFE95A2FBD8 (UnityPlayer) UnityMain
+0x00007FFE95812F56 (UnityPlayer) (function-name not available)
+0x00007FFE9581612D (UnityPlayer) (function-name not available)
+0x00007FFE9581A08B (UnityPlayer) (function-name not available)
+0x00007FFE9581A20B (UnityPlayer) UnityMain

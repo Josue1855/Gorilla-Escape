@@ -1,0 +1,1696 @@
+VBCSCompilerPreWarmer: pre-warm launched (dotnet PID 2104)
+VBCSCompiler prewarm took 5.73 ms
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.6/respin/6000.6.0f1-fa21a270ab12' branch; Version is '6000.6.0f1 (f7f8ed4d1e24) revision 16251117'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-equipo" at "2026-11-06T02:16:18.0949364Z"
+OS: 'Windows 11  (10.0.29698) Professional' Language: 'es' Physical Memory: 32452 MB
+BatchMode: 0, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-11-06T02:16:18Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 3752, path: "C:/Program Files/WindowsApps/UnityTechnologies.UnityHub_3.22.5.65535_x64__2vrhnee42bhxm/app/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              037c952da4bc42beaabdf2075a78b88d
+  Correlation Id:          9e8acfb4470ae442ec44dd14a455b5f5
+  External correlation Id: 4965249879952875910
+  Machine Id:              ARdZF+49+lgVn9tb4+FMPvOBcys=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-equipo" (connect: 0.00s, validation: 0.00s, handshake: 0.21s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-equipo-notifications" at "2026-11-06T02:16:18.3107081Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 4674268377099-unity_dad1b6777e8058e1ca3e-UnityProStuXXXX
+  Product: Unity Student
+  Type: Assigned
+  Expiration: 2027-10-18T13:03:24Z
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Module] Licensing Background thread has ended after 0.23s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Unity.exe
+-projectPath
+C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity
+-runTests
+-testPlatform
+PlayMode
+-testFilter
+GorillaEscape.Tests.JungleReleaseReviewTests;GorillaEscape.Tests.JunglePresentationPlayModeTests
+-testResults
+C:\Users\equipo\Documents\Repos\Gorilla Escape\Reports\QA\ReleaseReview\playmode_results.xml
+-logFile
+C:\Users\equipo\Documents\Repos\Gorilla Escape\Reports\QA\ReleaseReview\unity_playmode.log
+Successfully changed project path to: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity
+C:/Users/equipo/Documents/Repos/Gorilla Escape/Unity
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=1"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.
+Player connection [28136]  Target information:
+
+Player connection [28136]  * "[IP] 172.20.64.1 [Port] 55504 [Flags] 2 [Guid] 2801452381 [EditorId] 2801452381 [Version] 1048832 [Id] WindowsEditor(7,Galvan) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [28136]  * "[IP] 10.1.124.132 [Port] 55504 [Flags] 2 [Guid] 2801452381 [EditorId] 2801452381 [Version] 1048832 [Id] WindowsEditor(7,Galvan) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [28136] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [28136] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-32680" after 0.2 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+Launching Unity Data Store - C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Tools/Unity.DataStore.exe 
+Unity Data Store artifact dir = Library/DataStore, working dir = C:/Users/equipo/Documents/Repos/Gorilla Escape/Unity[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Unity Data Store running and initialised
+Initialize engine version: 6000.6.0f1 (f7f8ed4d1e24)
+[EntityIdStore] init: VM path (explicit commit), pageSize=4096, blockCount=1048576, entitiesPerBlock=256, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/equipo/Documents/Repos/Gorilla Escape/Unity/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.1]
+    Renderer:        Intel(R) Iris(R) Xe Graphics (ID=0xa7a1)
+    Vendor:          Intel
+    VRAM:            16218 MB
+    App VRAM Budget: 15450 MB
+    Driver:          32.0.101.7088
+    Unified Memory Architecture
+    Cache Coherent UMA
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56680
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001353 seconds.
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.658 seconds
+Domain Reload Profiling: 1152ms
+	BeginReloadAssembly (132ms)
+		CreateAndSetChildDomain (20ms)
+	RebuildCommonClasses (5ms)
+	RebuildNativeTypeToScriptingClass (14ms)
+	initialDomainReloadingComplete (66ms)
+	LoadAllAssembliesAndSetupDomain (277ms)
+		LoadAssemblies (111ms)
+		TypeCache.Refresh (197ms)
+			TypeCache.ScanAssembly (184ms)
+		AnalyzeDomain (1ms)
+	FinalizeReload (659ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (95ms)
+			ProcessInitializeOnLoadAttributes (95ms)
+			ProcessInitializeOnLoadMethodAttributes (241ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 65 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.assistant@2.21.0-pre.2 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.ai.assistant@890548b66362)
+    com.unity.ai.inference@2.6.1 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.ai.inference@9a123aee5df7)
+    com.unity.cloud.gltfast@6.19.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.cloud.gltfast@92828f845157)
+    com.unity.ide.rider@3.0.38 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.26 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.sdk.linux-arm64@1.1.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.sdk.linux-arm64@df9ffedfa568)
+    com.unity.sdk.linux-x86_64@1.1.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.sdk.linux-x86_64@6d12be270055)
+    com.unity.toolchain.linux-x86_64-linux@1.1.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.toolchain.linux-x86_64-linux@d0308bf9d559)
+    com.unity.sysroot.base@1.1.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.sysroot.base@3559fe1aa613)
+    com.unity.dt.app-ui@2.1.11 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.dt.app-ui@cd5609b130ce)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.searcher@4.9.5 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.profiling.core@1.0.3 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.profiling.core@8a49f7027d06)
+  Built-in packages:
+    com.unity.render-pipelines.universal@17.6.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.render-pipelines.universal@8457e85b8184)
+    com.unity.test-framework@1.8.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.test-framework@7a3849e09bd0)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tetgen@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.tetgen)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.timelinefoundation@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.timelinefoundation)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.1.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.ext.nunit@0198eae3b53e)
+    com.unity.render-pipelines.core@17.6.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.render-pipelines.core@2d66c71e606e)
+    com.unity.shadergraph@17.6.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.shadergraph@ef6135652377)
+    com.unity.render-pipelines.universal-config@17.6.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.render-pipelines.universal-config@561422b74439)
+    com.unity.burst@2.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.burst@626e66ab421b)
+    com.unity.collections@6.6.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.collections@10fff0607388)
+    com.unity.mathematics@1.4.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.mathematics@8306a64d0cd6)
+    com.unity.2d.sprite@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.2d.sprite@947350d67f82)
+    com.unity.graph-authoring@1.0.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.graph-authoring@cfd2588851ee)
+    com.unity.test-framework.performance@6.6.0 (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Unity\Library\PackageCache\com.unity.test-framework.performance@0a60b857a52e)
+  Local packages:
+    com.gorillaescape.contracts@file:C:\Users\equipo\Documents\Repos\Gorilla Escape\Shared\CSharp (location: C:\Users\equipo\Documents\Repos\Gorilla Escape\Shared\CSharp)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.04 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+Refreshing native plugins compatible for Editor in 2.35 ms, found 1 plugins.
+Starting: C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/equipo/Documents/Repos/Gorilla Escape/Unity
+ExitCode: 0 Duration: 3s280ms
+[1084/1429  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[1421/1429  1s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
+Assets\Scripts\JungleAudioBank.cs(110,57): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Scripts\JungleAudioBank.cs(110,19): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Scripts\GorillaMascotRig.cs(50,23): warning CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
+
+Assets\Scripts\SplashDirector.cs(168,76): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Scripts\SplashDirector.cs(168,22): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsInactive, FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Scripts\JungleStageBuilder.cs(48,27): warning CS0414: The field 'JungleStageBuilder.cachedStandardShader' is assigned but its value is never used
+
+Assets\Scripts\SplashDirector.cs(50,18): warning CS0414: The field 'SplashDirector.bootstrapped' is assigned but its value is never used
+[1423/1429  0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 150 defines and 363 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+1 processor(s) skipped this assembly
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+[1424/1429  0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 148 defines and 376 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+1 processor(s) skipped this assembly
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+[1426/1429  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[1428/1429  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+*** Tundra build success (3.22 seconds), 6 items updated, 1429 evaluated
+Assets\Scripts\JungleAudioBank.cs(110,57): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Scripts\JungleAudioBank.cs(110,19): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Scripts\GorillaMascotRig.cs(50,23): warning CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
+Assets\Scripts\SplashDirector.cs(168,76): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Scripts\SplashDirector.cs(168,22): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsInactive, FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Scripts\JungleStageBuilder.cs(48,27): warning CS0414: The field 'JungleStageBuilder.cachedStandardShader' is assigned but its value is never used
+Assets\Scripts\SplashDirector.cs(50,18): warning CS0414: The field 'SplashDirector.bootstrapped' is assigned but its value is never used
+Total cache size 259262724
+Total cache size after purge 259262724, took 00:00:00.1854703
+AssetDatabase: script compilation time: 4.639022s
+Begin MonoManager ReloadAssembly
+'Packages/com.unity.render-pipelines.core/Editor/Deprecated.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+'Packages/com.unity.render-pipelines.core/Editor/Deprecated.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+Native extension for WindowsStandalone target not found
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  1.682 seconds
+Domain Reload Profiling: 2685ms
+	BeginReloadAssembly (239ms)
+		DisableScriptedObjects (47ms)
+		CreateAndSetChildDomain (48ms)
+	RebuildCommonClasses (8ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (74ms)
+	LoadAllAssembliesAndSetupDomain (667ms)
+		LoadAssemblies (329ms)
+		TypeCache.Refresh (227ms)
+			TypeCache.ScanAssembly (212ms)
+		AnalyzeDomain (72ms)
+			BuildScriptInfoCaches (65ms)
+			ResolveRequiredComponents (5ms)
+	FinalizeReload (1684ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (137ms)
+			ProcessInitializeOnLoadAttributes (776ms)
+			ProcessInitializeOnLoadMethodAttributes (305ms)
+			AfterProcessingInitializeOnLoad (3ms)
+		AwakeInstancesAfterBackupRestoration (34ms)
+Starting new worker id: 0 with log in C:/Users/equipo/Documents/Repos/Gorilla Escape/Unity/Logs/AssetImportWorkerHW0.log
+
+Asset Pipeline Refresh (id=b05dfb6994c42b94ebf904c93e78a859): Total: 8.651 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=2315 ms
+		Asset DB Callback time: managed=484 ms, native=55 ms
+		Scripting: domain reloads=1, domain reload time=1098 ms, compile time=4642 ms, other=54 ms
+		Project Asset Count: scripts=1708, non-scripts=4979
+		Asset File Changes: new=0, changed=3, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 44.110ms
+	ApplyChangesToAssetFolders: 0.789ms
+	Scan: 171.216ms
+	Collect global state as custom dependencies: 23.963ms
+	OnSourceAssetsModified: 0.641ms
+	CategorizeScriptCompilationAssets: 35.266ms
+	ProcessAssetsWithTransientArtifactChanges: 68.105ms
+	CategorizeAssets: 110.860ms
+	CompileScripts: 4642.100ms
+	ImportOutOfDateAssets: 1712.088ms (1694.684ms without children)
+		ReloadNativeAssets: 0.076ms
+		UnloadImportedAssets: 1.024ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.612ms
+		ImportSchedulerStart: 14.684ms
+	PostProcessAllAssets: 488.495ms
+		VCAutoAddAssetPostprocess 2.324ms
+		XRBuildSystem.XRAssetImported 0.630ms
+		PostProcessCallbackCreateDeferredMaterials 0.066ms
+		AssemblyValidation.PostprocessAllAssets 0.066ms
+		MonoPostProcessAllAssets: 484.380ms
+			AssetPostprocessor.OnPostprocessAllAssets 142.087ms
+			AssetReferenceReimportMonitor.OnPostprocessAllAssets 25.601ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 17.823ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 14.833ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 5.676ms
+			SyncVS.PostprocessSyncProject 2.873ms
+			GraphRefreshPostprocessor.OnPostprocessAllAssets 2.456ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 2.330ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 2.195ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 1.742ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 1.523ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 1.521ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 1.435ms
+			AssetChangedListener.OnPostprocessAllAssets 1.350ms
+			AssetChangeDetector.OnPostprocessAllAssets 0.974ms
+			MaterialPostprocessor.OnPostprocessAllAssets 0.714ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.710ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.662ms
+			SkillsProjectAssetPostprocessor.OnPostprocessAllAssets 0.618ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.551ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.549ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.369ms
+			PostProcessor.OnPostprocessAllAssets 0.344ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.342ms
+			AssetEvents.OnPostprocessAllAssets 0.322ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.315ms
+			ModelAssetProcessor.OnPostprocessAllAssets 0.306ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.210ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.182ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.168ms
+			ThemePostprocessor.OnPostprocessAllAssets 0.140ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.127ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.119ms
+			TrackSelectedAssetsProcessor.OnPostprocessAllAssets 0.090ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.076ms
+	PostAssetChangesProfiler: 9.926ms
+	UnloadStreamsBegin: 1.599ms
+	PersistCurrentRevisions: 0.406ms
+	GenerateScriptTypeHashes: 2.198ms
+	GenerateScriptTypeSerializationHashes: 3.484ms
+	Untracked: 1282.515ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Scanning for USB devices : 0.884ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Gorilla Escape
+Unloading 106 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7038 unused Assets / (24.9 MB). Loaded Objects now: 8026.
+Memory consumption went from 493.5 MB to 468.6 MB.
+Total: 22.965300 ms (FindLiveObjects: 0.582500 ms CreateObjectMapping: 0.386800 ms MarkObjects: 14.324500 ms  DeleteObjects: 7.349600 ms)
+
+[LAYOUT] About to load UserSettings\Layouts\default-6000.dwlt, keepMainWindow=False
+[MODES] ModeService[default].InitializeCurrentMode
+[MODES] ModeService[default].RaiseModeChanged(default, default)
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+[Project] Loading completed in 13.331 seconds
+	Project init time: 				11.933 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.243 seconds
+		Asset Database init time: 		1.012 seconds
+		Global illumination init time: 	0.003 seconds
+		Assemblies load time: 			1.197 seconds
+		Unity extensions init time: 	0.020 seconds
+		Asset Database refresh time: 	8.651 seconds
+	Scene opening time: 			0.910 seconds
+##utp:{"type":"ProjectInfo","version":2,"phase":"Immediate","time":1793931391411,"processId":32680,"projectLoad":13.331009,"projectInit":11.9326446,"templateInit":0.0,"packageManagerInit":0.2430564,"assetDatabaseInit":1.0116318,"globalIlluminationInit":0.0029088,"assembliesLoad":1.1971706,"unityExtensionsInit":0.0196883,"assetDatabaseRefresh":8.6511045,"sceneOpening":0.9104882}
+##utp:{"type":"EditorInfo","version":2,"phase":"Immediate","time":1793931391411,"processId":32680,"editorVersion":"6000.6.0f1 (f7f8ed4d1e24)","branch":"6000.6/respin/6000.6.0f1-fa21a270ab12","buildType":"Release","platform":"Windows"}
+Worker ready: AssetImportWorkerHW0 0
+Running tests for ExecutionSettings with details:
+targetPlatform = 
+playerHeartbeatTimeout = 600
+filters[0] = 
+   Filter with settings:
+   testMode = PlayMode
+   targetPlatform = 
+   testNames = null
+   groupNames = GorillaEscape.Tests.JungleReleaseReviewTests, GorillaEscape.Tests.JunglePresentationPlayModeTests
+   categoryNames = null
+   assemblyNames = null
+ignoreTests = {}
+featureFlags = null
+
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:InitializeAndExecuteRun (string[]) (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/CommandLineTest/Executer.cs:53)
+UnityEditor.TestTools.TestRunner.CommandLineTest.TestStarter:InitializeAndExecuteRun () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/CommandLineTest/TestStarter.cs:64)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 53)
+
+Start Indexing on Editor startup
+[Indexing] Starting Initial Indexing for Assets
+Created GICache directory at C:/Users/equipo/AppData/LocalLow/Unity/Caches/GiCache. Took: 0.005s, timestamps: [14.309 - 14.313]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully updated the access token
+[Licensing::Module] Successfully updated access token: "e4TEi1Hc"... (expires: 2026-11-06T02:51:36Z)
+Unloading 10 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (87.3 KB). Loaded Objects now: 9028.
+Memory consumption went from 0.61 GB to 0.61 GB.
+Total: 21.972400 ms (FindLiveObjects: 0.589100 ms CreateObjectMapping: 0.192100 ms MarkObjects: 20.801200 ms  DeleteObjects: 0.122400 ms)
+
+Importing 'GUID: 0000000000000000b000000000000000 - Path: ProjectSettings/EditorBuildSettings.asset' with importer (LibraryAssetImporter)
+Imported 'GUID: 0000000000000000b000000000000000' -> (Import Result ID: 'af8562ef71b87eabd750e6bbae6c2ee8') in 0.005 seconds [static dependencies only]. Details - ImportResultOutputID=0a89a5c5f492143e0fa186859e17ba6f DependenciesID=bb615b23001f46467f079ed4d01fdb55 StaticDependenciesID=884c81c850b54c2a79f582490e239947 
+Asset Pipeline Refresh (id=fe6e17e6579869e4fb32024e6123b093): Total: 0.082 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: b00245212911cbe45817024bc278281d - Path: Assets/InitTestScene1794dd29-c801-4fa5-a8ff-72defa3f1f85.unity' with importer (DefaultImporter)
+Imported 'GUID: b00245212911cbe45817024bc278281d' -> (Import Result ID: '8e110c3eea85c54d360ade82bf2fecce') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=4a139b570e8e858fcd6b0d361a120e2d DependenciesID=38850b82bfaed36e9ad8bcda3c289227 StaticDependenciesID=3b92202006acce5a8ec341fd84c1b96d 
+Asset Pipeline Refresh (id=57a416c75fe3b8d429749fcc3c859103): Total: 0.066 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Executing IPrebuildSetup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:194)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:129)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+'Packages/com.unity.render-pipelines.core/Editor/Deprecated.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+'Packages/com.unity.render-pipelines.core/Editor/Deprecated.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+Native extension for WindowsStandalone target not found
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  2.332 seconds
+Domain Reload Profiling: 3263ms
+	BeginReloadAssembly (622ms)
+		DisableScriptedObjects (151ms)
+		CreateAndSetChildDomain (271ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (89ms)
+	LoadAllAssembliesAndSetupDomain (197ms)
+		LoadAssemblies (167ms)
+		TypeCache.Refresh (8ms)
+		AnalyzeDomain (9ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (2333ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (116ms)
+			ProcessInitializeOnLoadAttributes (514ms)
+			ProcessInitializeOnLoadMethodAttributes (412ms)
+		AwakeInstancesAfterBackupRestoration (877ms)
+No restricted APIs configured; Validation skipped.
+Checking 22 assemblies for restricted APIs found 0 usage(s) in 3 ms
+
+Asset Pipeline Refresh (id=de9c825527e87ab4cb43681e3702b27a): Total: 4.699 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=2694 ms
+		Asset DB Callback time: managed=894 ms, native=126 ms
+		Scripting: domain reloads=1, domain reload time=979 ms, compile time=4 ms, other=0 ms
+		Project Asset Count: scripts=1708, non-scripts=4980
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 1.911ms
+	ApplyChangesToAssetFolders: 0.279ms
+	Collect global state as custom dependencies: 3.620ms
+	ProcessAssetsWithTransientArtifactChanges: 136.888ms
+	CategorizeAssets: 96.528ms
+	CompileScripts: 4.305ms
+	ImportOutOfDateAssets: 2343.908ms (2338.363ms without children)
+		CollectScriptTypesHashes: 1.218ms
+		ReloadNativeAssets: 0.890ms
+		UnloadImportedAssets: 3.118ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.139ms
+		ImportSchedulerStart: 0.369ms
+	PostProcessAllAssets: 1014.942ms
+		AssemblyValidation.PostprocessAllAssets 21.128ms
+		PostProcessCallbackCreateDeferredMaterials 13.285ms
+		ShaderAssetModifiedCallback 7.233ms
+		RaytracingShaderImportPostprocess 6.669ms
+		ComputeShaderImportPostprocess 6.607ms
+		SpeedTreeImporter.PostprocessAllAssets 5.275ms
+		LocalizationDatabase.AssetDatabasePostprocessCallback 3.008ms
+		BlockShaderImporter.PostprocessAllAssets 2.613ms
+		XRBuildSystem.XRAssetImported 0.401ms
+		MonoPostProcessAllAssets: 891.848ms
+			SyncVS.PostprocessSyncProject 244.061ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 148.887ms
+			AssetPostprocessor.OnPostprocessAllAssets 38.352ms
+			AssetReferenceReimportMonitor.OnPostprocessAllAssets 34.067ms
+			PostProcessor.OnPostprocessAllAssets 30.203ms
+			GraphRefreshPostprocessor.OnPostprocessAllAssets 29.140ms
+			MaterialPostprocessor.OnPostprocessAllAssets 26.389ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 16.120ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 15.915ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 13.335ms
+			AssetChangedListener.OnPostprocessAllAssets 10.706ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 6.466ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 5.801ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 4.260ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 1.605ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 1.457ms
+			AssetChangeDetector.OnPostprocessAllAssets 0.943ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.869ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.769ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 0.628ms
+			SkillsProjectAssetPostprocessor.OnPostprocessAllAssets 0.610ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.570ms
+			ModelAssetProcessor.OnPostprocessAllAssets 0.490ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.410ms
+			ThemePostprocessor.OnPostprocessAllAssets 0.291ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.268ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.257ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.238ms
+			AssetEvents.OnPostprocessAllAssets 0.230ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.203ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.168ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.144ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.118ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.114ms
+			TrackSelectedAssetsProcessor.OnPostprocessAllAssets 0.076ms
+	PostAssetChangesProfiler: 5.480ms
+	GatherAllCurrentPrimaryImportResultRevisions: 0.268ms
+	UnloadStreamsBegin: 1.387ms
+	PersistCurrentRevisions: 0.203ms
+	GenerateScriptTypeHashes: 4.960ms
+	GenerateScriptTypeSerializationHashes: 8.304ms
+	Untracked: 1026.768ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.939 ms
+	Integration:            57.965 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       0.021 ms
+	Total Operation Time:   59.929 ms
+UPID Received 'c96887a6-7238-440b-9915-30c753523098'.
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.135600 ms
+Loaded scene 'Assets/Scenes/JungleDrums.unity'
+	Deserialize:            2.117 ms
+	Integration:            132.161 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       79.333 ms
+	Total Operation Time:   213.615 ms
+Unloading 6202 unused Assets / (2.9 MB). Loaded Objects now: 9482.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 39.186000 ms (FindLiveObjects: 2.513300 ms CreateObjectMapping: 0.695400 ms MarkObjects: 32.472500 ms  DeleteObjects: 3.202700 ms)
+
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+Unloading 30 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.336600 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            2.240 ms
+	Integration:            18.885 ms
+	Integration of assets:  0.010 ms
+	Thread Wait Time:       27.791 ms
+	Total Operation Time:   48.926 ms
+Unloading 10 unused Assets / (8.6 MB). Loaded Objects now: 9224.
+Memory consumption went from 0.61 GB to 0.61 GB.
+Total: 24.683400 ms (FindLiveObjects: 0.793900 ms CreateObjectMapping: 0.185900 ms MarkObjects: 23.344000 ms  DeleteObjects: 0.098500 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.979000 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            0.747 ms
+	Integration:            15.986 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       30.601 ms
+	Total Operation Time:   47.336 ms
+Unloading 5 unused Assets / (8.9 KB). Loaded Objects now: 9229.
+Memory consumption went from 0.61 GB to 0.61 GB.
+Total: 22.391900 ms (FindLiveObjects: 0.557100 ms CreateObjectMapping: 0.141400 ms MarkObjects: 21.362800 ms  DeleteObjects: 0.047200 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.838200 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            0.837 ms
+	Integration:            18.338 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       7.352 ms
+	Total Operation Time:   26.529 ms
+Unloading 5 unused Assets / (8.7 KB). Loaded Objects now: 9229.
+Memory consumption went from 0.61 GB to 0.61 GB.
+Total: 23.384600 ms (FindLiveObjects: 0.549400 ms CreateObjectMapping: 0.171800 ms MarkObjects: 22.345300 ms  DeleteObjects: 0.054000 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.326700 ms
+Loaded scene 'Assets/Scenes/GorillaSmash.unity'
+	Deserialize:            1.561 ms
+	Integration:            85.762 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.008 ms
+	Total Operation Time:   87.332 ms
+Unloading 35 unused Assets / (20.0 KB). Loaded Objects now: 9702.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 23.111100 ms (FindLiveObjects: 0.892500 ms CreateObjectMapping: 0.225200 ms MarkObjects: 21.601800 ms  DeleteObjects: 0.115400 ms)
+
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.968300 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            1.338 ms
+	Integration:            15.634 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       29.040 ms
+	Total Operation Time:   46.014 ms
+Unloading 10 unused Assets / (10.0 MB). Loaded Objects now: 9401.
+Memory consumption went from 0.63 GB to 0.62 GB.
+Total: 24.867800 ms (FindLiveObjects: 0.640400 ms CreateObjectMapping: 0.182200 ms MarkObjects: 23.667700 ms  DeleteObjects: 0.108200 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.745900 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            0.824 ms
+	Integration:            16.516 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       31.139 ms
+	Total Operation Time:   48.482 ms
+Unloading 5 unused Assets / (5.0 KB). Loaded Objects now: 9397.
+Memory consumption went from 0.62 GB to 0.62 GB.
+Total: 48.605900 ms (FindLiveObjects: 0.935000 ms CreateObjectMapping: 0.212900 ms MarkObjects: 47.064100 ms  DeleteObjects: 0.072100 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.053300 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            1.281 ms
+	Integration:            36.170 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       4.999 ms
+	Total Operation Time:   42.453 ms
+Unloading 5 unused Assets / (8.7 KB). Loaded Objects now: 9412.
+Memory consumption went from 0.62 GB to 0.62 GB.
+Total: 35.204000 ms (FindLiveObjects: 0.627500 ms CreateObjectMapping: 0.188600 ms MarkObjects: 33.664400 ms  DeleteObjects: 0.091700 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.253000 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            1.123 ms
+	Integration:            20.835 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       6.971 ms
+	Total Operation Time:   28.933 ms
+Unloading 1 unused Assets / (2.8 KB). Loaded Objects now: 9416.
+Memory consumption went from 0.62 GB to 0.62 GB.
+Total: 28.656000 ms (FindLiveObjects: 0.605200 ms CreateObjectMapping: 0.229000 ms MarkObjects: 27.404600 ms  DeleteObjects: 0.055700 ms)
+
+Unloading 20 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.030200 ms
+Loaded scene 'Assets/Scenes/BananaBowling.unity'
+	Deserialize:            7.865 ms
+	Integration:            69.202 ms
+	Integration of assets:  0.215 ms
+	Thread Wait Time:       3.914 ms
+	Total Operation Time:   81.196 ms
+Unloading 43 unused Assets / (2.7 MB). Loaded Objects now: 9946.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 31.989100 ms (FindLiveObjects: 0.722300 ms CreateObjectMapping: 0.226100 ms MarkObjects: 30.596100 ms  DeleteObjects: 0.163500 ms)
+
+Unloading 28 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.034100 ms
+Loaded scene 'Assets/Scenes/GorillaBoxing.unity'
+	Deserialize:            0.911 ms
+	Integration:            24.939 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       4.127 ms
+	Total Operation Time:   29.979 ms
+Unloading 46 unused Assets / (102.5 KB). Loaded Objects now: 9727.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 33.770800 ms (FindLiveObjects: 1.460100 ms CreateObjectMapping: 0.236200 ms MarkObjects: 30.492900 ms  DeleteObjects: 1.192200 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.776700 ms
+Loaded scene 'Assets/Scenes/JungleBaseball.unity'
+	Deserialize:            1.247 ms
+	Integration:            56.410 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       3.378 ms
+	Total Operation Time:   61.036 ms
+Unloading 28 unused Assets / (8.7 MB). Loaded Objects now: 10764.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 33.160400 ms (FindLiveObjects: 0.730600 ms CreateObjectMapping: 0.200800 ms MarkObjects: 31.628700 ms  DeleteObjects: 0.149600 ms)
+
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.038600 ms
+Loaded scene 'Assets/Scenes/JungleDrums.unity'
+	Deserialize:            0.510 ms
+	Integration:            31.974 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       4.668 ms
+	Total Operation Time:   37.153 ms
+Unloading 22 unused Assets / (5.4 MB). Loaded Objects now: 9730.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 34.910500 ms (FindLiveObjects: 1.040200 ms CreateObjectMapping: 0.345800 ms MarkObjects: 32.792600 ms  DeleteObjects: 0.430500 ms)
+
+Unloading 10 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.694700 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            3.366 ms
+	Integration:            135.135 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       2.304 ms
+	Total Operation Time:   140.807 ms
+Unloading 46 unused Assets / (16.1 MB). Loaded Objects now: 9722.
+Memory consumption went from 0.67 GB to 0.66 GB.
+Total: 27.783900 ms (FindLiveObjects: 0.764500 ms CreateObjectMapping: 0.211800 ms MarkObjects: 26.316600 ms  DeleteObjects: 0.193900 ms)
+
+Unloading 37 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.587100 ms
+Loaded scene 'Assets/Scenes/WhackAMole.unity'
+	Deserialize:            1.431 ms
+	Integration:            75.242 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       4.187 ms
+	Total Operation Time:   80.862 ms
+Unloading 233 unused Assets / (7.3 MB). Loaded Objects now: 9541.
+Memory consumption went from 0.67 GB to 0.67 GB.
+Total: 42.369800 ms (FindLiveObjects: 2.867700 ms CreateObjectMapping: 0.378400 ms MarkObjects: 38.401700 ms  DeleteObjects: 0.309000 ms)
+
+Unloading 27 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.149400 ms
+JUNGLE_ASSET_REFERENCE_MISSING: LogBalanceStage
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+JungleAssets:Resolve (string) (at Assets/_Project/Scripts/Core/JungleAssetReference.cs:25)
+JungleAssets:Load<UnityEngine.Material> (string) (at Assets/_Project/Scripts/Core/JungleAssetReference.cs:30)
+GorillaEscape.Minigames.LogBalance.LogBalanceAtmosphere:Material (UnityEngine.Color) (at Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceAtmosphere.cs:81)
+GorillaEscape.Minigames.LogBalance.LogBalanceAtmosphere:.ctor (UnityEngine.Transform,UnityEngine.Camera,UnityEngine.Light,single,GorillaEscape.Minigames.LogBalance.LogBalanceVisuals) (at Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceAtmosphere.cs:54)
+GorillaEscape.Minigames.LogBalance.LogBalanceStage:.ctor (UnityEngine.Transform,single,GorillaEscape.Minigames.LogBalance.LogBalanceVisuals,UnityEngine.Material) (at Assets/_Project/Scripts/Minigames/LogBalance/LogBalanceStage.cs:62)
+LogBalanceGameController:Awake () (at Assets/Scripts/LogBalanceGameController.cs:34)
+
+(Filename: Assets/_Project/Scripts/Core/JungleAssetReference.cs Line: 25)
+
+Loaded scene 'Assets/Scenes/LogBalance.unity'
+	Deserialize:            1.682 ms
+	Integration:            90.544 ms
+	Integration of assets:  0.020 ms
+	Thread Wait Time:       4.193 ms
+	Total Operation Time:   96.440 ms
+Unloading 278 unused Assets / (13.3 MB). Loaded Objects now: 10694.
+Memory consumption went from 0.66 GB to 0.65 GB.
+Total: 38.188400 ms (FindLiveObjects: 0.670300 ms CreateObjectMapping: 0.195800 ms MarkObjects: 36.509400 ms  DeleteObjects: 0.394000 ms)
+
+Unloading 29 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.547700 ms
+Loaded scene 'Assets/Scenes/GorillaSmash.unity'
+	Deserialize:            0.641 ms
+	Integration:            35.978 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       5.002 ms
+	Total Operation Time:   41.622 ms
+Unloading 45 unused Assets / (1.4 MB). Loaded Objects now: 9740.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 39.206600 ms (FindLiveObjects: 1.647700 ms CreateObjectMapping: 0.276200 ms MarkObjects: 36.470200 ms  DeleteObjects: 0.487500 ms)
+
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.699200 ms
+Loaded scene 'Assets/Scenes/CoconutThrow.unity'
+	Deserialize:            1.030 ms
+	Integration:            35.403 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       3.684 ms
+	Total Operation Time:   40.118 ms
+Unloading 32 unused Assets / (1.4 MB). Loaded Objects now: 9846.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 30.173300 ms (FindLiveObjects: 0.750400 ms CreateObjectMapping: 0.231800 ms MarkObjects: 28.755700 ms  DeleteObjects: 0.142000 ms)
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.143400 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            0.619 ms
+	Integration:            37.698 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       3.932 ms
+	Total Operation Time:   42.250 ms
+Unloading 25 unused Assets / (10.7 MB). Loaded Objects now: 9682.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 31.758300 ms (FindLiveObjects: 1.484600 ms CreateObjectMapping: 0.180800 ms MarkObjects: 29.303200 ms  DeleteObjects: 0.469200 ms)
+
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.347700 ms
+Creating missing JunglePanel component for SplashDirector in SplashDirector.
+Loaded scene 'Assets/Scenes/Splash.unity'
+	Deserialize:            1.768 ms
+	Integration:            136.499 ms
+	Integration of assets:  0.010 ms
+	Thread Wait Time:       29.253 ms
+	Total Operation Time:   167.529 ms
+Unloading 98 unused Assets / (4.1 MB). Loaded Objects now: 10092.
+Memory consumption went from 0.67 GB to 0.67 GB.
+Total: 38.612900 ms (FindLiveObjects: 0.778500 ms CreateObjectMapping: 0.351600 ms MarkObjects: 36.764500 ms  DeleteObjects: 0.338000 ms)
+
+Unloading 44 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.148100 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            0.939 ms
+	Integration:            25.025 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       18.357 ms
+	Total Operation Time:   44.326 ms
+Unloading 32 unused Assets / (453.5 KB). Loaded Objects now: 9456.
+Memory consumption went from 0.66 GB to 0.66 GB.
+Total: 34.533100 ms (FindLiveObjects: 3.567400 ms CreateObjectMapping: 1.148900 ms MarkObjects: 29.275600 ms  DeleteObjects: 0.161600 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.651300 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            1.059 ms
+	Integration:            26.280 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       13.521 ms
+	Total Operation Time:   40.861 ms
+Unloading 7 unused Assets / (4.0 MB). Loaded Objects now: 9454.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 43.234200 ms (FindLiveObjects: 0.694000 ms CreateObjectMapping: 0.188600 ms MarkObjects: 39.119400 ms  DeleteObjects: 2.633700 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.387000 ms
+Loaded scene 'Assets/Scenes/GorillaSmash.unity'
+	Deserialize:            2.253 ms
+	Integration:            52.529 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       8.582 ms
+	Total Operation Time:   63.368 ms
+Unloading 21 unused Assets / (2.7 MB). Loaded Objects now: 9759.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 42.213800 ms (FindLiveObjects: 0.793400 ms CreateObjectMapping: 0.310300 ms MarkObjects: 40.396500 ms  DeleteObjects: 0.152400 ms)
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.690500 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            2.089 ms
+	Integration:            26.606 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       13.179 ms
+	Total Operation Time:   41.876 ms
+Unloading 14 unused Assets / (6.7 MB). Loaded Objects now: 9454.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 30.829400 ms (FindLiveObjects: 1.464800 ms CreateObjectMapping: 0.232200 ms MarkObjects: 28.556100 ms  DeleteObjects: 0.138400 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.290500 ms
+Loaded scene 'Assets/Scenes/GorillaSmash.unity'
+	Deserialize:            2.098 ms
+	Integration:            32.241 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       15.422 ms
+	Total Operation Time:   49.765 ms
+Unloading 21 unused Assets / (2.7 MB). Loaded Objects now: 9759.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 30.577600 ms (FindLiveObjects: 1.135100 ms CreateObjectMapping: 0.212800 ms MarkObjects: 28.777400 ms  DeleteObjects: 0.144200 ms)
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.140600 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            0.663 ms
+	Integration:            22.484 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       28.459 ms
+	Total Operation Time:   51.610 ms
+Unloading 14 unused Assets / (1.4 MB). Loaded Objects now: 9454.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 52.289200 ms (FindLiveObjects: 2.397200 ms CreateObjectMapping: 0.392700 ms MarkObjects: 48.633100 ms  DeleteObjects: 0.427800 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.735900 ms
+Loaded scene 'Assets/Scenes/GorillaSmash.unity'
+	Deserialize:            1.250 ms
+	Integration:            56.728 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       11.622 ms
+	Total Operation Time:   69.602 ms
+Unloading 21 unused Assets / (5.4 MB). Loaded Objects now: 9759.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 36.557100 ms (FindLiveObjects: 0.870200 ms CreateObjectMapping: 0.270300 ms MarkObjects: 34.628100 ms  DeleteObjects: 0.213400 ms)
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.214900 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            2.649 ms
+	Integration:            44.215 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       29.349 ms
+	Total Operation Time:   76.218 ms
+Unloading 10 unused Assets / (10.0 MB). Loaded Objects now: 9458.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 30.140200 ms (FindLiveObjects: 0.667400 ms CreateObjectMapping: 0.174300 ms MarkObjects: 28.903400 ms  DeleteObjects: 0.108700 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.187300 ms
+Loaded scene 'Assets/Scenes/CoconutThrow.unity'
+	Deserialize:            1.432 ms
+	Integration:            63.014 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       11.802 ms
+	Total Operation Time:   76.252 ms
+Unloading 28 unused Assets / (5.4 MB). Loaded Objects now: 9860.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 35.087500 ms (FindLiveObjects: 1.773600 ms CreateObjectMapping: 0.305900 ms MarkObjects: 32.408200 ms  DeleteObjects: 0.159000 ms)
+
+Unloading 18 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.551500 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            4.487 ms
+	Integration:            34.668 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       6.473 ms
+	Total Operation Time:   45.630 ms
+Unloading 9 unused Assets / (8.8 MB). Loaded Objects now: 9461.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 42.021500 ms (FindLiveObjects: 1.637100 ms CreateObjectMapping: 0.277900 ms MarkObjects: 39.610000 ms  DeleteObjects: 0.111800 ms)
+
+Unloading 19 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.798200 ms
+Loaded scene 'Assets/Scenes/BananaBowling.unity'
+	Deserialize:            15.620 ms
+	Integration:            40.414 ms
+	Integration of assets:  0.191 ms
+	Thread Wait Time:       4.025 ms
+	Total Operation Time:   60.251 ms
+Unloading 45 unused Assets / (8.1 MB). Loaded Objects now: 9985.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 28.533700 ms (FindLiveObjects: 0.707600 ms CreateObjectMapping: 0.242600 ms MarkObjects: 26.905900 ms  DeleteObjects: 0.252200 ms)
+
+Unloading 26 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.471100 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            1.114 ms
+	Integration:            29.434 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       7.665 ms
+	Total Operation Time:   38.214 ms
+Unloading 40 unused Assets / (108.5 KB). Loaded Objects now: 9464.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 32.546600 ms (FindLiveObjects: 0.706900 ms CreateObjectMapping: 0.156800 ms MarkObjects: 31.160700 ms  DeleteObjects: 0.179400 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.520800 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            2.543 ms
+	Integration:            66.106 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       11.358 ms
+	Total Operation Time:   80.012 ms
+Unloading 43 unused Assets / (13.5 MB). Loaded Objects now: 9741.
+Memory consumption went from 0.67 GB to 0.66 GB.
+Total: 25.268900 ms (FindLiveObjects: 0.593800 ms CreateObjectMapping: 0.189400 ms MarkObjects: 24.027000 ms  DeleteObjects: 0.186700 ms)
+
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.437900 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            1.756 ms
+	Integration:            24.979 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       14.622 ms
+	Total Operation Time:   41.359 ms
+Unloading 6 unused Assets / (4.3 MB). Loaded Objects now: 9663.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 31.890400 ms (FindLiveObjects: 0.722500 ms CreateObjectMapping: 0.185400 ms MarkObjects: 30.550600 ms  DeleteObjects: 0.136700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.659300 ms
+Loaded scene 'Assets/Scenes/LogBalance.unity'
+	Deserialize:            1.543 ms
+	Integration:            83.756 ms
+	Integration of assets:  0.033 ms
+	Thread Wait Time:       13.726 ms
+	Total Operation Time:   99.060 ms
+Unloading 442 unused Assets / (6.0 MB). Loaded Objects now: 10713.
+Memory consumption went from 0.67 GB to 0.66 GB.
+Total: 30.156100 ms (FindLiveObjects: 0.648500 ms CreateObjectMapping: 0.188000 ms MarkObjects: 28.532500 ms  DeleteObjects: 0.439100 ms)
+
+Unloading 31 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.720700 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            4.460 ms
+	Integration:            26.592 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       19.430 ms
+	Total Operation Time:   50.485 ms
+Unloading 12 unused Assets / (4.2 MB). Loaded Objects now: 9475.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 28.429200 ms (FindLiveObjects: 0.831700 ms CreateObjectMapping: 0.212000 ms MarkObjects: 26.999600 ms  DeleteObjects: 0.111000 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.814500 ms
+Loaded scene 'Assets/Scenes/GorillaBoxing.unity'
+	Deserialize:            2.725 ms
+	Integration:            53.774 ms
+	Integration of assets:  0.006 ms
+	Thread Wait Time:       16.457 ms
+	Total Operation Time:   72.962 ms
+Unloading 5 unused Assets / (6.0 MB). Loaded Objects now: 9755.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 36.054400 ms (FindLiveObjects: 0.949600 ms CreateObjectMapping: 0.218700 ms MarkObjects: 34.178400 ms  DeleteObjects: 0.141300 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.576400 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            2.522 ms
+	Integration:            37.117 ms
+	Integration of assets:  0.007 ms
+	Thread Wait Time:       10.978 ms
+	Total Operation Time:   50.624 ms
+Unloading 1 unused Assets / (2.8 KB). Loaded Objects now: 9458.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 34.931900 ms (FindLiveObjects: 1.186200 ms CreateObjectMapping: 0.372300 ms MarkObjects: 33.019300 ms  DeleteObjects: 0.038800 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.227100 ms
+Loaded scene 'Assets/Scenes/JungleBaseball.unity'
+	Deserialize:            3.890 ms
+	Integration:            54.878 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       11.823 ms
+	Total Operation Time:   70.594 ms
+Unloading 28 unused Assets / (7.0 MB). Loaded Objects now: 10787.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 31.392600 ms (FindLiveObjects: 0.697700 ms CreateObjectMapping: 0.194100 ms MarkObjects: 29.976300 ms  DeleteObjects: 0.163100 ms)
+
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.846300 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            2.808 ms
+	Integration:            35.433 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       9.614 ms
+	Total Operation Time:   47.859 ms
+Unloading 8 unused Assets / (8.6 MB). Loaded Objects now: 9458.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 43.602900 ms (FindLiveObjects: 1.116400 ms CreateObjectMapping: 0.245300 ms MarkObjects: 41.754200 ms  DeleteObjects: 0.109300 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.833900 ms
+Loaded scene 'Assets/Scenes/JungleDrums.unity'
+	Deserialize:            1.327 ms
+	Integration:            34.774 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       14.063 ms
+	Total Operation Time:   50.168 ms
+Unloading 20 unused Assets / (5.4 MB). Loaded Objects now: 9753.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 41.421300 ms (FindLiveObjects: 0.632300 ms CreateObjectMapping: 0.196400 ms MarkObjects: 39.916900 ms  DeleteObjects: 0.199000 ms)
+
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.648200 ms
+Loaded scene 'Assets/Scenes/JungleDrums.unity'
+	Deserialize:            0.805 ms
+	Integration:            32.895 ms
+	Integration of assets:  0.043 ms
+	Thread Wait Time:       14.522 ms
+	Total Operation Time:   48.266 ms
+Unloading 22 unused Assets / (5.4 MB). Loaded Objects now: 9755.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 32.394800 ms (FindLiveObjects: 0.654300 ms CreateObjectMapping: 0.159600 ms MarkObjects: 30.970000 ms  DeleteObjects: 0.145500 ms)
+
+Unloading 10 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.781900 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            2.505 ms
+	Integration:            36.059 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       13.666 ms
+	Total Operation Time:   52.234 ms
+Unloading 8 unused Assets / (8.6 MB). Loaded Objects now: 9460.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 30.579500 ms (FindLiveObjects: 0.739900 ms CreateObjectMapping: 0.201700 ms MarkObjects: 29.241500 ms  DeleteObjects: 0.103400 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.194600 ms
+Loaded scene 'Assets/Scenes/WhackAMole.unity'
+	Deserialize:            1.802 ms
+	Integration:            54.131 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       14.393 ms
+	Total Operation Time:   70.328 ms
+Unloading 25 unused Assets / (2.7 MB). Loaded Objects now: 9560.
+Memory consumption went from 0.66 GB to 0.65 GB.
+Total: 30.933100 ms (FindLiveObjects: 1.399600 ms CreateObjectMapping: 0.210000 ms MarkObjects: 28.863900 ms  DeleteObjects: 0.142900 ms)
+
+TrimDiskCacheJob: Current cache size 0mb
+Unloading 27 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.692600 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            0.817 ms
+	Integration:            29.819 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       9.122 ms
+	Total Operation Time:   39.762 ms
+Unloading 10 unused Assets / (10.0 MB). Loaded Objects now: 9494.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 38.104600 ms (FindLiveObjects: 0.794800 ms CreateObjectMapping: 0.189600 ms MarkObjects: 36.310000 ms  DeleteObjects: 0.194600 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.715200 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            2.127 ms
+	Integration:            50.565 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       10.823 ms
+	Total Operation Time:   63.518 ms
+Unloading 54 unused Assets / (63.4 KB). Loaded Objects now: 9694.
+Memory consumption went from 0.66 GB to 0.66 GB.
+Total: 25.773600 ms (FindLiveObjects: 0.653300 ms CreateObjectMapping: 0.165400 ms MarkObjects: 24.466800 ms  DeleteObjects: 0.196500 ms)
+
+Unloading 18 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.164900 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            1.938 ms
+	Integration:            23.508 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       14.011 ms
+	Total Operation Time:   39.460 ms
+Unloading 6 unused Assets / (4.3 MB). Loaded Objects now: 9476.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 32.904700 ms (FindLiveObjects: 0.867600 ms CreateObjectMapping: 0.210600 ms MarkObjects: 31.440100 ms  DeleteObjects: 0.088900 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.040500 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            2.204 ms
+	Integration:            29.327 ms
+	Integration of assets:  0.007 ms
+	Thread Wait Time:       25.735 ms
+	Total Operation Time:   57.272 ms
+Unloading 23 unused Assets / (5.9 MB). Loaded Objects now: 9454.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 43.335700 ms (FindLiveObjects: 1.717300 ms CreateObjectMapping: 0.940400 ms MarkObjects: 40.095900 ms  DeleteObjects: 0.118800 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.209000 ms
+Loaded scene 'Assets/Scenes/GorillaSmash.unity'
+	Deserialize:            1.156 ms
+	Integration:            34.303 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       6.940 ms
+	Total Operation Time:   42.403 ms
+Unloading 21 unused Assets / (22.4 KB). Loaded Objects now: 9758.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 31.043100 ms (FindLiveObjects: 1.329700 ms CreateObjectMapping: 0.167700 ms MarkObjects: 29.134400 ms  DeleteObjects: 0.120600 ms)
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.472600 ms
+Loaded scene 'Assets/Scenes/GorillaSmash.unity'
+	Deserialize:            0.961 ms
+	Integration:            22.644 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.018 ms
+	Total Operation Time:   23.625 ms
+Unloading 24 unused Assets / (5.4 MB). Loaded Objects now: 9758.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 28.337100 ms (FindLiveObjects: 1.045000 ms CreateObjectMapping: 0.164000 ms MarkObjects: 26.721400 ms  DeleteObjects: 0.117600 ms)
+
+Unloading 11 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.500100 ms
+Loaded scene 'Assets/Scenes/CoconutThrow.unity'
+	Deserialize:            1.728 ms
+	Integration:            44.887 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       16.720 ms
+	Total Operation Time:   63.339 ms
+Unloading 32 unused Assets / (4.0 MB). Loaded Objects now: 9860.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 39.337400 ms (FindLiveObjects: 1.346200 ms CreateObjectMapping: 0.251900 ms MarkObjects: 37.257600 ms  DeleteObjects: 0.132200 ms)
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.063900 ms
+Loaded scene 'Assets/Scenes/CoconutThrow.unity'
+	Deserialize:            0.632 ms
+	Integration:            31.174 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       9.317 ms
+	Total Operation Time:   41.125 ms
+Unloading 31 unused Assets / (36.5 KB). Loaded Objects now: 9860.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 24.956000 ms (FindLiveObjects: 0.709100 ms CreateObjectMapping: 0.158300 ms MarkObjects: 23.673800 ms  DeleteObjects: 0.133900 ms)
+
+Unloading 31 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.920800 ms
+Loaded scene 'Assets/Scenes/BananaBowling.unity'
+	Deserialize:            11.080 ms
+	Integration:            38.116 ms
+	Integration of assets:  0.191 ms
+	Thread Wait Time:       5.576 ms
+	Total Operation Time:   54.963 ms
+Unloading 48 unused Assets / (59.4 KB). Loaded Objects now: 9985.
+Memory consumption went from 0.66 GB to 0.66 GB.
+Total: 25.236200 ms (FindLiveObjects: 0.632100 ms CreateObjectMapping: 0.183400 ms MarkObjects: 23.957800 ms  DeleteObjects: 0.158700 ms)
+
+Unloading 27 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.819900 ms
+Loaded scene 'Assets/Scenes/BananaBowling.unity'
+	Deserialize:            3.864 ms
+	Integration:            32.207 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       8.387 ms
+	Total Operation Time:   44.461 ms
+Unloading 66 unused Assets / (83.0 KB). Loaded Objects now: 9985.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 24.895700 ms (FindLiveObjects: 0.585900 ms CreateObjectMapping: 0.136000 ms MarkObjects: 23.732400 ms  DeleteObjects: 0.176100 ms)
+
+Unloading 23 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.413900 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            1.107 ms
+	Integration:            84.331 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       11.671 ms
+	Total Operation Time:   97.114 ms
+Unloading 79 unused Assets / (156.2 KB). Loaded Objects now: 9741.
+Memory consumption went from 0.68 GB to 0.68 GB.
+Total: 34.013000 ms (FindLiveObjects: 1.592400 ms CreateObjectMapping: 0.222600 ms MarkObjects: 31.391400 ms  DeleteObjects: 0.336800 ms)
+
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.302000 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            1.352 ms
+	Integration:            41.033 ms
+	Integration of assets:  0.009 ms
+	Thread Wait Time:       13.965 ms
+	Total Operation Time:   56.358 ms
+Unloading 47 unused Assets / (63.7 KB). Loaded Objects now: 9741.
+Memory consumption went from 0.67 GB to 0.67 GB.
+Total: 25.555600 ms (FindLiveObjects: 1.367600 ms CreateObjectMapping: 0.213900 ms MarkObjects: 23.512000 ms  DeleteObjects: 0.161600 ms)
+
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.559800 ms
+Loaded scene 'Assets/Scenes/LogBalance.unity'
+	Deserialize:            4.866 ms
+	Integration:            81.121 ms
+	Integration of assets:  0.056 ms
+	Thread Wait Time:       9.253 ms
+	Total Operation Time:   95.296 ms
+Unloading 445 unused Assets / (13.2 MB). Loaded Objects now: 10713.
+Memory consumption went from 0.67 GB to 0.66 GB.
+Total: 26.589900 ms (FindLiveObjects: 0.676200 ms CreateObjectMapping: 0.186600 ms MarkObjects: 25.015700 ms  DeleteObjects: 0.416200 ms)
+
+Unloading 27 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.467900 ms
+Loaded scene 'Assets/Scenes/LogBalance.unity'
+	Deserialize:            0.793 ms
+	Integration:            56.326 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       11.839 ms
+	Total Operation Time:   68.958 ms
+Unloading 251 unused Assets / (105.9 KB). Loaded Objects now: 10715.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 25.199700 ms (FindLiveObjects: 0.944300 ms CreateObjectMapping: 0.163300 ms MarkObjects: 23.349900 ms  DeleteObjects: 0.393800 ms)
+
+Unloading 26 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.964900 ms
+Loaded scene 'Assets/Scenes/GorillaBoxing.unity'
+	Deserialize:            2.406 ms
+	Integration:            28.641 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       22.047 ms
+	Total Operation Time:   53.098 ms
+Unloading 28 unused Assets / (10.3 MB). Loaded Objects now: 9755.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 30.369200 ms (FindLiveObjects: 0.742100 ms CreateObjectMapping: 0.198400 ms MarkObjects: 28.879900 ms  DeleteObjects: 0.184200 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.487000 ms
+Loaded scene 'Assets/Scenes/GorillaBoxing.unity'
+	Deserialize:            0.662 ms
+	Integration:            21.909 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       8.457 ms
+	Total Operation Time:   31.032 ms
+Unloading 1 unused Assets / (2.8 KB). Loaded Objects now: 9755.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 26.182700 ms (FindLiveObjects: 0.677500 ms CreateObjectMapping: 0.169500 ms MarkObjects: 24.942900 ms  DeleteObjects: 0.049000 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.246100 ms
+Loaded scene 'Assets/Scenes/JungleBaseball.unity'
+	Deserialize:            2.128 ms
+	Integration:            47.117 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       18.666 ms
+	Total Operation Time:   67.915 ms
+Unloading 28 unused Assets / (16.2 KB). Loaded Objects now: 10787.
+Memory consumption went from 0.65 GB to 0.65 GB.
+Total: 26.208900 ms (FindLiveObjects: 0.726200 ms CreateObjectMapping: 0.276300 ms MarkObjects: 24.660000 ms  DeleteObjects: 0.261000 ms)
+
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.923700 ms
+Loaded scene 'Assets/Scenes/JungleBaseball.unity'
+	Deserialize:            0.556 ms
+	Integration:            33.124 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       10.467 ms
+	Total Operation Time:   44.148 ms
+Unloading 30 unused Assets / (8.7 MB). Loaded Objects now: 10787.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 28.609000 ms (FindLiveObjects: 0.769100 ms CreateObjectMapping: 0.165500 ms MarkObjects: 27.203300 ms  DeleteObjects: 0.132600 ms)
+
+Unloading 10 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.500200 ms
+Loaded scene 'Assets/Scenes/JungleDrums.unity'
+	Deserialize:            1.747 ms
+	Integration:            47.393 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       9.987 ms
+	Total Operation Time:   59.133 ms
+Unloading 22 unused Assets / (5.4 MB). Loaded Objects now: 9753.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 33.917900 ms (FindLiveObjects: 0.752100 ms CreateObjectMapping: 0.219400 ms MarkObjects: 32.496300 ms  DeleteObjects: 0.120500 ms)
+
+Unloading 10 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.648500 ms
+Loaded scene 'Assets/Scenes/JungleDrums.unity'
+	Deserialize:            0.612 ms
+	Integration:            29.874 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       9.587 ms
+	Total Operation Time:   40.077 ms
+Unloading 24 unused Assets / (5.4 MB). Loaded Objects now: 9753.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 31.420900 ms (FindLiveObjects: 0.648900 ms CreateObjectMapping: 0.146800 ms MarkObjects: 30.103600 ms  DeleteObjects: 0.130100 ms)
+
+Unloading 10 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.700000 ms
+Loaded scene 'Assets/Scenes/WhackAMole.unity'
+	Deserialize:            2.917 ms
+	Integration:            64.565 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       11.531 ms
+	Total Operation Time:   79.015 ms
+Unloading 29 unused Assets / (42.9 KB). Loaded Objects now: 9560.
+Memory consumption went from 0.66 GB to 0.66 GB.
+Total: 28.506000 ms (FindLiveObjects: 0.925600 ms CreateObjectMapping: 0.226200 ms MarkObjects: 26.865400 ms  DeleteObjects: 0.147500 ms)
+
+Unloading 24 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.007600 ms
+Loaded scene 'Assets/Scenes/WhackAMole.unity'
+	Deserialize:            0.576 ms
+	Integration:            30.100 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       8.295 ms
+	Total Operation Time:   38.973 ms
+Unloading 32 unused Assets / (2.7 MB). Loaded Objects now: 9560.
+Memory consumption went from 0.66 GB to 0.65 GB.
+Total: 33.653200 ms (FindLiveObjects: 1.648500 ms CreateObjectMapping: 0.298000 ms MarkObjects: 31.224600 ms  DeleteObjects: 0.141900 ms)
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.315800 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            2.330 ms
+	Integration:            52.269 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       10.667 ms
+	Total Operation Time:   65.269 ms
+Unloading 61 unused Assets / (4.5 MB). Loaded Objects now: 9694.
+Memory consumption went from 0.67 GB to 0.66 GB.
+Total: 32.607800 ms (FindLiveObjects: 1.096400 ms CreateObjectMapping: 0.301200 ms MarkObjects: 30.608900 ms  DeleteObjects: 0.218700 ms)
+
+Unloading 17 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.665500 ms
+Loaded scene 'Assets/Scenes/CoconutSlice.unity'
+	Deserialize:            0.863 ms
+	Integration:            40.487 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       17.337 ms
+	Total Operation Time:   58.689 ms
+Unloading 22 unused Assets / (8.5 MB). Loaded Objects now: 9694.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 50.268400 ms (FindLiveObjects: 0.842300 ms CreateObjectMapping: 0.252800 ms MarkObjects: 46.565400 ms  DeleteObjects: 2.179100 ms)
+
+Unloading 12 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.277100 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            3.015 ms
+	Integration:            34.188 ms
+	Integration of assets:  0.010 ms
+	Thread Wait Time:       29.268 ms
+	Total Operation Time:   66.481 ms
+Unloading 28 unused Assets / (38.3 KB). Loaded Objects now: 9454.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 54.611800 ms (FindLiveObjects: 2.288700 ms CreateObjectMapping: 0.588500 ms MarkObjects: 51.101100 ms  DeleteObjects: 0.211800 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.855200 ms
+Loaded scene 'Assets/Scenes/JungleDrums.unity'
+	Deserialize:            2.504 ms
+	Integration:            78.188 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       23.067 ms
+	Total Operation Time:   103.763 ms
+Unloading 20 unused Assets / (5.4 MB). Loaded Objects now: 9718.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 52.330800 ms (FindLiveObjects: 2.115000 ms CreateObjectMapping: 0.815300 ms MarkObjects: 48.679800 ms  DeleteObjects: 0.195200 ms)
+
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.139000 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            1.383 ms
+	Integration:            36.825 ms
+	Integration of assets:  0.007 ms
+	Thread Wait Time:       46.229 ms
+	Total Operation Time:   84.443 ms
+Unloading 10 unused Assets / (8.6 MB). Loaded Objects now: 9454.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 50.576700 ms (FindLiveObjects: 4.262300 ms CreateObjectMapping: 1.090900 ms MarkObjects: 44.426000 ms  DeleteObjects: 0.138000 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.170300 ms
+Loaded scene 'Assets/Scenes/MainMenu.unity'
+	Deserialize:            2.138 ms
+	Integration:            26.814 ms
+	Integration of assets:  0.004 ms
+	Thread Wait Time:       23.557 ms
+	Total Operation Time:   52.513 ms
+Unloading 1 unused Assets / (2.8 KB). Loaded Objects now: 9458.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 31.711800 ms (FindLiveObjects: 0.701000 ms CreateObjectMapping: 0.371900 ms MarkObjects: 30.314400 ms  DeleteObjects: 0.034600 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.822000 ms
+Loaded scene 'Assets/Scenes/Connection.unity'
+	Deserialize:            2.533 ms
+	Integration:            24.512 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       31.237 ms
+	Total Operation Time:   58.286 ms
+Saving results to: C:/Users/equipo/AppData/LocalLow/Gorilla Escape Team/Gorilla Escape\TestResults.xml
+Saving results to: C:\Users\equipo\Documents\Repos\Gorilla Escape\Reports\QA\ReleaseReview\playmode_results.xml
+Unloading 5 unused Assets / (8.9 KB). Loaded Objects now: 9453.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 40.889300 ms (FindLiveObjects: 2.128900 ms CreateObjectMapping: 0.686500 ms MarkObjects: 37.649000 ms  DeleteObjects: 0.050900 ms)
+
+JUNGLE_PHASE0_CLEANUP complete=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PortableServiceHost/<Close>d__160:MoveNext () (at Assets/PortableModule/PortableServiceHost.cs:496)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start<PortableServiceHost/<Close>d__160> (PortableServiceHost/<Close>d__160&)
+PortableServiceHost:Close ()
+PortableServiceHost:ShutdownAsync () (at Assets/PortableModule/PortableServiceHost.cs:471)
+PortableServiceHost/<QuitAfterCleanup>d__164:MoveNext () (at Assets/PortableModule/PortableServiceHost.cs:512)
+System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start<PortableServiceHost/<QuitAfterCleanup>d__164> (PortableServiceHost/<QuitAfterCleanup>d__164&)
+PortableServiceHost:QuitAfterCleanup ()
+PortableServiceHost:WantsToQuit () (at Assets/PortableModule/PortableServiceHost.cs:507)
+UnityEngine.Application:Internal_ApplicationWantsToQuit ()
+
+(Filename: Assets/PortableModule/PortableServiceHost.cs Line: 496)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.873 ms
+	Integration:            25.677 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.060 ms
+	Total Operation Time:   26.612 ms
+Unloading 3 unused Assets / (8.0 MB). Loaded Objects now: 9198.
+Memory consumption went from 0.62 GB to 0.62 GB.
+Total: 32.986400 ms (FindLiveObjects: 1.023700 ms CreateObjectMapping: 0.178700 ms MarkObjects: 31.428600 ms  DeleteObjects: 0.071200 ms)
+
+[ScriptCompilation] Requested script compilation because: Player settings modified
+Starting: C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/equipo/Documents/Repos/Gorilla Escape/Unity
+ExitCode: 0 Duration: 0s289ms
+[1086/1429  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.26 seconds), 1 items updated, 1429 evaluated
+Reloading assemblies after finishing script compilation.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Total cache size 259262724
+Total cache size after purge 259262724, took 00:00:00.2531282
+Native extension for WindowsStandalone target not found
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  2.434 seconds
+Domain Reload Profiling: 3356ms
+	BeginReloadAssembly (639ms)
+		DisableScriptedObjects (117ms)
+		CreateAndSetChildDomain (302ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (72ms)
+	LoadAllAssembliesAndSetupDomain (188ms)
+		LoadAssemblies (139ms)
+		TypeCache.Refresh (7ms)
+		AnalyzeDomain (10ms)
+			ResolveRequiredComponents (7ms)
+	FinalizeReload (2435ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (210ms)
+			ProcessInitializeOnLoadAttributes (530ms)
+			ProcessInitializeOnLoadMethodAttributes (526ms)
+			AfterProcessingInitializeOnLoad (4ms)
+			EditorAssembliesLoaded (3ms)
+		AwakeInstancesAfterBackupRestoration (650ms)
+
+Asset Pipeline Refresh (id=41e4f65fd67691e49ba3e5f61f72fa60): Total: 3.699 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=2658 ms
+		Asset DB Callback time: managed=57 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=980 ms, compile time=2 ms, other=0 ms
+		Project Asset Count: scripts=1708, non-scripts=4980
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 2.684ms
+	ApplyChangesToAssetFolders: 0.346ms
+	Collect global state as custom dependencies: 4.359ms
+	ProcessAssetsWithTransientArtifactChanges: 0.219ms
+	CategorizeAssets: 74.552ms
+	CompileScripts: 1.960ms
+	ImportOutOfDateAssets: 2446.781ms (2443.291ms without children)
+		CollectScriptTypesHashes: 0.912ms
+		ReloadNativeAssets: 1.259ms
+		UnloadImportedAssets: 0.292ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.218ms
+		ImportSchedulerStart: 0.688ms
+	PostProcessAllAssets: 57.125ms
+		MonoPostProcessAllAssets: 57.118ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 148.887ms
+			AssetPostprocessor.OnPostprocessAllAssets 38.352ms
+			AssetReferenceReimportMonitor.OnPostprocessAllAssets 34.067ms
+			PostProcessor.OnPostprocessAllAssets 30.203ms
+			MaterialPostprocessor.OnPostprocessAllAssets 26.389ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 23.194ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 16.120ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 15.915ms
+			AssetChangedListener.OnPostprocessAllAssets 10.706ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 7.689ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 6.466ms
+			SyncVS.PostprocessSyncProject 4.542ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 2.984ms
+			GraphRefreshPostprocessor.OnPostprocessAllAssets 2.479ms
+			AssetChangeDetector.OnPostprocessAllAssets 1.751ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 1.457ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 1.440ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.869ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.858ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.822ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 0.628ms
+			SkillsProjectAssetPostprocessor.OnPostprocessAllAssets 0.610ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.570ms
+			ModelAssetProcessor.OnPostprocessAllAssets 0.490ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.410ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.327ms
+			ThemePostprocessor.OnPostprocessAllAssets 0.291ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.268ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.264ms
+			AssetEvents.OnPostprocessAllAssets 0.230ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.226ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.144ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.118ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.114ms
+			TrackSelectedAssetsProcessor.OnPostprocessAllAssets 0.076ms
+	GatherAllCurrentPrimaryImportResultRevisions: 0.419ms
+	PersistCurrentRevisions: 0.296ms
+	GenerateScriptTypeHashes: 2.878ms
+	GenerateScriptTypeSerializationHashes: 4.783ms
+	Untracked: 1033.144ms
+
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Executing IPostBuildCleanup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:194)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:129)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 268 unused Assets / (1.0 MB). Loaded Objects now: 9129.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 24.397800 ms (FindLiveObjects: 0.608800 ms CreateObjectMapping: 0.192400 ms MarkObjects: 20.593500 ms  DeleteObjects: 2.723500 ms)
+
+UPID Received 'c96887a6-7238-440b-9915-30c753523098'.
+Asset Pipeline Refresh (id=aa2d1c03fcda9a74badc14a419d935f8): Total: 0.112 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Test run completed. Exiting with code 0 (Ok). Run completed.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitApplication (UnityEditor.TestTools.TestRunner.CommandLineTest.Executer/ReturnCodes,string) (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/CommandLineTest/Executer.cs:81)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitIfRunIsCompleted () (at ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/CommandLineTest/Executer.cs:74)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@7a3849e09bd0/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 81)
+
+MonoPathRemapper: Attempts to remap: 118929; Successful remaps: 30774
+Serialized file version minimum: 22, current 23
+Importing 'GUID: 0000000000000000b000000000000000 - Path: ProjectSettings/EditorBuildSettings.asset' with importer (LibraryAssetImporter)
+Imported 'GUID: 0000000000000000b000000000000000' -> (Import Result ID: 'af8562ef71b87eabd750e6bbae6c2ee8') in 0.013 seconds [static dependencies only]. Details - ImportResultOutputID=0a89a5c5f492143e0fa186859e17ba6f DependenciesID=bb615b23001f46467f079ed4d01fdb55 StaticDependenciesID=884c81c850b54c2a79f582490e239947 
+Refreshing native plugins compatible for Editor in 2.26 ms, found 1 plugins.
+Asset Pipeline Refresh (id=1dd989354f4dff142b32536ac258c89b): Total: 0.038 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-equipo-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-equipo channel disconnected successfully.
+Lingering sessions upon destruction of worker manager
+Unity Data Store service was successfully shut down
+UDS shutting down local client system
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1793931445156,"processId":32680,"allocatedMemory":21054173,"memoryLabels":[{"Default":203761},{"Permanent":15516},{"NewDelete":71621},{"Thread":4205600},{"Manager":823909},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":852665},{"Material":24},{"GfxDevice":67440},{"Animation":952},{"FreeType":8},{"FontEngine":736},{"Physics":1970},{"Physics2D":16},{"Serialization":52992},{"Input":42840},{"JobScheduler":256},{"TextLib":43756},{"Mono":48},{"MonoCode":768},{"ScriptingNativeRuntime":1455416},{"BaseObject":269040},{"Resource":1208},{"Renderer":2376},{"Transform":4685},{"File":49003},{"WebCam":616},{"Culling":32},{"Terrain":11442},{"Wind":24},{"STL":40},{"String":762005},{"StaticString":3808},{"Utility":2674306},{"Curl":48},{"PoolAlloc":3080},{"AI":80},{"TypeTree":14869},{"ScriptManager":25280},{"CodeReload":448},{"RuntimeInitializeOnLoadManager":64},{"Sprites":102},{"SpriteAtlas":120},{"GI":7816},{"Director":8296},{"CloudService":576},{"WebRequest":3941},{"VR":49650},{"SceneManager":608},{"Video":208},{"LazyScriptCache":32},{"Camera":729},{"Secure":3785},{"SerializationCache":9256},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":464},{"Hierarchy":1188},{"UIElements":40},{"CoreStats":14456},{"Identifiers":7152},{"Gui":173},{"EditorUtility":143210},{"VersionControl":8},{"Undo":931},{"AssetDatabase":8950274},{"AssetImporter":40},{"EditorGi":328},{"UnityConnect":36918},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":96},{"DrivenProperties":72},{"LocalIPC":262},{"ProfilerEditor":9746},{"CoreBusinessMetrics":3182},{"Windowing":456},{"TLS":13984},{"Licensing":12630},{"AssetReference":32},{"IPCStream":32}]}

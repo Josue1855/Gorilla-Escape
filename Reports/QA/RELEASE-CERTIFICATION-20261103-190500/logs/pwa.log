@@ -1,0 +1,124 @@
+﻿
+added 19 packages in 2s
+
+> gorilla-escape-controller@0.1.0 test
+> node --test tests/*.test.js
+
+✔ menu and eight game profiles distinguish sensors, dominant hand and spectator navigation (4.7897ms)
+✔ camera-only scene stops sensors and releases wake intent without dropping the peer (4.5396ms)
+✔ foreground reconnect uses the resume credential and never replays a touch action (1.8632ms)
+✔ commands use the active scene token and cannot be sent by a spectator or while disconnected (34.625ms)
+✔ permission probe never requests access on load; capability-based, no UA (5.2381ms)
+✔ both permissions invoked synchronously before awaiting, granted is not a verified stream (0.8837ms)
+✔ denial is separate from absent API and retry really requests again (9.5857ms)
+✔ all APIs absent and partial API support remain explicit, no zeros manufactured (0.7806ms)
+✔ Android-style API without requestPermission is not reported as an explicit grant (1.5277ms)
+✔ insecure context never invokes sensor permission, errors are sanitized (1.0072ms)
+✔ CONNECT admission used once, technical connection precedes explicit permission (2.9225ms)
+✔ no QR does not simulate discovery or invoke transport (0.6982ms)
+✔ failed admission cannot be replayed; transport error text stays private (0.8977ms)
+✔ transport disconnect observed, late permission cannot override it, monitor cleaned (1.5758ms)
+✔ disposing during connect cannot publish readiness or retain owned transport (0.7176ms)
+✔ QA telemetry reuses measured windows, preserves missing and zero, and clears callback (1.0304ms)
+✔ ready control preview follows local tilt without inventing game balance or sensor values (1.1002ms)
+✔ connection check verifies HTTPS health without sending admission or sensor data (1.282ms)
+✔ connection check reports insecure context without a network call (1.2184ms)
+✔ public tunnel connection check uses only its allowed landing page (1.3484ms)
+✔ optional player registration posts once and never retries an uncertain write (5.2188ms)
+✔ game presentation expires when authenticated heartbeat context stops arriving (0.903ms)
+✔ retry reuses granted sensor permissions instead of prompting again (1.8726ms)
+✔ screen wake lock is reacquired after OS release and released on exit (1.5225ms)
+✔ invalid profiles never write and known unavailability differs from an uncertain POST (4.2651ms)
+✔ player name is validated and submitted with the active session (2.8385ms)
+✔ recenter action resets local tilt neutral and triggers haptic feedback when supported (1.3176ms)
+✔ unknown, absent or malformed context remains in lobby (3.4548ms)
+✔ Unity phase controls instructions; other players see their turn accurately (1.5686ms)
+✔ mobile score uses bounded authoritative stats and never invents missing values (3.484ms)
+✔ v2 presents each real game and omits unavailable statistics (3.7288ms)
+✔ accepts the compatible local health response (3.8777ms)
+✔ rejects unavailable and incompatible servers (1.663ms)
+✔ propagates network and malformed response failures for recoverable UI (4.0775ms)
+✔ rejects stale/incomplete health, without inventing a connected session (1.5124ms)
+✔ candidate metadata never retains addresses or SDP (6.1093ms)
+✔ successful connect stages and bounded report exclude credentials (10.6988ms)
+✔ HTTP rejection is distinguished; native/untrusted text never escapes (3.7507ms)
+✔ network exception maps to HTTP stage without reflecting its message (1.9196ms)
+✔ unknown server error is sanitized (1.5435ms)
+✔ official lobby admission closure keeps its sanitized rejection code (1.5964ms)
+✔ default browser fetch keeps its native global receiver (4.5731ms)
+✔ fetch rejection records only an allowed failure category (1.9119ms)
+✔ hidden immediately suspends, detaches sensors, discards pending input and interrupts measurement (27.9689ms)
+✔ short suspension resumes only after three fresh events per channel, never stale readiness (9.0796ms)
+✔ repeated hide/show keeps exactly one listener per channel and duplicate visibility notifications are inert (14.4398ms)
+✔ transport lost while hidden remains DISCONNECTED after return; no stale emission/reconnect (5.2389ms)
+✔ pagehide suspends samples but preserves the session for pageshow (3.4123ms)
+✔ repeated disposal remains promise-compatible with React cleanup after pagehide (3.5363ms)
+✔ partial is not zero; unavailable explicit (3.2322ms)
+✔ full fields and touch false preserved (0.7314ms)
+✔ source provenance required (3.0487ms)
+✔ orientation-only capture and independent orientation updates are forwarded (1.6015ms)
+✔ motion delivered + ACK delivered (12.7849ms)
+✔ motion packet lost does not hold next send for 2000ms (4.7457ms)
+✔ motion delivered but ACK lost does not hold next send for 2000ms (1.1991ms)
+✔ burst is latest-only and bounded while ACK absent; control remains reliable (4.5728ms)
+✔ 50Hz source x 3 runs, 100% ACK loss, bounded telemetry (94.3008ms)
+✔ 60Hz source x 3 runs, 100% ACK loss, bounded telemetry (72.5207ms)
+✔ 120Hz source x 3 runs, 100% ACK loss, bounded telemetry (118.3415ms)
+✔ buffer pressure drops latest instead of queuing history; closed motion leaves control intact (0.7595ms)
+✔ duplicate, out-of-order, invalid and old identity ACKs cannot advance input (0.4687ms)
+✔ SW precaches only generated local resources and never handles session/API/diagnostic traffic (205.5697ms)
+✔ shared wire example preserves fields, scalar vectors and version (5.6659ms)
+✔ public room requests carry the room prefix without changing local paths (5.4627ms)
+✔ permissions requested in same gesture; one source denied does not invent readings (5.7198ms)
+✔ denied, missing APIs, permission exception and insecure context are explicit (2.5331ms)
+✔ actual fields, nulls and invalid numeric values are distinguished (2.9443ms)
+✔ cadence is observed callback frequency; interruption does not claim sensor loss (1.1988ms)
+✔ orientation angles and screen changes stay separate (1.2122ms)
+✔ suspension removes listeners, resumes without counting hidden time as cadence (1.5179ms)
+✔ cleanup idempotent, pagehide cleans up; restart never duplicates listeners (0.9005ms)
+✔ stop or restart while permission pending isolates late results (1.5541ms)
+✔ native-style timers retain Window receiver and publish RUNNING before cleanup (3.7664ms)
+✔ sequence advances only for actual unique events, never snapshots or metric ticks (4.8807ms)
+✔ duplicate/out-of-order timestamps rejected independently per channel; UTC jumps do not alter Hz (1.9354ms)
+✔ partial axes, zero and nonfinite values remain distinct and no invalid-only emission occurs (0.7943ms)
+✔ motion and orientation rates are independent, snapshot dedup and UTC receipt preserved (3.0267ms)
+✔ deterministic 60 Hz fixture classifier, not physical evidence (0.3734ms)
+✔ deterministic 50 Hz fixture classifier, not physical evidence (0.1309ms)
+✔ deterministic 30 Hz fixture classifier, not physical evidence (2.4834ms)
+✔ deterministic 20 Hz fixture classifier, not physical evidence (0.296ms)
+✔ deterministic 15 Hz fixture classifier, not physical evidence (0.2841ms)
+✔ classifier conservative boundaries and bounded metrics with interval statistics (0.297ms)
+✔ latest-only coalesces a synchronous burst without ACK flow control (0.5964ms)
+✔ permission without events never INPUT_READY; sufficient valid finite events required, loss visible (0.8111ms)
+✔ partial actual input is LIMITED, not full readiness (0.6809ms)
+✔ physical measurement aggregates freeze independently; timers do not emit samples and cleanup cancels (3.4536ms)
+✔ coarsened receipt clock preserves distinct events and honest zero intervals (0.2327ms)
+✔ measured-pressure emission budget selects real unique events at 50Hz from two 60Hz channels, never fills idle time (7.6786ms)
+✔ emission budget resets due time on acquisition generation change without replaying snapshot (1.6413ms)
+✔ game touch zones accompany only real sensor samples, without timer-generated movement (2.1687ms)
+✔ game buttons clear on backgrounding and reject disconnected or disposed input (1.982ms)
+ℹ tests 93
+ℹ suites 0
+ℹ pass 93
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 724.2236
+
+> gorilla-escape-controller@0.1.0 build
+> vite build && node tools/build-service-worker.js
+
+[36mvite v8.3.2 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 25 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                        0.52 kB │ gzip:  0.32 kB
+dist/assets/LilitaOne-DWEPn4H6.ttf    28.09 kB
+dist/assets/NunitoSans-BCTtbOSn.ttf  113.59 kB
+dist/assets/index-BCcNFuRW.css        11.38 kB │ gzip:  3.63 kB
+dist/assets/index-8bnIFrc3.js        284.99 kB │ gzip: 89.38 kB
+
+[32m✓ built in 351ms[39m
+Offline shell generated: gorilla-shell-12c80cd8873e5ff0

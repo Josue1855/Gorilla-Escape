@@ -13,12 +13,16 @@ import java.util.concurrent.*;
 import javax.net.ssl.*;
 import com.gorillaescape.server.protocol.GorillaProtocol;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 class LocalTrustProcessTest {
     @TempDir Path directory;
     static int free(String address)throws IOException {try(var socket=new ServerSocket(0,1,InetAddress.getByName(address))){return socket.getLocalPort();}}
-    @Test void realLanTlsBootstrapProductQrOperatorIsolationAndEof() throws Exception {
+    // Fail-closed firewall semantics + real LAN trust bootstrap are Linux-only (pkexec helper);
+    // on Windows the firewall preflight is intentionally NOT_REQUIRED, so admission does not fail closed.
+    @Test @EnabledOnOs(OS.LINUX) void realLanTlsBootstrapProductQrOperatorIsolationAndEof() throws Exception {
         LanInterface.Candidate lan;
         try {lan=LanInterface.select(null,null);}catch(Exception e){org.junit.jupiter.api.Assumptions.assumeTrue(false,"No unique physical LAN; run this gate on explicit QA LAN");return;}
         Path trust=directory.resolve("trust");var material=LocalTrust.prepare(trust,lan.address());

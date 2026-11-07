@@ -27,19 +27,25 @@ public final class MobileController {
         this.runtime=runtime;this.origin=origin;this.address=address;this.lab=lab;
         operator=System.getenv("GORILLA_MOBILE_OPERATOR");
         if(operator==null||!operator.matches("[A-Za-z0-9_-]{43}"))throw new IllegalStateException("MOBILE_OPERATOR_CONFIG");
-        if(!lab && origin.isBlank())throw new IllegalStateException("MOBILE_ORIGIN_REQUIRED");
+        if(!lab && origin.isBlank() && !"CLOUDFLARED".equals(System.getenv("GORILLA_CONNECTION_MODE")))throw new IllegalStateException("MOBILE_ORIGIN_REQUIRED");
     }
     private void operator(HttpServletRequest request,String supplied){if(!(lab?"127.0.0.1":address).equals(request.getRemoteAddr())||supplied==null||!MessageDigest.isEqual(operator.getBytes(StandardCharsets.US_ASCII),supplied.getBytes(StandardCharsets.US_ASCII)))throw new ResponseStatusException(HttpStatus.FORBIDDEN,"OPERATOR_REQUIRED");}
     @PostMapping("/admission") public Map<String,Object> admission(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied)throws Exception{
         operator(r,supplied);
         URI page=lab?URI.create("http://127.0.0.1:"+r.getLocalPort()+"/mobile-lab/index.html"):
-            MobileOrigin.page(origin,address,r.getLocalPort());
+            ("CLOUDFLARED".equals(System.getenv("GORILLA_CONNECTION_MODE"))?URI.create("http://127.0.0.1:"+r.getLocalPort()+"/index.html"):MobileOrigin.page(origin,address,r.getLocalPort()));
         if(connectivity!=null)try{page=connectivity.page();}catch(IllegalStateException e){throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"CONNECTION_NOT_READY");}
-        var admission=runtime.admission();URI uri="http".equals(page.getScheme())?JoinQrPoc.labLink(page,admission):JoinQrPoc.link(page,admission);
+        var admission=runtime.admission();URI uri="http".equals(page.getScheme())?JoinQrPoc.labLink(page,admission):JoinQrPoc.link(page,admission,runtime.roomCode());
         var bits=JoinQrPoc.encode(uri);var image=new BufferedImage(bits.getWidth(),bits.getHeight(),BufferedImage.TYPE_INT_RGB);
         for(int y=0;y<bits.getHeight();y++)for(int x=0;x<bits.getWidth();x++)image.setRGB(x,y,bits.get(x,y)?0:0xffffff);
         var bytes=new ByteArrayOutputStream();ImageIO.write(image,"PNG",bytes);
         return Map.of("protocolVersion",1,"url",uri.toASCIIString(),"qrPng",Base64.getEncoder().encodeToString(bytes.toByteArray()),"expiresInSeconds",30,"scope",lab?"loopback software/lab; not phone onboarding":"DEC-016 prepared-device LAN HTTPS");
+    }
+    @PostMapping("/admission/revoke") public Map<String,String> revokeAdmission(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied,@RequestBody Map<String,String> body){
+        operator(r,supplied);
+        String token=body.get("token");
+        if(token!=null)runtime.revokeAdmission(token);
+        return Map.of("status","REVOKED");
     }
     @PostMapping("/join")public ResponseEntity<?> join(@RequestBody MobileRuntime.Signal signal){
         try{return ResponseEntity.ok(runtime.join(signal));}
@@ -50,6 +56,15 @@ public final class MobileController {
     @PostMapping("/reconnect")public MobileRuntime.Answer reconnect(@RequestBody Resume r){try{return runtime.reconnect(r.sessionId(),r.playerId(),r.resumeToken(),r.offer());}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"RESUME_REJECTED");}}
     public record Leave(String peerId,String resumeToken){}
     @PostMapping("/disconnect")public Map<String,String> disconnect(@RequestBody Leave r){try{runtime.disconnect(r.peerId(),r.resumeToken());return Map.of("state","DISCONNECTED");}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"DISCONNECT_REJECTED");}}
+    @PostMapping("/forfeit")public Map<String,String> forfeit(@RequestBody Leave r){try{runtime.forfeit(r.peerId(),r.resumeToken());return Map.of("state","FORFEITED");}catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"FORFEIT_REJECTED");}}
+    @PostMapping("/name")public ResponseEntity<?> name(@RequestBody MobileRuntime.ProfileRequest request){
+        try{return ResponseEntity.ok(runtime.setDisplayName(request));}catch(Exception error){return ResponseEntity.badRequest().body(Map.of("error","NAME_REJECTED"));}
+    }
+    @PostMapping("/profile")public ResponseEntity<?> profile(@RequestBody MobileRuntime.ProfileRequest request){
+        try{return ResponseEntity.ok(runtime.createProfile(request));}
+        catch(Exception error){String code=Set.of("PLAYERS_UNAVAILABLE","PROFILE_NAME").contains(String.valueOf(error.getMessage()))?error.getMessage():"PROFILE_NOT_CONFIRMED";
+            return ResponseEntity.status(code.equals("PLAYERS_UNAVAILABLE")?503:400).body(Map.of("error",code));}
+    }
     @GetMapping("/diagnostics")public Map<String,Object> diagnostics(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied){operator(r,supplied);return Map.of("peers",runtime.peerCount(),"inputs",runtime.inputs.metrics(),"joinAttempts",runtime.joinDiagnostics());}
     @PostMapping("/end")public Map<String,String> end(HttpServletRequest r,@RequestHeader(value="X-Gorilla-Operator",required=false)String supplied){operator(r,supplied);runtime.destroy();return Map.of("state","CLOSED");}
 }
