@@ -56,6 +56,7 @@ public static class AutomaticPrototypeSetup
     private static void EnsureMultiSceneBuildSettings()
     {
         string[] paths = {
+            $"Assets/Scenes/{SceneNavigator.Splash}.unity",
             "Assets/Scenes/Connection.unity",
             "Assets/Scenes/MainMenu.unity",
             "Assets/Scenes/BananaBowling.unity",
@@ -63,7 +64,10 @@ public static class AutomaticPrototypeSetup
             "Assets/Scenes/JungleBaseball.unity",
             "Assets/Scenes/JungleDrums.unity",
             "Assets/Scenes/CoconutSlice.unity",
-            "Assets/Scenes/WhackAMole.unity"
+            "Assets/Scenes/WhackAMole.unity",
+            $"Assets/Scenes/{SceneNavigator.LogBalance}.unity",
+            $"Assets/Scenes/{SceneNavigator.CoconutThrow}.unity",
+            $"Assets/Scenes/{SceneNavigator.JungleKeeper}.unity"
         };
         foreach (string path in paths) if (!System.IO.File.Exists(path)) return;
         bool correct = EditorBuildSettings.scenes.Length == paths.Length;
@@ -156,7 +160,7 @@ public static class AutomaticPrototypeSetup
         EditorSceneManager.SaveScene(scene, ScenePath);
         EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
         Selection.activeGameObject = root;
-        Debug.Log("Banana Bowling editable construido. Abre ESCENARIO EDITABLE en la jerarquía.");
+        Debug.Log("Banana Bowling editable construido. Abre ESCENARIO EDITABLE en la jerarquÃ­a.");
     }
 
     [MenuItem("Tools/Construir arquitectura multi-escena")]
@@ -182,6 +186,7 @@ public static class AutomaticPrototypeSetup
         CreateSimpleScene(whackPath, "Whack-A-Mole Controller", typeof(WhackAMoleController), new Color(.03f, .12f, .075f));
 
         EditorBuildSettings.scenes = new[] {
+            new EditorBuildSettingsScene($"Assets/Scenes/{SceneNavigator.Splash}.unity", true),
             new EditorBuildSettingsScene(connectionPath, true),
             new EditorBuildSettingsScene(menuPath, true),
             new EditorBuildSettingsScene(bowlingPath, true),
@@ -189,7 +194,10 @@ public static class AutomaticPrototypeSetup
             new EditorBuildSettingsScene(baseballPath, true),
             new EditorBuildSettingsScene(drumsPath, true),
             new EditorBuildSettingsScene(coconutSlicePath, true),
-            new EditorBuildSettingsScene(whackPath, true)
+            new EditorBuildSettingsScene(whackPath, true),
+            new EditorBuildSettingsScene($"Assets/Scenes/{SceneNavigator.LogBalance}.unity", true),
+            new EditorBuildSettingsScene($"Assets/Scenes/{SceneNavigator.CoconutThrow}.unity", true),
+            new EditorBuildSettingsScene($"Assets/Scenes/{SceneNavigator.JungleKeeper}.unity", true)
         };
         EditorSceneManager.OpenScene(connectionPath);
         Debug.Log("Arquitectura creada: Connection, MainMenu, BananaBowling y GorillaBoxing.");

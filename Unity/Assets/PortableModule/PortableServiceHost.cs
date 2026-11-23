@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using JungleParty.Portable;
 using UnityEngine;
+using UnityEngine.Networking;
 using Debug = UnityEngine.Debug;
 
 public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
@@ -16,6 +18,11 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     public bool IsRunning { get; private set; }
     public string Status { get; private set; } = "MÓDULO SIN INICIAR";
     public string PublicControllerUrl { get; private set; } = string.Empty;
+    public string ControllerUrlForRoom(string room)
+    {
+        if (string.IsNullOrEmpty(PublicControllerUrl)) return string.Empty;
+        return PublicControllerUrl + "/?room=" + Uri.EscapeDataString(room ?? string.Empty);
+    }
     public string MotionEndpoint => "http://127.0.0.1:8788/motion?room=";
     public string PoseEndpoint => "http://127.0.0.1:8788/pose";
 
@@ -23,6 +30,13 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     private Process preparationProcess;
     private Process cameraProcess;
     private Process tunnelProcess;
+    private string tunnelExecutable;
+    private string announcedTunnelUrl;
+    private bool tunnelRegistered;
+    private Coroutine tunnelProbe;
+    private Process publicPageProbe;
+    private bool waitingForPublicLink;
+    private float nextTunnelRetry;
 
     public static PortableServiceHost Ensure()
     {
@@ -77,7 +91,8 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         try
         {
             cameraProcess = StartHidden(python, Quote(tracker), Path.GetDirectoryName(tracker));
-            tunnelProcess = StartTunnel(cloudflared, Path.GetDirectoryName(cloudflared));
+            tunnelExecutable = cloudflared;
+            tunnelProcess = StartTunnel(tunnelExecutable, Path.GetDirectoryName(tunnelExecutable));
             IsRunning = true;
             Status = "INICIANDO CÁMARA Y CONTROL";
             return true;
@@ -97,6 +112,41 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
 
     private void Update()
     {
+        if (IsRunning && tunnelProcess != null && tunnelProcess.HasExited)
+        {
+            CancelTunnelProbe();
+            tunnelProcess.Dispose();
+            tunnelProcess = null;
+            lock (statusLock)
+            {
+                announcedTunnelUrl = PublicControllerUrl = string.Empty;
+                tunnelRegistered = false;
+            }
+            nextTunnelRetry = Time.unscaledTime + 3f;
+        }
+        if (IsRunning && tunnelProcess == null && Time.unscaledTime >= nextTunnelRetry)
+        {
+            nextTunnelRetry = Time.unscaledTime + 5f;
+            try
+            {
+                tunnelProcess = StartTunnel(tunnelExecutable, Path.GetDirectoryName(tunnelExecutable));
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning("No se pudo reabrir el túnel: " + exception.Message);
+            }
+        }
+
+        string candidate;
+        lock (statusLock)
+            candidate = tunnelRegistered ? announcedTunnelUrl : null;
+        if (IsRunning && tunnelProcess != null && tunnelProbe == null &&
+            string.IsNullOrEmpty(PublicControllerUrl) && !string.IsNullOrEmpty(candidate))
+        {
+            waitingForPublicLink = true;
+            tunnelProbe = StartCoroutine(VerifyPublicLink(candidate, tunnelProcess));
+        }
+
         if (preparationProcess == null || !preparationProcess.HasExited) return;
         int exitCode = preparationProcess.ExitCode;
         preparationProcess.Dispose();
@@ -111,6 +161,8 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         lock (statusLock)
         {
             if (phoneConnected && cameraConnected) Status = "MÓDULO LISTO";
+            else if (tunnelProcess == null) Status = "RECONECTANDO TÚNEL";
+            else if (waitingForPublicLink) Status = "COMPROBANDO EL ENLACE";
             else if (string.IsNullOrEmpty(PublicControllerUrl)) Status = "CREANDO ENLACE DEL CONTROL";
             else if (!cameraConnected) Status = "ESPERANDO CÁMARA";
             else Status = "ESPERANDO CELULAR";
@@ -135,12 +187,115 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
     {
         if (string.IsNullOrWhiteSpace(args.Data)) return;
         Match match = TunnelUrl.Match(args.Data);
-        if (!match.Success) return;
         lock (statusLock)
         {
-            PublicControllerUrl = match.Value;
-            Status = "ENLACE LISTO";
+            if (match.Success) announcedTunnelUrl = match.Value;
+            if (args.Data.Contains("Registered tunnel connection")) tunnelRegistered = true;
+
         }
+    }
+
+    [Serializable]
+    private sealed class DnsReply
+    {
+        public int Status;
+        public DnsAnswer[] Answer;
+    }
+
+    [Serializable]
+    private sealed class DnsAnswer
+    {
+        public int type;
+        public string data;
+    }
+
+    private IEnumerator VerifyPublicLink(string candidate, Process process)
+    {
+        string host = new Uri(candidate).Host;
+        float deadline = Time.realtimeSinceStartup + 100f;
+        while (Time.realtimeSinceStartup < deadline && process == tunnelProcess && !process.HasExited)
+        {
+            // Avoid querying the local DNS while the new hostname may still be unpublished.
+            string ip = null;
+            using (var dns = UnityWebRequest.Get("https://dns.google/resolve?type=A&name=" + UnityWebRequest.EscapeURL(host)))
+            {
+                dns.timeout = 4;
+                yield return dns.SendWebRequest();
+                if (dns.result == UnityWebRequest.Result.Success)
+                {
+                    var answer = JsonUtility.FromJson<DnsReply>(dns.downloadHandler.text);
+                    var record = answer?.Status == 0 && answer.Answer != null
+                        ? Array.Find(answer.Answer, item => item.type == 1 && System.Net.IPAddress.TryParse(item.data, out _))
+                        : null;
+                    ip = record?.data;
+                }
+
+                if (dns.result == UnityWebRequest.Result.Success && string.IsNullOrEmpty(ip))
+                {
+                    yield return new WaitForSecondsRealtime(2f);
+                    continue;
+                }
+            }
+
+            string page = null;
+            string curl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "curl.exe");
+            if (ip != null && File.Exists(curl))
+            {
+                // Preserve HTTPS hostname and certificate validation while bypassing stale local DNS.
+                var info = HiddenInfo(curl, "--silent --fail --max-time 5 --resolve " +
+                    Quote(host + ":443:" + ip) + " " + Quote(candidate + "/?check=unity"), Path.GetDirectoryName(curl));
+                info.RedirectStandardOutput = true;
+                try { publicPageProbe = Process.Start(info); }
+                catch (Exception exception) { Debug.LogWarning("No se pudo iniciar la comprobación HTTPS: " + exception.Message); }
+                if (publicPageProbe != null)
+                {
+                    var output = publicPageProbe.StandardOutput.ReadToEndAsync();
+                    while (!publicPageProbe.HasExited || !output.IsCompleted) yield return null;
+                    if (publicPageProbe.ExitCode == 0 && output.Status == System.Threading.Tasks.TaskStatus.RanToCompletion)
+                        page = output.Result;
+                    publicPageProbe.Dispose();
+                    publicPageProbe = null;
+                }
+            }
+            else
+            {
+                using var request = UnityWebRequest.Get(candidate + "/?check=unity");
+                request.timeout = 5;
+                yield return request.SendWebRequest();
+                if (request.result == UnityWebRequest.Result.Success) page = request.downloadHandler.text;
+            }
+
+            if (page != null && page.Contains("id=\"activate\""))
+            {
+                PublicControllerUrl = candidate;
+                break;
+            }
+            yield return new WaitForSecondsRealtime(2f);
+        }
+
+        tunnelProbe = null;
+        waitingForPublicLink = false;
+        if (string.IsNullOrEmpty(PublicControllerUrl) && process == tunnelProcess)
+        {
+            Debug.LogWarning("El túnel se registró, pero no se pudo abrir la página del control. Se reintentará.");
+            StopOwned(tunnelProcess);
+            tunnelProcess = null;
+            lock (statusLock)
+            {
+                announcedTunnelUrl = string.Empty;
+                tunnelRegistered = false;
+            }
+            nextTunnelRetry = Time.unscaledTime + 3f;
+        }
+    }
+
+    private void CancelTunnelProbe()
+    {
+        if (tunnelProbe != null) StopCoroutine(tunnelProbe);
+        StopOwned(publicPageProbe);
+        publicPageProbe = null;
+        tunnelProbe = null;
+        waitingForPublicLink = false;
     }
 
     private static Process StartHidden(string executable, string arguments, string workingDirectory)
@@ -181,12 +336,17 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
 
     public void StopModule()
     {
+        CancelTunnelProbe();
         StopOwned(tunnelProcess);
         StopOwned(cameraProcess);
         StopOwned(preparationProcess);
         tunnelProcess = cameraProcess = preparationProcess = null;
         IsRunning = false;
-        PublicControllerUrl = string.Empty;
+        lock (statusLock)
+        {
+            announcedTunnelUrl = PublicControllerUrl = string.Empty;
+            tunnelRegistered = false;
+        }
         Status = "MÓDULO DETENIDO";
     }
 
@@ -207,3 +367,4 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         Instance = null;
     }
 }
+

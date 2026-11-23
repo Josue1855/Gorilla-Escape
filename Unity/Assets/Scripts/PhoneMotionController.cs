@@ -90,6 +90,7 @@ public sealed class PhoneMotionController : MonoBehaviour
     private int bowlingFrame, bowlingBall = 1;
     private bool confirmInitialized;
     private bool poseDetected;
+    private int poseValidFrames;
     private bool swingPending;
     private bool karateLost;
     private bool karateMotionHigh;
@@ -104,8 +105,8 @@ public sealed class PhoneMotionController : MonoBehaviour
     private GUIStyle titleStyle, bigStyle, bodyStyle, buttonStyle;
     private GUIStyle dashHeadingStyle, dashRowStyle, dashRowActiveStyle, dashScoreStyle, dashScoreActiveStyle;
     private Texture2D panelTexture, accentTexture, selectedTexture, optionTexture, coconutTexture, cactusTexture, darkTexture, boxingBlueTexture, boxingRedTexture, gorillaTexture, leavesBottom, leavesLeft, leavesRight;
-    private Texture2D bowlingHudTexture, bowlingCardTexture, bowlingButtonTexture, bowlingButtonHoverTexture;
-    private Font hudFont;
+    private Texture2D bowlingButtonTexture, bowlingButtonHoverTexture;
+    private AudioSource sfx;
     private MotionSession sharedSession;
 
     private void Awake()
@@ -113,6 +114,7 @@ public sealed class PhoneMotionController : MonoBehaviour
         Application.runInBackground = true;
         for (int i = 0; i < bowlingFrames.Length; i++) bowlingFrames[i] = new List<int>();
         sharedSession = MotionSession.Ensure();
+        sfx = JungleAudioBank.Attach2DSource(gameObject);
         roomCode = sharedSession.RoomCode;
         polling = sharedSession.IsPolling;
         gorillaTexture = Resources.Load<Texture2D>("Jungle/gorila_menu");
@@ -1040,12 +1042,13 @@ public sealed class PhoneMotionController : MonoBehaviour
             gorillaMascot.transform.rotation = gorillaRestRotation;
         }
         state = GameState.Boxing;
+        sfx.PlayOneShot(JungleAudioBank.BoxingBell, .75f);
     }
 
     private void UpdateBoxing()
     {
         boxingRoundTime -= Time.deltaTime;
-        if (boxingRoundTime <= 0f) { state = GameState.BoxingOver; return; }
+        if (boxingRoundTime <= 0f) { state = GameState.BoxingOver; sfx.PlayOneShot(JungleAudioBank.BoxingBell, .80f); return; }
         if (Time.time >= gorillaActionAt && boxingGorillaAction == 0)
         {
             float roll = UnityEngine.Random.value;
@@ -1060,6 +1063,7 @@ public sealed class PhoneMotionController : MonoBehaviour
             bool covering = boxingLeftHand.y < .49f && boxingRightHand.y < .49f;
             bool dodging = Mathf.Abs(poseBodyX - .5f) > .13f;
             float damage = dodging ? 0f : covering ? 5f : UnityEngine.Random.Range(14f, 22f);
+            if (damage > 0f) sfx.PlayOneShot(covering ? JungleAudioBank.BoxingBlock : JungleAudioBank.BoxingPunch, covering ? .55f : .85f);
             playerHealth = Mathf.Max(0f, playerHealth - damage);
             boxingMessageCode = dodging ? 4 : covering ? 3 : 2; boxingMessageUntil = Time.time + .8f;
             if (playerHealth <= 0f) { state = GameState.BoxingKnockdown; getUpEnergy = 0f; resultAt = Time.time + 10f; }
@@ -1075,10 +1079,15 @@ public sealed class PhoneMotionController : MonoBehaviour
         bool gorillaBlocking = boxingGorillaAction == 2;
         float baseDamage = right ? Mathf.Clamp((phonePower - 180f) / 28f, 5f, 20f) : Mathf.Clamp(cameraSpeed * 4.2f, 3f, 10f);
         float damage = gorillaBlocking ? baseDamage * .18f : baseDamage;
+        sfx.PlayOneShot(gorillaBlocking ? JungleAudioBank.BoxingBlock : JungleAudioBank.BoxingPunch, gorillaBlocking ? .55f : .85f);
         gorillaHealth = Mathf.Max(0f, gorillaHealth - damage);
         boxingMessageCode = gorillaBlocking ? 5 : 1; boxingMessageUntil = Time.time + .55f;
         gorillaReaction = 2; gorillaReactionUntil = Time.time + .38f;
-        if (gorillaHealth <= 0f) state = GameState.BoxingOver;
+        if (gorillaHealth <= 0f)
+        {
+            state = GameState.BoxingOver;
+            sfx.PlayOneShot(JungleAudioBank.BoxingBell, .85f);
+        }
     }
 
     private void Connect()
@@ -1090,6 +1099,8 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void Update()
     {
+        if (PartyMode.Blocking) return;
+        if (JungleStory.BlocksGame) return;
         ReadPhone();
         ReadPose();
         AnimateGorilla();
@@ -1175,7 +1186,32 @@ public sealed class PhoneMotionController : MonoBehaviour
         poseDetected = needsBothHands
             ? pose.leftDetected || pose.rightDetected
             : sharedSession.HandMode == MotionSession.HandTrackingMode.LeftOnly ? pose.leftDetected : pose.rightDetected || pose.detected;
-        if (!poseDetected) return;
+        bool legacyBowlingTracking = SceneManager.GetActiveScene().name == SceneNavigator.Bowling;
+        if (legacyBowlingTracking)
+        {
+            if (!poseDetected) return;
+        }
+        else
+        {
+        bool rightCoordinatesValid = pose.rightWristX >= -.02f && pose.rightWristX <= 1.02f && pose.rightWristY >= -.02f && pose.rightWristY <= 1.02f;
+        bool leftCoordinatesValid = pose.leftWristX >= -.02f && pose.leftWristX <= 1.02f && pose.leftWristY >= -.02f && pose.leftWristY <= 1.02f;
+        bool coordinatesValid = sharedSession.HandMode == MotionSession.HandTrackingMode.Both
+            ? (pose.leftDetected && leftCoordinatesValid) || (pose.rightDetected && rightCoordinatesValid)
+            : sharedSession.HandMode == MotionSession.HandTrackingMode.LeftOnly ? leftCoordinatesValid : rightCoordinatesValid;
+        bool confidenceValid = sharedSession.HandMode == MotionSession.HandTrackingMode.RightOnly ? pose.confidence >= .50f : poseDetected;
+        if (!poseDetected || !coordinatesValid || !confidenceValid)
+        {
+            poseDetected = false;
+            poseValidFrames = 0;
+            poseWristVelocityX = 0f;
+            poseSampleAt = 0f;
+            lastPoseAt = -10f;
+            poseTrail.Clear();
+            return;
+        }
+        poseValidFrames++;
+        if (poseValidFrames < 2) { poseDetected = false; return; }
+        }
         float now = Time.unscaledTime;
         float dt = poseSampleAt > 0 ? Mathf.Clamp(now - poseSampleAt, .008f, .12f) : .033f;
         if (pose.leftDetected || pose.rightDetected)
@@ -1318,6 +1354,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void LaunchBall()
     {
+        sfx.PlayOneShot(JungleAudioBank.BowlingRoll, .70f);
         state = GameState.Rolling; ballBody.isKinematic = false;
         ballPassedPinsAt = -1f;
         float speed = Mathf.Clamp(8.3f + (power - 330f) * .022f, 8.3f, 15.8f);
@@ -1362,8 +1399,10 @@ public sealed class PhoneMotionController : MonoBehaviour
             else FreezeStandingPin(pin);
         }
         bool rackCleared = activePins > 0 && fallen >= activePins;
+        if (fallen > 0) sfx.PlayOneShot(rackCleared ? JungleAudioBank.BowlingStrike : JungleAudioBank.BowlingPins, rackCleared ? .90f : .75f);
         lastPins = fallen;
         TriggerGorillaReaction(rackCleared);
+        int completedFrame = bowlingFrame;
         RegisterBowlingRoll(fallen);
         totalScore = CalculateBowlingScores()[Mathf.Clamp(bowlingFrame, 0, 9)];
         if (totalScore < 0)
@@ -1373,6 +1412,41 @@ public sealed class PhoneMotionController : MonoBehaviour
         }
         state = GameState.Results; resultAt = Time.time + 2.7f;
         StopBody(ballBody, true);
+        if (bowlingGameOver || bowlingFrame != completedFrame)
+        {
+            var saved = new BowlingPartyRound { frame = bowlingFrame, over = bowlingGameOver };
+            for (int i=0; i<10; i++) saved.rolls[i] = new List<int>(bowlingFrames[i]);
+            if (PartyMode.Round(GetDisplayedBowlingScore(), saved, bowlingGameOver, RestoreBowlingPartyRound)) return;
+        }
+        if (bowlingGameOver)
+        {
+            int finalScore = GetDisplayedBowlingScore();
+            JungleStory.Finish(SceneNavigator.Bowling, finalScore >= 80, $"Total: {finalScore} puntos");
+        }
+    }
+
+    private sealed class BowlingPartyRound
+    {
+        internal int frame;
+        internal bool over;
+        internal List<int>[] rolls = new List<int>[10];
+    }
+
+    private void RestoreBowlingPartyRound(object snapshot)
+    {
+        StartBowlingGame();
+        if (snapshot is BowlingPartyRound saved)
+        {
+            bowlingFrame = saved.frame;
+            bowlingGameOver = saved.over;
+            for (int i=0; i<10; i++)
+            {
+                bowlingFrames[i].Clear();
+                bowlingFrames[i].AddRange(saved.rolls[i]);
+            }
+        }
+        state = GameState.Aim;
+        Calibrate();
     }
 
     private IEnumerator AnimateBowlingRackTransition()
@@ -1591,11 +1665,8 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void PrepareStyles()
     {
-        hudFont ??= Font.CreateDynamicFontFromOSFont(new[] { "Segoe UI", "Arial" }, 32);
         // Las referencias sobreviven a una recompilación mientras Play está activo.
         // Descarta las texturas antiguas para que el nuevo HUD se vea de inmediato.
-        if (bowlingHudTexture != null && bowlingHudTexture.width < 192) { Destroy(bowlingHudTexture); bowlingHudTexture = null; }
-        if (bowlingCardTexture != null && bowlingCardTexture.width < 144) { Destroy(bowlingCardTexture); bowlingCardTexture = null; }
         if (bowlingButtonTexture != null && bowlingButtonTexture.width < 128) { Destroy(bowlingButtonTexture); bowlingButtonTexture = null; }
         if (bowlingButtonHoverTexture != null && bowlingButtonHoverTexture.width < 128) { Destroy(bowlingButtonHoverTexture); bowlingButtonHoverTexture = null; }
         panelTexture ??= Solid(new Color(.025f, .045f, .09f, .94f));
@@ -1607,14 +1678,12 @@ public sealed class PhoneMotionController : MonoBehaviour
         darkTexture ??= Solid(new Color(.035f, .025f, .018f, 1f));
         boxingBlueTexture ??= Solid(new Color(.12f, .55f, 1f, 1f));
         boxingRedTexture ??= Solid(new Color(1f, .25f, .12f, 1f));
-        bowlingHudTexture ??= Rounded(192, 48, new Color(.018f, .055f, .075f, .94f), new Color(.018f, .055f, .075f, .94f));
-        bowlingCardTexture ??= Rounded(144, 36, new Color(.035f, .15f, .13f, .96f), new Color(.035f, .15f, .13f, .96f));
         bowlingButtonTexture ??= Rounded(128, 32, new Color(.07f, .67f, .84f, 1f), new Color(.07f, .67f, .84f, 1f));
         bowlingButtonHoverTexture ??= Rounded(128, 32, new Color(.16f, .84f, .94f, 1f), new Color(.16f, .84f, .94f, 1f));
-        titleStyle ??= new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = 32, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(.45f, .94f, 1f) } };
-        bigStyle ??= new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = 38, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
-        bodyStyle ??= new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = 21, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = new Color(.86f, .9f, 1f) } };
-        buttonStyle ??= new GUIStyle(GUI.skin.button) { font = hudFont, fontSize = 22, fontStyle = FontStyle.Bold, normal = { background = accentTexture, textColor = new Color(.01f, .06f, .1f) } };
+        titleStyle ??= new GUIStyle(GUI.skin.label) { font = JungleUITheme.TitleFont, fontSize = 32, fontStyle = FontStyle.Normal, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(.45f, .94f, 1f) } };
+        bigStyle ??= new GUIStyle(GUI.skin.label) { font = JungleUITheme.TitleFont, fontSize = 38, fontStyle = FontStyle.Normal, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
+        bodyStyle ??= new GUIStyle(GUI.skin.label) { font = JungleUITheme.TextFont, fontSize = 21, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = new Color(.86f, .9f, 1f) } };
+        buttonStyle ??= new GUIStyle(GUI.skin.button) { font = JungleUITheme.TextFont, fontSize = 22, fontStyle = FontStyle.Bold, normal = { background = accentTexture, textColor = new Color(.01f, .06f, .1f) } };
     }
 
     private Texture2D Rounded(int size, int radius, Color fill, Color border)
@@ -1638,8 +1707,11 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void OnGUI()
     {
+        if (PartyMode.Blocking) return;
+        if (bowlingGameOver && PartyMode.Report(GetDisplayedBowlingScore())) return;
+        if (state == GameState.BoxingOver && PartyMode.Report(Mathf.RoundToInt(100f - gorillaHealth + (gorillaHealth <= 0 ? 100f : 0f)))) return;
+        if (JungleStory.BlocksGame) return;
         PrepareStyles();
-        if (hudFont != null) GUI.skin.font = hudFont;
         if (state == GameState.Menu)
         {
             if (gorillaTexture != null) GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), gorillaTexture, ScaleMode.ScaleAndCrop);
@@ -1672,56 +1744,57 @@ public sealed class PhoneMotionController : MonoBehaviour
         }
         DrawBowlingHud();
         DrawBowlingDashboard();
+        if (bowlingGameOver) { DrawBowlingVictory(); return; }
         DrawCameraStatus();
     }
 
     private void DrawBowlingHud()
     {
         float w = Screen.width, h = Screen.height;
-        float scale = Mathf.Clamp(Mathf.Min(w / 1920f, h / 1080f), .65f, 1.35f);
-        Rect hud = new Rect(24 * scale, 20 * scale, Mathf.Min(w * .57f, 820 * scale), 154 * scale);
-        GUI.Box(hud, GUIContent.none, RoundedStyle(bowlingHudTexture, 24));
+        float scale = Mathf.Clamp(Mathf.Min(w / 1920f, h / 1080f), .45f, 1.35f);
+        Rect hud = new Rect(24 * scale, 20 * scale, Mathf.Min(w * .57f, 820 * scale), 179 * scale);
+        JungleUITheme.DrawPanel(hud);
 
-        GUIStyle brand = CrispLabel(Mathf.RoundToInt(18 * scale), new Color(.30f, .95f, .88f), FontStyle.Bold, TextAnchor.MiddleLeft);
-        GUIStyle frame = CrispLabel(Mathf.RoundToInt(29 * scale), Color.white, FontStyle.Bold, TextAnchor.MiddleLeft);
+        GUIStyle brand = CrispLabel(Mathf.RoundToInt(18 * scale), new Color(.30f, .95f, .88f), FontStyle.Bold, TextAnchor.MiddleLeft, true);
+        GUIStyle frame = CrispLabel(Mathf.RoundToInt(29 * scale), Color.white, FontStyle.Bold, TextAnchor.MiddleLeft, true);
         GUIStyle messageStyle = CrispLabel(Mathf.RoundToInt(14 * scale), new Color(.82f, .90f, .89f), FontStyle.Normal, TextAnchor.MiddleLeft);
-        GUI.Label(new Rect(hud.x + 22 * scale, hud.y + 10 * scale, hud.width * .42f, 30 * scale), "BANANA BOWLING", brand);
+        JungleUITheme.DrawFittedLabel(new Rect(hud.x + 22 * scale, hud.y + 10 * scale, hud.width - 44 * scale, 30 * scale), "BANANA BOWLING", brand);
 
         bool connected = Time.unscaledTime - lastPacketAt < 1f;
         if (!connected)
         {
-            GUI.Label(new Rect(hud.x + 22 * scale, hud.y + 42 * scale, hud.width * .52f, 43 * scale), $"CÓDIGO  {roomCode}", frame);
-            GUI.Label(new Rect(hud.x + 22 * scale, hud.y + 86 * scale, hud.width * .54f, 28 * scale), connectionState, messageStyle);
+            JungleUITheme.DrawFittedLabel(new Rect(hud.x + 22 * scale, hud.y + 42 * scale, hud.width * .52f, 43 * scale), $"CÓDIGO  {roomCode}", frame);
+            JungleUITheme.DrawFittedLabel(new Rect(hud.x + 22 * scale, hud.y + 86 * scale, hud.width * .54f, 28 * scale), connectionState, messageStyle);
             if (!polling && GUI.Button(new Rect(hud.xMax - 205 * scale, hud.y + 52 * scale, 180 * scale, 42 * scale), "CONECTAR", CrispButton(Mathf.RoundToInt(14 * scale)))) Connect();
             return;
         }
 
-        GUI.Label(new Rect(hud.x + 22 * scale, hud.y + 40 * scale, hud.width * .44f, 43 * scale), $"FRAME {Mathf.Min(bowlingFrame + 1, 10)}  ·  BOLA {bowlingBall}", frame);
+        JungleUITheme.DrawFittedLabel(new Rect(hud.x + 22 * scale, hud.y + 40 * scale, hud.width - 44 * scale, 43 * scale), $"FRAME {Mathf.Min(bowlingFrame + 1, 10)}  ·  BOLA {bowlingBall}", frame);
         string shotLabel = lastLaunchDirection < -.18f ? "DIAGONAL IZQUIERDA" : lastLaunchDirection > .18f ? "DIAGONAL DERECHA" : "TIRO RECTO";
         string message = bowlingGameOver ? $"PARTIDA TERMINADA · TOTAL {GetDisplayedBowlingScore()}" : state == GameState.Aim
             ? (swingPending ? "Leyendo trayectoria..." : "Coloca la mano · Swing fuerte · Traza la diagonal")
             : state == GameState.Rolling ? $"¡Bola en juego! · {shotLabel}" : $"Derribaste {lastPins} pinos";
-        GUI.Label(new Rect(hud.x + 22 * scale, hud.y + 80 * scale, hud.width - 44 * scale, 28 * scale), message, messageStyle);
+        JungleUITheme.DrawFittedLabel(new Rect(hud.x + 22 * scale, hud.y + 83 * scale, hud.width - 44 * scale, 28 * scale), message, messageStyle);
 
-        float buttonY = hud.yMax - 38 * scale;
+        float buttonY = hud.yMax - 52 * scale;
         float gap = 8 * scale;
         float buttonWidth = (hud.width - 44 * scale - gap * 2) / 3f;
         GUIStyle button = CrispButton(Mathf.RoundToInt(13 * scale));
-        if (GUI.Button(new Rect(hud.x + 22 * scale, buttonY, buttonWidth, 29 * scale), "CALIBRAR", button)) Calibrate();
-        if (GUI.Button(new Rect(hud.x + 22 * scale + buttonWidth + gap, buttonY, buttonWidth, 29 * scale), "NUEVA PARTIDA", button)) StartBowlingGame();
-        if (GUI.Button(new Rect(hud.x + 22 * scale + (buttonWidth + gap) * 2, buttonY, buttonWidth, 29 * scale), "MENÚ", button)) SceneNavigator.Load(SceneNavigator.MainMenu);
+        if (GUI.Button(new Rect(hud.x + 22 * scale, buttonY, buttonWidth, 34 * scale), "CALIBRAR", button)) Calibrate();
+        if (GUI.Button(new Rect(hud.x + 22 * scale + buttonWidth + gap, buttonY, buttonWidth, 34 * scale), "NUEVA PARTIDA", button)) StartBowlingGame();
+        if (GUI.Button(new Rect(hud.x + 22 * scale + (buttonWidth + gap) * 2, buttonY, buttonWidth, 34 * scale), "MENÚ", button)) SceneNavigator.Load(SceneNavigator.MainMenu);
     }
 
-    private GUIStyle CrispLabel(int size, Color color, FontStyle weight, TextAnchor alignment)
+    private GUIStyle CrispLabel(int size, Color color, FontStyle weight, TextAnchor alignment, bool heading = false)
     {
-        var style = new GUIStyle(GUI.skin.label) { font = hudFont, fontSize = Mathf.Max(15, size), fontStyle = weight, alignment = alignment, clipping = TextClipping.Clip };
+        var style = new GUIStyle(GUI.skin.label) { font = heading ? JungleUITheme.TitleFont : JungleUITheme.TextFont, fontSize = Mathf.Max(10, size), fontStyle = heading ? FontStyle.Normal : weight, alignment = alignment, wordWrap = false, clipping = TextClipping.Clip, padding = new RectOffset(2, 2, 1, 1) };
         style.normal.textColor = color;
         return style;
     }
 
     private GUIStyle CrispButton(int size)
     {
-        var style = new GUIStyle(GUI.skin.button) { font = hudFont, fontSize = Mathf.Max(14, size), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, border = new RectOffset(32, 32, 32, 32) };
+        var style = new GUIStyle(GUI.skin.button) { font = JungleUITheme.TextFont, fontSize = Mathf.Max(10, size), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, wordWrap = false, padding = new RectOffset(4, 4, 1, 1), border = new RectOffset(12, 12, 12, 12) };
         style.normal.background = bowlingButtonTexture;
         style.hover.background = bowlingButtonHoverTexture;
         style.active.background = bowlingButtonHoverTexture;
@@ -1743,7 +1816,7 @@ public sealed class PhoneMotionController : MonoBehaviour
         float w = Screen.width, h = Screen.height;
         GUIStyle fightTitle = new GUIStyle(bigStyle) { fontSize = Mathf.RoundToInt(h * .038f) };
         GUIStyle fightText = new GUIStyle(bodyStyle) { fontSize = Mathf.RoundToInt(h * .025f), fontStyle = FontStyle.Bold };
-        GUI.DrawTexture(new Rect(w * .16f, h * .025f, w * .68f, h * .15f), panelTexture);
+        JungleUITheme.DrawPanel(new Rect(w * .16f, h * .025f, w * .68f, h * .15f));
         GUI.Label(new Rect(w * .35f, h * .035f, w * .30f, h * .055f), "BOXEO CON GORILA", fightTitle);
         DrawHealthBar(new Rect(w * .19f, h * .105f, w * .26f, h * .035f), playerHealth, new Color(.1f, .75f, 1f), "TÚ");
         DrawHealthBar(new Rect(w * .55f, h * .105f, w * .26f, h * .035f), gorillaHealth, new Color(1f, .25f, .1f), "GORILA");
@@ -1751,7 +1824,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
         if (state == GameState.BoxingKnockdown)
         {
-            GUI.DrawTexture(new Rect(w * .25f, h * .28f, w * .50f, h * .32f), panelTexture);
+            JungleUITheme.DrawPanel(new Rect(w * .25f, h * .28f, w * .50f, h * .32f));
             GUI.Label(new Rect(w * .28f, h * .31f, w * .44f, h * .10f), $"¡LEVÁNTATE!  {Mathf.Max(0, Mathf.CeilToInt(resultAt - Time.time))}", fightTitle);
             GUI.Label(new Rect(w * .29f, h * .41f, w * .42f, h * .07f), "AGITA EL CELULAR REPETIDAMENTE", fightText);
             GUI.DrawTexture(new Rect(w * .31f, h * .51f, w * .38f, h * .035f), darkTexture);
@@ -1759,10 +1832,10 @@ public sealed class PhoneMotionController : MonoBehaviour
         }
         else if (state == GameState.BoxingOver)
         {
-            GUI.DrawTexture(new Rect(w * .26f, h * .30f, w * .48f, h * .25f), panelTexture);
+            JungleUITheme.DrawPanel(new Rect(w * .26f, h * .30f, w * .48f, h * .25f));
             string result = gorillaHealth <= 0f ? "¡GANASTE!" : playerHealth <= 0f ? "K.O. DEL GORILA" : playerHealth >= gorillaHealth ? "¡GANASTE POR PUNTOS!" : "EL GORILA GANA";
             GUI.Label(new Rect(w * .29f, h * .34f, w * .42f, h * .09f), result, fightTitle);
-            if (GUI.Button(new Rect(w * .38f, h * .45f, w * .24f, h * .065f), "REVANCHA", buttonStyle)) StartBoxingGame();
+            if (MotionSession.PrimaryButton(new Rect(w * .38f, h * .45f, w * .24f, h * .065f), "REVANCHA", buttonStyle)) StartBoxingGame();
         }
         else
         {
@@ -1860,32 +1933,55 @@ public sealed class PhoneMotionController : MonoBehaviour
     private void DrawBowlingDashboard()
     {
         float w = Screen.width, h = Screen.height;
-        float scale = Mathf.Clamp(Mathf.Min(w / 1920f, h / 1080f), .65f, 1.35f);
-        float width = Mathf.Min(w * .205f, 292 * scale);
-        float height = 618 * scale;
-        float x = w - width - 24 * scale, y = 22 * scale;
-        GUI.Box(new Rect(x, y, width, height), GUIContent.none, RoundedStyle(bowlingHudTexture, 24));
-        dashHeadingStyle = CrispLabel(Mathf.RoundToInt(18 * scale), new Color(1f, .84f, .18f), FontStyle.Bold, TextAnchor.MiddleCenter);
-        dashRowStyle = CrispLabel(Mathf.RoundToInt(12 * scale), new Color(.84f, .91f, .89f), FontStyle.Normal, TextAnchor.MiddleLeft);
-        dashRowActiveStyle = CrispLabel(Mathf.RoundToInt(12 * scale), new Color(.06f, .09f, .05f), FontStyle.Bold, TextAnchor.MiddleLeft);
-        dashScoreStyle = CrispLabel(Mathf.RoundToInt(14 * scale), Color.white, FontStyle.Bold, TextAnchor.MiddleRight);
-        dashScoreActiveStyle = CrispLabel(Mathf.RoundToInt(14 * scale), new Color(.06f, .09f, .05f), FontStyle.Bold, TextAnchor.MiddleRight);
-        GUI.Label(new Rect(x + 14 * scale, y + 12 * scale, width - 28 * scale, 28 * scale), "TABLERO DE LA SELVA", dashHeadingStyle);
-        GUI.Label(new Rect(x + 18 * scale, y + 44 * scale, width - 36 * scale, 23 * scale), $"ÚLTIMO TIRO: {lastPins} PINOS", dashRowStyle);
+        float scale = Mathf.Clamp(Mathf.Min(w / 1920f, h / 1080f), .45f, 1.35f);
+        float width = Mathf.Min(w * .25f, 360 * scale);
+        float height = Mathf.Min(h * .88f, 720 * scale);
+        float x = w - width - 14 * scale, y = 16 * scale;
+        Rect board = new Rect(x, y, width, height);
+        JungleUITheme.DrawPanel(board);
+        dashHeadingStyle = CrispLabel(Mathf.RoundToInt(20 * scale), new Color(1f, .86f, .28f), FontStyle.Bold, TextAnchor.MiddleCenter, true);
+        dashRowStyle = CrispLabel(Mathf.RoundToInt(13 * scale), new Color(.96f, .91f, .72f), FontStyle.Bold, TextAnchor.MiddleLeft);
+        dashRowActiveStyle = CrispLabel(Mathf.RoundToInt(13 * scale), new Color(.12f, .07f, .025f), FontStyle.Bold, TextAnchor.MiddleLeft);
+        dashScoreStyle = CrispLabel(Mathf.RoundToInt(15 * scale), new Color(1f, .91f, .42f), FontStyle.Bold, TextAnchor.MiddleRight);
+        dashScoreActiveStyle = CrispLabel(Mathf.RoundToInt(15 * scale), new Color(.12f, .07f, .025f), FontStyle.Bold, TextAnchor.MiddleRight);
+        JungleUITheme.DrawFittedLabel(new Rect(x + width * .13f, y + height * .065f, width * .74f, height * .067f), "TABLERO TRIBAL", dashHeadingStyle);
+        JungleUITheme.DrawFittedLabel(new Rect(x + width * .16f, y + height * .14f, width * .68f, height * .055f), $"ÚLTIMO TIRO: {lastPins} PINOS", dashRowStyle);
         int[] scores = CalculateBowlingScores();
-        float rowsY = y + 76 * scale, rowH = 42 * scale;
+        float rowsY = y + height * .22f, rowH = height * .056f;
         for (int i = 0; i < 10; i++)
         {
             bool active = i == Mathf.Min(bowlingFrame, 9) && !bowlingGameOver;
-            Rect row = new Rect(x + 14 * scale, rowsY + i * rowH, width - 28 * scale, rowH - 5 * scale);
-            GUI.Box(row, GUIContent.none, RoundedStyle(active ? selectedTexture : bowlingCardTexture, active ? 0 : 14));
+            Rect row = new Rect(x + width * .135f, rowsY + i * rowH, width * .73f, rowH - 4 * scale);
+            if (active) GUI.DrawTexture(row, selectedTexture);
+            else JungleUITheme.DrawSubPanel(row);
             GUIStyle frameStyle = active ? dashRowActiveStyle : dashRowStyle;
             GUIStyle frameScore = active ? dashScoreActiveStyle : dashScoreStyle;
-            GUI.Label(new Rect(row.x + 10 * scale, row.y, row.width * .18f, row.height), (i + 1).ToString("00"), frameStyle);
-            GUI.Label(new Rect(row.x + row.width * .21f, row.y, row.width * .39f, row.height), BowlingRollText(i), frameStyle);
-            GUI.Label(new Rect(row.x + row.width * .62f, row.y, row.width * .32f, row.height), scores[i] >= 0 ? scores[i].ToString() : "", frameScore);
+            JungleUITheme.DrawFittedLabel(new Rect(row.x + 10 * scale, row.y, row.width * .18f, row.height), (i + 1).ToString("00"), frameStyle);
+            JungleUITheme.DrawFittedLabel(new Rect(row.x + row.width * .21f, row.y, row.width * .39f, row.height), BowlingRollText(i), frameStyle);
+            JungleUITheme.DrawFittedLabel(new Rect(row.x + row.width * .62f, row.y, row.width * .32f, row.height), scores[i] >= 0 ? scores[i].ToString() : "", frameScore);
         }
-        GUI.Label(new Rect(x + 16 * scale, y + height - 66 * scale, width - 32 * scale, 45 * scale), $"TOTAL  {GetDisplayedBowlingScore()}", dashHeadingStyle);
+        JungleUITheme.DrawFittedLabel(new Rect(x + width * .13f, y + height * .81f, width * .74f, height * .085f), $"TOTAL  {GetDisplayedBowlingScore()}", dashHeadingStyle);
+    }
+
+    private void DrawBowlingVictory()
+    {
+        float w = Screen.width, h = Screen.height;
+        GUI.DrawTexture(new Rect(0, 0, w, h), darkTexture, ScaleMode.StretchToFill, true);
+        Rect frame = new Rect(w * .30f, h * .045f, w * .40f, h * .91f);
+        JungleUITheme.DrawPanel(frame, true);
+        int finalScore = GetDisplayedBowlingScore();
+        string rank = finalScore >= 220 ? "REY DE LA SELVA" : finalScore >= 160 ? "GRAN JEFE GORILA" : finalScore >= 100 ? "GUERRERO DEL COCO" : "EXPLORADOR TROPICAL";
+        GUIStyle victoryTitle = CrispLabel(Mathf.RoundToInt(h * .052f), new Color(1f, .86f, .22f), FontStyle.Bold, TextAnchor.MiddleCenter, true);
+        GUIStyle victoryScore = CrispLabel(Mathf.RoundToInt(h * .078f), Color.white, FontStyle.Bold, TextAnchor.MiddleCenter, true);
+        GUIStyle victoryBody = CrispLabel(Mathf.RoundToInt(h * .030f), new Color(.94f, .89f, .67f), FontStyle.Bold, TextAnchor.MiddleCenter, true);
+        JungleUITheme.DrawFittedLabel(new Rect(w * .355f, h * .19f, w * .29f, h * .10f), "¡VICTORIA!", victoryTitle);
+        JungleUITheme.DrawFittedLabel(new Rect(w * .355f, h * .295f, w * .29f, h * .12f), finalScore.ToString(), victoryScore);
+        JungleUITheme.DrawFittedLabel(new Rect(w * .355f, h * .405f, w * .29f, h * .09f), "PUNTOS", victoryBody);
+        JungleUITheme.DrawFittedLabel(new Rect(w * .34f, h * .50f, w * .32f, h * .09f), rank, victoryTitle);
+        JungleUITheme.DrawFittedLabel(new Rect(w * .355f, h * .59f, w * .29f, h * .07f), "¡LA SELVA CELEBRA TU PARTIDA!", victoryBody);
+        GUIStyle tribalButton = CrispButton(Mathf.RoundToInt(h * .024f));
+        if (MotionSession.PrimaryButton(new Rect(w * .36f, h * .69f, w * .28f, h * .065f), "JUGAR DE NUEVO", tribalButton)) StartBowlingGame();
+        if (GUI.Button(new Rect(w * .36f, h * .77f, w * .28f, h * .065f), "VOLVER AL MENÚ", tribalButton)) SceneNavigator.Load(SceneNavigator.MainMenu);
     }
 
     private void DrawMiniGame()
@@ -1973,12 +2069,12 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void DrawCameraStatus()
     {
-        float scale = Mathf.Clamp(Mathf.Min(Screen.width / 1920f, Screen.height / 1080f), .65f, 1.35f);
+        float scale = Mathf.Clamp(Mathf.Min(Screen.width / 1920f, Screen.height / 1080f), .45f, 1.35f);
         GUIStyle status = CrispLabel(Mathf.RoundToInt(13 * scale), CameraActive ? new Color(.3f, 1f, .45f) : new Color(1f, .72f, .22f), FontStyle.Bold, TextAnchor.MiddleCenter);
-        status.normal.textColor = CameraActive ? new Color(.3f, 1f, .45f) : new Color(1f, .72f, .22f);
-        Rect rect = new Rect(Screen.width - 292 * scale - 24 * scale, Screen.height - 55 * scale, 292 * scale, 38 * scale);
-        GUI.Box(rect, GUIContent.none, RoundedStyle(bowlingHudTexture, 18));
-        GUI.Label(rect, CameraActive ? "● CÁMARA · MANO DETECTADA" : "○ CÁMARA · ESPERANDO", status);
+        Rect rect = new Rect(Screen.width - 292 * scale - 24 * scale, Screen.height - 64 * scale, 292 * scale, 44 * scale);
+        JungleUITheme.DrawPanel(rect);
+        Rect label = new Rect(rect.x + 12 * scale, rect.y + 4 * scale, rect.width - 24 * scale, rect.height - 8 * scale);
+        JungleUITheme.DrawFittedLabel(label, CameraActive ? "CÁMARA · MANO DETECTADA" : "CÁMARA · ESPERANDO", status);
     }
 
     private void DrawLeafFrame()
@@ -1993,9 +2089,6 @@ public sealed class PhoneMotionController : MonoBehaviour
         if (bowlingGorillaGraph.IsValid()) bowlingGorillaGraph.Destroy();
         gorillaImport?.Dispose();
         islandImport?.Dispose();
-        if (hudFont != null) Destroy(hudFont);
-        if (bowlingHudTexture != null) Destroy(bowlingHudTexture);
-        if (bowlingCardTexture != null) Destroy(bowlingCardTexture);
         if (bowlingButtonTexture != null) Destroy(bowlingButtonTexture);
         if (bowlingButtonHoverTexture != null) Destroy(bowlingButtonHoverTexture);
     }

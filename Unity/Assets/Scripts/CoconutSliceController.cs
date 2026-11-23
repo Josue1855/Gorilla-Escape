@@ -4,12 +4,6 @@ using UnityEngine;
 
 public sealed class CoconutSliceController : MonoBehaviour
 {
-    [Serializable] private struct PosePacket
-    {
-        public bool detected, leftDetected, rightDetected;
-        public float leftWristX, leftWristY, rightWristX, rightWristY, bodyX, confidence, time;
-    }
-
     private enum GameState { Intro, Countdown, Playing, Finale, Results }
     private sealed class Coconut
     {
@@ -26,10 +20,14 @@ public sealed class CoconutSliceController : MonoBehaviour
     private readonly List<Coconut> coconuts = new List<Coconut>();
     private readonly List<GameObject> temporaryPieces = new List<GameObject>();
     private MotionSession session;
+    private AudioSource sfx;
+    private int lastCountdownBeep;
     private GameState state = GameState.Intro;
     private Vector2 leftHand = new Vector2(.32f, .52f), rightHand = new Vector2(.68f, .52f);
     private Vector2 previousLeft, previousRight, mousePrevious;
-    private float leftSpeed, rightSpeed, nextSpawn, stateStartedAt, roundEndsAt, lastSliceAt;
+    private bool leftTracked, rightTracked;
+    private long lastCameraSample;
+    private float nextSpawn, stateStartedAt, roundEndsAt, lastSliceAt;
     private int score, combo, bestCombo, missed, sliced, lives = 3;
     private string callout = "";
     private float calloutUntil;
@@ -56,6 +54,7 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     private void Awake()
     {
+        sfx = JungleAudioBank.Attach2DSource(gameObject);
         session = MotionSession.Ensure();
         session.Connect();
         BuildStage();
@@ -274,6 +273,9 @@ public sealed class CoconutSliceController : MonoBehaviour
         return item;
     }
 
+    private Camera sliceCamera;
+    private Transform paintedBackdrop;
+
     private void BuildStage()
     {
         coconutMaterial = MakeMaterial(new Color(.27f, .105f, .035f));
@@ -281,7 +283,7 @@ public sealed class CoconutSliceController : MonoBehaviour
         darkMaterial = MakeMaterial(new Color(.035f, .075f, .055f));
         greenMaterial = MakeMaterial(new Color(.035f, .30f, .12f));
 
-        Camera camera = Camera.main;
+        Camera camera = sliceCamera = Camera.main;
         camera.orthographic = true;
         camera.orthographicSize = 5.4f;
         camera.transform.position = new Vector3(0, 0, -10f);
@@ -295,17 +297,45 @@ public sealed class CoconutSliceController : MonoBehaviour
         backgroundMaterial.mainTextureScale = new Vector2(1f, -1f);
         backgroundMaterial.mainTextureOffset = new Vector2(0f, 1f);
         backgroundMaterial.color = Color.white;
-        Primitive(PrimitiveType.Cube, "Fondo selvático pintado", transform, new Vector3(0, 0, 4.5f), new Vector3(19.4f, 10.95f, .3f), backgroundMaterial);
+        paintedBackdrop = Primitive(PrimitiveType.Cube, "Fondo selvático pintado", transform,
+            new Vector3(0, 0, 4.5f), Vector3.one, backgroundMaterial).transform;
+        FitBackdrop();
 
         CreateSlicePalms();
     }
 
+    private void FitBackdrop()
+    {
+        if (paintedBackdrop == null || sliceCamera == null) return;
+        float visibleHeight = 2f * sliceCamera.orthographicSize;
+        float visibleWidth = visibleHeight * sliceCamera.aspect;
+        float cover = Mathf.Max(visibleWidth / 19.4f, visibleHeight / 10.95f) * 1.01f;
+        paintedBackdrop.localScale = new Vector3(19.4f * cover, 10.95f * cover, .3f);
+    }
+
+    private void LateUpdate() => FitBackdrop();
+
     private void Update()
     {
+        if (PartyMode.Blocking) return;
+        if (JungleStory.BlocksGame) return;
         ReadPose();
         UpdateDistractorGorilla();
 
-        if (state == GameState.Countdown && Time.time - stateStartedAt >= 3.2f) StartRound();
+        if (state == GameState.Countdown)
+        {
+            float elapsed = Time.time - stateStartedAt;
+            if (elapsed >= 3.2f) StartRound();
+            else
+            {
+                int count = Mathf.Clamp(3 - Mathf.FloorToInt(elapsed), 1, 3);
+                if (count != lastCountdownBeep)
+                {
+                    lastCountdownBeep = count;
+                    sfx.PlayOneShot(JungleAudioBank.CountdownTick, .6f);
+                }
+            }
+        }
         else if (state == GameState.Playing)
         {
             if (Time.time >= nextSpawn) SpawnWave();
@@ -315,6 +345,7 @@ public sealed class CoconutSliceController : MonoBehaviour
         {
             ClearCoconuts();
             state = GameState.Results;
+            JungleStory.Finish(SceneNavigator.CoconutSlice, !lostByGorilla && score >= 1600, $"{score} puntos · {sliced} cocos cortados");
             stateStartedAt = Time.time;
         }
 
@@ -324,32 +355,45 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     private void ReadPose()
     {
-        string json = session.ConsumePose();
-        if (!string.IsNullOrEmpty(json))
+        var pose = session.LatestPose;
+        if (pose == null)
         {
-            PosePacket pose = JsonUtility.FromJson<PosePacket>(json);
-            float dt = Mathf.Clamp(Time.deltaTime, .01f, .08f);
-            Vector2 nextLeft = new Vector2(pose.leftWristX, 1f - pose.leftWristY);
-            Vector2 nextRight = new Vector2(pose.rightWristX, 1f - pose.rightWristY);
-            leftSpeed = Vector2.Distance(nextLeft, previousLeft) / dt;
-            rightSpeed = Vector2.Distance(nextRight, previousRight) / dt;
-            if (pose.leftDetected)
-            {
-                TrySliceSegment(previousLeft, nextLeft, leftSpeed);
-                leftHand = Vector2.Lerp(leftHand, nextLeft, .72f);
-            }
-            if (pose.rightDetected)
-            {
-                TrySliceSegment(previousRight, nextRight, rightSpeed);
-                rightHand = Vector2.Lerp(rightHand, nextRight, .72f);
-            }
-            previousLeft = nextLeft;
-            previousRight = nextRight;
+            leftTracked = rightTracked = false;
+            lastCameraSample = 0;
+        }
+        else if (pose.time != lastCameraSample)
+        {
+            float seconds = (pose.time - lastCameraSample) * .001f;
+            bool continuous = lastCameraSample > 0 && seconds > 0f && seconds <= .25f;
+            leftTracked = UpdateHand(pose.leftDetected, pose.leftWristX, pose.leftWristY,
+                leftTracked, continuous, seconds, ref previousLeft, ref leftHand);
+            rightTracked = UpdateHand(pose.rightDetected, pose.rightWristX, pose.rightWristY,
+                rightTracked, continuous, seconds, ref previousRight, ref rightHand);
+            lastCameraSample = pose.time;
         }
 
         Vector2 mouse = new Vector2(Input.mousePosition.x / Mathf.Max(1f, Screen.width), Input.mousePosition.y / Mathf.Max(1f, Screen.height));
         if (Input.GetMouseButton(0)) TrySliceSegment(mousePrevious, mouse, Vector2.Distance(mousePrevious, mouse) / Mathf.Max(.01f, Time.deltaTime));
         mousePrevious = mouse;
+    }
+
+    private bool UpdateHand(bool detected, float x, float y, bool wasTracked,
+        bool continuous, float seconds, ref Vector2 previous, ref Vector2 visible)
+    {
+        if (!detected) return false;
+
+        Vector2 next = new Vector2(x, 1f - y);
+        if (wasTracked && continuous)
+        {
+            TrySliceSegment(previous, next, Vector2.Distance(previous, next) / seconds);
+            visible = Vector2.Lerp(visible, next, .72f);
+        }
+        else
+        {
+            visible = next;
+        }
+        previous = next;
+        return true;
     }
 
     private void TrySliceSegment(Vector2 from, Vector2 to, float speed)
@@ -426,6 +470,7 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     private void Slice(Coconut coconut, Vector2 direction, float speed)
     {
+        sfx.PlayOneShot(coconut.hazard || coconut.instantLoss ? JungleAudioBank.CoconutHazard : JungleAudioBank.CoconutSlice, .75f);
         coconut.sliced = true;
         Vector3 position = coconut.gameObject.transform.position;
         Vector3 velocity = coconut.body.linearVelocity;
@@ -575,19 +620,21 @@ public sealed class CoconutSliceController : MonoBehaviour
         }
     }
 
-    private void BeginCountdown()
+    internal void BeginCountdown()
     {
         ClearCoconuts();
         score = combo = bestCombo = missed = sliced = 0;
         lives = 3;
         lostByGorilla = false;
         rareGorillaSpawned = false;
+        lastCountdownBeep = 0;
         state = GameState.Countdown;
         stateStartedAt = Time.time;
     }
 
     private void StartRound()
     {
+        sfx.PlayOneShot(JungleAudioBank.CountdownGo, .7f);
         state = GameState.Playing;
         stateStartedAt = Time.time;
         roundEndsAt = Time.time + RoundDuration;
@@ -631,32 +678,40 @@ public sealed class CoconutSliceController : MonoBehaviour
         orange = Solid(new Color(1f, .34f, .08f, .95f));
         red = Solid(new Color(.90f, .08f, .04f, .95f));
         white = Solid(new Color(1f, 1f, 1f, .92f));
-        titleStyle = new GUIStyle(GUI.skin.label) { fontSize = Mathf.RoundToInt(Screen.height * .052f), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, .82f, .15f) } };
+        titleStyle = new GUIStyle(JungleUITheme.Title) { fontSize = Mathf.RoundToInt(Screen.height * .052f), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, .82f, .15f) } };
         bigStyle = new GUIStyle(titleStyle) { fontSize = Mathf.RoundToInt(Screen.height * .105f), normal = { textColor = Color.white } };
-        bodyStyle = new GUIStyle(GUI.skin.label) { fontSize = Mathf.RoundToInt(Screen.height * .029f), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = Color.white } };
+        bodyStyle = new GUIStyle(JungleUITheme.Body) { fontSize = Mathf.RoundToInt(Screen.height * .029f), fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, wordWrap = true, normal = { textColor = Color.white } };
         scoreStyle = new GUIStyle(bodyStyle) { fontSize = Mathf.RoundToInt(Screen.height * .034f) };
     }
 
     private void OnGUI()
     {
+        if (PartyMode.Blocking) return;
+        if (state == GameState.Results && PartyMode.Report(score)) return;
+        if (JungleStory.BlocksGame) return;
         JungleUITheme.Ensure();
         EnsureUI();
         float w = Screen.width, h = Screen.height;
 
-        GUI.DrawTexture(new Rect(w * .015f, h * .02f, w * .97f, h * .105f), dark);
+        JungleUITheme.DrawPanel(new Rect(w * .015f, h * .02f, w * .97f, h * .105f));
         GUI.Label(new Rect(w * .05f, h * .025f, w * .44f, h * .085f), "COCONUT SLICE", titleStyle);
         GUI.Label(new Rect(w * .46f, h * .025f, w * .38f, h * .085f), $"PUNTOS {score}   COMBO x{combo}", scoreStyle);
         if (GUI.Button(new Rect(w * .85f, h * .035f, w * .12f, h * .065f), "MENÚ", JungleUITheme.Button)) SceneNavigator.Load(SceneNavigator.MainMenu);
         DrawLives(w, h);
 
-        DrawHand(leftHand, turquoise, "IZQ");
-        DrawHand(rightHand, orange, "DER");
+        if (leftTracked) DrawHand(leftHand, turquoise, "IZQ");
+        if (rightTracked) DrawHand(rightHand, orange, "DER");
+        if (!leftTracked && !rightTracked && state == GameState.Playing)
+        {
+            string hint = session.CameraConnected ? "MUESTRA LAS MUÑECAS A LA CÁMARA" : "ESPERANDO FOTOGRAMAS DE LA CÁMARA";
+            JungleUITheme.DrawShadowedLabel(new Rect(w * .22f, h * .85f, w * .56f, h * .08f), hint, bodyStyle, 2f);
+        }
 
         if (state == GameState.Intro) DrawIntro(w, h);
         else if (state == GameState.Countdown)
         {
             int count = Mathf.Clamp(3 - Mathf.FloorToInt(Time.time - stateStartedAt), 1, 3);
-            GUI.DrawTexture(new Rect(w * .37f, h * .29f, w * .26f, h * .25f), dark);
+            JungleUITheme.DrawPanel(new Rect(w * .37f, h * .29f, w * .26f, h * .25f));
             GUI.Label(new Rect(w * .38f, h * .30f, w * .24f, h * .23f), count.ToString(), bigStyle);
             GUI.Label(new Rect(w * .30f, h * .59f, w * .40f, h * .07f), "LEVANTA LAS MANOS", bodyStyle);
         }
@@ -682,7 +737,7 @@ public sealed class CoconutSliceController : MonoBehaviour
     private void DrawLives(float w, float h)
     {
         Rect backing = new Rect(w * .025f, h * .135f, w * .215f, h * .060f);
-        GUI.DrawTexture(backing, dark);
+        JungleUITheme.DrawPanel(backing);
         GUI.Label(new Rect(w * .032f, h * .140f, w * .065f, h * .05f), "VIDAS", bodyStyle);
         float segmentWidth = w * .036f;
         for (int i = 0; i < 3; i++)
@@ -697,7 +752,7 @@ public sealed class CoconutSliceController : MonoBehaviour
     {
         float entrance = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((Time.time - stateStartedAt) / .75f));
         Rect panel = new Rect(w * (.50f - .25f * entrance), h * .20f, w * .50f * entrance, h * .57f);
-        GUI.DrawTexture(panel, dark);
+        JungleUITheme.DrawPanel(panel);
         if (entrance < .65f) return;
         GUI.Label(new Rect(w * .29f, h * .23f, w * .42f, h * .09f), "¡EL GORILA TIENE HAMBRE!", titleStyle);
         GUI.DrawTexture(new Rect(w * .30f, h * .34f, w * .40f, h * .055f), turquoise);
@@ -705,7 +760,7 @@ public sealed class CoconutSliceController : MonoBehaviour
         GUI.DrawTexture(new Rect(w * .30f, h * .44f, w * .40f, h * .055f), orange);
         GUI.Label(new Rect(w * .29f, h * .425f, w * .42f, h * .09f), "2  HAZ UN CORTE RÁPIDO SOBRE LOS COCOS", bodyStyle);
         GUI.Label(new Rect(w * .27f, h * .535f, w * .46f, h * .07f), "USA AMBAS MANOS · EVITA CACTUS Y GORILAS", bodyStyle);
-        if (GUI.Button(new Rect(w * .37f, h * .64f, w * .26f, h * .085f), "¡ESTOY LISTO!", JungleUITheme.Button)) BeginCountdown();
+        if (MotionSession.PrimaryButton(new Rect(w * .37f, h * .64f, w * .26f, h * .085f), "¡ESTOY LISTO!", JungleUITheme.Button)) BeginCountdown();
     }
 
     private void DrawFinale(float w, float h)
@@ -721,12 +776,12 @@ public sealed class CoconutSliceController : MonoBehaviour
     private void DrawResults(float w, float h)
     {
         string rank = score >= 5000 ? "REY DE LA SELVA" : score >= 3000 ? "NINJA GORILA" : score >= 1600 ? "CORTADOR TROPICAL" : "APRENDIZ DEL COCO";
-        GUI.DrawTexture(new Rect(w * .27f, h * .19f, w * .46f, h * .59f), dark);
+        JungleUITheme.DrawPanel(new Rect(w * .27f, h * .19f, w * .46f, h * .59f));
         GUI.Label(new Rect(w * .31f, h * .22f, w * .38f, h * .08f), "RESULTADO", titleStyle);
         GUI.DrawTexture(new Rect(w * .32f, h * .315f, w * .36f, h * .08f), gold);
         GUI.Label(new Rect(w * .32f, h * .315f, w * .36f, h * .08f), rank, bodyStyle);
         GUI.Label(new Rect(w * .32f, h * .41f, w * .36f, h * .15f), $"{score} PUNTOS\n{sliced} COCOS CORTADOS  ·  MEJOR COMBO x{bestCombo}\n{missed} COCOS ESCAPARON", bodyStyle);
-        if (GUI.Button(new Rect(w * .34f, h * .63f, w * .20f, h * .085f), "OTRA RONDA", JungleUITheme.Button)) BeginCountdown();
+        if (MotionSession.PrimaryButton(new Rect(w * .34f, h * .63f, w * .20f, h * .085f), "OTRA RONDA", JungleUITheme.Button)) BeginCountdown();
         if (GUI.Button(new Rect(w * .56f, h * .63f, w * .10f, h * .085f), "MENÚ", JungleUITheme.Button)) SceneNavigator.Load(SceneNavigator.MainMenu);
     }
 
@@ -736,6 +791,8 @@ public sealed class CoconutSliceController : MonoBehaviour
         Rect rect = new Rect(hand.x * Screen.width - size * .5f, (1f - hand.y) * Screen.height - size * .5f, size, size);
         GUI.DrawTexture(rect, white);
         GUI.DrawTexture(new Rect(rect.x + 5, rect.y + 5, rect.width - 10, rect.height - 10), color);
-        GUI.Label(rect, label, new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, normal = { textColor = Color.black } });
+        GUI.Label(rect, label, new GUIStyle(JungleUITheme.Body) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, normal = { textColor = Color.black } });
     }
 }
+
+

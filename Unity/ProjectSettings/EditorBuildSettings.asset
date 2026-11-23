@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Splash.unity
+    guid: 3cc47e1ac7d5de44e8b99dfd2f07b500
+  - enabled: 1
     path: Assets/Scenes/Connection.unity
     guid: 49f1d97f56b2d22428118f8d5d919268
   - enabled: 1
@@ -29,4 +32,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WhackAMole.unity
     guid: c23deae6b101e15469ad84d36e05d72c
+  - enabled: 1
+    path: Assets/Scenes/LogBalance.unity
+    guid: 36cb4a5c97bd4baeb009c36b49cf77bb
+  - enabled: 1
+    path: Assets/Scenes/CoconutThrow.unity
+    guid: 96790a5ce7f64fdbbc31a23e3a2fda2e
+  - enabled: 1
+    path: Assets/Scenes/JungleKeeper.unity
+    guid: 59140a62aa1d4402bb134b0277ec36f5
   m_configObjects: {}

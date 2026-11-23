@@ -23,12 +23,29 @@ public sealed class ConnectionScreen : MonoBehaviour
     private Texture2D greenPixel;
     private Texture2D shadowPixel;
     private string requestedQrUrl;
+    private float retryQrAt;
+    private bool qrPending;
+    private PhoneMenuPointer phonePointer;
 
     private void Awake()
     {
+        JungleAudioBank.Attach2DSource(gameObject);
+        AudioClip theme = Resources.Load<AudioClip>("Audio/ConnectionTheme");
+        if (theme != null)
+        {
+            AudioSource music = gameObject.AddComponent<AudioSource>();
+            music.playOnAwake = false;
+            music.spatialBlend = 0f;
+            music.clip = theme;
+            music.loop = true;
+            music.volume = .60f * JungleAudioBank.MusicVolume;
+            music.Play();
+        }
         session = MotionSession.Ensure();
+        StartCoroutine(JungleAudioBank.Prewarm());
         services = PortableServiceHost.Ensure();
         session.Connect();
+        phonePointer = gameObject.AddComponent<PhoneMenuPointer>();
 
         background = Resources.Load<Texture2D>("Jungle/gorila_menu_hd");
         if (background == null) background = Resources.Load<Texture2D>("Jungle/gorila_menu");
@@ -97,18 +114,27 @@ public sealed class ConnectionScreen : MonoBehaviour
 
     private void Update()
     {
-        string controllerUrl = services.PublicControllerUrl;
-        if (string.IsNullOrEmpty(controllerUrl) || controllerUrl == requestedQrUrl) return;
+        string controllerUrl = services.ControllerUrlForRoom(session.RoomCode);
+        if (controllerUrl != requestedQrUrl && qrTexture != null)
+        {
+            Destroy(qrTexture);
+            qrTexture = null;
+        }
+        if (string.IsNullOrEmpty(controllerUrl) || qrPending || qrTexture != null || Time.unscaledTime < retryQrAt) return;
+        qrPending = true;
         requestedQrUrl = controllerUrl;
         StartCoroutine(DownloadQr(controllerUrl));
     }
 
     private IEnumerator DownloadQr(string controllerUrl)
     {
-        string endpoint = "https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data=" +
+        string endpoint = "http://127.0.0.1:8790/qr.png?url=" +
             UnityWebRequest.EscapeURL(controllerUrl);
         using UnityWebRequest request = UnityWebRequestTexture.GetTexture(endpoint, true);
+        request.timeout = 3;
         yield return request.SendWebRequest();
+        qrPending = false;
+        if (controllerUrl != services.ControllerUrlForRoom(session.RoomCode)) yield break;
         if (request.result == UnityWebRequest.Result.Success)
         {
             if (qrTexture != null) Destroy(qrTexture);
@@ -117,14 +143,15 @@ public sealed class ConnectionScreen : MonoBehaviour
             qrTexture.wrapMode = TextureWrapMode.Clamp;
             qrTexture.anisoLevel = 0;
         }
-        else Debug.LogWarning("No se pudo generar el QR: " + request.error);
+        else retryQrAt = Time.unscaledTime + 1.5f;
     }
 
     private void OnGUI()
     {
+        JungleUITheme.Ensure();
         float w = Screen.width;
         float h = Screen.height;
-        float scale = Mathf.Clamp(Mathf.Min(w / 1920f, h / 1080f), .62f, 1.65f);
+        float scale = Mathf.Min(w / 1450f, h / 1080f, 1.65f);
         float time = Time.unscaledTime;
 
         DrawBackground(w, h, time);
@@ -132,12 +159,10 @@ public sealed class ConnectionScreen : MonoBehaviour
 
         GUIStyle logoShadow = Label(Mathf.RoundToInt(54 * scale), new Color(0f, 0f, 0f, .34f), FontStyle.Bold, TextAnchor.MiddleLeft);
         GUIStyle logo = Label(Mathf.RoundToInt(54 * scale), new Color(1f, .82f, .12f), FontStyle.Bold, TextAnchor.MiddleLeft);
-        GUIStyle tagline = Label(Mathf.RoundToInt(15 * scale), new Color(.79f, 1f, .95f), FontStyle.Bold, TextAnchor.MiddleLeft);
         GUI.Label(new Rect(w * .055f + 3 * scale, h * .055f + 4 * scale, w * .52f, 70 * scale), "JUNGLE PARTY", logoShadow);
         GUI.Label(new Rect(w * .055f, h * .055f, w * .52f, 70 * scale), "JUNGLE PARTY", logo);
-        GUI.Label(new Rect(w * .058f, h * .055f + 62 * scale, w * .45f, 25 * scale), "MUEVE · JUEGA · CONQUISTA LA SELVA", tagline);
 
-        Rect shell = new Rect(w * .055f, h * .205f, Mathf.Min(w * .56f, 1030 * scale), h * .715f);
+        Rect shell = new Rect(w * .055f, h * .205f, Mathf.Min(w * .89f, 1030 * scale), h * .715f);
         GUI.DrawTexture(new Rect(shell.x + 16 * scale, shell.y + 18 * scale, shell.width, shell.height), shadowPixel);
         GUI.Box(shell, GUIContent.none, PanelStyle(darkGlass, 28));
 
@@ -149,23 +174,35 @@ public sealed class ConnectionScreen : MonoBehaviour
         Rect left = new Rect(inner.x, inner.y, textColumn, inner.height);
         Rect right = new Rect(inner.xMax - qrColumn, inner.y, qrColumn, inner.height);
 
-        GUIStyle eyebrow = Label(Mathf.RoundToInt(14 * scale), new Color(.29f, .96f, .87f), FontStyle.Bold, TextAnchor.MiddleLeft);
         GUIStyle heading = Label(Mathf.RoundToInt(34 * scale), Color.white, FontStyle.Bold, TextAnchor.UpperLeft);
-        GUIStyle body = Label(Mathf.RoundToInt(16 * scale), new Color(.76f, .88f, .85f), FontStyle.Normal, TextAnchor.UpperLeft);
+        GUIStyle body = Label(Mathf.RoundToInt(22 * scale), new Color(.89f, .96f, .94f), FontStyle.Normal, TextAnchor.UpperLeft);
         GUIStyle code = Label(Mathf.RoundToInt(56 * scale), new Color(1f, .82f, .15f), FontStyle.Bold, TextAnchor.MiddleCenter);
 
-        GUI.Label(new Rect(left.x, left.y, left.width, 24 * scale), "CONFIGURACIÓN DEL JUGADOR", eyebrow);
-        GUI.Label(new Rect(left.x, left.y + 30 * scale, left.width, 84 * scale), "Conecta tu\ncelular", heading);
-        GUI.Label(new Rect(left.x, left.y + 117 * scale, left.width, 48 * scale), "Escanea el QR y escribe este código en tu celular.", body);
+        GUI.Label(new Rect(left.x, left.y, left.width, 62 * scale), "Conecta tu celular", heading);
+        string instructions = "1. Escanea el código QR.\n2. Abre el enlace y permite el acceso al movimiento.\n3. Ponte frente a la cámara con las manos a la vista.";
+        var steps = new GUIContent(instructions);
+        float stepsHeight = body.CalcHeight(steps, left.width);
+        GUI.Label(new Rect(left.x, left.y + 66 * scale, left.width, stepsHeight + 4 * scale), steps, body);
 
-        Rect codeCard = new Rect(left.x, left.y + 174 * scale, left.width, 78 * scale);
+        Rect codeCard = new Rect(left.x, left.y + 86 * scale + stepsHeight, left.width, 72 * scale);
         GUI.Box(codeCard, GUIContent.none, PanelStyle(softCard, 20));
         GUI.Label(codeCard, session.RoomCode, code);
 
         GUIStyle statusText = Label(Mathf.RoundToInt(15 * scale), Color.white, FontStyle.Bold, TextAnchor.MiddleLeft);
-        DrawStatus(new Rect(left.x, left.y + 270 * scale, left.width, 48 * scale), "CÁMARA", session.CameraConnected ? "LISTA" : "PREPARANDO", session.CameraConnected, statusText, scale);
-        DrawStatus(new Rect(left.x, left.y + 328 * scale, left.width, 48 * scale), "CELULAR", session.PhoneConnected ? "CONECTADO" : "ESPERANDO", session.PhoneConnected, statusText, scale);
-        GUI.Label(new Rect(left.x + 5 * scale, left.y + 387 * scale, left.width - 10 * scale, 45 * scale), services.Status, body);
+        var pose = session.LatestPose;
+        bool handsVisible = pose != null && (pose.leftDetected || pose.rightDetected);
+        string cameraStatus = pose == null ? "SIN IMAGEN" : !handsVisible ? "NO VE TUS MANOS"
+            : pose.leftDetected && pose.rightDetected ? "AMBAS MANOS" : pose.leftDetected ? "IZQUIERDA" : "DERECHA";
+        DrawStatus(new Rect(left.x, codeCard.yMax + 16 * scale, left.width, 48 * scale),
+            "CÁMARA", cameraStatus, handsVisible, statusText, scale);
+        DrawStatus(new Rect(left.x, codeCard.yMax + 74 * scale, left.width, 48 * scale), "CELULAR", session.PhoneConnected ? "CONECTADO" : "ESPERANDO", session.PhoneConnected, statusText, scale);
+        string hint = session.PhoneConnected ? "Pulsa ACEPTAR en tu celular para entrar."
+            : pose == null ? "Si la cámara no responde, revisa que esté encendida y destapada."
+            : !handsVisible ? "Da un paso atrás hasta que la cámara vea tus manos."
+            : "Cuando el celular se conecte, pulsa ACEPTAR.";
+        var hintContent = new GUIContent(hint);
+        GUI.Label(new Rect(left.x, codeCard.yMax + 138 * scale, left.width,
+            body.CalcHeight(hintContent, left.width) + 4 * scale), hintContent, body);
 
         Rect qrCard = new Rect(right.x, right.y + 2 * scale, right.width, right.width + 62 * scale);
         GUI.Box(qrCard, GUIContent.none, PanelStyle(whiteCard, 22));
@@ -174,19 +211,25 @@ public sealed class ConnectionScreen : MonoBehaviour
         if (qrTexture != null)
             GUI.DrawTexture(qrRect, qrTexture, ScaleMode.ScaleToFit, false);
         else
-            GUI.Label(qrRect, "CREANDO\nENLACE SEGURO...", Label(Mathf.RoundToInt(18 * scale), new Color(.05f, .20f, .20f), FontStyle.Bold, TextAnchor.MiddleCenter));
+            GUI.Label(qrRect, (string.IsNullOrEmpty(services.ControllerUrlForRoom(session.RoomCode)) ? services.Status : "PREPARANDO EL QR…"), Label(Mathf.RoundToInt(18 * scale), new Color(.05f, .20f, .20f), FontStyle.Bold, TextAnchor.MiddleCenter));
         GUI.Label(new Rect(qrCard.x + 5 * scale, qrCard.yMax - 52 * scale, qrCard.width - 10 * scale, 40 * scale), "ESCANEA PARA CONECTAR", Label(Mathf.RoundToInt(14 * scale), new Color(.04f, .16f, .16f), FontStyle.Bold, TextAnchor.MiddleCenter));
 
         float buttonY = shell.yMax - pad - 50 * scale;
         GUIStyle copyButton = ButtonStyle(softCard, softCard, Color.white, Mathf.RoundToInt(15 * scale));
-        GUIStyle continueButton = session.PhoneConnected
+        bool canEnter = session.PhoneConnected || handsVisible;
+        GUIStyle continueButton = canEnter
             ? ButtonStyle(goldButton, cyanButtonHover, new Color(.035f, .12f, .11f), Mathf.RoundToInt(16 * scale))
             : ButtonStyle(disabledButton, disabledButton, new Color(.68f, .76f, .74f), Mathf.RoundToInt(15 * scale));
-        if (!string.IsNullOrEmpty(services.PublicControllerUrl) && GUI.Button(new Rect(left.x, buttonY, left.width, 50 * scale), "COPIAR ENLACE", copyButton))
-            GUIUtility.systemCopyBuffer = services.PublicControllerUrl;
-        if (GUI.Button(new Rect(right.x, buttonY, right.width, 50 * scale), session.PhoneConnected ? "ENTRAR A LA SELVA" : "ESPERANDO CELULAR", continueButton) && session.PhoneConnected)
-            SceneNavigator.Load(SceneNavigator.MainMenu);
+        if (!string.IsNullOrEmpty(services.ControllerUrlForRoom(session.RoomCode)) && GUI.Button(new Rect(left.x, buttonY, left.width, 50 * scale), "COPIAR ENLACE", copyButton))
+            GUIUtility.systemCopyBuffer = services.ControllerUrlForRoom(session.RoomCode);
+        string enterLabel = session.PhoneConnected ? "ENTRAR A LA SELVA" : handsVisible ? "JUGAR CON CÁMARA" : "ESPERANDO CELULAR";
+        if (GUI.Button(new Rect(right.x, buttonY, right.width, 50 * scale), enterLabel, continueButton) && canEnter)
+        {
+            SplashDirector.OpenConnectedMenu();
+            return;
+        }
 
+        if (session.PhoneConnected && phonePointer.TakeConfirm()) SplashDirector.OpenConnectedMenu();
         DrawForegroundLeaves(w, h, time, scale);
     }
 
@@ -264,8 +307,9 @@ public sealed class ConnectionScreen : MonoBehaviour
 
     private static GUIStyle Label(int size, Color color, FontStyle weight, TextAnchor alignment)
     {
-        var style = new GUIStyle(GUI.skin.label)
+        var style = new GUIStyle(JungleUITheme.Body)
         {
+            font = size >= 28 ? JungleUITheme.TitleFont : JungleUITheme.TextFont,
             fontSize = size,
             fontStyle = weight,
             alignment = alignment,
@@ -278,7 +322,7 @@ public sealed class ConnectionScreen : MonoBehaviour
 
     private static GUIStyle ButtonStyle(Texture2D normal, Texture2D hover, Color textColor, int size)
     {
-        var style = new GUIStyle(GUI.skin.button)
+        var style = new GUIStyle(JungleUITheme.Button)
         {
             fontSize = size,
             fontStyle = FontStyle.Bold,

@@ -20,11 +20,13 @@ public sealed class BaseballController : MonoBehaviour
     private Quaternion batOrientation = Quaternion.Euler(15f, 0f, 0f);
     private int pitches, strikes, hits, homeRuns, score;
     private string message = "PREPÁRATE";
-    private Texture2D panel, green, yellow, red, blue;
+    private Texture2D yellow, red, blue;
+    private AudioSource sfx;
 
     private void Awake()
     {
         session = MotionSession.Ensure();
+        sfx = JungleAudioBank.Attach2DSource(gameObject);
         BuildField();
         previousRight = rightHand;
         SchedulePitch(1.2f);
@@ -62,6 +64,7 @@ public sealed class BaseballController : MonoBehaviour
 
     private void Update()
     {
+        if (PartyMode.Blocking) return;
         ReadSensors();
         Vector3 handPosition = new Vector3(Mathf.Lerp(-2.45f,2.45f,rightHand.x),Mathf.Lerp(2.75f,.30f,rightHand.y),-3.1f);
         bat.transform.position = Vector3.Lerp(bat.transform.position, handPosition, 18f * Time.deltaTime);
@@ -78,12 +81,24 @@ public sealed class BaseballController : MonoBehaviour
         }
         else if(state==PlayState.Result && Time.time>=stateUntil)
         {
+            if (PartyMode.Round(score, new int[]{pitches,strikes,hits,homeRuns,score}, pitches>=10, RestorePartyPitch)) return;
             if(pitches>=10) state=PlayState.GameOver; else SchedulePitch(1.1f);
         }
     }
 
+    private void RestorePartyPitch(object snapshot)
+    {
+        int[] saved = snapshot as int[] ?? new int[5];
+        pitches=saved[0]; strikes=saved[1]; hits=saved[2]; homeRuns=saved[3]; score=saved[4];
+        phoneCalibrated=false;
+        powerReady=true;
+        ballBody.isKinematic=true;
+        SchedulePitch(1.1f);
+    }
+
     private void StartPitch()
     {
+        sfx.PlayOneShot(JungleAudioBank.Pitch, .55f);
         state=PlayState.Pitching; pitches++; message="¡BATEA!";
         ball.transform.position=new Vector3(UnityEngine.Random.Range(-.45f,.45f),UnityEngine.Random.Range(1.25f,1.85f),5.8f);
     }
@@ -122,25 +137,28 @@ public sealed class BaseballController : MonoBehaviour
         float strength=Mathf.Clamp((phonePower-210f)/260f,.25f,1f);
         hitDistance=25f+timing*55f+strength*55f;
         hits++; score += hitDistance>105f?4:hitDistance>72f?2:1; if(hitDistance>105f) homeRuns++;
+        sfx.PlayOneShot(hitDistance > 105f ? JungleAudioBank.HomeRun : JungleAudioBank.BatHit, .85f);
         state=PlayState.HitFlight; message=hitDistance>105f?"¡JONRÓN!":"¡HIT!";
         ballBody.isKinematic=false; ballBody.useGravity=true; ballBody.linearVelocity=new Vector3(direction*8f,8f+strength*7f,13f+strength*12f); stateUntil=Time.time+2.7f;
     }
 
     private void FinishHit() { ballBody.isKinematic=true; state=PlayState.Result; stateUntil=Time.time+1.5f; }
-    private void FinishPitch(bool hit,float distance) { strikes++; message="STRIKE"; state=PlayState.Result; stateUntil=Time.time+1.3f; }
+    private void FinishPitch(bool hit,float distance) { strikes++; message="STRIKE"; sfx.PlayOneShot(JungleAudioBank.Strike, .65f); state=PlayState.Result; stateUntil=Time.time+1.3f; }
 
     private Texture2D Solid(Color c){Texture2D t=new Texture2D(1,1);t.SetPixel(0,0,c);t.Apply();return t;}
     private void OnGUI()
     {
+        if (PartyMode.Blocking) return;
+        if (state == PlayState.GameOver && PartyMode.Report(score)) return;
         JungleUITheme.Ensure();
-        panel??=Solid(new Color(.02f,.04f,.055f,.94f)); green??=Solid(new Color(.08f,.65f,.18f)); yellow??=Solid(new Color(1f,.78f,.08f)); red??=Solid(new Color(.9f,.12f,.08f)); blue??=Solid(new Color(.06f,.55f,.9f));
-        float w=Screen.width,h=Screen.height; GUIStyle title=new GUIStyle(GUI.skin.label){fontSize=Mathf.RoundToInt(h*.045f),fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,normal={textColor=Color.white}};
-        JungleUITheme.DrawPanel(new Rect(w*.12f,h*.03f,w*.76f,h*.16f)); GUI.Label(new Rect(w*.14f,h*.04f,w*.72f,h*.065f),"JUNGLE BASEBALL",title);
-        GUI.Label(new Rect(w*.15f,h*.105f,w*.70f,h*.06f),$"LANZAMIENTO {Mathf.Min(pitches+1,10)}/10    HITS {hits}    JONRONES {homeRuns}    PUNTOS {score}",title);
+        yellow??=Solid(new Color(1f,.78f,.08f)); red??=Solid(new Color(.9f,.12f,.08f)); blue??=Solid(new Color(.06f,.55f,.9f));
+        float w=Screen.width,h=Screen.height; GUIStyle title=new GUIStyle(JungleUITheme.Title){fontSize=Mathf.RoundToInt(h*.045f),fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter,normal={textColor=Color.white}};
+        JungleUITheme.DrawPanel(new Rect(w*.12f,h*.03f,w*.76f,h*.16f)); JungleUITheme.DrawFittedLabel(new Rect(w*.14f,h*.04f,w*.72f,h*.065f),"JUNGLE BASEBALL",title);
+        JungleUITheme.DrawFittedLabel(new Rect(w*.15f,h*.105f,w*.70f,h*.06f),$"LANZAMIENTO {Mathf.Min(pitches+1,10)}/10    HITS {hits}    JONRONES {homeRuns}    PUNTOS {score}",title);
         GUI.DrawTexture(new Rect(w*.34f,h*.22f,w*.32f,h*.075f),message.Contains("JON")?yellow:message.Contains("STRIKE")?red:blue); GUI.Label(new Rect(w*.34f,h*.22f,w*.32f,h*.075f),message,title);
-        if(state==PlayState.GameOver){GUI.DrawTexture(new Rect(w*.27f,h*.34f,w*.46f,h*.25f),panel);GUI.Label(new Rect(w*.29f,h*.37f,w*.42f,h*.08f),$"PARTIDA TERMINADA · {score} PUNTOS",title);if(GUI.Button(new Rect(w*.38f,h*.49f,w*.24f,h*.07f),"OTRA PARTIDA")){pitches=strikes=hits=homeRuns=score=0;SchedulePitch(1f);}}
+        if(state==PlayState.GameOver){JungleUITheme.DrawPanel(new Rect(w*.27f,h*.34f,w*.46f,h*.25f), true);JungleUITheme.DrawFittedLabel(new Rect(w*.29f,h*.37f,w*.42f,h*.08f),$"PARTIDA TERMINADA · {score} PUNTOS",title);if(MotionSession.PrimaryButton(new Rect(w*.38f,h*.49f,w*.24f,h*.07f),"OTRA PARTIDA", JungleUITheme.Button)){pitches=strikes=hits=homeRuns=score=0;SchedulePitch(1f);}}
         if(GUI.Button(new Rect(w*.84f,h*.04f,w*.13f,h*.07f),"MENÚ",JungleUITheme.Button))SceneNavigator.Load(SceneNavigator.MainMenu);
-        GUI.Label(new Rect(w*.18f,h*.88f,w*.64f,h*.06f),"SIGUE LA PELOTA · HAZ EL SWING CON EL CELULAR Y LA MANO DERECHA",title);
+        JungleUITheme.DrawFittedLabel(new Rect(w*.18f,h*.88f,w*.64f,h*.06f),"SIGUE LA PELOTA · HAZ EL SWING CON EL CELULAR Y LA MANO DERECHA",title);
         JungleUITheme.DrawLeaves();
     }
 }

@@ -15,11 +15,14 @@ public sealed class RhythmDrumsController : MonoBehaviour
     private int score,combo,bestCombo,misses,beatIndex;
     private bool rightPowerReady=true,finished;
     private const float Beat=.54545f;
-    private Texture2D dark,cyan,orange,white,green,red;
+    private Texture2D cyan,orange,white,green,red;
+
+    private AudioSource sfx;
 
     private void Awake()
     {
         session=MotionSession.Ensure(); previousLeft=leftHand; previousRight=rightHand;
+        sfx = JungleAudioBank.Attach2DSource(gameObject);
         BuildStage(); startTime=Time.time+2f; nextBeat=startTime; GenerateChart();
     }
 
@@ -50,6 +53,7 @@ public sealed class RhythmDrumsController : MonoBehaviour
 
     private void Update()
     {
+        if (PartyMode.Blocking) return;
         ReadSensors();float now=Time.time;
         if(!finished)
         {
@@ -81,7 +85,9 @@ public sealed class RhythmDrumsController : MonoBehaviour
     {
         Note best=null;float error=.26f;
         foreach(Note n in notes)if(!n.judged&&n.left==left&&Mathf.Abs(Time.time-n.time)<error){best=n;error=Mathf.Abs(Time.time-n.time);}
-        if(best==null){combo=0;misses++;return;}best.judged=true;combo++;bestCombo=Mathf.Max(bestCombo,combo);
+        if(best==null){sfx.PlayOneShot(JungleAudioBank.MissDrum, .55f);combo=0;misses++;return;}
+        sfx.PlayOneShot(left ? JungleAudioBank.LeftDrum : JungleAudioBank.RightDrum, .75f);
+        best.judged=true;combo++;bestCombo=Mathf.Max(bestCombo,combo);
         int gained=error<.075f?1000:error<.15f?650:350;score+=gained+combo*12;
         if(left)leftFlash=Time.time+.12f;else rightFlash=Time.time+.12f;
     }
@@ -89,19 +95,21 @@ public sealed class RhythmDrumsController : MonoBehaviour
     private Texture2D Solid(Color c){Texture2D t=new Texture2D(1,1);t.SetPixel(0,0,c);t.Apply();return t;}
     private void OnGUI()
     {
+        if (PartyMode.Blocking) return;
+        if (finished && PartyMode.Report(score)) return;
         JungleUITheme.Ensure();
-        dark??=Solid(new Color(.015f,.025f,.04f,.94f));cyan??=Solid(new Color(.05f,.7f,1f));orange??=Solid(new Color(1f,.32f,.06f));white??=Solid(Color.white);green??=Solid(new Color(.15f,.9f,.3f));red??=Solid(new Color(.9f,.08f,.06f));
-        float w=Screen.width,h=Screen.height;GUIStyle title=new GUIStyle(GUI.skin.label){fontSize=Mathf.RoundToInt(h*.038f),fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter,normal={textColor=Color.white}};
-        JungleUITheme.DrawPanel(new Rect(w*.16f,h*.02f,w*.68f,h*.13f));GUI.Label(new Rect(w*.18f,h*.025f,w*.64f,h*.055f),"JUNGLE DRUMS",title);GUI.Label(new Rect(w*.19f,h*.08f,w*.62f,h*.05f),$"PUNTOS {score}    COMBO {combo}    MEJOR {bestCombo}    FALLOS {misses}",title);
+        cyan??=Solid(new Color(.05f,.7f,1f));orange??=Solid(new Color(1f,.32f,.06f));white??=Solid(Color.white);green??=Solid(new Color(.15f,.9f,.3f));red??=Solid(new Color(.9f,.08f,.06f));
+        float w=Screen.width,h=Screen.height;GUIStyle title=new GUIStyle(JungleUITheme.Title){fontSize=Mathf.RoundToInt(h*.038f),fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter,normal={textColor=Color.white}};
+        JungleUITheme.DrawPanel(new Rect(w*.16f,h*.02f,w*.68f,h*.13f));JungleUITheme.DrawFittedLabel(new Rect(w*.18f,h*.025f,w*.64f,h*.055f),"JUNGLE DRUMS",title);JungleUITheme.DrawFittedLabel(new Rect(w*.19f,h*.08f,w*.62f,h*.05f),$"PUNTOS {score}    COMBO {combo}    MEJOR {bestCombo}    FALLOS {misses}",title);
         DrawLane(true,w*.25f,w,h,title);DrawLane(false,w*.62f,w,h,title);
-        if(finished){GUI.DrawTexture(new Rect(w*.28f,h*.31f,w*.44f,h*.25f),dark);GUI.Label(new Rect(w*.30f,h*.35f,w*.40f,h*.08f),$"CANCIÓN TERMINADA · {score}",title);if(GUI.Button(new Rect(w*.39f,h*.47f,w*.22f,h*.06f),"REPETIR"))SceneNavigator.Load(SceneNavigator.Drums);}
+        if(finished){JungleUITheme.DrawPanel(new Rect(w*.28f,h*.31f,w*.44f,h*.25f), true);JungleUITheme.DrawFittedLabel(new Rect(w*.30f,h*.35f,w*.40f,h*.08f),$"CANCIÓN TERMINADA · {score}",title);if(MotionSession.PrimaryButton(new Rect(w*.39f,h*.47f,w*.22f,h*.06f),"REPETIR", JungleUITheme.Button))SceneNavigator.Load(SceneNavigator.Drums);}
         if(GUI.Button(new Rect(w*.85f,h*.04f,w*.12f,h*.06f),"MENÚ",JungleUITheme.Button))SceneNavigator.Load(SceneNavigator.MainMenu);
         JungleUITheme.DrawLeaves();
     }
 
     private void DrawLane(bool left,float x,float w,float h,GUIStyle style)
     {
-        float laneW=w*.13f,targetY=h*.76f;GUI.DrawTexture(new Rect(x, h*.16f,laneW,h*.66f),dark);GUI.DrawTexture(new Rect(x,targetY,laneW,h*.025f),left?cyan:orange);
+        float laneW=w*.13f,targetY=h*.76f;JungleUITheme.DrawSubPanel(new Rect(x, h*.16f,laneW,h*.66f));GUI.DrawTexture(new Rect(x,targetY,laneW,h*.025f),left?cyan:orange);
         foreach(Note n in notes)if(!n.judged&&n.left==left){float seconds=n.time-Time.time;if(seconds<2.6f&&seconds>-.3f){float y=targetY-seconds*(h*.23f);GUI.DrawTexture(new Rect(x+laneW*.18f,y,laneW*.64f,h*.045f),left?cyan:orange);}}
         bool flash=Time.time<(left?leftFlash:rightFlash);GUI.DrawTexture(new Rect(x-laneW*.05f,h*.80f,laneW*1.1f,h*.08f),flash?white:(left?cyan:orange));GUI.Label(new Rect(x,h*.80f,laneW,h*.08f),left?"IZQUIERDA":"DERECHA",style);
     }
