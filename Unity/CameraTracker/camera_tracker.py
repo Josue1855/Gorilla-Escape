@@ -33,13 +33,26 @@ pose_data = {
 data_lock = threading.Lock()
 rooms = {}
 parties = {}
+player_results = {}
+last_players = {}
 preview_frame = None
 
 
 class PoseHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         request = urlparse(self.path)
-        if request.path == "/party":
+        if request.path == "/results":
+            query = parse_qs(request.query)
+            key = (query.get("room", [""])[0].upper(), query.get("player", [""])[0])
+            with data_lock:
+                payload = json.dumps(player_results.get(key, [])).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+        elif request.path == "/party":
             room = parse_qs(request.query).get("room", [""])[0].upper()
             with data_lock:
                 party = parties.get(room, {"players": [], "active": "", "locked": False})
@@ -131,6 +144,41 @@ class PoseHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         request = urlparse(self.path)
+        if request.path == "/results":
+            if self.headers.get("Cf-Ray") or self.client_address[0] != "127.0.0.1":
+                self.send_error(403)
+                return
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if not 0 < length <= 1024:
+                    raise ValueError("size")
+                result = json.loads(self.rfile.read(length))
+                room = parse_qs(request.query).get("room", [""])[0].upper()
+                games = {"BananaBowling", "GorillaBoxing", "JungleBaseball", "JungleDrums", "CoconutSlice",
+                         "WhackAMole", "CoconutThrow", "LogBalance", "JungleKeeper"}
+                if (not isinstance(result.get("id"), str) or not 1 <= len(result["id"]) <= 64
+                        or result.get("game") not in games or type(result.get("score")) not in (float, int)
+                        or not math.isfinite(result["score"])):
+                    raise ValueError("result")
+                with data_lock:
+                    player = result.get("player") or last_players.get(room)
+                    if not isinstance(player, str) or not 1 <= len(player) <= 64:
+                        raise ValueError("player")
+                    key = (room, player)
+                    if key not in player_results and len(player_results) >= 300:
+                        player_results.pop(next(iter(player_results)))
+                    history = player_results.setdefault(key, [])
+                    if not any(item["id"] == result["id"] for item in history):
+                        history.append({"id": result["id"], "game": result["game"], "score": result["score"],
+                                        "time": int(time.time() * 1000)})
+                        del history[:-50]
+            except (ValueError, TypeError, KeyError, AttributeError):
+                self.send_error(400, "Invalid result")
+                return
+            self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         if request.path == "/party":
             if self.headers.get("Cf-Ray") or self.client_address[0] != "127.0.0.1":
                 self.send_error(403)
@@ -169,6 +217,8 @@ class PoseHandler(BaseHTTPRequestHandler):
         with data_lock:
             party = parties.get(room)
             player = parse_qs(request.query).get("player", [""])[0]
+            if player:
+                last_players[room] = player
             if party is not None:
                 members = party["players"]
                 member = next((item for item in members if item["id"] == player), None)

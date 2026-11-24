@@ -1073,6 +1073,11 @@ public sealed class SplashDirector : MonoBehaviour
             int phoneSign = menuPointer != null && menuPointer.Connected
                 ? SignUnderPointer(menuPointer.ScreenPosition) : -1;
             bool phoneConfirmed = menuPointer != null && menuPointer.TakeConfirm();
+            if (phoneConfirmed && GameWindowControls.ExitHovered(menuPointer))
+            {
+                GameWindowControls.QuitGame();
+                return;
+            }
             if (phoneConfirmed && phoneSign >= 0)
             {
                 TriggerSignAction(phoneSign);
@@ -1389,6 +1394,7 @@ public sealed class SplashDirector : MonoBehaviour
                 }
             }
 
+            GameWindowControls.DrawExitButton(menuPointer);
             float navPillW = Mathf.Min(sw * 0.75f, 540f);
             float navPillH = 38f;
             Rect navPillRect = new Rect((sw - navPillW) * 0.5f, sh * 0.915f, navPillW, navPillH);
@@ -1610,6 +1616,7 @@ public sealed class SplashDirector : MonoBehaviour
     // AUTOMACIÓN DE CAPTURA VISUAL PARA LABORATORIO QA (10 EVIDENCIAS)
     // -------------------------------------------------------------
 }
+
 
 
 

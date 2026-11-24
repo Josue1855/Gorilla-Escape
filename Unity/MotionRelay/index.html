@@ -29,6 +29,7 @@
     .profile input{font-size:20px;letter-spacing:normal;text-transform:none;padding:12px;height:54px}
     .profile p{line-height:1.5}.profile button{margin:6px 0;min-height:48px;font-size:16px}
     .profile [hidden]{display:none!important}.profile .danger{background:#873d32;color:white}
+    .profile-section{border-top:1px solid #ffffff25;margin-top:12px}.profile-section summary{font-size:17px}.profile select{width:100%;padding:12px;border:1px solid #31585a;border-radius:12px;background:#06191d;color:white;font:inherit;margin-bottom:10px}.profile input[type=range]{padding:0;height:38px}.profile .check{display:flex;align-items:center;gap:12px}.profile input[type=checkbox]{appearance:auto;width:24px;height:24px;margin:0}.profile li{margin-bottom:10px}.profile #profileRecords p{border-left:4px solid var(--gold);padding-left:10px}
     .profile label{display:block;margin:12px 0 6px}.profile .note{font-size:13px;color:var(--muted)}
   </style>
 </head>
@@ -48,15 +49,38 @@
   <details class="card profile">
     <summary>MI PERFIL</summary>
     <p id="profileSummary">Todavía no has creado un perfil.</p>
-    <form id="profileForm">
-      <label for="profileName">Nombre del jugador</label>
-      <input id="profileName" maxlength="20" autocomplete="nickname" required>
-      <button type="submit" id="profileSave">CREAR PERFIL</button>
-    </form>
-    <button type="button" id="profileDelete" class="danger" hidden>BORRAR MIS DATOS LOCALES</button>
-    <button type="button" id="profileExport" class="secondary" hidden>EXPORTAR PERFIL</button>
-    <label for="profileImport">Recuperar un perfil exportado</label>
-    <input id="profileImport" type="file" accept=".json,application/json">
+    <details class="profile-section">
+      <summary>Mi jugador</summary>
+      <form id="profileForm">
+        <label for="profileName">Nombre</label><input id="profileName" maxlength="20" autocomplete="nickname" required>
+        <label for="profileAvatar">Avatar</label>
+        <select id="profileAvatar"><option value="gorilla">🦍 Gorila</option><option value="monkey">🐵 Explorador</option><option value="playful">🐒 Travieso</option></select>
+        <label for="profileColor">Color del jugador</label>
+        <select id="profileColor"><option value="gold">Dorado</option><option value="turquoise">Turquesa</option><option value="blue">Azul</option></select>
+        <button type="submit" id="profileSave">CREAR PERFIL</button>
+      </form>
+    </details>
+    <details class="profile-section">
+      <summary>Mis resultados</summary>
+      <p class="note">Últimas partidas y mejor marca por juego en este perfil.</p>
+      <div id="profileRecords"></div><ol id="profileResults"></ol>
+      <p id="resultsStatus" role="status">Todavía no hay partidas guardadas.</p>
+    </details>
+    <details class="profile-section">
+      <summary>Ajustar mi control</summary>
+      <label for="pointerSensitivity">Sensibilidad del puntero <output id="sensitivityValue">1.0×</output></label>
+      <input type="range" id="pointerSensitivity" min="0.6" max="1.6" step="0.1" value="1">
+      <label class="check"><input type="checkbox" id="controlVibration" checked> Vibración del control</label>
+      <button type="button" id="profileRecenter" class="secondary">RECENTRAR CELULAR</button>
+      <p class="note">Apunta al centro de la pantalla y toca Recentrar. Los ajustes se guardan con tu perfil.</p>
+    </details>
+    <details class="profile-section">
+      <summary>Administrar mis datos</summary>
+      <button type="button" id="profileExport" class="secondary" hidden>EXPORTAR PERFIL Y RESULTADOS</button>
+      <label for="profileImport">Recuperar un perfil exportado</label><input id="profileImport" type="file" accept=".json,application/json">
+      <button type="button" id="profileDelete" class="danger" hidden>BORRAR MIS DATOS LOCALES</button>
+      <p class="note">Exporta antes de cambiar de enlace para conservar tus datos.</p>
+    </details>
     <p id="profileStatus" role="status" aria-live="polite"></p>
     <p class="note">El nombre se guarda en este navegador. Si cambia el dominio del QR, importa tu archivo para recuperarlo. Al conectarte, el nombre también se comparte con la partida.</p>
     <button type="button" id="installPwa" class="secondary" hidden>INSTALAR CONTROL</button>
@@ -82,6 +106,7 @@ let latest=null,running=false,listenersAttached=false,count=0,last=performance.n
 let motion={ax:0,ay:0,az:0,rx:0,ry:0,rz:0};
 function showStatus(message,kind=''){statusText.textContent=message;state.className='state'+(kind?' '+kind:'')}
 function showHelp(html){help.innerHTML=html;help.style.display='block'}function hideHelp(){help.style.display='none';help.textContent=''}
+function vibrate(pattern){if(window.JungleProfile?.settings().vibration!==false)navigator.vibrate?.(pattern)}
 function onMotion(e){const a=e.acceleration||e.accelerationIncludingGravity||{},rot=e.rotationRate||{};motion={ax:a.x||0,ay:a.y||0,az:a.z||0,rx:rot.alpha||0,ry:rot.beta||0,rz:rot.gamma||0}}
 function onOrientation(e){if(![e.alpha,e.beta,e.gamma].some(Number.isFinite))return;latest={type:'motion',time:Date.now(),alpha:e.alpha||0,beta:e.beta||0,gamma:e.gamma||0,screen:screen.orientation?.angle||window.orientation||0,confirm:confirmCount,recenter:recenterCount,...motion}}
 function attachSensors(){if(listenersAttached)return;addEventListener('devicemotion',onMotion,{passive:true});addEventListener('deviceorientation',onOrientation,{passive:true});listenersAttached=true}
@@ -94,7 +119,7 @@ async function send(){
 
   const time=Math.max(Date.now(),lastSentTime+1);
   lastSentTime=time;
-  const payload={...latest,time,playerName:nameInput.value.trim(),confirm:confirmCount,recenter:recenterCount,back:backCount,menu:menuCount,...motion};
+  const payload={...latest,time,pointerSensitivity:window.JungleProfile?.settings().sensitivity||1,playerName:nameInput.value.trim(),confirm:confirmCount,recenter:recenterCount,back:backCount,menu:menuCount,...motion};
   const controller=new AbortController();
   const timeout=setTimeout(()=>controller.abort(),1800);
   inFlight++;
@@ -136,11 +161,16 @@ activateButton.addEventListener('click',async()=>{
     setTimeout(()=>{if(!latest){showStatus('No llegan datos de orientación','error');showHelp('<strong>Activa Movimiento y orientación para este sitio.</strong><br>iPhone: Ajustes › Safari › Movimiento y orientación.<br>Android: ajustes del sitio › Sensores de movimiento. Luego recarga esta página.')}},3500);
   }catch(error){activateButton.disabled=false;showStatus('Acceso al movimiento bloqueado','error');showHelp('<strong>El código es correcto, pero el navegador negó los sensores.</strong><br>iPhone: abre esta página en Safari y permite Movimiento y orientación.<br>Android: abre los permisos del sitio y habilita Sensores de movimiento. Después recarga e intenta otra vez.')}
 });
-document.getElementById('backButton').addEventListener('click',()=>{backCount++;navigator.vibrate?.(30)});
-document.getElementById('menuButton').addEventListener('click',()=>{menuCount++;navigator.vibrate?.(40)});
-confirmButton.addEventListener('click',()=>{confirmCount++;if(latest)latest.confirm=confirmCount;navigator.vibrate?.(50)});recenterButton.addEventListener('click',()=>{recenterCount++;if(latest)latest.recenter=recenterCount;navigator.vibrate?.([30,30,30])});roomInput.addEventListener('input',()=>{roomInput.value=roomInput.value.replace(/[^a-z0-9]/gi,'').toUpperCase()});
+document.getElementById('backButton').addEventListener('click',()=>{backCount++;vibrate(30)});
+document.getElementById('menuButton').addEventListener('click',()=>{menuCount++;vibrate(40)});
+confirmButton.addEventListener('click',()=>{confirmCount++;if(latest)latest.confirm=confirmCount;vibrate(50)});recenterButton.addEventListener('click',()=>{recenterCount++;if(latest)latest.recenter=recenterCount;vibrate([30,30,30])});roomInput.addEventListener('input',()=>{roomInput.value=roomInput.value.replace(/[^a-z0-9]/gi,'').toUpperCase()});
+window.JungleControl = {
+  recenter(){recenterButton.click()},
+  player(){return {room:roomInput.value.toUpperCase(),player:playerId,connected:running}}
+};
 addEventListener('jungle-profile-deleted',()=>{
   running=false;latest=null;nameInput.value='';nameInput.disabled=false;
+  playerId=crypto.randomUUID();sessionStorage.setItem('junglePlayer',playerId);
   controls.style.display='none';activateButton.style.display='';activateButton.disabled=false;
   roomInput.disabled=false;showStatus('Perfil local borrado. Escribe un nombre para volver a conectar.');
 });

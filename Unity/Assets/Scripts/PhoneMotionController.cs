@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -968,6 +968,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void StartBowlingGame()
     {
+        GameResultRecorder.Reset();
         SetBowlingVisible(true);
         if (gorillaMascot != null) { gorillaMascot.transform.position = gorillaRestPosition; gorillaMascot.transform.rotation = gorillaRestRotation; }
         for (int i = 0; i < bowlingFrames.Length; i++) bowlingFrames[i].Clear();
@@ -1032,6 +1033,7 @@ public sealed class PhoneMotionController : MonoBehaviour
 
     private void StartBoxingGame()
     {
+        GameResultRecorder.Reset();
         SetBowlingVisible(false);
         playerHealth = 100f; gorillaHealth = 100f; boxingRoundTime = 90f; getUpEnergy = 0f;
         boxingGorillaAction = 0; gorillaActionAt = Time.time + 1.8f; boxingMessageCode = 0; boxingMessageUntil = 0;

@@ -5,7 +5,7 @@ const source = fs.readFileSync(require('node:path').join(__dirname, 'profile.js'
 function load(store = new Map(), blocked = false) {
   const elements = {}, events = {};
   const el = id => elements[id] ||= { value: '', hidden: false, textContent: '', listeners: {},
-    addEventListener(type, handler) { this.listeners[type] = handler; } };
+    style: {}, children: [], replaceChildren() { this.children = []; }, appendChild(child) { this.children.push(child); }, addEventListener(type, handler) { this.listeners[type] = handler; } };
   const context = {
     localStorage: {
       getItem: key => store.get(key) || null,
@@ -13,12 +13,12 @@ function load(store = new Map(), blocked = false) {
       removeItem: key => store.delete(key)
     },
     sessionStorage: { removeItem() {} },
-    document: { getElementById: el },
+    document: { getElementById: el, querySelector: el, createElement: () => ({ textContent: '' }) },
     navigator: {}, Event: class { constructor(type) { this.type = type; } },
     confirm: () => true,
     addEventListener(type, fn) { events[type] = fn; },
     dispatchEvent(event) { events[event.type]?.(event); },
-    setTimeout
+    setInterval() {}, setTimeout
   };
   context.window = context;
   vm.runInNewContext(source, context);
@@ -52,5 +52,23 @@ function load(store = new Map(), blocked = false) {
   const unavailable = load(new Map(), true);
   assert.equal(unavailable.context.JungleProfile.save('Ana'), true);
   assert.match(unavailable.el('profileStatus').textContent, /bloqueó/);
-  console.log('PASS: profile create/read/update/delete, reload, invalid import, blocked storage.');
+    app.el('profileAvatar').value = 'playful';
+  app.el('profileColor').value = 'blue';
+  app.el('pointerSensitivity').value = '1.4';
+  app.el('controlVibration').checked = false;
+  app.context.JungleProfile.save('José');
+  const customized = JSON.parse(app.store.get('jungle.profile.v1'));
+  assert.equal(customized.avatar, 'playful');
+  assert.equal(customized.color, 'blue');
+  assert.equal(customized.settings.sensitivity, 1.4);
+  assert.equal(customized.settings.vibration, false);
+  app = load(app.store);
+  assert.equal(app.context.JungleProfile.settings().sensitivity, 1.4);
+  assert.equal(app.el('controlVibration').checked, false);
+  const result = {id:'round-1',game:'WhackAMole',score:500,time:Date.now()};
+  app = load(new Map([['jungle.profile.v1', JSON.stringify({...customized, results:[result]})]]));
+  assert.match(app.el('profileRecords').children[0].textContent, /500/);
+  assert.match(app.el('profileResults').children[0].textContent, /Whack-a-Mole/);
+  console.log('PASS: profile CRUD, migration, settings, avatars, records, reload, invalid import, blocked storage.');
 })().catch(error => { console.error(error); process.exitCode = 1; });
+

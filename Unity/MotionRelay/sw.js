@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'jungle-controller-v1';
+const CACHE = 'jungle-controller-v2';
 const SHELL = ['/', '/profile.js', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png',
   '/fonts/LilitaOne.ttf', '/fonts/NunitoSans.ttf', '/art/jungle.png', '/art/leaves.png'];
 self.addEventListener('install', event => {

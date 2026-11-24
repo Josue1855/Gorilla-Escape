@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 // Consumes only the existing MotionSession. No camera or extra HTTP poller is needed.
@@ -7,7 +7,7 @@ public sealed class PhoneMenuPointer : MonoBehaviour
     [Serializable] public struct Packet
     {
         public double time;
-        public float alpha, beta, gamma, screen;
+        public float alpha, beta, gamma, screen, pointerSensitivity;
         public int confirm, recenter;
     }
     public Vector2 Position { get; private set; } = new Vector2(.5f, .5f);
@@ -66,7 +66,10 @@ public sealed class PhoneMenuPointer : MonoBehaviour
         Vector2 offset = new Vector2(-Mathf.DeltaAngle(yaw, packet.alpha), Mathf.DeltaAngle(pitch, packet.beta));
         if (Mathf.Abs(offset.x) < .15f) offset.x = Mathf.DeltaAngle(roll, packet.gamma);
         offset = (Vector2)(Quaternion.Euler(0, 0, -packet.screen) * offset);
-        return new Vector2(Mathf.Clamp01(.5f + DeadZone(offset.x) / 65f), Mathf.Clamp01(.5f - DeadZone(offset.y) / 55f));
+        float sensitivity = Finite(packet.pointerSensitivity) && packet.pointerSensitivity > 0f
+            ? Mathf.Clamp(packet.pointerSensitivity, .6f, 1.6f) : 1f;
+        return new Vector2(Mathf.Clamp01(.5f + DeadZone(offset.x) * sensitivity / 65f),
+            Mathf.Clamp01(.5f - DeadZone(offset.y) * sensitivity / 55f));
     }
     private static bool Finite(float n) => !float.IsNaN(n) && !float.IsInfinity(n);
     private static float DeadZone(float n) => Mathf.Sign(n) * Mathf.Max(0, Mathf.Abs(n) - .8f);

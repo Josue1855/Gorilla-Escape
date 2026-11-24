@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -142,7 +142,14 @@ internal sealed class PartyMode : MonoBehaviour
 
     internal static bool Report(float score)
     {
-        if (instance == null || !instance.isParty || instance.view != View.Playing) return false;
+        if (instance == null || !instance.isParty)
+        {
+            GameResultRecorder.Record(score);
+            return false;
+        }
+        if (instance.view != View.Playing) return false;
+        if (instance.restoreRound == null || instance.completed[instance.turn])
+            GameResultRecorder.Record(score, instance.roster[instance.turn].id);
         instance.scores[instance.turn] = score;
         if (instance.restoreRound == null) instance.completed[instance.turn] = true;
         instance.view = View.Result;

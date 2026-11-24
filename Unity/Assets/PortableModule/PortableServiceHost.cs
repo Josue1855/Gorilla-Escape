@@ -57,7 +57,8 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         if (IsRunning) return true;
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
         string root = ResolveModuleRoot();
-        string python = Path.Combine(root, "CameraTracker", ".venv", "Scripts", "python.exe");
+        string python = Path.Combine(root, "CameraTracker", "Python", "python.exe");
+        if (!File.Exists(python)) python = Path.Combine(root, "CameraTracker", ".venv", "Scripts", "python.exe");
         string tracker = Path.Combine(root, "CameraTracker", "camera_tracker.py");
         string cloudflared = Path.Combine(root, "MotionRelay", "cloudflared.exe");
         string preparation = Path.Combine(root, "PREPARAR_MODULO.ps1");
@@ -367,4 +368,5 @@ public sealed class PortableServiceHost : MonoBehaviour, IPortableModuleStatus
         Instance = null;
     }
 }
+
 

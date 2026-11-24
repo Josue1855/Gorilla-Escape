@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public sealed class WhackAMoleController : MonoBehaviour
@@ -67,7 +67,7 @@ public sealed class WhackAMoleController : MonoBehaviour
     private void SpawnHead(){sfx.PlayOneShot(JungleAudioBank.WhackPop,.55f);activeHeadIndex=UnityEngine.Random.Range(0,slots.Length);activeSlot=Camera.main.WorldToViewportPoint(ActiveHeadPosition);head=Model(headPrefab,headMat,"03 Cabeza activa",ActiveHeadPosition + Vector3.down * .65f,1.42f,false,Quaternion.Euler(headRotation));headAt=Time.time;headUntil=Time.time+1.25f;message="¡AHORA!";}
     private void UpdateHead(){if(hitHead!=null&&Time.time>=hitUntil){Destroy(hitHead);hitHead=null;nextHeadAt=Time.time+UnityEngine.Random.Range(.18f,.48f);}if(head==null&&hitHead==null&&Time.time>=nextHeadAt)SpawnHead();if(head==null)return;float age=Time.time-headAt,remaining=headUntil-Time.time,pop=Mathf.SmoothStep(0,1,Mathf.Clamp01(age/.18f));if(remaining<.18f)pop=Mathf.SmoothStep(0,1,Mathf.Clamp01(remaining/.18f));head.transform.position=ActiveHeadPosition + Vector3.down * Mathf.Lerp(.65f,0,pop);if(Time.time>=headUntil){Destroy(head);head=null;misses++;combo=0;message="¡SE ESCAPÓ!";nextHeadAt=Time.time+.28f;}}
     private void TryHit(){if(Time.time-headAt<.14f||Vector2.Distance(HandViewport,activeSlot)>.105f)return;sfx.PlayOneShot(JungleAudioBank.WhackHit,.75f);lastHit=Time.time;Destroy(head);head=null;hitHead=Model(hitPrefab,hitMat,"03 Cabeza golpeada",ActiveHeadPosition - Camera.main.transform.forward * .1f,1.52f,false,Quaternion.Euler(headRotation+new Vector3(0,0,UnityEngine.Random.Range(-7,7))));hitUntil=Time.time+.42f;hits++;combo++;bestCombo=Mathf.Max(bestCombo,combo);int gain=100+Mathf.Min(combo,12)*20;score+=gain;message=combo>=4?$"¡COMBO x{combo}!":$"+{gain}";}
-    internal void Begin(){lastCountdownBeep=0;score=hits=misses=combo=bestCombo=0;phoneCalibrated=false;cursorViewport=new Vector2(.5f,.5f);state=State.Countdown;stateAt=Time.time;}
+    internal void Begin(){GameResultRecorder.Reset();lastCountdownBeep=0;score=hits=misses=combo=bestCombo=0;phoneCalibrated=false;cursorViewport=new Vector2(.5f,.5f);state=State.Countdown;stateAt=Time.time;}
     private void StartRound(){sfx.PlayOneShot(JungleAudioBank.CountdownGo,.7f);state=State.Playing;endAt=Time.time+45;nextHeadAt=Time.time+.35f;message="¡A JUGAR!";}
     private void Finish(){if(head!=null)Destroy(head);if(hitHead!=null)Destroy(hitHead);head=hitHead=null;state=State.Results;message="¡TIEMPO!";JungleStory.Finish(SceneNavigator.WhackAMole,hits>=10,$"{hits} golpes");}
 

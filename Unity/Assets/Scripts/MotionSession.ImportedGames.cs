@@ -1,4 +1,4 @@
-
+﻿
 using System;
 using GorillaEscape.Gameplay.Input;
 using UnityEngine;
@@ -136,6 +136,7 @@ public sealed partial class MotionSession
 
     public void ResetRound()
     {
+        GameResultRecorder.Reset();
         availableActions = JungleAction.None;
         throwArmed = false;
         coconutGesture.Reset();

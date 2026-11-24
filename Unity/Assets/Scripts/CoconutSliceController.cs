@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -622,6 +622,7 @@ public sealed class CoconutSliceController : MonoBehaviour
 
     internal void BeginCountdown()
     {
+        GameResultRecorder.Reset();
         ClearCoconuts();
         score = combo = bestCombo = missed = sliced = 0;
         lives = 3;
