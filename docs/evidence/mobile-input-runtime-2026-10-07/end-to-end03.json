@@ -1,0 +1,19 @@
+{
+  "scope": "Real Chrome/PWA → RTC → Java child owned by Unity → same loopback IPC → Unity Player PhoneInput",
+  "physical": "DEFERRED",
+  "runs": [],
+  "negatives": [],
+  "gate": "FAIL",
+  "cleanup": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 0,
+    "lifecycleStopped": null,
+    "residualOwnedChildren": 0
+  },
+  "error": "deadline",
+  "unityObservations": [],
+  "unityGate": "FAIL"
+}

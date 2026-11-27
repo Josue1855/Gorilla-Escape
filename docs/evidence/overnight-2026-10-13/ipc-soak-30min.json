@@ -1,0 +1,737 @@
+{
+  "base": "1694e43f8bda7bc53f3309e38e66fa2b831cbd49",
+  "classification": "LAB reference developer PC; physical cleanPC NOT RUN",
+  "camera": "NOT RUN in this IPC-only harness",
+  "Vision": "NOT RUN",
+  "gate": "PASS",
+  "runs": [
+    {
+      "run": 1,
+      "gate": "PASS",
+      "startupSeconds": 4.833606146999955,
+      "measuredHoldSeconds": 1801.0000886829994,
+      "rssBytes": {
+        "unity": {
+          "N": 1800,
+          "retained": 1800,
+          "first": 248463360,
+          "last": 272130048,
+          "delta": 23666688,
+          "peak": 272134144,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 1800,
+          "retained": 1800,
+          "first": 215760896,
+          "last": 221175808,
+          "delta": 5414912,
+          "peak": 221175808,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 2,
+      "gate": "PASS",
+      "startupSeconds": 11.594926302001113,
+      "measuredHoldSeconds": 5.336799949873239e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 3,
+      "gate": "PASS",
+      "startupSeconds": 11.426892563000365,
+      "measuredHoldSeconds": 1.4643999747931957e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 4,
+      "gate": "PASS",
+      "startupSeconds": 9.812824804999764,
+      "measuredHoldSeconds": 2.2139000066090375e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 5,
+      "gate": "PASS",
+      "startupSeconds": 7.641436519001218,
+      "measuredHoldSeconds": 1.1255000572418794e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 6,
+      "gate": "PASS",
+      "startupSeconds": 7.43631432499933,
+      "measuredHoldSeconds": 1.2137001249357127e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 7,
+      "gate": "PASS",
+      "startupSeconds": 7.539550532001158,
+      "measuredHoldSeconds": 1.274900023418013e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 8,
+      "gate": "PASS",
+      "startupSeconds": 8.156737161998535,
+      "measuredHoldSeconds": 1.3042001228313893e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 9,
+      "gate": "PASS",
+      "startupSeconds": 7.846685357999377,
+      "measuredHoldSeconds": 1.2184000297565944e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 10,
+      "gate": "PASS",
+      "startupSeconds": 7.4090187050005625,
+      "measuredHoldSeconds": 1.532500027678907e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 11,
+      "gate": "PASS",
+      "startupSeconds": 7.467425249998996,
+      "measuredHoldSeconds": 1.1472000551293604e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 12,
+      "gate": "PASS",
+      "startupSeconds": 7.689603591001287,
+      "measuredHoldSeconds": 1.3052000213065185e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 13,
+      "gate": "PASS",
+      "startupSeconds": 7.750184323000212,
+      "measuredHoldSeconds": 1.0956000551232137e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 14,
+      "gate": "PASS",
+      "startupSeconds": 7.389369007998539,
+      "measuredHoldSeconds": 1.1734000509022735e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 15,
+      "gate": "PASS",
+      "startupSeconds": 7.436875843999587,
+      "measuredHoldSeconds": 1.7639000361668877e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 16,
+      "gate": "PASS",
+      "startupSeconds": 8.270924110998749,
+      "measuredHoldSeconds": 1.0464000297361054e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 17,
+      "gate": "PASS",
+      "startupSeconds": 7.464433111001199,
+      "measuredHoldSeconds": 1.1963000360992737e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 18,
+      "gate": "PASS",
+      "startupSeconds": 7.491149358998882,
+      "measuredHoldSeconds": 1.3299000784172677e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 19,
+      "gate": "PASS",
+      "startupSeconds": 6.843957171999136,
+      "measuredHoldSeconds": 1.004799923975952e-05,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    },
+    {
+      "run": 20,
+      "gate": "PASS",
+      "startupSeconds": 5.303361555001175,
+      "measuredHoldSeconds": 9.740000677993521e-06,
+      "rssBytes": {
+        "unity": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        },
+        "java": {
+          "N": 0,
+          "retained": 0,
+          "first": null,
+          "last": null,
+          "delta": null,
+          "peak": null,
+          "scope": "1Hz VmRSS; startup/GC/load included; not a leak diagnosis"
+        }
+      },
+      "cleanup": {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "playerExit": 0,
+      "residuals": 0
+    }
+  ],
+  "playerSha256": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f",
+  "jarSha256": "bc10c229b37b7d26f8c90afff6aed0f34b5dc7b026548617f3ecd48f41a9bf41",
+  "successfulRuns": 20,
+  "runtimeSourceCommit": "1694e43f8bda7bc53f3309e38e66fa2b831cbd49",
+  "timezone": "America/Chihuahua",
+  "runDates": "2026-10-13/14",
+  "classificationNote": "Developer-host LAB with real reference webcam acquisition for combined run; no physical phone/human QA or cleanPC certification",
+  "playerAssemblySha256": "745cb049a372a1a1cc9f2f65809e0a30901bd1a4e6e1877299f448eab8c6dda9"
+}

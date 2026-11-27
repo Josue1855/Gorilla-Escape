@@ -1,0 +1,68 @@
+[
+  {
+    "name": "remove-linux",
+    "commit_sha": "e950bd820ea2dd6ede265943a3b7702f445be467",
+    "unity": "6000.3.23f1 (09d2ecc7fb28)",
+    "os": "Pop!_OS 24.04 LTS Linux x86_64; kernel 7.1.5-76070105-generic",
+    "procedure": "Temporary editor helper through public UPM/PlayerSettings APIs; prepared copy contains helpers and preceding config, not final source snapshot",
+    "command": [
+      "flatpak",
+      "run",
+      "--env=UNITY_DISABLE_LINUX_TOOLCHAIN_MIGRATOR=1",
+      "--env=UNITY_DISABLE_LINUX_AUTO_TOOLCHAIN_INSTALLATION=1",
+      "--command=$UNITY_EDITOR",
+      "com.unity.UnityHub",
+      "-batchmode",
+      "-nographics",
+      "-projectPath",
+      "$REPO/Unity/Logs/FoundationValidation/2026-10-06/Prepared/Unity",
+      "-executeMethod",
+      "GorillaEscape.Editor.RemoveLinuxPackages.Run",
+      "-logFile",
+      "$REPO/Unity/Logs/FoundationValidation/2026-10-06/evidence/remove-linux.log"
+    ],
+    "exit_code": 0,
+    "log": "$REPO/Unity/Logs/FoundationValidation/2026-10-06/evidence/remove-linux.log",
+    "raw_log_sha256": "1a1d452b53c23a9981b0b26122709ebf1e61c09e2b4179767dabf78e55d18bc8",
+    "tests": null,
+    "xml": null,
+    "status": "PASS",
+    "warnings": [
+      "License update token unavailable, entitlement resolved",
+      "Editor build-server/SDK and debugger cleanup diagnostics"
+    ]
+  },
+  {
+    "name": "console-placeholder",
+    "commit_sha": "e950bd820ea2dd6ede265943a3b7702f445be467",
+    "unity": "6000.3.23f1 (09d2ecc7fb28)",
+    "os": "Pop!_OS 24.04 LTS Linux x86_64; kernel 7.1.5-76070105-generic",
+    "procedure": "Temporary editor helper through public UPM/PlayerSettings APIs; prepared copy contains helpers and preceding config, not final source snapshot",
+    "command": [
+      "flatpak",
+      "run",
+      "--env=UNITY_DISABLE_LINUX_TOOLCHAIN_MIGRATOR=1",
+      "--env=UNITY_DISABLE_LINUX_AUTO_TOOLCHAIN_INSTALLATION=1",
+      "--command=$UNITY_EDITOR",
+      "com.unity.UnityHub",
+      "-batchmode",
+      "-nographics",
+      "-projectPath",
+      "$REPO/Unity/Logs/FoundationValidation/2026-10-06/Prepared/Unity",
+      "-executeMethod",
+      "GorillaEscape.Editor.ConsolePlaceholder.Set",
+      "-logFile",
+      "$REPO/Unity/Logs/FoundationValidation/2026-10-06/evidence/console-placeholder.log"
+    ],
+    "exit_code": 0,
+    "log": "$REPO/Unity/Logs/FoundationValidation/2026-10-06/evidence/console-placeholder.log",
+    "raw_log_sha256": "0c19be8acffa7628b7a817af5bc26e4d74d8e547db325911ab11390c18a22eef",
+    "tests": null,
+    "xml": null,
+    "status": "PASS",
+    "warnings": [
+      "License update token unavailable, entitlement resolved",
+      "Editor build-server/SDK and debugger cleanup diagnostics"
+    ]
+  }
+]

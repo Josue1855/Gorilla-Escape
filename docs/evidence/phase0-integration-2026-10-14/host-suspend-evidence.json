@@ -1,0 +1,21 @@
+{
+  "events": [
+    {
+      "utc": "2026-10-15T06:43:53.349729+00:00",
+      "message": "The system will suspend now!",
+      "unit": "systemd-logind.service"
+    },
+    {
+      "utc": "2026-10-15T06:43:53.720347+00:00",
+      "message": "Performing sleep operation 'suspend'...",
+      "unit": "systemd-suspend.service"
+    },
+    {
+      "utc": "2026-10-15T12:23:28.910004+00:00",
+      "message": "System returned from sleep operation 'suspend'.",
+      "unit": "systemd-suspend.service"
+    }
+  ],
+  "hostNetworkMutationByAgent": false,
+  "inference": "The observed suspend/Wi-Fi deactivation interrupted the RTC run; it is not a30min PASS."
+}

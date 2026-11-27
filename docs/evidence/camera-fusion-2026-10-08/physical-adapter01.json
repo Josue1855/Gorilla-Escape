@@ -1,0 +1,965 @@
+{
+  "scope": "physical camera adapter only, Unity not involved yet",
+  "events": [
+    {
+      "event": "READY"
+    },
+    {
+      "sequence": 1,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 2,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 3,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 4,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 5,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 6,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 7,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 8,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 9,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 10,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 11,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 12,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 13,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 14,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 15,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 16,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 17,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 18,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 19,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 20,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 21,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 22,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 23,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 24,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 25,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 26,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 27,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 28,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 29,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 30,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 31,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 32,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 33,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 34,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 35,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 36,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 37,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 38,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 39,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 40,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 41,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 42,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 43,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 44,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 45,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 46,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 47,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 48,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 49,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 50,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 51,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 52,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 53,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 54,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 55,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 56,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 57,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 58,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 59,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 60,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 61,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 62,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 63,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 64,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 65,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 66,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 67,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 68,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 69,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 70,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 71,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 72,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 73,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 74,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 75,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 76,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 77,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 78,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 79,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 80,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 81,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 82,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 83,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 84,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 85,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 86,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 87,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 88,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 89,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 90,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 91,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 92,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 93,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 94,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 95,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 96,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 97,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 98,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 99,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 100,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 101,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 102,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 103,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 104,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 105,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 106,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 107,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 108,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 109,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 110,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 111,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 112,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 113,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 114,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 115,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 116,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "sequence": 117,
+      "source": "physical-webcam",
+      "width": 640,
+      "height": 480,
+      "subjects": 0,
+      "landmarks": 0
+    },
+    {
+      "summary": {
+        "frames": 117,
+        "retainedMetrics": 117,
+        "fpsObserved": 16.25788367203924,
+        "processingP50Ms": 64.511909,
+        "processingP95Ms": 77.194511,
+        "trackingFrames": 0,
+        "trackingGaps": 117,
+        "confidenceMin": null,
+        "confidenceMax": null,
+        "hardwareDroppedFrames": null,
+        "cameraReleased": true,
+        "detectorClosed": true
+      }
+    }
+  ],
+  "exitCode": 0,
+  "stderrBytes": 801,
+  "errors": [],
+  "gate": "PASS capture",
+  "humanLossRecovery": "NOT RUN"
+}

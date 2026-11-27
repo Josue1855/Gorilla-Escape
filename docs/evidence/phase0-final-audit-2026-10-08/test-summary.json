@@ -1,0 +1,513 @@
+{
+  "EditMode": {
+    "result": "Passed",
+    "total": "64",
+    "passed": "64",
+    "failed": "0",
+    "skipped": "0",
+    "cases": [
+      {
+        "name": "SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraFreshPhoneStaleAndPhoneFreshCameraStale",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptSequencesRouteSignalsWithoutSportsSemantics",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptualTracesRetainEverySampleWithoutInferringIntention",
+        "result": "Passed"
+      },
+      {
+        "name": "ContractRejectsNonFiniteAndMissingLandmarks",
+        "result": "Passed"
+      },
+      {
+        "name": "CorpusHasAllRequiredCameraAndConceptualCases",
+        "result": "Passed"
+      },
+      {
+        "name": "DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(0,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneBufferRejectsDuplicateReorderedAndBoundsReplay",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneDisconnectReconnectEpochAndPartialSignals",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerIsolationAndInvalidPlayerNeverBecomeEligible",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerLockLossRecoveryNeverSelectsAnotherSubject",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectedFusionRetainsRawQualityAgeAndTrackingWithoutInventingUsableSignals",
+        "result": "Passed"
+      },
+      {
+        "name": "SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-camera-aligned\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"both-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"low-confidence\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"partial-capabilities\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"reordered-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-camera\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"player-mismatch\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"wrong-player\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"second-subject\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"recovery-after-loss\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SpatialJumpAndStaleFramesDoNotRefreshLock",
+        "result": "Passed"
+      },
+      {
+        "name": "StaleLostRecoveredAndFutureSamplesAreExplicit",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateOldAndNewEpoch",
+        "result": "Passed"
+      },
+      {
+        "name": "FourPlayersAndClear",
+        "result": "Passed"
+      },
+      {
+        "name": "LatestFreshnessAndMissingAxis",
+        "result": "Passed"
+      },
+      {
+        "name": "RawPhoneInputPreservesPartialAndDisconnect",
+        "result": "Passed"
+      },
+      {
+        "name": "CommonFixtureRoundTripsWithBigEndianLength",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(0)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(4097)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(-1)",
+        "result": "Passed"
+      },
+      {
+        "name": "ActiveAttemptRejectsAnotherStart",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(STARTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(CONNECTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(RUNNING)",
+        "result": "Passed"
+      },
+      {
+        "name": "IncompleteCleanupBlocksRecovery",
+        "result": "Passed"
+      },
+      {
+        "name": "LaunchBudgetAllowsExactlyThreeAttempts",
+        "result": "Passed"
+      },
+      {
+        "name": "OldGenerationCannotChangeNewAttempt",
+        "result": "Passed"
+      },
+      {
+        "name": "SuccessfulLifecycleRequiresHandshakeAndCleanup",
+        "result": "Passed"
+      },
+      {
+        "name": "ConcatenatedFramesAndBoundedOutput",
+        "result": "Passed"
+      },
+      {
+        "name": "InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadyExactSchemaAndDuplicates",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedCorpus",
+        "result": "Passed"
+      },
+      {
+        "name": "UnityReadsTheSameWireFixtureAsJavaAndReact",
+        "result": "Passed"
+      }
+    ]
+  },
+  "Java": {
+    "total": 48,
+    "failed": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "suite": "com.gorillaescape.server.protocol.GorillaProtocolTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ipc.ProbeCorpusTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ipc.ProbeWriteDeadlineTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.protocol.TechnicalSessionTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.protocol.PhoneInputHubTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ProtocolContractTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.hosting.MobileHttpsTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ipc.ProbeCodecTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ServerIntegrationTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.mobile.LocalSignalingTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.protocol.JoinQrPocTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ipc.ProbePressureProcessTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "Node": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0
+  },
+  "PwaBuild": "PASS",
+  "PlayMode": {
+    "result": "Passed",
+    "total": "16",
+    "passed": "16",
+    "failed": "0",
+    "skipped": "0",
+    "cases": [
+      {
+        "name": "BootstrapAppliesAndRestoresConfiguredFrameRate",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelStartupIsBoundedAndOwnChildStops",
+        "result": "Passed"
+      },
+      {
+        "name": "ReplayChildFramesReachStoreAndEofReleases",
+        "result": "Passed"
+      },
+      {
+        "name": "StartupDeadlineAndInvalidFramesAreBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "UnavailableAndVisionFailureCleanWithoutAffectingJava",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicatePongFromTestJvmFailsAndCleansUp",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateReadyFromTestJvmFailsBeforeConnect",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelDuringRunningClosesRealChild",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelDuringStartupClosesRealChild",
+        "result": "Passed"
+      },
+      {
+        "name": "DeathManualRetryAndThreeLaunchLimit",
+        "result": "Passed"
+      },
+      {
+        "name": "RealFixtureReadyTimeoutHasBoundedCleanup",
+        "result": "Passed"
+      },
+      {
+        "name": "RealFixtureTcpRefusedIsDifferentiated",
+        "result": "Passed"
+      },
+      {
+        "name": "SingletonRefusesSecondRealChildWithoutHarmingOwner",
+        "result": "Passed"
+      },
+      {
+        "name": "TcpLossStopsLivingOwnedJava",
+        "result": "Passed"
+      },
+      {
+        "name": "MissingExecutableIsRecoverable",
+        "result": "Passed"
+      },
+      {
+        "name": "StartsRealJavaAndClosesOwnedChild",
+        "result": "Passed"
+      }
+    ]
+  },
+  "LinuxBuild": {
+    "result": "PASS",
+    "errors": 0,
+    "warnings": 0,
+    "reportLine": "Foundation Linux development build: Succeeded; errors=0; warnings=0",
+    "environmentDiagnostics": "Existing editor launcher/license/build-server/debugger/native allocation diagnostics retained privately; not build warnings and no global leak claim"
+  },
+  "execution": "Fresh final audit 2026-10-08",
+  "quickMobile": {
+    "result": "PASS",
+    "realChromeClients": 4,
+    "negativeLifecycleCases": 18,
+    "UnityGate": "PASS",
+    "evidence": "mobile-runtime.json"
+  },
+  "quickCameraFusion": {
+    "result": "PASS",
+    "turns": 4,
+    "source": "replay fixtures, actual Player/vision child and RTC clients",
+    "evidence": "camera-fusion.json"
+  },
+  "Retained2C": "RETAINED PREVIOUS EVIDENCE \u2014 3 independent N1000 +601.2234171s, unchanged JAR/transport",
+  "RetainedCameraNegatives": [
+    "../camera-fusion-2026-10-08/e2e-unavailable01.json",
+    "../camera-fusion-2026-10-08/e2e-vision-failure03.json"
+  ],
+  "Player2A2B": {
+    "result": "PASS",
+    "groups": 11,
+    "ownedResiduals": 0,
+    "reference": "ipc-2a-2b-regression.json"
+  },
+  "reproducibility": {
+    "Java": "JAVA_HOME=<existing JDK21> ./Server/mvnw -f Server/pom.xml -Dgorilla.test.lanAddress=<current LAN IPv4> -Dgorilla.test.lanInterface=<current interface> test",
+    "Node": "node --test PWA/tests/*.test.js PWA/spikes/sensors/capture.test.js",
+    "PwaBuild": "npm run build in PWA",
+    "Unity": "Unity6000.3.23f1 via Flatpak Hub: -batchmode -nographics -projectPath <repo>/Unity -runTests -testPlatform EditMode|PlayMode, private testResults/logFile; existing test Java/fixture/vision paths configured as documented",
+    "LinuxBuild": "FoundationSetup.BuildDevelopmentLinux via same Unity Hub editor",
+    "MobilePlayer": "node tools/spikes/webrtc/runtime.mjs <new-output.json> --unity",
+    "CameraPlayer": "node tools/spikes/camera/run.mjs <new-output.json> replay",
+    "IpcPlayer": "python3 tools/validate_ipc_2b_player.py --player <built-player> --java <existing JDK21>/bin/java --jar <fixed-jar> --fixtures <existing fixture dir> --output <private-cache-newdir>",
+    "serialPolicy": "All managed Java suites and Players serial. No active JAR replacement."
+  },
+  "rawEvidenceHashes": {
+    "gorilla-final-audit-java.log": "05615d59c320b7a4002098b2efc47f0da018df321a3806b7285b3a176bfa9973",
+    "gorilla-final-audit-node.log": "9717f6ee3f40607faa44b51894dbca30a8399b85baf339f5a2e13e7e676e717f",
+    "gorilla-final-audit-edit.xml": "b5c977fa262ece00aee0a4a0d2b171724be1c8d1d8ea69e12f31d06a0dacf624",
+    "gorilla-final-audit-play.xml": "c1855248d868d7abf7e540fde5b8f7254f676551ca62338cc07fa61c2e2bb353",
+    "gorilla-final-audit-build.log": "08ebfd6a558968833b76f3b9ed8e7cb457c2728655e05986ac2124ff640173d3",
+    "gorilla-final-audit-pwa-build.log": "d41a74ffd7e3a45534bcd2388d7c7ca613e6eb706716eecd7463a62ef010e239",
+    "gorilla-final-audit-mobile.log": "3c479c2423cb9de22df50108cd92c8d774398411aea04b0bd15459aa04844763",
+    "gorilla-final-audit-camera.log": "f9a7f93bed4d01fac073edf3b6921d6b4dd6b666c3f3e8253ef134433e5ecde0",
+    "gorilla-final-audit-ipc.log": "2e34c5abb9c21d737854f8c9982673a48302329f25fc4b6d10efd2c91f8b05c3"
+  }
+}

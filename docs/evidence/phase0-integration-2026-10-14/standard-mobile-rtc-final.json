@@ -1,0 +1,985 @@
+{
+  "scope": "Phase0 runtime Chrome/PWA adapter ↔ RTC ↔ Java; Unity NOT RUN in this harness",
+  "physical": "DEFERRED",
+  "runs": [
+    {
+      "hz": 30,
+      "clients": [
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.400000000372529,
+          "p95Ms": 5.5,
+          "maximumMs": 7.2999999998137355,
+          "durationMs": 2000.6000000000931
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 4.099999999627471,
+          "p95Ms": 6.600000000093132,
+          "maximumMs": 8.100000000093132,
+          "durationMs": 2000.2999999998137
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.6000000000931323,
+          "p95Ms": 7,
+          "maximumMs": 8,
+          "durationMs": 2000.5
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 4.2000000001862645,
+          "p95Ms": 8.700000000186265,
+          "maximumMs": 9.800000000279397,
+          "durationMs": 1999.6000000000931
+        }
+      ]
+    },
+    {
+      "hz": 50,
+      "clients": [
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 1.6999999997206032,
+          "p95Ms": 4.2999999998137355,
+          "maximumMs": 7,
+          "durationMs": 1199.7999999998137
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 1.6000000000931323,
+          "p95Ms": 3.6999999997206032,
+          "maximumMs": 5.7000000001862645,
+          "durationMs": 1199.6000000000931
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 1.8000000002793968,
+          "p95Ms": 5.100000000093132,
+          "maximumMs": 6.600000000093132,
+          "durationMs": 1199.6000000000931
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 1.7000000001862645,
+          "p95Ms": 4.800000000279397,
+          "maximumMs": 5.899999999906868,
+          "durationMs": 1199.3999999999069
+        }
+      ]
+    },
+    {
+      "hz": 60,
+      "clients": [
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.3000000002793968,
+          "p95Ms": 3.8999999999068677,
+          "maximumMs": 4.099999999627471,
+          "durationMs": 999.7000000001863
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.099999999627471,
+          "p95Ms": 4.099999999627471,
+          "maximumMs": 5.5,
+          "durationMs": 999.7000000001863
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.1000000000931323,
+          "p95Ms": 3.3999999999068677,
+          "maximumMs": 5.399999999906868,
+          "durationMs": 999.5999999996275
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.599999999627471,
+          "p95Ms": 4.600000000093132,
+          "maximumMs": 5,
+          "durationMs": 1000
+        }
+      ]
+    }
+  ],
+  "negatives": [
+    {
+      "case": "operator-unauthorized",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-player",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-version",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-type",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "missing-field",
+      "gate": "PASS"
+    },
+    {
+      "case": "stale",
+      "gate": "PASS"
+    },
+    {
+      "case": "future",
+      "gate": "PASS"
+    },
+    {
+      "case": "malformed",
+      "gate": "PASS"
+    },
+    {
+      "case": "oversized",
+      "gate": "PASS"
+    },
+    {
+      "case": "rate-abuse-isolated-and-recovered",
+      "gate": "PASS"
+    },
+    {
+      "case": "fifth-peer-rejected-at-capacity",
+      "gate": "PASS"
+    },
+    {
+      "case": "duplicate-active-client",
+      "gate": "PASS"
+    },
+    {
+      "case": "credential-replay",
+      "gate": "PASS"
+    },
+    {
+      "case": "invalid-credential",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "one-disconnect-others-live",
+      "gate": "PASS"
+    },
+    {
+      "case": "session-closed",
+      "gate": "PASS"
+    }
+  ],
+  "gate": "PASS",
+  "cleanup": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 7623,
+    "residualOwnedChildren": 0
+  },
+  "startupMs": 3158.031862,
+  "browser": "155.0.8059.79",
+  "qr": "PNG → ZXing decoder → real admission PASS",
+  "playerIds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "rtc": [
+    {
+      "pairs": [
+        {
+          "localType": "prflx",
+          "remoteType": "host",
+          "transport": "udp"
+        },
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    },
+    {
+      "pairs": [
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        },
+        {
+          "localType": "prflx",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    },
+    {
+      "pairs": [
+        {
+          "localType": "prflx",
+          "remoteType": "host",
+          "transport": "udp"
+        },
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    },
+    {
+      "pairs": [
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    }
+  ],
+  "replay": {
+    "gate": "PASS",
+    "source": "replay",
+    "fixture": "Shared/Protocol/mobile/motion-v1.json"
+  },
+  "burst": {
+    "generated": 500,
+    "overwritten": 499,
+    "pending": 0,
+    "latestPending": false,
+    "source": "synthetic"
+  },
+  "capture": {
+    "events": 11,
+    "source": "synthetic DOM events through maintained shared SensorCapture",
+    "lifecycle": "PASS"
+  },
+  "touch": "reliable TOUCH accepted PASS",
+  "pressure": {
+    "sent": 400,
+    "acknowledged": 209,
+    "rejected": 191,
+    "sendDurationMs": 311.39999999990687,
+    "gate": "PASS"
+  },
+  "reconnect": "PASS",
+  "javaDiagnostics": {
+    "inputs": {
+      "pendingSlots": 4,
+      "overwritten": 955,
+      "forwarded": 0,
+      "received": 959,
+      "rejected": 202
+    },
+    "peers": 0,
+    "joinAttempts": [
+      {
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.004285,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.413175,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.672639,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 2.507616,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 3.285076,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 3.722269,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 5.395476,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 5.477351,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 5.575039,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 6.957653,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 8.438408,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 8.605787,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 20.420381,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 20.545562,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 29.409257,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 29.606827,
+            "value": "OPEN",
+            "event": "motion"
+          },
+          {
+            "ms": 7767.880828,
+            "value": "CLOSING",
+            "event": "control"
+          },
+          {
+            "ms": 7767.972209,
+            "value": "CLOSING",
+            "event": "motion"
+          },
+          {
+            "ms": 7768.013574,
+            "value": "CLOSED",
+            "event": "control"
+          },
+          {
+            "ms": 7768.102627,
+            "value": "CLOSED",
+            "event": "motion"
+          },
+          {
+            "ms": 7768.358934,
+            "value": "DISCONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 7772.310036,
+            "value": "CLOSED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 7772.331469,
+            "value": "CLOSED",
+            "event": "connectionState"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 52221,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 33130,
+            "type": "host",
+            "addressKind": "IPV6",
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.003862,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.404233,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.673723,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 1.993144,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 2.906271,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 3.150288,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 4.36281,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 4.447688,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 4.645337,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 6.376162,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 8.062187,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 8.176932,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 21.75074,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 21.837637,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 33.767122,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 33.915804,
+            "value": "OPEN",
+            "event": "motion"
+          },
+          {
+            "ms": 7452.870938,
+            "value": "CLOSING",
+            "event": "control"
+          },
+          {
+            "ms": 7453.325368,
+            "value": "CLOSING",
+            "event": "motion"
+          },
+          {
+            "ms": 7453.386118,
+            "value": "CLOSED",
+            "event": "control"
+          },
+          {
+            "ms": 7453.668825,
+            "value": "CLOSED",
+            "event": "motion"
+          },
+          {
+            "ms": 7454.097427,
+            "value": "DISCONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 7461.751051,
+            "value": "CLOSED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 7461.767479,
+            "value": "CLOSED",
+            "event": "connectionState"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 47934,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 38955,
+            "type": "host",
+            "addressKind": "IPV6",
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.0115,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.86055,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 1.267633,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 3.49729,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 4.533899,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 4.796949,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 6.077085,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 6.166671,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 6.219201,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 7.523558,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 9.760555,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 9.942581,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 23.988357,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 24.049253,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 35.214351,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 35.529814,
+            "value": "OPEN",
+            "event": "motion"
+          },
+          {
+            "ms": 7131.989229,
+            "value": "CLOSING",
+            "event": "control"
+          },
+          {
+            "ms": 7132.486573,
+            "value": "CLOSING",
+            "event": "motion"
+          },
+          {
+            "ms": 7132.530568,
+            "value": "CLOSED",
+            "event": "control"
+          },
+          {
+            "ms": 7132.870659,
+            "value": "CLOSED",
+            "event": "motion"
+          },
+          {
+            "ms": 7133.110857,
+            "value": "DISCONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 7142.052122,
+            "value": "CLOSED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 7142.108172,
+            "value": "CLOSED",
+            "event": "connectionState"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 36781,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 41128,
+            "type": "host",
+            "addressKind": "IPV6",
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
+        "stage": "VALIDATION",
+        "code": "SESSION_FULL",
+        "events": [
+          {
+            "ms": 0.00852,
+            "value": "VALIDATION",
+            "event": "stage"
+          }
+        ],
+        "candidates": []
+      },
+      {
+        "stage": "ADMISSION",
+        "code": "ADMISSION_EXPIRED_OR_USED",
+        "events": [
+          {
+            "ms": 0.013396,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.329332,
+            "value": "ADMISSION",
+            "event": "stage"
+          }
+        ],
+        "candidates": []
+      },
+      {
+        "stage": "ADMISSION",
+        "code": "ADMISSION_INVALID",
+        "events": [
+          {
+            "ms": 0.005114,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.279214,
+            "value": "ADMISSION",
+            "event": "stage"
+          }
+        ],
+        "candidates": []
+      },
+      {
+        "stage": "ADMISSION",
+        "code": "ADMISSION_INVALID",
+        "events": [
+          {
+            "ms": 0.00525,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.800168,
+            "value": "ADMISSION",
+            "event": "stage"
+          }
+        ],
+        "candidates": []
+      },
+      {
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.019785,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 0.62403,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 0.842456,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 0.892968,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 1.119154,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 1.131621,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 1.143376,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 1.906727,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 2.488552,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 2.536925,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 10.618729,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 10.666919,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 15.563644,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 15.604568,
+            "value": "OPEN",
+            "event": "motion"
+          },
+          {
+            "ms": 363.805345,
+            "value": "CLOSING",
+            "event": "control"
+          },
+          {
+            "ms": 364.019703,
+            "value": "CLOSING",
+            "event": "motion"
+          },
+          {
+            "ms": 364.055109,
+            "value": "CLOSED",
+            "event": "control"
+          },
+          {
+            "ms": 364.074833,
+            "value": "CLOSED",
+            "event": "motion"
+          },
+          {
+            "ms": 364.273036,
+            "value": "DISCONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 373.1896,
+            "value": "CLOSED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 373.273094,
+            "value": "CLOSED",
+            "event": "connectionState"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 57374,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          },
+          {
+            "port": 59598,
+            "type": "host",
+            "addressKind": "IPV6",
+            "protocol": "udp"
+          }
+        ]
+      }
+    ]
+  }
+}

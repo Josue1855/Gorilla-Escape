@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-09 America/Chihuahua",
+  "preservedBranch": "feature/camera-t016-performance-packaging",
+  "preservedCommits": [
+    "f4f110d",
+    "768ec10"
+  ],
+  "physicalTrials": [
+    "raw-default",
+    "minimal-default",
+    "thread-default",
+    "raw-priority0",
+    "minimal-priority0",
+    "raw-720",
+    "raw-1080",
+    "raw-manual100",
+    "minimal-manual100",
+    "raw-priority0-buffer1",
+    "minimal-priority0-buffer3",
+    "raw-manual100-buffer1",
+    "minimal-manual100-buffer3"
+  ],
+  "trialCount": 13,
+  "measurementMinimumSeconds": 35,
+  "warmupSeconds": 5,
+  "allRestoredExactly": true,
+  "lightingComparison": "NOT RUN; PO cannot change lighting now",
+  "baselineFirstLimitedLayer": "A V4L2 MMAP",
+  "rootCause": "Exposure/dynamic-cadence and buffer-count effects observed; physical sensor/firmware/UVC mechanism NOT PROVEN",
+  "productChanged": false,
+  "threshold": 30,
+  "AC1": "FAIL (unchanged product)",
+  "AC2": "PARTIAL",
+  "AC3": "PASS",
+  "staging": "/tmp/gorilla-t016-redistribution-final/Vision",
+  "runtimeFiles": 2868,
+  "runtimeELF": 193,
+  "componentNotices": 57,
+  "licenseTexts": 128,
+  "componentTests": "13/13 PASS",
+  "push": false,
+  "PR": null,
+  "v1DiagnosticSha256": "b5ac41740dae02198ec78a44341afb4014bce7b5cd25576929aa2218e08ba41c",
+  "v1Trials": [
+    "raw-default",
+    "minimal-default",
+    "thread-default",
+    "raw-priority0",
+    "minimal-priority0",
+    "raw-720",
+    "raw-1080"
+  ],
+  "v2Trials": [
+    "raw-manual100",
+    "minimal-manual100",
+    "raw-priority0-buffer1",
+    "minimal-priority0-buffer3",
+    "raw-manual100-buffer1",
+    "minimal-manual100-buffer3"
+  ],
+  "sourceHashes": {
+    "tools/t016/bundle.py": "45a41560bad47f8313f125f200217f262f422614e7e2ab315763a8f18fcd13e9",
+    "tools/t016/benchmark.py": "8ae85d8ca31be54b92c9bb51cf7ae7940476a5d0c774db4a252583a8a1589316",
+    "tools/t016/redistribution.py": "156dff9d330d8c34fe72ca788ebb7c0f76703ff5a6be54d0566c4475f55a8ddc",
+    "tools/t016/player_inventory.py": "1164c3a23f368ac22f4d3efdb57803fa96cd04c694ff9ac0c6c0e6b4a49baacf",
+    "tools/t016/test_bundle.py": "77c1706910ca41fced60009e03347aa366530d8884b864e305d92478343bd75d",
+    "tools/t016/layered_capture.py": "d61ca556cb2170b2fc0e1e79a5fa6aa5992fa21ab2f3f6eb9697f1a9d912f560",
+    "tools/t016/offline_player.py": "c0c079403c9e271bd0092235bf8fab87c61d42a8d77e230f1b8961d2aa1a8813",
+    "tools/t016/test_pipeline.py": "b3e099cd654978ff504c08b83a205b3040258f66c2bd8f6188c2aa7d6b53ca23",
+    "tools/t016/runtime_library_probe.py": "dabcf8b592fb0011b14e5c8e6248c09c666952fdb70a9b657e2bf02f1c40e317"
+  },
+  "remaining": "Product quality/latency approval/testing for alternate temporary mode, matching source/license provenance and dynamic host dependency closure",
+  "privacy": "No frames/video/physical landmarks retained; text dequeue metadata reduced to aggregates",
+  "cleanup": {
+    "fullSanitizedBeforeAfterSnapshotIdentical": true,
+    "ownCameraChildrenAndBenchmarks": [],
+    "temporaryNetworkNamespaces": "None created during this continuation; no own bwrap/strace/player residual",
+    "foreignProcessesStopped": false
+  },
+  "checks": {
+    "components": "13/13 PASS",
+    "management": "88 records /555 links PASS",
+    "foundation": "71 GUIDs PASS",
+    "syntax": "four diagnostic tools PASS",
+    "diffCheck": "PASS",
+    "runtimeHashes": "2868/2868 PASS",
+    "originalPayloadManifest": "PASS"
+  },
+  "runtimeProbeSourceSha256": "b22a232bf793288eb0cc561414fab9487663760b1d2d819d1f5407f0746d7cd0"
+}

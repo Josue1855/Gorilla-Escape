@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-07",
+  "scope": "real desktop Chrome + Java21; local endpoint on same host",
+  "bindKind": "LAN-address-on-same-host",
+  "dependencyCommit": "b63ebb06b0ab33af73c9bf1f96bedd9e7cb73243",
+  "java": "openjdk version \"21.0.12.1\" 2026-08-18",
+  "android": "NOT RUN",
+  "iphone": "NOT RUN",
+  "offlinePwa": "NOT RUN",
+  "windows": "NOT RUN",
+  "validStartupMs": 509.21657299977596,
+  "expiredStartupMs": 385.09296600022935,
+  "browserProcessGroupResidual": false,
+  "browser": "155.0.8059.39",
+  "features": {
+    "secureContext": true,
+    "webtransport": true
+  },
+  "results": [
+    {
+      "name": "correct-certificate",
+      "expected": "PASS",
+      "status": "PASS",
+      "connectMs": 154,
+      "reliable": {
+        "n": 20,
+        "minMs": 0.6999999997206032,
+        "p50Ms": 0.8999999999068677,
+        "p95Ms": 1.3999999999068677,
+        "maxMs": 1.5
+      },
+      "datagrams": {
+        "n": 20,
+        "minMs": 0.599999999627471,
+        "p50Ms": 0.900000000372529,
+        "p95Ms": 3.2000000001862645,
+        "maxMs": 6.100000000093132
+      },
+      "invalidRejected": true,
+      "disconnect": "PASS",
+      "sent": 20,
+      "received": 20,
+      "loss": 0,
+      "errors": 0,
+      "casePass": true
+    },
+    {
+      "name": "wrong-fingerprint",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "CONNECTING",
+      "elapsedMs": 5.7000000001862645,
+      "errorName": "WebTransportError",
+      "errorMessage": "Opening handshake failed.",
+      "deadline": false,
+      "casePass": true
+    },
+    {
+      "name": "unauthorized-session",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "AUTHENTICATING",
+      "elapsedMs": 27.199999999720603,
+      "errorName": "WebTransportError",
+      "errorMessage": "The session is closed.",
+      "deadline": false,
+      "casePass": true
+    },
+    {
+      "name": "oversize",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "OVERSIZE",
+      "elapsedMs": 22.600000000093132,
+      "errorName": "WebTransportError",
+      "errorMessage": "The session is closed.",
+      "deadline": false,
+      "casePass": true
+    },
+    {
+      "name": "manual-recovery",
+      "expected": "PASS",
+      "status": "PASS",
+      "connectMs": 16.200000000186265,
+      "reliable": {
+        "n": 20,
+        "minMs": 0.5,
+        "p50Ms": 0.6999999997206032,
+        "p95Ms": 0.8000000002793968,
+        "maxMs": 0.900000000372529
+      },
+      "datagrams": {
+        "n": 20,
+        "minMs": 0.40000000037252903,
+        "p50Ms": 0.6999999997206032,
+        "p95Ms": 1.099999999627471,
+        "maxMs": 1.1000000000931323
+      },
+      "invalidRejected": true,
+      "disconnect": "PASS",
+      "sent": 20,
+      "received": 20,
+      "loss": 0,
+      "errors": 0,
+      "casePass": true
+    },
+    {
+      "name": "expired-certificate",
+      "expected": "REJECTED",
+      "status": "REJECTED",
+      "stage": "CONNECTING",
+      "elapsedMs": 138.90000000037253,
+      "errorName": "WebTransportError",
+      "errorMessage": "Opening handshake failed.",
+      "deadline": false,
+      "casePass": true
+    }
+  ],
+  "cleanup": [
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 64.01456599996891,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=8 datagrams=40"
+    },
+    {
+      "exitCode": 0,
+      "forced": false,
+      "shutdownMs": 64.25907999982883,
+      "residual": false,
+      "udpPortReleased": true,
+      "serverSummary": "STOPPED invalid=0 datagrams=0"
+    }
+  ],
+  "pass": true
+}

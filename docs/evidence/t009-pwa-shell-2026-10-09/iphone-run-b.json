@@ -1,0 +1,51 @@
+{
+  "scope": "Physical iPhone Safari T009; sanitized projection of PO-pasted diagnostic, not synthetic",
+  "run": "B",
+  "device": "iPhone 15",
+  "iOS": "27 (PO-reported)",
+  "iOSExactBuild": "UNKNOWN",
+  "SafariExactVersion": "UNKNOWN",
+  "trustedHTTPS": "PASS (PO confirmation)",
+  "gorillaCoreVisible": "PASS (PO confirmation)",
+  "safetyVisible": "PASS (PO confirmation)",
+  "promptObserved": false,
+  "denialPhysical": "NOT RUN",
+  "recoveryAfterDenialPhysical": "NOT RUN",
+  "stage": "READY",
+  "code": null,
+  "postExecuted": true,
+  "httpStatus": 200,
+  "rejectionCode": null,
+  "remoteDescription": "PASS",
+  "candidates": [
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL",
+      "port": 65272
+    },
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL",
+      "port": 58502
+    }
+  ],
+  "controller": {
+    "state": "PERMISSION_GRANTED",
+    "network": "NETWORK_READY",
+    "capabilities": {
+      "motion": "request-required",
+      "orientation": "request-required"
+    },
+    "permissions": {
+      "motion": "granted",
+      "orientation": "granted"
+    }
+  },
+  "signalVerified": false,
+  "internalConnectMs": 284,
+  "humanQRJoinTiming": "NOT MEASURED",
+  "note": "Internal timing is not human onboarding duration or motion latency.",
+  "limitation": "PO confirms Safari did not prompt again; grant retained. No settings reset/cache deletion to manufacture deny."
+}

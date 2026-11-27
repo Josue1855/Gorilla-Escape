@@ -1,0 +1,204 @@
+{
+  "basis": "end-to-end04; UTC timestamps on same PC, millisecond resolution; synthetic/replay only; not human/motion-to-photon",
+  "allUnityObservations": 643,
+  "uniqueActiveMotionObservations": 636,
+  "javaToUnity": {
+    "n": 636,
+    "minimumMs": 0,
+    "p50Ms": 11,
+    "p95Ms": 23,
+    "maximumMs": 29
+  },
+  "clientGenerationToUnity": {
+    "n": 636,
+    "minimumMs": 1,
+    "p50Ms": 13,
+    "p95Ms": 25,
+    "maximumMs": 30
+  },
+  "clientToJavaUtc": {
+    "n": 636,
+    "minimumMs": 0,
+    "p50Ms": 1,
+    "p95Ms": 3,
+    "maximumMs": 7
+  },
+  "browserToJavaRttPerRateAndClient": [
+    {
+      "hz": 30,
+      "clients": [
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.699999999254942,
+          "p95Ms": 3.900000000372529,
+          "maximumMs": 5.6000000005587935,
+          "durationMs": 2000.5999999996275
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.6000000005587935,
+          "p95Ms": 4.3999999994412065,
+          "maximumMs": 7.1000000005587935,
+          "durationMs": 2000
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.6000000005587935,
+          "p95Ms": 4.6000000005587935,
+          "maximumMs": 7.699999999254942,
+          "durationMs": 1999.8999999994412
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.599999999627471,
+          "p95Ms": 5.2999999998137355,
+          "maximumMs": 9.399999999441206,
+          "durationMs": 2000.1000000005588
+        }
+      ]
+    },
+    {
+      "hz": 50,
+      "clients": [
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.7000000001862645,
+          "p95Ms": 3.7999999998137355,
+          "maximumMs": 4.2000000001862645,
+          "durationMs": 1200.2999999998137
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.900000000372529,
+          "p95Ms": 3.7999999998137355,
+          "maximumMs": 4.1000000005587935,
+          "durationMs": 1199.9000000003725
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.3999999994412065,
+          "p95Ms": 4.5,
+          "maximumMs": 5.599999999627471,
+          "durationMs": 1200.1000000005588
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.7000000001862645,
+          "p95Ms": 4.7000000001862645,
+          "maximumMs": 5.099999999627471,
+          "durationMs": 1199.5999999996275
+        }
+      ]
+    },
+    {
+      "hz": 60,
+      "clients": [
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.3999999994412065,
+          "p95Ms": 2.7000000001862645,
+          "maximumMs": 2.900000000372529,
+          "durationMs": 1000.0999999996275
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.099999999627471,
+          "p95Ms": 2.7999999998137355,
+          "maximumMs": 3.3999999994412065,
+          "durationMs": 999.7000000001863
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.099999999627471,
+          "p95Ms": 2.900000000372529,
+          "maximumMs": 3.5,
+          "durationMs": 1000
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 1.7999999998137355,
+          "p95Ms": 2.7999999998137355,
+          "maximumMs": 3.2999999998137355,
+          "durationMs": 999.6000000005588
+        }
+      ]
+    }
+  ],
+  "javaBackpressure": {
+    "rejected": 202,
+    "received": 961,
+    "forwarded": 643,
+    "overwritten": 318,
+    "pendingSlots": 0
+  },
+  "negativePressure": {
+    "sent": 400,
+    "acknowledged": 209,
+    "rejected": 191,
+    "sendDurationMs": 307.79999999981374,
+    "gate": "PASS"
+  },
+  "nominalObservedErrors": 0,
+  "observableNominalMissingReceipts": 0,
+  "caveat": "IPC coalescing is intentional, not network packet-loss measurement; active observations include intentional adversarial rate pressure and replay, so do not label the aggregate nominal-only"
+}

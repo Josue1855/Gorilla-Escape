@@ -1,0 +1,14 @@
+import {readFile,writeFile} from 'node:fs/promises';import{pathToFileURL}from'node:url';
+const[configPath,resultPath,url]=process.argv.slice(2),config=JSON.parse(await readFile(configPath,'utf8'));
+const{chromium}=await import(pathToFileURL(process.env.WT_PLAYWRIGHT_MODULE));const browser=await chromium.launch({executablePath:process.env.WT_CHROME||'/usr/bin/google-chrome',headless:true});
+try{const page=await browser.newPage({ignoreHTTPSErrors:false});await page.goto(url);const out={scope:'desktop loopback preparation; not phone',cases:[],features:await page.evaluate(()=>({secure:isSecureContext,wt:typeof WebTransport==='function'}))};
+const cases=[['positive',config],['wrong-pin',{...config,badPin:true}],['different-certificate',{...config,hash:config.otherHash}],['invalid-credential',{...config,token:'0'.repeat(64)}],['invalid-session',{...config,sessionId:'0'.repeat(16)}],['oversize',config],['expired',{...config,url:config.expiredUrl,hash:config.expiredHash}],['manual-recovery',config]];
+for(const[name,c]of cases){const result=await page.evaluate(async({c,name})=>{const {probe}=await import('./wt.js');return probe(c,name==='oversize'?'oversize':'positive')},{c,name});out.cases.push({name,...result});}
+out.sensorAck=await page.evaluate(async c=>{const{Link}=await import('./wt.js');const l=await new Link(c).open();try{const good='S:1:123.000:M:0,0,0,0,0,0,0,9.8,0';return {response:await l.exchange(good),malformed:await l.exchange('S:1:NaN:M:bad'),afterInvalid:await l.exchange('PING:1')};}finally{await l.close();}},config);
+await page.click('#prepare');await page.waitForFunction(()=>document.querySelector('#offline').textContent.includes('Bundle completo'));out.offlineBundlePrepared=true;await page.reload();await page.waitForFunction(()=>navigator.serviceWorker.controller!==null);
+const cache=await page.evaluate(async()=>{const c=await caches.open('3a-st-2026-10-07-r1');return(await c.keys()).length;});out.cachedAssets=cache;
+await page.context().setOffline(true);await page.reload();await page.waitForSelector('#start');out.browserOfflineShell=true;await page.context().setOffline(false);
+const stages={'wrong-pin':'CONNECTING','different-certificate':'CONNECTING','invalid-credential':'AUTHENTICATING','invalid-session':'AUTHENTICATING',oversize:'OVERSIZE',expired:'CONNECTING'};
+out.pass=out.cases.every(r=>stages[r.name]?r.status==='REJECTED'&&r.stage===stages[r.name]&&!r.deadline:r.status==='PASS'&&r.malformedControlled&&r.reliable.received===100&&r.datagrams.received===100)&&/^ACK:1:[0-9]+:[0-9]+$/.test(out.sensorAck.response)&&out.sensorAck.malformed==='INVALID'&&out.sensorAck.afterInvalid==='PING:1'&&out.browserOfflineShell;
+await writeFile(resultPath,JSON.stringify(out,null,2));console.log(JSON.stringify({pass:out.pass,cases:out.cases.map(r=>[r.name,r.status]),offline:'desktop browser emulation only'}));if(!out.pass)process.exitCode=1;
+}finally{await browser.close();}

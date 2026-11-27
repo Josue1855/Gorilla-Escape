@@ -1,0 +1,9 @@
+{
+  "number": 94,
+  "state": "OPEN",
+  "draft": true,
+  "head": "0d940f77f533bb6780bc3f07169dce414ea21e54",
+  "base": "develop",
+  "baseSha": "ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760",
+  "source": "GitHub connector read-only metadata; no PR mutation"
+}

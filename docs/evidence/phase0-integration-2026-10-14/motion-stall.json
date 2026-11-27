@@ -1,0 +1,22 @@
+{
+  "ref": "59a32a2",
+  "source": "deterministic clock / no physical input",
+  "sendTimesMs": [
+    0,
+    2000
+  ],
+  "at20": 1,
+  "at1999": 1,
+  "pending": 1,
+  "metrics": {
+    "sent": 2,
+    "received": 0,
+    "errors": 2,
+    "overwritten": 0,
+    "motionSubmitted": 2,
+    "motionSent": 2,
+    "motionAck": 0,
+    "motionErrors": 2,
+    "rtt": []
+  }
+}

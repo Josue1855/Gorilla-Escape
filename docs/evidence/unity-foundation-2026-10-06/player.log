@@ -1,0 +1,9 @@
+# Reviewed excerpt; full raw log retained locally; SHA-256 in runs.json.
+Renderer: Mesa Intel(R) Iris(R) Xe Graphics (RPL-U)
+Version:  4.6 (Core Profile) Mesa 26.1.6-1pop0~1787580452~24.04~a5619ea
+Gorilla Escape foundation ready; gameplay and hardware adapters pending.
+Gorilla Escape foundation shutdown.
+[Physics::Module] Cleanup current backend.
+Input System module state changed to: ShutdownInProgress.
+Input System module state changed to: Shutdown.
+PlayerConnection::Cleanup##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1791312744679,"processId":124911,"allocatedMemory":68646,"memoryLabels":[{"Default":136},{"Permanent":34},{"NewDelete":15896},{"Manager":8530},{"Audio":752},{"Serialization":520},{"JobScheduler":32768},{"String":462},{"DynamicArray":3076},{"HashMap":3584},{"Utility":736},{"PoolAlloc":48},{"CloudService":144},{"VR":1848},{"Subsystems":96},{"CoreBusinessMetrics":120}]}

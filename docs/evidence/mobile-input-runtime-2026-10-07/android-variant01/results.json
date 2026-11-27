@@ -1,0 +1,52 @@
+{
+  "scope": "Android emulated; localhost signaling via ADB reverse, real host RTC UDP; no physical/TLS claim",
+  "gate": "BLOCKED",
+  "physical": "DEFERRED",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "qr": "PASS",
+  "features": {
+    "secureContext": true,
+    "rtc": true,
+    "motion": true
+  },
+  "connection": {
+    "status": "BLOCKED",
+    "clientState": "FAILED",
+    "reason": "RTC channel did not reach OPEN before deadline"
+  },
+  "playerExit": 0,
+  "javaCleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "ownedJavaResiduals": 0,
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/spikes/webrtc/android_runtime.py": "dec87e3e714f82f4d006ef6ad317461e1a00f1dd2c738ecb6ce8305181006963",
+    "tools/validate_android_3a.py": "0025393bb3ed6a425b3c933833350fe4c7fbb9b1f49903783c867ea175f117ef",
+    "PWA/src/input/mobileClient.js": "ecc8d9af5e4a8f44b7a04b6ca69e66c737a5613b051b89fc5192fcc21b084f57"
+  }
+}

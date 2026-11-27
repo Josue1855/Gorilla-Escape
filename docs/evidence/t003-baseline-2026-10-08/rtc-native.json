@@ -1,0 +1,8 @@
+{
+  "artifact": "dev.onvoid.webrtc:webrtc-java:0.19.0",
+  "nativeClassifier": "linux-x86_64",
+  "nativeJarSha256": "0195ae27572722906c8eccb466cd1c02ed22a1209925d69d009beda24b1004f4",
+  "libraries": {
+    "libwebrtc-java-linux-x86_64.so": "e248ca1d11fd841323d988c67af548b78224ec343374288440109a2634197d09"
+  }
+}

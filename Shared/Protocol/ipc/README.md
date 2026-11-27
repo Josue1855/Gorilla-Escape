@@ -1,0 +1,85 @@
+# IPC probe v1 — Incrementos 2A/2B/2C
+
+Contrato interno aprobado por DEC-005; no es Gorilla Protocol móvil ni crea sesión de juego.
+
+Transporte TCP IPv4 exclusivo 127.0.0.1, Java elige puerto 0, Unity cliente. Frame: uint32 big-endian (4 bytes) de longitud del JSON UTF-8 estricto; rango 1..4096 bytes. Lecturas parciales obligatorias; EOF intermedio invalida el frame. Un escritor y un PING pendiente por conexión.
+
+Campos PING: ipcVersion entero 1, type PING, instanceId UUID canónico por lanzamiento, connectionId UUID canónico por conexión, sequence entero positivo que comienza en 1, payload. Primer payload contiene launchToken base64url sin padding (32 bytes aleatorios/43 caracteres); posteriores payload vacíos. PONG type PONG refleja identidades y sequence, payload vacío. Fixtures ping-first.json/pong.json son comunes a Java y C#; el token de fixture es público de prueba y nunca se usa por Unity en producción. El token real sólo existe en entorno del hijo/memoria y primer frame; no en argumentos, logs o evidencia.
+
+Bootstrap: stdout emite una línea `GORILLA_IPC_READY ` + objeto ipcVersion/instanceId/pid/ipcPort/httpPort. Ambos listeners loopback, puerto real conocido sólo después de bind. Spring inicia normalmente y el modo administrado opt-in añade IPC al evento ApplicationReady. Configuración de logs específica ipc-logback.xml enruta Spring a stderr; los pipes se drenan desde inicio y stdout de readiness está limitado a 4096 caracteres. READY no basta: RUNNING requiere PONG correcto. El proceso se inicia con gorilla.ipc.managed=true; arranque HTTP normal sin esa opción conserva comportamiento previo.
+
+Startup 15 s hasta PONG inicial, conexión <=2 s y dentro de startup, read/write <=2 s; cancellation cierra socket. Unity nunca espera I/O en el hilo de frames. Normal shutdown: supervisor cierra socket y stdin, Java detecta EOF/cierra contexto Spring y listener; Unity observa exit 0 <=10 s. Fallback sólo al hijo propio tras deadline, observado <=2 s; no cuenta como cierre limpio. No reconnect/restart/watchdog avanzado en 2A. Fallos muestran un error recuperable y no continúan al juego.
+
+Desarrollo: configurar rutas absolutas GORILLA_IPC_JAVA y GORILLA_IPC_JAR al ejecutar Editor/Player. El JDK debe ser Java 21 completo y accesible al proceso (incluidos archivos de seguridad, no enlaces rotos en un sandbox). No buscar en PATH ni descargar al ejecutar. GORILLA_IPC_SMOKE_EXIT=1 ejecuta probe y solicita salida normal del Player después del cleanup. En tests PlayMode usar GORILLA_TEST_JAVA/GORILLA_TEST_JAR; si faltan, el test real se marca ignorado/NOT RUN, nunca PASS real. El runner no se activa por defecto ni modifica la escena foundation.
+
+Smoke: 10 warmup +100 PING secuenciales con cadencia nominal suave 20 ms entre respuestas; no es benchmarking 50 Hz. Publicar startup, mínimo/P50/P95/máximo RTT (nearest-rank), N/errores/exit y versiones/hashes. RTT en worker incluye codec, TCP ida/vuelta y Java; no incluye consumo de gameplay en frame. No extrapolar a teléfono→gameplay.
+
+2C valida campos exactos/obligatorios, tipos sin coerción, documento único, duplicados (incluidos nombres escapados), unknown fields y payload explícito en ambos runtimes. Java reutiliza Jackson existente con profundidad 4; C# usa IpcProbeContract específico del probe, sin DOM/parser general/dependencia nueva: sólo raíz+payload, ningún anidamiento arbitrario. READY usa sus cinco campos exactos y el límite bootstrap existente; no framing TCP. Los frames aceptados por Unity provienen del hijo identificado y no contienen acciones de juego. El contrato completo y requisitos diferidos permanecen en docs/PHASE0_UNITY_JAVA_DECISION.md.
+
+## Incremento 2B — lifecycle administrado
+
+Sin cambios al envelope, framing o DTO. Unity usa STOPPED, STARTING, CONNECTING,
+RUNNING, STOPPING y FAILED. RUNNING requiere READY y primer PONG válido. En modo
+sostenido, PING/PONG a 1 Hz como liveness: un request pendiente, un lector, deadline
+PONG de 2 s. Cualquier fallo activo pasa por STOPPING/cleanup antes de FAILED.
+Cero reconnect/restart automático; recuperación mediante acción explícita Unity,
+hasta tres lanzamientos por ejecución, sólo con cleanup completo del intento previo.
+Cada intento tiene nueva generación/instanceId/token/connectionId; no reutilizar READY.
+
+El bootstrap Java administrado recibe GORILLA_IPC_LOCK_DIR: ruta absoluta estable
+por usuario/producto, por defecto `$HOME/.gorilla-escape/managed` resuelta por Unity
+(no dentro del repo/JAR). FileChannel.tryLock antes de Spring/listeners/READY;
+exit 73 = ALREADY_RUNNING, exit 74 = LOCK_UNAVAILABLE. stderr contiene error
+estructurado; stdout no publica READY para el rechazado. No borrar el archivo lock,
+no matar al propietario ni adoptar otra JVM. El guard libera el lock en finally.
+EOF de stdin se observa desde bootstrap y cierra Spring cuando refresh terminó;
+READY y EOF se serializan para evitar publicar readiness después de EOF observado.
+
+Presupuestos conservados: startup completo 15 s hasta primer PONG, connect hasta
+2 s dentro de startup; read/write y PONG hasta 2 s; EOF→exit 10 s, fallback sobre
+el hijo propio y observación 2 s; readers hasta 2 s adicionales registrados aparte.
+No watchdog/Job Objects. Tokens sólo en entorno/memoria y primer PING; nunca CLI,
+logs o archivo lock. El modo HTTP no administrado conserva su arranque anterior.
+Validación Windows, resiliencia avanzada y performance extensiva quedan diferidas.
+EOF/padre muerto no garantiza eliminar una JVM completamente congelada.
+EOF/cancel y errores reales se prueban sin sustituir integración por mocks.
+
+## Incremento 2C — hardening y medición
+
+Corpus compartido cases/corpus.json: 71 casos válidos/rechazados; prefijo uint32
+incluidos extremos, EOF, UTF-8, contrato/escapes/correlación/token. Longitud comprobada
+antes de cuerpo; output UTF-8 acotado. Un frame inválido cierra esa conexión Java,
+sin respuesta detallada ni caída del backend; diagnóstico fijo sin contenido/token.
+El token es por lanzamiento y sólo va en primer PING de cada conexión, no en PONG
+ni PING posteriores; no rediseñar autenticación como token de un solo uso global.
+
+Java usa deadline absoluto de frame de 2 s (incluye espera de prefijo), no timeout
+renovable por fragmento. Escritura síncrona en worker único, un deadline cancelado
+por operación; callback captura ese socket. Sin common pool ni cola de respuestas.
+Temporizador de un thread, remove-on-cancel y cleanup observado. Liveness 1 Hz y
+recuperación manual limitada de 2B se conservan; sequence exhausto falla explícitamente,
+sin reconnect automático.
+
+GORILLA_IPC_MODE=benchmark es un probe de desarrollo finito: 100 warmup incluyendo
+handshake +1000 medidos, pacing monotónico objetivo 50 Hz sin acumular pending.
+Smoke 2A permanece 10+100 con su cadencia histórica. El modo lifecycle sigue 1 Hz;
+GORILLA_IPC_MEASURE=1 emite un resumen acotado al cerrar. Retención RTT máxima1024,
+contadores independientes; no detener el lifecycle largo al completar el buffer.
+
+Publicar tres corridas separadas y ≥600 s reales; nearest-rank, timeouts/errores aparte,
+startup/shutdown/duración/cadencia/ticks. Presupuestos DEC-005 5/10/50 ms P50/P95/max
+para baseline local, nunca latencia teléfono→gameplay. Procedimiento y evidencia:
+[validación 2C](../../../docs/PHASE0_IPC_2C_VALIDATION.md). RSS sólo observación;
+no afirmar ausencia global de fugas. Sin nuevas dependencias, móvil ni gameplay.
+
+### QA extension version 1 (T062)
+
+First authenticated PING may negotiate `qaVersion:1` alongside existing
+phoneInputVersion/lobbyVersion. Subsequent `qaRegenerate:true` requests a new
+pending admission, revoking only that pending QR; connected players remain.
+PONG payload adds qaHosting (token-free origin/prepareUrl/CA fingerprint), qa
+(state, ttlMs, size, packed modules), qaMetrics (counters) and qaPhones (up to
+four current aggregate reports defined in mobile/README). All stay within the
+existing ProbeCodec maximum and authenticated loopback channel. No new endpoint,
+CameraInput image field, session owner or gameplay authority is introduced.
+QR modules are sensitive memory data: never log, export, or persist them.

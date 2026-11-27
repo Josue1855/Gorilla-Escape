@@ -1,0 +1,366 @@
+{
+  "scope": "T011 LAB/EMULATOR; ADB reverse localhost != physical LAN/TLS validation",
+  "source": "emulator",
+  "physical": "NOT RUN; deferred T019/DEC-022",
+  "gate": "PASS",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "cleanProfile": {
+    "method": "new disposable AVD/Chrome; explicit origin storage clear + HTTP cache clear before first navigation",
+    "usageBefore": 0,
+    "existingRegistrations": 0,
+    "preloaded": false
+  },
+  "wanProbeBeforeFirstLoad": "UNAVAILABLE",
+  "directPublicIpTcpExit": "1",
+  "wanIsolation": {
+    "method": "owned guest OUTPUT reject rules IPv4+IPv6, allow only loopback and PC endpoints; mobile data disabled",
+    "directPublicIpTcpExit": "1",
+    "hostNetworkModified": false
+  },
+  "stage": "FINAL_PROBES",
+  "lastRequestedControl": "Copiar diagn\u00f3stico",
+  "firstLoad": {
+    "status": "PASS",
+    "secureContext": true,
+    "network": "NETWORK_READY",
+    "source": "emulator",
+    "wan": "UNAVAILABLE",
+    "cacheBefore": 0
+  },
+  "assets": [
+    {
+      "path": "/assets/index-DB-vQ36e.js",
+      "status": 200
+    },
+    {
+      "path": "/assets/index-Dif6RnX5.css",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-192.png",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-512.png",
+      "status": 200
+    },
+    {
+      "path": "/index.html",
+      "status": 200
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200
+    }
+  ],
+  "localHealth": {
+    "status": 200
+  },
+  "cache": [
+    {
+      "name": "gorilla-shell-978e04518ecb6b50",
+      "paths": [
+        "/assets/index-DB-vQ36e.js",
+        "/assets/index-Dif6RnX5.css",
+        "/icons/icon-192.png",
+        "/icons/icon-512.png",
+        "/index.html",
+        "/manifest.webmanifest"
+      ]
+    }
+  ],
+  "models": "NONE",
+  "bindingProbe": true,
+  "lifecycleEvents": [
+    "beforeunload",
+    "beforeunload"
+  ],
+  "pagehideCDPBinding": null,
+  "pagehide": {
+    "pagehideSeen": true,
+    "motionListeners": 0,
+    "orientationListeners": 0,
+    "intervals": 0,
+    "timeouts": 0,
+    "connection": "closed",
+    "externalUnityInputDeltaAfterDrain": 0,
+    "status": "PASS"
+  },
+  "pagehideObserver": "one bounded aggregate in disposable QA sessionStorage, written during pagehide before context destruction; not product storage",
+  "secondLoad": {
+    "status": "PASS",
+    "controller": "INPUT_READY",
+    "SWControlled": true
+  },
+  "backgroundForegroundRepetitions": {
+    "classification": "LAB/EMULATOR",
+    "target": 20,
+    "attempted": 20,
+    "successful": 20,
+    "cycles": [
+      {
+        "cycle": 1,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 2,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 3,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 4,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 5,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 6,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 7,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 8,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 9,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 10,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 11,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 12,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 13,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 14,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 15,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 16,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 17,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 18,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 19,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      },
+      {
+        "cycle": 20,
+        "gate": "PASS",
+        "hiddenMotionSubmittedDelta": 0,
+        "resumeState": "INPUT_READY",
+        "oneListenerPerChannel": true
+      }
+    ]
+  },
+  "shortSuspension": {
+    "status": "PASS",
+    "state": "CONTROL_SUSPENDED",
+    "hiddenMotionSubmittedDelta": 0,
+    "measurement": "INTERRUPTED",
+    "sensorsDetached": true
+  },
+  "resume": {
+    "status": "PASS",
+    "state": "INPUT_READY",
+    "freshVirtualCallbacks": true
+  },
+  "duplicateListeners": "PASS \u2014 one per channel after real HOME/return; repeated epochs covered by unit test",
+  "longSuspension": {
+    "status": "PASS",
+    "method": "real HOME, >=3s hidden, intentionally close owned RTCPeerConnection, return; deterministic transport-loss case, not physical OS throttling",
+    "state": "DISCONNECTED",
+    "capture": "STOPPED",
+    "recovery": "fresh QR; no automatic reconnect"
+  },
+  "finalResources": {
+    "motionListeners": 0,
+    "orientationListeners": 0,
+    "intervals": 0,
+    "timeouts": 0,
+    "connection": "closed"
+  },
+  "wanProbeAfterLifecycle": "UNAVAILABLE",
+  "runtimeRequests": {
+    "externalOrigins": 0,
+    "local": {
+      "GET /": 3,
+      "GET /assets/index-DB-vQ36e.js": 4,
+      "GET /assets/index-Dif6RnX5.css": 4,
+      "GET /manifest.webmanifest": 4,
+      "GET /favicon.ico": 1,
+      "GET /icons/icon-192.png": 4,
+      "POST /mobile/join": 2,
+      "GET /icons/icon-512.png": 1,
+      "GET /index.html": 1,
+      "GET /api/health": 1
+    },
+    "excludedProbes": "explicit WAN probes only; not product traffic"
+  },
+  "unityObservedByDeclaredSource": {
+    "emulator": 1542
+  },
+  "ipcLifecycle": [
+    {
+      "event": "START_REQUESTED",
+      "state": "STARTING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    },
+    {
+      "event": "PROCESS_STARTED",
+      "state": "STARTING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    },
+    {
+      "event": "READY_RECEIVED",
+      "state": "CONNECTING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    },
+    {
+      "event": "FIRST_PONG",
+      "state": "RUNNING",
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": false,
+      "forced": false
+    }
+  ],
+  "guestNetworkRestored": true,
+  "playerExit": 0,
+  "javaCleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "ownedJavaResiduals": 0,
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t011/android_offline.py": "4ba5fe50458b28816be06257a745d8a09999ee3043f217779a73195de849e43c",
+    "PWA/src/input/sensors/capture.js": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d",
+    "PWA/src/controller/session.js": "130f1439abcbe6151a4871b02daa93df055a3e3993100d67a8cd1c015df4dc08",
+    "PWA/src/controller/presentation.js": "48ef0eafcd6f5103d77373c6a8d7dcd3cd2bd08c5af09f286444b2aaa9e396e0",
+    "PWA/dist/sw.js": "b28365bdf52c947f01ceef52a512a1f2060fd606dbb6a18087ea2df6d15d4e25",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "bc10c229b37b7d26f8c90afff6aed0f34b5dc7b026548617f3ecd48f41a9bf41"
+  },
+  "runtimeSourceCommit": "1694e43f8bda7bc53f3309e38e66fa2b831cbd49",
+  "timezone": "America/Chihuahua",
+  "sourceBoundary": "New disposable Android API36/Chrome133.0.6943.137; ADB reverse localhost LAB; no physical LAN/trust/phone proof"
+}

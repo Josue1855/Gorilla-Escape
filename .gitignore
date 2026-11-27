@@ -21,6 +21,49 @@ __pycache__/
 /Unity/Builds/
 /Unity/*.csproj
 /Unity/*.sln
+/Unity/*.slnx
+/Unity/CameraTracker/.venv/
+/Unity/CameraTracker/vendor/
+/Unity/CameraTracker/.runtime/
+/Unity/CameraTracker/.downloads/
+/Unity/MotionRelay/cloudflared.exe
+/Unity/python-install*.log
+/Unity/*-compile.log
+/Unity/Assets/_Recovery/
+/Unity/Assets/_Recovery.meta
+
+# La biblioteca compartida conserva fuentes, no residuos de herramientas.
+/assets/**/__pycache__/
+
+# Prototipo alpha aislado de Josue
+/Prototypes/JosueAlpha/Unity/[Ll]ibrary/
+/Prototypes/JosueAlpha/Unity/[Tt]emp/
+/Prototypes/JosueAlpha/Unity/[Oo]bj/
+/Prototypes/JosueAlpha/Unity/[Ll]ogs/
+/Prototypes/JosueAlpha/Unity/[Uu]ser[Ss]ettings/
+/Prototypes/JosueAlpha/Unity/[Bb]uild/
+/Prototypes/JosueAlpha/Unity/[Bb]uilds/
+/Prototypes/JosueAlpha/Unity/Assets/_Recovery/
+/Prototypes/JosueAlpha/Unity/*.csproj
+/Prototypes/JosueAlpha/Unity/*.sln*
+/Prototypes/JosueAlpha/CameraTracker/.venv/
+/Prototypes/JosueAlpha/CameraTracker/vendor/
+/Prototypes/JosueAlpha/CameraTracker/.runtime/
+/Prototypes/JosueAlpha/CameraTracker/.downloads/
+/Prototypes/JosueAlpha/MotionRelay/cloudflared.exe
+/Prototypes/JosueAlpha/unity-*.log
+# Regenerated defaults for unused systems, or local editor/UI state.
+/Unity/ProjectSettings/PackageManagerSettings.asset
+/Unity/ProjectSettings/Packages/com.unity.ai.assistant/
+/Unity/ProjectSettings/SceneTemplateSettings.json
+/Unity/ProjectSettings/ClusterInputManager.asset
+/Unity/ProjectSettings/MemorySettings.asset
+/Unity/ProjectSettings/MultiplayerManager.asset
+/Unity/ProjectSettings/NavMeshAreas.asset
+/Unity/ProjectSettings/Physics2DSettings.asset
+/Unity/ProjectSettings/PresetManager.asset
+/Unity/ProjectSettings/VFXManager.asset
+/Unity/ProjectSettings/VersionControlSettings.asset
 # Java and frontend outputs
 **/target/
 /PWA/node_modules/
@@ -31,3 +74,7 @@ __pycache__/
 *.pfx
 *.p12
 *.jks
+
+# DEC-016 private trust material is outside the checkout; defense in depth.
+*.key
+*.pem

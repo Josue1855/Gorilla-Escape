@@ -1,0 +1,25 @@
+{
+  "gate": "PASS \u2014 SOFTWARE/LAB Chrome synthetic/replay",
+  "runtime": "end-to-end04.json",
+  "androidVariant": "BLOCKED \u2014 android-variant01/results.json",
+  "physicalAndroid": "DEFERRED",
+  "physicalIphone": "DEFERRED",
+  "windows": "DEFERRED",
+  "phase0": "IN PROGRESS",
+  "phase1": "NOT STARTED",
+  "camera": "NOT STARTED",
+  "inputFusion": "NOT STARTED",
+  "pr94": {
+    "state": "OPEN",
+    "draft": true,
+    "head": "0d940f77f533bb6780bc3f07169dce414ea21e54"
+  },
+  "gitActions": "no branch creation/commit/push/merge",
+  "sourceHashesVerified": true,
+  "evidenceReview": "PASS",
+  "management": "PASS",
+  "foundation": "PASS",
+  "diffCheck": "PASS",
+  "testSummary": "Java48; Node18; EditMode23; PlayMode12; Linux build0/0; Player2A/2B11groups; Player2C3N1000+601.2234171s",
+  "nextIncrement": "PC Webcam \u2192 CameraInput \u2192 Player Lock \u2192 temporal alignment \u2192 Input Fusion infrastructure; NOT STARTED"
+}

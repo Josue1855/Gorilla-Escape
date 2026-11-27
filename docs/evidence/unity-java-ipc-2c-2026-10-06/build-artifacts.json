@@ -1,0 +1,9 @@
+{
+  "build": "PASS, 0 errors / 0 warnings",
+  "files": {
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "b43a17087e34cda7404952253dd4ae61615a4ae2f3b32489e8c5a3803d022961",
+    "Unity/Builds/FoundationLinux/GorillaEscape.x86_64": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f",
+    "Unity/Builds/FoundationLinux/GorillaEscape_Data/Managed/GorillaEscape.Contracts.dll": "ab9dc553c9b2f3bda59ff8d1944d2d482aa18214af2543ebd8b8ca4cb2c0fa6b",
+    "Unity/Builds/FoundationLinux/GorillaEscape_Data/Managed/GorillaEscape.Runtime.dll": "aba4df143a88b8312f5fd31fb9d7f94189759071d88506b7cf4a7dfe61f630b3"
+  }
+}

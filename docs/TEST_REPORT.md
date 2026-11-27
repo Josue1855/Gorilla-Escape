@@ -1,5 +1,117 @@
 # Reporte de pruebas
 
+> Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
+
+> **Resumen vigente — 2026-10-14:** salida técnica T017/T018 aceptada; humano tracking DEFERRED/NOT RUN; física móvil/cleanPC/visible E2E NOT RUN. Edit126/126, Play20/20, componentes23/23, PWA59/59, Java76 ejecutados/2SKIP históricos. [Final Exit Report y límites](PHASE0_FINAL_EXIT_REPORT.md). Checkpoints anteriores permanecen como historial.
+
+## T018 / #32 — checkpoint local de telemetría, 2026-10-13
+
+Base develop `bb90c04d050f35feae8ae1a99968aa9d91ed2e4a`, rama `codex/t018-telemetry-metrics`. [Reporte vigente, clocks/uncertainty/AC y A/B](PHASE0_T018_TELEMETRY_METRICS.md). Reutilización IPC/RTC/PhoneInput/CameraInput/T016/buffers; históricos cuantitativos conservados con vigencia limitada. Sólo instrumentación faltante: modo mínimo, frame window y errores/evictions/N; sin nuevo protocolo/threshold ni video/personas. AC1/AC2/AC3 PARCIAL, físico motion→result/clock telefónico NOT RUN; **T018 OPEN/Validation/needs-device-test/performance**. No cierre por PASS del harness.
+
+[Validación nueva](evidence/t018-telemetry-2026-10-13/validation.json): componentes23/23, Edit101/101, Play20/20, LinuxbuildSucceeded0errors0warnings, PWA59/buildPASS, Java78tests/0failures/0errors/2existingSKIP con JDKcompleto25/release21. Management/Foundation/diffPASS. PlayMode usa el runtime C# final; el contador Python de errores no finitos se refinó después, validado por componentes y A/B final. [Intentos de setup/corrida exploratoria preservados](evidence/t018-telemetry-2026-10-13/attempts.json). Sin nueva DEC. Checkpoint previo a integración: flujo normal PR/checks/merge; estado efectivo de publicación en el PR/Issue.
+
+Comparación definitiva A–B–B–A,5swarmup/61s porbrazo, webcam/MJPG640×480/manual10ms/buffers2/numposes2: run1 minimal captura30.224877/inferencia30.025306/Unityefectivo117.728402FPS; run2 enabled captura30.224679/inferencia28.244336/Unityefectivo110.692595FPS; run3 enabled captura30.223942/inferencia29.611282/Unityefectivo118.482209FPS; run4 minimal captura30.224199/inferencia28.134608/Unityefectivo117.560105FPS. P50/P95/N/retained/overwrites/RSS y diferencias absolutas/% porpar en el reporte y JSON finales; sin threshold nuevo ni PASS de imperceptible. HardwaredropsUNKNOWN; phoneHz/sync/motion→resultNOTRUN. Privacywrites0/normalcleanupPASS en los4brazos.
+
+T017OPEN/Validation/needs-device-test y AC intactos; F04OPEN; T019BLOCKED porT017/T018 sin iniciar; T020BLOCKED; F05OPEN; E0OPEN; Phase0INPROGRESS; Phase1NOTSTARTED. Reevaluación T019 no elimina el blocker físico de#30.
+
+
+## Recuperación local y salida T011 — 2026-10-09
+
+Se recuperó la rama local existente sin reset/clean/recreación. [Inventario inicial](evidence/t011-offline-lifecycle-2026-10-09/recovery-inventory.json): seis archivos modificados, cinco entradas no rastreadas, índice vacío; HEAD base a41257c18dd6dc525c076e0933fec0a180c8fa44. Los tres fuentes productivos locales conservan exactamente sus hashes previos a la recuperación; sólo se ajustaron harness, assertions de QA y documentación.
+
+**DEC-022 ACCEPTED. Candidato listo para PR hacia develop; sin merge ni cierre de #22.** AC1 literal PASS LAB/EMULATOR, salida PASS FOR T011 EXIT under DEC-022; AC2 PASS literal; AC3 PASS LAB/EMULATOR, salida PASS FOR T011 EXIT under DEC-022. **PASS FOR T011 EXIT != physical mobile QA completed.** Todos los gates físicos siguen NOT RUN, ya transferidos a #33/T019 con AC/dependencias/bloqueo intactos. F02 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED.
+
+Ejecución nueva [Android final13](evidence/t011-offline-lifecycle-2026-10-09/android-final-13.json): perfil limpio usage0/SW0, primera y segunda carga sin WAN PASS, Java local200, seis recursos locales200/cache exacta, modelos NONE, requests externos runtime0. HOME→CONTROL_SUSPENDED, motionSubmitted oculto delta0, medición INTERRUPTED, retorno INPUT_READY con callbacks frescos; pérdida RTC propia después de >=3s oculta→DISCONNECTED/STOPPED, sin reconnect automático. Esto no mide throttling de hardware físico.
+
+Pagehide acreditado con unit tests + navegación real a vista health + observación externa Unity/RTC: agregado escrito durante pagehide antes de destruir documento, sensor listeners0/0, intervals0, timeouts0, connection closed, input Unity post-drenaje delta0. CDP binding final13 permanece null aunque el agregado prueba que pagehide ocurrió: pérdida del canal de observación al destruir contexto (categoría C; dependencia de timing del harness D), no defecto de producto demostrado. No se cambia producto para sostener un observer. Un único agregado sin tokens/vectores en sessionStorage de QA desechable; ninguna API de debug o almacenamiento productivo agregado. Receptor HTTP de QA retirado. Unit comprueba cancelación de medición y estado DISCONNECTED sin READY viejo.
+
+Listeners: RUNNING1 por canal, SUSPENDED0; ocho ciclos unit hide/show con notificaciones duplicadas, sin duplicar intervalos/timeouts; tras STOPPED0 listeners/intervals/timeouts y peer closed en emulador. Java/Unity exit0, cleanupComplete=true, forced=false, Java/ADB/AVD/helpers residual0; reglas del guest restauradas, red/firewall host sin cambios.
+
+Ejecución nueva: PWA58/58 PASS [log](evidence/t011-offline-lifecycle-2026-10-09/pwa-unit-recovery.txt), build PASS [log](evidence/t011-offline-lifecycle-2026-10-09/pwa-build-recovery.txt); [auditoría de recursos/JAR](evidence/t011-offline-lifecycle-2026-10-09/resource-audit-recovery.json) PASS. Browser7 fixtures [retenidos](evidence/t011-offline-lifecycle-2026-10-09/browser-summary-final.json), no nueva ejecución; build idéntico al resource-audit-final. Java54 PASS/2 SKIP históricos y build Unity retenidos, fuentes intactas, sin nueva suite pesada local. Validaciones finales Management/Foundation/diff-check y security review registradas en integration-preflight.json. PR/head/checks remotos se registran en #22/PR para evitar push directo a develop.
+
+Intentos01–11 FAIL/BLOCKED conservados íntegros; intento12 PASS conservado como checkpoint previo a retirar receptor sobrante; final13 PASS sobre helper final. Los snapshots siguientes conservan el estado pendiente anterior, superseded sólo por este resultado, sin transformar FAIL/NOT RUN en PASS.
+
+
+## T011 / #22 — offline y lifecycle, 2026-10-09
+
+DEC-022 ACCEPTED por PO. [Implementación/auditoría/gates](PHASE0_T011_OFFLINE_LIFECYCLE.md). Base developa41257c18dd6dc525c076e0933fec0a180c8fa44, rama feature/mobile-t011-offline-lifecycle. SW existente conservado: precache exacto local, /api y rutas mobile/session excluidas. Corrección mínima: CONTROL_SUSPENDED, descarte pending no enviado, cancelación inmediata de medición, nueva epoch de adquisición con tres eventos frescos por canal al volver, pagehide dispose. Sin rangos/tiers/freshness2000ms/captureRevision/budget50/protocolo cambiados.
+
+Nuevos PWA57/57 PASS/build PASS, browser7 fixtures PASS; Management/Foundation/diff-check PASS iniciales. Emulador offline/lifecycle en ejecución; resultados pendientes, no PASS provisional. JAR actual reempaquetado; Java fuentes intactas/evidencia histórica retenida, no nueva suite Java local. QA física T011 NOT RUN formalmente añadida a #33/T019 preservando AC/dependencias/bloqueo. PASS FOR T011 EXIT != physical mobile QA completed. #22 OPEN/In Progress hasta gates/PR; sin merge/cierre. F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED.
+
+
+## DEC-021 — estado vigente de salida T010, 2026-10-09
+
+DEC-021 ACCEPTED por PO: candidato autorizado para integración normal y cierre de implementación después de checks post-merge; integración pendiente en este snapshot documental. El estado efectivo de integración y sus SHA se registran en #21/PR. AC1/AC2 literales PARTIAL (acreditación física final diferida), ambos PASS FOR T010 EXIT under DEC-021; AC3 PASS. **PASS FOR T010 EXIT != physical QA completed.** QA física final iPhone REST/GENTLE y Android NOT RUN transferida a T019, conservando sus AC/dependencias/bloqueos.
+
+Sin cambios productivos tras candidato final aceptado: revisión t010-2-coarsened-clock, maximumHz50, alpha360→null y freshness2000ms intactos. Evidencia previa retenida, no nuevas ejecuciones: PWA51/51/build PASS; Java54 PASS +2 SKIP históricos; focused5/5 PASS. Emulador09 aceptado para salida, no hardware físico; resultados FAIL anteriores intactos. Management/Foundation y revisión de seguridad se comprueban nuevamente para integración. F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. T011 no iniciado; después del cierre efectivo de T010 sólo se prepara #22 Ready.
+
+**Los apartados siguientes son snapshots históricos anteriores a DEC-021; sus restricciones de no PR/cierre quedan supersedidas sólo para la salida T010 por esta autorización formal. No se reinterpretan sus resultados.** [Decisión](DECISIONS.md#dec-021--t010-exit-with-deferred-physical-qa) · [AC/evidencia/carry-forward](PHASE0_T010_SENSOR_CAPTURE.md#dec-021--salida-autorizada-y-qa-fisica-diferida).
+
+
+## T010 / #21 — captura PWA, 2026-10-09
+
+DEC-020 ACCEPTED. [Implementación, métricas y gates](PHASE0_T010_SENSOR_CAPTURE.md). Rama feature/mobile-t010-sensor-capture desde develop1f4b129100ab37f8621ca655a325599578359192. PWA51/51 PASS, build PASS; Java54PASS+2SKIP históricos, build SUCCESS, warnings previos conservados; browser7casos PASS con fixtures explícitos (no físico). Management/Foundation PASS locales. Sin nuevos fuentes/config/build Editor Unity; evidencia previa retenida.
+
+Gate iPhone final: preflight INPUT_READY / NETWORK_READY, t010-2-coarsened-clock y maximumHz50 confirmado. Ventana previa sin medición: motion53.3883Hz, orientation53.3943Hz, emisión44.0308Hz, errores0; measurement=null, no cuenta como corrida final. [Diagnóstico](evidence/t010-sensor-capture-2026-10-09/iphone-budget-preflight.json). Run A reposo y Run B gentle finales NOT RUN, pausados por PO para pruebas Android emuladas; no se sustituyen por emulador. Historial de intentos/errores conservado. [Cleanup físico](evidence/t010-sensor-capture-2026-10-09/physical-06-cleanup.json): Unity/Java exit0, STOPPED/cleanupComplete, Java residual0; regla propia TCP19443 retirada, firewall activo/política y estado completo intactos. No UDP abierto. Android físico NOT RUN; QA cross-device sigue T019. #21 OPEN/In Progress; F02 OPEN/Fase0 IN PROGRESS/Fase1 NOT STARTED; no T011. Sin commit/push/PR hasta gates requeridos.
+
+Android auxiliar: dos ventanas COMPLETE en API36/Chrome133, gate global FAIL. Rest motion58.2244Hz/ori13.1900Hz/emisión48.5349Hz, termina NO_SENSOR_INPUT por orientación age3127.5ms; gentle motion58.5755Hz/ori47.9155Hz/emisión48.8059Hz, INPUT_READY pero27 campos orientación inválidos. Errores transporte0 en ambas, overwritten5/4;1752 observaciones emulator recibidas en Unity. Java/Unity exit0 y Java/AVD/ADB propios residuales0. [Evidencia separada](evidence/t010-sensor-capture-2026-10-09/android-final-06-results.json). No relajar criterios ni reemplazar gates físicos; comprobación adicional realizada sin cambios de producto: [diagnóstico07](evidence/t010-sensor-capture-2026-10-09/android-diagnostic-07-results.json), variación virtual de aceleración/giro/orientación confirmada;8 alpha fuera de rango rechazados, errores transporte0, emisión46.4501Hz, cleanup residual0. Gate nominal FAIL conservado. Revisión de frescura en reposo pendiente; no PR/cierre T010.
+
+PO solicita no usar dispositivos físicos por ahora y acepta avance de laboratorio; QA física final NOT RUN/diferida, sin modificar AC/readiness ni borrar FAIL. Diagnóstico bounded09: alpha14 casos acumulados, min=max360, primeros8 todos360, beta/gamma0; null estricto conservado. Ventana09 COMPLETE/INPUT_READY: adquisición59.3975Hz/52.3628Hz, emisión49.5635Hz, sent/ACK1238, errores0;13 campos alpha inválidos dentro de ventana (denominador distinto del observador acumulado). [5/5 controles enfocados PASS nuevos](evidence/t010-sensor-capture-2026-10-09/focused-checks.json), nominal FAIL no reetiquetado. Producto sin cambios en esta iteración. Cleanup Unity/Java0, propios residuales0/firewall enabled=yes, baseline restaurado previamente y sin nuevas reglas. #21 OPEN/In Progress sin PR/commit/push/merge, no T011.
+
+> T009/#20 fue integrado posteriormente a su snapshot siguiente: PR97 MERGED, develop1f4b129100ab37f8621ca655a325599578359192, #20 CLOSED/completed/Done. Los estados y resultados anteriores se conservan como historia, no se reinterpretan como nuevas ejecuciones.
+
+## T009 / #20 — Gorilla Core y permisos, 2026-10-09
+
+[DEC-019 Accepted](DECISIONS.md#dec-019--controller-ux--theme-strategy). [Alcance/estados/AC/evidencia](PHASE0_T009_PWA_SHELL.md): AC1/AC2/AC3 PASS en candidato, pendiente revisión/integración; #20 OPEN / In Review. PWA25/25 PASS, build PASS, Java54 PASS +2 SKIP sin fallos; browser7casos con fixtures explícitos y responsive PASS; RTC real4Chrome→Java→IPC→Unity PASS (inputs sintéticos, no físicos), cleanup/residual0. Management/Foundation PASS. Editor/build Unity previos retenidos sin nueva ejecución ni fuentes cambiadas.
+
+Safari iPhone15/iOS27 reportado: Run A HTTPS/shell/safety/NETWORK_READY y motion/orientation granted PASS; signalVerified=false. Run B conserva granted sin nuevo prompt (confirmado PO): denial/recovery físicos NOT RUN, sin reset artificial. Android físico NOT RUN, metadatos exactos OS/Safari pendientes; QA trazada a T019 sin modificar AC/dependencias/iniciarlo. No convertir tiempos internos270/284ms en cronometraje humano. Primer intento8443 mostró contenido Inear (causa exacta UNKNOWN), gate aislado18443 con misma CA y única regla TCP temporal autorizada/retirada; políticas ajenas intactas. Java/Unity exit0, residual0, QR efímeros eliminados.
+
+No nueva dependencia, Theme Engine, Flutter, frecuencia/quality/calibración, reconnect, offline/suspensión, protocolo, cámara o gameplay. T010/T011 no iniciados; F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. PR hacia develop sin merge automático; no cierre #20 antes de DoD integrado. Los apartados anteriores/siguientes de otros incrementos conservan evidencia histórica.
+
+
+## T003 — baseline técnico documentado, 2026-10-08
+
+DEC-015 Accepted por autorización PO condicional, AC1/AC2 PASS: [baseline/comparativa/compatibilidad](PHASE0_T003_TECHNICAL_BASELINE.md). Configs/artifacts/modelo/nativos auditados; Java compile/package nuevo aislado PASS, sin reemplazar JAR histórico. Tests/build Unity y pruebas lab previas RETENIDAS con hashes idénticos, no ejecuciones nuevas. T001/T002 pendientes locales se publican junto con T003 vía rama docs/phase0-t003-baseline y PR normal hacia develop. No otros cierres/producto, no merge automático; E0/milestoneFase0 OPEN, Fase1 NOT STARTED. Los siguientes apartados describen snapshots anteriores cuando difieran de este estado.
+
+
+> **Resultado remoto verificado T002:** #11 CLOSED/completed/Done; retirados sólo blocked y needs-device-test. #12 OPEN/PO Review, dependencia #11 satisfecha e intacta, blocked retirado; needs-decision conservado. No se inicia T003. T019 sin cambios, QA física pendiente. E0/milestone/Fase0 siguen OPEN; Fase1 NOT STARTED.
+
+
+> **Enmienda vigente T002 — DEC-014 Accepted:** alcance documental por plataformas/capacidades, QA hardware no exclusivo; AC1/AC2 PASS. Android/router concretos no bloquean T002; físicos y versiones exactas permanecen en T019/gates correspondientes. Los faltantes anteriores son historia superseded. [Inventario vigente](PHASE0_T002_HARDWARE_INVENTORY.md). No iniciar T003 ni Fase1; sin nuevas pruebas/producto/commit/push.
+
+
+## T002 — última reevaluación PO
+
+PO proporciona iOS exacto27 y designa Android oficial, pero sus campos fabricante/modelo/OS/Chrome siguen `[PEGAR]`. AC1/AC2 PARTIAL por **único faltante: ficha real del Android físico**. Router/modelo/firmware y políticas LAN desconocidas se registran UNKNOWN, no blocker artificial. #11 OPEN/Validation, blocked/needs-device-test por Android; #12 sigue bloqueado, no iniciado. [Inventario vigente](PHASE0_T002_HARDWARE_INVENTORY.md). Sin pruebas nuevas ni commit/push.
+
+
+## T002 — designaciones PO oficiales registradas
+
+PC/Pop!_OS/webcam/iPhone15/Safari/familias de navegador/modelo Wi-Fi LAN aceptados por PO. [Inventario vigente](PHASE0_T002_HARDWARE_INVENTORY.md): AC1 PARTIAL/AC2 PARTIAL; faltan iOS exacto, Android físico oficial/OS/Chrome y router/firmware/restricciones físicas. #11 OPEN/Validation, blocked y needs-device-test por faltantes reales; #12 bloqueado por #11. Inspección sólo lectura (SMBIOS denegado, sin elevación); sin suites ni resultados históricos alterados. No commit/push ni T003/Fase1.
+
+
+## Actualización T001/T002 — 2026-10-08
+
+PO resuelve slow motion: P1, fuera MVP P0, no bloquea Smash; sin implementación autorizada. [DEC-013](DECISIONS.md#dec-013--slow-motion-p1-fuera-del-mvp-p0-t00110), T001 3/3 AC. Auditoría T002 sólo lectura: [inventario y faltantes](PHASE0_T002_HARDWARE_INVENTORY.md); #11 OPEN/Validation, hardware oficial y Android físico pendientes. Ninguna suite reejecutada ni resultado histórico alterado. Base integrada develop `65aecf8c3198ed960a43eaa50cfcc495f4562b53`; PR94 MERGED. Software/Lab COMPLETE; E0/milestone OPEN; #35 bloqueado por #34, Fase1 NOT STARTED. Siguiente Issue operativo autorizado: #11, sin empezar #12.
+
+
+> **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
+
+## Estado vigente — FINAL PHASE0 AUDIT, 2026-10-08
+
+**PHASE 0 FINAL AUDIT: PASS — SOFTWARE/LAB.** Fase0 — Base/Spike: **COMPLETED — SOFTWARE/LAB**. Fase1 — Gorilla Smash Vertical Slice: **READY TO START**, no iniciada. Physical validation debt remains open and is required before final MVP acceptance. 3A product/physical onboarding: **DEFERRED / IN PROGRESS**. #94 **OPEN/DRAFT**; candidato local sin commit distinto del PR remoto. Sin nuevo código de producto, commit/push/merge ni fase posterior. [Audit y DoD](PHASE0_FINAL_AUDIT.md), [evidencia](evidence/phase0-final-audit-2026-10-08/gate-summary.json). Los estados previos siguientes son snapshots históricos.
+
+> **Lectura de estado (auditoría 2026-10-08):** las fechas, estados y próximos pasos de este documento son snapshots históricos del incremento descrito. El estado consolidado vigente se registra en [PHASE0_FINAL_AUDIT.md](PHASE0_FINAL_AUDIT.md). Las decisiones de transporte anteriores están **superseded / replaced by DEC-010 Mobile Transport**; se conservan resultados y limitaciones originales.
+
+## Criterio vigente de cierre Software/Lab — aprobado por PO, 2026-10-07
+
+Fase 0 puede cerrar como **COMPLETED — SOFTWARE/LAB** únicamente cuando arquitectura base implementada, integrada y todos los gates automatizados/laboratorio requeridos estén PASS. Esta autorización no equivale a declarar el cierre ahora. iPhone 15/Safari y Android físicos, cadencia móvil real, movimiento humano con teléfono/cámara y latencia física quedan **NOT RUN / DEFERRED**, obligatorios antes de aceptación final del MVP. Windows: DEFERRED. Los intentos fallidos de acceso iPhone y toda evidencia anterior se conservan; no se convierten en PASS. No se vuelve a solicitar teléfono para avanzar.
+
+Orden obligatorio: A comparador WebRTC aislado → B DEC-010 y un transporte → C sesión/admission/QR POC → D protocolo común → E input móvil lab/Java/IPC/Unity → F webcam PC/pose/Unity → G asociación y temporal → H infraestructura Fusion/fixtures → I 1–4 clientes → J resiliencia/regresión → K auditoría → L cierre. No gameplay final, reconocimiento facial, cámara móvil, backend cloud ni Fase 1 antes del cierre. PR #94 permanece DRAFT. Sin push/merge autorizado para este trabajo. Secure-context/onboarding sin configuración del jugador sigue como riesgo independiente; resultados lab no demuestran compatibilidad física.
+
+**Estado actual:** cierre IN PROGRESS; A PASS (comparator lab); B DEC-010 selecciona RTC; C PARTIAL (modelo y unit tests); D–L NOT RUN en esta secuencia. Foundation/IPC y resultados de laboratorio históricos conservados. Fase 1 NOT STARTED; sólo será READY TO START después de auditoría PASS e integración requerida.
+
+
 ## BASE-001 — Base compartida
 
 **Fecha:** 2026-10-05.
@@ -13,7 +125,7 @@
 
 ## Validación manual pendiente
 
-1. Con licencia válida, importar Unity, generar/revisar escena, settings y lockfile; ejecutar EditMode/PlayMode y construir Player PC.
+1. Definir PC oficial y validar la foundation en ese hardware. Validación Linux de desarrollo realizada en UNITY-001, abajo.
 2. Probar instalación y actualización de PWA en Android/iPhone con HTTPS confiable.
 3. En la tarea correspondiente del Spike, instrumentar y medir sensores, webcam, Player Lock, calibración y latencia P95; registrar hardware y resultados reales.
 
@@ -25,3 +137,642 @@ No declarar métricas ni aceptación de hardware hasta ejecutar estos procedimie
 **Build y tests locales:** React build y Maven verify con Java 21 PASS; cuatro tests web y cuatro Java PASS. Validación de foundation PASS (34 GUIDs únicos); manifiesto/documentación PASS (88 registros, 51 enlaces locales); diff sin errores de whitespace.
 **Publicación:** main y develop comparten la base inicial. Estado de CI disponible en GitHub Actions; auditoría de backlog, relaciones y protecciones en docs/github/verification.json.
 **Limitaciones:** no se ejecutaron nuevas pruebas físicas. Unity sigue pendiente de licencia, importación, tests y build; ningún resultado local acredita el Spike completo.
+
+## UNITY-001A — Intento limpio y preparación de validación
+
+**Fecha:** 2026-10-06. **Base:** develop e950bd8. **Alcance:** Incremento 1A, exclusivamente foundation y documentación; no cierra Incremento 1.
+**Implementado:** inventario inspeccionado, intento limpio y procedimiento de importación, assets/lockfile, EditMode/PlayMode, build mínimo y cierre de Player en [PHASE0_UNITY_FOUNDATION](PHASE0_UNITY_FOUNDATION.md). Discrepancias de alcance, autoridad, IPC y protocolo identificadas como propuestas pendientes; sin nuevas decisiones aceptadas.
+**Hardware:** PC de desarrollo Linux x86_64, kernel 7.1.5-76070105-generic; Unity 6000.3.23f1 (09d2ecc7fb28), módulos de PC instalados. PC oficial de presentación no confirmada.
+**Importación:** copia nueva de Assets/Packages/ProjectSettings y Shared, sin Library previa. Comando exacto: `$UNITY_EDITOR -batchmode -nographics -quit -projectPath /tmp/gorilla-unity-clean-hat2_zjh/Unity -logFile /tmp/gorilla-unity-clean-hat2_zjh/import.log`. Código 198; `No valid Unity Editor license found. Please activate your license.` Resultado **BLOCKED**, no FAIL de código ni PASS de importación. Log local temporal; extracto sanitizado preservado en la guía.
+**Build:** **NOT RUN** por dependencia de importación/licencia; comando preparado en la guía, no ejecutado.
+**Tests Unity:** **NOT RUN** para EditMode y PlayMode; no XML ni conteos inventados.
+**Checks ejecutados:** `python3 tools/validate_foundation.py` PASS (34 GUIDs inicialmente; 35 tras .meta generado externamente); `python3 tools/github/validate_management.py` PASS (88 registros, 53 enlaces locales válidos tras documentación); `git diff --check` PASS. Son checks estáticos/documentales, no tests Unity. Java/React no se repitieron: sin cambios en sus fuentes ni contratos.
+**Cambio concurrente:** editor iniciado vía Hub sobre el checkout generó ProjectSettings/lockfile/.meta y modificó manifest/ProjectVersion. Se conservan sin aprobación ni integración. Lockfile Test Framework 1.6.0 frente a manifest 1.4.2; nuevos sdk/toolchain Linux 1.1.0 requieren explicación/revisión. No atribuirlos al cambio documental ni declarar importación completa. Segundo intento batch en la copia temporal: salida 198, mismo mensaje; log import-retry.log. Verificar entorno/licencia batch o ejecutar desde sesión válida del editor; no inferir el estado de licencia del Hub.
+**Warnings:** arranque Unity informa licencia ausente; compilación, warnings de código y build no evaluables hasta importar. No se afirma ausencia de warnings del producto.
+**Seguridad:** no dependencias, red de producto, sensores, cámara, CORS ni certificados añadidos. Log completo no versionado; extracto omite identificadores locales de licencia/máquina y red. Seguridad de gameplay **NOT RUN**.
+**Rendimiento:** FPS, frame time, Hz, calibración, P50/P95/máximo de latencia, descartes/duplicados/antiguos/reconexiones **NOT RUN**. No se midieron sesiones ni Player Lock.
+**Validación manual requerida:** activar licencia por el titular; ejecutar pasos 1–8 de la guía en copia limpia y PC con gráficos, revisar assets/lockfile, XML, build y tres aperturas/cierres normales. Identificar PC oficial y repetir allí. Teléfono/webcam/router no necesarios para 1A; sus pruebas siguen pendientes.
+**Riesgos/deuda:** licencia bloqueante, compilación desconocida, hardware oficial sin identificar y acuerdos de Incremento 2 pendientes. **Aceptación:** inventario/copia limpia y checks estáticos PASS; import/paquetes BLOCKED; assets/tests/build/Player NOT RUN; sensores/cámara/red NOT APPLICABLE a 1A. **Siguiente incremento:** continuar Incremento 1 con licencia válida, sin ejecutar Incremento 2 o Fase 1 automáticamente.
+
+## UNITY-001A-AUDIT — Reproducibilidad de archivos generados
+
+**Fecha:** 2026-10-06. **Base exacta:** e950bd820ea2dd6ede265943a3b7702f445be467. **Rama:** feature/gameplay-phase0-unity-foundation-validation. **Alcance:** diagnóstico estático y documentación; no nuevos arranques, pruebas Unity ni cambios de versiones/archivos técnicos. Auditoría completa archivo por archivo en [PHASE0_UNITY_FOUNDATION](PHASE0_UNITY_FOUNDATION.md).
+**Evidencia:** Test Framework directo depth 0/source builtin resuelto 1.6.0; editor instalado declara minimumVersion 1.6.0/mustBeBundled true y contiene ese paquete core. NUnit transitivo depth 1 resuelve core 2.0.5. Manifest actual y HEAD siguen declarando 1.4.2. SDK Linux y toolchain de host Linux directos 1.1.0 requieren sysroot.base transitiva 1.1.0; peticiones UPM add-dependency observadas, caller original no identificado.
+**Archivos:** dos técnicos versionados modificados y 21 nuevos (19 settings, lockfile, .meta), preservados sin incorporar. Caches/estado de UI y ciertos identificadores generados no permiten asumir igualdad byte a byte o configuración oficial. Scene list sigue vacía.
+**Licencia:** sesión interactiva Hub/Flatpak con entitlement resuelto; entorno batch distinto, últimos dos intentos 198. No se considera resuelto el bloqueo ni se copian tokens/licencias.
+**Build/tests/rendimiento:** batch startup y clean import BLOCKED; EditMode/PlayMode, PC Build, Player execution, Performance y Windows NOT RUN. No hay nuevas métricas ni tests Unity.
+**Seguridad:** inspección de procesos con autenticación sanitizada; logs completos y sus valores privados no incorporados; sin red de producto, cámara o sensores nuevos.
+**Checks ejecutados:** `python3 tools/validate_foundation.py` PASS (35 GUIDs únicos); `python3 tools/github/validate_management.py` PASS (88 registros, 54 enlaces locales); revisión de whitespace PASS. Contraste SHA-256 de 78 archivos Unity/Shared entre inicio y cierre: PASS, cero cambios/eliminaciones. Escaneo de Packages/ProjectSettings: sin rutas absolutas del host detectadas. Estos checks no acreditan importación limpia.
+**Recomendación:** C, corregir configuración antes de validar; propuesta de core 1.6.0 con el editor fijado y selección explícita de plataforma/backend/paquetes de host, pendiente de aprobación. Sin cambio de decisión, commit ni PR. **Siguiente paso único:** acordar configuración de foundation antes de modificar versión o ejecutar validación completa.
+
+## UNITY-001 — Foundation de desarrollo
+
+**Fecha:** 2026-10-06. **Rama:** feature/gameplay-phase0-unity-foundation-validation.
+**SHA base:** e950bd820ea2dd6ede265943a3b7702f445be467; base de las ejecuciones previas al commit de cierre. El [inventario SHA-256](evidence/unity-foundation-2026-10-06/source-sha256.json) de 76 archivos identifica el contenido exacto validado; el cierre compara el contenido funcional exacto del commit con ese inventario.
+**Editor / OS:** Unity 6000.3.23f1 (09d2ecc7fb28); Pop!_OS 24.04 LTS, Linux x86_64, kernel 7.1.5-76070105-generic. Player OpenGL: Mesa Intel Iris Xe Graphics (RPL-U), Mesa 26.1.6. PC oficial de presentación pendiente.
+**Configuración:** Test Framework 1.6.0 core, NUnit 2.0.5 transitivo, IMGUI 1.0.0 transitivo, jsonserialize 1.0.0 directo y paquete local de contratos. Cinco paquetes en lockfile UPM; sin SDK/toolchain/sysroot Linux. Mono/Development sólo para validación local. DEC-003 y [guía vigente](UNITY_FOUNDATION_VALIDATION.md).
+**Procedimiento / comandos exactos / horarios UTC:** [runs.json](evidence/unity-foundation-2026-10-06/runs.json). Launcher Flatpak del Hub, con opciones locales del editor que desactivan instalación y migración automática de toolchains. No tokens/credenciales copiados ni elusión de licencias. El comando directo histórico con salida 198 permanece BLOCKED.
+
+| Orden / criterio | Resultado | Exit | Tests / artefacto esperado / evidencia |
+|---|---|---|---|
+| Clean import / compilación | PASS | 0 | Copia fuente nueva sin Library; runtime assembly generado; [extracto](evidence/unity-foundation-2026-10-06/import.log) |
+| Resolución de paquetes | PASS | 0 | Cinco paquetes; manifest/lock idénticos al candidato, sin dependencias Linux |
+| Escena / settings persistidos | PASS | 0 | Un Bootstrap, script/referencia correctos, 60 configurados, Build Settings y cero scripts faltantes; caso real EditMode |
+| EditMode | PASS | 0 | 2 ejecutados, 2 Passed, 0 Failed/Skipped; [XML](evidence/unity-foundation-2026-10-06/editmode.xml), [log](evidence/unity-foundation-2026-10-06/editmode.log) |
+| PlayMode | PASS | 0 | 1 ejecutado, 1 Passed, 0 Failed/Skipped; [XML](evidence/unity-foundation-2026-10-06/playmode.xml), [log](evidence/unity-foundation-2026-10-06/playmode.log) |
+| Linux development build | PASS | 0 | BuildReport Succeeded, 0 errores/0 warnings de build; launcher ELF + UnityPlayer.so + datos/assembly; [hashes](evidence/unity-foundation-2026-10-06/build-artifacts.json), [log](evidence/unity-foundation-2026-10-06/build.log) |
+| Player con gráficos | PASS | 0 al cerrar | Ventana observada, renderer OpenGL real y foundation ready; [log](evidence/unity-foundation-2026-10-06/player.log) |
+| Player clean shutdown | PASS | 0 | WM_DELETE_WINDOW normal a ventana del Player, sin kill; foundation shutdown, cleanup de física/input y fin del proceso |
+| Clean re-import del checkout final | PASS | 0 | Segunda copia sin Library/Temp/UserSettings: 76/76 archivos fuente idénticos, mismo manifest/lock/GUIDs/settings; drift=[]; [log](evidence/unity-foundation-2026-10-06/reimport.log) |
+| Errores de código/proyecto en tests/build/Player | PASS | 0 | Sin errores de compilación ni tests fallidos ni excepción del Player |
+| Diagnósticos conocidos del entorno | ENVIRONMENT / REQUIRES FOLLOW-UP | 0 | Deuda #89; no son fallo demostrado de Gorilla Escape ni puerta artificial de integración |
+| Presentation PC | BLOCKED / NOT RUN | — | Hardware/plataforma oficial aún no definidos; Linux development PASS no acredita presentación |
+| FPS real/frame time/latencia/memoria/leaks/sensores/webcam/Player Lock | NOT RUN | — | No medidos ni inferidos desde foundation; gameplay offline/integrado tampoco acreditado |
+
+**Warnings y diagnósticos reales:** el log del editor etiqueta `[Licensing::Module] Error: Access token is unavailable; failed to update`, seguido de entitlement resuelto. La ejecución batch sí ocurre y produce artefactos; el diagnóstico no se oculta ni demuestra que el launcher directo del host esté arreglado. El cleanup del editor ejecuta build-server sobre un runtime sin SDK y comunica `No .NET SDKs were found`; debugger-agent no logra escuchar en un descriptor. No son errores de compilación del proyecto, pero impiden afirmar un log totalmente limpio. El Player de desarrollo emite registro nativo `MemoryLeaks`, allocatedMemory **68646 bytes** al salir; no hay crash/excepción, pero no se acredita cero fugas ni se atribuye sin análisis al código del proyecto. BuildReport 0 warnings no significa ausencia de estos diagnósticos de entorno.
+
+**Preparación conservada:** [preparation-runs.json](evidence/unity-foundation-2026-10-06/preparation-runs.json) registra UPM AddAndRemove Success y placeholder determinista mediante PlayerSettings.PS4.passcode, con editor/SHA/OS/comandos/exit/log/hashes. Helpers locales excluidos de las fuentes finales; NUnit no añadido directamente. [Retirada UPM](evidence/unity-foundation-2026-10-06/remove-linux.log) y [setting de consola](evidence/unity-foundation-2026-10-06/console-placeholder.log).
+
+**Exploración / fallos anteriores:** se observaron salidas 0 en importación vía Hub e inspecciones del editor; retirada UPM con callbacks interrumpidos por reload terminó siendo detenida (143); un build fue rechazado con 1 por proyecto aún abierto. La prueba inicial de assets ejecutó 2 casos, uno falló (exit 2) por settings=fileID 0; se corrigió NewScene antes de cargar settings. La casilla desactivada no impidió migración batch. Una prevalidación pasó suites/build pero el control de fuente detectó que Unity regeneraba el passcode de consola vacío; no se aceptó como reproducción idéntica. La sesión original reintrodujo paquetes y el control de cinco dependencias rechazó esa copia. Los logs/XML exploratorios bajo Unity/Temp fueron eliminados por el cleanup normal al cerrar ese editor; evidencia no conservada, no sostiene ningún PASS final. Se repitió íntegramente la secuencia con logs persistentes y configuración final. La prevalidación anterior al placeholder se conserva localmente en Unity/Logs/FoundationValidation/2026-10-06/evidence/pre-placeholder, sin sustituir los resultados definitivos.
+
+**Conservación:** logs completos locales bajo Unity/Logs/FoundationValidation/2026-10-06/evidence; hashes de raw logs/XML en runs.json. docs/evidence contiene extractos revisados y XML normalizados ($REPO sustituye ruta local); no son logs completos. Build utilizable local en Unity/Builds/FoundationLinux, ignorado. Se conservó sólo configuración compartida necesaria, con revisión individual en la guía; PackageManagerSettings y otros defaults locales/para sistemas no usados están ignorados. Git/editorconfig preservan whitespace de serialización Unity, sin reescribir assets generados.
+
+**Cierre autorizado:** Unity Foundation / Development environment **PASS**. El PO acepta integrar la foundation funcional sin convertir un log vacío en requisito adicional. Los diagnósticos quedan **ENVIRONMENT / REQUIRES FOLLOW-UP**, deuda [#89](https://github.com/Josue1855/Gorilla-Escape/issues/89), sin evidencia de error del código Gorilla Escape. Presentation PC **BLOCKED / NOT RUN**; rendimiento físico **NOT RUN**; Fase 0 **IN PROGRESS**; Incremento 2/Fase 1 **NOT STARTED**. Se prepara commit y PR a develop para revisión normal; no merge automático. Próximo paso recomendado, no ejecutado: definir PC/plataforma oficial y su aceptación de foundation.
+
+**Verificación final del checkout:** nueva sesión concurrente agregó paquetes AI y toolchains después del re-import. Se preservaron sus manifest/lock/settings en el respaldo local concurrent-root-backup, se cerró normalmente y se restauró el par manifest/lock y ProjectSettings (incluido retiro del define de analytics introducido por AI) exactamente desde el resultado UPM validado. Los 76 hashes del checkout vuelven a coincidir con la ejecución definitiva; los settings AI se clasifican locales/rechazados. Diff completo revisado mediante índice temporal, sin cambiar el staging del usuario. Validación estática PASS: 38 GUIDs únicos; gestión documental PASS: 88 registros y enlaces locales válidos; sin errores de whitespace en el candidato completo.
+
+## UNITY-001-CLOSE — Revisión final para commit y PR
+
+**Fecha:** 2026-10-06. **Alcance:** cierre autorizado de foundation de desarrollo; documentación/evidencia sanitizada, sin cambios funcionales después de UNITY-001.
+**Candidato exacto:** cotejo SHA-256 de los 76 archivos Unity/Shared contra el inventario ejecutado PASS. Configuración Unity 6000.3.23f1, Test Framework 1.6.0; NUnit sólo transitivo; cinco paquetes UPM; cero AI/toolchains Linux compartidos. Escena/settings/GUIDs/referencias verificados; 60 configurados, servicios cloud deshabilitados. Helpers, caches, backups, builds, estado UI/AI y logs raw excluidos. Historial 1A conservado.
+**Checks finales:** python3 tools/validate_foundation.py PASS (38 GUIDs únicos); python3 tools/github/validate_management.py PASS (88 registros/enlaces válidos); git diff --cached --check PASS sobre todos los archivos del commit; sin secretos detectados. No se repite Unity porque el contenido funcional coincide exactamente con el ejecutado; las métricas físicas permanecen NOT RUN.
+**Checks de regresión del flujo del repo:** npm --prefix PWA test PASS (4/4), npm --prefix PWA run build PASS con Node 24.19.0; JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 Server/mvnw -B -f Server/pom.xml verify PASS (4/4 tests, BUILD SUCCESS), OpenJDK 21.0.12.1, Maven 3.9.11. Primera invocación con JDK por defecto 25 también pasó 4/4, pero no sustituye la verificación explícita con JDK 21. Sin cambios Java/React. Warning de instrumentación dinámica Mockito/JVM existente; no modifica su clasificación ni configura nuevos flags.
+**Publicación:** un commit coherente feat(unity): validate phase 0 foundation en la rama solicitada; PR a develop para revisión normal/checks. La revisión/integración queda pendiente de GitHub, sin merge automático ni cambio de protecciones. Deuda de entorno #89 abierta. Development PASS; Presentation PC BLOCKED / NOT RUN; rendimiento físico NOT RUN; Fase 0 IN PROGRESS; Incremento 2/Fase 1 NOT STARTED.
+
+
+## IPC-002A — Unity ↔ Java mínimo real
+
+2026-10-06. Base develop `2a635b607a286bb70d1457aa0cf34f7e85f17abe`, merge normal #90; commit validado ancestro y 76/76 hashes foundation idénticos. Protección efectiva clásica: approvals 1→0, única diferencia autorizada; PR y ambos checks/prohibiciones conservados, sin rulesets efectivos. Checks del merge develop PASS.
+
+Implementación 2A opt-in: Unity inicia JAR Spring/Java21, configura loopback y puerto0, valida READY y primer PONG, intercambia frames uint32 big-endian UTF-8 <=4096, token efímero/identidades/sequence; workers con deadlines/cancellation y buffers acotados, shutdown por stdin EOF y exit observado. No crea estado competitivo Java ni modifica PWA móvil/gameplay.
+
+**Build/tests:** Java21 Maven verify 8/8 PASS (incluye hijo JVM real, frames fragmentados, stdin EOF/exit0), React regresión 4/4 y build PASS sin cambios de fuentes, EditMode 7/7 y PlayMode 3/3 PASS con JVM real. Linux Mono development Player build PASS, 0 errores/0 advertencias. Player con gráficos/OpenGL y foundation shutdown, salida Unity0/Java0, listeners efectivos sólo127.0.0.1 y ningún Java propio residual al terminar. Error de ejecutable ausente cubierto como recuperable en PlayMode.
+
+| Smoke (100 válidos después de 10 warmup) | Startup ms | RTT mínimo ms | P50 ms | P95 ms | Máximo ms | Errores |
+|---|---:|---:|---:|---:|---:|---:|
+| PlayMode final | 2278.170 | 0.404 | 0.567 | 0.718 | 1.988 | 0 |
+| Player Linux final | 2353.197 | 0.586 | 0.795 | 1.441 | 1.889 | 0 |
+
+Medición monotónica Unity worker, incluye codec/TCP ida y vuelta/Java; cadencia suave nominal20ms entre respuestas, no certificación50Hz. No incluye gameplay/frame, teléfono/LAN/sensores. No extrapolar a P95 end-to-end de v4 ni afirmar memoria/leaks/FPS físicos aprobados.
+
+Evidencia sanitizada [validation.json](evidence/unity-java-ipc-2a-2026-10-06/validation.json), XML EditMode/PlayMode, extractos build/Player/PlayMode/Maven, listeners reales/exit y hashes JAR/Player en [player-result.json](evidence/unity-java-ipc-2a-2026-10-06/player-result.json), inventario de fuentes y cambio de protección antes/después. Raw logs, JDK copiado, snapshot, binaries y helpers locales ignorados. Primer intento fallido por symlinks JDK dentro de Flatpak y correcciones de medición/warning documentados en validation.json; pruebas afectadas repetidas sobre candidato final.
+
+**Gate 2A desarrollo:** **PASS / MERGED**. El PO aprobó integración; [PR #91](https://github.com/Josue1855/Gorilla-Escape/pull/91) se integró mediante merge normal en develop `9fbb566e5f24af8f4e92fa3c139968161e832d46`, que contiene el commit validado `a17dfb2968f79e35d479a6912e40d3b5d55538bd` sin cambios de contenido. No se repiten ni alteran los resultados medidos por este cierre documental. PC oficial y Windows/backend final NOT RUN. Resiliencia avanzada, reconnect/restart/watchdog, Job Objects, flood/fault injection extensa y benchmark exhaustivo diferidos a autorización posterior, no eliminados de DEC-005. Parser Unity tiene validación básica; validación estricta completa/fuzzing pendientes de hardening. Diagnósticos editor conocidos siguen ENVIRONMENT / REQUIRES FOLLOW-UP #89. Sin 2B ni Fase1.
+
+
+## IPC-002B — lifecycle y fallos básicos, 2026-10-06
+
+**Resultado:** Incremento 2B **PASS / MERGED en Linux de desarrollo** mediante [PR #92](https://github.com/Josue1855/Gorilla-Escape/pull/92), merge normal autorizado por el PO; develop `7e3aa60aa53c65e7051f32477a77985fbe628907` contiene el candidato `88f1e309fc7adeffe6aa6499e195f53185ab36f9`. Árbol integrado idéntico y 105/105 hashes del inventario coincidentes. Las protecciones de develop permanecen intactas. Diseño [Accepted con precisiones del PO](PHASE0_IPC_2B_DESIGN.md). Base `9fbb566e5f24af8f4e92fa3c139968161e832d46`, rama `codex/phase0-ipc-2b-lifecycle`. [Procedimiento reproducible](PHASE0_IPC_2B_VALIDATION.md), [checks](evidence/unity-java-ipc-2b-2026-10-06/checks.json), [inventario SHA256 de 105 fuentes/contratos](evidence/unity-java-ipc-2b-2026-10-06/source-sha256.json), [hashes de build/JAR](evidence/unity-java-ipc-2b-2026-10-06/build-artifacts.json). El SHA de commit se informa en el PR/reporte de cierre; no inventar un hash autorreferencial en su propio archivo.
+
+**Implementación:** seis estados aprobados y fallos activos siempre STOPPING→FAILED; PING/PONG de liveness 1 Hz sólo RUNNING, un pendiente/un lector, deadline PONG 2 s; cero restart/reconnect automático; hasta tres lanzamientos por ejecución Unity y reintento explícito después de cleanup completo. Generaciones aisladas y prueba real de callback exit tardío. Java adquiere FileLock antes de Spring/READY, libera finalmente y no borra el archivo; EOF se observa durante bootstrap. Cierre/cancellation sólo del hijo propio, streams/readers/CTS/handlers liberados; diagnóstico de desarrollo Player/Editor con Retry/Stop y atajos R/S. Sin cambio a codec/DTO/framing/token/autoridad ni dependencias.
+
+### Build y conteos exactos
+
+| Suite | Resultado | Alcance |
+|---|---|---|
+| Java 21 Maven verify | **13/13 PASS**, 0 fallos/errors/skips | 6 unit/contrato/codec/guard; 3 integración Spring HTTP; 4 tests con procesos JVM reales (readiness/framing/EOF, singleton, EOF temprano, kill/release/rearranque explícito). [Resumen sin properties/outputs crudos](evidence/unity-java-ipc-2b-2026-10-06/java-results.json) |
+| Unity EditMode | **15/15 PASS**, 0 skips | Incluye 8 nuevos casos lifecycle/generación/budget y regresión codec/contrato/foundation. [XML normalizado](evidence/unity-java-ipc-2b-2026-10-06/editmode.xml) |
+| Unity PlayMode | **10/10 PASS**, 0 skips | 6 tests con servidor Java real; 2 fixtures JVM para READY ausente/connect rechazado; 1 ruta inválida; 1 Bootstrap. [XML normalizado](evidence/unity-java-ipc-2b-2026-10-06/playmode.xml) |
+| React regresión | **4/4 PASS**, build PASS | Fuentes PWA sin cambios |
+| Player Linux development Mono | **PASS**, build 0 errores / 0 warnings | Unity 6000.3.23f1; 11 grupos de escenarios ejecutados, no 11 tests NUnit. [Eventos/resultados](evidence/unity-java-ipc-2b-2026-10-06/player-results.json) |
+| Validaciones del repo | **PASS** | Foundation/links/management y diff sin whitespace |
+
+### Matriz de fallos y recuperación
+
+| Caso | Evidencia real aplicable | Resultado |
+|---|---|---|
+| Java muere en RUNNING | PlayMode + Player terminan exclusivamente su handle/child verificado | JAVA_EXITED, STOPPING→FAILED, cleanup completo, residual 0; sin autorestart |
+| READY nunca llega | PlayMode/Player lanzan JVM helper que conserva pipes sin READY | READY_TIMEOUT; 15.02 s desde process-start observado hasta fallo/cleanup en Player. Helper identificado; no certificar interoperabilidad del servidor con él |
+| TCP connect falla | PlayMode/Player con helper READY/endpoint cerrado real | CONNECT_FAILED; cleanup/residual 0, sin adoptar un proceso ajeno |
+| TCP se pierde con Java vivo | PlayMode cierra el socket propio conectado al servidor real | CONNECTION_LOST; EOF cierra Java real con exit 0; Retry manual vuelve a READY/PONG |
+| Java no responde al siguiente PING | Player SIGSTOP sobre child propio, luego SIGCONT tras STOPPING | CONNECTION_LOST; detección 3.04 s desde detención, incluye hasta 1 s de cadencia más deadline PONG 2 s; sin reconnect; cleanup/exit 0 |
+| Unity cierra con Java activo | Player WM_DELETE_WINDOW durante RUNNING | Cleanup completo, Unity exit 0 / Java exit 0, residual 0; EOF→exit 65.37 ms |
+| stdin EOF temprano | Java real + PlayMode/Player cancel STARTING | Cierre seguro después de refresh; nunca RUNNING en caso cancel temprano; Player Java exit 0, cleanup 1.88 s, residual 0 |
+| Cancel RUNNING / Stop repetido | PlayMode + control S/Stop en Player | STOPPING→STOPPED, Java exit 0; Player cierre 64.22 ms, residual 0 |
+| Singleton ocupado | Dos JVM reales; dos supervisores PlayMode; dos Players | Segundo exit 73, sin READY/Spring; dueño sigue vivo; ambos hijos terminan al cerrar sus owners, residual 0 |
+| Lock stale/release | Unit Java + kill/release con otra JVM real | Archivo existente sin lock no bloquea; no borrar archivo ni matar por PID/puerto/lock |
+| Flatpak ↔ host | Editor posee lock; JVM del host misma ruta | Exit 73 en 214.13 ms, sin READY ni proceso residual; [evidencia](evidence/unity-java-ipc-2b-2026-10-06/flatpak-lock.json) |
+| Java propio no atiende EOF | Player detiene sólo su child con SIGSTOP | Espera EOF 10.04 s, kill propio observado, exit 137, forced=true, readers 1.17 ms; residual 0. No contar como graceful |
+| Padre termina abruptamente | Harness mata su Player después de READY/PONG | Pipe EOF libera Java y deja residual 0. Unity exit -9 intencional; exitCode Java no observable desde padre muerto, no se inventa 0 |
+| Recovery manual y límite | PlayMode/Player: tres lanzamientos con nuevas identidades/PONG | Dos retries explícitos tras cleanup; cuarto bloqueado; máximo un child válido, residual 0 al cerrar cada intento |
+| Evento tardío | Unit reducer + callback real capturado del intento anterior, invocado durante nuevo RUNNING en PlayMode | Estado/child nuevos permanecen intactos |
+| Cleanup y estados | Todos los casos anteriores + unit transición inválida/incompleta | Socket/streams/readers/exit observados, cleanupComplete; no FAILED directo desde estado activo; retry bloqueado si cleanup incompleto |
+
+**Regresión 2A:** Unity→Java→READY→TCP IPv4 loopback→100 PING/PONG→EOF→clean exit **PASS**. Listeners efectivos de los hijos inspeccionados por inodos son únicamente TCP IPv4 **127.0.0.1** (HTTP e IPC). Smoke Player final N=100: startup **2.182 s**, RTT mínimo **0.910 ms**, P50 **1.600 ms**, P95 **1.994 ms**, máximo **3.504 ms**, errores **0**. Cierre Unity/Java normal exit 0, residual 0. Comparación de desarrollo con build 2A anterior en el mismo entorno: startup 1.873 s, mínimo 0.672 ms, P50 1.572 ms, P95 1.935 ms, máximo 2.343 ms, errores 0 ([registro](evidence/unity-java-ipc-2b-2026-10-06/baseline-2a-same-environment.json)). Variación observada no demuestra regresión material; no benchmarking exhaustivo ni gate rígido. Se conservan las métricas históricas 2A de IPC-002A. Nada se extrapola a teléfono→gameplay.
+
+**Correcciones durante desarrollo:** primer PlayMode con JDK host por /run/host falló por symlinks de configuración /etc no visibles en Flatpak; sustituido por copia local de desarrollo del mismo JDK21 con enlaces resueltos. Se corrigió salida del diagnóstico y ejecución en segundo plano; la automatización descartó logs anteriores antes de cada lanzamiento y sustituyó clicks inestables Xwayland por los atajos visibles de la misma acción manual. Esas ejecuciones no acreditan PASS; resultados anteriores corresponden al candidato final, con inventario comprobado sin cambios de fuentes.
+
+**Sanitización / límites:** sólo resúmenes JSON, XML sin outputs/properties y hashes revisados en Git; raw logs, JDK, helpers compilados y builds permanecen locales ignorados. No tokens/env dumps/payloads en evidencia. El build mantiene 0 warnings, pero existen diagnósticos del entorno Unity ya conocidos (licensing/debugger/build-server y registro nativo MemoryLeaks); no afirmar cero leaks globales. Windows, distribución JRE y PC oficial NOT RUN. Lock cooperativo y FS local; JVM congelada después de morir el padre requiere futura contención nativa, fuera de 2B. Watchdog, reconnect/restart automático, parser exhaustivo/fuzz/flood, performance extensiva, móvil/PWA/QR/sensores/cámara/gameplay/Input Fusion y Fase 1 no implementados. **2A PASS/MERGED; 2B PASS/MERGED; Incremento 2/Fase 0 IN PROGRESS; 2C/Fase 1 NOT STARTED.**
+
+Checks posteriores del merge 2B en `7e3aa60aa53c65e7051f32477a77985fbe628907`: **management-validation PASS / java-react-foundation PASS**. Protecciones comparadas antes/después, idénticas. Cierre de integración; 2C no iniciado.
+
+## IPC-002C — hardening y validación sostenida, 2026-10-06
+
+**Resultado: PASS / MERGED Linux de desarrollo mediante PR #93.** Diseño [Accepted](PHASE0_IPC_2C_DESIGN.md) y [procedimiento reproducible](PHASE0_IPC_2C_VALIDATION.md). Fetch confirmó develop `7e3aa60aa53c65e7051f32477a77985fbe628907`; rama `codex/phase0-ipc-2c-hardening` desde ese SHA. Sin nuevas dependencias, rediseño del lifecycle ni cambios de fases futuras. Documentación local del merge 2B conservada.
+
+| Gate / suite | Resultado y evidencia |
+|---|---|
+| Corpus Java/C# | **71/71 casos en ambos PASS**: tamaños uint32, truncación, UTF-8, documento único, fields/types/duplicates/escapes/identidades/sequence/token; [corpus común](../Shared/Protocol/ipc/cases/corpus.json) |
+| Java verify | **22/22 PASS**, 0 failures/errors/skips; suites existentes 2A/2B conservadas; [resumen sin properties/outputs](evidence/unity-java-ipc-2c-2026-10-06/java-results.json) |
+| EditMode | **19/19 PASS**, 0 skips; corpus/READY/concatenación/UTF-8 output/tamaño previo + regresión; [XML](evidence/unity-java-ipc-2c-2026-10-06/editmode.xml) |
+| PlayMode | **12/12 PASS**, 0 skips; seis tests backend real, cuatro helpers JVM identificados, ruta inválida/Bootstrap; [XML](evidence/unity-java-ipc-2c-2026-10-06/playmode.xml) |
+| React regresión | **4/4 PASS**, build PASS; sin cambios a PWA |
+| Player Linux development Mono | Build **0 errores / 0 warnings**; binarios/hashes en [artifacts](evidence/unity-java-ipc-2c-2026-10-06/build-artifacts.json) |
+| Input inválido aislado | Rechazos mediante socket/JVM Spring real, PING válido posterior en misma JVM, proceso vivo; sin payload/token en diagnósticos |
+| Deadlines absolutos | Prefijo y cuerpo con goteo500ms terminan ≈2s total; write bloqueado en sockets reales con buffers reducidos sólo test termina por deadline2s, nueva conexión responde durante >2s |
+| Presión determinista | **5 grupos reales PASS**: corpus rechazos, oversized100+invalid100, valid1000 consumidor lento+máximos100, parciales/goteo, productor sin lector≤1MiB; [recursos y RSS observada](evidence/unity-java-ipc-2c-2026-10-06/pressure-results.json) |
+| Tareas / colas | Writer único, sin common pool, sin cola PONG/thread por PONG; máximo deadline pendiente1, final0, executor terminado; no body read para prefijo oversized; buffers fuente/cuerpo/output acotados y RTT list≤1024 |
+| Player medición | **3 corridas independientes N=1000 PASS**, con 100 warmup cada una; métricas completas abajo y [JSON individual/estabilidad](evidence/unity-java-ipc-2c-2026-10-06/measurement-results.json), [CSV](evidence/unity-java-ipc-2c-2026-10-06/benchmark-runs.csv) |
+| Estabilidad real | **601.24s RUNNING PASS**, heartbeat real1Hz; 601 enviados/recibidos/válidos (handshake1+heartbeats600), errores/timeouts/disconnects0; estado final STOPPED, Unity exit0/Java exit0, cleanupComplete, residual propio0 |
+| Regresión Player 2A/2B | **11 grupos PASS**, no 11 tests NUnit; [resultados](evidence/unity-java-ipc-2c-2026-10-06/regression-player-results.json). Manual3 launches/cuarto bloqueado, singleton, cancel startup/RUNNING, EOF normal/abrupto, READY/refused fixtures, liveness/fallback propios; generaciones tardías también PASS PlayMode |
+| Validadores | management/foundation PASS; diff --check PASS |
+
+### Tres corridas independientes
+
+Entorno [registrado](evidence/unity-java-ipc-2c-2026-10-06/environment.json): Unity6000.3.23f1/Mono, Java21, Jackson3.1.5 ya existente. JVM nueva por Player; filesystem warm sin desalojar caches, escritorio de desarrollo con posible carga breve de validación. Sin Editor Unity durante las tres corridas. N=1000 excluye warmup100; totales enviados/recibidos/válidos=1100. Duration incluye warmup restante+medición después de primer PONG; cadencia efectiva sobre intervalos de las1000 muestras. Ticks tardíos: >1ms respecto del turno previsto, incluido warmup restante; se publican, no se eliminan.
+
+| Corrida | Startup ms | N | Sent / Received / Valid | Errors / Timeouts | RTT min ms | P50 ms | P95 ms | Max ms |
+|---|---:|---:|---|---|---:|---:|---:|---:|
+| 1 | 2134.0482 | 1000 | 1100 / 1100 / 1100 | 0 / 0 | 0.2580 | 1.0075 | 1.5617 | 3.5342 |
+| 2 | 1912.9807 | 1000 | 1100 / 1100 / 1100 | 0 / 0 | 0.2698 | 0.9777 | 1.5687 | 3.1940 |
+| 3 | 1899.5049 | 1000 | 1100 / 1100 / 1100 | 0 / 0 | 0.3096 | 0.9767 | 1.6134 | 3.1152 |
+
+| Corrida | Duration s | Effective Hz | Late ticks | Shutdown ms | Exit Unity / Java | Own residual |
+|---|---:|---:|---:|---:|---|---:|
+| 1 | 21.9865932 | 50.0010696 | 212 | 50.0231 | 0 / 0 | 0 |
+| 2 | 21.9844135 | 50.0001662 | 191 | 62.1348 | 0 / 0 | 0 |
+| 3 | 21.9859263 | 49.9992382 | 224 | 76.2648 | 0 / 0 | 0 |
+
+Todas cumplen P50≤5ms, P95≤10ms, máximo≤50ms y errores/timeouts nominales0. Nearest-rank por corrida, sin mezclar3000 muestras ni excluir picos. Tres launches no permiten declarar P95 estadísticamente significativo de startup. RTT worker incluye serialización/framing/validación/TCP/Java, no consumo de juego ni latencia one-way: **no extrapolar a teléfono→Java→Unity→gameplay**.
+
+### Estabilidad, memoria y regresión
+
+Estabilidad: startup1921.2768ms, operación601.2428525s, frecuencia efectiva0.9986053Hz, N heartbeat600, min0.3316/P501.0978/P951.7587/max3.3326ms, shutdown54.0375ms. Handshake aparte, STOPPED/exit0/cleanup completo/residual0. Todos los listeners propios observados: sólo IPv4 127.0.0.1. Errores inyectados de regresión son expectativas separadas del recorrido nominal; fallback propio exit137 no se presenta como cierre limpio y el exit code Java tras crash del padre no es observable, aunque su desaparición sí.
+
+RSS muestreada cada5s: Unity244961280→266268672bytes, pico266268672; Java215642112→207876096bytes, pico215642112. Managed heap **NOT MEASURED**. Muestra inicial tras primer PONG, no heap estabilizado tras GC/JIT; serie completa conservada. No excede alerta max(64MiB,25%), pero eso no acredita ausencia global de fugas ni memory safety. Diagnósticos nativos/licensing/debugger/build-server del entorno Unity previamente registrados y deuda[#89](https://github.com/Josue1855/Gorilla-Escape/issues/89) se conservan. Los límites deterministas de producto sí se verifican como gate.
+
+Smoke2A regresión N100: startup1395.0498ms, mínimo1.0118/P501.5640/P951.9586/máximo2.0892ms, errors0 y cleanExit. No reemplaza ni reescribe mediciones históricas de2A/2B.
+
+Iteraciones descartadas: se corrigieron expectativas del harness (spy confundía lectura del prefijo con cuerpo, catch C# de InvalidDataException, token vigente en conexión nueva frente a reutilización post-handshake y supuesto de llenar TCP con≤1MiB). La prueba separada con buffers pequeños demuestra write deadline real sin alterar tuning productivo. Dos corridas iniciales Player de regresión no acreditaron PASS porque Xwayland no confirmó teclado/foco; se elevó/enfocó ventana, esperó evento y canceló startup mediante cierre normal que activa RequestStop. Candidato runtime no cambió tras medir; corrida final11 grupos y PlayMode12/12 acreditan regresión, no los intentos descartados.
+
+**Identidad / sanitización:** [147 hashes de fuentes funcionales/tests/harness](evidence/unity-java-ipc-2c-2026-10-06/source-sha256.json); fuentes runtime y hashes JAR/Player/assemblies comprobados sin cambios después de las mediciones y al terminar todas las pruebas. Hash JAR `b43a17087e34cda7404952253dd4ae61615a4ae2f3b32489e8c5a3803d022961`. Sólo resúmenes JSON/CSV/XML sin properties/outputs secretos; raw logs/runtime/helpers/builds ignorados. Codec C# específico de probe, sin parser genérico ni dependencia nueva. No reconnect/restart automático, watchdog avanzado/nativo, Job Objects, arbitrary tree kill, TLS, malware defense, móvil/PWA/QR/sensores/cámara/gameplay/scoring/Input Fusion ni Fase1. Windows/PC oficial **NOT RUN**.
+
+**Estados:** 2A PASS / MERGED; 2B PASS / MERGED; **2C PASS / MERGED; Incremento 2 — Unity ↔ Java IPC PASS / MERGED**; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. Integración mediante merge normal autorizado del PR #93; sin trabajo posterior.
+
+## Integración normal del Incremento 2C
+
+[PR #93](https://github.com/Josue1855/Gorilla-Escape/pull/93) integrado mediante merge normal autorizado por el PO el 2026-10-07 01:03:09 UTC (2026-10-06 local). develop `ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760` contiene el candidato validado `e957775b0a848a001d37e1a4770eb14103888d0c`; árbol completo idéntico y 147/147 hashes funcionales/test/harness coincidentes. Checks posteriores **Management validation PASS / Foundation validation PASS**. Protección efectiva comparada antes/después, sin cambios: PR obligatorio, checks estrictos `management-validation` y `java-react-foundation`, force push y eliminación deshabilitados, reglas aplicables a administradores y conversaciones resueltas obligatorias. Sin bypass ni cambios al candidato.
+
+**Estado vigente:** 2A PASS / MERGED; 2B PASS / MERGED; 2C PASS / MERGED; **Incremento 2 — Unity ↔ Java IPC PASS / MERGED**; Fase 0 IN PROGRESS; Fase 1 NOT STARTED. Evidencia exacta de 2C conservada: Java22/22, EditMode19/19, PlayMode12/12, React4/4, build0errores/0warnings, corpus71casos, regresión Player11grupos, residual Java propio0, tres corridas independientes N1000 y estabilidad601.24s PASS; errores/timeouts/desconexiones nominales0. No combinar ni reinterpretar corridas ni extrapolar a teléfono → gameplay. Trabajo detenido tras integración.
+
+## LAN-003A — HTTPS LAN, candidato automatizado 2026-10-06
+
+**Resultado: implementación 3A IN PROGRESS; gate físico NOT RUN.** Diseño general
+[Accepted](PHASE0_PHONE_LAN_ONBOARDING_DESIGN.md), autorización únicamente 3A. Base
+`ec5880c94304e8c7d587c5f5d8c2cf28dbf5a760`, rama
+`feature/mobile-phase0-lan-https-3a`. [Guía física/setup](PHASE0_PHONE_3A_VALIDATION.md).
+Sin QR, sessionId/deviceId, heartbeat de presencia, estado CONNECTED, WS ni sensores.
+
+Configuración externa opt-in de IPv4/interfaz confirmadas, default8443, TLS directo
+Spring/PKCS12 con SAN validado. Rechaza IP/interfaz/configuración/password/certificado
+inválidos, wildcard/IPv6/VPN/virtual; leaf/password fuera de cualquier repositorio Git.
+Sin archivo móvil, perfil previo intacto. Unity hereda GORILLA_MOBILE_CONFIG al Java
+propio; no cambia fuentes Unity ni READY/token/framing/codecs/contratos/lifecycle IPC.
+Health diagnóstico añade identidad pública de lanzamiento, contador de peticiones y
+secure; APIs no-store. React mide petición puntual, muestra HTTPS/secure context y
+estado del worker, permite comprobar nuevamente; no crea sesión ni conexión continua.
+Sin dependencias/framework adicionales y sin modificación de firewall/router/trust.
+
+| Verificación | Resultado del candidato |
+|---|---|
+| Java regresión + TLS/LAN reales | **26/26 PASS**, sin fallos/errors/skips, JDK21 |
+| TLS confiable / CA desconocida / hostname SAN | PASS con cliente real y hostname verification; sin trust-all |
+| Perfil portátil CI TLS loopback | 3 PASS / 1 skip explícito del preflight LAN; el mismo caso sí pasó con configuración LAN |
+| React / build Vite / empaquetado JAR | **5/5 PASS**, builds PASS |
+| Assets/root/manifest/sw/API404/archivos privados no servidos | PASS desde Java HTTPS real |
+| Player con Java propio y HTTPS LAN | PASS, FIRST_PONG real, shell/health, listeners LAN HTTPS y127.0.0.1 IPC |
+| Cierre Player móvil | Unity exit0, Java exit0, cleanup completo, residual propio0 |
+| Regresión Player2A/2B con JAR final | **11 grupos PASS**, singleton/manual recovery/EOF/cancellation/deadlines/cleanup, residual0 |
+| UI en Chrome PC390px | PASS desde PWA empaquetada, HTTP loopback sólo para inspección UI |
+| Foundation / gestión / diff | PASS; no fuentes Unity/Shared modificadas |
+| Android/Chrome físico; iPhone/Safari físico | **NOT RUN** |
+| CA demo instalada, TLS sin warnings físico, SW físico | **NOT RUN** |
+| Primera carga sin cache con WAN desconectada; refresh/reapertura física | **NOT RUN** |
+| Segundo dispositivo LAN intenta IPC | **NOT RUN**; rechazo desde propia IPv4 LAN de PC sí comprobado |
+
+Evidencia sanitizada: [Java](evidence/phone-lan-https-3a-2026-10-06/java-lan-results.json),
+[TLS portable](evidence/phone-lan-https-3a-2026-10-06/tls-portable-results.json),
+[Player móvil](evidence/phone-lan-https-3a-2026-10-06/mobile-player-results.json),
+[regresión](evidence/phone-lan-https-3a-2026-10-06/player-regression-results.json),
+[React](evidence/phone-lan-https-3a-2026-10-06/react-results.json),
+[pendientes físicos](evidence/phone-lan-https-3a-2026-10-06/physical-results.json),
+[hashes fuentes](evidence/phone-lan-https-3a-2026-10-06/source-sha256.json) y
+[artefactos](evidence/phone-lan-https-3a-2026-10-06/build-artifacts.json).
+PKI de tests generada temporalmente fuera del repo y eliminada; nunca usada en teléfonos.
+mkcert de demo todavía no instalado/preparado: origen/versión se registrarán al setup.
+
+Corridas descartadas no acreditan gate: test nuevo utilizaba token en lugar de launchToken;
+perfil portable de test repetía server.port y no arrancaba; ambos corregidos en tests.
+Un lanzamiento concurrente de dos harness Player activó el singleton esperado: se repitió
+secuencialmente con JAR final, once grupos PASS. Se conserva únicamente el resultado final
+sanitizado; raw logs/builds/captura PC ignorados. Regresión no altera métricas históricas
+2A/2B/2C ni las tres corridas independientes de2C. No se repite benchmark600s porque IPC
+no cambió. EditMode/PlayMode y build Unity previos conservados, no declarados como nuevas
+corridas. Diagnósticos nativos del entorno Unity #89 permanecen; no afirmar ausencia global
+de fugas. Java mantiene avisos existentes de deprecación/Mockito/JVM; no declarar0warnings.
+
+**Estados:** Incremento1 PASS/MERGED; Incremento2 PASS/MERGED; **3A IN PROGRESS,
+gate físico NOT RUN**; 3B NOT STARTED; Incremento3 IN PROGRESS; Fase0 IN PROGRESS;
+Fase1 NOT STARTED. Publicar borrador de PR para revisión, no integración automática.
+Pendiente responsable con Android/iPhone: confirmar LAN, preparar CA pública, comprobar
+Chrome/Safari y retirar WAN manteniendo Wi-Fi. No se inventan modelos/router ni métricas
+URL→shell/confirmación físicas. No declarar3A PASS Linux+Android ni multiplataforma PASS.
+
+### Requisito posterior DEC-006 — reinterpretación del gate, no de las mediciones
+
+El PO exige PWA universal y Flutter Android opcional con HTTPS sin configurar certificados,
+CA/perfiles, DNS o navegador del jugador. La automatización LAN-003A anterior se conserva
+exacta como evidencia técnica de CA de test/IPC/hosting; **no demuestra cumplimiento de la
+nueva UX/trust público**. Nuevo gate3A NOT RUN, estrategia CA móvil superada; #94 DRAFT.
+[Rediseño Proposed](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) pendiente de aprobación.
+Esta tarea sólo actualiza documentos: validación de gestión/enlaces y diff PASS; builds y
+pruebas nuevas de aplicación no aplican, Flutter no implementado. Sin nuevos resultados
+físicos ni modificación/reinterpretación de métricas previas.
+
+### 3A — Adaptación FQDN y origen443 (software; gate físico pendiente)
+
+Head previo confirmado `50e48418ff286dcd3096c92800fd47f602ad27f2`, #94 OPEN/DRAFT. Arquitectura técnica Accepted; sólo software autorizado. [Evidencia nueva sanitizada](evidence/phone-lan-fqdn-3a-2026-10-06/java-results.json) separada del candidato CA/SAN IP histórico, que conserva sus resultados exactos.
+
+- Java JDK21 `verify` explícito LAN: **30/30 PASS**, sin skips; ocho casos TLS/configuración y22 regresiones existentes. SAN DNS correcto/incorrecto/IP-only, IP de escucha distinta del hostname, origen HTTPS443 estricto, cadena completa/incompleta/orden inválido, PKIX, root omitido con issuer conocido/desconocido, leaf expirado, password/permisos/origen inválidos, CA desconocida, hostname verification, puerto ocupado/no fallback, health/assets/IPC/EOF. Root de test no acredita confianza pública.
+- TLS portable: **6 PASS / 2 SKIP de 8**; los dos preflight LAN se ejecutaron PASS en la corrida explícita anterior. Build Maven/JAR PASS; aviso previo de API deprecada en ProbeCodec sin modificación. No afirmar cero warnings globales ni nueva build Unity.
+- React **5/5 PASS**, build PASS; siete archivos dist idénticos byte a byte dentro del JAR. Recursos locales inspeccionados sin CDN obligatorio. React no cambió.
+- [Player real Unity→Java HTTPS DNS](evidence/phone-lan-fqdn-3a-2026-10-06/mobile-player-results.json): **PASS**, LAN8443 + IPC127.0.0.1, SNI/validación DNS real por conexión de test a IP explícita; Java hijo con UID normal y capacidades efectivas0, READY/PING/PONG, health/shell locales, Unity exit0, Java exit0, cleanup y propios residuales0. DNS del SO intacto;443/DNS router/teléfonos no probados.
+- [Regresión Player2A/2B](evidence/phone-lan-fqdn-3a-2026-10-06/player-regression-results.json): **11 grupos PASS**, N100 nominal, muerte/recuperación manual/límite3, cancel, singleton, timeoutREADY/conexión, liveness/fallback/EOF; propios residuales0. Fixtures etiquetadas, crash de padre no permite observar exitCode Java. No extrapolar métricas IPC a móvil/gameplay; no repetir ni combinar métricas2C.
+- [Intentos anteriores](evidence/phone-lan-fqdn-3a-2026-10-06/attempts.json): primer cliente Java no resolvía hostname ficticio, ajustado con ruta test directa y SNI; primer intento Player no reconoció acción UI en Xwayland, repetición secuencial del mismo harness PASS. Ninguno se oculta ni se considera PASS.
+
+| Dimensión | Estado |
+|---|---|
+| Software / pruebas aplicables de PC | PASS |
+| Procedimiento Linux443 | PREPARADO, no aplicado |
+| Dominio/certificado público/router/DNS/redirección443 | Pendiente / NOT RUN |
+| Android e iPhone físicos, sin CA ni DNS manual, primera carga sinWAN | NOT RUN |
+| Gate3A | IN PROGRESS |
+
+[Procedimiento vigente](PHASE0_PHONE_3A_VALIDATION.md) y [Linux443](PHASE0_PHONE_3A_LINUX_443.md). No compras/emisión pública/router/firewall/trust modificados. Hashes fuente/artefactos guardados; Player Unity previo reutilizado sin cambio Unity/Shared/IPC. Validación foundation/gestión y diff PASS. 3B/4A/4B/4C NOT STARTED; Fase0 IN PROGRESS; Fase1 NOT STARTED. #94 DRAFT, sin merge.
+
+### 3A — Android Emulator / Chrome, QA local
+
+[Procedimiento reproducible](PHASE0_PHONE_3A_ANDROID_EMULATOR.md) y [resultados nuevos](evidence/android-emulator-3a-2026-10-06/results.json): **10 PASS / 2 BLOCKED / 1 SKIP**, API36/Chrome133.0.6943.137, KVM/headless en Pop!_OS24.04/COSMIC. Android boot, Chrome, React real, health200/no-store, interacción, recarga, restart navegador, error de conexión al cerrar Java real, rechazo de certificado no confiable, logcat y cleanup PASS. Java HTTP/TLS, Emulator y ADB exit0; residuales propios/helpers0. SDK ausente: [BLOCKED/exit2](evidence/android-emulator-3a-2026-10-06/missing-sdk-results.json), sin iniciar procesos.
+
+Java iniciado por el harness de QA, no Unity; HTTP localhost por ADB sólo prueba componentes, no fallback del producto ni HTTPS público. Certificado efímero rechazado por Chrome sin bypass/CA instalada; confianza pública positiva y LAN/DNS443/Android/iPhone físicos siguen BLOCKED. QR/sesión/sensores/WSS/Flutter SKIP fuera de alcance. No sustituye pruebas históricas Unity/Java/React ni las declara reejecutadas.
+
+[Intentos y hash exacto del harness](evidence/android-emulator-3a-2026-10-06/manifest.json): tres fallos de automatización conservados (dispositivo aún no disponible, first-run Chrome y espera tras restart), corregidos exclusivamente en QA; corrida final PASS. Evidencia seleccionada sanitizada; logs/perfiles/PKI ignorados y temporales. Sin instalaciones, cambios de runtime, red, DNS, firewall o confianza del sistema. **3A IN PROGRESS; #94 DRAFT**; estados posteriores sin cambio.
+
+
+## Investigación móvil segura, 2026-10-06 — sin ejecución nueva
+
+Actualización documental exclusivamente. WT/RTC, pin Safari, sensores reales, hotspot, webcam e Input Fusion: NOT RUN para la arquitectura propuesta. No nuevos resultados de producto ni nuevas métricas; no se repiten suites completas sin cambios runtime. Emulador Android histórico **10 PASS / 2 BLOCKED / 1 SKIP** conservado, sin reinterpretación como físico. IPC, HTTPS LAN, Unity y lifecycle previos conservan sus resultados/alcance. Ver [plan y criterios propuestos](PHASE0_SECURE_MOTION_SPIKE_PLAN.md).
+
+Verificación GitHub de sólo lectura en esta tarea: #94 **OPEN/DRAFT**, head `0d940f77f533bb6780bc3f07169dce414ea21e54`; `management-validation` y `java-react-foundation` SUCCESS sobre ese head remoto. Documentos de investigación locales no publicados ni cubiertos por esos checks remotos. Validación documental local: management PASS (88 registros, 242 enlaces) y git diff --check PASS. Sin merge, commit ni push.
+
+
+## SENSORS-SPIKE-001 — captura PWA aislada, 2026-10-07
+
+**Alcance:** adquisición/diagnóstico y lifecycle del capturador; sin sensores enviados a Java/Unity ni gameplay. Node existente v24.19.0; ninguna dependencia instalada. Código, página y procedimiento en [guía](../PWA/spikes/sensors/README.md).
+
+**Ejecutado:** `node --test PWA/spikes/sensors/capture.test.js` — 8/8 PASS, 0 FAIL/skip; `npm --prefix PWA test` — 5/5 PASS, 0 FAIL/skip. Primera corrida 8/8; tras validar rangos Euler/interval y ampliar casos de permiso rechazado, candidato local final volvió a pasar 8/8. Tests con EventTarget/permisos/reloj simulados: granted/denied/throws/rejects, contexto inseguro/API ausente, campos nulos/NaN/Infinity/tipo inválido, cambios orientación, cadencia/interrupción, hidden/visible, pagehide/stop/restart y resultado de permiso tardío cancelado. No latency/Hz físicos publicados ni build Player nuevo.
+
+**Límites:** browser real de la página experimental, Android/iPhone físicos, frecuencia hardware, precisión, calibración/normalización, intención/FPR/FNR, webcam, RTC/WT y nueva confianza HTTPS NOT RUN. 50 Hz en fixture sólo verifica aritmética con timestamps sintéticos, no sensor real. No iniciar servidor, hosting ni emitir certificados. Memoria estructural: latest por fuente/contadores, sin cola/historial; no declaración de ausencia global de fugas.
+
+**Conservación:** emulador histórico 10 PASS / 2 BLOCKED / 1 SKIP y todas las evidencias foundation/2A/2B/2C/HTTPS intactas. No repetir Java/Unity/Player porque sus fuentes no cambian. Capturador aislado no modifica su aceptación. Estados: #94 OPEN/DRAFT, 3A/Fase 0 IN PROGRESS, Fase 1 NOT STARTED. Los checks GitHub previos no cubren cambios locales sin commit del Spike.
+
+**Corrida final exacta:** tras completar diagnóstico de accelerationIncludingGravity y aislamiento de permisos tardíos respecto de un nuevo Start, tests 8/8 PASS nuevamente. [Resultado sanitizado y hashes de los cuatro archivos del Spike](evidence/pwa-sensors-spike-2026-10-07/results.json). Regresión PWA 5/5 conserva su ejecución previa; fuentes productivas no cambiaron. Management PASS (88 registros, 261 enlaces locales), git diff --check PASS. Esta evidencia nueva no altera artifacts históricos.
+
+
+## Evidencia adicional aislada 3A-T — 2026-10-07
+
+Build del prototipo Maven Java 21 PASS (aviso API deprecated; no 0 warnings). Chrome desktop real: seis escenarios PASS en loopback y seis en dirección LAN del mismo host; invalid-input también comprobado dentro de sesiones positivas. Pin correcto, incorrecto y vencido diferenciados por etapa; AUTH y oversize diferenciados, ningún negativo por deadline. 20 reliable y 20 datagramas por sesión positiva; métricas por ruta y recovery en [informe](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md#15-spike-ejecutable-3a-t--2026-10-07), JSON y hashes en [evidencia](evidence/webtransport-spike-2026-10-07/). EOF/exit 0, UDP rebinding y cero procesos propios residuales PASS. Primeros fallos de perfil de certificado documentados; no contarlos como éxito de seguridad.
+
+LAN física, Android, iPhone, Windows y offline PWA NOT RUN. Upstream unit tests NOT RUN; pruebas costosas de componentes sin cambios no repetidas. No afirmar memoria sin fugas ni latencia móvil; evidencia 2A/2B/2C y emulador 10 PASS/2 BLOCKED/1 SKIP conservada sin reinterpretación. Spike local fuera del candidato remoto #94, aceptación 3A no cambia.
+
+
+## Android WebTransport + componentes existentes — 2026-10-07
+
+[Informe y métricas por sesión](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md#16-android-emulator--validación-integrada-de-componentes-2026-10-07); [evidencia](evidence/webtransport-android-2026-10-07/). API36/Chrome133 existentes, emulador desechable: final **16/16 PASS**, React/Health/reload/restart/EOF/error, seis WT con TLS hash real/negativos, reconexión tras reload, eventos virtuales sensores y Stop, cleanup. Cero procesos propios residuales, exit 0 y UDP liberado. Reliable RTT máximo observado 65 ms, conservado; no gate de performance WT ni extrapolación móvil.
+
+Initial 15 PASS de aserciones limitadas; strict-before-fix 13 PASS/1 FAIL por UI sensor stale, conservados separadamente. Corrección mínima del receptor Window de timers en el Spike de sensores existente, regresión unit **9/9 PASS** y Android final RUNNING/eventos/STOPPED PASS. Histórico sensor unit 8/8 y Android 10 PASS/2 BLOCKED/1 SKIP intactos. Sensores no conectados al transporte ni Unity. Físicos/HTTPS público/offline LAN NOT RUN. Capturas/JSON sanitizados; no instalaciones, CA, trust bypass o red modificada.
+
+### Incremento aislado A/B y base C — 2026-10-07
+
+Comparador RTC Chromium ↔ Java21 real: **PASS**, `webrtc-java 0.19.0`/JNI Linux fijados sólo en Spike. Corrida final `run04-reviewed.json`: 2400/2400 mensajes medidos, 0 pérdidas/timeouts/errores nominales; 1 peer, reconexión nueva y 4 peers activos. Padding32/1024, reliable ordered/unordered maxRetransmits0. Candidatos host UDP, sin iceServers/STUN/TURN. Negativos7 PASS: SDP inválido, oferta con ID duplicado aislada, payload inválido, quinto peer rechazado, desconexión aislada, credential incorrecta, oversized. Revisión detectó que rechazar una oferta con ID repetido podía cerrar el peer existente: corrección limitada al peer asignado por ese request y prueba de regresión real añadida; corridas anteriores conservadas.
+
+Java startup observado264.52ms (un lanzamiento, no P95). RTT por escenario, sin combinar muestras: single N400, mayor P95 de sus subgrupos0.60ms/max1.50ms; recovery N400, mayor P950.90ms/max1.70ms; four N1600, mayor P951.00ms/max2.00ms. Subgrupos/tamaños/canales y métricas completas permanecen separados en JSON; esos máximos de percentiles no son un percentil combinado. No se comparan como benchmark equivalente con WT ni se extrapolan a teléfono/gameplay. Java exit0, peers residuales0, comandos pendientes0, navegador cerrado.
+
+DEC-010 selecciona **WebRTC DataChannel** como dirección Software/Lab; no transporte productivo integrado aún. WT histórico permanece aislado. Sesión técnica Java: siete unit tests PASS para token one-use, cuatro players, expiración, liveness, desconexión/identity y reconnect con epoch. Regresión Java37 total:35 PASS/2 SKIP de variantes LAN,0 fallos/errores; no se cambian resultados históricos. Foundation wiring PASS; diff check PASS. No QR/endpoint de admisión implementado todavía; C PARTIAL, pipeline móvil/Unity, webcam/Fusion, multicliente productivo y auditoría final pendientes.
+
+Evidencia: `docs/evidence/webrtc-comparator-2026-10-07/`; comando `tools/spikes/webrtc/run.mjs`; restricciones/dependencias `tools/spikes/webrtc/README.md`. #94 verificado OPEN/DRAFT, head0d940f77; sin commit/push/merge. Fase0 IN PROGRESS y Fase1 NOT STARTED. Físicos DEFERRED por decisión PO; ya no bloquean gates Software/Lab.
+
+**Actualización del mismo incremento:** POC QR implementado con ZXing core3.5.3/Apache-2.0 (única nueva dependencia del servidor para QR), QR384×384 codificado y decodificado realmente en test; URL HTTPS con admission efímero en fragment, sin token IPC/clave/credencial permanente. Dominios `.invalid` son fixtures, no hosting desplegado ni concesión de infraestructura. Rechaza HTTP, userinfo, query/fragment previos; token consumido sólo una vez. Dos tests QR PASS. Credential de resume rota al reconectar y epoch anterior queda inválido; siete tests sesión PASS. Regresión final con interfaz LAN explícita: **Java39/39 PASS,0 SKIP,0 errores/fallos** (`technical-session-qr-java-final.json`). La corrida previa35PASS/2SKIP sigue conservada separadamente. C permanece PARTIAL: faltan endpoints/integración de admission/liveness con el transporte real/PWA; QR POC componente PASS. No pipeline móvil→Unity, webcam, asociación/Fusion ni auditoría final aún. No se declara Fase0 COMPLETED ni Fase1 READY.
+
+## Sesión / QR / Gorilla Protocol / WebRTC / PhoneInput — Software/Lab, 2026-10-07
+
+**PASS en Chrome real sintético/replay**. [Informe](PHASE0_MOBILE_INPUT_RUNTIME_VALIDATION.md) y [evidencia dedicada](evidence/mobile-input-runtime-2026-10-07/).
+
+| Prueba ejecutada | Resultado |
+|---|---|
+| Java, con interfaz LAN explícita | 48/48 PASS; 0 SKIP |
+| Node: React, capturador y adaptador | 18/18 PASS |
+| Unity EditMode / PlayMode real | 23/23 y 12/12 PASS |
+| Build Linux | 0 errores / 0 warnings |
+| Corpus móvil compartido | 17 casos PASS, más escenarios de secuencia/rate/aislamiento |
+| Regresión Player 2A/2B | 11 grupos PASS |
+| Regresión Player 2C | Tres N=1000 independientes y 601.2234171 s PASS |
+
+El corpus IPC anterior de 71 casos conserva sus regresiones por las suites aplicables. 2C terminó STOPPED, exit 0, sin force y con cero procesos propios residuales. Errores/timeouts: 0.
+
+Runtime end-to-end04: cuatro peers host/host UDP, sin STUN/TURN; QR PNG → decoder → JOIN real; PlayerIds 1–4; captura DOM sintética, replay y TOUCH; 18 casos negativos/lifecycle; recuperación manual; 643 observaciones Unity sin cruces de identidad. Carga nominal de 30/50/60 Hz, 60 muestras de movimiento por cliente/grupo y recibos adicionales de heartbeat contabilizados. Los 12 grupos RTT permanecen separados: P95 por grupo entre 2.7 y 5.3 ms, máximo individual 9.4 ms, cero errores/recibos faltantes nominales.
+
+Ráfaga de 500 muestras: 498 coalesced. Presión de 400 mensajes: 209 ACK / 191 rechazos; cliente recuperado y otros activos. No extrapolar pérdida física ni benchmarks. Contadores Java: forwarded 643, coalesced 318, pending 0, rejected 202; incluyen control/presión.
+
+Tramos UTC en la misma PC, incluyendo replay/presión: Java → Unity P50/P95 = 11/23 ms; generación del cliente → Unity = 13/25 ms, resolución de 1 ms. No son human latency, motion-to-photon ni latencia física.
+
+Android nuevo **BLOCKED** (canales RTC no OPEN); Player/Java/Emulator/ADB exit 0 y cero residuales. Background/foreground móvil NOT RUN; iPhone/Android físicos/Windows DEFERRED. Histórico Android 16/16 y resultados WT/comparador intactos. Se conservan fallos iniciales Java/PlayMode/singleton y la primera estabilidad 2C con cierre forzado; la repetición fija pasó, sin confirmar causa definitiva. No se repite el comparador cerrado.
+
+DEC-010 IMPLEMENTED FOR PHASE 0 LAB. Fase 0 / 3A IN PROGRESS, Fase 1 NOT STARTED. Camera/Input Fusion NOT STARTED. PR #94 DRAFT; sin commit/push/merge.
+
+
+## Webcam PC / asociación / alineación / Fusion — Software/Lab, 2026-10-08 UTC
+
+**PASS — SOFTWARE/LAB**: CameraInput, Player Lock, Temporal Alignment e Input Fusion infrastructure.
+Se conserva runtime móvil PASS y se añade adaptador cámara local supervisado/fixtures; no gameplay.
+[Informe completo y evidencia](PHASE0_CAMERA_FUSION_VALIDATION.md), DEC-012.
+
+- Java48/48, PWA18/18, EditMode64/64, PlayMode16/16 finales PASS; Linux build0 errores/0 warnings, PWA build PASS.
+- Corpus12 camera cases,21 escenarios fusion y8 trazas conceptuales; Player4Chrome RTC reales + camera replay PASS,
+  turnos1–4, aislamiento, lost/recovery, phone disconnect/manual resume y freshness.
+- unavailable/vision failure no detienen cuatro inputs móviles; worker exit2 esperado, parents exit0, propios residuales0.
+- Regresión Player2A/2B11 grupos PASS; runtime mobile real PASS con18 negativos/lifecycle. Bench2C anteriores
+  independientes/601.2234171s conservados sin nueva ejecución; JAR y fuentes de transporte/PhoneInput intactos,
+  regressions reales codec/proceso Java/PlayMode repetidas. Getter de lectura nuevo únicamente en IpcProbeRunner.
+- Replay:342 frames,336 recibidos,29.868FPS;50 evaluaciones Eligible; delta P50/P953/13ms,max14ms.
+  Process→Unity P50/P9510/43ms,max202ms. Datos completos sin exclusiones en e2e-replay03.json.
+- Webcam física:640×480,102 frames,100 recibidos,17.611FPS; processing P50/P9539.341/65.884ms,
+  read P50/P957.655/36.538ms; process→Unity P50/P9510/157ms,max402ms. Confianza .00136–.00687,
+  cero frames fiables bajo configuración lab; captura→detector→store y release PASS técnico parcial,
+  persona/salida/retorno fiable NOT RUN.30FPS no acreditados, hardware dropped frames desconocidos.
+
+Normales: Unity/Java/vision exit0, STOPPED, camera/detector released, sin forced y propios residuales0.
+Intentos fallidos de compilación/tests/harness y early Python exit134 preservados con reparaciones y
+repeticiones separadas; no alteran históricos. No global leak claim ni accuracy/latencia física deportiva.
+
+iPhone/Android físicos, Windows, movimiento humano, fusión física, tuning final y packaging siguen DEFERRED;
+Android Emulator RTC nuevo BLOCKED. Secure-context/onboarding aún deuda; no reabrir comparador/WT ni usar
+cámara móvil. A–J del cierre Software/Lab disponen de gates; **siguiente único bloque: FINAL PHASE0 AUDIT**,
+no ejecutado aquí. Fase0/3A IN PROGRESS, Fase1 NOT STARTED; PR94 OPEN/DRAFT head0d940f77, nueva implementación
+sólo local sin commit/push/merge. Auditoría decidirá cierre/integración; no se declara COMPLETED ni READY Fase1.
+
+
+**Candidato final del mismo incremento:** EditMode64/64 y build03 Linux0/0; e2e-replay04 PASS después de
+conservar RawPhone/RawCamera/ages/quality aun con input no elegible. No cambia algoritmo temporal, detector,
+lifecycle ni protocolo. Replay04: 329 frames/326 recibidos, 29.870FPS; 48 Eligible,
+delta P50/P95 9/15ms,max15ms; process→Unity P50/P95 10/42ms,max210ms.
+Corridas anteriores y webcam física se mantienen separadas, no se sustituyen/combinan. Propios residuales0,
+Unity/Java/vision exit0, sin forced. Sólo FINAL PHASE0 AUDIT pendiente; no ejecutado.
+
+## Reconciliación operativa Project — 2026-10-08
+
+SoftwareLab technical checkpoint PASS retenido; Project Phase0 stillOPEN. Se publican los cambios auditados en PR94; no nuevo código de producto. 27Issues reales reconciliados con AC/Dependencies/DoD:0cierres,9InProgress/8POReview/10Validation; metadata/dependencias preservadas. T0012/3,slowmotion pendiente; T016/T017/T019 físicos y T020PC limpia pendientes. #35blockedby#34;Fase1NOTSTARTED. [Matriz/evidencia](PHASE0_PROJECT_RECONCILIATION.md). Checks del head publicado inicialPASS; final e integración se verifican separadamente.
+
+## T008 / DEC-016 — candidato local trust, 2026-10-08
+
+Base integrada `7e818d5e729aad09c3b6fe40cc22422268198d2a`; rama `feature/mobile-t008-local-trust`. DEC-016 ACCEPTED FOR IMPLEMENTATION / VALIDATION: CA única por instalación, leaf corto con SAN iPAddress, origen HTTPS LAN y QR conectado al endpoint de producto. Preparación inicial de confianza y JOIN preparado son flujos/mediciones distintos; no cambia WebRTC/contrato/IPC ni añade T009. [Diseño y procedimiento](PHASE0_T008_LOCAL_TRUST.md).
+
+**Nueva ejecución del candidato:** Java **52/52 PASS**, 0 errores/fallos/SKIP y build/package PASS; PWA **9/9 PASS** y build PASS. Incluye 4 tests nuevos (3 unit + 1 Java real) de CA/leaf/permisos/IP/QR/TLS/bootstrap/EOF. TLS normal: CA confiada valida; certificado no confiado, IP incorrecta y expiración se rechazan. No trust-all ni flags. Management/Foundation validadores locales PASS.
+
+**Regresión serial nueva PASS:** Chrome real, 4 peers → WebRTC → Java hijo de Unity → IPC 127.0.0.1 → Player, 641 observaciones Unity y 18 negativos; recuperación manual, peers liberados, STOPPED, exit 0 y propios residuales 0. Entrada sintética/replay, no sensores físicos ni medición de onboarding humano. Cada corrida sintética permanece separada en [evidencia](evidence/t008-local-trust-2026-10-08/rtc-regression-serial.json). JAR final SHA256 `5c9728132226b9ac89ca057091e4aa4abffe0336529897896e4477d1eefb41de`.
+
+Unity EditMode **64/64**, PlayMode **16/16**, build Linux **0 errores/0 warnings** son evidencia **retenida, no una nueva ejecución**: fuentes/configuración Unity intactas frente a la base. Player SHA256 `26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f`. El JAR cambió; por ello se ejecutó la integración real nueva anterior. No se combinan/extrapolan métricas históricas 2C o móviles al gameplay físico.
+
+Fallos conservados por separado: primer test Java real falló por lector de test acotado para PNG; corrección exclusiva del lector, repetición PASS. Primer RTC con gate físico concurrente falló por deadline (causa exacta no demostrada); repetición serial PASS. [Resumen de software](evidence/t008-local-trust-2026-10-08/software-results.json).
+
+**iPhone 15 BLOCKED antes de instalar CA:** `/prepare` no carga. Cinco eventos UFW BLOCK coinciden con la IP del teléfono y los puertos del gate; lectura administrativa de estado rechazada con `sudo: a password is required`. No modificaciones de firewall/router/DNS/CA del sistema. No fallo TLS/Safari acreditado. Gate cerrado Player/Java exit 0, STOPPED/cleanup completo, residuales 0. Confianza HTTPS física, QR→READY humano y ambas duraciones NOT RUN/NOT MEASURED; Android físico NOT RUN. [Evidencia sanitizada](evidence/t008-local-trust-2026-10-08/physical-gate-01.json).
+
+**Estado:** AC1 PARTIAL; AC2 PARTIAL; AC3 NOT RUN (preparación/JOIN humanos); AC4 PASS. T008/#19 OPEN / Validation, T009/#20 bloqueado por #19, F02/E0/Fase0 OPEN, Fase1 NOT STARTED. No cierre/merge automático. Siguiente gate exclusivo: intervención autorizada y administrativa para resolver el filtrado LAN observado, seguida de preparación/confianza iPhone. El nuevo candidato no constituye aceptación física ni integración en develop.
+
+## CI native prerequisite
+
+Las primeras cuatro ejecuciones Foundation del candidato fallaron (Java 52: 49 PASS, 1 error, 2 SKIP de gates HTTPS LAN históricos). El diagnóstico final identifica `Initialize the default AudioDeviceModule failed`: el runner no tiene sistema de audio activo y la fábrica nativa RTC existente lo solicita incluso para DataChannel. No era un fallo TLS ni se demuestra inviabilidad de DEC-016. Fallos conservados en [evidencia](evidence/t008-local-trust-2026-10-08/ci-native-audio.json).
+
+Corrección de entorno: el workflow prepara PulseAudio exclusivamente en el runner efímero de CI. No cambia la fábrica/contrato WebRTC, no salta la prueba real y no instala software en la laptop del usuario. No añade dependencia Maven ni servicio de gameplay. La repetición de checks se publica separadamente en el PR.
+
+## T008 gate físico con excepción UFW temporal — 2026-10-08
+
+Código probado: `023c0725af3a6e015cf7921c452deed9438f3def`. Sólo documentación/evidencia cambia después de esta prueba; no nueva ejecución de suites retenidas ni modificación de WebRTC. [Evidencia sanitizada](evidence/t008-local-trust-2026-10-08/physical-firewall-gate-03.json).
+
+LAN comprobada: `wlp0s20f3`, PC `10.1.125.17/22`, subred `10.1.124.0/22`, gateway `10.1.124.1`; iPhone confirmado `10.1.124.240`. Runtime real comprobado escuchando HTTPS TCP8443 y bootstrap TCP18000. Elevación normal `pkexec` autorizada por PO; no contraseña guardada/automatizada. UFW activo antes/después, políticas deny incoming / allow outgoing / disabled routed preservadas. Sólo dos reglas ALLOW IN TCP hacia la IP de la PC por esa interfaz y desde esa subred, comentarios `Gorilla Escape T008 PREPARE` y `Gorilla Escape T008 HTTPS`; ningún UDP abierto.
+
+**Bootstrap físico PASS:** PO confirma PREPARE DEVICE visible. **HTTPS /prepare iPhone PASS:** PO confirma apertura en Safari sin advertencia tras instalar/confiar CA. Evidencia humana declarada, no inspección remota del teléfono. Misma CA de instalación, sin regeneración. iOS27 es dato PO previo; patch/build/Safari exactos no verificados. Android físico NOT RUN.
+
+**JOIN FAIL / READY no acreditado:** tras QR y JOIN, Safari muestra `No se pudo conectar. Comprueba LAN, confianza TLS y QR vigente.` Snapshot posterior Java: peers0, received0, forwarded0; no inferir ausencia de peer transitorio desde ese snapshot. Filtro del journal desde emisión de QR: sólo UFW BLOCK UDP source iPhone / destination PC, **0 eventos observados**, ningún puerto UDP acreditado. La ausencia de logs no demuestra ausencia de tráfico o drops. No atribuir fallo a UDP/TLS/Safari/expiración sin evidencia. El QR tenía TTL30s al emitirse; hora de escaneo/llegada de JOIN no medida. Panel de archivo inicialmente queued, imagen después mostrada inline; no acreditar tiempo de visibilidad humana.
+
+**FIRST-TIME PREPARATION: NOT MEASURED. PREPARED DEVICE JOIN: NOT MEASURED; READY no alcanzado.** Se solicitó cronómetro y duración, pero no se recibió valor. No estimar tiempos por respuestas del chat, excluir pasos manuales, afirmar target<60s ni reinstalar CA sólo para inventar medición inicial.
+
+Cleanup PASS: eliminadas exclusivamente las dos reglas añadidas; ninguna regla propia restante. UFW activo, políticas intactas y estado completo coincidente con el anterior (comparación, no restauración de snapshot). Player/Java exit0, STOPPED, cleanupComplete=true, forced=false, Java propio residual0, listeners18000/8443 cerrados, QR efímero eliminado. CA privada sigue fuera de Git; confianza del teléfono no se retira automáticamente. No router/DNS/NAT/WAN/forwarding modificados.
+
+API de rango ICE confirmada en artefacto0.19.0: `RTCConfiguration.portAllocatorConfig.minPort/maxPort`; guía oficial con extremos inclusivos y 0 no especificado. Config actual sólo deshabilita STUN/relay/TCP. No rango seleccionado/aplicado/abierto ni validación nativa de rango. **DEC-017 Proposed — ONE-TIME NETWORK SETUP**, pendiente necesidad UDP observada, dimensionamiento1/4peers y aprobación PO; no producto firewall integrado ahora.
+
+AC1 PARTIAL global (iPhoneHTTPS PASS; Android físico pendiente); AC2 PARTIAL (QR/PWA accesibles; RTC/READY no); AC3 PARTIAL / mediciones no disponibles; AC4 PASS (registro/alternativas, Plan B no activado). #19 OPEN/Validation, #20 bloqueado; PR96 OPEN/DRAFT, sin merge; Fase0 IN PROGRESS, Fase1 NOT STARTED. Próximo bloqueo real: JOIN no alcanza READY y el mensaje no distingue fase/causa. Proponer intento controlado con QR nuevo y diagnóstico de señalización/ICE antes de modificar transporte o abrir UDP. No ejecutado después del cierre del gate.
+
+## T008 JOIN — instrumentación y rollback acotados, 2026-10-08
+
+[Diagnóstico y procedimiento](PHASE0_T008_LOCAL_TRUST.md). [Evidencia software](evidence/t008-local-trust-2026-10-08/join-diagnostics-software.json): verificación Java serial 54 PASS + 2 SKIP; ejecución suplementaria LAN 8/8 PASS cubre ambos SKIP (56 tests distintos PASS, sin reescribir resultados de corridas). PWA 14/14 PASS/build PASS; Management/Foundation locales PASS. Intentos intermedios y causas conservados; no cambios a tests históricos para obtener PASS.
+
+[Regresión real RTC](evidence/t008-local-trust-2026-10-08/join-diagnostics-rtc-regression.json): cuatro clientes Chrome → Java hijo → IPC → Unity Player, 640 observaciones, 18 negativos PASS; manual resume y cleanup STOPPED/exit0/residuales0. Unity completo no repetido: fuentes/config intactas, evidencia anterior retenida. Ningún cambio a configuración ICE/transportes/puertos; DEC-017 Proposed.
+
+Gate físico instrumentado pendiente; HTTPS iPhone anterior PASS conservado, fallo JOIN anterior y ausencia de UFW UDP observada no reinterpretados. AC1/AC2 PARTIAL, AC3 sin medición humana completa, AC4 registro PASS; #19 OPEN/Validation, PR96 OPEN/DRAFT, T009 bloqueado; Fase0 IN PROGRESS/Fase1 NOT STARTED.
+
+## T008 intento físico instrumentado — 2026-10-08
+
+Código probado `f62fa22171f00ccdff987a3d282e228144a37b5f`. [Reporte sanitizado, sin IPs/SDP/tokens](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json). iPhone15/Safari/iOS27 declarado (build/version exactos UNKNOWN), QR nuevo y un único JOIN: **READY técnico PASS**, HTTP200, remoteDescriptionPASS, ICE new38ms→checking269ms→connected306ms, connection new38ms→connecting269ms→connected313ms, canales control/motionOPEN326ms, HELLOACK→READY340ms. Tiempos relativos a connect en Safari; **QR→JOIN y preparación humana NOT MEASURED**. No inferir P95, latencia gameplay ni gate temporal humano de esos340ms.
+
+Safari ofrece un candidato host/udp/MDNS_LOCAL puerto62352; Java ofrece host/udp/IPV4 puerto50804. El mDNS funciona en este intento; no afirmar compatibilidad universal ni identificarlo como causa anterior. Error genérico anterior **UNKNOWN / NOT REPRODUCED**. No inspección UFW UDP nueva: no hubo fallo de ICE que activara esa condición. El cero de eventos histórico permanece intacto y no se atribuye a este intento. No UDP abierto/rango seleccionado, no cambios de transporte. DEC-017 Proposed.
+
+Java registró cierre posterior a39.296s y peers0: causa no establecida, sin declarar estabilidad/suspensión/reconexión físicas PASS. Cierre del gate: Player/Javaexit0, STOPPED, cleanupComplete=true, forced=false, Java propio residual0, listeners18000/8443 cerrados, QR eliminado. Ambas excepcionesTCP temporales retiradas; UFW activo, políticas y status completo iguales al snapshot anterior (comparación, no restauración). Sin reinstalarCA ni modificarrouter/DNS/WAN.
+
+AC1 PARTIAL (iPhoneHTTPS PASS, Android físicoNOTRUN); AC2 PARTIALglobal (flujoQR/signaling/RTC/HELLOACK/READY iPhonePASS, matrizfísica incompleta); AC3 PARTIAL/sin medicioneshumanas completas; AC4 PASS (registro, PlanB noactivado). #19 OPEN/Validation; PR96 OPEN/DRAFT; T009 bloqueado, Fase0 INPROGRESS/Fase1 NOTSTARTED. Checks del código probadof62fa22: Management/Foundation SUCCESS. Próxima acción propuesta, no ejecutada: completar cronómetros humanos PREPARE/JOIN y gateAndroid físico mediante nueva autorización/prueba. No cambioscorrectivos adicionales tras estaobservación.
+
+## T008 reevaluación física / cronómetros — 2026-10-08
+
+[Procedimiento, tabla y AC actuales](PHASE0_T008_LOCAL_TRUST.md), [evidencia nueva](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json). Un nuevo QR/unJOIN iPhone vuelve a READYtécnicoPASS, HTTP200/remoteSDPPASS/ICECONNECTED/control+motionOPEN/HELLOACK. 316ms sólo desdeconnect, **no onboarding humano**. PO no usó cronómetro: PREPARE/JOIN humanosNOTMEASURED. Androidfísico no disponible/NOTRUN, modeloOSChromeUNKNOWN; emuladorauxiliar no sustituyehardwarereal.
+
+AC1PARTIAL, **AC2PASS** por criterio demostrado iPhone (no compatibilidaduniversal), AC3nosatisfecho por medicionespendientes, AC4PASS. DEC-017Proposed actualizada: TCPobservado, UDPadicionalno demostrado necesario, sinreglaspreventivas/rangominmax/cambiosRTC. Historialanteriorconservado. Producto/Unity/tests sin cambios; sólo evidenciafísicanueva y documentos, suitescostosasno repetidas. AmbasreglasTCPtemporales retiradas, UFWactivo/políticas/statusintactos, PlayerJavaexit0/STOPPED/cleanup/residuales0/listenerscerrados.
+
+#19OPEN/Validation/needs-device-test, PR96OPEN/DRAFT; Android es el único gate de **dispositivo** pendiente, pero también quedan cronómetrosAC3 y DoD de integración. No declararONLY_ANDROID_BLOCKER para todoT008. No cierreantesdemerge, noPRreadyhastaAC1–4PASS, noT009; F02OPEN/Fase0INPROGRESS/Fase1NOTSTARTED.
+
+## T008 salida de Spike / DEC-018 — 2026-10-09
+
+[DEC-018 Accepted](DECISIONS.md#dec-018--t008-spike-exit--deferred-physical-qa): iPhone físico cumple el objetivo técnico del Spike. AC1 y AC3 **PASS FOR SPIKE EXIT under DEC-018**, AC2/AC4 PASS; **no toda la QA física completada**. Android físico trustedHTTPS/QR→READY sigue NOT RUN; PREPARE/preparedJOIN humanos NOT MEASURED. Evidencia anterior intacta;316/340ms no usados como cronómetros humanos. [Corrida04](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json), [corrida05](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json).
+
+Carry-forward obligatorio a #33/T019: Android trust/QR→signaling→RTC→READY, metadatos iPhone/Android, ambos cronómetros humanos, verificar<60s o documentar fallo, firewall en más redes/dispositivos. T019 conserva todos sus AC/dependencias, bloqueado/no iniciado. DEC-017 Proposed; sin UDP preventivo ni cambios de código/transporte. Esta tarea sólo añade decisión/documentación y transferencia de QA; software/Unity retenidos, no nueva suite física/costosa manual.
+
+Salida aprobada para integración normal del PR96; DoD y cierre efectivo #19 después del merge y validaciones post-merge, con SHA/resultado registrados en GitHub. needs-device-test se retira de #19 al transferir formalmente QA, security/type:spike/area:network conservados. #20 sólo siguiente candidato tras reevaluar sus dependencias, no iniciado. F02 OPEN/Fase0 IN PROGRESS/Fase1 NOT STARTED.
+
+
+## 2026-10-09 — T013 lobby admission — fresh software/lab validation
+
+Implementation `b581606e6c9885b8b518a87e19d59ba94a8a801b`, branch `feature/server-t013-lobby-admission`, base develop `10b02121bc0d2134ba03f39236d18553cbfdd058`. [T013 report](PHASE0_T013_LOBBY_ADMISSION.md) and [sanitized evidence](evidence/t013-lobby-admission-2026-10-09/summary.json).
+
+Existing TechnicalSession/RTC/IPC reused; Unity explicitly authorizes PLAYER_READY and OPEN→STARTING→STARTED. Admission closes at STARTING, including outstanding tokens. One-to-four owners, fifth rejection, credential-authorized resume, epoch rotation, expiry/replay/spoof, concurrent JOIN and JOIN/start races, fresh input prerequisites and cleanup PASS LAB. Java only mirrors Unity authority; no phone GAME_START, gameplay/action lifecycle, results, scoring, lobby UI or T016 change.
+
+Java21 full verify 77 cases (75 PASS, two unrelated LAN-configuration skips); final focused 30/30 PASS, including the additional exact-freshness-boundary test and recovery during STARTING. PWA 59/59 + build PASS; Unity EditMode71/71 and PlayMode17/17 PASS, including four real Chrome RTC clients through owned Java/IPC into Unity and post-start resume. Build/check results are recorded in the evidence summary. No physical pass claimed.
+
+T013 AC1/AC2/AC3 PASS Software/Lab, integration/administrative closure through its PR. T015 AC1 ALREADY PASS LAB; AC2/AC3 NEEDS PRODUCT IMPLEMENTATION: official-action cancellation, confirmed-result persistence and official-action idempotency are absent. After #25/#26 completed, remove blocked and preserve dependency history; keep #27 and F03 open. T016 OPEN/Ready independently; E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED until the future FINAL EXIT AUDIT including T019/T020/performance/physical gates.
+
+## T015 — Official action lifecycle / 2026-10-09
+
+DEC-024 ACCEPTED; Unity authority implemented in OfficialActionLedger at the existing JavaProbeSupervisor→PhoneInputStore boundary. Explicit candidates only, immutable confirmed results, cancellation on disconnect/invalidation/epoch replacement/transport end, per-player replay protection, one-lock races, bounded256 records without eviction. No Java/PWA/mobile-protocol product change, gameplay/Phase1 or T016 implementation.
+
+AC1/AC2/AC3 PASS SOFTWARE/LAB: EditMode92/92 (21 new), PlayMode18/18 (one new real4Chrome→RTC→Java→IPC→Unity action scenario), action-client16/16 and T013 client15/15. Stress100 confirm/disconnect races and100 eight-thread duplicate confirmations: one terminal transition/result. Linux Mono development build Succeeded,0errors/0warnings. PhysicalQA NOT RUN, remains T019/Final Exit Audit.
+
+[Design and reproduction](PHASE0_T015_ACTION_LIFECYCLE.md) · [sanitized evidence and source hashes](evidence/t015-action-lifecycle-2026-10-09/summary.json). Candidate requires normal PR/checks/security review/merge before completed/Done; F03 closure then uses integrated T012–T015 evidence. T018 still depends T016; T019 still depends T017/T018/physicalQA. E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED; next recommended T016 OPEN/Ready without starting it here.
+
+## T016 local camera/runtime candidate — 2026-10-09
+
+**OPEN/In Progress; no PR/merge/closure.** AC1 FAIL: current physical reference camera-only19.967887FPS; three nominal threaded runs19.964–19.967, temporary fixed-cadence19.683–19.796, manual diagnostic21.972–22.002; final/default/offline19.940556FPS. Driver30 != measured30. Each benchmark5s warmup+35s measurement; controls restored; no resolution/pose-count/threshold reduction. True acquisition cause remains unproven. Historical17.611159 combined-loop evidence remains intact.
+
+One capture thread/one owned latest-frame slot, separate VIDEO inference/writer and monotonic capture/inference/output metrics. Relative Linux Vision bundle technically runs from distribution with developer cache hidden/WAN unavailable, no pip/download:692 physical CameraInputs accepted by built Unity Player,0 image/video writes/per-frame physical logs, normal child/Player exit0, joined/released/closed, no owned residuals. AC3 PASS. **AC2 PARTIAL:** local offline staging is real; full Qt/FFmpeg/system-library redistribution notices/corresponding-source fulfillment remain unfinished, no binary/model upload. DEC-025 LOCAL CANDIDATE/ACCEPTANCE BLOCKED.
+
+Component13/13, UnityEdit99/99, UnityPlay19/19 incl real packaged physical child, Linux build0errors/0warnings; Management/Foundation localPASS; Java/PWA/GorillaProtocol/T015 unchanged, existing UnityRTC/lobby/action regressions repeated. Physical human PlayerLock20entries/occlusion/return NOT RUN, Windows/macOS/cleanPC NOT VALIDATED. [Report](PHASE0_T016_CAMERA_RUNTIME.md) · [All sanitized measurements/source hashes](evidence/t016-camera-runtime-2026-10-09/summary.json). Failed staging/Player attempts preserved separately.
+
+T017/T018 remain blocked by openT016; F04/E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED. No cascade to these tasks. Next work must resolve capture>=30 and distribution/license completeness; do not round or substitute replay/driver values.
+
+
+T016 local continuation (2026-10-09):13 layered physical diagnostics preserve DEC-025 candidate. Default raw19.966964FPS; manual10ms/MMAP3 raw30.225315 and independent OpenCV3 30.225872 diagnostic-only; single-buffer delivery limit reproduced in raw V4L2. Product settings unchanged, AC1 FAIL/AC2 PARTIAL/AC3 PASS. Authentic runtime notices/inventory expanded; source/native-closure/model/Player provenance remain OPEN. No push/PR or cascade. See [Layered Capture Diagnosis](PHASE0_T016_CAMERA_RUNTIME.md#layered-capture-diagnosis).
+
+T016 local PO-authorized profile continuation (2026-10-09): minimum measured candidatebuffers2/manual10ms/priorityoriginal1; three paired capture30.224215376583782/30.225402700303786/30.225225678964854FPS and fresh offline integratedPlayer30.224441621546614FPS. Integratedinfer29.854089942381933/output29.85409429745793; Unityaccepted1963. Controls normal/forced-child restorationPASS; components19/19/Edit99/99/Play20/20/Linuxbuild0errors0warnings, Management/Foundation validatorsPASS (full remote CI workflow not run). AC3 physicalprivacyPASS; AC1quality unproven/acceptanceFAIL (user unavailable forhuman/lighting), AC2PARTIAL (matching source/build/Player/nativeclosure gaps). DEC025LOCALCANDIDATE/VALIDATIONINPROGRESS, originaldefault retained. No push/PR/merge/closure/cascade; E0OPEN/Phase0INPROGRESS/Phase1NOTSTARTED. [Full new evidence](PHASE0_T016_CAMERA_RUNTIME.md#product-profile-validation--latest-local-continuation).
+
+T016 PO original-AC reevaluation (2026-10-13): AC1PASS physicalreference (capture>=30 with separately measured inference, not inference>=30); DEC025ACCEPTED/referenceprofile manual10ms/buffers2/priorityoriginal1; OpenCVheadlesssame4.13.0.92 adopted. FinalofflinefreshstagingPASS withdevcacheshidden/privateHOME/WANoff, source/manifests/notices supplied, AC2PASS Linuxreference, AC3PASS static+technicalprivacy. Components20/Edit99/Play20/build0errors0warnings. No new physicalhumanQA, no exposure/buffer/light sweeps, no Java/PWA full localrerun. T017/T018physicalgates independentlypending; F04/E0OPEN/Phase0INPROGRESS/Phase1NOTSTARTED. [Latest proof/materials](PHASE0_T016_CAMERA_RUNTIME.md#po-original-ac-acceptance--2026-10-13). Integration state updated separately afterPR.
+
+
+T016 final r7 continuation (2026-10-13): Unity Student local activation/minimalbatchmodePASS; no plan change/Pro request. Components21/Edit99/Play20/Linux0errors0warnings. Fresh offline r7 capture30.223863957016217FPS, inference28.91914503137035FPS, Unityaccepted1907; normalPlayer/workerexit0, fullsnapshotrestorationPASS, noforced/residual/imagewrites/perframelogs. Source/notices/actualmanifest verified, AC1/AC2/AC3PASS; DEC025ACCEPTED. Prior r6 cleanupFAIL preserved, cause unproven; no fabricatedPASS or human tests. [Final report](PHASE0_T016_CAMERA_RUNTIME.md#student-activation-and-final-r7-validation--2026-10-13). Publication/integration state recorded separately; F04/E0OPEN, Phase0INPROGRESS, Phase1NOTSTARTED.
+
+## Academic reconciliation — 2026-10-13
+
+DEC-026: cuatro juegos P0 (Smash, Throw, Bowling, Slice), Archery P1/Post-MVP; E3 tres restantes/F40 torneo completo. [Matriz académica](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md). Fallback T060/#104 pendiente implementación; sin gameplay nuevo. E0 OPEN; Phase1 NOT STARTED. Evidencia física pendiente no alterada.
+
+## Phase0 technical exit amendments — 2026-10-13
+
+DEC-027 accepts deterministic T017 gate and moves physical human AC to T061/#106, Post-MVP, DEFERRED / NOT RUN. [T017 technical report](PHASE0_T017_DETERMINISTIC_VALIDATION.md). DEC-028 accepts T018 technical exit using integrated PR #103; literal AC1/AC2 PARTIAL, physical E2E/Hz/sync NOT RUN transferred to T019. Closure conditional on PR integration; F04 then reevaluated, T019 physical gates unchanged. E0 OPEN; Phase1 NOT STARTED.
+
+## Combined IPC/camera privacy regression — 2026-10-13
+
+Overnight packaging preflight detected FUSION_OBSERVED from a rejected evaluation: `Camera` was null but `RawCamera` was physical. A null eligible camera must not classify physical source as a fixture. Observation policy now requires actual nonphysical RawCamera and rejects physical RawPhone, including loss/no-association/rejected cases. Five focused regressions cover physical/synthetic/replay raw camera, physical phone and absent input. No frames/images/video retained; failed preflight aggregate evidence preserved. No tracking human test or gameplay added.
+
+Privacy correction validation: [receipt](evidence/overnight-2026-10-13/privacy-validation.json), Edit126/126, Play20/20, Linuxbuild0errors0warnings, components23/23 and Management/Foundation/diff PASS. Full physical phone/clean-PC acceptance remains NOT RUN.
+
+## Physical QA readiness tooling — 2026-10-13
+
+[T019 physical matrix](PHASE0_T019_PHYSICAL_MOBILE_QA.md) and [T020 cleanPC runbook](PHASE0_T020_CLEAN_PC_RUNBOOK.md) preserve mandatory physical gates. Fresh host RTC regression20/20 connects and20/20 reconnects PASS LAB; no 1/4physical claim. Five mathematical clock tests PASS; physical sync NOT RUN. Package preflight12s passes with Unity/Java/Vision, zero physical diagnostic logs/images/video and zero own residuals. Two subsequent >=30min camera attempts failed startup (captured0), so no long camera-soak PASS. An independent IPC-only soak is running; final report will record its actual result. Additional Android emulator offline attempt BLOCKED by Chrome first-run UI, cleanup residuals0; no physical failure inferred. [QA validation](evidence/overnight-2026-10-13/qa-tool-validation.json).
+
+## Final soak outcome — 2026-10-14
+
+Combined stable-candidate runtime PASS:1800.984256s, camera capture30.224030FPS/inference26.681604FPS, telemetry errors0, physical-observation/image-video writes0, owned residuals0, controls restored. IPC-only1801.000089s plus20/20startup/shutdown PASS. [Final Exit Report](PHASE0_FINAL_EXIT_REPORT.md) preserves prior FAIL attempts and metric scope. E0/F05/T019/T020 remain OPEN because physical phones/visible E2E/cleanPC gates NOT RUN.
+
+## Final emulator/lifecycle result — 2026-10-14
+
+[Final actual emulator report](evidence/overnight-2026-10-13/android-offline-final.json): **PASS**, disposable AndroidAPI36/Chrome133.0.6943.137; cold-cache first/second local load with WAN unavailable, pagehide listeners/timers/transport cleanup, **20/20 actual emulator HOME→Chrome cycles**, zero hidden emission in each cycle, exactly one listener/channel on return, fresh callbacks before INPUT_READY, long-suspension/RTC-loss safe DISCONNECTED and no automatic reconnect. Guest networking restored, own emulator/ADB/Java/Player residuals0, no physical input observed. ADB reverse localhost is LAB/EMULATOR, not physical LAN or certificate trust.
+
+Earlier Chrome-first-run BLOCKED and two subsequent QA timeouts are preserved; final PASS does not erase them. Private HOME/cache/data profile added to owned test Player to isolate concurrent reference runs; loop now records target/attempt/success, and last requested UI control for failure diagnosis. Existing deterministic PWA repeated hide/show regression increased8→20cycles; suite59/59PASS, no product runtime change. [Validation/source hashes](evidence/overnight-2026-10-13/final-lifecycle-validation.json).
+
+Physical mobile sensorHz/clock/E2E/QR<60s and cleanPC remain NOT RUN. T019/T020/F05/E0 OPEN. No ownership assignment or gameplay.
+
+
+## T062 — Main Menu y Centro de Pruebas, 2026-10-14
+
+DEC-029: fundación real Bootstrap→MainMenu→PRUEBAS, JUGAR deshabilitado; preview QA local/memoria desde captura T016 única, QR productivo, sensores/slots/readiness, indicador técnico y agregados. [Arquitectura/evidencia](PHASE0_MAIN_MENU_QA_CENTER.md) y [runbook iPhone15 sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). No gameplay ni cierre F41. **T019 OPEN / Validation; T020/F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED.** Physical iPhone/four-phone evidence NOT RUN por esta implementación. Resultados técnicos se registran en la documentación de T062; ningún mock acredita PASS físico.
+
+
+T062, validación de entrega: Linux build0 errores/0 warnings; PWA60/60+build; Java82 únicos PASS incluyendo HTTPS LAN explícito; preview2/2, cámara23/23, Unity PlayMode24/24; EditMode/Management/Foundation/diff-check en [recibo](evidence/t062-main-menu-2026-10-14/regression.json). Navegación real y preflight PHYSICAL HTTPS200/QR renderizado PASS local; RTC4 sintéticos+1 reconnect/43 inputs con respuesta técnica renderizada PASS LAB. Capture OFF30.2243 / ON30.2237 FPS; inference30.2038 /30.1742, preview4.9969;0 image/video writes y0 procesos residuales. [Método, límites, descartes y tablas](PHASE0_MAIN_MENU_QA_CENTER.md). No physical phone PASS; no cierre T019/T020/E0/F05/F41 ni Phase1.
+
+Corrección Editor de T062 (2026-10-14): Bootstrap oficial → Play → Main Menu sin backend; Untitled/otras escenas/Test Runner/batch excluidos; SALIR detiene Play y Stop limpia. EditMode155/155, PlayMode27/27, fixture Bootstrap en Test Runner interactivo1/1, smoke Editor interactivo con dos Play/cierre PASS; Linux0 errores/0 warnings y regresión ejecutable HTTPS200/preview18 frames/cleanup0 procesos PASS. Java/PWA sin cambios; no rerun local separado. Paquete standalone original intacto/integridad PASS. [Evidencia y límites](evidence/t062-main-menu-2026-10-14/editor-correction.json). T062 CLOSED; T019 OPEN; Phase1 NOT STARTED.
+
+### Overnight integration 2026-10-14 — evidence separation
+
+[Reporte y evidencia](PHASE0_OVERNIGHT_INTEGRATION_REPORT_2026-10-14.md). FRESH: motion stall0→2000ms reproducido,9 focused tests,3×50/60/120Hz con100%ACK loss ybounded64, PWA69/69/build; UnityEdit161/161, Play27/27, interactiveEditor product path/singleton/navigation/Exit/backend idle, Linuxbuild0/0; Java full including explicit LAN configuration, Python25 tests, protocol/clock, management/foundation/diff, gateway/security,1/2/4nativeRTC y bootstrap-loss supervivencia. Sin STUN/TURN ni relay; Chrome oculta direcciones locales (UNKNOWN), selectedremotehostprivate medido. No latenciaE2E física inferida.
+
+Quick Tunnel external lab: official2026.10.0/hash revisado, registro3933ms pero DNS público falló; BLOCKED, noHTTPS PASS. T018 comparación nueva detenida: cámara abrió/configuró pero0capturedFrames, cleanup/controlsRestored true; comparación incompleta, noPASS actual de rendimiento. AudioListener warning: configuración de escena temporal con paqueteAudio deshabilitado, Bootstrap sinAudioListener; no módulo habilitado para silenciarlo. Hardware humano/teléfonos/PC limpia NOT RUN. Estados finales y soak se incorporan al reporte al terminar.
+
+Later overnight checkpoint: fresh Java94cases=93pass/1external skip; gateway/RTC and virtual-LAN/no-WAN labs PASS. PlayMode repeat during the30min soak encountered the intended singleton (9ALREADY_RUNNING,18pass); clean repetition is pending after owned soak shutdown. T018 comparison remains incomplete due zero camera frames. These attempts are retained honestly, not relabeled PASS.
+
+
+### Final protected integration soak — 2026-10-15
+
+Four real RTC clients, Unity/Java IPC and replay Vision: 1800.21s PASS, 100%motionACK loss on one client, bounded telemetry/errors0; normal exit/owned residual0, frozen runtime hashes preserved. Earlier host-suspend FAIL, native-click/whole-stack-noWAN automation limits, blocked public HTTPS and fresh T018 zero-frame comparison are retained explicitly. See [final integration report](PHASE0_OVERNIGHT_INTEGRATION_REPORT_2026-10-14.md). Physical T019/T020 NOT RUN; F05/E0 OPEN; Final Exit BLOCKED; Phase1 NOT STARTED; JUGAR disabled.
+
+## T063 transparent AUTO — 2026-10-15
+
+PWA69/69/build PASS; Java verify100 total,0 failures/errors,2 opt-in skips; final
+connectivity18/18. Unity EditMode161/161 and navigation PlayMode7/7; Linux build
+0 errors/0 warnings. Real RTC1–4 clients survive bootstrap loss with stable
+identity/epoch; isolated no-WAN LAN regression PASS. Final packaged four-client
+10-second integration smoke PASS, owned residuals0, Java/camera cleanup true.
+Package includes verified cloudflared2026.10.0. External HTTPS gate BLOCKED:
+registered tunnel but no public200 within the bounded budget; repeated failed
+attempts retained, cleanup true. This is not a physical join PASS or T063 closure.
+Remaining: iPhone Safari AUTO, Android Chrome AUTO; one-time offline preparation,
+WAN removal during active controls, forced modes as separate QA. No T019/T020/
+F05/E0 closure or Phase1. [Detailed evidence](evidence/t063-transparent-auto-2026-10-15/validation.json).
+
+## T063 DNS/readiness follow-up — 2026-10-15
+
+JDK21 targeted20/20 PASS: connectivity18, forked-JVM negative-cache recovery,
+and real external Quick Tunnel/PWA gate. Public HTTPS200 observed at6297ms,
+6826ms and6537ms (last on explicit JDK21), private routes404, invalid admission400,
+cleanup true. Actual packaged JRE21/server main/AUTO also returns public PWA200,
+fragment-only admission and zero owned residuals. No TLS bypass or firewall
+change. Reference Wi-Fi DNS correction was necessary in the controlled
+comparison; private backup/rollback retained outside Git. No distributed runtime
+DNS reconfiguration. [Evidence](evidence/t063-dns-readiness-2026-10-15/diagnosis.json).
+Physical phone joins and all T019/T020/F05/E0 obligations remain pending.
+
+DNS follow-up full regression: explicit JDK21 verify/package103 total,0 failures/errors,2 opt-in skips PASS; PWA/Unity code and their existing results unchanged.
+
+## Phone connection final PO candidate — 2026-10-16
+
+Software validation: Java21 full verify111 total /110 passed /1 opt-in external
+skip, PWA69/69 + build, Unity EditMode162/162 and full PlayMode29/29 (navigation8),
+Linux0 errors/0 warnings, Vision23 + preview2 + firewall10 tests passed. Management,
+Foundation, shell syntax and diff checks pass. Count growth: Java +8 (resolver2,
+preflight4, nested hosting contract1, explicit recovery1); Unity EditMode +1 nested
+Java fixture, navigation +1 inherited physical-QA Test Runner guard. No suite
+reduction. The previous reference cited navigation only; this run includes all
+29 PlayMode tests. One old expectation of automatic QR replacement now asserts
+preservation until explicit regeneration, consistent with the final PO decision.
+
+Native/browser RTC selected pairs verified host/UDP with bounded Java ports;
+existing identities/epochs survive external bootstrap loss. Real public HTTPS200
+passed at6986ms; a later transient readiness timeout remains BLOCKED separately.
+Final runtime package integrity verified. Physical iPhone/Polkit trial in progress,
+not claimed PASS by software evidence. Protected initial UFW inspection limitation
+and individual gates: [decision](PHASE0_PHONE_CONNECTION_FINAL.md) and
+[evidence](evidence/phone-connection-final-2026-10-16/validation.json).
+
+
+Pre-publication review: Java21 full verify112 total /111 passed /1 separate
+external opt-in skip PASS; PWA69/69 + production build PASS; firewall Python11/11,
+Vision23/23 and preview2/2 PASS. The +1 Java case forbids physical helper actions
+in explicit LAB, and the +1 Python case preserves a foreign replacement when
+an ownership comment appears on a different UFW tuple. Unity sources are unchanged
+from the162/162 EditMode,29/29 full PlayMode and0-error/0-warning Linux build above.
+Required CI additionally runs the closed helper tests without elevation. Physical
+final iPhone JOIN/cleanup is unconfirmed; no acceptance gate is closed by publishing.

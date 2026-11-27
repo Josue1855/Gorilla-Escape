@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-13",
+  "componentTests": {
+    "passed": 21,
+    "total": 21
+  },
+  "LinuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "Management": "PASS",
+  "Foundation": "PASS",
+  "diffCheck": "PASS",
+  "sourceGaps": [],
+  "runtimeManifestFilesetAndHashes": "PASS",
+  "cameraSnapshotFullEquality": "PASS",
+  "staging": "/home/josuegalvan/.local/share/gorilla-t016-final-2026-10-13-r7",
+  "runtimeManifestSha256": "42794abee0b1dfa9775bb7b690fb53682a84d42de169566b7297d217c25cfba0",
+  "distributionFiles": 3101,
+  "distributionBytesExcludingSelfManifest": 968157527,
+  "humanTests": "NOT RUN",
+  "editmode": {
+    "total": "99",
+    "passed": "99",
+    "failed": "0",
+    "skipped": "0"
+  },
+  "playmode": {
+    "total": "20",
+    "passed": "20",
+    "failed": "0",
+    "skipped": "0"
+  }
+}

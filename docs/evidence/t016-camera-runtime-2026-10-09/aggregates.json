@@ -1,0 +1,56 @@
+{
+  "originalControls": {
+    "runs": 3,
+    "warmupPerRunSeconds": 5,
+    "measurementPerRunSeconds": 35,
+    "captureFpsEach": [
+      19.96690930576716,
+      19.965562937094447,
+      19.964207540620894
+    ],
+    "captureWeightedFps": 19.965559866892875,
+    "inferenceWeightedFps": 19.95467453373977,
+    "outputWeightedFps": 19.95467779527913,
+    "overwrittenBeforeInferenceTotal": 2
+  },
+  "dynamicFramerateOff": {
+    "runs": 3,
+    "warmupPerRunSeconds": 5,
+    "measurementPerRunSeconds": 35,
+    "captureFpsEach": [
+      19.68290442337904,
+      19.79649302267055,
+      19.796497494422095
+    ],
+    "captureWeightedFps": 19.758632723809125,
+    "inferenceWeightedFps": 19.752928156158358,
+    "outputWeightedFps": 19.752927288280176,
+    "overwrittenBeforeInferenceTotal": 0
+  },
+  "manualExposureDiagnostic": {
+    "runs": 3,
+    "warmupPerRunSeconds": 5,
+    "measurementPerRunSeconds": 35,
+    "captureFpsEach": [
+      22.00154154345133,
+      21.971955988039472,
+      21.97302491228105
+    ],
+    "captureWeightedFps": 21.98217402077383,
+    "inferenceWeightedFps": 21.978099350688876,
+    "outputWeightedFps": 21.978099807088448,
+    "overwrittenBeforeInferenceTotal": 0
+  },
+  "finalDefaultControls": {
+    "runs": 1,
+    "warmupPerRunSeconds": 5,
+    "measurementPerRunSeconds": 35,
+    "captureFpsEach": [
+      19.940556524680336
+    ],
+    "captureWeightedFps": 19.940556524680336,
+    "inferenceWeightedFps": 19.95321279017395,
+    "outputWeightedFps": 19.95321650054743,
+    "overwrittenBeforeInferenceTotal": 0
+  }
+}

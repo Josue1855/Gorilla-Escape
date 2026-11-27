@@ -1,0 +1,283 @@
+{
+  "scope": "Real Chrome/PWA → RTC → Java child owned by Unity → same loopback IPC → Unity Player PhoneInput",
+  "physical": "DEFERRED",
+  "gate": "PASS",
+  "unityGate": "PASS",
+  "runs": [
+    {
+      "hz": 30,
+      "clients": [
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.7999999998137355,
+          "p95Ms": 4.6000000005587935,
+          "maximumMs": 5,
+          "durationMs": 1999.7000000001863
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.599999999627471,
+          "p95Ms": 5.8999999994412065,
+          "maximumMs": 7.1000000005587935,
+          "durationMs": 1999.699999999255
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.7999999998137355,
+          "p95Ms": 7.5,
+          "maximumMs": 8,
+          "durationMs": 1999.9000000003725
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 4.3999999994412065,
+          "p95Ms": 7.900000000372529,
+          "maximumMs": 9.5,
+          "durationMs": 1999.9000000003725
+        }
+      ]
+    },
+    {
+      "hz": 50,
+      "clients": [
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.6000000005587935,
+          "p95Ms": 4.400000000372529,
+          "maximumMs": 8,
+          "durationMs": 1199.8999999994412
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.199999999254942,
+          "p95Ms": 5,
+          "maximumMs": 7.3999999994412065,
+          "durationMs": 1199.8999999994412
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.1000000005587935,
+          "p95Ms": 5.400000000372529,
+          "maximumMs": 7.099999999627471,
+          "durationMs": 1199.7999999998137
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.400000000372529,
+          "p95Ms": 5.099999999627471,
+          "maximumMs": 6,
+          "durationMs": 1200.2000000001863
+        }
+      ]
+    },
+    {
+      "hz": 60,
+      "clients": [
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.2999999998137355,
+          "p95Ms": 3.2000000001862645,
+          "maximumMs": 3.8999999994412065,
+          "durationMs": 1000.2999999998137
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.2999999998137355,
+          "p95Ms": 3.8999999994412065,
+          "maximumMs": 4.3999999994412065,
+          "durationMs": 1000.0999999996275
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.7999999998137355,
+          "p95Ms": 3.7000000001862645,
+          "maximumMs": 4.599999999627471,
+          "durationMs": 1000.2000000001863
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.599999999627471,
+          "p95Ms": 4.2000000001862645,
+          "maximumMs": 5.2999999998137355,
+          "durationMs": 999.7000000001863
+        }
+      ]
+    }
+  ],
+  "negatives": [
+    {
+      "case": "operator-unauthorized",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-player",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-version",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-type",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "missing-field",
+      "gate": "PASS"
+    },
+    {
+      "case": "stale",
+      "gate": "PASS"
+    },
+    {
+      "case": "future",
+      "gate": "PASS"
+    },
+    {
+      "case": "malformed",
+      "gate": "PASS"
+    },
+    {
+      "case": "oversized",
+      "gate": "PASS"
+    },
+    {
+      "case": "rate-abuse-isolated-and-recovered",
+      "gate": "PASS"
+    },
+    {
+      "case": "fifth-peer-rejected-at-capacity",
+      "gate": "PASS"
+    },
+    {
+      "case": "duplicate-active-client",
+      "gate": "PASS"
+    },
+    {
+      "case": "credential-replay",
+      "gate": "PASS"
+    },
+    {
+      "case": "invalid-credential",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "one-disconnect-others-live",
+      "gate": "PASS"
+    },
+    {
+      "case": "session-closed",
+      "gate": "PASS"
+    }
+  ],
+  "replay": {
+    "gate": "PASS",
+    "source": "replay",
+    "fixture": "Shared/Protocol/mobile/motion-v1.json"
+  },
+  "burst": {
+    "generated": 500,
+    "overwritten": 498,
+    "pending": 0,
+    "latestPending": false,
+    "source": "synthetic"
+  },
+  "capture": {
+    "events": 11,
+    "source": "synthetic DOM events through unchanged SensorCapture",
+    "lifecycle": "PASS"
+  },
+  "touch": "reliable TOUCH accepted PASS",
+  "reconnect": "PASS",
+  "cleanup": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 0,
+    "lifecycleStopped": {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    },
+    "residualOwnedChildren": 0
+  },
+  "rawEvidenceSha256": "d15f60b9ef5db588c0f0502bc4866847d3e21f0401abbb87f6a08569608b1c1f",
+  "unityObservationCount": 641,
+  "players": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "physicalSensors": "NOT RUN; synthetic/replay lab only"
+}

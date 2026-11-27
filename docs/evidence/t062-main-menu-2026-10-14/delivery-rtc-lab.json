@@ -1,0 +1,27 @@
+{
+  "classification": "LAB / synthetic host Chrome",
+  "physicalPhone": "NOT RUN",
+  "gate": "PASS",
+  "screenshots": 0,
+  "images": 0,
+  "initial": 4,
+  "reconnect": 1,
+  "exit": {
+    "code": 0,
+    "signal": null
+  },
+  "surface": {
+    "visualApplied": true,
+    "cameraCleanup": true,
+    "javaCleanup": true,
+    "controlsRestored": true,
+    "qaPhoneObserved": true,
+    "phoneAccepted": 43,
+    "previewOverwritten": 0,
+    "visualFrame": 637,
+    "endOfFrame": 637,
+    "unityUpdateFps": 111.82660457443865,
+    "previewState": ""
+  },
+  "tokenLogs": 0
+}

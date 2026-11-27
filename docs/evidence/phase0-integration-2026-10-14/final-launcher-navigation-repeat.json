@@ -1,0 +1,50 @@
+{
+  "classification": "LAB / built UI + physical capture transport; physical phone NOT RUN",
+  "screenshots": 0,
+  "gate": "FAIL",
+  "opened": 0,
+  "closed": 0,
+  "secretLogs": 0,
+  "backendMode": "PHYSICAL HTTPS LAN / no physical phone",
+  "renderSize": [
+    1920,
+    940
+  ],
+  "cameraStarted": true,
+  "httpsLanStatus": 200,
+  "windowSize": [
+    1920,
+    940
+  ],
+  "lastPointer": {
+    "requested": [
+      180,
+      568
+    ],
+    "local": [
+      874,
+      842
+    ],
+    "root": [
+      874,
+      910
+    ]
+  },
+  "playDisabled": true,
+  "error": "UI action was not acknowledged",
+  "cleanup": {
+    "visualApplied": false,
+    "cameraCleanup": true,
+    "javaCleanup": true,
+    "controlsRestored": true,
+    "qaPhoneObserved": false,
+    "phoneAccepted": 0,
+    "previewOverwritten": 0,
+    "visualFrame": 0,
+    "endOfFrame": 0,
+    "unityUpdateFps": 118.78117727666094,
+    "previewState": ""
+  },
+  "residualOwnedProcesses": 0,
+  "stderrBytes": 0
+}

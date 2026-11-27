@@ -1,0 +1,19 @@
+{
+  "finalJava": "PASS 30/30",
+  "finalPlayerRegression": "PASS 11 groups",
+  "earlierAttempts": [
+    {
+      "result": "FAIL",
+      "scope": "first Java integration attempt",
+      "error": "UnresolvedAddressException for fictitious DNS hostname in test client",
+      "resolution": "Test-only direct IPv4 routing with DNS SNI and HTTPS endpoint verification; system DNS untouched"
+    },
+    {
+      "result": "INCOMPLETE",
+      "scope": "first Player regression attempt",
+      "error": "Xwayland UI START_REQUESTED action not acknowledged",
+      "resolution": "Repeated unchanged harness sequentially; all 11 groups passed; no lifecycle code change"
+    }
+  ],
+  "scope": "Do not reinterpret earlier incomplete runs as PASS"
+}

@@ -1,0 +1,116 @@
+{
+  "pairs": [
+    {
+      "pair": 1,
+      "unity": {
+        "fpsP50": {
+          "minimal": 83.87924743656106,
+          "enabled": 79.87730845684479,
+          "absolute": -4.001938979716272,
+          "percent": -4.771071632161446
+        },
+        "fpsP95": {
+          "minimal": 1976.2845837535012,
+          "enabled": 1177.5788981738149,
+          "absolute": -798.7056855796864,
+          "percent": -40.414507715418566
+        },
+        "frameTimeP50Ms": {
+          "minimal": 11.871299999256735,
+          "enabled": 12.469700000110606,
+          "absolute": 0.5984000008538715,
+          "percent": 5.0407284871188285
+        },
+        "frameTimeP95Ms": {
+          "minimal": 16.789799999969546,
+          "enabled": 16.746699999202974,
+          "absolute": -0.04310000076657161,
+          "percent": -0.25670347929486825
+        },
+        "effectiveFps": {
+          "minimal": 117.72840228797592,
+          "enabled": 110.69259543578514,
+          "absolute": -7.035806852190788,
+          "percent": -5.976303691763753
+        }
+      },
+      "camera": {
+        "captureFps": {
+          "minimal": 30.224877333588566,
+          "enabled": 30.22467933764001,
+          "absolute": -0.00019799594855740565,
+          "percent": -0.0006550761029470746
+        },
+        "inferenceFps": {
+          "minimal": 30.025306493943653,
+          "enabled": 28.24433645079506,
+          "absolute": -1.7809700431485922,
+          "percent": -5.931563241520377
+        },
+        "outputFps": {
+          "minimal": 30.025307738266207,
+          "enabled": 28.24434260877653,
+          "absolute": -1.780965129489676,
+          "percent": -5.931546630644181
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "unity": {
+        "fpsP50": {
+          "minimal": 88.69730271527456,
+          "enabled": 88.23633219151297,
+          "absolute": -0.4609705237615884,
+          "percent": -0.5197119976030621
+        },
+        "fpsP95": {
+          "minimal": 1066.4391600240583,
+          "enabled": 1645.007401364346,
+          "absolute": 578.5682413402876,
+          "percent": 54.25234397124309
+        },
+        "frameTimeP50Ms": {
+          "minimal": 11.241300000619958,
+          "enabled": 11.330799999996088,
+          "absolute": 0.08949999937613029,
+          "percent": 0.7961712557372757
+        },
+        "frameTimeP95Ms": {
+          "minimal": 16.05539999945904,
+          "enabled": 16.56379999985802,
+          "absolute": 0.5084000003989786,
+          "percent": 3.1665358721433803
+        },
+        "effectiveFps": {
+          "minimal": 117.56010545723578,
+          "enabled": 118.48220921655016,
+          "absolute": 0.9221037593143819,
+          "percent": 0.7843679245845954
+        }
+      },
+      "camera": {
+        "captureFps": {
+          "minimal": 30.224199223449837,
+          "enabled": 30.223941709616014,
+          "absolute": -0.00025751383382299764,
+          "percent": -0.0008520120977206973
+        },
+        "inferenceFps": {
+          "minimal": 28.13460809370898,
+          "enabled": 29.611282370372077,
+          "absolute": 1.476674276663097,
+          "percent": 5.248604394078223
+        },
+        "outputFps": {
+          "minimal": 28.134604459097414,
+          "enabled": 29.611281611392066,
+          "absolute": 1.476677152294652,
+          "percent": 5.248615293104517
+        }
+      }
+    }
+  ],
+  "imperceptibility": "UNDETERMINED: specification has no numerical threshold",
+  "scope": "local webcam technical workload; no physical sensors/motion-result ground truth"
+}

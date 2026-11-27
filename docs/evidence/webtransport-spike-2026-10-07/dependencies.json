@@ -1,0 +1,75 @@
+{
+  "sourceCommit": "b63ebb06b0ab33af73c9bf1f96bedd9e7cb73243",
+  "sourceArchiveSha256": "2c365a76475898d0c9730e06af29ed744c52bbbceddabc0832df0a3d6d887de5",
+  "runtimeArtifacts": [
+    {
+      "artifact": "netty-codec-webtransport-0.0.1-SNAPSHOT.jar",
+      "sha256": "e419cfceb2f2c159422339de4201b4b1c906d2ae785901db1bd4fc7ae014a82d"
+    },
+    {
+      "artifact": "netty-codec-http3-4.2.12.Final.jar",
+      "sha256": "460280a6474bfdbd9461285991ad63f4fdb2f7cc8342aeafe1eca53bd2eb3508"
+    },
+    {
+      "artifact": "netty-common-4.2.12.Final.jar",
+      "sha256": "9b03e4d08ef4c3e4e97065186fd3e1485301532ef4303f9fc29049dd13475b8d"
+    },
+    {
+      "artifact": "netty-buffer-4.2.12.Final.jar",
+      "sha256": "20dffa0e42c7b90b8c114d00c73bdf8f8ff5b363e3180b449359b2609e339561"
+    },
+    {
+      "artifact": "netty-codec-base-4.2.12.Final.jar",
+      "sha256": "ea267e1006386fa24c40089e97740904095bbadd9e5014d2e953907816df9e25"
+    },
+    {
+      "artifact": "netty-codec-http-4.2.12.Final.jar",
+      "sha256": "2e9a74893b73fa9baebec1d880c274b75a62db2d56a3aa4ba783f38fd2355805"
+    },
+    {
+      "artifact": "netty-codec-compression-4.2.12.Final.jar",
+      "sha256": "ba123232dd562710744b98b9917083db63279190862f83f3c0c72a24f714ae15"
+    },
+    {
+      "artifact": "netty-handler-4.2.12.Final.jar",
+      "sha256": "78fa734626bc67cef39191d1284325d95400e1efcb1b3fe75b59af3fab6992d9"
+    },
+    {
+      "artifact": "netty-transport-native-unix-common-4.2.12.Final.jar",
+      "sha256": "18ab01d6ba0f44bb2a4393020a30f3a1f53998ea0c6e29d5076b6b652d4c9023"
+    },
+    {
+      "artifact": "netty-transport-4.2.12.Final.jar",
+      "sha256": "5add99236edf95d005d429bc0cb9748678749b5b01fd69557aa7f63b6232fea8"
+    },
+    {
+      "artifact": "netty-resolver-4.2.12.Final.jar",
+      "sha256": "533be5715f97b5a3409844c095b8dd4ab7e2988fd1920cd82545873dddc812ca"
+    },
+    {
+      "artifact": "netty-codec-classes-quic-4.2.12.Final.jar",
+      "sha256": "d95326f7cb9c6e44e28708aa795cb7c0849bb0fb5e6c2c97ef2258d4fb3f9834"
+    },
+    {
+      "artifact": "netty-codec-native-quic-4.2.12.Final-linux-aarch_64.jar",
+      "sha256": "c3adea0e4801d52c0819df64a6491966c8936753375c9d252454e764d947813f"
+    },
+    {
+      "artifact": "netty-codec-native-quic-4.2.12.Final-osx-x86_64.jar",
+      "sha256": "b47917d9a60c3277b6776a739671b83edfafd0496d737ec3ed2a379dc8558396"
+    },
+    {
+      "artifact": "netty-codec-native-quic-4.2.12.Final-osx-aarch_64.jar",
+      "sha256": "dfc4c25b92b38b5f89e7b035c2d6d3c58bee8d901c94b40e022e0823bba282c5"
+    },
+    {
+      "artifact": "netty-codec-native-quic-4.2.12.Final-windows-x86_64.jar",
+      "sha256": "7062f96c393acf14d4d4f5a04d7f5b8773431658b7fdf343068abbf6e044e3b7"
+    },
+    {
+      "artifact": "netty-codec-native-quic-4.2.12.Final-linux-x86_64.jar",
+      "sha256": "2b5084f8176490c1691650f4e3fd6a1fa7cede9c30eb8473ace8b34b26a8c197"
+    }
+  ],
+  "os": "Linux-7.1.5-76070105-generic-x86_64-with-glibc2.39"
+}

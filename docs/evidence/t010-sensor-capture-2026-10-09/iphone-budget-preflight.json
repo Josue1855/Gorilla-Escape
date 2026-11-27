@@ -1,0 +1,298 @@
+{
+  "stage": "READY",
+  "code": null,
+  "postExecuted": true,
+  "httpStatus": 200,
+  "rejectionCode": null,
+  "remoteDescription": "PASS",
+  "candidates": [
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL"
+    },
+    {
+      "type": "host",
+      "protocol": "udp",
+      "addressKind": "MDNS_LOCAL"
+    }
+  ],
+  "events": [
+    {
+      "ms": 10,
+      "event": "signalingState",
+      "value": "stable"
+    },
+    {
+      "ms": 10,
+      "event": "iceGatheringState",
+      "value": "new"
+    },
+    {
+      "ms": 10,
+      "event": "iceConnectionState",
+      "value": "new"
+    },
+    {
+      "ms": 10,
+      "event": "connectionState",
+      "value": "new"
+    },
+    {
+      "ms": 10,
+      "event": "control",
+      "value": "connecting"
+    },
+    {
+      "ms": 10,
+      "event": "motion",
+      "value": "connecting"
+    },
+    {
+      "ms": 11,
+      "event": "stage",
+      "value": "CREATE_OFFER"
+    },
+    {
+      "ms": 13,
+      "event": "stage",
+      "value": "LOCAL_DESCRIPTION"
+    },
+    {
+      "ms": 14,
+      "event": "signalingState",
+      "value": "have-local-offer"
+    },
+    {
+      "ms": 14,
+      "event": "stage",
+      "value": "ICE_GATHERING"
+    },
+    {
+      "ms": 16,
+      "event": "iceGatheringState",
+      "value": "gathering"
+    },
+    {
+      "ms": 131,
+      "event": "iceGatheringState",
+      "value": "complete"
+    },
+    {
+      "ms": 131,
+      "event": "stage",
+      "value": "SIGNALING_POST"
+    },
+    {
+      "ms": 153,
+      "event": "iceConnectionState",
+      "value": "checking"
+    },
+    {
+      "ms": 153,
+      "event": "connectionState",
+      "value": "connecting"
+    },
+    {
+      "ms": 165,
+      "event": "stage",
+      "value": "SIGNALING_RESPONSE"
+    },
+    {
+      "ms": 166,
+      "event": "stage",
+      "value": "REMOTE_DESCRIPTION"
+    },
+    {
+      "ms": 166,
+      "event": "signalingState",
+      "value": "stable"
+    },
+    {
+      "ms": 166,
+      "event": "stage",
+      "value": "ICE_CONNECTING"
+    },
+    {
+      "ms": 172,
+      "event": "iceConnectionState",
+      "value": "connected"
+    },
+    {
+      "ms": 172,
+      "event": "stage",
+      "value": "ICE_CONNECTED"
+    },
+    {
+      "ms": 176,
+      "event": "connectionState",
+      "value": "connected"
+    },
+    {
+      "ms": 184,
+      "event": "control",
+      "value": "open"
+    },
+    {
+      "ms": 184,
+      "event": "stage",
+      "value": "CONTROL_OPEN"
+    },
+    {
+      "ms": 185,
+      "event": "motion",
+      "value": "open"
+    },
+    {
+      "ms": 185,
+      "event": "stage",
+      "value": "MOTION_OPEN"
+    },
+    {
+      "ms": 185,
+      "event": "stage",
+      "value": "HELLO_ACK"
+    },
+    {
+      "ms": 192,
+      "event": "stage",
+      "value": "READY"
+    }
+  ],
+  "controller": {
+    "state": "INPUT_READY",
+    "network": "NETWORK_READY",
+    "capabilities": {
+      "motion": "request-required",
+      "orientation": "request-required"
+    },
+    "permissions": {
+      "motion": "granted",
+      "orientation": "granted"
+    },
+    "measurement": null
+  },
+  "signalVerified": true,
+  "sensors": {
+    "captureRevision": "t010-2-coarsened-clock",
+    "state": "RUNNING",
+    "measurementClock": "monotonic callback receipt",
+    "channels": {
+      "motion": {
+        "permission": "granted",
+        "captured": 480,
+        "rawCallbacks": 480,
+        "validSamples": 480,
+        "rawAcquisition": {
+          "count": 480,
+          "windowCount": 480,
+          "capacity": 4096,
+          "durationMs": 8972,
+          "actualMeasuredHz": 53.3883192153366,
+          "tier": 50,
+          "intervalMs": {
+            "min": 1,
+            "median": 17,
+            "p95": 18
+          }
+        },
+        "validUnique": {
+          "count": 480,
+          "windowCount": 480,
+          "capacity": 4096,
+          "durationMs": 8972,
+          "actualMeasuredHz": 53.3883192153366,
+          "tier": 50,
+          "intervalMs": {
+            "min": 1,
+            "median": 17,
+            "p95": 18
+          }
+        },
+        "duplicateOrOutOfOrder": 0,
+        "timingRejected": 0,
+        "invalidFields": 0,
+        "missingFields": 0,
+        "missingAxes": {},
+        "invalidAxes": {},
+        "ageMs": 2,
+        "availability": {
+          "acceleration": "present",
+          "accelerationIncludingGravity": "present",
+          "rotationRate": "present"
+        }
+      },
+      "orientation": {
+        "permission": "granted",
+        "captured": 480,
+        "rawCallbacks": 480,
+        "validSamples": 480,
+        "rawAcquisition": {
+          "count": 480,
+          "windowCount": 480,
+          "capacity": 4096,
+          "durationMs": 8971,
+          "actualMeasuredHz": 53.39427042693122,
+          "tier": 50,
+          "intervalMs": {
+            "min": 1,
+            "median": 17,
+            "p95": 18
+          }
+        },
+        "validUnique": {
+          "count": 480,
+          "windowCount": 480,
+          "capacity": 4096,
+          "durationMs": 8971,
+          "actualMeasuredHz": 53.39427042693122,
+          "tier": 50,
+          "intervalMs": {
+            "min": 1,
+            "median": 17,
+            "p95": 18
+          }
+        },
+        "duplicateOrOutOfOrder": 0,
+        "timingRejected": 0,
+        "invalidFields": 0,
+        "missingFields": 0,
+        "missingAxes": {},
+        "invalidAxes": {},
+        "ageMs": 2,
+        "availability": {
+          "orientation": "present"
+        }
+      }
+    }
+  },
+  "emissionPolicy": {
+    "maximumHz": 50,
+    "emitted": 396,
+    "budgetDropped": 564,
+    "policy": "real-event discard; latest values at accepted event; no timer"
+  },
+  "emission": {
+    "count": 396,
+    "windowCount": 396,
+    "capacity": 4096,
+    "durationMs": 8971,
+    "actualMeasuredHz": 44.030765800914054,
+    "tier": 30,
+    "intervalMs": {
+      "min": 11,
+      "median": 17,
+      "p95": 34
+    }
+  },
+  "transport": {
+    "motionSubmitted": 396,
+    "motionSent": 396,
+    "motionAck": 395,
+    "motionErrors": 0,
+    "overwritten": 0,
+    "errors": 0
+  },
+  "measurement": null,
+  "evidenceClassification": "Preflight PASS; measurement null; not a final rest or gentle run"
+}

@@ -1,0 +1,102 @@
+{
+  "scope": "Java final regression with explicit current LAN interface; technical session/QR components, not network admission or Unity integration",
+  "counts": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeCorpusTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeWriteDeadlineTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.protocol.TechnicalSessionTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ProtocolContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.hosting.MobileHttpsTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeCodecTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ServerIntegrationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.protocol.JoinQrPocTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbePressureProcessTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "sourceHashes": {
+    "Server/pom.xml": "40ed13f9557b82b354a0f0379ea4fe8bf3330c5f8f30750c813bab85d463f630",
+    "Server/src/main/java/com/gorillaescape/server/protocol/TechnicalSession.java": "5d9231a1f269baeb1635a11937acf74f3d313cc7a88af1ef038d66caef307071",
+    "Server/src/main/java/com/gorillaescape/server/protocol/JoinQrPoc.java": "92466c5fc66240ef940fa34f19370c4bb3d4f38db5a5d1b2c4f3d86d7b6afff7",
+    "Server/src/test/java/com/gorillaescape/server/protocol/TechnicalSessionTest.java": "adebfe4a9dd454252100aef015ee465477e0ca91eda2387e42ccf2aaa832cd6d",
+    "Server/src/test/java/com/gorillaescape/server/protocol/JoinQrPocTest.java": "39fe87d1a76b2c071e25607632ed42e8d2a90e696acf2885066fbd5a7b9a18ff"
+  }
+}

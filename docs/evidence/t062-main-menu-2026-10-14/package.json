@@ -1,0 +1,17 @@
+{
+  "buildSourceCommit": "cc8d4a7339dd5b37b9886aa0f8e6f5d0cf1b1d22",
+  "platform": "Linux x86_64 / glibc2.39 reference",
+  "unity": "6000.3.23f1 Mono Development",
+  "build": "clean Library in isolated copy; errors0 warnings0",
+  "directory": "/home/josuegalvan/Documentos/GorillaEscape-Phase0-MainMenuQA-2026-10-14",
+  "entry": "./run-qa.sh \u2192 Main Menu \u2192 PRUEBAS",
+  "pr": "https://github.com/Josue1855/Gorilla-Escape/pull/112",
+  "physicalMobile": "NOT RUN",
+  "cleanPC": "NOT RUN",
+  "hashes": {
+    "GorillaEscape_Data/Managed/GorillaEscape.Runtime.dll": "ea89a80f83c2b71a3c48c694674a90281b06dc92b7134b050af0a638f9b44054",
+    "Java/server.jar": "b6cb85e29076f930179525e0e7a500ac4367969c35288e76b9a393bc9ebfc9bd",
+    "Vision/worker.py": "48a96b7cbb065c534aa45fc0c61c6f79e75047c555fde1c5536590ea0688eba0",
+    "Vision/preview.py": "9f0ebb0634c7bc252e0ceb5dcbe474d538d5b53d8b730388e5e9c0fe1d335dcb"
+  }
+}

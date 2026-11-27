@@ -1,0 +1,116 @@
+{
+  "scope": "T011 LAB/EMULATOR; ADB reverse localhost != physical LAN/TLS validation",
+  "source": "emulator",
+  "physical": "NOT RUN; deferred T019/DEC-022",
+  "gate": "FAIL",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "cleanProfile": {
+    "method": "new disposable AVD/Chrome; explicit origin storage clear + HTTP cache clear before first navigation",
+    "usageBefore": 0,
+    "existingRegistrations": 0,
+    "preloaded": false
+  },
+  "wanProbeBeforeFirstLoad": "UNAVAILABLE",
+  "directPublicIpTcpExit": "1",
+  "wanIsolation": {
+    "method": "owned guest OUTPUT reject rules IPv4+IPv6, allow only loopback and PC endpoints; mobile data disabled",
+    "directPublicIpTcpExit": "1",
+    "hostNetworkModified": false
+  },
+  "stage": "PAGEHIDE",
+  "firstLoad": {
+    "status": "PASS",
+    "secureContext": true,
+    "network": "NETWORK_READY",
+    "source": "emulator",
+    "wan": "UNAVAILABLE",
+    "cacheBefore": 0
+  },
+  "assets": [
+    {
+      "path": "/assets/index-CZvKtJwk.js",
+      "status": 200
+    },
+    {
+      "path": "/assets/index-Dif6RnX5.css",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-192.png",
+      "status": 200
+    },
+    {
+      "path": "/icons/icon-512.png",
+      "status": 200
+    },
+    {
+      "path": "/index.html",
+      "status": 200
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200
+    }
+  ],
+  "localHealth": {
+    "status": 200
+  },
+  "cache": [
+    {
+      "name": "gorilla-shell-833c068219651043",
+      "paths": [
+        "/assets/index-CZvKtJwk.js",
+        "/assets/index-Dif6RnX5.css",
+        "/icons/icon-192.png",
+        "/icons/icon-512.png",
+        "/index.html",
+        "/manifest.webmanifest"
+      ]
+    }
+  ],
+  "models": "NONE",
+  "pagehide": null,
+  "observerCleanup": true,
+  "guestNetworkRestored": true,
+  "playerExit": 0,
+  "javaCleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "ownedJavaResiduals": 0,
+  "reason": "AssertionError",
+  "failureAt": "android_offline.py:154",
+  "detail": "",
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t011/android_offline.py": "6d19da7df78cd15cb5c609eeaa6bce1b6750d974dcb3399554919fc5d86a4fb6",
+    "PWA/src/input/sensors/capture.js": "49fbe46831ae3b03f97de41b2e86022dc484a5cf023a1964e8cc944213ced98d",
+    "PWA/src/controller/session.js": "130f1439abcbe6151a4871b02daa93df055a3e3993100d67a8cd1c015df4dc08",
+    "PWA/src/controller/presentation.js": "48ef0eafcd6f5103d77373c6a8d7dcd3cd2bd08c5af09f286444b2aaa9e396e0",
+    "PWA/dist/sw.js": "6698673a37e8916ef4be479e6c9ec678811bd15763e2c3f04971d5bc31fb97bf",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "759e5c1b112127ae001c7439ee7a226c1c01134695601d5c1409212e82880b21"
+  }
+}

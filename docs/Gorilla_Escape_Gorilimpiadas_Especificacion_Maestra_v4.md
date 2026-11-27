@@ -1,4 +1,10 @@
 # Gorilla Escape: Gorilimpiadas
+
+> **Fuente operativa vigente — 2026-10-14:** [Final Exit Report](PHASE0_FINAL_EXIT_REPORT.md) y GitHub real. Academic MVP exactamente cuatro por DEC-026; T017/T018/F04 Done bajo DEC-027/028, E0/F05/T019/T020 OPEN. Phase1 NOT STARTED. Las referencias históricas a cinco como gate académico están superseded.
+
+> **Snapshot histórico — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
+
+> **Precedencia de estado:** las enmiendas vigentes al final de este documento prevalecen sobre los snapshots de implementación y transporte del texto original. WebSocket obligatorio y WT/RTC pendiente están superseded / replaced by DEC-010 Mobile Transport. El cierre Software/Lab se decide en [auditoría final](PHASE0_FINAL_AUDIT.md), separado del MVP físico.
 ## Especificación maestra v4 — producto, experiencia, implementación y viabilidad
 
 **Estado:** línea base de preproducción para validación del equipo  
@@ -11,6 +17,7 @@
 **Feature Freeze:** 6 de noviembre de 2026  
 **Última revisión editorial:** 22 de septiembre de 2026  
 **Enmienda técnica:** 5 de octubre de 2026 — DEC-002: servidor Java y PWA React, por instrucción explícita del Product Owner. No modifica fases ni reglas de gameplay.
+**Aclaración de autoridad:** 6 de octubre de 2026 — DEC-005 aprobada por el Product Owner: Unity confirma los resultados oficiales; Java sólo transporta. Implementación IPC 2A condicionada a integración normal de Unity Foundation, sin iniciar Fase 1.
 
 > Esta v4 sustituye a la v3 como fuente principal de consulta. Conserva su contenido técnico y de negocio, corrige ambigüedades e incorpora el concepto y el marco narrativo del MVP. Una decisión sólo se considera vigente cuando queda registrada en este documento o en el historial de decisiones del proyecto.
 
@@ -319,6 +326,8 @@ El nombre **Gorilla Escape** funciona como marca de plataforma y **Gorilimpiadas
 
 ## P1 — Si hay tiempo
 
+**Decisión PO vigente (DEC-013, T001/#10, 2026-10-08):** slow motion P1 fuera del MVP P0; no bloquea Gorilla Smash. Reconsideración sólo con decisión explícita futura del PO; sin implementación ni trabajo técnico autorizado.
+
 - Vibración.
 - Replays breves.
 - Slow motion contextual.
@@ -580,7 +589,7 @@ ERROR_RECOVERABLE
 - Un jugador desconectado puede reconectarse.
 - La partida conserva su PlayerId durante una reconexión.
 - Si un teléfono se desconecta durante una acción, esa acción se cancela si aún no fue validada.
-- Si el resultado ya fue confirmado por el servidor, permanece válido.
+- Si Unity, como autoridad de juego de la PC, ya confirmó el resultado oficial, permanece válido. Java únicamente transporta el resultado y no calcula ni confirma scoring, ganador o estado competitivo por sí mismo.
 - El host puede pausar.
 - Un jugador puede recalibrarse entre intentos, nunca durante una acción activa.
 
@@ -1774,6 +1783,8 @@ Score
 ## Regla
 
 El slow motion no debe romper la sincronización de input ni hacer lenta la sesión.
+
+**Aclaración PO DEC-013:** la mención micro slow-motion de LEGENDARY es una opción P1 futura, no un requisito MVP P0 ni un bloqueo para Gorilla Smash. No implementarlo sin nueva autorización.
 
 ---
 
@@ -3323,6 +3334,8 @@ Sin crash
 
 # 50. Orden de implementación recomendado
 
+La secuencia histórica se conserva; cobertura vigente del Spike y siguiente fase en [auditoría final](PHASE0_FINAL_AUDIT.md). Fase 1 no se inicia automáticamente.
+
 ## Fase 0
 
 ```text
@@ -3619,6 +3632,8 @@ Será que:
 
 ## Matriz mínima de aceptación
 
+Esta matriz es de aceptación del producto físico/MVP, no los gates de cierre Software/Lab. La [Definition of Done del audit](PHASE0_FINAL_AUDIT.md#definition-of-done-softwarelab) vincula cada gate técnico a su evidencia; las deudas físicas siguen obligatorias.
+
 | Objetivo | Requisito relacionado | Evidencia de aceptación | Responsable principal |
 |---|---|---|---|
 | Incorporación sencilla | QR, PWA, sesión y permisos | una persona nueva conecta en menos de 60 s en hardware objetivo | Hiram |
@@ -3836,3 +3851,135 @@ Este checklist debe completarse antes del storyboard y repetirse después de cua
 - [ ] El equipo no necesita añadir verbalmente información ausente para justificar el orden o las reglas.
 - [ ] Los problemas abiertos están registrados con responsable, evidencia requerida y fecha límite.
 - [ ] Premisa, sinopsis, cadena causal, beat sheet, matriz de información y auditoría coinciden entre sí.
+
+
+# Enmienda de producto — dos clientes móviles oficiales (DEC-006, 2026-10-06)
+
+Por instrucción explícita del Product Owner, el producto admite PWA/web como fallback universal sin instalación obligatoria y Flutter Android como cliente nativo opcional, preferido cuando instalado. Instalar Flutter nunca es requisito para participar. Esta enmienda prevalece sobre «app nativa sólo Plan B»/«no construir app nativa por adelantado» en cuanto al roadmap aprobado: Flutter se diseña para4C, no se implementa ahora. No amplía a app iOS.
+
+Ambos comparten sesión, IDs, contratos/Gorilla Protocol móvil, semántica/reglas de conexión y backend Java; preferencia WSS/WebSocket para ambos, sin UDP nativo propio. Java administra transporte/sesión técnica; Unity conserva autoridad exclusiva de gameplay/resultados. No duplicar scoring/torneo ni lógica de negocio Dart/JS.
+
+Un enlace HTTPS y un QR deben funcionar en navegador; App Links/deep linking Android es una mejora futura opcional, nunca reemplaza el fallback web. El jugador no instala CA/certificados/perfiles TLS, cambia DNS/configura navegador ni necesita instalar Flutter. Preparación de red/host corresponde al operador; no Internet requerido durante gameplay. La estrategia técnica HTTPS/DNS/certificado del [rediseño](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) queda Accepted para adaptación de software3A por aprobación posterior explícita del PO. No declarar offline/trust público validados.
+
+Roadmap diseñado:3A LAN+HTTPS sin configuración TLS del teléfono;3B QR+sesión técnica;4A WS/protocolo común;4B sensores PWA reales;4C Flutter Android común; comparación/hardening posterior. No se autoriza implementación de estos bloques por esta enmienda; #94 permanece DRAFT hasta aprobar nueva estrategia. Fase1 NOT STARTED.
+
+**Precisión de ejecución3A:** autorizada adaptación de #94 para FQDN/SAN DNS, cadena TLS, origen público443 y Java8443 sin privilegios. No autoriza compras, emisión pública ni modificaciones router/firewall. IPC/supervisor intactos; procedimientos preparados no equivalen a infraestructura aplicada. 3A IN PROGRESS hasta certificado público real, cero configuración del jugador y gate físico Android/iPhone. #94 DRAFT; 3B/4A/4B/4C y Fase1 NOT STARTED.
+
+
+# Enmienda de producto — movimiento completo y webcam PC (DEC-007)
+
+Por instrucción explícita del PO, PWA y Flutter Android opcional deben compartir acelerómetro, giroscopio, orientación, touch/gestos, calibración, personalización y feedback según capacidades declaradas. Touch no sustituye completamente movimiento requerido. No instalación obligatoria, dominio propio, router específico, certificados móviles ni DNS manual. Juego sin dependencia WAN durante partida.
+
+Input Fusion combina **webcam integrada/externa PC + sensores móviles + touch**. Cámara del teléfono excluida de postura, vídeo y gameplay; QR del sistema o scanner Flutter futuro es sólo onboarding. Procesamiento visual local/offline; integración MediaPipe/OpenCV y modelos por evaluar, no implementados.
+
+Unity única autoridad de gameplay/física/animaciones/scoring/resultados, sincronización temporal, calibración aplicada, fusión e interpretación de gestos. Java único backend/transporte/sesión técnica e hijo supervisado; IPC sólo 127.0.0.1. Perfiles separados por usuario, dispositivo, minijuego y límites competitivos Unity. Boliche distingue dirección/velocidad/spin/eje/hook; giro de muñeca no equivale automáticamente a curva proporcional.
+
+Esta enmienda prevalece sobre requisitos anteriores de dominio/DNS y WebSocket obligatorio para transporte móvil. **No selecciona WT ni RTC:** [decisión Accepted sólo como base de Spike](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md). Primera preparación online, hosting y gate offline revisado pendientes del PO; ningún PASS físico nuevo. [Plan de Spike](PHASE0_SECURE_MOTION_SPIKE_PLAN.md) y [contrato conceptual](PHASE0_INPUT_FUSION_CONCEPT.md) son propuestas, no implementación autorizada. #94 DRAFT; 3A IN PROGRESS; posteriores y Fase 1 NOT STARTED.
+
+
+# Enmienda de producto — calibración inmersiva y justicia competitiva (DEC-008)
+
+Por instrucción explícita del PO, la calibración individual se integrará mediante desafíos jugables breves, animaciones/efectos y feedback inmediato, no tutorial técnico ni asistente largo. Rango cómodo individual, mano, orientación, estabilidad y capacidades sirven para normalizar intención; fuerza absoluta, talla o alcance no determinan automáticamente potencia virtual. No exigir esfuerzo máximo ni movimientos peligrosos; el teléfono permanece sujeto.
+
+Unity conserva límites de potencia, física y reglas competitivas; precisión, timing, técnica y coordinación siguen distinguiendo habilidad. Oportunidades comparables de alcanzar techo virtual no significan resultados idénticos ni equilibrio demostrado. Personalización distingue usuario/dispositivo/minijuego/reglas competitivas; asistencias que afectan resultados son explícitas/versionadas. Parámetros competitivos congelados por ronda; desviaciones o variación aparente de rendimiento sólo motivan propuesta/recalibración controlada entre rondas, sin diagnóstico ni cambios silenciosos.
+
+Input Fusion usa exclusivamente webcam PC, sensores móviles y touch según disponibilidad; degradación explícita, sin pose inventada ni cámara móvil. Sin vídeo ni biometría identificable por defecto. Pruebas físicas diversas con consentimiento/privacidad/seguridad, especialmente menores, necesarias para aceptar equidad; simulación sola no basta. [Contrato y criterios conceptuales](PHASE0_INPUT_FUSION_CONCEPT.md#8-calibración-inmersiva-y-justicia-competitiva--dec-008) y DEC-008 registran requisito Accepted con métodos/targets Proposed. Ejemplos boxeo/boliche/tenis/golf/penales no agregan minijuegos al alcance congelado.
+
+Sólo documentación y dependencias futuras en Fase 0 actual; no reiniciar incrementos ni implementar desafíos, webcam, gameplay o calibración definitiva. #94 OPEN/DRAFT, 3A/Fase 0 IN PROGRESS; Fase 1 NOT STARTED.
+
+
+# Enmienda de producto — intención y acciones únicas (DEC-009)
+
+Unity reconocerá patrones temporales de preparación, inicio, dirección/trayectoria, aceleración/orientación/giro, ejecución, finalización y recuperación; no disparará acciones por un único umbral de aceleración. Modelo conceptual IDLE → PREPARING → ACTION_CANDIDATE → CONFIRMED → RECOVERY → IDLE, con cancelación/rechazo y suspensión por calidad/identidad. Una sola acción oficial por gesto; no ejecución durante preparación ni redisparo por muestra intensa, replay o dato tardío.
+
+Intención e intensidad separadas: lanzamiento suave/lento coherente puede ser válido; movimiento accidental rápido no lo es por su pico. Umbrales personalizados a ruido/movimiento habitual/rango cómodo/mano y capacidades, limitados competitivamente por Unity y fijos por ronda según DEC-008. Sin fuerza máxima ni thresholds universales no medidos.
+
+Fusión temporal/espacial con webcam exclusivamente PC cuando datos y asociación persona/control sean fiables. Si visión no es fiable, evaluar modalidad sensor-only con criterios específicos; si no hay evidencia suficiente, pausar/rechazar o alternativa explícita, nunca pose/confianza inventadas. Multijugador 1–4 con identidad técnica y track temporal validados; no asignación cruzada por proximidad. Confirmar golpe no confirma impacto/scoring; confirmar lanzamiento antecede a física/spin/hook Unity.
+
+[Contrato, estados y pruebas](PHASE0_INPUT_FUSION_CONCEPT.md#9-reconocimiento-de-intención-y-prevención-de-activaciones-falsas--dec-009): sesiones etiquetadas, falsos positivos/negativos, lentos/rápidos, duplicados/prematuros, atribución cruzada y latencia física, por dispositivo/fuentes/modalidad. Valores definitivos requieren evidencia física y aprobación; ninguna precisión demostrada ahora. Sólo diseño dentro de Fase 0 existente, sin detector/minijuegos/cámara implementados, transporte independiente pendiente, #94 OPEN/DRAFT, Fase 0 IN PROGRESS y Fase 1 NOT STARTED.
+
+## Precisión de cierre Fase 0 aprobada por Product Owner — 2026-10-07
+
+El cierre **COMPLETED — SOFTWARE/LAB** requiere todos los gates de base, transporte único, session/admission/QR, protocolo, pipeline PWA/Java/IPC/Unity, webcam PC, Player Lock, temporal alignment, Input Fusion infrastructure, fixtures, 1–4 clientes, resiliencia/regresión, cleanup e integración PASS. No se implementa el detector/minijuego final de Smash en Fase0. iPhone/Android físicos, cadencia/tuning móviles, movimiento humano fusionado y latencia física son **NOT RUN / DEFERRED**, obligatorios antes de aceptar el MVP y no bloquean el cierre Software/Lab. Linux es el entorno de laboratorio actual; Windows DEFERRED. Fase1 sólo READY TO START después de auditoría final PASS; el estado actual sigue IN PROGRESS/NOT STARTED. Las restricciones históricas sobre implementar Spikes de RTC/cámara/Fusion quedan reemplazadas exclusivamente por el alcance técnico A–L autorizado; no autorizan gameplay final ni servicios cloud ni cambios de infraestructura.
+
+## Enmienda vigente — runtime móvil Software/Lab, 2026-10-07
+
+Por instrucción del PO, DEC-010 Mobile Transport queda ACCEPTED / IMPLEMENTED FOR PHASE 0 LAB: **WebRTC DataChannel**, único transporte móvil seleccionado; comparador CLOSED. Sustituye, para este alcance, WebSocket obligatorio o selección WT/RTC pendiente de enmiendas anteriores. WT permanece como evidencia experimental histórica aislada. Sin signaling cloud, STUN/TURN público ni vídeo móvil.
+
+Session/admission/QR técnico, Gorilla Protocol v1 común, adaptador PWA/Java y extensión opt-in del mismo IPC loopback hacia PhoneInput Unity están implementados y validados en laboratorio con 1–4 clientes Chrome sintéticos/replay. Java sólo administra identidad/sesión técnica/transporte/validación/routing; Unity sigue siendo la única autoridad competitiva. Sin gestos deportivos, scoring, Fusion o cámara nuevos. [Contrato real](../Shared/Protocol/mobile/README.md) y [gate, evidencia y deuda](PHASE0_MOBILE_INPUT_RUNTIME_VALIDATION.md).
+
+El resultado no valida onboarding HTTPS de un teléfono nuevo ni red física. Emulador RTC nuevo BLOCKED; iPhone/Android físicos/Windows DEFERRED. Camera/Input Fusion NOT STARTED; 3A/Fase 0 IN PROGRESS; Fase 1 NOT STARTED. PR #94 permanece OPEN/DRAFT; sin push/merge ni siguiente incremento automático.
+
+
+## Enmienda vigente — infraestructura cámara/fusión Software/Lab, 2026-10-08 UTC
+
+El incremento autorizado implementa CameraInput raw de PC, asociación temporal/Player Lock por turno,
+alineación acotada y FusionFrame con fuentes/calidad/ausencias explícitas, usando el runtime móvil validado.
+No es recognizer de deporte, calibración inmersiva final, scoring ni Fase1. DEC-012 limita el adaptador
+MediaPipe/OpenCV supervisado a Linux laboratorio; empaquetado distribuido/Windows pendiente. Timestamps
+PC receipt/read-complete son proxies, no sincronización física demostrada. [Gate y deuda](PHASE0_CAMERA_FUSION_VALIDATION.md).
+
+Camera/Fusion NOT STARTED de secciones anteriores describe su momento histórico. Resultado vigente se
+registra en DEVELOPMENT_PROGRESS/TEST_REPORT del incremento. Fase0/3A IN PROGRESS y Fase1 NOT STARTED;
+#94 OPEN/DRAFT. El siguiente bloque será únicamente FINAL PHASE0 AUDIT, no iniciado en esta entrega.
+
+## Enmienda vigente — cierre FINAL PHASE0 AUDIT, 2026-10-08
+
+Por el gate final autorizado por el PO, **PHASE 0 FINAL AUDIT: PASS — SOFTWARE/LAB**.
+Fase0 — Base/Spike: **COMPLETED — SOFTWARE/LAB**; Fase1 — Gorilla Smash Vertical Slice: **READY TO START**, no iniciada. La [auditoría](PHASE0_FINAL_AUDIT.md) acredita cada gate técnico y las regresiones del candidato local.
+Foundation/2A/2B/2C PASS/MERGED; móvil/cámara/lock/alineación/Fusion infra PASS Software/Lab local, todavía sin integración Git de cambios recientes. #94 OPEN/DRAFT; local candidate != remote PR head. Sin commit/push/merge ni gameplay.
+3A product/physical onboarding **DEFERRED / IN PROGRESS**; deuda física/plataforma sigue abierta y obligatoria antes de aceptación final del MVP. No declarar cámara/fusión físicamente validadas, no inferir timing humano de replay ni convertir emulador RTC BLOCKED en PASS. Esta enmienda prevalece sobre estados de avance anteriores; no elimina requisitos de producto ni cambia thresholds.
+
+
+# Enmienda PO — hardware QA y compatibilidad por capacidades (DEC-014)
+
+T002 define plataformas/capacidades y REFERENCE TEST HARDWARE, no únicos equipos soportados. Android moderno/Chrome estable e iOS moderno/Safari del sistema; secure context/WebRTC DataChannel/touch/LAN, sensores según disponibilidad y permisos normales. Detección runtime requerida con FULL/LIMITED/INCOMPATIBLE sin inventar señales, no implementada por esta decisión. Red Wi-Fi LAN estándar, WAN opcional, gameplay local. Modelos/versiones/firmware se registran en QA física: Android no identificado/router UNKNOWN no bloquean T002. T019 y gates físicos mantienen todas sus obligaciones, sin compatibilidad universal prometida. [DEC-014/inventario](PHASE0_T002_HARDWARE_INVENTORY.md).
+
+### Enmienda PO — DEC-016 Local HTTPS Trust Model, 2026-10-08
+
+Para T008, el enfoque principal pasa a CA local única por instalación + certificado leaf corto con SAN iPAddress de la IP LAN actual, HTTPS puerto configurable no privilegiado y QR con ese mismo origen. No dominio/DNS administrado/443 como requisito principal. PREPARE DEVICE instala/confía esa CA una vez por instalación; JOIN GAME conserva target <60s para dispositivo preparado. Preparación inicial y join se miden/publican separados, sin afirmar <60s nuevo hasta medir. Esta concesión explícita reemplaza las prohibiciones históricas de preparaciónCA únicamente en este alcance; no autoriza bypass TLS/trust-all/flags, cloud, otro transporte ni nuevos incrementos. WebRTC DEC-010 y hardware representativo DEC-014 siguen vigentes. Claves locales privadas fuera de Git, ninguna root compartida entre instalaciones, renovaciónleaf porIP/vigencia y regeneraciónroot sólo explícita. [Diseño/procedimiento/gates](PHASE0_T008_LOCAL_TRUST.md); aceptación física Android/iPhone y T008Done siguen pendientes.
+
+
+## Enmienda PO — captura y calidad de sensores T010 (DEC-020), 2026-10-09
+
+DEC-020 ACCEPTED: sólo eventos reales del navegador; separar adquisición raw, muestras válidas únicas, emisión y ACK. Hz/intervalos monotónicos medidos, sin fabricar50Hz ni muestras por timer/upsampling; UTC clientTimestamp y unidades/ejes del protocolo móvil v1 conservados. Tiers60/50/30/20 conservadores según actualMeasuredHz; valores finitos o null, cero válido, disponibilidad explícita. INPUT_READY exige conexión técnica/permisos y señal real suficiente/fresca, sin equivaler a calibración/PLAYER_READY. Latest-only acotado, métricas agregadas y cleanup. Android físico NOT RUN continúa QA/T019; la evidencia iPhone de frecuencia y fixtures de clasificación son gates T010, no certificación universal. [Decisión](DECISIONS.md#dec-020--sensor-sampling--quality-policy), [implementación y evidencia](PHASE0_T010_SENSOR_CAPTURE.md). No T011/Fase1 autorizados por esta enmienda.
+
+### Enmienda PO DEC-021 — salida T010 con QA física diferida
+
+DEC-021 ACCEPTED: software + Android Emulator permiten salida de implementación T010 e integración normal. AC1/AC2 literales permanecen PARTIAL; exit PASS FOR T010 EXIT under DEC-021, AC3 PASS. PASS FOR T010 EXIT != physical QA completed. Acreditación física final se transfiere a T019 conservando AC/dependencias/gates reales. DEC-020, rangos, freshness2000ms, autoridad Unity y protocolo intactos. No autoriza T011 ni Fase1. Véase DECISIONS y PHASE0_T010_SENSOR_CAPTURE.
+
+## Enmienda vigente — Academic MVP, DEC-026 (2026-10-13)
+
+**ACCEPTED por PO.** Entrega académica P0 exactamente cuatro: Gorilla Smash, Coconut Throw, Coconut Bowling y Jungle Slice. Smash/Throw son el núcleo mínimo GOR-03; Bowling/Slice completan el catálogo autorizado GOR-04. Jungle Archery/F31/T034–T036 queda P1/Post-MVP abierto, preservando diseño. E3 pasa de cuatro a **tres minijuegos restantes**.
+
+Referencias anteriores a cinco disciplinas obligatorias están **SUPERSEDED para Academic MVP** y se conservan como PRODUCT VISION futura. La enmienda académica tiene precedencia para gates de entrega. F40 exige cuatro disciplinas integradas en un torneo: participantes, turnos, resultados, score/GP, tabla acumulada, desempate visible, campeón automático y retorno al menú. Cuatro demos no satisfacen F40.
+
+Ruta principal: teléfono/PWA/Gorilla Protocol/WebRTC local/Java/IPC/Unity PhoneInput. Unity única autoridad oficial; cámara complementaria según disciplina. T060 exige fallback visible de usuario, prueba/calibración y torneo completo sin dispositivo adicional; pendiente implementación en fase correspondiente. Herramientas debug no lo satisfacen. <150ms acción→respuesta visible y <60s participante no preparado requieren evidencia física; RTT no equivale a E2E. E0 sigue OPEN, Phase1 NOT STARTED. Fecha vigente intacta; no adoptar fechas de otros equipos.
+
+[Fuente académica aplicable, cobertura real y gaps](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md).
+
+
+## Enmienda PO — Main Menu y Centro de Pruebas Phase0 (DEC-029, 2026-10-14)
+
+El Main Menu real puede comenzar en Phase0 como fundación reutilizable de producto: Bootstrap técnico → MainMenu → PRUEBAS → Centro de Pruebas. JUGAR permanece visible/deshabilitado «En desarrollo»; SALIR usa el lifecycle oficial. `GORILLA_QA_MENU=0` puede ocultar PRUEBAS en la entrega académica sin borrar tooling. No completa F41 ni inicia Phase1/gameplay.
+
+El boundary de respuesta visible técnica Phase0 termina en PhoneInput real aceptado → indicador técnico renderizado por Unity. No acredita resultado deportivo, score, scanout/photon ni cierre físico T019. Preview QA exclusivamente desde captura PC T016 única, loopback127.0.0.1/memoria, sin segunda webcam, disco, video, screenshots, Java/RTC/PWA/teléfono. T019/T020/F05/E0 OPEN y Final Exit BLOCKED hasta sus gates reales. [DEC/implementación](PHASE0_MAIN_MENU_QA_CENTER.md).
+
+Corrección PO de la misma fundación: Unity Editor Play Mode sobre la ruta oficial `Assets/_Project/Scenes/Bootstrap/Bootstrap.unity` muestra Main Menu sin build y sin exigir Java/Vision/hardware. Untitled, otras escenas, Test Runner y batch ajeno al producto no autoarrancan el menú. Editor permite navegar a PRUEBAS con backend explícitamente no disponible; SALIR detiene Play Mode. QA física continúa en el standalone validado; no se inicia Phase1.
+
+## Enmienda PO 2026-10-14 — Bootstrap transparente (DEC-030)
+
+CABAÑA = bootstrap local/offline canónico. CLOUDFLARED = bootstrap HTTPS/PWA/signaling opcional de conveniencia. AUTO = resolver transparente, acotado y con cleanup antes del fallback. Ambos convergen en la misma TechnicalSession, Gorilla Protocol, WebRTC LAN DIRECT, Java, IPC y autoridad Unity. Cloudflared no lleva gameplay; remote multiplayer sigue Post-MVP. GOR-07, SRS-GOR-02 y aceptación offline no cambian. Un teléfono nuevo en Cabaña requiere PREPARAR TELÉFONO; no se promete trust automático ni RNF-GOR-02 sin medir. T063 bajo F41 es opcional y soporta F05/T019/T062; no agrega gate académico a E0. [Arquitectura y límites](TRANSPARENT_CONNECTIVITY.md).
+
+### Enmienda PO — T063 AUTO transparente, 2026-10-15
+
+El usuario conecta su teléfono mediante QR sin elegir tecnología. AUTO prepara
+la ruta local primero y verifica la comodidad HTTPS pública en segundo plano;
+únicamente una ruta pública realmente READY se prefiere al emitir un nuevo QR.
+Cada admission conserva su origen. El binario opcional viene empaquetado y su
+SHA se verifica antes de ejecutarlo; no se descarga al jugar. Cualquier fallo
+opcional conserva Cabin funcional. La preparación única de un teléfono nuevo
+sin Internet se explica de forma humana, con arquitectura sólo en Detalles/QA.
+Cloudflared sirve exclusivamente PWA/HTTPS/signaling; gameplay sigue por RTC
+LAN directo → Java → IPC → Unity. T019/T020/F05/E0 no se cierran; JUGAR sigue
+deshabilitado y Phase1 no comienza. Gates/evidencia: PHASE0_T063_TRANSPARENT_AUTO.md.

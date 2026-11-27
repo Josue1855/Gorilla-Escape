@@ -1,0 +1,27 @@
+{
+  "algorithm": "SHA-256",
+  "testedSources": {
+    "PWA/src/App.jsx": "49142fdba64ad57f06b577f4f6539f2d006641ba1672f99c604ee23514257ddd",
+    "PWA/src/styles.css": "970235daa126de2c6e88d6c70d3c0245824e3cb70c069bedb1eea1b036c8c004",
+    "PWA/src/connection/HealthProbe.jsx": "cea9f07274492cd23fbe2765ee77e03ecc32cfc3e38ada07a33bef4ce9bf2da2",
+    "PWA/src/controller/permissions.js": "44864ebca4a598b44258c2e0582b9de9298e8230f0030d97e417ab66687cba70",
+    "PWA/src/controller/session.js": "9499add00111762ea9067e0de626ecc56b1d9b7bc01bef19e24df1bd26dd27ec",
+    "PWA/src/controller/presentation.js": "5cd368241a918b1624bb48c48b32321dd95278a21f08e4c8ffc9a7107262ead6",
+    "PWA/src/input/mobileClient.js": "e26daeac4482b99b513200e65a33b4513fb20ca8754f369ad7e95ea09b5a1915",
+    "PWA/spikes/sensors/capture.js": "4cab6a873b6926a868828d5f9417b1aa0fa8a9cc7d0b4bf713504d80848642ad",
+    "PWA/tests/controller.test.js": "d054056af75aeb2a41e3fce1d275dd98624067d68de28a6f122a47a77592d306",
+    "tools/t009/browser-shell.mjs": "5915f4c633150251602136a7e400bb0586cd7e9a3e43926fdc42e1892b4ca1ef",
+    "Server/src/main/java/com/gorillaescape/server/mobile/MobileOrigin.java": "8389fc39cea567527e9cb17a3f73fd912c54a2e2eb041cf4cdf1c63926908941",
+    "Server/src/test/java/com/gorillaescape/server/hosting/LocalTrustTest.java": "ffa8bcbe50b95c03f1fec730680377b93048db1e0125864e5d8a1cd355b5dad1"
+  },
+  "testedJavaJar": "0b9f21724ce5490c794ade88bcea8466031ff34c0580a847c99fdbf4cef54817",
+  "testedPwaAssets": {
+    "PWA/dist/manifest.webmanifest": "0a8bff7a016e1b998614274027580e977e4554c1d24a983924790b43bdad268e",
+    "PWA/dist/sw.js": "3da8235413f1e1135ec75ec6236cc3aa40ba2858cc75849b23a64eb0f79285ad",
+    "PWA/dist/index.html": "30d6c5fd7dade26dcc663f1c3cfcf8b13fc9986979215d4e58e9541fa7c8c94b",
+    "PWA/dist/assets/index-Dif6RnX5.css": "b259ea57045c23a6c63741f82efba1a73c5901277a18a3516460f049230964bd",
+    "PWA/dist/assets/index-B1nexFMY.js": "863ac44f8dddf881168d48c0cb54225e2a59557b897ac381ec58f02e196e7ceb",
+    "PWA/dist/icons/icon-192.png": "26be2b6e260d195f4ba2d13555d25152745c12004dd1e4ada17b4a2760485801",
+    "PWA/dist/icons/icon-512.png": "1cbaffca751544104aca7d73dfc38922faa8801a8b26b50f7f4831df1f5c0cdc"
+  }
+}

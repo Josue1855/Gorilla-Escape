@@ -1,0 +1,10 @@
+{
+  "reproduction": "desktop Chrome 155 real Window setInterval invoked as method of unrelated object",
+  "result": {
+    "name": "TypeError",
+    "message": "Illegal invocation"
+  },
+  "androidSymptom": "strict runner timed out waiting for RUNNING; recorded FAIL, not hidden",
+  "minimalFix": "Use injected Window receiver for default setInterval and clearInterval",
+  "unitRegression": "9/9 PASS; historical 8/8 retained"
+}

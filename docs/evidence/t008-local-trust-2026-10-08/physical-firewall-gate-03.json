@@ -1,0 +1,151 @@
+{
+  "scope": "T008 physical iPhone gate with PO-authorized temporary UFW rules; no transport/runtime changes",
+  "dateLocal": "2026-10-08",
+  "testedCodeHead": "023c0725af3a6e015cf7921c452deed9438f3def",
+  "hardware": {
+    "phone": "iPhone 15",
+    "iOS": "27 (PO reported earlier; exact build not verified this run)",
+    "browser": "Safari (exact version not independently verified)",
+    "phoneIPv4": "10.1.124.240",
+    "androidPhysical": "NOT RUN"
+  },
+  "network": {
+    "interface": "wlp0s20f3",
+    "pcIPv4": "10.1.125.17",
+    "prefixLength": 22,
+    "subnet": "10.1.124.0/22",
+    "gateway": "10.1.124.1",
+    "source": "active physical interface and default route inspected read-only"
+  },
+  "runtime": {
+    "origin": "https://10.1.125.17:8443",
+    "httpsTcpPort": 8443,
+    "bootstrapTcpPort": 18000,
+    "portsConfirmedListeningBeforeRuleChange": true,
+    "sameInstallationCA": true,
+    "caSha256": "74d0b90d85c686d18bdd89991dadbdf19ab36d465f054557a4c1e1c9b0d6b9a6"
+  },
+  "firewall": {
+    "authorization": "PO attachment authorized exactly these temporary QA rules",
+    "elevation": "pkexec, normal system authentication; no password captured/automated",
+    "before": {
+      "active": true,
+      "policy": "deny incoming / allow outgoing / disabled routed",
+      "sanitizedStateCaptured": true
+    },
+    "added": [
+      {
+        "direction": "in",
+        "interface": "wlp0s20f3",
+        "protocol": "tcp",
+        "source": "10.1.124.0/22",
+        "destination": "10.1.125.17",
+        "port": 18000,
+        "comment": "Gorilla Escape T008 PREPARE"
+      },
+      {
+        "direction": "in",
+        "interface": "wlp0s20f3",
+        "protocol": "tcp",
+        "source": "10.1.124.0/22",
+        "destination": "10.1.125.17",
+        "port": 8443,
+        "comment": "Gorilla Escape T008 HTTPS"
+      }
+    ],
+    "addedRulesVerified": true,
+    "udpRulesAdded": 0,
+    "firewallDisabled": false,
+    "defaultPoliciesForwardingRouterDnsNatWanChanged": false,
+    "cleanup": {
+      "removedOwnRules": 2,
+      "noOwnRuleRemaining": true,
+      "active": true,
+      "defaultPoliciesUnchanged": true,
+      "completeStatusMatchesBefore": true,
+      "snapshotRestored": false
+    }
+  },
+  "physicalObservations": {
+    "bootstrapPrepare": "PASS — PO reports PREPARE DEVICE visible",
+    "httpsPrepare": "PASS — PO reports HTTPS /prepare opened in Safari without security warning after preparation",
+    "trustSource": "manual PO report; no remote inspection of iPhone trust settings",
+    "firstTimePreparationDuration": "NOT MEASURED / no stopwatch value provided",
+    "qr": "HTTPS LAN QR generated; PO reports JOIN UI/error after scanning; ephemeral QR removed, no admission URL archived",
+    "join": "FAIL — no READY confirmed",
+    "joinError": "No se pudo conectar. Comprueba LAN, confianza TLS y QR vigente.",
+    "preparedJoinDuration": "NOT MEASURED / READY not reached",
+    "stopwatchValuesProvided": false,
+    "webRtcOpen": "NOT VALIDATED",
+    "udpBlocks": {
+      "journalExit": 0,
+      "sinceUtc": "2026-10-09T01:58:22.081959+00:00",
+      "matchingUdpBlocks": 0,
+      "destinationPorts": [],
+      "events": []
+    },
+    "javaSnapshotAfterFailure": {
+      "peers": 0,
+      "inputs": {
+        "pendingSlots": 0,
+        "overwritten": 0,
+        "forwarded": 0,
+        "received": 0,
+        "rejected": 0
+      }
+    },
+    "limitations": [
+      "Generic UI error does not identify failure phase or cause.",
+      "Zero peers in later snapshot does not prove no transient peer existed.",
+      "No matching UDP BLOCK events is not proof of no packets/drop; UFW logging is rate-limited.",
+      "Admission was valid for 30 seconds at issuance; scan/JOIN arrival time was not measured.",
+      "QR file panel open was queued; QR subsequently displayed inline. No human visibility timestamp confirmed."
+    ],
+    "nextBlocker": "JOIN does not reach technical READY; cause unestablished. Need controlled fresh-QR attempt and signaling/ICE diagnosis before deciding UDP access."
+  },
+  "rangeInvestigation": {
+    "version": "webrtc-java 0.19.0",
+    "verifiedInInstalledArtifact": [
+      "RTCConfiguration.portAllocatorConfig",
+      "PortAllocatorConfig.minPort",
+      "PortAllocatorConfig.maxPort"
+    ],
+    "currentCode": "STUN/relay/TCP disabled; no explicit min/max",
+    "officialGuide": "https://jrtc.dev/guide/networking/port-allocator-config",
+    "nativeRangeExecution": "NOT RUN",
+    "selectedRange": null,
+    "openedRange": null,
+    "decision": "DEC-017 Proposed; PO approval pending observed need/minimum dimensioning"
+  },
+  "runtimeCleanup": {
+    "playerExit": 0,
+    "javaResiduals": 0,
+    "stopped": [
+      {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false
+      }
+    ],
+    "listenersClosed": [
+      18000,
+      8443
+    ],
+    "ephemeralQrDeleted": true
+  },
+  "acceptance": {
+    "AC1": "PARTIAL overall; iPhone HTTPS/trust step PASS, Android physical NOT RUN",
+    "AC2": "PARTIAL; HTTPS PWA/QR reached, JOIN-to-RTC-to-READY failed",
+    "AC3": "PARTIAL / timings NOT MEASURED, prepared target not demonstrated",
+    "AC4": "PASS — failures, constraints and proposed alternative documented; Plan B not activated"
+  },
+  "states": {
+    "T008": "OPEN / Validation",
+    "T009": "OPEN / blocked by T008; NOT STARTED",
+    "PR96": "OPEN / DRAFT; no merge",
+    "DEC017": "Proposed",
+    "Phase0": "IN PROGRESS",
+    "Phase1": "NOT STARTED"
+  }
+}

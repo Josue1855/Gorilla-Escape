@@ -1,0 +1,215 @@
+{
+  "issues": [
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPEw",
+          "name": "needs-device-test",
+          "description": "Requiere prueba f\u00edsica, no reemplazar por mocks.",
+          "color": "fbca04"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPmA",
+          "name": "performance",
+          "description": "Rendimiento o latencia medidos.",
+          "color": "5319e7"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQfQ",
+          "name": "type:task",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Task",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRrA",
+          "name": "area:camera-tracking",
+          "description": "\u00c1rea para b\u00fasqueda global: Camera/Tracking",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 29,
+      "projectItems": [
+        {
+          "status": {
+            "optionId": "c4217f5e",
+            "name": "In Progress"
+          },
+          "title": "Gorilla Escape \u2014 Product Development"
+        }
+      ],
+      "state": "OPEN",
+      "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxO7A",
+          "name": "blocked",
+          "description": "Dependencia t\u00e9cnica sin resolver; retirar al desbloquear.",
+          "color": "b60205"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPEw",
+          "name": "needs-device-test",
+          "description": "Requiere prueba f\u00edsica, no reemplazar por mocks.",
+          "color": "fbca04"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQfQ",
+          "name": "type:task",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Task",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRrA",
+          "name": "area:camera-tracking",
+          "description": "\u00c1rea para b\u00fasqueda global: Camera/Tracking",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 30,
+      "projectItems": [
+        {
+          "status": {
+            "optionId": "9fb36150",
+            "name": "Validation"
+          },
+          "title": "Gorilla Escape \u2014 Product Development"
+        }
+      ],
+      "state": "OPEN",
+      "title": "[T017] Validar ROI, Player Lock y recuperaci\u00f3n de tracking"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxO7A",
+          "name": "blocked",
+          "description": "Dependencia t\u00e9cnica sin resolver; retirar al desbloquear.",
+          "color": "b60205"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPEw",
+          "name": "needs-device-test",
+          "description": "Requiere prueba f\u00edsica, no reemplazar por mocks.",
+          "color": "fbca04"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPmA",
+          "name": "performance",
+          "description": "Rendimiento o latencia medidos.",
+          "color": "5319e7"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQfQ",
+          "name": "type:task",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Task",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRfg",
+          "name": "area:ci-qa",
+          "description": "\u00c1rea para b\u00fasqueda global: CI/QA",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 32,
+      "projectItems": [
+        {
+          "status": {
+            "optionId": "9fb36150",
+            "name": "Validation"
+          },
+          "title": "Gorilla Escape \u2014 Product Development"
+        }
+      ],
+      "state": "OPEN",
+      "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQWg",
+          "name": "type:feature",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Feature",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRrA",
+          "name": "area:camera-tracking",
+          "description": "\u00c1rea para b\u00fasqueda global: Camera/Tracking",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 28,
+      "projectItems": [
+        {
+          "status": {
+            "optionId": "c4217f5e",
+            "name": "In Progress"
+          },
+          "title": "Gorilla Escape \u2014 Product Development"
+        }
+      ],
+      "state": "OPEN",
+      "title": "[F04] C\u00e1mara local y viabilidad de tracking"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQJA",
+          "name": "type:epic",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Epic",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxUDQ",
+          "name": "area:unity-core",
+          "description": "\u00c1rea para b\u00fasqueda global: Unity/Core",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 1,
+      "projectItems": [
+        {
+          "status": {
+            "optionId": "c4217f5e",
+            "name": "In Progress"
+          },
+          "title": "Gorilla Escape \u2014 Product Development"
+        }
+      ],
+      "state": "OPEN",
+      "title": "[E0] Base t\u00e9cnica y viabilidad"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQJA",
+          "name": "type:epic",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Epic",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxUDQ",
+          "name": "area:unity-core",
+          "description": "\u00c1rea para b\u00fasqueda global: Unity/Core",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 2,
+      "projectItems": [
+        {
+          "status": {
+            "optionId": "0b2823c5",
+            "name": "Backlog"
+          },
+          "title": "Gorilla Escape \u2014 Product Development"
+        }
+      ],
+      "state": "OPEN",
+      "title": "[E1] Vertical Slice Gorilla Smash"
+    }
+  ],
+  "pullRequests": []
+}

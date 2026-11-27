@@ -1,0 +1,40 @@
+{
+  "baseDevelop": "2a635b607a286bb70d1457aa0cf34f7e85f17abe",
+  "branch": "feature/gameplay-phase0-unity-java-ipc-2a",
+  "unity": "6000.3.23f1",
+  "backend": "Mono development Linux",
+  "java": "OpenJDK 21.0.12.1",
+  "os": "Pop!_OS 24.04 x86_64",
+  "sampleCount": 100,
+  "warmupCount": 10,
+  "tests": {
+    "Java": 8,
+    "EditMode": 7,
+    "PlayMode": 3,
+    "ReactRegression": 4
+  },
+  "testResults": "PASS",
+  "rawHashes": {
+    "editmode.log": "da4736dddadd53a42b480db4d516565c00a5aab0f89506aa43117e40e00880eb",
+    "editmode.xml": "bd808e3716d67a6d8c61fc923da6ccb14afde5dc160e61e4cb91bd277740949d",
+    "playmode.log": "3fd956f2bd18e71f3588089f67173cb85c968331865cd7bc30b41a067235e5ea",
+    "playmode.xml": "3d3241b6468291ab976183195c360175afe3f87cf88c9c419948bdd1453dcd77",
+    "build.log": "3efb66fe4b112b38dff8c03ee925a471744c5f47996d620a74979d6377f37082",
+    "player.log": "0c6b717a26c9f7820d7d2d0d83b780c4b63e5228fcb3b16fc4c509eaf44ebe0d"
+  },
+  "javaRawHash": "4eafe03daefe79fe2aca1e3bc514299522253f4ea5cce6ff94c93cd17b453960",
+  "procedure": [
+    "Maven Java21 verify (codec + real child process tests), unchanged React regression test/build",
+    "Unity Flatpak clean source snapshot, local complete copied JDK21 with dereferenced config links for sandbox",
+    "EditMode and PlayMode with GORILLA_TEST_JAVA/GORILLA_TEST_JAR configured; tests cannot silently pass without real paths",
+    "FoundationSetup.BuildDevelopmentLinux in snapshot, Mono development build",
+    "Player with GORILLA_IPC_JAVA/GORILLA_IPC_JAR and GORILLA_IPC_SMOKE_EXIT=1; live ss listeners matched owned child PID; exit0 and absence of child /proc entry",
+    "Source snapshots matched to source-sha256.json; sanitized XML/log excerpts and binary/JAR hashes retained"
+  ],
+  "environmentDiagnostics": "Licensing access-token, build-server no .NET SDK, debugger-agent and native MemoryLeaks telemetry remain ENVIRONMENT / REQUIRES FOLLOW-UP issue89; no physical leak claim",
+  "preliminaryAttempts": [
+    "First PlayMode integration failed because copied distro JDK retained /etc/java security symlinks absent in Flatpak. Complete local JDK copy with dereferenced links resolved environment issue. Final integration rerun PASS.",
+    "First Player measurement collector rejected IPv4-mapped loopback display despite successful runtime probe; final child launch explicitly selects IPv4 stack and listener evidence confirms 127.0.0.1.",
+    "Unused stage warning corrected; final build report 0 warnings."
+  ]
+}

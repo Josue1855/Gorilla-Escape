@@ -1,0 +1,7 @@
+{
+  "av_version_info": "8.0.1",
+  "avutil_configuration": "--prefix=/ffmpeg_build --extra-cflags=-I/ffmpeg_build/include --extra-ldflags=-L/ffmpeg_build/lib --enable-openssl --enable-libvpx --enable-shared --enable-pic --bindir=/root/bin",
+  "avutil_license": "LGPL version 2.1 or later",
+  "avcodec_configuration": "--prefix=/ffmpeg_build --extra-cflags=-I/ffmpeg_build/include --extra-ldflags=-L/ffmpeg_build/lib --enable-openssl --enable-libvpx --enable-shared --enable-pic --bindir=/root/bin",
+  "avcodec_license": "LGPL version 2.1 or later"
+}

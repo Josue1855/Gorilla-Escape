@@ -1,0 +1,533 @@
+{
+  "baseline": "b1db2f3",
+  "branch": "codex/phone-connect-final",
+  "scope": "Software/Lab validated for PR integration; final physical iPhone gate unconfirmed",
+  "gstack": "Not installed in inspected skill roots; repository validation used",
+  "java21": {
+    "total": 112,
+    "passed": 111,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 1,
+    "skipReason": "Opt-in external Quick Tunnel test separated from portable verify; native RTC lab and physical LAN-config tests enabled"
+  },
+  "pwa": {
+    "tests": 69,
+    "passed": 69,
+    "build": "PASS"
+  },
+  "unityEditMode": {
+    "total": "162",
+    "passed": "162",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed"
+  },
+  "unityPlayModeFull": {
+    "total": "29",
+    "passed": "29",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed"
+  },
+  "unityNavigation": {
+    "baseline": 7,
+    "current": 8,
+    "reason": "Inherited GORILLA_EDITOR_PHYSICAL_QA flag / Test Runner regression added"
+  },
+  "linuxBuild": {
+    "errors": 0,
+    "warnings": 0,
+    "status": "Succeeded"
+  },
+  "python": {
+    "vision": 23,
+    "preview": 2,
+    "firewall": 11,
+    "allPassed": true
+  },
+  "management": "PASS",
+  "foundation": "PASS",
+  "shellSyntax": "PASS",
+  "diffCheck": "PASS",
+  "publicHttps": {
+    "classification": "EXTERNAL NETWORK LAB / no physical phone",
+    "tunnelStartupMs": 6986,
+    "version": "cloudflared version 2026.10.0 (built 2026-10-05-17:37 UTC)",
+    "publicHttpsStatus": 200,
+    "forbidden": {
+      "/mobile/admission": 404,
+      "/mobile/diagnostics": 404,
+      "/mobile/end": 404,
+      "/ipc": 404,
+      "/qa/preview": 404,
+      "/camera/preview": 404,
+      "/prepare": 404,
+      "/ca.key": 404,
+      "/actuator": 404
+    },
+    "invalidAdmissionStatus": 400,
+    "cleanupComplete": true,
+    "gate": "PASS",
+    "supervisor": {
+      "probeFailure": "ConnectException",
+      "registered": true,
+      "healthAttempts": 6,
+      "binarySha": "PASS",
+      "failure": "NONE",
+      "lastHttpsStatus": 200,
+      "cleanupComplete": true
+    }
+  },
+  "publicIntermittentFailure": {
+    "classification": "EXTERNAL NETWORK LAB / no physical phone",
+    "gate": "BLOCKED",
+    "reason": "IOException",
+    "supervisor": {
+      "registered": true,
+      "probeFailure": "HttpConnectTimeoutException",
+      "cleanupComplete": true,
+      "lastHttpsStatus": 0,
+      "failure": "TUNNEL_HTTPS_UNAVAILABLE",
+      "binarySha": "PASS",
+      "healthAttempts": 57
+    }
+  },
+  "realRtc": {
+    "CABINSelectedPairs": [
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50000,
+        "protocol": "udp"
+      },
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50001,
+        "protocol": "udp"
+      },
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50002,
+        "protocol": "udp"
+      },
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50003,
+        "protocol": "udp"
+      }
+    ],
+    "CABIN": {
+      "event": "COMPLETE",
+      "classification": "LAB / real gateway and RTC; stub external tunnel",
+      "mode": "CABIN",
+      "counts": [
+        {
+          "clients": 1,
+          "players": [
+            1
+          ]
+        },
+        {
+          "clients": 2,
+          "players": [
+            1,
+            2
+          ]
+        },
+        {
+          "clients": 3,
+          "players": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "clients": 4,
+          "players": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "gate": "PASS",
+      "rtc": [
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50000
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        },
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50001
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        },
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50002
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        },
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50003
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        }
+      ],
+      "nonLanCandidateRejected": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "afterTunnelLoss": [
+        {
+          "state": "RUNNING",
+          "player": 1,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        },
+        {
+          "state": "RUNNING",
+          "player": 2,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        },
+        {
+          "state": "RUNNING",
+          "player": 3,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        },
+        {
+          "state": "RUNNING",
+          "player": 4,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        }
+      ],
+      "reconnect": {
+        "samePlayer": true,
+        "epoch": 2
+      },
+      "fifthOrReusedAdmissionDenied": true
+    },
+    "AUTOSelectedPairs": [
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50000,
+        "protocol": "udp"
+      },
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50001,
+        "protocol": "udp"
+      },
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50002,
+        "protocol": "udp"
+      },
+      {
+        "state": "NOT_MEASURED"
+      },
+      {
+        "remoteType": "host",
+        "localType": "host",
+        "state": "SELECTED",
+        "serverPort": 50003,
+        "protocol": "udp"
+      }
+    ],
+    "AUTO": {
+      "event": "COMPLETE",
+      "classification": "LAB / real gateway and RTC; stub external tunnel",
+      "mode": "AUTO",
+      "counts": [
+        {
+          "clients": 1,
+          "players": [
+            1
+          ]
+        },
+        {
+          "clients": 2,
+          "players": [
+            1,
+            2
+          ]
+        },
+        {
+          "clients": 3,
+          "players": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "clients": 4,
+          "players": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "gate": "PASS",
+      "rtc": [
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50000
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        },
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50001
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        },
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50002
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        },
+        {
+          "iceServers": 0,
+          "pairs": [
+            {
+              "local": "host",
+              "remote": "host",
+              "localPrivate": null,
+              "remotePrivate": true,
+              "serverPort": 50003
+            }
+          ],
+          "motionOrdered": false,
+          "retransmits": 0
+        }
+      ],
+      "nonLanCandidateRejected": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "afterTunnelLoss": [
+        {
+          "state": "RUNNING",
+          "player": 1,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        },
+        {
+          "state": "RUNNING",
+          "player": 2,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        },
+        {
+          "state": "RUNNING",
+          "player": 3,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        },
+        {
+          "state": "RUNNING",
+          "player": 4,
+          "epoch": 1,
+          "sent": 40,
+          "errors": 0,
+          "pending": 0,
+          "telemetry": 40
+        }
+      ],
+      "reconnect": {
+        "samePlayer": true,
+        "epoch": 2
+      },
+      "fifthOrReusedAdmissionDenied": true
+    }
+  },
+  "previousAttempts": {
+    "java": "One initial TLS fixture assertion still expected admission200 before preflight; changed to503 fail-closed with actual IPC nesting assertions retained. One later optional public HTTPS attempt timed out; retained BLOCKED, not suppressed by timeout increase. Java fixture JSON numeric-node normalization fixed. Stats fixture duplicate local declaration corrected before tests.",
+    "unity": "Initial full PlayMode26/29: stale expectation of automatic QR rotation and two browser tools missing forwarded host environment. Corrected frozen-QR expectation and host tool wrapper; full29/29 passed."
+  },
+  "physical": {
+    "status": "PENDING / final physical JOIN and cleanup not confirmed by the human; no new PASS inferred",
+    "T019": "OPEN",
+    "T020": "OPEN",
+    "F05": "OPEN",
+    "E0": "OPEN",
+    "T063": "CLOSED Software/Lab unless actual regression",
+    "Phase1": "NOT STARTED"
+  },
+  "materialLimit": "Protected UFW files require first administrative inspection without an existing trusted receipt; cannot prove existing equivalent rules non-elevated on this host.",
+  "sourceHashes": {
+    ".github/workflows/foundation-validation.yml": "2d71b8f4e0b5df61bff1394188230986e34daab845943a1f33bccafde58925a2",
+    "README.md": "f440b6ac0afd060aca293d15c380386bee66c8b322a7712842070918b6480524",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/ConnectionBootstrap.java": "aa7c8fcf23e7bbd66a93de911285d5f7e1ca7230133ddbbeaf599e0958933bc2",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/ConnectivityService.java": "aa3a4222285b9a20a376741b7107db14c3ad5d2603476d3542a7107cf72fcd42",
+    "Server/src/main/java/com/gorillaescape/server/connectivity/FirewallPreflight.java": "b84ec0116a01c993e0088f1e39a730af36121687b340dfdc0d3d3eb76e2b23a9",
+    "Server/src/main/java/com/gorillaescape/server/hosting/TrustOnboarding.java": "02b3a7e4c744e2baece42256ae2083df7f4d2dc238417939a20158e597b23e06",
+    "Server/src/main/java/com/gorillaescape/server/ipc/ManagedProbe.java": "46eba41ae39a03a9f15d3572837fa53f5b396f3a05f39977eaab571fde270169",
+    "Server/src/main/java/com/gorillaescape/server/mobile/JoinDiagnostic.java": "6b4feda4efb80bfd6215f3531cf55e3478c61263b509c690c3cd1ce67f703e0b",
+    "Server/src/main/java/com/gorillaescape/server/mobile/MobileRuntime.java": "8db3666b18dc9ef89e37789d0608df55409982f39ba8ba50e2c0502ac3f480fd",
+    "Server/src/test/java/com/gorillaescape/server/connectivity/BootstrapRtcLabTest.java": "079d19958d614e7850af33575450a49139d42768ea38ecc908416f80059b689e",
+    "Server/src/test/java/com/gorillaescape/server/connectivity/ConnectivityTest.java": "03c46544a2a891e25bb9ad3e4960ace3863c14e48de436a77a8112825bc54216",
+    "Server/src/test/java/com/gorillaescape/server/connectivity/FirewallPreflightTest.java": "d41861b7723dfcd839ef1c536e5a0069f5ed4a9f0fa7d7dbfe1340cfcc5e5a7c",
+    "Server/src/test/java/com/gorillaescape/server/hosting/LocalTrustProcessTest.java": "e43e84c27ceb76e9e0bd187211f84031354664ee8c13b48d86bb96d863143a1a",
+    "Server/src/test/java/com/gorillaescape/server/hosting/TrustRecoveryTest.java": "4f4090376b6d068282b5ee03c4647b6d36473addae549faee0f1f32856a0dd07",
+    "Server/src/test/java/com/gorillaescape/server/protocol/QaHostingContractTest.java": "7d602eb890f75a0f5822ac3fd8f374063bfb3c4cbf5633caa0941bd133bfad77",
+    "Shared/CSharp/Runtime/PhoneInputWire.cs": "9870babd72194abb0a8ac90b592f5f2e9823d45d0cda5a35baba36ba05e1b1eb",
+    "Shared/Protocol/fixtures/qa-hosting.json": "a2aac237bf425d2e6e2b1d5939b715bf685f1e1f30062b0b2da0a4bb69021dfb",
+    "Unity/Assets/_Project/Scripts/Network/JavaProbeSupervisor.cs": "d9211bc778a8653a2e02794ffce436610158ae9457825c7e2cd51715f16fd594",
+    "Unity/Assets/_Project/Scripts/QA/QaRuntimeService.cs": "15697232fca622435934dbf7e4f1699798f3ce4cd9cbb99ef0b82714f39d7d2d",
+    "Unity/Assets/_Project/Scripts/UI/MainMenuController.cs": "5dd4fe498607fbab160eb773f6f69d591e3ea393494c6fbc6cf7ef7d9a0ba9ae",
+    "Unity/Assets/_Project/Scripts/UI/TestsMenuView.cs": "6a474f07b93886afc8a6d58c54b0b5f79c3e31d068d73c9fdc0cd2c3d06f4137",
+    "Unity/Assets/_Project/Tests/EditMode/QaHostingContractTests.cs": "b30eea58aaf0a2e81f8161b66930dd7e17afc5e83a81bf0903a065e309471c36",
+    "Unity/Assets/_Project/Tests/EditMode/QaHostingContractTests.cs.meta": "d606b62bff1d33550b0deb1afab72c620c9a75ee0fc3322877007e2028e11de4",
+    "Unity/Assets/_Project/Tests/PlayMode/LiveQaIpcTests.cs": "9d64203a196269687b125213644151224c09d3da4821743c8c1a083eddc78ca1",
+    "Unity/Assets/_Project/Tests/PlayMode/MainMenuNavigationTests.cs": "b2c8b9888198b30ed0da8ab881646e6198c29cb70b45f6b3394a5b6a3f30fffa",
+    "docs/DECISIONS.md": "e8f1dec92ab0cf9ce772e1512f9510d6d856855732740b24aafc1c5ba15309b3",
+    "docs/DEVELOPMENT_PROGRESS.md": "9b2c8836a7f8b9c8829ab5b274a27e67c7a29287dd1a56e6c2cdd9d658cfb11c",
+    "docs/PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md": "8bc3ccfe940b4f16e93b87f9e421c08413d60673648fd7f456f6b6b67d696287",
+    "docs/PHASE0_PHONE_CONNECTION_FINAL.md": "d47161f6e1482e5ec720a22be466d6164a5e42c860515b1ff9d95be1c8ba3ec6",
+    "docs/PHASE0_T063_TRANSPARENT_AUTO.md": "076d7a430d9f6fa8445c28a1dda990812fe6cc19472eb4d43b7b02e7f6647045",
+    "docs/TEAM_START.md": "83caa3ca6a8e101e57fd18d46d1e6f0ac182ace968ae76d1b4b6fc37f161ce43",
+    "docs/TEST_REPORT.md": "bb0eb030b16066c40713d0c50670711ef99cd0da121b3204fa81e76b5b09d77b",
+    "tools/connectivity/firewall.py": "7c436b9067d007b45bfbcb0905ab6f5160138f123e1b6ae897ca28ff49d30190",
+    "tools/connectivity/test_firewall.py": "cc8b2d8a9d63bd4c5a865a3de455edc7ce1a0dcc178f8a4e085945aa2fb3980a",
+    "tools/setup-firewall.sh": "48afb0b60862736442176be74d49bb2634c6d2bee9ebcdbddabf803dbc24638e",
+    "tools/t020/package.py": "6976ff5d52f25e5278def3748faaf3a31abefbc36c8e9dea32f589fc8bfb272a",
+    "tools/t062/run-qa.sh": "88d10ad8ee1b738283135f1e6a03060566e76b793524092c89c0d3e437a1fbc5",
+    "tools/t063/bootstrap-rtc-lab.mjs": "85887ef1c709485f24033764d505e43e2ad9f38869fa666ab7e6e11f3d4676dc"
+  },
+  "publicationReview": {
+    "labIsolation": "PASS: explicit LAB CHECK/INSTALL/RECOVERY cannot invoke physical helper",
+    "firewallOwnership": "PASS: exact tuple and ownership comment must match on the same UFW line",
+    "teamImplementationAuthorized": true,
+    "acceptanceGatesClosed": false,
+    "countsDelta": "Java+1 LAB isolation regression, Python+1 foreign-rule/comment regression since initial candidate; Unity sources unchanged"
+  }
+}

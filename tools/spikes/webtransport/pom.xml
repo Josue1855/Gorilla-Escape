@@ -1,0 +1,8 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"><modelVersion>4.0.0</modelVersion>
+<groupId>com.gorillaescape.spike</groupId><artifactId>wt-probe</artifactId><version>0.0.1</version>
+<properties><maven.compiler.release>21</maven.compiler.release><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
+<dependencies>
+<dependency><groupId>io.github.suboptimal-solutions</groupId><artifactId>netty-codec-webtransport</artifactId><version>0.0.1-SNAPSHOT</version></dependency>
+</dependencies>
+<build><extensions><extension><groupId>kr.motd.maven</groupId><artifactId>os-maven-plugin</artifactId><version>1.7.1</version></extension></extensions><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.13.0</version></plugin></plugins></build>
+</project>

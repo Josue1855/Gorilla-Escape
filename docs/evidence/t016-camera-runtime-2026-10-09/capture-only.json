@@ -1,0 +1,13 @@
+{
+  "measurementElapsedSeconds": 35.089784647,
+  "captureFrames": 700,
+  "captureDuration": 35.006207619,
+  "captureFps": 19.967887056140583,
+  "captureReadFrames": 700,
+  "captureReadDuration": 35.006207619,
+  "captureReadFps": 19.967887056140583,
+  "captureReadP50Ms": 50.099118,
+  "captureReadP95Ms": 53.933681,
+  "scope": "Physical OpenCV capture-only isolation; no MediaPipe inference",
+  "cameraReleased": true
+}

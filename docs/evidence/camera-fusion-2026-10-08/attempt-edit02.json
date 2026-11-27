@@ -1,0 +1,13 @@
+{
+  "gate": "FAIL",
+  "passed": 39,
+  "failed": 2,
+  "causes": [
+    "alignment test unintentionally classified age 300ms as stale against budget 250ms",
+    "equidistant pair selected older phone sample"
+  ],
+  "repairs": [
+    "explicit 400ms phone age in delta-only test",
+    "tie-break prefers newer phone timestamp/sequence then camera sequence"
+  ]
+}

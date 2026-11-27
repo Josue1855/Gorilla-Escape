@@ -1,0 +1,1078 @@
+{
+  "projectId": "PVT_kwHOBFweE84Bl2mT",
+  "fields": [
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzWs",
+      "name": "Title",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzWw",
+      "name": "Assignees",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+      "name": "Status",
+      "options": [
+        {
+          "id": "0b2823c5",
+          "name": "Backlog"
+        },
+        {
+          "id": "6ecf9cc2",
+          "name": "Ready"
+        },
+        {
+          "id": "c4217f5e",
+          "name": "In Progress"
+        },
+        {
+          "id": "cb74130a",
+          "name": "In Review"
+        },
+        {
+          "id": "9fb36150",
+          "name": "Validation"
+        },
+        {
+          "id": "05f75440",
+          "name": "PO Review"
+        },
+        {
+          "id": "563deb79",
+          "name": "Done"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzW4",
+      "name": "Labels",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzW8",
+      "name": "Linked pull requests",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXA",
+      "name": "Milestone",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXE",
+      "name": "Repository",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXM",
+      "name": "Reviewers",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXQ",
+      "name": "Parent issue",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXU",
+      "name": "Sub-issues progress",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXY",
+      "name": "Created",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXc",
+      "name": "Updated",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXg",
+      "name": "Closed",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KQ",
+      "name": "Priority",
+      "options": [
+        {
+          "id": "2315b011",
+          "name": "Critical"
+        },
+        {
+          "id": "251fbd2f",
+          "name": "High"
+        },
+        {
+          "id": "d7315eaf",
+          "name": "Medium"
+        },
+        {
+          "id": "96b38fec",
+          "name": "Low"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+      "name": "Phase",
+      "options": [
+        {
+          "id": "17aa3b95",
+          "name": "0"
+        },
+        {
+          "id": "9bf5f6aa",
+          "name": "1"
+        },
+        {
+          "id": "f27967b6",
+          "name": "2"
+        },
+        {
+          "id": "9cd106ae",
+          "name": "3"
+        },
+        {
+          "id": "5c4e0aab",
+          "name": "4"
+        },
+        {
+          "id": "10d694af",
+          "name": "5"
+        },
+        {
+          "id": "77fdf4e7",
+          "name": "6"
+        },
+        {
+          "id": "5a0d8d1a",
+          "name": "Futuro"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+      "name": "Area",
+      "options": [
+        {
+          "id": "26be4479",
+          "name": "Mobile/PWA"
+        },
+        {
+          "id": "c1ebfd9e",
+          "name": "Network"
+        },
+        {
+          "id": "85529b56",
+          "name": "Server"
+        },
+        {
+          "id": "5e9fbb00",
+          "name": "Protocol"
+        },
+        {
+          "id": "cdd11b6b",
+          "name": "Unity/Core"
+        },
+        {
+          "id": "2116b5c4",
+          "name": "Gameplay"
+        },
+        {
+          "id": "0d73445e",
+          "name": "Camera/Tracking"
+        },
+        {
+          "id": "c38cfd32",
+          "name": "UI/Art"
+        },
+        {
+          "id": "1cba9ea6",
+          "name": "CI/QA"
+        },
+        {
+          "id": "ff3a3bc0",
+          "name": "Documentation"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Kc",
+      "name": "Risk",
+      "options": [
+        {
+          "id": "567718ff",
+          "name": "Critical"
+        },
+        {
+          "id": "5d106018",
+          "name": "High"
+        },
+        {
+          "id": "11849f25",
+          "name": "Medium"
+        },
+        {
+          "id": "1f2288ac",
+          "name": "Low"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+      "name": "Target Release",
+      "options": [
+        {
+          "id": "216e6e9b",
+          "name": "v1.0 — MVP"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkh1Lw",
+      "name": "Story Points",
+      "type": "ProjectV2Field"
+    },
+    {
+      "id": "PVTIF_lAHOBFweE84Bl2mTzhkh1L0",
+      "name": "Iteration",
+      "type": "ProjectV2IterationField"
+    },
+    {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhlkHXc",
+      "name": "MVP Scope",
+      "options": [
+        {
+          "id": "db4fc05c",
+          "name": "Academic MVP / P0"
+        },
+        {
+          "id": "688f4507",
+          "name": "Post-MVP / P1"
+        },
+        {
+          "id": "413a11b1",
+          "name": "Future / P2"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    }
+  ],
+  "items": [
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGm0",
+      "title": "[E0] Base técnica y viabilidad",
+      "status": "In Progress",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 1
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGoI",
+      "title": "[E1] Vertical Slice Gorilla Smash",
+      "status": "Backlog",
+      "phase": "1",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 2
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGqE",
+      "title": "[E2] Sistemas reutilizables",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 3
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGrc",
+      "title": "[E3] Tres minijuegos restantes",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 4
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGt4",
+      "title": "[E4] Integración del torneo",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 5
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGwQ",
+      "title": "[E5] Polish y balance",
+      "status": "Backlog",
+      "phase": "5",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 6
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGxI",
+      "title": "[E6] Freeze, QA y entrega",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 7
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGyQ",
+      "title": "[EFuturo] Opcionales y roadmap fuera del MVP",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "issue": 8
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGzo",
+      "title": "[F00] Decisiones de viabilidad y hardware",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 9
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG08",
+      "title": "[T001] Aclarar frontera Spike / Vertical Slice y autoridad de resultados",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 10
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG2E",
+      "title": "[T002] Inventariar PC, webcam, teléfonos, red y navegadores oficiales",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 11
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG3U",
+      "title": "[T003] Validar versiones Unity/Java y ruta de integración nativa",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 12
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG4M",
+      "title": "[F01] Monorepo y base ejecutable",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 13
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG6A",
+      "title": "[T004] Crear base Unity con Bootstrap y separación inicial",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 14
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG7o",
+      "title": "[T005] Preparar host Java/Spring Boot local y ciclo de vida",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 15
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG80",
+      "title": "[T006] Configurar contratos React/Java/Unity y fixtures JSON v1",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 16
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xG_M",
+      "title": "[T007] Configurar CI por componentes y build reproducible inicial",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 17
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHAo",
+      "title": "[F02] Control móvil seguro y offline",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 18
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHDA",
+      "title": "[T008] Resolver contexto seguro PWA, señalización LAN e incorporación por QR",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 19
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHFE",
+      "title": "[T009] Crear shell PWA y flujo de permisos",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 20
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHIg",
+      "title": "[T010] Capturar aceleración, giro y orientación con frecuencia efectiva",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 21
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHJw",
+      "title": "[T011] Validar PWA/red sin WAN y recuperación de visibilidad",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 22
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHL0",
+      "title": "[F03] Red local y adaptador Unity",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 23
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHNM",
+      "title": "[T012] Implementar WebRTC DataChannel y validación Gorilla Protocol v1",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 24
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHOk",
+      "title": "[T013] Implementar admisión y asociación de controles al lobby",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 25
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHQI",
+      "title": "[T014] Conectar adaptador Unity a PhoneInput",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 26
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHRU",
+      "title": "[T015] Implementar heartbeat, reconexión y cancelación segura",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 27
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHSU",
+      "title": "[F04] Cámara local y viabilidad de tracking",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 28
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHTs",
+      "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 29
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHVk",
+      "title": "[T017] Validar ROI, Player Lock y recuperación de tracking",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 30
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHWw",
+      "title": "[F05] Evidencia de viabilidad técnica end-to-end",
+      "status": "In Progress",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 31
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHYE",
+      "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales",
+      "status": "Done",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 32
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHZo",
+      "title": "[T019] Ejecutar validación base con cuatro teléfonos y fallos",
+      "status": "Validation",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 33
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHbE",
+      "title": "[T020] Validar build mínima en PC limpia y dictamen de viabilidad",
+      "status": "Validation",
+      "phase": "0",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 34
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHcs",
+      "title": "[F10] Gorilla Smash de extremo a extremo",
+      "status": "Backlog",
+      "phase": "1",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 35
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHeM",
+      "title": "[T021] Construir gesto Smash con calibración y validación mínima",
+      "status": "Backlog",
+      "phase": "1",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 36
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHfY",
+      "title": "[T022] Implementar Smash: intentos, scoring y loop de resultado",
+      "status": "Backlog",
+      "phase": "1",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 37
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHg8",
+      "title": "[T023] Integrar tutorial, escena y feedback del slice",
+      "status": "Backlog",
+      "phase": "1",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 38
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHis",
+      "title": "[T024] Validar slice Smash con hardware y jugadores externos",
+      "status": "Backlog",
+      "phase": "1",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 39
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHkg",
+      "title": "[F20] Sesión, jugadores y calibración reutilizables",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 40
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHls",
+      "title": "[T025] Generalizar sesión y jugadores con estado único",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 41
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHnc",
+      "title": "[T026] Generalizar calibración adaptativa y configuración central",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 42
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHo8",
+      "title": "[F21] Motion Analyzer y Input Fusion reutilizables",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 43
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHqs",
+      "title": "[T027] Generalizar análisis temporal, filtros y coordenadas",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 44
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHsE",
+      "title": "[T028] Generalizar fusión, InputValidator y recuperación",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 45
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHtY",
+      "title": "[F22] Scoring, GP, resultados y persistencia comunes",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 46
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHvM",
+      "title": "[T029] Implementar Gorilla Points y desempates comunes",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 47
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHwg",
+      "title": "[T030] Generalizar resultados, JSON local y telemetría",
+      "status": "Backlog",
+      "phase": "2",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 48
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHx8",
+      "title": "[F30] Coconut Throw completo",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 49
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHzk",
+      "title": "[T031] Implementar mecánica y scoring de Coconut Throw",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 50
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xH2c",
+      "title": "[T032] Integrar tutorial, feedback, resultado y turnos de Coconut Throw",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 51
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xH4o",
+      "title": "[T033] Validar Coconut Throw con input real y recuperación",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 52
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xH6Y",
+      "title": "[F31] Jungle Archery completo",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 53
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xH8w",
+      "title": "[T034] Implementar mecánica y scoring de Jungle Archery",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 54
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xH-g",
+      "title": "[T035] Integrar tutorial, feedback, resultado y turnos de Jungle Archery",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 55
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIAo",
+      "title": "[T036] Validar Jungle Archery con input real y recuperación",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 56
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xICE",
+      "title": "[F32] Coconut Bowling completo",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 57
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIDk",
+      "title": "[T037] Implementar mecánica y scoring de Coconut Bowling",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 58
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIEw",
+      "title": "[T038] Integrar tutorial, feedback, resultado y turnos de Coconut Bowling",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 59
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIGs",
+      "title": "[T039] Validar Coconut Bowling con input real y recuperación",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 60
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIIc",
+      "title": "[F33] Jungle Slice completo",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 61
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIJ8",
+      "title": "[T040] Implementar mecánica y scoring de Jungle Slice",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 62
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIMs",
+      "title": "[T041] Integrar tutorial, feedback, resultado y turnos de Jungle Slice",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 63
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIPI",
+      "title": "[T042] Validar Jungle Slice con input real y recuperación",
+      "status": "Backlog",
+      "phase": "3",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 64
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIQU",
+      "title": "[F40] Torneo completo y flujo de producto",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 65
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIRs",
+      "title": "[T043] Integrar secuencia del torneo, transiciones y final",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 66
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xITo",
+      "title": "[T044] Integrar narrativa funcional, menús y Modo Fiesta Próximamente",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 67
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIU4",
+      "title": "[F41] Presentación común, móvil y accesibilidad P0",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 68
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIWI",
+      "title": "[T045] Producir cuatro avatares y assets/animaciones P0",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 69
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIX4",
+      "title": "[T046] Integrar UI móvil de turnos, resultados y errores",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 70
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIY4",
+      "title": "[T047] Integrar audio, accesibilidad básica y seguridad",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 71
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIaY",
+      "title": "[F50] Balance, game feel y rendimiento del MVP",
+      "status": "Backlog",
+      "phase": "5",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 72
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIb0",
+      "title": "[T048] Ajustar curvas, filtros y balance de cuatro disciplinas MVP",
+      "status": "Backlog",
+      "phase": "5",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 73
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIdE",
+      "title": "[T049] Pulir feedback audiovisual y cámaras virtuales",
+      "status": "Backlog",
+      "phase": "5",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 74
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIf8",
+      "title": "[T050] Optimizar rendimiento y experiencia de incorporación",
+      "status": "Backlog",
+      "phase": "5",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 75
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xIhg",
+      "title": "[F60] QA de aceptación y cierre de defectos",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 76
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mS4",
+      "title": "[T051] Ejecutar matriz cuantitativa y pruebas de regresión",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 77
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mVk",
+      "title": "[T052] Validar experiencia externa, seguridad y privacidad",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 78
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mXY",
+      "title": "[T053] Cerrar bugs reales y verificar aceptación P0",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 79
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mas",
+      "title": "[F61] Build final, evidencia y presentación",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 80
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mnI",
+      "title": "[T054] Preparar build final y documentación de uso/compatibilidad",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 81
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mpA",
+      "title": "[T055] Preparar evidencia y presentación del MVP para aceptación",
+      "status": "Backlog",
+      "phase": "6",
+      "mVP Scope": "Academic MVP / P0",
+      "target Release": "v1.0 — MVP",
+      "issue": 82
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mrU",
+      "title": "[FF1] Opcionales P1 — sólo tras completar P0",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 83
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mtU",
+      "title": "[T056] Evaluar feedback extra, animaciones y móvil enriquecido",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 84
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mvg",
+      "title": "[T057] Evaluar récords, estadísticas, asistencia y accesibilidad ampliada",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 85
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8mx0",
+      "title": "[FF2] Roadmap P2 condicionado fuera del MVP",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "mVP Scope": "Future / P2",
+      "issue": 86
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8m0I",
+      "title": "[T058] Catalogar Fiesta, contenido, personalización y eventos futuros",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "mVP Scope": "Future / P2",
+      "issue": 87
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-8m2E",
+      "title": "[T059] Catalogar opciones de plataforma y red bajo revisión de alcance",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "mVP Scope": "Future / P2",
+      "issue": 88
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzg--GiI",
+      "title": "Investigate Unity 6000.3.23f1 development environment diagnostics",
+      "status": "Backlog",
+      "issue": 89
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzhAnYUQ",
+      "title": "[T060] Implementar control alternativo de usuario para el torneo académico",
+      "status": "Backlog",
+      "phase": "4",
+      "mVP Scope": "Academic MVP / P0",
+      "issue": 104
+    },
+    {
+      "id": "PVTI_lAHOBFweE84Bl2mTzhAnays",
+      "title": "[T061] Validar Player Lock con sujetos humanos en hardware real",
+      "status": "Backlog",
+      "phase": "Futuro",
+      "mVP Scope": "Post-MVP / P1",
+      "issue": 106
+    }
+  ],
+  "scopeFailures": "No permissions failure. Mixed P1/P2 historical options without an exact single-select mapping kept unchanged/unset. Scope reconciliation local script initially stopped on that mixed value, then completed exact P0/P1/P2 mappings.",
+  "views": "All existing10 preserved; no view mutations"
+}

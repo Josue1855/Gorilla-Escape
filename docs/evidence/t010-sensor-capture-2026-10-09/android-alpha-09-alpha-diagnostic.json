@@ -1,0 +1,22 @@
+{
+  "scope": "Android virtual sensor observer; cumulative since activation, no physical claim",
+  "maximumStoredViolations": 8,
+  "alphaViolationCount": 14,
+  "alphaViolationMin": 360,
+  "alphaViolationMax": 360,
+  "firstAlphaViolations": [
+    360,
+    360,
+    360,
+    360,
+    360,
+    360,
+    360,
+    360
+  ],
+  "orientationRangeRejected": {
+    "alpha": 14,
+    "beta": 0,
+    "gamma": 0
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "dateLocal": "2026-10-07",
+  "head": "0d940f77f533bb6780bc3f07169dce414ea21e54",
+  "branch": "feature/mobile-phase0-lan-https-3a",
+  "classificationLimit": "Path-level attribution from conversation and prior inventory; exact contents saved, no blanket authorization to commit",
+  "files": [
+    {
+      "path": "PWA/spikes/sensors/README.md",
+      "sha256": "d484dd21928be6c43fbba0ff70a67b67523c097ca408aabc3fd1a997d4b64d7f",
+      "classification": "prior-sequence-sensor-spike; preserve"
+    },
+    {
+      "path": "PWA/spikes/sensors/capture.js",
+      "sha256": "4cab6a873b6926a868828d5f9417b1aa0fa8a9cc7d0b4bf713504d80848642ad",
+      "classification": "prior-sequence-sensor-spike; preserve"
+    },
+    {
+      "path": "PWA/spikes/sensors/capture.test.js",
+      "sha256": "017405cf63d94c98bab32bc26a3b6852618c554a96f7d1b966c4d658d1abc04f",
+      "classification": "prior-sequence-sensor-spike; preserve"
+    },
+    {
+      "path": "PWA/spikes/sensors/index.html",
+      "sha256": "539fccf2f2f293a0fffb9f466512cb12eaf0456270243af1928946a35f573070",
+      "classification": "prior-sequence-sensor-spike; preserve"
+    },
+    {
+      "path": "docs/DECISIONS.md",
+      "sha256": "94a38bf4ee7ee459089c55b465eea709d65fd78fc5bcfed2b2782fddf95974ce",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/DEVELOPMENT_PROGRESS.md",
+      "sha256": "73cda1d23ac9a4b4175b457dd2bc1f5fca961010b65bb5e7a94a3566d581faee",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/DEVELOPMENT_RULES.md",
+      "sha256": "d50a03fd551cd9115275a017240c3322e937eb9af0287e763b4ee50aaf3ce8fd",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md",
+      "sha256": "4a67a7de3811822f292fc194a970404641fc49f1fbf3d24ed8e3dc70b1c1b0ec",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/PHASE0_INPUT_FUSION_CONCEPT.md",
+      "sha256": "23e5108481567c4792f2c76c4dd737b7558f9e5755f3b3410dfa84b01623f921",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/PHASE0_PORTABLE_LAN_REDESIGN.md",
+      "sha256": "2b9b2588ee1ebd6cac2c2db27fc49d30c39919a1b0f89776dbf2f21701c9718d",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/PHASE0_SECURE_MOTION_SPIKE_PLAN.md",
+      "sha256": "16b24dd97c68ea313efb02424149489226903880518336ce2d4acec5ecf24acd",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md",
+      "sha256": "fea8d17c2dda26c82bec7d76fd8a4e295b4067d046f1ee6a24382980306ac622",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/TEST_REPORT.md",
+      "sha256": "4f99fc27319ff26a765b566eaf4042592f3bcd6b0b5746a1458cb445a024c8d0",
+      "classification": "prior-sequence-documentation; preserve; no current rewrite"
+    },
+    {
+      "path": "docs/evidence/pwa-sensors-spike-2026-10-07/results.json",
+      "sha256": "43e2d5c3c1790dcb72ab48ea58965ecb9abda6082af5f6ab919ba078cf0bf583",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/final/connection-error.png",
+      "sha256": "9a94ab0b635b81b81723f8f4ddb011f0b4af0c0574a43dc0b39eab1718b1a28a",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/final/react-health.png",
+      "sha256": "50d194a58b4a34c2165097b7d3661fb051d811cc2e4bb5f55f2c3ec19b667799",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/final/results.json",
+      "sha256": "4365bc84c42248a10b5241397b60ec19f06fea7a251dc6d3cd4d80df55fd49ba",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/final/sensors-virtual-stopped.png",
+      "sha256": "9e8fad2a6caafe44b16a1bde80b42ed1f13b4a32ea4da966ba9d4d6c54f9ed38",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/final/webtransport-results.png",
+      "sha256": "427d53a72f636898af2bb17bd1cff06d6cf6ad55fc0507ffd32b1d00b673bc9e",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/initial/connection-error.png",
+      "sha256": "037865601e0d4fe26e30291b515ae37805449be0a5ab70ae7e85d1531d0d875a",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/initial/react-health.png",
+      "sha256": "50d194a58b4a34c2165097b7d3661fb051d811cc2e4bb5f55f2c3ec19b667799",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/initial/results.json",
+      "sha256": "d45056d635b0c3a4ca1f4a1f4208dadc9e3134779104f26843efe21e92113e75",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/initial/sensors-virtual-stopped.png",
+      "sha256": "9e8fad2a6caafe44b16a1bde80b42ed1f13b4a32ea4da966ba9d4d6c54f9ed38",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/initial/webtransport-results.png",
+      "sha256": "427d53a72f636898af2bb17bd1cff06d6cf6ad55fc0507ffd32b1d00b673bc9e",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/strict-before-fix/connection-error.png",
+      "sha256": "037865601e0d4fe26e30291b515ae37805449be0a5ab70ae7e85d1531d0d875a",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/strict-before-fix/react-health.png",
+      "sha256": "50d194a58b4a34c2165097b7d3661fb051d811cc2e4bb5f55f2c3ec19b667799",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/strict-before-fix/results.json",
+      "sha256": "63329db15b919313dceb2c35fcab4b2f87c13857f0f3bbc040d3daf5235f0ae1",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/strict-before-fix/webtransport-results.png",
+      "sha256": "427d53a72f636898af2bb17bd1cff06d6cf6ad55fc0507ffd32b1d00b673bc9e",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/timer-diagnosis.json",
+      "sha256": "edb227b471a37c8149b820fefb168860a59133d9041f5e04d0e9e41e91b2b0a9",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-android-2026-10-07/unit-regression.json",
+      "sha256": "614c7b49f68d99893f57f9be63c98b60994993416e196b8207d9dce1390dd60e",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/dependencies.json",
+      "sha256": "dbb6c3789371a92162bfed975b1f3f973978a268411a12554f2fc34eb9f2adc3",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/lan-self.json",
+      "sha256": "9dd76d1ba7c7f1580510e03b802b03fa0c4a89941382df6b2cb12c15d261a443",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/loopback.json",
+      "sha256": "29c8055f6f3f4f8c61f997ed5936da6008c638cf5d260468a3265272876f46cb",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/netty-LICENSE.boringssl.txt",
+      "sha256": "827c8d8fc207c2392794eef9e00fe246f9f61fdcc132556c275be3dd8c3cd97f",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/netty-LICENSE.quiche.txt",
+      "sha256": "2ef4b5abfce387a83933bda738e72467a79d15c1c17679143ec55011dae66b84",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/netty-LICENSE.txt",
+      "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/netty-NOTICE.txt",
+      "sha256": "1775b0d91666fcb82493a5198f761b59a6d4d050bae6a4d26ecc377354068571",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "docs/evidence/webtransport-spike-2026-10-07/source-manifest.json",
+      "sha256": "2ace1591c7b480fad426eb85c926f4c13d1ff6e03d87f2c83f59677454759cbb",
+      "classification": "prior-sequence-evidence; immutable historical results"
+    },
+    {
+      "path": "tools/spikes/webtransport/.gitignore",
+      "sha256": "1141064ed2630abfb4a4b52385d7e6c5676a9a51c3c01a4884a7cdaf05609a74",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/DEPENDENCIES.md",
+      "sha256": "966679cba31d1a126284e6e0b4f6050559b892c7be136bf80c9549504efffd47",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/README.md",
+      "sha256": "4c6784e2ac7ec8f01d272b92f2d0225638a072b96272520a0b361ef665450e84",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/android.py",
+      "sha256": "d2bdd88af89ebceb18e5524ac1df3290b123c3a895b94422eb89ea380bcdf950",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/browser.mjs",
+      "sha256": "98f600adbc9b96fe7aea5609005d27ad92d566d13e2a63f713f5b21b5ae6b289",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/client.js",
+      "sha256": "b86e082aaa962e1aa5661a3aed2b241783f208935c1bca3330563a31c84d686c",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/pom.xml",
+      "sha256": "6baf64cdc4cdd93872c0fac618f6b69cf67d3570918d115df8aeedcdde22be52",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/prepare.py",
+      "sha256": "2e2f41266a9ee859379668be8dff24b388f6b8c20fdd852a9764cfcf076bd801",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/run.py",
+      "sha256": "cc40a5efc8acde6930759c6c18718f836a4d7fa69df108b0e3d5062aac9559a9",
+      "classification": "prior-sequence-WT-spike; preserve"
+    },
+    {
+      "path": "tools/spikes/webtransport/src/main/java/com/gorillaescape/spike/ProbeServer.java",
+      "sha256": "2d4f12f0062ef643e9f627610415f1865d3fa69c99ee78c6fe8e80e5328def33",
+      "classification": "prior-sequence-WT-spike; preserve"
+    }
+  ],
+  "patchSha256": "abcf5dd7bd9ff48f0660f65ad9bbd8a8f8d26cd23785cbe7c2578c7fe499d6c8",
+  "archiveSha256": "f951b3847477bbcb4d436a59762e9024aa48f774e3326169f2f99b679c08cf3c"
+}

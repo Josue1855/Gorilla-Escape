@@ -1,0 +1,15 @@
+# Selección experimental y licencias — 2026-10-07
+
+| Opción inspeccionada | Evidencia | Decisión para este laboratorio |
+|---|---|---|
+| [Flupke/Kwik](https://github.com/ptrd/flupke) | Java HTTP/3; LGPL-3.0; API Session WT inspeccionada no expone datagramas de sesión | No satisface ambos canales requeridos sin trabajo adicional; no confundir UDP interno con datagramas WT. |
+| [netty-webtransport](https://github.com/suboptimal-solutions/netty-webtransport) | Java 21, Apache-2.0; fuente `b63ebb06b0ab33af73c9bf1f96bedd9e7cb73243`; API bidi/datagramas, builds y ejemplos HTTP/3 | Usado exclusivamente en Spike; 0.0.1-SNAPSHOT compilado desde commit fijado, no release estable. |
+| [webtransport4j](https://github.com/webtransport4j/webtransport4j) | Investigación documental de alternativa; no usado ni compilado | No incorporado; soporte/mantenimiento y distribución no validados en este ensayo. |
+
+Se comprobó fuente/build/API/licencia del candidato elegido; mantenimiento de implementación pequeña y compatibilidad con drafts son riesgos, no garantía de soporte. [POM fijado](https://github.com/suboptimal-solutions/netty-webtransport/blob/b63ebb06b0ab33af73c9bf1f96bedd9e7cb73243/pom.xml). Archivo de fuente SHA-256 `2c365a76475898d0c9730e06af29ed744c52bbbceddabc0832df0a3d6d887de5`, validado al descargar. No se han modificado comportamientos de la biblioteca. Build upstream puede aplicar formato mediante sus plugins.
+
+Netty HTTP/3/QUIC 4.2.12.Final: Apache-2.0, con componentes nativos y avisos de terceros. No es Java puro: carga JNI/BoringSSL. Classpath resuelto contiene classifiers Linux x86_64/aarch_64, macOS x86_64/aarch_64 y Windows x86_64; presencia de JAR no demuestra ejecución en esas plataformas. Sólo Linux x86_64 probado. Portabilidad, empaquetado nativo y revisión completa de avisos legales antes de distribuir producto pendientes. Licencias/NOTICE y hashes reales conservados en [evidencia](../../../docs/evidence/webtransport-spike-2026-10-07/); las licencias BoringSSL/quiche se conservan separadas, no se declaran todas Apache.
+
+Herramientas build: Maven 3.9.11 (Apache-2.0), os-maven-plugin 1.7.1 (Apache-2.0), compiler plugin 3.13.0 (Apache-2.0); Maven cache aislado y checksum SHA-512 de distribución. Runtime QA usa herramientas existentes Chrome, Node, Playwright y Python cryptography, no incorporadas a dependencias del producto. No se distribuye JRE ni binarios en Git. No se ejecutan suites upstream al compilar `-DskipTests`; sí los seis escenarios del navegador real y validación local del build.
+
+[WebTransport W3C](https://www.w3.org/TR/webtransport/) define streams/datagramas y autenticación por certificado hash: no confundir ésta con admisión del jugador. [Secure Contexts](https://www.w3.org/TR/secure-contexts/) permite laboratorio loopback, sin resolver primera carga de PWA móvil. [WebKit Safari 26.4](https://webkit.org/blog/17862/webkit-features-for-safari-26-4/) documenta API: iPhone y pin efectivo permanecen NOT RUN. Comparación WebRTC ejecutable sigue pendiente, no iniciada.

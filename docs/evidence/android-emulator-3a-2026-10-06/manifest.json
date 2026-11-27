@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-06",
+  "pr": 94,
+  "head": "034ab44aa5b27c1812fc1b5f9f3cc8f7593debf1",
+  "toolSha256": "0025393bb3ed6a425b3c933833350fe4c7fbb9b1f49903783c867ea175f117ef",
+  "finalRun": "run-1791341181536643408",
+  "results": {
+    "PASS": 10,
+    "BLOCKED": 2,
+    "SKIP": 1
+  },
+  "attempts": [
+    {
+      "run": "run-1791340517591875090",
+      "result": "FAIL",
+      "detail": "Harness did not tolerate device not yet available; polling corrected."
+    },
+    {
+      "run": "run-1791340563406834566",
+      "result": "FAIL",
+      "detail": "DevTools readiness expired before first-run UI completed; UI-tree readiness corrected."
+    },
+    {
+      "run": "run-1791340676076487515",
+      "result": "PASS",
+      "detail": "Earlier harness version, component cases passed."
+    },
+    {
+      "run": "run-1791340815652968578",
+      "result": "PASS",
+      "detail": "Added native screenshot/logcat and graceful isolated ADB shutdown."
+    },
+    {
+      "run": "run-1791340910862756530",
+      "result": "FAIL",
+      "detail": "Timeout after browser restart; navigation readiness corrected without product changes."
+    },
+    {
+      "run": "run-1791341053305327069",
+      "result": "PASS",
+      "detail": "Navigation readiness passed; later reload readiness change not yet included."
+    },
+    {
+      "run": "run-1791341181536643408",
+      "result": "PASS",
+      "detail": "Final exact harness version; 10 PASS, 2 BLOCKED, 1 SKIP; owned processes exit 0 and residuals 0."
+    }
+  ],
+  "scope": "Component/browser QA only; physical LAN/public TLS remain blocked. Raw logs, disk images, credentials and temporary PKI excluded.",
+  "sanitizedEvidenceSha256": {
+    "connection-error.png": "037865601e0d4fe26e30291b515ae37805449be0a5ab70ae7e85d1531d0d875a",
+    "missing-sdk-results.json": "d7cdbb353b22854e3edf54c6fd5aaa974f82b3ad448bb1fa666eb6b3e0798b42",
+    "native-react-health.png": "34a2ee3af2d13edeeeee864ee26a15a77ffbcaac3a43eae70c8485514d02be10",
+    "results.json": "43e4b3ced0eee2cfb856fc68a071a26c0e873e045143e7b5c063202d28880226",
+    "tls-rejected.png": "315e6d79faee6a2062efa0f60ecabff50f941dbc0be17bd5879bac0d04538e30"
+  }
+}

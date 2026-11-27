@@ -1,0 +1,18 @@
+{
+  "scope": "Built Linux Player/relative Vision; physical webcam; private pipes/Unity store",
+  "wanProbeExit": 0,
+  "wanUnavailable": true,
+  "developerCacheHidden": true,
+  "imagePersistence": false,
+  "gate": "FAIL",
+  "humanTracking": "NOT RUN",
+  "error": "PACKAGED_CAMERA_STARTUP_FAILED",
+  "forcedPlayer": true,
+  "stderrBytes": 57,
+  "laterOwnCleanup": {
+    "playerResidual": false,
+    "visionResidual": false,
+    "traceResidual": false,
+    "note": "Own Player closed through X11 after failed harness deadline; no unrelated process terminated"
+  }
+}

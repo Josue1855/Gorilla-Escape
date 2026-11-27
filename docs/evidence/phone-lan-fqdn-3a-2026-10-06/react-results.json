@@ -1,0 +1,10 @@
+{
+  "tests": 5,
+  "passed": 5,
+  "errors": 0,
+  "build": "PASS",
+  "packagedFiles": 7,
+  "packagedBytesMatchDist": true,
+  "externalResources": "No required CDN/external URLs in app source/HTML/public assets/build worker; static inspection",
+  "reactSourceChanged": false
+}

@@ -1,0 +1,340 @@
+{
+  "projectId": "PVT_kwHOBFweE84Bl2mT",
+  "fields": {
+    "Title": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzWs",
+      "name": "Title",
+      "type": "ProjectV2Field"
+    },
+    "Assignees": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzWw",
+      "name": "Assignees",
+      "type": "ProjectV2Field"
+    },
+    "Status": {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkhzW0",
+      "name": "Status",
+      "options": [
+        {
+          "id": "0b2823c5",
+          "name": "Backlog"
+        },
+        {
+          "id": "6ecf9cc2",
+          "name": "Ready"
+        },
+        {
+          "id": "c4217f5e",
+          "name": "In Progress"
+        },
+        {
+          "id": "cb74130a",
+          "name": "In Review"
+        },
+        {
+          "id": "9fb36150",
+          "name": "Validation"
+        },
+        {
+          "id": "05f75440",
+          "name": "PO Review"
+        },
+        {
+          "id": "563deb79",
+          "name": "Done"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    "Labels": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzW4",
+      "name": "Labels",
+      "type": "ProjectV2Field"
+    },
+    "Linked pull requests": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzW8",
+      "name": "Linked pull requests",
+      "type": "ProjectV2Field"
+    },
+    "Milestone": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXA",
+      "name": "Milestone",
+      "type": "ProjectV2Field"
+    },
+    "Repository": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXE",
+      "name": "Repository",
+      "type": "ProjectV2Field"
+    },
+    "Reviewers": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXM",
+      "name": "Reviewers",
+      "type": "ProjectV2Field"
+    },
+    "Parent issue": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXQ",
+      "name": "Parent issue",
+      "type": "ProjectV2Field"
+    },
+    "Sub-issues progress": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXU",
+      "name": "Sub-issues progress",
+      "type": "ProjectV2Field"
+    },
+    "Created": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXY",
+      "name": "Created",
+      "type": "ProjectV2Field"
+    },
+    "Updated": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXc",
+      "name": "Updated",
+      "type": "ProjectV2Field"
+    },
+    "Closed": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkhzXg",
+      "name": "Closed",
+      "type": "ProjectV2Field"
+    },
+    "Priority": {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KQ",
+      "name": "Priority",
+      "options": [
+        {
+          "id": "2315b011",
+          "name": "Critical"
+        },
+        {
+          "id": "251fbd2f",
+          "name": "High"
+        },
+        {
+          "id": "d7315eaf",
+          "name": "Medium"
+        },
+        {
+          "id": "96b38fec",
+          "name": "Low"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    "Phase": {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KU",
+      "name": "Phase",
+      "options": [
+        {
+          "id": "17aa3b95",
+          "name": "0"
+        },
+        {
+          "id": "9bf5f6aa",
+          "name": "1"
+        },
+        {
+          "id": "f27967b6",
+          "name": "2"
+        },
+        {
+          "id": "9cd106ae",
+          "name": "3"
+        },
+        {
+          "id": "5c4e0aab",
+          "name": "4"
+        },
+        {
+          "id": "10d694af",
+          "name": "5"
+        },
+        {
+          "id": "77fdf4e7",
+          "name": "6"
+        },
+        {
+          "id": "5a0d8d1a",
+          "name": "Futuro"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    "Area": {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1KY",
+      "name": "Area",
+      "options": [
+        {
+          "id": "26be4479",
+          "name": "Mobile/PWA"
+        },
+        {
+          "id": "c1ebfd9e",
+          "name": "Network"
+        },
+        {
+          "id": "85529b56",
+          "name": "Server"
+        },
+        {
+          "id": "5e9fbb00",
+          "name": "Protocol"
+        },
+        {
+          "id": "cdd11b6b",
+          "name": "Unity/Core"
+        },
+        {
+          "id": "2116b5c4",
+          "name": "Gameplay"
+        },
+        {
+          "id": "0d73445e",
+          "name": "Camera/Tracking"
+        },
+        {
+          "id": "c38cfd32",
+          "name": "UI/Art"
+        },
+        {
+          "id": "1cba9ea6",
+          "name": "CI/QA"
+        },
+        {
+          "id": "ff3a3bc0",
+          "name": "Documentation"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    "Risk": {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Kc",
+      "name": "Risk",
+      "options": [
+        {
+          "id": "567718ff",
+          "name": "Critical"
+        },
+        {
+          "id": "5d106018",
+          "name": "High"
+        },
+        {
+          "id": "11849f25",
+          "name": "Medium"
+        },
+        {
+          "id": "1f2288ac",
+          "name": "Low"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    "Target Release": {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhkh1Ls",
+      "name": "Target Release",
+      "options": [
+        {
+          "id": "216e6e9b",
+          "name": "v1.0 — MVP"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    },
+    "Story Points": {
+      "id": "PVTF_lAHOBFweE84Bl2mTzhkh1Lw",
+      "name": "Story Points",
+      "type": "ProjectV2Field"
+    },
+    "Iteration": {
+      "id": "PVTIF_lAHOBFweE84Bl2mTzhkh1L0",
+      "name": "Iteration",
+      "type": "ProjectV2IterationField"
+    },
+    "MVP Scope": {
+      "id": "PVTSSF_lAHOBFweE84Bl2mTzhlkHXc",
+      "name": "MVP Scope",
+      "options": [
+        {
+          "id": "db4fc05c",
+          "name": "Academic MVP / P0"
+        },
+        {
+          "id": "688f4507",
+          "name": "Post-MVP / P1"
+        },
+        {
+          "id": "413a11b1",
+          "name": "Future / P2"
+        }
+      ],
+      "type": "ProjectV2SingleSelectField"
+    }
+  },
+  "changes": [
+    {
+      "issue": 4,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xGrc",
+      "scope": "P0",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 35,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xHcs",
+      "scope": "P0",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 49,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xHx8",
+      "scope": "P0",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 57,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xICE",
+      "scope": "P0",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 61,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xIIc",
+      "scope": "P0",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 53,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xH6Y",
+      "scope": "P1",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 54,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xH8w",
+      "scope": "P1",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 55,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xH-g",
+      "scope": "P1",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 56,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xIAo",
+      "scope": "P1",
+      "statusPreserved": "Backlog"
+    },
+    {
+      "issue": 65,
+      "itemId": "PVTI_lAHOBFweE84Bl2mTzg-xIQU",
+      "scope": "P0",
+      "statusPreserved": "Backlog"
+    }
+  ],
+  "fallback": {
+    "number": 104,
+    "node": "I_kwDOU9aZ0c8AAAABXDxJSg",
+    "itemId": "PVTI_lAHOBFweE84Bl2mTzhAnYUQ"
+  },
+  "views": "Preserved; no view mutations attempted"
+}

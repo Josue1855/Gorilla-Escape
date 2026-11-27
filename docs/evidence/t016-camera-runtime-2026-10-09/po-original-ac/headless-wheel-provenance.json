@@ -1,0 +1,24 @@
+{
+  "comment_text": null,
+  "core-metadata": {
+    "sha256": "df5254c1dc2d39dd9390bf1cc039147ad406b418b16e594845dfbb5ed4f072de"
+  },
+  "digests": {
+    "blake2b_256": "6e0989714580c617cf6e9f66eed9137759fc017ab6ab093c2a03227e8ee19578",
+    "md5": "b0ea8ac7d64feeaa57c6b53b61c4fccb",
+    "sha256": "c9b028adc04f6579f37227eb1d648bead14fd6fefc58da86df37c8320351f7bd"
+  },
+  "downloads": -1,
+  "filename": "opencv_contrib_python_headless-4.13.0.92-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+  "has_sig": false,
+  "md5_digest": "b0ea8ac7d64feeaa57c6b53b61c4fccb",
+  "packagetype": "bdist_wheel",
+  "python_version": "cp37",
+  "requires_python": ">=3.6",
+  "size": 62147375,
+  "upload_time": "2026-02-05T10:20:03",
+  "upload_time_iso_8601": "2026-02-05T10:20:03.076074Z",
+  "url": "https://files.pythonhosted.org/packages/6e/09/89714580c617cf6e9f66eed9137759fc017ab6ab093c2a03227e8ee19578/opencv_contrib_python_headless-4.13.0.92-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+  "yanked": false,
+  "yanked_reason": null
+}

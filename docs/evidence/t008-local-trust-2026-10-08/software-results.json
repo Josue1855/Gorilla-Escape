@@ -1,0 +1,160 @@
+{
+  "java": {
+    "gate": "PASS",
+    "tests": 52,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reports": [
+      {
+        "name": "com.gorillaescape.server.ProtocolContractTest",
+        "tests": "1",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ServerIntegrationTest",
+        "tests": "3",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.hosting.LocalTrustProcessTest",
+        "tests": "1",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.hosting.LocalTrustTest",
+        "tests": "3",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.hosting.MobileHttpsTest",
+        "tests": "8",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+        "tests": "3",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+        "tests": "1",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ipc.ProbeCodecTest",
+        "tests": "3",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ipc.ProbeCorpusTest",
+        "tests": "3",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ipc.ProbePressureProcessTest",
+        "tests": "5",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.ipc.ProbeWriteDeadlineTest",
+        "tests": "1",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.mobile.LocalSignalingTest",
+        "tests": "1",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.protocol.GorillaProtocolTest",
+        "tests": "7",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.protocol.JoinQrPocTest",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.protocol.PhoneInputHubTest",
+        "tests": "1",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.gorillaescape.server.protocol.TechnicalSessionTest",
+        "tests": "7",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "pwa": {
+    "nodeTests": 9,
+    "gate": "PASS",
+    "build": "PASS"
+  },
+  "unityRetained": {
+    "EditMode": 64,
+    "PlayMode": 16,
+    "LinuxBuildErrors": 0,
+    "LinuxBuildWarnings": 0,
+    "rerun": false,
+    "condition": "Unity source/configuration unchanged from base"
+  },
+  "validators": {
+    "management": "PASS",
+    "foundation": "PASS"
+  },
+  "failuresPreserved": [
+    {
+      "case": "initial LocalTrustProcessTest",
+      "gate": "FAIL",
+      "cause": "test used bounded mobile mapper for QR PNG response; test reader fixed; product parser limit unchanged"
+    },
+    {
+      "case": "first RTC regression concurrent with physical gate",
+      "gate": "FAIL",
+      "cause": "deadline; precise cause unproven",
+      "cleanup": "Player exit 0, no owned children residual"
+    }
+  ]
+}

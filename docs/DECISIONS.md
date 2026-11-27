@@ -1,5 +1,9 @@
 # Gorilla Escape — Decision Log
 
+> Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
+
+> **Fuente operativa vigente — 2026-10-08:** GitHub Project/Issues/dependencias/AC. Checkpoint técnico Fase0 **PASS — SOFTWARE/LAB**, conservado; **Project Fase0/E0/milestone siguen OPEN**. Fase1 **BLOCKED / NOT STARTED** por #35→#34; los estados READY del audit anterior no autorizan iniciar según Project. [Reconciliación vigente](PHASE0_PROJECT_RECONCILIATION.md).
+
 Este documento registra únicamente decisiones que cambian o aclaran decisiones relevantes del proyecto. La [especificación maestra v4](Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md) sigue siendo la fuente principal de verdad.
 
 ## Formato
@@ -51,3 +55,491 @@ DEC-001 registra la organización original; el stack de ese momento fue sustitui
 **Conservado:** Unity/C#, PC autoritativa, modular monolith, WebSocket/JSON, MediaPipe/OpenCV, sin cuentas/base de datos/cloud obligatorios. Java no puede compartir ensamblados C#; interoperabilidad mediante JSON/fixtures.
 **Impacto:** arranque y empaquetado de JVM, compatibilidad Unity ↔ Java y HTTPS/sensores deben validarse durante Spike. No se define aún IPC, propietario del resultado ni cámara nativa. No añade microservicios, JPA, PostgreSQL, Lombok ni Redis.
 **Pruebas:** build Java/React y fixtures; tests Unity preparados, pendientes de licencia. No cambia el calendario ni marca Fase 0 completa.
+
+### DEC-003 — Unity Test Framework core de la foundation
+
+**Fecha:** 2026-10-06. **Estado:** Accepted.
+**Decisión anterior:** TEAM_START/MONOREPO_PLAN/manifest declaraban Test Framework 1.4.2.
+**Decisión nueva:** conservar Unity **6000.3.23f1** y declarar Test Framework **1.6.0**, versión core que distribuye y exige ese editor. NUnit permanece transitivo; la resolución core observada es 2.0.5. Lockfile generado por Unity/UPM, sin edición manual.
+**Problema / evidencia:** UNITY-001A-AUDIT verificó minimumVersion 1.6.0/mustBeBundled y resolución efectiva 1.6.0; no provino de los paquetes Linux. UNITY-001 valida compilación/tests/build y reimportación del candidato coherente.
+**Alternativas consideradas:** conservar una declaración 1.4.2 incongruente; cambiar de editor; no adoptadas. No se actualiza por novedad.
+**Impacto técnico:** manifest, lockfile y documentación coherentes con el editor fijado. SDK/toolchain Linux no aceptados como requisito permanente; el build de desarrollo seleccionado usa Mono y se valida sin ellos mediante UPM y opciones locales de desactivación de instalación/migración del editor. No establece plataforma/backend de presentación.
+**Impacto en alcance:** exclusivamente Incremento 1 — Unity Foundation. No modifica gameplay, IPC, Java, WebSocket, sensores ni cámara. Fase 0 sigue abierta.
+**Impacto en calendario:** sin cambio de fechas ni estimación nueva.
+**Impacto en pruebas:** EditMode, PlayMode, Linux development build/Player y reimportación documentados en UNITY-001. PC oficial pendiente.
+**Responsable:** Product Owner para versión; responsable técnico para evidencia/configuración candidata.
+**Aprobación Product Owner:** instrucción directa del usuario «Continúa exclusivamente con el Incremento 1 — Unity Foundation», que mantiene 6000.3.23f1 y aprueba 1.6.0, 2026-10-06. No se infiere aprobación de toolchains permanentes ni de plataforma final.
+
+### DEC-004 — Aceptación de foundation en desarrollo y separación del entorno
+
+**Fecha:** 2026-10-06. **Estado:** Accepted.
+**Decisión anterior:** el cierre operativo trataba «log completamente limpio» como criterio adicional de aceptación de foundation.
+**Decisión nueva:** Unity Foundation de desarrollo **PASS** con import/compilación/paquetes/escena/settings, EditMode 2/2, PlayMode 1/1, build Linux/Mono, Player/cierre y reimportación reproducible aprobados. Los diagnósticos conocidos se clasifican **ENVIRONMENT / REQUIRES FOLLOW-UP**, sin atribuirlos al código sin evidencia ni bloquear integración por sí solos. Seguimiento separado: [#89](https://github.com/Josue1855/Gorilla-Escape/issues/89).
+**Problema / evidencia:** UNITY-001 y 76 hashes fuente coincidentes; tests/build/ejecución reales correctos con diagnósticos del launcher/editor y registro nativo de memoria pendientes de investigar.
+**Alternativas consideradas:** exigir un log vacío; rechazada explícitamente por el PO. No ocultar mensajes ni afirmar cero leaks.
+**Impacto técnico/pruebas:** conservar Unity 6000.3.23f1/Test Framework 1.6.0 y lockfile de cinco paquetes; ningún cambio funcional nuevo. PC/plataforma oficial **BLOCKED / NOT RUN**; FPS real, frame time, latencia, memoria/leaks, sensores, webcam y Player Lock **NOT RUN**.
+**Impacto en alcance/calendario:** cierre del trabajo actual de foundation de desarrollo, commit/PR a develop y revisión normal; sin cierre de Fase 0, sin Incremento 2/Fase 1 ni cambio de calendario.
+**Responsable / aprobación Product Owner:** instrucción directa «Cierra el trabajo actual de Unity Foundation de desarrollo» en este chat, 2026-10-06. Autoriza commit y PR, no merge forzado ni siguiente incremento.
+
+### DEC-005 — Ownership, IPC y lifecycle Unity ↔ Java
+
+**Fecha:** 2026-10-06. **Estado:** Accepted.
+**Decisión anterior:** DEC-002 separa runtimes sin definir IPC/lifecycle; v4 §5 usa «confirmado por el servidor» de forma ambigua. DEC-003/004 pertenecen a la foundation del PR #90, no integrado en develop en la consulta de esta tarea; se reserva DEC-005 para evitar colisión de identificadores.
+**Decisión nueva:** Unity conserva estado jugable/sesión, física, scoring, torneo y resultados oficiales; Java conserva hosting/transporte/conexiones y adaptación de input. TCP loopback persistente, framing length-prefix/JSON mínimo PING/PONG; Unity supervisa un hijo Java con READY por stdout, cierre por EOF stdin, lock de instancia y recovery acotado.
+**Problema / evidencia:** estado real de develop e950bd8, health HTTP insuficiente para readiness IPC, DTO sensor sin contrato de lifecycle y ambigüedad de autoridad. [Documento completo](PHASE0_UNITY_JAVA_DECISION.md) compara opciones, propone contrato, límites, pruebas, métricas y manejo de huérfanos.
+**Alternativas consideradas:** WebSocket local, named pipes/UDS, stdin/stdout completo; ninguna medida. No se justifica mover autoridad a Java.
+**Impacto técnico:** nuevo supervisor y listener separado; dependencias/versiones actuales conservadas. Enmienda v4 §5 aprobada y aplicada documentalmente. Runtime JRE y compatibilidad Unity/Windows requieren validación.
+**Impacto en alcance:** diseño de Incremento 2 de Fase 0 aprobado. Implementación autorizada exclusivamente para 2A después de integración normal de #90 y verificación de develop; todavía no iniciada. Recovery avanzado, watchdog, fault injection extensa y performance/hardening diferidos, no eliminados. Sin PWA móvil, QR, sensores, WebSocket móvil, cámara, gameplay ni Fase 1.
+**Impacto en calendario:** sin estimaciones o fechas nuevas; gate de merge #90 obligatorio antes de código.
+**Impacto en pruebas:** unit lifecycle/codec, integración Java con cliente real simulado y Unity con JVM real, fault injection y métricas startup/RTT/reconnect/shutdown; todavía NOT RUN.
+**Responsable:** PO para autoridad, política de recuperación, plataforma y presupuesto; Arturo/Hiram para revisión productor/consumidor. No se asignan usuarios GitHub ficticios.
+**Aprobación Product Owner:** instrucción explícita «Como Product Owner, apruebo DEC-005» de 2026-10-06. Acepta ownership, TCP IPv4 loopback, framing UTF-8/uint32 big-endian/4096 bytes, identidades y token efímero, puerto 0 Java, supervisión Unity, READY + PONG, stdin EOF, deadlines/buffers/cancellation y ninguna dependencia adicional. Autoriza sólo 2A después del merge normal de #90; exige reporte previo de SHA/rama/archivos/tests/riesgos/aceptación. No autoriza modificar #90 ni continuar a 2B.
+
+**Aprobación posterior de Incremento 2B (2026-10-06):** el PO aprueba [PHASE0_IPC_2B_DESIGN](PHASE0_IPC_2B_DESIGN.md) con precisiones explícitas. Autoriza implementar exclusivamente lifecycle y fallos básicos desde develop `9fbb566e5f24af8f4e92fa3c139968161e832d46`, estados sin RECONNECTING, PING/PONG a 1 Hz en RUNNING, recuperación manual hasta tres lanzamientos sólo tras cleanup completo, generaciones aisladas, singleton FileChannel.tryLock y presupuestos 15/2/10+2/readers2 s conservados. Abrir PR sin merge automático. Resiliencia avanzada permanece diferida; no autoriza 2C ni Fase 1.
+
+### DEC-006 — PWA y Flutter Android como clientes oficiales del mismo producto
+
+**Fecha:** 2026-10-06. **Estado del requisito de producto:** Accepted por instrucción explícita del PO. **Estado de estrategia técnica HTTPS/onboarding:** Accepted para adaptación software3A; infraestructura pendiente.
+**Decisión:** PWA sin instalación obligatoria y Flutter Android opcional/preferido cuando instalado; una sesión/IDs/protocolo/semántica/backend Java, WSS común y autoridad Unity. Un enlace HTTPS/QR con fallback navegador y asociación Android futura; ningún jugador instala CA/perfil, cambia DNS/browser o necesita Flutter. Sustituye limitación nativo sólo Plan B y la aceptación del setup CA móvil de3A; no autoriza implementar Flutter ni ampliar a iOS nativo.
+**Impacto:** enmienda v4 y reglas coherentes; [rediseño](PHASE0_PHONE_LAN_ONBOARDING_REDESIGN.md) propone certificado público/FQDN/resolución LAN preparada por operador, con renovación previa online y gameplay local offline sujeto a gate físico. Dominio/router/DNS/443/App Links aún requieren aprobación/pruebas. #94 DRAFT, CA anterior no satisface nuevo gate. Sin dependencias, código, compras, trust/red/firewall ni implementación de otros incrementos.
+**Pruebas:** futuras físicas Android/Chrome+iPhone/Safari sin configuración del jugador, primera carga sinWAN, QR web y futura paridad JS/Dart/Java; resultados existentes3A son históricos, no PASS del nuevo gate.
+
+**Precisión posterior del PO — software3A:** autorizada adaptación exclusivamente en #94 DRAFT desde head `50e48418ff286dcd3096c92800fd47f602ad27f2`: FQDN/SAN DNS exacto, cadena/vigencia, IPv4 LAN separada, origen HTTPS443 y escucha Java8443, configuración externa privada. Se conserva supervisor/READY/IPC/EOF/singleton/límites2B. Sin compras, emisión pública, cambios router/firewall, QR/sesiones/WS/Flutter. Procedimiento Linux preparado, no aplicado; tests efímeros no sustituyen confianza pública ni Android/iPhone físicos. 3A IN PROGRESS hasta gate físico completo.
+
+
+### DEC-007 — Movimiento completo, cámara PC y Spike de transporte móvil
+
+**Fecha:** 2026-10-06. **Estado:** Accepted para requisitos de producto y base de Spike; transporte definitivo pendiente.
+**Aprobación:** instrucción del PO en «Investigación técnica de transporte seguro, sensores, cámara PC e Input Fusion». No autoriza código de producto, despliegue ni infraestructura.
+**Decisión:** PWA y Flutter Android opcional comparten movimiento/touch, sesión y contratos; Unity posee fusión, calibración aplicada, física y resultados. Java único backend supervisado, IPC exclusivamente 127.0.0.1. Webcam exclusivamente PC para detección corporal; cámara móvil sólo QR, no gameplay/vídeo. Personalización separada usuario/dispositivo/minijuego/reglas competitivas Unity.
+**Sustitución limitada de DEC-006:** dominio propio, router específico y configuración manual DNS no son requisitos aceptables del jugador/operador para la arquitectura objetivo portable. WSS no queda impuesto como transporte móvil definitivo: investigar WT y RTC, sin elegir ninguno ni invalidar el IPC Accepted. Preservar pruebas y diseño HTTPS/DNS anteriores como evidencia histórica, no aceptación de solución final nueva.
+**Concesión pendiente:** primera carga/preparación online de PWA; la aprobación de investigación NO acepta cambiar el gate de un teléfono nuevo sin WAN. Hosting estático gratuito, bibliotecas, certificados efímeros y Spikes ejecutables requieren autorización de sus pasos.
+**Impacto:** sólo documentos de investigación y fuente normativa; ningún runtime/dependencia/rama/PR modificado. #94 OPEN/DRAFT, 3A IN PROGRESS; posteriores NOT STARTED, Fase 0 IN PROGRESS, Fase 1 NOT STARTED.
+**Evidencia:** [decisión](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md), [comparación y gates](PHASE0_SECURE_MOTION_SPIKE_PLAN.md), [contrato y fusión conceptual](PHASE0_INPUT_FUSION_CONCEPT.md). Pruebas físicas de esta arquitectura NOT RUN; no reinterpretar emulador ni métricas IPC.
+
+
+### DEC-008 — Calibración inmersiva y oportunidades competitivas comparables
+
+**Fecha:** 2026-10-06. **Estado:** Accepted para requisito de producto; algoritmos, thresholds y validación futura Proposed / NOT RUN.
+**Aprobación Product Owner:** solicitud explícita «Calibración inmersiva, personalización y justicia competitiva» en este chat.
+**Decisión:** calibración individual mediante desafíos breves jugables, no asistente técnico; normalizar intención respecto del rango cómodo para que fuerza, talla y alcance no determinen automáticamente potencia virtual. Separar potencia de precisión/timing/técnica/coordinación. No igualar resultados ni afirmar equilibrio probado.
+**Autoridad:** Unity acepta/aplica perfil, límites y snapshot competitivo. Java transporta; PWA/Flutter misma semántica. Webcam sólo PC; sin diagnóstico de fuerza/fatiga ni vídeo/biometría identificable por defecto. Preferencias separadas de reglas de asistencia/equilibrio.
+**Dinámica:** observar desviaciones, proponer cambios acotados/recalibración entre rondas con confirmación/revisión; no mutación competitiva silenciosa durante acción/ronda. Límites ante perfiles artificialmente débiles sin excluir movilidad limitada ni prometer prevención total de engaño.
+**Impacto y alternativas:** no normalización puramente por aceleración absoluta; no exigir fuerza máxima ni retocar scoring para igualar victorias. Ejemplos deportivos del PO son ilustrativos, no ampliación automática de los minijuegos del MVP. Se conserva foundation/IPC/lifecycle/3A y transporte indeciso.
+**Pruebas/alcance:** [diseño, contratos y pruebas futuras](PHASE0_INPUT_FUSION_CONCEPT.md#8-calibración-inmersiva-y-justicia-competitiva--dec-008). Equidad exige participantes físicos diversos, privacidad/consentimiento y seguridad, especialmente menores; simulación no basta. Sólo actualización documental, sin cámara/minijuegos/calibración definitiva ni infraestructura. #94 OPEN/DRAFT, 3A/Fase 0 IN PROGRESS, Fase 1 NOT STARTED.
+
+
+### DEC-009 — Reconocimiento de intención y supresión de activaciones falsas
+
+**Fecha:** 2026-10-06. **Estado:** Accepted para requisito de producto; detector/umbrales/ventanas Proposed, validación física NOT RUN.
+**Aprobación PO:** solicitud explícita «Reconocimiento de intención y prevención de movimientos falsos» en este chat.
+**Decisión:** gestos temporales completos y contextualizados, no pico de aceleración aislado; intención distinta de intensidad. Acciones lentas/suaves coherentes válidas, accidentales rápidos rechazables. Unity confirma una acción por gesto, luego recovery/rearme; preparación no ejecuta, duplicados/muestras tardías no redisparan.
+**Ownership/fuentes:** Unity detector y física/scoring; Java sólo transporte/sesión técnica. Fuentes móviles y exclusivamente webcam PC, asociación jugador/control/track validada. Sensor-only con criterios apropiados cuando visión no fiable; incertidumbre/ausencia explícitas, no atribuir observación ambigua ni inventar pose.
+**Calibración/equidad:** thresholds relativos a ruido/rango cómodo y capacidades, límites competitivos y snapshot fijo por ronda (DEC-008). No fuerza máxima ni valores universales sin medir; touch accesible sin falsa equivalencia de movimiento ni bonus oculto.
+**Alternativas/riesgos:** umbral simple, cámara siempre confiable y cooldown universal rechazados como supuestos. Intención observable no es certeza mental; distinguir sensor-only suficiente de gestos inherentemente ambiguos. Boxeo/boliche son ejemplos, no ampliación del MVP.
+**Pruebas/alcance:** [estados, contratos y corpus físico futuro](PHASE0_INPUT_FUSION_CONCEPT.md#9-reconocimiento-de-intención-y-prevención-de-activaciones-falsas--dec-009). FPR/FNR, duplicados, prematuros, latencia física y atribución por jugador/dispositivo/modo, sin PASS de emulador como detector físico. Sólo documentación; transporte WT/RTC pendiente, foundation/IPC intactos; #94 OPEN/DRAFT, 3A/Fase 0 IN PROGRESS, Fase 1 NOT STARTED.
+
+
+### DEC-010 — Alcance deportivo v4 y captura PWA aislada de sensores (identificador histórico)
+
+**Fecha:** 2026-10-07. **Estado:** Accepted para corrección de alcance y ejecución del Spike de adquisición exclusivamente.
+**Aprobación PO:** instrucción «Fase 0 — Spike de sensores, calibración inmersiva y reconocimiento de intención».
+**Decisión:** cinco juegos oficiales v4 §§17–21: Gorilla Smash (3 intentos), Coconut Throw (3 intentos), Jungle Archery (5 flechas), Coconut Bowling (3 rondas) y Jungle Slice (60 s), por jugador. Sustituir ejemplos operativos boxeo/tenis/golf/penales de diseños anteriores; conservarlos como contexto histórico, no ampliar MVP. Banana Catch sólo propuesta post-MVP, sin modificación de v4 ni torneo.
+**Implementación autorizada:** captura/diagnóstico PWA aislados, permisos, campos, timestamps/cadencia/validación y cleanup; sin gameplay/envío, transporte, cámara, Flutter, infraestructura o publicación. [Código y pruebas](../PWA/spikes/sensors/README.md).
+**Conservado:** Java único backend, Unity autoridad competitiva, IPC intacto y webcam exclusivamente PC futura. Slice mantiene regla velocidad/trayectoria/confianza e intersección, sin exigir teléfono; Archery exige release de botón, cancel no dispara. Gestos personalizados completos, sin fuerza máxima ni pico aislado como confirmación.
+**Evidencia:** capturador 8/8 tests unitarios con eventos/permisos simulados PASS; regresión PWA 5/5 PASS. Sensores/Android/iPhone físicos y recognizers NOT RUN. [Diseño oficial corregido](PHASE0_INPUT_FUSION_CONCEPT.md#10-cinco-disciplinas-oficiales-y-spike-de-captura--corrección-2026-10-07). #94 OPEN/DRAFT, 3A/Fase 0 IN PROGRESS, Fase 1 NOT STARTED; sin commit/push/merge automático.
+
+
+### DEC-011 — Spike WebTransport 3A-T aislado, no selección definitiva
+
+Estado: Accepted únicamente para experimento, autorización PO 2026-10-07. Java 21/Chrome real, pin efímero, AUTH separada, ecos fiables y datagramas; límites/cleanup y métricas en laboratorio. Área tools/spikes/webtransport, sin dependencias del producto ni cambios al IPC. Biblioteca experimental Netty con nativos; Linux validado, móviles/Windows/offline pendientes. WT definitivo, hosting, preparación inicial y QR permanecen pendientes. [Resultados y límites](PHASE0_SECURE_MOTION_TRANSPORT_DECISION.md#15-spike-ejecutable-3a-t--2026-10-07). No autoriza WebRTC, sensores, cámara ni gameplay.
+
+
+## Criterio vigente de cierre Software/Lab — aprobado por PO, 2026-10-07
+
+Fase 0 puede cerrar como **COMPLETED — SOFTWARE/LAB** únicamente cuando arquitectura base implementada, integrada y todos los gates automatizados/laboratorio requeridos estén PASS. Esta autorización no equivale a declarar el cierre ahora. iPhone 15/Safari y Android físicos, cadencia móvil real, movimiento humano con teléfono/cámara y latencia física quedan **NOT RUN / DEFERRED**, obligatorios antes de aceptación final del MVP. Windows: DEFERRED. Los intentos fallidos de acceso iPhone y toda evidencia anterior se conservan; no se convierten en PASS. No se vuelve a solicitar teléfono para avanzar.
+
+Orden obligatorio: A comparador WebRTC aislado → B DEC-010 y un transporte → C sesión/admission/QR POC → D protocolo común → E input móvil lab/Java/IPC/Unity → F webcam PC/pose/Unity → G asociación y temporal → H infraestructura Fusion/fixtures → I 1–4 clientes → J resiliencia/regresión → K auditoría → L cierre. No gameplay final, reconocimiento facial, cámara móvil, backend cloud ni Fase 1 antes del cierre. PR #94 permanece DRAFT. Sin push/merge autorizado para este trabajo. Secure-context/onboarding sin configuración del jugador sigue como riesgo independiente; resultados lab no demuestran compatibilidad física.
+
+**Estado actual:** cierre IN PROGRESS; A IN PROGRESS; B–L NOT RUN en esta secuencia. Foundation/IPC y resultados de laboratorio históricos conservados. Fase 1 NOT STARTED; sólo será READY TO START después de auditoría PASS e integración requerida.
+
+## DEC-010 — Mobile Transport — decisión Software/Lab
+
+**Status: Accepted for Phase 0 architecture. Mobile Transport: WebRTC DataChannel.**
+Señalización local; no STUN/TURN público obligatorio ni cloud gameplay backend. WebTransport conserva evidencia experimental histórica, sin transporte productivo paralelo.
+La entrada anterior «DEC-010 — Alcance deportivo» conserva su identificador histórico; la referencia vigente DEC-010 de transporte designa exclusivamente esta sección.
+
+
+Estado: **ACCEPTED / IMPLEMENTED FOR PHASE 0 LAB**, 2026-10-07, por aprobación explícita del PO. **WebRTC DataChannel** es el único adaptador móvil de este incremento Software/Lab. Session/QR/protocolo/Java/IPC/Unity y 1–4 clientes PASS en Chrome real sintético/replay; Android Emulator nuevo BLOCKED y físicos/Windows DEFERRED. [Validación del runtime](PHASE0_MOBILE_INPUT_RUNTIME_VALIDATION.md). WT se conserva como Spike histórico aislado; no se elimina evidencia ni se incorpora un segundo transporte productivo. El runtime está integrado localmente en laboratorio; no equivale a integración Git, onboarding resuelto ni PASS iPhone físico.
+
+Motivo: ambos candidatos tienen echo cifrado local demostrado; RTC permite mantener un modelo común compatible con las APIs WebRTC documentadas en Safari/Chrome y un futuro Flutter, sin depender de disponibilidad/pinning WebTransport en Safari. La dependencia JNI y la señalización adicional son concesiones explícitas. No se selecciona por ranking de RTT: las corridas WT anteriores tienen N=20/mensajes pequeños y RTC N=100/padding32/1024, sin igualdad de carga. El comparador queda CLOSED por decisión PO; no se vuelve a comparar salvo regresión demostrada. Físicos diferidos; no se declara superioridad de rendimiento.
+
+Tabla histórica del comparador cerrado; el resultado runtime posterior está en la validación enlazada.
+
+| Criterio | WT existente | RTC comparator |
+|---|---|---|
+| Browser lab | Chrome/Android emulado histórico PASS | Chromium/Java real PASS; Android RTC NOT RUN |
+| Safari físico | NOT RUN / DEFERRED | NOT RUN / DEFERRED; API documentada, no interoperabilidad ensayada |
+| Java | Netty/QUIC, código experimental fijado | webrtc-java 0.19.0/JNI Linux, artefactos fijados |
+| Señalización | Endpoint + pin + admission metadata | SDP/ICE/fingerprint por intercambio autenticado, implementación productiva pendiente |
+| Seguridad | Pin endpoint no crea secure context de página | DTLS transport + auth canal lab; secure context/señalización productivos pendientes |
+| LAN | Loopback/misma PC + emulador, física diferida | Candidatos host UDP, sin STUN/TURN configurado, misma PC lab |
+| 1–4 clientes | 1 cliente lab documentado; 4 NOT RUN | 1 y 4 peers concurrentes PASS, IDs aislados en comparador |
+| Recovery | Manual, evidencia histórica | Manual con peer/credential nueva PASS; automático no implementado |
+| Mensajes | Stream fiable + datagrams | Fiable ordered + unordered maxRetransmits=0 PASS |
+| Loss nominal | Resultados individuales existentes conservados | 0/2400 en corrida lab, sin extrapolar a presión/Wi-Fi |
+| Lifecycle | EOF/cleanup histórico PASS | EOF/exit0, cero peers y peticiones pendientes PASS |
+| QR/onboarding | Metadata pin compacta; origen seguro pendiente | SDP no debe meterse indiscriminadamente en QR; retorno autenticado pendiente |
+| Mantenimiento | HTTP/3/QUIC/pinning en biblioteca experimental | JNI/libwebrtc y signaling aumentan complejidad; wrapper publicado |
+| Binarios/licencias | Inventario WT existente | Apache wrapper + avisos native incluidos; auditoría distribución pendiente |
+
+Fuentes primarias: [WebKit WebRTC](https://webkit.org/blog/7763/a-closer-look-into-webrtc/), [webrtc-java DataChannels](https://jrtc.dev/guide/data/data-channels), [webrtc-java plataforma/dependencias](https://jrtc.dev/guide/get-started). Evidencia: `docs/evidence/webrtc-comparator-2026-10-07/`. Límites y comando repetible: `tools/spikes/webrtc/README.md`. Las concesiones de origen HTTPS seguro/distribución y confianza de signaling siguen abiertas y no se ocultan mediante HTTP LAN o bypass.
+
+
+## DEC-012 — PC camera / association / temporal / Fusion, implementación Linux Software/Lab
+
+2026-10-08 UTC. **IMPLEMENTED FOR PHASE 0 LAB**, dentro del incremento explícitamente autorizado por PO.
+Unity conserva CameraInputStore, Player Lock, alineación y FusionFrame. Java/PWA/IPC/PhoneInput existentes
+no cambian contrato ni ownership. Un jugador cámara-activo por turno, cuatro controles conectados.
+
+Adaptador opt-in local MediaPipe Python Tasks0.10.33/OpenCV4.13.0.92 en venv aislado, supervisado por Unity,
+private stdin/stdout, EOF/timeout/buffers/cleanup. No SDK C#/Java de visión ya instalado; construir ahora un
+plugin C++ ampliaría toolchains y packaging antes del gate. Se justifica únicamente el adaptador Linux de
+laboratorio; **Python como runtime distribuido de producto no queda adoptado definitivamente**. Inventario
+versiones/licencias/native/model hashes, límites y alternativas de distribución en
+[README](../tools/spikes/camera/README.md) y [validación](PHASE0_CAMERA_FUSION_VALIDATION.md).
+
+Landmarks raw no métricos, visibilidad/confianza y fuente explícitas; manos como proxies de pose, sin full
+hand detector ni quaternion inventado. Camera/Phone histories bounded, lock conservador sin biometría.
+Receipt PC UTC versus camera read-complete PC UTC es proxy de alineación lab; sync físico sigue DEFERRED.
+DEC-009 recognizer y DEC-008 calibración deportiva siguen conceptuales, sin umbrales/física/scoring nuevos.
+Fuentes/confianza insuficientes degradan, no disparan gesto. Distribución nativa/Windows/human motion quedan
+pendientes; ninguna cifra de gesture accuracy/switches físicos se atribuye a los fixtures.
+
+## Registro de cierre audit — 2026-10-08
+
+[FINAL PHASE0 AUDIT](PHASE0_FINAL_AUDIT.md): **PASS — SOFTWARE/LAB**; Fase0 **COMPLETED — SOFTWARE/LAB** y Fase1 **READY TO START**, no iniciada. No nueva decisión de arquitectura ni implementación de gameplay. DEC-010 WebRTC Accepted for Phase0 architecture; WT sólo histórico experimental. 3A físico/onboarding DEFERRED / IN PROGRESS. Deuda física/plataforma abierta, obligatoria antes del MVP. Candidato integrado localmente, no remoto; #94 OPEN/DRAFT, sin commit/push/merge.
+
+
+## DEC-013 — Slow motion P1 fuera del MVP P0 (T001/#10)
+
+**Fecha:** 2026-10-08. **Estado:** Accepted. **Aprobación:** decisión oficial explícita del Product Owner en este chat.
+
+Slow motion se clasifica **P1**, **no incluido en MVP P0** y **no bloquea el desarrollo de Fase 1 Gorilla Smash** por este concepto. Sólo podrá reconsiderarse mediante decisión explícita futura del PO. No implementar ahora, no introducir silenciosamente en Smash, no reclasificar a P0 y no crear trabajo técnico relacionado sin autorización.
+
+Resuelve el tercer AC de #10 (P1 frente a v4 §26). La mención micro slow-motion en LEGENDARY de §26 es una opción futura subordinada a esta decisión, no una exigencia del MVP. Los otros dos AC ya están aceptados: frontera Fase0 base/Spike versus Fase1 slice, y Unity autoridad de resultados/input; Java transporte/sesión técnica. T001: 3/3 AC; documentación/decisión sin código nuevo ni suites aplicables. No resuelve otros gates: #35 sigue bloqueado por #34. Fase0/E0/milestone OPEN, Fase1 NOT STARTED.
+
+
+## Decisión PO oficial — referencias de hardware T002/#11
+
+**Estado:** Accepted,2026-10-08. Dell Latitude5540/Pop!_OS24.04LTS x86_64/i7-1355U/Iris Xe/RAM comprobable y Integrated_Webcam_FHD son referencias oficiales Phase0; iPhone15/Safari es referencia iOS. Modelo oficial de red: existing local Wi-Fi LAN, WAN opcional, gameplay local, sin hotspot ni cloud/STUN/TURN público obligatorio. Android físico pendiente de selección/designación; router físico real de pruebas pendiente fabricante/modelo/firmware. Safari corresponde al iOS instalado; Chrome estable Android; registrar dispositivo/OS/navegador/fecha exactos por ejecución sin congelar parches. Windows/macOS futuros no descartados. 17.61FPS no cumple >=30FPS. [Inventario/AC/faltantes vigentes](PHASE0_T002_HARDWARE_INVENTORY.md). #11 no aceptado aún; #12 continúa bloqueado, Fase1 NOT STARTED.
+
+
+## DEC-014 — Compatibilidad por plataforma/capacidades y hardware de referencia QA
+
+**Fecha:**2026-10-08. **Estado:**Accepted. **Aprobación:** instrucción explícita PO de esta tarea. Sustituye interpretación de T002 que exigía Android físico/modelo router para definir compatibilidad. Hardware concreto = REFERENCE TEST HARDWARE, no ONLY SUPPORTED HARDWARE.
+
+T002 inventaría PC/cámara y plataformas Android moderno/Chrome estable e iOS moderno/Safari incluido, secure context/RTC/touch/LAN y sensores según capacidades/permisos. Política FULL/LIMITED/INCOMPATIBLE con detección runtime requerida conceptualmente, sin implementación nueva ni sensores inventados. Misma LAN accesible, WAN opcional y juego local sin cloud/STUN/TURN público obligatorio. PC/cámara actuales e iPhone15 son referencias de QA, no límites exclusivos.
+
+Modelos/versiones Android/iPhone/router son metadatos de ejecución; Android físico se selecciona en T019. T019/gates posteriores conservan móviles físicos,1/4controles, conexiones/reconexiones, fallos yP95real, fecha/OS/browser exactos. Firmware UNKNOWN no bloquea inventario. No reducir FPS, PC limpia ni pruebas humanas. AC T002 enmendados con texto histórico preservado, [inventario/evidencia](PHASE0_T002_HARDWARE_INVENTORY.md). AC1/AC2 PASS documental, no certificación universal ni aprobación física. #12 requiere reevaluación, sin iniciarlo; Fase1 NOT STARTED.
+
+
+## DEC-015 — Phase 0 Technical Baseline
+
+**Fecha:**2026-10-08. **Estado:**Accepted bajo autorización PO explícita condicionada a evidencia, satisfecha por auditoría T003. Unity6000.3.23f1/rev09d2ecc7fb28; Java release21/JDK lab Ubuntu21.0.12.1+1-1-24.04.4-Ubuntu; Boot4.1.1/Springcore7.0.9; Maven3.9.11/wrapper3.3.2/compiler3.15.0; webrtc-java0.19.0/native linux-x86_64; GorillaProtocol mobilev1 (IPCprobev1/CameraInputv1 separados); Python LAB3.12.3/MediaPipe0.10.33/OpenCV contrib4.13.0.92/cv2 4.13.0/NumPy2.5.3, Pose Landmarker lite float16v1 hash59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a. Plataforma validada Pop!_OS24.04x86_64/DellLatitude5540.
+
+No actualización por novedad: necesidad/compatibilidad/regresión/decisión previa para upgrades. DEC-010 WebRTC transporte seleccionado permanece vigente; WT/WS históricos no regresan al producto. [Comparativa/compatibilidad/evidencia/AC](PHASE0_T003_TECHNICAL_BASELINE.md). Java mínimo nuevo aislado PASS; UnityEdit64/Play16/build0/0 retenidos con hashes/config idénticos, no nuevas ejecuciones. Windows/macOS/PC limpia/packaging final visión/licencias siguen pendientes; adaptador Python sólo LAB,17.61FPS no cumpleT016. AC1/AC2 PASS documental, no todoFase0Done. Sin inicio de otros Issues/Fase1 ni merge automático.
+
+## DEC-016 — Local HTTPS Trust Model
+
+**ACCEPTED FOR IMPLEMENTATION / VALIDATION**, decisión explícita PO 2026-10-08, dentro de T008/#19. CA raíz local única por instalación + leaf corto con SAN iPAddress para la IPv4 LAN actual. Wi-Fi doméstica existente, sin DNS/router específico ni hostname administrado. HTTPS puerto no privilegiado configurable (8443 por defecto); WebRTC DataChannel DEC-010 se conserva. Claves privadas locales fuera de Git, permisos restrictivos, fingerprint público y regeneración sólo por acción explícita del operador.
+
+Esta decisión reemplaza **para el enfoque principal de T008** las exigencias históricas de dominio/certificado público/DNS administrado/443 y la prohibición de preparación de confianza en el teléfono. No reinterpreta evidencia anterior ni convierte pruebas LAB en físicas. PREPARE DEVICE (instalar y confiar CA una vez por instalación) se separa de JOIN GAME; target <60 s aplica a dispositivo preparado, y la preparación inicial se mide/publica separadamente. Android/iPhone son hardware representativo de QA (DEC-014), no únicos modelos compatibles. Fase0/E0 abiertos; Fase1 NOT STARTED; no T009/T010/T011.
+
+[Implementación, lifecycle, seguridad, procedimiento y validación](PHASE0_T008_LOCAL_TRUST.md). JDK21/keytool existente es requisito de este Spike de generación (no biblioteca añadida ni distribución final resuelta). Windows ACL/keytool empaquetado quedan sin validar en este gate Linux; no abrir permisos para simular portabilidad. Confianza física Android/Safari y métricas humanas siguen gates pendientes antes de cerrar #19.
+
+
+## DEC-017 — Local Firewall Integration
+
+**Estado: Proposed — pendiente de aprobación PO y gates físicos/red adicionales. Fecha: 2026-10-08.** Esta propuesta no autoriza integración automática del firewall en el producto ni modifica DEC-010. T008/#19 sigue siendo el único Issue operativo.
+
+Recomendación: **ONE-TIME NETWORK SETUP** por instalación o desde Settings. El instalador/configurador detecta requisitos y solicita elevación normal del sistema para crear exclusivamente reglas identificables de Gorilla Escape. Los inicios normales de Unity/Java no requieren elevación. Settings/uninstall puede retirar las reglas propias, preservando reglas ajenas y políticas por defecto. El juego y Java nunca se ejecutan como root. No guardar ni automatizar contraseña administrativa.
+
+Reglas mínimas por protocolo y puerto, restringidas a interfaz/subred LAN confirmadas cuando el sistema lo permita; destino local y sin forwarding/NAT/router/DNS/WAN. Bootstrap HTTP de CA sólo habilitado durante preparación, no dejarlo abierto como requisito permanente de gameplay. Registrar propiedad, contenido, versión y qué reglas realmente se crearon; idempotencia no implica apropiarse de una regla equivalente preexistente. No restaurar snapshots completos. Cambios de interfaz/subred/puertos requieren revalidación y actualización explícita de la configuración, no asumir que la regla inicial cubre cualquier red futura. Linux/UFW y Windows Firewall necesitan adaptadores y validación independientes, todavía no implementados.
+
+**QA temporal actual, no diseño de producto aceptado:** dos excepciones TCP confirmadas (8443 HTTPS y 18000 PREPARE), con comentarios `Gorilla Escape T008 HTTPS` / `Gorilla Escape T008 PREPARE`. Sólo por la interfaz y desde la subred de esta ejecución; se eliminan al terminar. Estado previo saneado, verificación posterior y cleanup obligatorio. Firewall activo y políticas originales preservadas. Ningún permiso UDP implícito.
+
+**Capacidad de rango ICE demostrada en API, no en ejecución:** el artefacto instalado `webrtc-java 0.19.0` expone `RTCConfiguration.portAllocatorConfig` y `PortAllocatorConfig.minPort/maxPort`. La [guía oficial](https://jrtc.dev/guide/networking/port-allocator-config) describe límites inclusivos y 0 como no especificado. El código actual únicamente deshabilita STUN/relay/TCP; no fija min/max. Es posible diseñar un rango acotado para Java, pero no se configuró ni abrió ninguno. El rango de los puertos remotos del navegador no se controla con esta API.
+
+**Conclusión técnica actual:** los requisitos TCP fueron observados. **Reglas adicionales de entrada UDP NO están demostradas como necesarias actualmente.** El gate físico iPhone con QR nuevo alcanzó HTTP200, remoteDescriptionPASS, ICECONNECTED, ambosDataChannelsOPEN y READY técnico usando sólo las excepciones TCP temporales; Safari host/UDP/MDNS_LOCAL y Java host/UDP/IPV4 conectaron sin reglas UDP adicionales. [Evidencia](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json). No deducir compatibilidad universal ni atribuir retrospectivamente el fallo genérico anterior, cuya causa sigue UNKNOWN / NOT REPRODUCED.
+
+No incluir UDP preventivo en la propuesta ni seleccionar minPort/maxPort/rango, modificar ICE, introducir STUN/TURN o alterar mDNS. La capacidad API documentada arriba no es un requisito operativo. Si un gate futuro demuestra un bloqueo UDP concreto, tratarlo como nueva evidencia que exige diagnóstico acotado, dimensionamiento y autorización PO separados antes de proponer reglas. No hacer de esa hipótesis un gate artificial de T008.
+
+**Pendiente para aceptar DEC-017 como diseño final:** validación física Android y más redes/gates representativos; adaptadores Linux/Windows, propiedad/idempotencia/remoción de reglas y preservación de políticas. ONE-TIME NETWORK SETUP sigue propuesto: reglas propias mínimas demostradas, starts normales sin elevación y remoción segura, sin aprobación de diseño universal todavía.
+
+Criterios de aceptación de una implementación futura: autorización visible, reglas mínimas/idempotentes/propias, rechazo de interfaces ambiguas, fallo recuperable cuando la elevación se rechaza, no cambiar políticas/forwarding, funcionamiento normal sin elevación, remoción de reglas propias y preservación de cambios concurrentes ajenos, validación física y rollback documentado. Esta propuesta no cierra #19 ni desbloquea T009.
+
+## DEC-018 — T008 Spike Exit / Deferred Physical QA
+
+**Fecha: 2026-10-09. Estado: ACCEPTED. Aprobación: autorización formal del Product Owner en este chat.** Aplica únicamente a la salida del Spike T008/#19 y su PR #96; no acepta la QA diferida ni inicia T019/T009/Fase 1.
+
+La prueba física iPhone 15 demostró trusted HTTPS → QR seguro → sesión Java LAN → `/mobile/join` HTTP200 → SDP PASS → ICE CONNECTED → control/motion DataChannels OPEN → Gorilla Protocol HELLO/ACK → READY técnico. [Primera evidencia instrumentada](evidence/t008-local-trust-2026-10-08/physical-join-diagnostic-04.json) y [segunda corrida](evidence/t008-local-trust-2026-10-08/physical-human-join-05.json). Esto satisface el objetivo técnico del Spike. La falta de Android físico no bloquea su salida bajo esta decisión; no implica compatibilidad universal.
+
+| AC final T008 | Dictamen de salida | Evidencia o deuda conservada |
+|---|---|---|
+| AC1 | PASS FOR SPIKE EXIT under DEC-018 | iPhone físico PASS; Android físico DEFERRED / NOT RUN |
+| AC2 | PASS | QR seguro, sesión/signaling LAN, RTC y HELLO/ACK/READY físicos iPhone |
+| AC3 | PASS FOR SPIKE EXIT under DEC-018 | Cronómetros humanos DEFERRED / NOT MEASURED; no target <60s acreditado |
+| AC4 | PASS | Fallos/alternativas e historia conservados; Plan B no activado |
+
+**PASS FOR SPIKE EXIT != all physical QA completed.** Android physical HTTPS/trust y QR→READY siguen NOT RUN. PREPARE DEVICE y prepared JOIN humanos siguen NOT MEASURED. No usar 316ms,340ms ni «unos pocos segundos» como cronometraje humano; tampoco son latencia teléfono→gameplay. El fallo genérico anterior sigue UNKNOWN / NOT REPRODUCED.
+
+**Deferred QA from T008 / DEC-018 → #33/T019:** Android físico trusted HTTPS; Android físico QR→signaling→RTC→READY; metadatos de compatibilidad iPhone/Android (modelo/OS/browser/red por ejecución); duración humana PREPARE DEVICE inicial completa; duración humana QR→READY de dispositivo preparado; verificar target<60s o registrar fallo; reevaluar firewall en dispositivos/redes adicionales. Añadir estos gates sin borrar/modificar AC ni dependencias existentes de T019. T019 permanece bloqueado, no iniciado; conserva sus gates de 1/4 controles, conexiones/reconexiones, fallos y P95 real.
+
+DEC-017 permanece **Proposed**: acceso TCP requerido en la red probada; reglas inbound UDP adicionales no demostradas necesarias. No minPort/maxPort, UDP preventivo, cambios ICE/mDNS/STUN/TURN ni configuración nueva de infraestructura.
+
+DoD: documentación/decisión y carry-forward → checks aplicables → PR96 Ready for Review → merge normal autorizado a develop → validación post-merge → #19 CLOSED/completed/Done. Sólo entonces retirar needs-device-test de #19 (QA transferida), conservar security/type:spike/area:network y reevaluar #20/T009 sin implementarlo. Registrar SHA/checks/cierre efectivos en el PR e Issues tras integración; esta aprobación no declara que el merge ya ocurrió. F02/#18 y Fase0 permanecen OPEN/IN PROGRESS; Fase1 NOT STARTED. DEC-018 enmienda sólo las condiciones de salida anteriores de T008, no elimina su historial ni cambia DEC-016/autoridad/protocolo.
+
+## DEC-019 — Controller UX & Theme Strategy
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Instrucción explícita del Product Owner para T009/#20.
+
+PWA = controlador universal, ligero, touch-first, sin instalación obligatoria, Gorilla Core como única apariencia y funcionalidad esencial completa. Native App = opcional, mismos controles esenciales/gameplay/protocolo; puede mejorar haptics, perfiles, preferencias, skins y feedback, nunca otorgar ventaja competitiva. La arquitectura sigue LAN-first, Java backend local y Unity autoridad; la preparación de confianza DEC-016 no se sustituye ni se oculta.
+
+**SKIN != NEW CONTROL LAYOUT.** Skins futuras pueden cambiar colores, tipografía, decoración, bordes, fondos, animaciones, partículas, iconos, sonidos y mapeo háptico. No cambian posiciones críticas, hit targets funcionales, sensibilidad, calibración, latencia, reglas, comportamiento competitivo ni semántica de protocolo. Jungle, Sketch, Neon Future, Arcade, Sport, Blueprint, Comic, Clay, Volcano e Ice son posibilidades futuras de la app, NO implementadas. PlayerColor independiente de theme y compartido conceptualmente con Unity; no se añade al contrato actual.
+
+Estado funcional → componentes Gorilla Core → tokens CSS. Sin Theme Engine ni nuevas dependencias: controles HTML nativos, React y CSS existentes cubren foco, accesibilidad y feedback. Motion for React/headless primitives evaluados como innecesarios en esta pantalla; no se incorporan Motion/GSAP/React Bits/Animate UI/beUI. Feedback semántico CONNECTING/SUCCESS/WARNING/ERROR/READY; máximo un movimiento primario y un feedback secundario, reduced-motion obligatorio. Haptics opcionales futuros por capability; no prometer vibración iPhone PWA ni implementar Flutter.
+
+CONNECT consume el QR/admission real de T008; NETWORK_READY sólo acredita conexión técnica. Permisos desde gesto explícito; disponibilidad API ≠ hardware presente ≠ señal verificada. INPUT_READY, CALIBRATION_REQUIRED y PLAYER_READY quedan reservados, sin presentarse como acreditados por T009. Reconexión/captura/frecuencia/calibración siguen sus Issues correspondientes. Diagnóstico secundario sanitizado, advertencia física visible antes del permiso.
+
+[Implementación, alcance, estados y evidencia T009](PHASE0_T009_PWA_SHELL.md). Estándar de permisos: [Device Orientation and Motion](https://www.w3.org/TR/orientation-event/), secure context y transient user activation. Sin certificación universal de Android/iPhone; QA física separada y trazable en T019.
+
+### Enmienda PO de DEC-019 — tecnologías móviles y catálogo, 2026-10-09
+
+**Estado: ACCEPTED.** Se completa DEC-019 sin borrar su registro previo: **PWA = React + Vite; Native App = Flutter + Dart**. React PWA conserva Gorilla Core, rol universal, instalación de app no obligatoria, LAN/offline y gameplay esencial completo. Flutter App es controlador nativo opcional: mismo Gorilla Protocol, gameplay y controles críticos, con haptics nativos, perfiles, preferencias, skins y feedback avanzado; nunca ventaja competitiva. La app no será React Native, Flutter Web sustituyendo la PWA ni otra PWA empaquetada.
+
+**Flutter = arquitectura futura ACCEPTED; Flutter implementation in T009 = OUT OF SCOPE.** No proyecto Flutter, paquetes Dart, proyecto nativo Android/iOS ni Flutter CI en T009. La enmienda es documental; no cambia el stack/runtime React actual, contratos, aceptación, decisiones de transporte ni los gates físicos.
+
+**candidate catalog != installed dependencies.** Las siguientes herramientas son CANDIDATAS, no dependencias aprobadas, instaladas ni compatibles/validadas por este catálogo. Cada futura incorporación exige necesidad/justificación y revisión de compatibilidad, licencia, coste, seguridad y pruebas antes de adoptarla. No se fija versión ni se selecciona proveedor nuevo aquí.
+
+| React / PWA — categoría | Candidatos |
+|---|---|
+| Base | Base UI; shadcn/ui |
+| Motion | Motion |
+| Feedback | Sileo |
+| Icons | Phosphor |
+| Shared animated assets | Rive |
+| Specialized / theme references | React Bits; beUI; Animate UI; SmoothUI; Bencho; Rare UI; Rough.js; Drawably |
+| Diagnostics only | Nivo |
+
+| Flutter App — categoría | Candidatos |
+|---|---|
+| Theme/style system | Mix |
+| Motion | flutter_animate |
+| Shared animated assets | Rive |
+| Haptics | haptic_feedback; vibration |
+| Sensors | sensors_plus |
+| Audio | audioplayers |
+| Notifications | Toastification |
+| Vector assets | flutter_svg |
+| Icons | Phosphor Flutter |
+| General UI candidate | Forui |
+| Sketch theme candidates | rough_flutter; hand_drawn_toolkit |
+| Future/Neon candidates | mesh_gradient; shaders/Rive |
+| Diagnostics only | fl_chart |
+
+**Assets compartidos — dirección futura, no implementación:** React, Flutter y Unity pueden compartir assets Rive/SVG/sonido, design tokens, eventos semánticos de feedback y semántica PlayerColor. No compartir código UI entre TypeScript y Dart; cada runtime renderiza su propia UI. Esquema conceptual, aún no creado:
+
+```text
+Shared/ControllerDesign/
+├── theme.schema.json
+├── motion.tokens.json
+├── feedback.events.json
+├── themes/
+├── rive/
+├── svg/
+└── sounds/
+```
+
+El esquema no autoriza estructura prematura, dependencias, motor de temas, Flutter runtime ni otro Issue. SKIN != NEW CONTROL LAYOUT y ausencia de ventaja competitiva permanecen obligatorios. T010/T011/Fase1 no se inician por esta enmienda.
+
+## DEC-020 — Sensor Sampling & Quality Policy
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Decisión explícita del PO para #21/T010.
+
+Adquirir exclusivamente eventos DeviceMotion/DeviceOrientation del navegador; ninguna muestra creada por timer, repetición, interpolación, upsampling o ceros inventados. Los relojes monotónicos miden callbacks y jitter; UTC Unix ms conserva `clientTimestamp` v1. Un permiso concedido no acredita señal. `INPUT_READY` exige NETWORK_READY, permisos utilizables, tres eventos únicos con campos finitos por cada canal, frescura <2s y todos los grupos requeridos presentes. Señal parcial = INPUT_LIMITED; ausencia/interrupción = NO_SENSOR_INPUT; no PLAYER_READY ni calibración acreditada.
+
+Separar raw acquisition, valid unique acquisition, emisiones a `MobileClient.motion`, frames RTC y ACK. `actualMeasuredHz=(N-1)*1000/(último-primer callback)` en ventana acotada; nunca inferir frecuencia física desde ACK/RTT. Tiers conservadores: mayor umbral realmente alcanzado entre60/50/30/20; inferior20 = degraded-below-20; no redondear hacia arriba ni sustituir la medición con el tier. Fixtures prueban esos umbrales, no hardware. Medir iPhone físico >=15s por corrida; Android físico NOT RUN permanece en QA/T019 sin bloquear artificialmente T010.
+
+Conservar m/s² para acceleration/accelerationIncludingGravity, grados/s alpha/beta/gamma rotationRate y grados Euler/screenOrientation del contrato móvil vigente. Ejes web, no anatómicos/Unity/cámara; ausencia=null, cero válido, present/partial/unavailable. No límites físicos arbitrarios ni cálculo Power/Spin. [Estándar Device Orientation and Motion](https://www.w3.org/TR/orientation-event/). No cambio del contrato JSON2048, quality ni RTC/IPC. La futura app Flutter+Dart debe producir la misma semántica, sin introducir DOM en el contrato compartido.
+
+Una identidad por canal/generación/evento; descartar objeto repetido y timestamps DOM repetidos/fuera de orden cuando disponibles. Motion/orientation independientes: combinar últimos valores no implica simultaneidad. Un motion en vuelo + un último pendiente, sobrescrituras contadas; no cola creciente. No throttling antes de observar la tasa física. Sólo el último evento y ventanas numéricas acotadas; evidencia agregada, sin trazas físicas prolongadas. [Implementación y gate T010](PHASE0_T010_SENSOR_CAPTURE.md).
+
+## DEC-021 — T010 Exit with Deferred Physical QA
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Autorización explícita del Product Owner para cerrar implementación #21/T010 con software + Android Emulator, integrar por PR y transferir acreditación física final a #33/T019. No cambia los AC históricos ni acredita QA física.
+
+La ruta browser APIs → normalización → Gorilla Protocol → WebRTC → Java → IPC → Unity está demostrada en laboratorio. Evidencia retenida: PWA51/51 PASS/build PASS, Java54 PASS/2 SKIP históricos, controles enfocados5/5 PASS. Emulador09: motion59.39745428038163Hz, orientation52.36276407777539Hz, emisión49.56346487484926/s; submitted/sent/ACK1238, motionErrors/errors/overwritten0. No son frecuencias de Android físico. Corridas nominales FAIL previas permanecen intactas.
+
+| AC | Literal evidence status | Phase-0 exit status |
+|---|---|---|
+| AC1 | PARTIAL — physical final accreditation deferred | PASS FOR T010 EXIT under DEC-021 |
+| AC2 | PARTIAL — physical final accreditation deferred | PASS FOR T010 EXIT under DEC-021 |
+| AC3 | PASS | PASS |
+
+**PASS FOR T010 EXIT != physical QA completed.** iPhone REST ≥15s, GENTLE ≥25s y Android físico permanecen NOT RUN. T019 recibe medición física motion/orientation actualMeasuredHz, emisión maximumHz50, frescura estacionaria, rangos alpha/beta/gamma, comparación cross-device y ausencia de errores significativos de transporte; conserva sus AC/dependencias y permanece bloqueado, sin iniciarlo.
+
+Producto idéntico al candidato final probado: captureRevision `t010-2-coarsened-clock`, maximumHz50; alpha>=0 && alpha<360. Observador AVD/API36/Chrome: alphaViolationCount14/min360/max360, beta/gamma0; alpha360→invalid→null, sin clamp/modulo/ampliación. Comportamiento físico NOT VALIDATED. Frescura2000ms intacta; orientation estacionaria que deja de actualizar→NO_SENSOR_INPUT es LAB OBSERVATION, physical applicability UNKNOWN; no eventos fabricados ni bug físico declarado.
+
+Se autoriza commit/push/PR Ready, revisión de seguridad/checks y merge normal; cierre completed/Done de #21 sólo después de integración y Management/Foundation post-merge PASS. QA transferida justifica retirar needs-device-test de #21. #22 sólo se desbloquea/Ready tras #20 y #21 Closed/Done; no se implementa T011. F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. [Registro y evidencia](PHASE0_T010_SENSOR_CAPTURE.md).
+
+## DEC-022 — T011 Exit with Emulator/Lab and Deferred Physical QA
+
+**Fecha: 2026-10-09. Estado: ACCEPTED.** Decisión explícita del PO: T011 puede validar primera carga sin caché/sin WAN y lifecycle mediante software/laboratorio + Android Emulator. **PASS FOR T011 EXIT != physical mobile QA completed.** No reemplaza QA física ni acepta compatibilidad universal.
+
+WAN unavailable (PC/ruta local disponibles) se distingue de servidor local unavailable: el shell cacheado no fabrica sesión ni sustituye Java/PC. Primera carga exige origen Gorilla sin SW/cache/almacenamiento previo y WAN realmente inaccesible; probe externo debe fallar y endpoint local funcionar. ADB reverse/localhost sólo evidencia LAB/EMULATOR, no Wi-Fi física ni confianza TLS pública. Recursos runtime locales, modelos runtime actuales NONE; no cloud ni CDN. SW productivo conserva precache de lista cerrada del build; no cachear API/JOIN/reconnect/admission/SDP/diagnósticos/sensores.
+
+Al ocultar, CONTROL_SUSPENDED, listeners sensores desacoplados y cero nueva emisión; último pendiente no enviado se descarta. Al volver, PREPARING_SENSORS y tres eventos frescos por canal antes de readiness. Si RTC murió, DISCONNECTED y nuevo QR; sin reconnect automático. Pagehide limpia captura/medición/transporte propio. Rangos, freshness2000ms, captureRevision t010-2-coarsened-clock, tiers, maximumHz50 y Gorilla Protocol v1 intactos.
+
+QA física diferida a #33/T019 (todos NOT RUN): primera carga sin caché con teléfono LAN/sin WAN, recursos locales iPhone/Android, background/foreground corto y largo, throttling, lock-screen/return, cero input stale oculto, recuperación segura/DISCONNECTED y diferencias Safari/Chrome. T019 mantiene AC/dependencias/bloqueo; no se inicia. AC1/AC3 evidencia literal LAB/EMULATOR; salida PASS FOR T011 EXIT bajo DEC-022 sólo con pruebas exitosas. AC2 puede ser PASS literal por recursos locales comprobados.
+
+T011 termina en PR Ready hacia develop, sin merge/cierre: #22 OPEN/In Review, F02 OPEN, Fase0 IN PROGRESS, Fase1 NOT STARTED. [Alcance y evidencia](PHASE0_T011_OFFLINE_LIFECYCLE.md).
+
+### DEC-022 — acreditación de salida del candidato recuperado
+
+2026-10-09: AC1 PASS literal LAB/EMULATOR y PASS FOR T011 EXIT under DEC-022; AC2 PASS literal; AC3 PASS literal LAB/EMULATOR y PASS FOR T011 EXIT under DEC-022. Android final13 acredita primera/segunda carga sin WAN, recursos locales, zero hidden motion, recuperación fresca, medición interrumpida, pérdida RTC y pagehide cleanup. Datos físicos permanecen NOT RUN en T019, sin modificar sus AC/dependencias ni iniciarlo. Pagehide observer se corrige sólo en QA: agregado bounded escrito antes de pérdida de contexto, unit cleanup y RTC/Unity externos. Producto local recuperado intacto. Publicar PR hacia develop, #22 OPEN/In Review; no merge/cierre. F02 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED. Historia FAIL/BLOCKED anterior conservada.
+
+## DEC-024 — Official Action Lifecycle and Idempotency
+
+**Fecha: 2026-10-09. Status: ACCEPTED.** Autorización explícita del Product Owner para T015/#27.
+
+Unity is the sole authority for official actions/results. Java transporta estado/input. Java ACK != gameplay confirmation; NETWORK_READY != action confirmation; INPUT_READY != action confirmation; PLAYER_READY != action confirmation.
+
+Unity crea CANDIDATE explícitamente desde input aceptado y decide validación, confirmación, cancelación y resultado. Terminales CONFIRMED/CANCELLED inmutables. ActionKey incluye sesión/dispositivo/playerId/connectionEpoch/sourceSequence/actionKind; ningún ID del teléfono ni credencial es autoridad. Un origen consumido no se reutiliza con otra clave semántica. Lock único arbitra confirmación/desconexión: gana la primera transición terminal, resultado completo o ausente.
+
+Retención sin eviction de hasta256 acciones por sesión; al límite se rechazan nuevas candidatas, conservando todos los resultados confirmados hasta reset explícito. Epoch nuevo permite secuencias independientes; epoch anterior y secuencias consumidas no reabren acciones. Sin scoring, física, reconocimiento de gestos ni eventos GAME→PHONE. [Contrato, integración y límites](PHASE0_T015_ACTION_LIFECYCLE.md).
+
+## DEC-025 — Bounded Camera Capture / Inference Pipeline
+
+**Fecha inicial:2026-10-09. Reevaluación PO:2026-10-13. Estado: ACCEPTED — reference PC pipeline/profile.** Selección implementada y medida para T016, sin aprobación de distribución/integración ni cambio de AC.
+
+Un hilo OpenCV de captura real→un slot latest de frame owned→inferencia VIDEO/writer en hilo principal. Retener MediaPipe0.10.33/OpenCV4.13.0.92/model lite float16v1/640×480/MJPG/num_poses2. FPS separados con reloj monotónico, overruns medidos, sin queue/interpolación/duplicados/imágenes persistentes. EOF/join/release/close; contrato CameraInput v1 y Player Lock intactos. LIVE_STREAM no necesario para el boundary acotado.
+
+La separación elimina el acoplamiento lógico; **no resuelve el AC1**: captura-only19.967887FPS, tres corridas nominales~19.96, diagnóstico manual~21.97–22.00, final19.940556FPS. Driver30 no es medición30. Controles temporales restaurados; ningún preset manual/threshold/tolerancia adoptado para producto. Sensor/USB/firmware exacto no diagnosticado. T016 permanece OPEN.
+
+Bundle relativo de Python preparado/stdlib/wheels/nativos/model/manifest, sin nueva herramienta de freezing ni runtime pip/download. Staging offline técnico; **AC2 PARTIAL** por redistribución incompleta Qt/FFmpeg/system-library notices/corresponding source. Binaries/model no publicados. Linux reference solamente, Windows/macOS NOT VALIDATED. [Mediciones, packaging, privacidad y límites](PHASE0_T016_CAMERA_RUNTIME.md). E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED.
+
+
+T016 local continuation (2026-10-09):13 layered physical diagnostics preserve DEC-025 candidate. Default raw19.966964FPS; manual10ms/MMAP3 raw30.225315 and independent OpenCV3 30.225872 diagnostic-only; single-buffer delivery limit reproduced in raw V4L2. Product settings unchanged, AC1 FAIL/AC2 PARTIAL/AC3 PASS. Authentic runtime notices/inventory expanded; source/native-closure/model/Player provenance remain OPEN. No push/PR or cascade. See [Layered Capture Diagnosis](PHASE0_T016_CAMERA_RUNTIME.md#layered-capture-diagnosis).
+
+PO-authorized T016 profile evaluation: manual10ms/buffers1–3; minimum passing2 preserves original priority1. New paired capture30.224215376583782/30.225402700303786/30.225225678964854FPS, everyrun>=30.000. Original default retained. Capability-based session controls and parent restoration after owned-child kill verified. Human BRIGHT/NORMAL/LOW-LIGHT NOTRUN by user availability, so AC1 acceptance remains FAIL/unproven and DEC-025 is not ACCEPTED. AC2 PARTIAL despite supplied matching upstream Qt/FFmpeg sources/model notice. [Latest validation](PHASE0_T016_CAMERA_RUNTIME.md#product-profile-validation--latest-local-continuation). No push/PR/closure.
+
+T016 original-AC reevaluation (2026-10-13): DEC025 ACCEPTED. Independent capture/latest-slot1/separate inference, physical >=30.000, manual10ms/buffers2/originalpriority1/MJPG640×480/numposes2; capability checks/snapshot-before-apply/worker+parentrestore/cleanup/privacy verified. Headlesssameversion adopted with explicit Vision-only MediaPipe import patch/materials. No universal compatibility or human identity continuity/intrusion/occlusion certification. Human stability is outsideT016 and remains unvalidatedT017; no new physical human QA permitted. AC1/AC2/AC3PASS forLinuxreference; integration state separate. [Current acceptance/materials](PHASE0_T016_CAMERA_RUNTIME.md#po-original-ac-acceptance--2026-10-13).
+
+## DEC-026 — Academic MVP Game Set Freeze
+
+**Fecha: 2026-10-13. Estado: ACCEPTED.** Decisión explícita del Product Owner en la ejecución nocturna.
+
+Academic MVP / P0: **Gorilla Smash, Coconut Throw, Coconut Bowling, Jungle Slice**. Post-MVP / P1: **Jungle Archery**, F31/T034–T036; preservar diseño e Issues abiertos, sin iniciar implementación. E3 incluye tres juegos restantes después de Smash. F40 exige un torneo completo de cuatro disciplinas, participantes, turnos, resultados, score/GP, tabla, desempate, campeón y retorno al menú.
+
+El PDF académico permite añadir disciplinas hasta cinco después de estabilizar el núcleo Smash/Throw y el control; el PO fija el corte final en exactamente cuatro. PRODUCT VISION conserva la visión futura de cinco; ACADEMIC MVP define la entrega obligatoria. Esta enmienda prevalece sobre referencias históricas a cinco como gate académico; no elimina historial ni cambia fecha vigente (semana 9–13 noviembre; freeze 6 noviembre). No importa requisitos de otros equipos.
+
+Ruta principal vigente: teléfono → PWA → Gorilla Protocol → WebRTC local → Java → IPC → Unity/PhoneInput, conforme DEC-005/DEC-010. Unity única autoridad oficial; cámara complementaria cuando la disciplina lo requiera. Fallback de usuario obligatorio, aún no implementado: T060, calibración/prueba y torneo completo sin dispositivo adicional. No confundir herramientas de laboratorio con fallback de producto.
+
+No acredita juegos implementados, latencia física, dispositivos, cierre E0 ni inicio Phase1. [Requisitos y matriz](ACADEMIC_MVP_IDGS102N_GORILLA_ESCAPE.md).
+
+## DEC-027 — Deferred Physical Human Tracking Validation
+
+**Fecha: 2026-10-13. Estado: ACCEPTED.** Autorización explícita del PO en ejecución nocturna. No realizar nuevas pruebas de tracking con personas para Academic MVP.
+
+Human Physical QA queda **Post-MVP/P1**, T061/#106, Backlog/Futuro, no bloquea Academic MVP. AC históricos T017: 20 entradas de otra persona, oclusión/recuperación física y no-auto-selection físico quedan **DEFERRED / NOT RUN**, nunca PASS físico. Replay/fixtures no equivalen a humano real. No se certifica identidad humana, continuidad biométrica ni reconocimiento facial.
+
+T017 Phase0 puede cerrar tras integración y >=20 escenarios deterministas de intrusion/replacement, cero switches no autorizados, tracking perdido seguro, recovery según política explícita (dos frames elegibles del subject anterior por settings vigentes), ningún subject diferente promovido automáticamente, coherencia player/session/lock, fixtures reproducibles sin imágenes/video/personas y regressions InputFusion/PlayerLock PASS. Subject IDs son efímeros espaciales; misma etiqueta no demuestra misma persona.
+
+Se preservan AC humanos y dependencia #29 como historial satisfecho; no añadir certificación humana como gate de los cuatro juegos. No autoriza cerrar T019/T020 ni E0 sin evidencia física correspondiente. [Aceptación técnica y límites](PHASE0_T017_DETERMINISTIC_VALIDATION.md).
+
+## DEC-028 — T018 Exit with Physical E2E Accreditation Deferred to T019
+
+**Fecha: 2026-10-13. Estado: ACCEPTED.** Autorización explícita PO en ejecución nocturna; no reimplementar instrumentación integrada por PR #103 (head `136ee366b782c6f40a74114be00f881ea0307279`, merge `3129081eeb9cf92c3326038da076c67addc4b0fd`).
+
+| Gate | Literal AC status | Amended Phase0 exit |
+|---|---|---|
+| AC1 sincronización/relojes | PARTIAL; phone↔PC offset/drift/error UNKNOWN / NOT RUN | PASS FOR T018 EXIT: dominios/unidades/limitaciones y segmentos instrumentados documentados |
+| AC2 latencia/Hz/FPS | PARTIAL; physical phone Hz y true motion→visible-result NOT RUN | PASS FOR T018 EXIT: segmentos medidos sin inferir E2E, gates físicos transferidos a T019 |
+| AC3 impacto | Imperceptibilidad universal no acreditada | PASS FOR T018 EXIT: telemetry bounded, cero errores de telemetry en evidencia, sin video, A–B–B–A repetido, deltas publicados y sin degradación consistente/reproducible de signo estable atribuible a telemetry |
+
+No inventar threshold porcentual. Pares existentes: Unity effective −5.98%/+0.78%; inference −5.93%/+5.25%. No evidencia de impacto cero ni mejora universal. PR #103 satisface salida objetiva; no demuestra precisión cross-device ni FPS display. Browser performance.now monotonic y Date.now Unixms; Java UTCms; Unity UTCms/Stopwatch; Python UTCns/monotonicns; V4L2 proxy kernel conservados. ACK RTT/IPC RTT sólo segmentos.
+
+Cierre #32 sólo después de integrar esta DEC y verificar evidencia; T019 recibe acreditación física, conserva AC intactos y permanece OPEN hasta QA real. T020 PC limpia obligatorio. No permite cierre E0 ni Phase1. [Evidencia y tabla de salida](PHASE0_T018_TELEMETRY_METRICS.md).
+
+## DEC-029 — Main Menu QA Center and Phase0 Visible Response Boundary
+
+**Fecha: 2026-10-14. Estado: ACCEPTED.** Autorización explícita PO. T062/#111 bajo F05/#31 soporta T019/#33; reutiliza el trabajo local de QA Surface y lo integra en el menú real.
+
+1. El Main Menu real puede comenzar durante Phase0. Bootstrap mantiene configuración e inicialización técnica; la navegación usa MainMenuView/Controller y TestsMenuView/Controller.
+2. No inicia gameplay ni Phase1. JUGAR visible/deshabilitado con «En desarrollo», PRUEBAS activo y SALIR invoca el lifecycle existente.
+3. El Centro de Pruebas vive detrás de PRUEBAS. Main Menu permanece limpio y utilizable aunque Java/cámara/red fallen.
+4. Preview QA es local-only/memory-only: única captura T016 → slot1 → JPEG máximo320×240/5FPS → TCP efímero127.0.0.1 → slot1 Unity → Texture2D. Codificación y retención de imagen sólo con consumidor activo en Tests; volver libera textura/socket/buffers. No Java/PWA/teléfono, segunda captura, disco, logs raw, screenshots o video. CameraInput conserva sólo landmarks/estado.
+5. Boundary Phase0 autorizado: physical phone event → PWA → WebRTC → Java → IPC → Unity PhoneInput accepted → technical visual response rendered by Unity. Marcas apply/end-of-frame no acreditan scanout/photon ni offset cross-device.
+6. No equivale a sport/gameplay result, score o aceptación física T019. T019/T020/F05/E0 permanecen OPEN, Final Exit Audit BLOCKED. F41/#68 conserva AC y estado; reutilización futura no es cierre de presentación académica.
+7. `GORILLA_QA_MENU=0` oculta PRUEBAS sin borrar tooling; default Phase0 visible. No crea dependencia de QA para la UX académica final.
+
+QR desde TechnicalSession/JoinQrPoc mediante extensión IPC QA v1 autenticada: TTL30s/one-use/capacity4; regeneración sólo revoca admisión pendiente. Secret sólo en QR en memoria, jamás texto/log/export. Sensores/readiness observan autoridades existentes. HEARTBEAT QA v1 opcional transporta únicamente Hz originales y percentiles ACK RTT agregados; nada de historiales raw. Clasificación física requiere confirmación del operador, nunca se infiere del source claim.
+
+[Arquitectura](PHASE0_MAIN_MENU_QA_CENTER.md), [runbook sin Editor](PHASE0_IPHONE15_LIVE_QA_RUNBOOK.md). T061 conserva validación humana diferida Post-MVP; subjectId efímero no implica identificación biométrica.
+
+Aclaración PO posterior a T062: la escena Bootstrap oficial también inicia Main Menu en Editor Play Mode interactivo, sin Java/Vision. Test Runner, batch, Untitled y escenas ajenas quedan excluidos; SALIR detiene Play Mode. La ejecución física conserva el standalone y sus supervisores. [Política y evidencia Editor](PHASE0_MAIN_MENU_QA_CENTER.md#unity-editor--bootstrap--play).
+
+## DEC-030 — Transparent Dual Connectivity: Cabin + Cloudflared
+
+**Fecha: 2026-10-14. Estado: ACCEPTED.** Instrucción explícita del Product Owner en overnight integration.
+
+1. Cabaña es la ruta canónica local/offline.
+2. Cloudflared es bootstrap opcional de conveniencia, nunca reemplaza capacidad offline.
+3. Cloudflared transporta únicamente PWA/HTTPS/signaling, **nunca gameplay**.
+4. Motion/control mantienen WebRTC DataChannel LAN DIRECT, host ICE, sin STUN/TURN público obligatorio ni relay.
+5. Unity conserva autoridad oficial; Java conserva sesión/transporte.
+6. No se habilita multiplayer remoto ni se inicia Phase1.
+7. AUTO puede resolver la ruta en un intento acotado, con fallback a Cabaña después de cleanup.
+8. UI normal no exige conocer rutas; QA muestra RequestedMode/ResolvedMode/state/fallback/origins/timing.
+9. Cloudflared no es gate del Academic MVP; Cabaña sigue siendo aceptación válida y canónica T019/T020/offline.
+10. Se preservan GOR-07, SRS-GOR-02 y requisitos offline; no se reescribe historia ni evidencia física.
+11. Quick Tunnel sólo temporal para desarrollo/QA, WAN requerida, sin promesa de estabilidad; sin cuenta/dominio/Access obligatorio.
+12. La entrada pública es un gateway dedicado loopback con allowlist, sin exponer Spring/IPC/preview/trust/diagnostics.
+13. TechnicalSession/JoinQrPoc se reutilizan; admission sigue en fragment. Cambiar origin revoca QR pendientes y preserva jugadores/época/estado Unity.
+14. T019 físico y T020 PC limpia siguen obligatorios; F05/E0 OPEN y JUGAR disabled. Diseño y límites en [Transparent Connectivity](TRANSPARENT_CONNECTIVITY.md).
+
+### DEC-030 clarification — transparent AUTO completion (PO, 2026-10-15)
+
+AUTO is the only normal product policy. Cabin is usable during background public
+readiness; a shown admission never changes its origin automatically. Prefer a
+public origin only after live process + valid hostname + registration + public
+HTTPS 200, with bounded retry and official automatic protocol selection. Bundle
+verified cloudflared 2026.10.0, never download at runtime; missing/invalid optional
+binary falls back locally. Technical details remain in QA/Detalles. This explicit
+PO instruction supersedes the earlier wait-before-QR and unbundled-discovery
+policies of DEC-030. See PHASE0_T063_TRANSPARENT_AUTO.md for gates and evidence.
+
+## DEC-031 — One JOIN QR and controlled PC elevation
+
+**2026-10-16, ACCEPTED by explicit final PO instruction.** Supersedes DEC-030's
+2026-10-15 immediate Cabin QR policy and preventive phone preparation UI.
+AUTO prepares local and public routes concurrently, waits for bounded verified
+public readiness before the first QR, and falls back locally. A shown admission
+never changes origin silently. The normal phone flow is scan → connect → ready;
+CA trust is explicit recovery only. Only a minimal closed-operation firewall
+helper may receive OS graphical elevation, after preflight requires it. Preserve
+Unity authority, authenticated loopback IPC, supervised children and LAN DIRECT
+RTC. No silent trust detection, TLS bypass, broad firewall permissions or Phase1.
+Implementation, protected UFW inspection limitation and physical gates:
+[final phone connection decision](PHASE0_PHONE_CONNECTION_FINAL.md).
+
+### DEC-031 — autorización de integración y trabajo paralelo del equipo
+
+**2026-10-16, instrucción explícita posterior del PO:** integrar en `develop`
+los cambios locales de conexión/firewall mediante PR y permitir que los
+compañeros inicien juegos, mejoras PWA y cliente Flutter desde esa base.
+Esta autorización sustituye la prohibición de iniciar implementación del resto;
+la deuda física de T019/T020 y los criterios de cierre de F05/E0 permanecen
+abiertos. No modifica resultados históricos, dependencias, autoridades,
+protecciones de ramas ni aceptación de una entrega. [Arranque del equipo](TEAM_START.md#arranque-del-equipo-autorizado-2026-10-16).

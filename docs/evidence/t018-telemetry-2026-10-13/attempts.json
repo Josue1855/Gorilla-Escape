@@ -1,0 +1,21 @@
+{
+  "unityEditFirstAttempt": {
+    "exit": 198,
+    "result": "FAIL: host default licensing profile; no tests run",
+    "retry": "XDG_CONFIG_HOME points at existing Unity Hub profile; 101/101 PASS"
+  },
+  "javaFirstAttempt": {
+    "tests": 78,
+    "errors": 2,
+    "skipped": 2,
+    "result": "FAIL: reduced cached Java runtime lacks keytool; no product change"
+  },
+  "comparisonFirstAttempt": {
+    "result": "FAIL before any camera launch: provenance assumed Assembly-CSharp.dll; actual asmdef is GorillaEscape.Runtime.dll",
+    "measurementRuns": 0
+  },
+  "abbaR2": {
+    "result": "Exploratory comparison interrupted after launching arm2; arm1 and arm2 preserved. NOT final-source acceptance.",
+    "reason": "Replace placeholder telemetryErrors with actual rejected-nonfinite counter; repeat final ABBA with frozen sources."
+  }
+}

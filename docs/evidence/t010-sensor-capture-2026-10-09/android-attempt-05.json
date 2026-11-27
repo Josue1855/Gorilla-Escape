@@ -1,0 +1,34 @@
+{
+  "scope": "T010 actual React shell \u2192 Android Chrome virtual sensor events \u2192 RTC \u2192 Java child \u2192 loopback IPC \u2192 Unity",
+  "physical": "NOT RUN / pending; emulator does not replace iPhone rest/gentle or Android physical QA",
+  "tls": "NOT VALIDATED: localhost secure context through ADB reverse; no TLS bypass or CA installation",
+  "instrumentation": "CDP labels wire quality.source emulator only; no sensor API/event/payload/time substitution",
+  "runs": [],
+  "gate": "FAIL",
+  "stage": "ANDROID_BOOT",
+  "reason": "CommandFailure",
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t010/android_capture.py": "ff45f19479a26f85f9163eedaa0db6b87078c97b09407f96b5959c84c49c57ca",
+    "PWA/src/input/sensors/capture.js": "62edd2965c6b3ce1dcebc89aad2b6c025e198cd677fb1b4a7976b50cae0cf536",
+    "PWA/src/controller/session.js": "56f0dcb4df865003e2d14b79d4e20451cac91beb64d9990f0ecff95c9b00009e",
+    "PWA/src/input/mobileClient.js": "9f83dececc871a6dfaa3315c8905290e2d4eddb78e0d58f0d100d04950339e09",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "49052e84cc17f0684bf6dd3059687595afcadd377d314d71189e2657d6b549d6"
+  }
+}

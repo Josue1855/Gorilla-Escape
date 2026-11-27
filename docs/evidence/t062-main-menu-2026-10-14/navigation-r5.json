@@ -1,0 +1,21 @@
+{
+  "classification": "LAB / built UI + physical capture transport; physical phone NOT RUN",
+  "screenshots": 0,
+  "gate": "FAIL",
+  "opened": 1,
+  "closed": 0,
+  "secretLogs": 0,
+  "renderSize": [
+    1920,
+    940
+  ],
+  "windowSize": [
+    1920,
+    940
+  ],
+  "playDisabled": true,
+  "loopbackOnly": true,
+  "error": "Expecting value: line 1 column 1 (char 0)",
+  "stderrBytes": 0,
+  "mouseDownEvents": 4
+}

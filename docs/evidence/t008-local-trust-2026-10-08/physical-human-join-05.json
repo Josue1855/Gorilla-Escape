@@ -1,0 +1,359 @@
+{
+  "date": "2026-10-08",
+  "testedRuntimeCommit": "7dcd8b213ca62dc209eff2a4126200403a878ced",
+  "scope": "T008 fresh QR prepared iPhone JOIN; human stopwatch requested but not performed",
+  "freshQr": true,
+  "attempts": 1,
+  "device": {
+    "model": "iPhone 15",
+    "os": "iOS 27 user-reported; exact build UNKNOWN",
+    "browser": "Safari; exact version UNKNOWN",
+    "role": "REFERENCE TEST HARDWARE, not exclusive product support"
+  },
+  "network": "Existing Wi-Fi LAN; current interface/subnet confirmed privately; no public private-IP metadata",
+  "humanTimings": {
+    "prepareDeviceSeconds": null,
+    "prepareStatus": "NOT MEASURED; prior preparation retained, no CA removal or reinstallation",
+    "preparedJoinSeconds": null,
+    "preparedJoinStatus": "NOT MEASURED",
+    "poReport": "no se, no lo medi, unos pocos segundos",
+    "under60Seconds": "NOT EVALUATED; no numeric external measurement",
+    "measurementMethodRequired": "External human stopwatch: QR visible + user starts using phone until technical READY, with scan/load/JOIN/signaling/ICE included"
+  },
+  "safari": {
+    "stage": "READY",
+    "code": null,
+    "postExecuted": true,
+    "httpStatus": 200,
+    "rejectionCode": null,
+    "remoteDescription": "PASS",
+    "candidates": [
+      {
+        "type": "host",
+        "protocol": "udp",
+        "addressKind": "MDNS_LOCAL",
+        "port": 62660
+      }
+    ],
+    "events": [
+      {
+        "ms": 36,
+        "event": "signalingState",
+        "value": "stable"
+      },
+      {
+        "ms": 36,
+        "event": "iceGatheringState",
+        "value": "new"
+      },
+      {
+        "ms": 36,
+        "event": "iceConnectionState",
+        "value": "new"
+      },
+      {
+        "ms": 36,
+        "event": "connectionState",
+        "value": "new"
+      },
+      {
+        "ms": 38,
+        "event": "control",
+        "value": "connecting"
+      },
+      {
+        "ms": 38,
+        "event": "motion",
+        "value": "connecting"
+      },
+      {
+        "ms": 38,
+        "event": "stage",
+        "value": "CREATE_OFFER"
+      },
+      {
+        "ms": 42,
+        "event": "stage",
+        "value": "LOCAL_DESCRIPTION"
+      },
+      {
+        "ms": 45,
+        "event": "signalingState",
+        "value": "have-local-offer"
+      },
+      {
+        "ms": 45,
+        "event": "stage",
+        "value": "ICE_GATHERING"
+      },
+      {
+        "ms": 46,
+        "event": "iceGatheringState",
+        "value": "gathering"
+      },
+      {
+        "ms": 163,
+        "event": "iceGatheringState",
+        "value": "complete"
+      },
+      {
+        "ms": 166,
+        "event": "stage",
+        "value": "SIGNALING_POST"
+      },
+      {
+        "ms": 250,
+        "event": "iceConnectionState",
+        "value": "checking"
+      },
+      {
+        "ms": 250,
+        "event": "connectionState",
+        "value": "connecting"
+      },
+      {
+        "ms": 267,
+        "event": "stage",
+        "value": "SIGNALING_RESPONSE"
+      },
+      {
+        "ms": 270,
+        "event": "stage",
+        "value": "REMOTE_DESCRIPTION"
+      },
+      {
+        "ms": 270,
+        "event": "signalingState",
+        "value": "stable"
+      },
+      {
+        "ms": 271,
+        "event": "stage",
+        "value": "ICE_CONNECTING"
+      },
+      {
+        "ms": 283,
+        "event": "iceConnectionState",
+        "value": "connected"
+      },
+      {
+        "ms": 283,
+        "event": "stage",
+        "value": "ICE_CONNECTED"
+      },
+      {
+        "ms": 291,
+        "event": "connectionState",
+        "value": "connected"
+      },
+      {
+        "ms": 301,
+        "event": "control",
+        "value": "open"
+      },
+      {
+        "ms": 301,
+        "event": "stage",
+        "value": "CONTROL_OPEN"
+      },
+      {
+        "ms": 301,
+        "event": "motion",
+        "value": "open"
+      },
+      {
+        "ms": 301,
+        "event": "stage",
+        "value": "MOTION_OPEN"
+      },
+      {
+        "ms": 301,
+        "event": "stage",
+        "value": "HELLO_ACK"
+      },
+      {
+        "ms": 316,
+        "event": "stage",
+        "value": "READY"
+      }
+    ]
+  },
+  "internalConnectReadyMs": 316,
+  "internalTimingExclusion": "Not human onboarding, not AC3, not gameplay latency",
+  "java": {
+    "joinAttempts": [
+      {
+        "stage": "ANSWER_RETURNED",
+        "code": "NONE",
+        "events": [
+          {
+            "ms": 0.11539,
+            "value": "VALIDATION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.271765,
+            "value": "ADMISSION",
+            "event": "stage"
+          },
+          {
+            "ms": 0.496934,
+            "value": "PEER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 5.159123,
+            "value": "REMOTE_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 6.306335,
+            "value": "ANSWER_CREATE",
+            "event": "stage"
+          },
+          {
+            "ms": 6.755653,
+            "value": "LOCAL_SDP",
+            "event": "stage"
+          },
+          {
+            "ms": 7.118014,
+            "value": "CHECKING",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 7.147033,
+            "value": "GATHERING",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 7.264901,
+            "value": "SERVER_ICE",
+            "event": "stage"
+          },
+          {
+            "ms": 8.514435,
+            "value": "CONNECTING",
+            "event": "connectionState"
+          },
+          {
+            "ms": 16.790096,
+            "value": "COMPLETE",
+            "event": "iceGatheringState"
+          },
+          {
+            "ms": 16.976703,
+            "value": "ANSWER_RETURNED",
+            "event": "stage"
+          },
+          {
+            "ms": 52.676556,
+            "value": "CONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 52.733918,
+            "value": "CONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 73.750138,
+            "value": "OPEN",
+            "event": "control"
+          },
+          {
+            "ms": 78.157971,
+            "value": "OPEN",
+            "event": "motion"
+          },
+          {
+            "ms": 29702.448804,
+            "value": "DISCONNECTED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 29702.508816,
+            "value": "DISCONNECTED",
+            "event": "connectionState"
+          },
+          {
+            "ms": 30105.070889,
+            "value": "CLOSED",
+            "event": "iceConnectionState"
+          },
+          {
+            "ms": 30105.116638,
+            "value": "CLOSED",
+            "event": "connectionState"
+          }
+        ],
+        "candidates": [
+          {
+            "port": 38819,
+            "type": "host",
+            "addressKind": "IPV4",
+            "protocol": "udp"
+          }
+        ]
+      }
+    ],
+    "peers": 0
+  },
+  "androidPhysical": {
+    "available": false,
+    "availabilitySource": "PO confirmation this turn",
+    "manufacturerModel": "UNKNOWN",
+    "os": "UNKNOWN",
+    "chrome": "UNKNOWN",
+    "trust": "NOT RUN",
+    "qrReady": "NOT RUN",
+    "prepareDuration": "NOT RUN",
+    "preparedJoinDuration": "NOT RUN",
+    "onlyRemainingDeviceGate": "physical Android trust + QR-to-READY validation",
+    "emulator": "Auxiliary retained evidence only, not a physical phone"
+  },
+  "firewall": {
+    "temporaryTcpPorts": [
+      18000,
+      8443
+    ],
+    "restriction": "Confirmed active LAN interface and current LAN subnet",
+    "udpRulesAdded": 0,
+    "iceRangeConfigured": false,
+    "temporaryRulesRemoved": 2,
+    "enabledAfter": true,
+    "policiesPreserved": true,
+    "fullStatusMatchedBefore": true
+  },
+  "cleanup": {
+    "playerExit": 0,
+    "javaResiduals": 0,
+    "cleanup": [
+      {
+        "state": "STOPPED",
+        "exitCode": 0,
+        "cleanupComplete": true,
+        "forced": false
+      }
+    ]
+  },
+  "listenersClosed": {
+    "18000": true,
+    "8443": true
+  },
+  "transientQrRemoved": true,
+  "softwareEvidence": "RETAINED; source SHA256 matches tested software evidence and JAR static resources match working-tree files; no product changes, no Unity suite rerun",
+  "acceptance": {
+    "AC1": "PARTIAL: physical iPhone trusted HTTPS PASS; Android physical NOT RUN",
+    "AC2": "PASS: physical iPhone secure QR, session admission, local signaling, WebRTC DataChannels, Gorilla Protocol HELLO/ACK and technical READY demonstrated; not universal physical compatibility",
+    "AC3": "NOT SATISFIED: initial PREPARE and prepared JOIN not externally measured; no <60s claim",
+    "AC4": "PASS: full historical failures/alternatives and current successes retained; Plan B not activated"
+  },
+  "historicJoinFailure": "UNKNOWN / NOT REPRODUCED; not retroactively assigned to firewall/ICE/mDNS",
+  "DEC017": "Proposed; TCP observed, additional inbound UDP necessity NOT DEMONSTRATED",
+  "pr96": "OPEN / DRAFT",
+  "issue19": "OPEN / Validation / needs-device-test",
+  "phase0": "IN PROGRESS",
+  "phase1": "NOT STARTED",
+  "T009": "NOT STARTED; blocked by #19"
+}

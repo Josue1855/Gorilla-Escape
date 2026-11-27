@@ -1,0 +1,189 @@
+{
+  "recordedUtc": "2026-10-07T13:18:54.240790+00:00",
+  "status": "BLOCKED",
+  "observed": "Inbound lab TCP attempts blocked by UFW; physical sensors and WT not tested",
+  "events": [
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18000
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    },
+    {
+      "event": "UFW BLOCK",
+      "interface": "Wi-Fi",
+      "sourceRole": "LAN client attempting lab connection",
+      "destinationRole": "lab laptop",
+      "protocol": "TCP",
+      "port": 18443
+    }
+  ],
+  "rawMacAddressesRetained": false,
+  "firewallChanged": false,
+  "routerChanged": false,
+  "wanChanged": false,
+  "firstOriginUserReported": "Inear page; cause unverified",
+  "newOriginUserReported": "black screen; bootstrap certificate unavailable"
+}

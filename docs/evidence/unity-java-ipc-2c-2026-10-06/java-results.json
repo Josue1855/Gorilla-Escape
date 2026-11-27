@@ -1,0 +1,179 @@
+{
+  "suites": [
+    {
+      "suite": "com.gorillaescape.server.ProtocolContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "readsAndRoundTripsTheSharedSensorFixture",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ServerIntegrationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "servesPackagedReactShell",
+          "status": "PASS"
+        },
+        {
+          "name": "unknownApiDoesNotReturnTheApplicationShell",
+          "status": "PASS"
+        },
+        {
+          "name": "healthExposesProtocolWithoutPlayerData",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "killedOwnerReleasesKernelLockForNextRealJvm",
+          "status": "PASS"
+        },
+        {
+          "name": "immediateParentEofDuringBootstrapExitsCleanly",
+          "status": "PASS"
+        },
+        {
+          "name": "competingJvmFailsBeforeSpringAndOwnerStillResponds",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "realChildReadinessFramesAndStdinEof",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "staleFileCanBeLockedAndReusedWithoutDeletion",
+          "status": "PASS"
+        },
+        {
+          "name": "relativePathIsRejected",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbeCodecTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "sharedContractAndBigEndianFrame",
+          "status": "PASS"
+        },
+        {
+          "name": "rejectsLengthsTruncationAndUtf8",
+          "status": "PASS"
+        },
+        {
+          "name": "rejectsTokenIdentitySequenceAndDuplicateFields",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbeCorpusTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "sharedCorpus",
+          "status": "PASS"
+        },
+        {
+          "name": "concatenationAndNoBodyReadForInvalidSize",
+          "status": "PASS"
+        },
+        {
+          "name": "outputUtf8BoundedAndMalformedSurrogateRejected",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbePressureProcessTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "thousandConcatenatedWithSlowConsumerAndMaximumFrames",
+          "status": "PASS"
+        },
+        {
+          "name": "allInvalidFramesCloseOnlyTheirConnection",
+          "status": "PASS"
+        },
+        {
+          "name": "stalledAndTricklingFramesUseAbsoluteDeadline",
+          "status": "PASS"
+        },
+        {
+          "name": "repeatedOversizedAndInvalidFrames",
+          "status": "PASS"
+        },
+        {
+          "name": "nonReadingProducerHasFinitePressureAndCleanup",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "suite": "com.gorillaescape.server.ipc.ProbeWriteDeadlineTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "stalledRealSocketClosesWithinDeadlineAndNewSocketIsUnaffected",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 22,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

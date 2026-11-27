@@ -1,0 +1,37 @@
+{
+  "base": "bf857da9af07ae9b823d7f84e79663317301e462",
+  "branch": "codex/phase0-camera-privacy",
+  "classification": "technical LAB; physical webcam pipeline tests, no human QA",
+  "sourceHashes": {
+    "Unity/Assets/_Project/Scripts/CameraTracking/CameraFusionLabRunner.cs": "5c4b446b6ace09e25e338c5fde3de1b148e016b9a74263183ceedaf955ef3c26",
+    "Unity/Assets/_Project/Tests/EditMode/CameraFusionTests.cs": "0bfea1cb44220e85477d46ec6760696c0dc814a86d05050f90a59d7aa6039e7c"
+  },
+  "components": {
+    "passed": 23,
+    "total": 23
+  },
+  "Management": "PASS",
+  "Foundation": "PASS",
+  "diffCheck": "PASS",
+  "editmode": {
+    "total": "126",
+    "passed": "126",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed",
+    "xmlSha256": "8b9d4529249090f391e302108115d799a80f20caa499c162ff6ebc99c357e50e"
+  },
+  "playmode": {
+    "total": "20",
+    "passed": "20",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed",
+    "xmlSha256": "36a1ed830bf45793721e349cfd3b23547a082e13e892f00b78b1e64b405454f6"
+  },
+  "LinuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  }
+}

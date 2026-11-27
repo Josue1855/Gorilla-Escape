@@ -1,0 +1,69 @@
+{
+  "scope": "Real Chrome/PWA → RTC → Java → owned Unity IPC / PlayMode",
+  "source": "synthetic",
+  "physical": "NOT RUN",
+  "browser": "155.0.8059.39",
+  "cases": [
+    {
+      "case": "1-players-admitted",
+      "gate": "PASS"
+    },
+    {
+      "case": "2-players-admitted",
+      "gate": "PASS"
+    },
+    {
+      "case": "3-players-admitted",
+      "gate": "PASS"
+    },
+    {
+      "case": "4-players-admitted",
+      "gate": "PASS"
+    },
+    {
+      "case": "fifth-admission-rejected",
+      "gate": "PASS"
+    },
+    {
+      "case": "fifth-join-rejected",
+      "gate": "PASS"
+    },
+    {
+      "case": "unity-rejected-ready-before-input",
+      "gate": "PASS"
+    },
+    {
+      "case": "unity-issued-official-start",
+      "gate": "PASS"
+    },
+    {
+      "case": "post-start-issuance-rejected",
+      "gate": "PASS"
+    },
+    {
+      "case": "post-start-new-join-rejected",
+      "gate": "PASS"
+    },
+    {
+      "case": "real-rtc-playerid-spoof-rejected",
+      "gate": "PASS"
+    },
+    {
+      "case": "post-start-resume-same-player-device-new-epoch",
+      "gate": "PASS"
+    },
+    {
+      "case": "consumed-resume-replay-rejected",
+      "gate": "PASS"
+    },
+    {
+      "case": "phone-cannot-issue-game-start",
+      "gate": "PASS"
+    },
+    {
+      "case": "unity-observed-preserved-association",
+      "gate": "PASS"
+    }
+  ],
+  "gate": "PASS"
+}

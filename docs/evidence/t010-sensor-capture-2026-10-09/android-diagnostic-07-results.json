@@ -1,0 +1,134 @@
+{
+  "scope": "T010 actual React shell \u2192 Android Chrome virtual sensor events \u2192 RTC \u2192 Java child \u2192 loopback IPC \u2192 Unity",
+  "physical": "NOT RUN / pending; emulator does not replace iPhone rest/gentle or Android physical QA",
+  "tls": "NOT VALIDATED: localhost secure context through ADB reverse; no TLS bypass or CA installation",
+  "instrumentation": "CDP labels wire quality.source emulator only; passive observers read explicit axes; no sensor API/event/payload/time substitution",
+  "runs": [
+    {
+      "mode": "gentle",
+      "gate": "FAIL",
+      "file": "android-gentle.json"
+    }
+  ],
+  "gate": "FAIL",
+  "stage": "MEASURE_GENTLE",
+  "android": {
+    "api": "36",
+    "chrome": "133.0.6943.137"
+  },
+  "features": {
+    "secureContext": true,
+    "motion": true,
+    "orientation": true,
+    "rtc": true
+  },
+  "uiActions": [
+    {
+      "label": "CONECTAR",
+      "bounds": [
+        62,
+        708,
+        658,
+        810
+      ]
+    },
+    {
+      "label": "ACTIVAR CONTROL",
+      "bounds": [
+        62,
+        690,
+        658,
+        792
+      ]
+    },
+    {
+      "label": "Copiar diagn\u00f3stico",
+      "method": "DOM click; diagnostic/measurement only"
+    },
+    {
+      "label": "Medici\u00f3n t\u00e9cnica de sensores",
+      "method": "DOM click; diagnostic/measurement only"
+    },
+    {
+      "label": "Medir movimiento suave \u00b7 25 s",
+      "method": "DOM click; diagnostic/measurement only"
+    },
+    {
+      "label": "Copiar diagn\u00f3stico",
+      "method": "DOM click; diagnostic/measurement only"
+    }
+  ],
+  "virtualSensors": [
+    "acceleration: enabled.",
+    "gyroscope: enabled.",
+    "magnetic-field: enabled.",
+    "orientation: enabled.",
+    "temperature: enabled.",
+    "proximity: enabled.",
+    "light: enabled.",
+    "pressure: enabled.",
+    "humidity: enabled.",
+    "magnetic-field-uncalibrated: enabled.",
+    "gyroscope-uncalibrated: enabled.",
+    "hinge-angle0: disabled.",
+    "hinge-angle1: disabled.",
+    "hinge-angle2: disabled.",
+    "heart-rate: disabled.",
+    "rgbc-light: disabled.",
+    "wrist-tilt: disabled.",
+    "acceleration-uncalibrated: enabled.",
+    "heading: disabled."
+  ],
+  "preflight": "PASS",
+  "virtualSignalVariation": {
+    "motion": 1521,
+    "orientation": 1217,
+    "trustedMotion": 1521,
+    "trustedOrientation": 1217,
+    "accelerationChanged": true,
+    "rotationChanged": true,
+    "orientationChanged": true,
+    "orientationRangeRejected": {
+      "alpha": 8,
+      "beta": 0,
+      "gamma": 0
+    }
+  },
+  "unityObservedByDeclaredSource": {
+    "emulator": 1024
+  },
+  "playerExit": 0,
+  "javaCleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "ownedJavaResiduals": 0,
+  "androidCleanup": {
+    "processes": [
+      {
+        "component": "emulator",
+        "exitCode": 0,
+        "residual": false
+      },
+      {
+        "component": "adb",
+        "exitCode": 0,
+        "residual": false
+      }
+    ],
+    "ownedResiduals": 0,
+    "ownedHelperResiduals": 0,
+    "javaGraceful": true
+  },
+  "sourceHashes": {
+    "tools/t010/android_capture.py": "cc3954af9713b01565b42be102022a704d1055d7b8325be7bec95dcb291777b4",
+    "PWA/src/input/sensors/capture.js": "62edd2965c6b3ce1dcebc89aad2b6c025e198cd677fb1b4a7976b50cae0cf536",
+    "PWA/src/controller/session.js": "56f0dcb4df865003e2d14b79d4e20451cac91beb64d9990f0ecff95c9b00009e",
+    "PWA/src/input/mobileClient.js": "9f83dececc871a6dfaa3315c8905290e2d4eddb78e0d58f0d100d04950339e09",
+    "Server/target/local-server-0.1.0-SNAPSHOT.jar": "49052e84cc17f0684bf6dd3059687595afcadd377d314d71189e2657d6b549d6"
+  }
+}

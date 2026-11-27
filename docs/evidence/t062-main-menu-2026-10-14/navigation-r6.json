@@ -1,0 +1,36 @@
+{
+  "classification": "LAB / built UI + physical capture transport; physical phone NOT RUN",
+  "screenshots": 0,
+  "gate": "PASS",
+  "opened": 2,
+  "closed": 2,
+  "secretLogs": 0,
+  "renderSize": [
+    1920,
+    940
+  ],
+  "windowSize": [
+    1920,
+    940
+  ],
+  "mouseDownEvents": 8,
+  "playDisabled": true,
+  "loopbackOnly": true,
+  "summaryExport": "PASS / aggregate allowlist",
+  "exitCode": 0,
+  "cleanup": {
+    "visualApplied": false,
+    "cameraCleanup": true,
+    "javaCleanup": true,
+    "controlsRestored": true,
+    "qaPhoneObserved": false,
+    "phoneAccepted": 0,
+    "previewOverwritten": 0,
+    "visualFrame": 0,
+    "endOfFrame": 0,
+    "unityUpdateFps": 111.21820636999014,
+    "previewState": ""
+  },
+  "residualOwnedProcesses": 0,
+  "stderrBytes": 0
+}

@@ -1,0 +1,149 @@
+{
+  "scope": "Android emulator virtual sensors \u2014 NOT physical QA",
+  "mode": "gentle",
+  "controller": {
+    "state": "INPUT_READY",
+    "network": "NETWORK_READY",
+    "capabilities": {
+      "motion": "not-required-by-api",
+      "orientation": "not-required-by-api"
+    },
+    "permissions": {
+      "motion": "not-required-by-api",
+      "orientation": "not-required-by-api"
+    },
+    "measurement": {
+      "mode": "gentle",
+      "status": "COMPLETE"
+    }
+  },
+  "measurement": {
+    "mode": "gentle",
+    "status": "COMPLETE",
+    "durationMs": 25002.899999999994,
+    "capture": {
+      "captureRevision": "t010-2-coarsened-clock",
+      "state": "RUNNING",
+      "measurementClock": "monotonic callback receipt",
+      "channels": {
+        "motion": {
+          "permission": "not-required-by-api",
+          "captured": 1473,
+          "rawCallbacks": 1473,
+          "validSamples": 1473,
+          "rawAcquisition": {
+            "count": 1473,
+            "windowCount": 1473,
+            "capacity": 4096,
+            "durationMs": 24965.800000000003,
+            "actualMeasuredHz": 58.960658180390766,
+            "tier": 50,
+            "intervalMs": {
+              "min": 5.600000000005821,
+              "median": 16.69999999999709,
+              "p95": 19.30000000000291
+            }
+          },
+          "validUnique": {
+            "count": 1473,
+            "windowCount": 1473,
+            "capacity": 4096,
+            "durationMs": 24965.800000000003,
+            "actualMeasuredHz": 58.960658180390766,
+            "tier": 50,
+            "intervalMs": {
+              "min": 5.600000000005821,
+              "median": 16.69999999999709,
+              "p95": 19.30000000000291
+            }
+          },
+          "duplicateOrOutOfOrder": 0,
+          "timingRejected": 0,
+          "invalidFields": 0,
+          "missingFields": 0,
+          "missingAxes": {},
+          "invalidAxes": {},
+          "ageMs": 6.69999999999709,
+          "availability": {
+            "acceleration": "present",
+            "accelerationIncludingGravity": "present",
+            "rotationRate": "present"
+          }
+        },
+        "orientation": {
+          "permission": "not-required-by-api",
+          "captured": 1270,
+          "rawCallbacks": 1270,
+          "validSamples": 1270,
+          "rawAcquisition": {
+            "count": 1270,
+            "windowCount": 1270,
+            "capacity": 4096,
+            "durationMs": 24931.5,
+            "actualMeasuredHz": 50.89946453281993,
+            "tier": 50,
+            "intervalMs": {
+              "min": 8.89999999999418,
+              "median": 16.69999999999709,
+              "p95": 33.40000000000873
+            }
+          },
+          "validUnique": {
+            "count": 1270,
+            "windowCount": 1270,
+            "capacity": 4096,
+            "durationMs": 24931.5,
+            "actualMeasuredHz": 50.89946453281993,
+            "tier": 50,
+            "intervalMs": {
+              "min": 8.89999999999418,
+              "median": 16.69999999999709,
+              "p95": 33.40000000000873
+            }
+          },
+          "duplicateOrOutOfOrder": 0,
+          "timingRejected": 0,
+          "invalidFields": 9,
+          "missingFields": 0,
+          "missingAxes": {},
+          "invalidAxes": {},
+          "ageMs": 41.39999999999418,
+          "availability": {
+            "orientation": "present"
+          }
+        }
+      }
+    },
+    "emission": {
+      "count": 1230,
+      "windowCount": 1230,
+      "capacity": 4096,
+      "durationMs": 24966,
+      "actualMeasuredHz": 49.226948650164225,
+      "tier": 30,
+      "intervalMs": {
+        "min": 0.19999999999708962,
+        "median": 17.19999999999709,
+        "p95": 33.39999999999418
+      }
+    },
+    "emissionPolicy": {
+      "maximumHz": 50,
+      "emitted": 1230,
+      "budgetDropped": 1513,
+      "policy": "real-event discard; latest values at accepted event; no timer"
+    },
+    "transportDelta": {
+      "motionSubmitted": 1230,
+      "motionSent": 1230,
+      "motionAck": 1231,
+      "motionErrors": 0,
+      "overwritten": 0,
+      "errors": 0
+    },
+    "inputState": "INPUT_READY",
+    "source": "browser events; physical provenance requires operator confirmation"
+  },
+  "virtualControlUpdates": 51,
+  "gate": "FAIL"
+}

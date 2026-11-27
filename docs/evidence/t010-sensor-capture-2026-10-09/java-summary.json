@@ -1,0 +1,11 @@
+{
+  "command": "JAVA_HOME=Java21 Server/mvnw verify",
+  "tests": 56,
+  "pass": 54,
+  "fail": 0,
+  "errors": 0,
+  "skip": 2,
+  "build": "SUCCESS",
+  "warnings": "Preexisting deprecated ThreadDeath/protocol APIs and Mockito dynamic agent; no new Java source changes.",
+  "scope": "Actual local run, not retained results"
+}

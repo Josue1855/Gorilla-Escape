@@ -1,0 +1,16 @@
+{
+  "scope": "Phase0 runtime Chrome/PWA adapter ↔ RTC ↔ Java; Unity NOT RUN in this harness",
+  "physical": "DEFERRED",
+  "runs": [],
+  "negatives": [],
+  "gate": "FAIL",
+  "cleanup": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 2800
+  },
+  "browser": "155.0.8059.39",
+  "error": "page.evaluate: TypeError: Failed to execute 'fetch' on 'Window': Illegal invocation\n    at MobileClient.signal (http://127.0.0.1:42861/mobile-lab/mobileClient.js:23:54)\n    at MobileClient.connect (http://127.0.0.1:42861/mobile-lab/mobileClient.js:33:193)\n    at async eval (eval at evaluate (:311:30), <anonymous>:1:83)\n    at async <anonymous>:337:30"
+}

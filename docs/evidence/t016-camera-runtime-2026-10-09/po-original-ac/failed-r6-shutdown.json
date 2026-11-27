@@ -1,0 +1,11 @@
+{
+  "gate": "FAIL",
+  "date": "2026-10-13",
+  "technicalOnly": true,
+  "failure": "Player exceeded normal close timeout; harness finally raised and failed to persist aggregates",
+  "ownPlayerPid": 351449,
+  "workerResidualBeforeForcedPlayerClose": false,
+  "finalPlayerTermination": "SIGTERM then SIGKILL only if needed",
+  "cameraControlRecovery": "Independent final read pending; no claim that failed run restoration passed",
+  "physicalFrameHistory": "NONE"
+}

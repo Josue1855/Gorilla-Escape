@@ -1,0 +1,60 @@
+{
+  "id": "I_kwDOU9aZ0c8AAAABVQo2vA",
+  "number": 35,
+  "title": "[F10] Gorilla Smash de extremo a extremo",
+  "body": "<!-- gorilla-backlog:F10 -->\n\n## Objective\nGorilla Smash de extremo a extremo\n\n## Context\nv4 §17; v4 §23; v4 §26; v4 §27; v4 §42; v4 §49. Fase: 1. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar físicamente el teléfono. No adoptar dependencias candidatas sin prueba/decisión.\n\n## Acceptance Criteria\n- [ ] Tutorial, input real, gameplay, scoring, feedback, resultado, reinicio y turnos integrados.\n- [ ] 3 intentos/jugador; score 0–10000 y validación de gesto.\n\n## Dependencies\n- Blocked by #34\n\n## Technical Notes\nTipo: Feature. Área: Gameplay. Parent: #2. Responsabilidades primarias según WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobación.\n\n## Tests\nUnit/integration/PlayMode aplicables y validación manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de cámara.\n\n## Definition of Done\nAplicar v4 §49: implementación, build, aceptación, pruebas aplicables, integración, PR revisado, recuperación, logging, tuning y documentación. Hardware real cuando aplique. Documentación/spikes: entregar evidencia y decisión revisadas; build sólo si existe código de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n",
+  "state": "OPEN",
+  "labels": {
+    "nodes": [
+      {
+        "name": "blocked"
+      },
+      {
+        "name": "type:feature"
+      },
+      {
+        "name": "area:gameplay"
+      }
+    ]
+  },
+  "assignees": {
+    "nodes": []
+  },
+  "milestone": {
+    "number": 2,
+    "title": "Fase 1 — Vertical Slice Gorilla Smash",
+    "state": "OPEN"
+  },
+  "parent": {
+    "number": 2
+  },
+  "subIssues": {
+    "nodes": [
+      {
+        "number": 36,
+        "state": "OPEN"
+      },
+      {
+        "number": 37,
+        "state": "OPEN"
+      },
+      {
+        "number": 38,
+        "state": "OPEN"
+      },
+      {
+        "number": 39,
+        "state": "OPEN"
+      }
+    ]
+  },
+  "blockedBy": {
+    "nodes": [
+      {
+        "number": 34,
+        "state": "OPEN",
+        "title": "[T020] Validar build mínima en PC limpia y dictamen de viabilidad"
+      }
+    ]
+  }
+}

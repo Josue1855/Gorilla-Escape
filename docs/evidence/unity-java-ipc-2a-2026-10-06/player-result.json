@@ -1,0 +1,25 @@
+{
+  "playerExitCode": 0,
+  "javaResidual": false,
+  "bindingEvidence": [
+    "LISTEN 0      100        127.0.0.1:35755      0.0.0.0:*    users:((\"java\",pid=249172,fd=9))            ",
+    "LISTEN 0      2          127.0.0.1:44123      0.0.0.0:*    users:((\"java\",pid=249172,fd=13))           "
+  ],
+  "smoke": {
+    "startupMs": 2353.1973000000003,
+    "minimumMs": 0.5863,
+    "p50Ms": 0.7951,
+    "p95Ms": 1.4409,
+    "maximumMs": 1.889,
+    "samples": 100,
+    "errors": 0,
+    "pid": 249172,
+    "exitCode": 0,
+    "cleanExit": true
+  },
+  "playerSha256": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f",
+  "jarSha256": "7a85012025165f7f22203f5653e1c36e04b92eb302cde93b820854a2b8123c36",
+  "durationSeconds": 8.06592059135437,
+  "graphics": true,
+  "unityCleanShutdown": true
+}

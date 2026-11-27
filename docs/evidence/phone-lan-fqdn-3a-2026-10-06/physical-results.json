@@ -1,0 +1,14 @@
+{
+  "android": "NOT RUN",
+  "iphone": "NOT RUN",
+  "publicCertificate": "NOT ISSUED",
+  "domainDnsOwnership": "NOT CONFIRMED",
+  "routerLocalDns": "NOT CONFIGURED/NOT RUN",
+  "public443": "NOT RUN",
+  "wanOffFirstLoad": "NOT RUN",
+  "secondDeviceIpc": "NOT RUN",
+  "firewallChanges": "NONE",
+  "phoneTrustOrDnsChanges": "NONE",
+  "procedure": "PREPARED ONLY",
+  "gate3A": "IN PROGRESS"
+}

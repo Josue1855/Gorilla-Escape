@@ -1,0 +1,66 @@
+{
+  "before": {
+    "width": 640,
+    "height": 480,
+    "fourcc": "MJPG",
+    "fps": 30.0,
+    "controls": {
+      "auto_exposure": 3,
+      "exposure_time_absolute": 156,
+      "exposure_dynamic_framerate": 1
+    }
+  },
+  "layer": "minimal",
+  "warmupSeconds": 5,
+  "lighting": "current ambient; illuminance unmeasured",
+  "requested": {
+    "width": 640,
+    "height": 480,
+    "fourcc": "MJPG",
+    "fps": 30,
+    "priority": 0,
+    "manualExposure": null
+  },
+  "returned": {
+    "width": 640,
+    "height": 480,
+    "fourcc": "MJPG",
+    "fps": 30.0,
+    "controls": {
+      "auto_exposure": 3,
+      "exposure_time_absolute": 156,
+      "exposure_dynamic_framerate": 0
+    }
+  },
+  "measurement": {
+    "frames": 693,
+    "elapsedMonotonicSeconds": 35.01887821600394,
+    "fps": 19.76077005470009,
+    "intervalP50Ms": 62.76134899962926,
+    "intervalP95Ms": 68.26641100633424,
+    "readP50Ms": 62.769576004939154,
+    "readP95Ms": 68.24623800639529,
+    "actualOpenCV": {
+      "fourcc": "MJPG",
+      "width": 640.0,
+      "height": 480.0,
+      "reportedFps": 30.0,
+      "buffer": 1.0,
+      "backend": "V4L2"
+    },
+    "cameraReleased": true,
+    "captureThreadJoined": true
+  },
+  "afterRestore": {
+    "width": 640,
+    "height": 480,
+    "fourcc": "MJPG",
+    "fps": 30.0,
+    "controls": {
+      "auto_exposure": 3,
+      "exposure_time_absolute": 156,
+      "exposure_dynamic_framerate": 1
+    }
+  },
+  "restoredExactly": true
+}

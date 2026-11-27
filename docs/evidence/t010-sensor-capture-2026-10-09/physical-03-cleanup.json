@@ -1,0 +1,20 @@
+{
+  "scope": "Owned-process cleanup only, not a physical sensor acceptance verdict",
+  "playerExit": 0,
+  "javaResiduals": 0,
+  "cleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "unityInputObservedByDeclaredSource": {
+    "physical": 3989,
+    "synthetic": 0,
+    "replay": 0,
+    "emulator": 0,
+    "other": 0
+  }
+}

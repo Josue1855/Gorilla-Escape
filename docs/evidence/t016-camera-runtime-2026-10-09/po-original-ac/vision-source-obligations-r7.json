@@ -1,0 +1,74 @@
+[
+  {
+    "component": "mediapipe",
+    "required": "Pinned Eigen headers source SHA verified against MediaPipe release WORKSPACE; source/archive and original license copies supplied",
+    "fulfillment": "Pinned static dependency sources/notices plus explicit Python import modification supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "opencv-contrib-python-headless",
+    "required": "Corresponding-source fulfillment for embedded Qt/FFmpeg remains incomplete; see supplied upstream archives, measured configuration and open build/patch gaps in source-obligations.json",
+    "fulfillment": "Applicable native source materials supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "FFmpeg",
+    "required": "See source-obligations.json: matching upstream releases supplied; wheel modifications/build provenance and applicable relinking/replacement fulfillment remain OPEN",
+    "fulfillment": "Sources, measured configuration and vendor build scripts supplied; no Gorilla binary/source changes",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "system-copy-libcrypt.so.1",
+    "required": "For copyleft-covered files provide exact package corresponding source, distro patches and build materials; not downloaded or offered yet. Full copyright file controls per-file exceptions.",
+    "fulfillment": "Matching distro source/patch/build archives supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "system-copy-libdb-5.3.so",
+    "required": "For copyleft-covered files provide exact package corresponding source, distro patches and build materials; not downloaded or offered yet. Full copyright file controls per-file exceptions.",
+    "fulfillment": "Matching distro source/patch/build archives supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "system-copy-libgcc_s.so.1",
+    "required": "For copyleft-covered files provide exact package corresponding source, distro patches and build materials; not downloaded or offered yet. Full copyright file controls per-file exceptions.",
+    "fulfillment": "Matching distro source/patch/build archives supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "system-copy-libgdbm.so.6",
+    "required": "For copyleft-covered files provide exact package corresponding source, distro patches and build materials; not downloaded or offered yet. Full copyright file controls per-file exceptions.",
+    "fulfillment": "Matching distro source/patch/build archives supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "system-copy-libreadline.so.8",
+    "required": "For copyleft-covered files provide exact package corresponding source, distro patches and build materials; not downloaded or offered yet. Full copyright file controls per-file exceptions.",
+    "fulfillment": "Matching distro source/patch/build archives supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "system-copy-libstdc++.so.6",
+    "required": "For copyleft-covered files provide exact package corresponding source, distro patches and build materials; not downloaded or offered yet. Full copyright file controls per-file exceptions.",
+    "fulfillment": "Matching distro source/patch/build archives supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "CPython-runtime",
+    "required": "Inspect retained Python and embedded-extension licenses; GNU readline and other copied system libraries have separate source requirements.",
+    "fulfillment": "Exact CPython supplier source/patch/build archives supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "numpy.libs-GNU-compiler-runtimes",
+    "required": "Matching supplier sources/patches/build recipes supplied; see component source map",
+    "fulfillment": "Exact source RPMs, spec/build recipes, matching code hashes and authentic licenses supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  },
+  {
+    "component": "opencv_contrib_python_headless.libs-GNU-compiler-runtimes",
+    "required": "Matching supplier sources/patches/build recipes supplied; see component source map",
+    "fulfillment": "Exact source RPMs, spec/build recipes, matching code hashes and authentic licenses supplied",
+    "sourceReference": "SOURCES_OR_SOURCE_INFO/component-source-map.json"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "validate_management": {
+    "exit": 0,
+    "output": "PASS: 88 backlog records, acyclic dependencies, valid hierarchy, 405 local links; no fake assignments/Sprints.",
+    "error": ""
+  },
+  "validate_foundation": {
+    "exit": 0,
+    "output": "PASS: local UPM, 61 unique meta GUIDs, engine-independent contracts, fixture, PWA icons and amended architecture.",
+    "error": ""
+  },
+  "diffCheck": "PASS",
+  "historicalEvidenceRetention": "173 non-document sources, 4 artifacts, 108 vision natives and model matched; unchanged configs",
+  "freshTestsScope": "Static validations/config hashes + isolated Java compile/package; tests skipped there; PR CI separate"
+}

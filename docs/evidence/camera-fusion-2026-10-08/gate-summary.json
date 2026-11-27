@@ -1,0 +1,63 @@
+{
+  "gate": "PASS — SOFTWARE/LAB",
+  "CameraInput": "PASS — SOFTWARE/LAB",
+  "PlayerLock": "PASS — SOFTWARE/LAB, one camera-active player per turn",
+  "TemporalAlignment": "PASS — SOFTWARE/LAB, PC receipt/read-complete proxies",
+  "InputFusionInfrastructure": "PASS — SOFTWARE/LAB, no sporting decisions",
+  "tests": {
+    "Java": "48/48 PASS",
+    "PWA": "18/18 PASS",
+    "EditMode": "64/64 PASS",
+    "PlayMode": "16/16 PASS",
+    "LinuxBuild": "0 errors / 0 warnings",
+    "Player2A2B": "11 groups PASS",
+    "mobileRegression": "PASS, four real Chrome peers, 18 negative/lifecycle cases",
+    "cameraCorpus": 12,
+    "fusionScenarios": 21,
+    "conceptualTraces": 8
+  },
+  "replay": "e2e-replay04.json",
+  "physicalCamera": {
+    "captureToStore": "PASS technical partial",
+    "reliableHumanLeaveReturn": "NOT RUN",
+    "reference": "e2e-physical01.json",
+    "fpsTarget30": "NOT ACHIEVED in smoke, observed 17.611"
+  },
+  "negativePlayer": {
+    "unavailable": "e2e-unavailable01.json PASS",
+    "visionFailure": "e2e-vision-failure03.json PASS",
+    "actualOpenCvUnavailable": "physical-unavailable01.json PASS"
+  },
+  "benchmarks2C": "Retained previous independent three N1000 +601.2234171s, not rerun; transport source/JAR identical",
+  "ownProcessResidual": 0,
+  "normalExit": "Unity / Java / vision =0; expected failed vision exit2, separately classified",
+  "cleanup": "PASS, physical capture/detector closed, no normal forced stop",
+  "sourceHashVerification": "PASS",
+  "evidenceReview": "PASS, no secrets/raw physical landmarks/video, 54 historical evidence files unchanged",
+  "foundation": "PASS,61 meta GUIDs",
+  "management": "PASS,88 records/307 links",
+  "diffCheck": "PASS",
+  "git": {
+    "branch": "feature/mobile-phase0-lan-https-3a",
+    "HEAD": "0d940f77f533bb6780bc3f07169dce414ea21e54",
+    "newBranch": false,
+    "commit": false,
+    "push": false,
+    "merge": false,
+    "priorLocalFilesPreserved": true
+  },
+  "PR94": "OPEN/DRAFT, head0d940f77 unchanged",
+  "physicalIphone": "DEFERRED",
+  "physicalAndroid": "DEFERRED",
+  "AndroidEmulatorRTC": "BLOCKED, prior evidence preserved",
+  "Windows": "DEFERRED",
+  "humanMotionFusion": "DEFERRED",
+  "physicalClockSync": "DEFERRED",
+  "finalThresholdTuning": "DEFERRED",
+  "productPackaging": "DEFERRED, lab Python adapter not adopted for distribution",
+  "phase0": "IN PROGRESS",
+  "increment3A": "IN PROGRESS",
+  "phase1": "NOT STARTED",
+  "nextOnlyBlock": "FINAL PHASE0 AUDIT — NOT STARTED",
+  "gameplayImplemented": false
+}

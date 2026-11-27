@@ -1,0 +1,1283 @@
+{
+  "runs": [
+    {
+      "run": 1,
+      "warmup": 100,
+      "N": 1000,
+      "result": {
+        "startupMs": 2134.0482,
+        "minimumMs": 0.258,
+        "p50Ms": 1.0075,
+        "p95Ms": 1.5617,
+        "maximumMs": 3.5342000000000002,
+        "shutdownMs": 50.0231,
+        "readersMs": 0.7601,
+        "samples": 1000,
+        "errors": 0,
+        "pid": 190431,
+        "exitCode": 0,
+        "sent": 1100,
+        "received": 1100,
+        "valid": 1100,
+        "timeouts": 0,
+        "lateTicks": 212,
+        "durationSeconds": 21.986593199999998,
+        "effectiveHz": 50.00106959244964,
+        "cleanExit": true,
+        "forced": false,
+        "cleanupComplete": true,
+        "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "memoryInitialRSS": {
+        "unity": 233852928,
+        "java": 208101376
+      },
+      "ownershipVerified": true,
+      "playerExit": 0,
+      "residuals": [],
+      "listeners": {
+        "190431": [
+          {
+            "family": "tcp",
+            "address": "127.0.0.1",
+            "port": 42545
+          },
+          {
+            "family": "tcp",
+            "address": "127.0.0.1",
+            "port": 40053
+          }
+        ]
+      },
+      "events": [
+        {
+          "component": "ipc-unity",
+          "event": "START_REQUESTED",
+          "state": "STARTING",
+          "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+          "generation": 1,
+          "pid": 0,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 0,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "PROCESS_STARTED",
+          "state": "STARTING",
+          "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+          "generation": 1,
+          "pid": 190431,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "READY_RECEIVED",
+          "state": "CONNECTING",
+          "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+          "generation": 1,
+          "pid": 190431,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "FIRST_PONG",
+          "state": "RUNNING",
+          "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+          "generation": 1,
+          "pid": 190431,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "STOP_REQUESTED",
+          "state": "STOPPING",
+          "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+          "generation": 1,
+          "pid": 190431,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "SHUTDOWN_CLEAN",
+          "state": "STOPPING",
+          "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+          "generation": 1,
+          "pid": 190431,
+          "exitCode": 0,
+          "shutdownMs": 50.0231,
+          "readersMs": 0.7601,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": true,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "STOPPED",
+          "state": "STOPPED",
+          "instanceId": "3c4e0db9-92e9-4b00-9330-5faca888b50f",
+          "generation": 1,
+          "pid": 190431,
+          "exitCode": 0,
+          "shutdownMs": 50.0231,
+          "readersMs": 0.7601,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": true,
+          "errorCode": "",
+          "cleanupError": ""
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "warmup": 100,
+      "N": 1000,
+      "result": {
+        "startupMs": 1912.9807,
+        "minimumMs": 0.26980000000000004,
+        "p50Ms": 0.9777,
+        "p95Ms": 1.5687,
+        "maximumMs": 3.194,
+        "shutdownMs": 62.134800000000006,
+        "readersMs": 1.3998000000000002,
+        "samples": 1000,
+        "errors": 0,
+        "pid": 191667,
+        "exitCode": 0,
+        "sent": 1100,
+        "received": 1100,
+        "valid": 1100,
+        "timeouts": 0,
+        "lateTicks": 191,
+        "durationSeconds": 21.9844135,
+        "effectiveHz": 50.00016616671838,
+        "cleanExit": true,
+        "forced": false,
+        "cleanupComplete": true,
+        "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "memoryInitialRSS": {
+        "unity": 233902080,
+        "java": 210468864
+      },
+      "ownershipVerified": true,
+      "playerExit": 0,
+      "residuals": [],
+      "listeners": {
+        "191667": [
+          {
+            "family": "tcp",
+            "address": "127.0.0.1",
+            "port": 40343
+          },
+          {
+            "family": "tcp",
+            "address": "127.0.0.1",
+            "port": 33061
+          }
+        ]
+      },
+      "events": [
+        {
+          "component": "ipc-unity",
+          "event": "START_REQUESTED",
+          "state": "STARTING",
+          "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+          "generation": 1,
+          "pid": 0,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 0,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "PROCESS_STARTED",
+          "state": "STARTING",
+          "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+          "generation": 1,
+          "pid": 191667,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "READY_RECEIVED",
+          "state": "CONNECTING",
+          "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+          "generation": 1,
+          "pid": 191667,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "FIRST_PONG",
+          "state": "RUNNING",
+          "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+          "generation": 1,
+          "pid": 191667,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "STOP_REQUESTED",
+          "state": "STOPPING",
+          "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+          "generation": 1,
+          "pid": 191667,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "SHUTDOWN_CLEAN",
+          "state": "STOPPING",
+          "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+          "generation": 1,
+          "pid": 191667,
+          "exitCode": 0,
+          "shutdownMs": 62.1348,
+          "readersMs": 1.3998,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": true,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "STOPPED",
+          "state": "STOPPED",
+          "instanceId": "16d47441-6648-4bc7-9336-d180cd9873db",
+          "generation": 1,
+          "pid": 191667,
+          "exitCode": 0,
+          "shutdownMs": 62.1348,
+          "readersMs": 1.3998,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": true,
+          "errorCode": "",
+          "cleanupError": ""
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "warmup": 100,
+      "N": 1000,
+      "result": {
+        "startupMs": 1899.5049000000001,
+        "minimumMs": 0.30960000000000004,
+        "p50Ms": 0.9767,
+        "p95Ms": 1.6134000000000002,
+        "maximumMs": 3.1152,
+        "shutdownMs": 76.26480000000001,
+        "readersMs": 1.5106000000000002,
+        "samples": 1000,
+        "errors": 0,
+        "pid": 193983,
+        "exitCode": 0,
+        "sent": 1100,
+        "received": 1100,
+        "valid": 1100,
+        "timeouts": 0,
+        "lateTicks": 224,
+        "durationSeconds": 21.9859263,
+        "effectiveHz": 49.99923824984368,
+        "cleanExit": true,
+        "forced": false,
+        "cleanupComplete": true,
+        "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      "memoryInitialRSS": {
+        "unity": 233648128,
+        "java": 216641536
+      },
+      "ownershipVerified": true,
+      "playerExit": 0,
+      "residuals": [],
+      "listeners": {
+        "193983": [
+          {
+            "family": "tcp",
+            "address": "127.0.0.1",
+            "port": 46827
+          },
+          {
+            "family": "tcp",
+            "address": "127.0.0.1",
+            "port": 33649
+          }
+        ]
+      },
+      "events": [
+        {
+          "component": "ipc-unity",
+          "event": "START_REQUESTED",
+          "state": "STARTING",
+          "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+          "generation": 1,
+          "pid": 0,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 0,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "PROCESS_STARTED",
+          "state": "STARTING",
+          "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+          "generation": 1,
+          "pid": 193983,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "READY_RECEIVED",
+          "state": "CONNECTING",
+          "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+          "generation": 1,
+          "pid": 193983,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "FIRST_PONG",
+          "state": "RUNNING",
+          "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+          "generation": 1,
+          "pid": 193983,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "STOP_REQUESTED",
+          "state": "STOPPING",
+          "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+          "generation": 1,
+          "pid": 193983,
+          "exitCode": 0,
+          "shutdownMs": 0,
+          "readersMs": 0,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": false,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "SHUTDOWN_CLEAN",
+          "state": "STOPPING",
+          "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+          "generation": 1,
+          "pid": 193983,
+          "exitCode": 0,
+          "shutdownMs": 76.2648,
+          "readersMs": 1.5106,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": true,
+          "errorCode": "",
+          "cleanupError": ""
+        },
+        {
+          "component": "ipc-unity",
+          "event": "STOPPED",
+          "state": "STOPPED",
+          "instanceId": "516f0877-4e5a-4129-9d39-22fb5fea13fe",
+          "generation": 1,
+          "pid": 193983,
+          "exitCode": 0,
+          "shutdownMs": 76.2648,
+          "readersMs": 1.5106,
+          "forced": false,
+          "launches": 1,
+          "cleanupComplete": true,
+          "errorCode": "",
+          "cleanupError": ""
+        }
+      ]
+    }
+  ],
+  "stability": {
+    "result": {
+      "startupMs": 1921.2768,
+      "minimumMs": 0.3316,
+      "p50Ms": 1.0978,
+      "p95Ms": 1.7587000000000002,
+      "maximumMs": 3.3326000000000002,
+      "shutdownMs": 54.0375,
+      "readersMs": 0.9524,
+      "samples": 600,
+      "errors": 0,
+      "pid": 195285,
+      "exitCode": 0,
+      "sent": 601,
+      "received": 601,
+      "valid": 601,
+      "timeouts": 0,
+      "lateTicks": 0,
+      "durationSeconds": 601.2428525,
+      "effectiveHz": 0.9986052931660057,
+      "cleanExit": true,
+      "forced": false,
+      "cleanupComplete": true,
+      "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+      "errorCode": "",
+      "cleanupError": ""
+    },
+    "elapsedRunningSeconds": 601.509,
+    "memory": [
+      {
+        "seconds": 0.0,
+        "unityRSS": 244961280,
+        "javaRSS": 215642112
+      },
+      {
+        "seconds": 5.02,
+        "unityRSS": 249708544,
+        "javaRSS": 206270464
+      },
+      {
+        "seconds": 10.043,
+        "unityRSS": 252129280,
+        "javaRSS": 206278656
+      },
+      {
+        "seconds": 15.061,
+        "unityRSS": 254541824,
+        "javaRSS": 206311424
+      },
+      {
+        "seconds": 20.082,
+        "unityRSS": 257015808,
+        "javaRSS": 206315520
+      },
+      {
+        "seconds": 25.102,
+        "unityRSS": 259338240,
+        "javaRSS": 206336000
+      },
+      {
+        "seconds": 30.121,
+        "unityRSS": 259768320,
+        "javaRSS": 206356480
+      },
+      {
+        "seconds": 35.141,
+        "unityRSS": 259796992,
+        "javaRSS": 206413824
+      },
+      {
+        "seconds": 40.163,
+        "unityRSS": 259743744,
+        "javaRSS": 206417920
+      },
+      {
+        "seconds": 45.18,
+        "unityRSS": 259805184,
+        "javaRSS": 206442496
+      },
+      {
+        "seconds": 50.2,
+        "unityRSS": 259874816,
+        "javaRSS": 206462976
+      },
+      {
+        "seconds": 55.018,
+        "unityRSS": 259911680,
+        "javaRSS": 206487552
+      },
+      {
+        "seconds": 60.042,
+        "unityRSS": 260251648,
+        "javaRSS": 206499840
+      },
+      {
+        "seconds": 65.063,
+        "unityRSS": 260280320,
+        "javaRSS": 206520320
+      },
+      {
+        "seconds": 70.085,
+        "unityRSS": 260313088,
+        "javaRSS": 206536704
+      },
+      {
+        "seconds": 75.106,
+        "unityRSS": 260337664,
+        "javaRSS": 206540800
+      },
+      {
+        "seconds": 80.127,
+        "unityRSS": 260374528,
+        "javaRSS": 206565376
+      },
+      {
+        "seconds": 85.147,
+        "unityRSS": 260419584,
+        "javaRSS": 206594048
+      },
+      {
+        "seconds": 90.168,
+        "unityRSS": 260509696,
+        "javaRSS": 206598144
+      },
+      {
+        "seconds": 95.19,
+        "unityRSS": 260513792,
+        "javaRSS": 206618624
+      },
+      {
+        "seconds": 100.01,
+        "unityRSS": 260599808,
+        "javaRSS": 206618624
+      },
+      {
+        "seconds": 105.033,
+        "unityRSS": 260722688,
+        "javaRSS": 206639104
+      },
+      {
+        "seconds": 110.048,
+        "unityRSS": 260747264,
+        "javaRSS": 206667776
+      },
+      {
+        "seconds": 115.064,
+        "unityRSS": 260808704,
+        "javaRSS": 206680064
+      },
+      {
+        "seconds": 120.08,
+        "unityRSS": 260952064,
+        "javaRSS": 206680064
+      },
+      {
+        "seconds": 125.097,
+        "unityRSS": 261005312,
+        "javaRSS": 206688256
+      },
+      {
+        "seconds": 130.112,
+        "unityRSS": 261009408,
+        "javaRSS": 206761984
+      },
+      {
+        "seconds": 135.127,
+        "unityRSS": 261074944,
+        "javaRSS": 206761984
+      },
+      {
+        "seconds": 140.139,
+        "unityRSS": 261144576,
+        "javaRSS": 206761984
+      },
+      {
+        "seconds": 145.155,
+        "unityRSS": 261197824,
+        "javaRSS": 206761984
+      },
+      {
+        "seconds": 150.17,
+        "unityRSS": 261214208,
+        "javaRSS": 206766080
+      },
+      {
+        "seconds": 155.191,
+        "unityRSS": 261292032,
+        "javaRSS": 206766080
+      },
+      {
+        "seconds": 160.011,
+        "unityRSS": 261320704,
+        "javaRSS": 206807040
+      },
+      {
+        "seconds": 165.03,
+        "unityRSS": 261378048,
+        "javaRSS": 206807040
+      },
+      {
+        "seconds": 170.05,
+        "unityRSS": 261488640,
+        "javaRSS": 206823424
+      },
+      {
+        "seconds": 175.067,
+        "unityRSS": 261455872,
+        "javaRSS": 206852096
+      },
+      {
+        "seconds": 180.083,
+        "unityRSS": 261566464,
+        "javaRSS": 206860288
+      },
+      {
+        "seconds": 185.105,
+        "unityRSS": 261652480,
+        "javaRSS": 206864384
+      },
+      {
+        "seconds": 190.126,
+        "unityRSS": 261709824,
+        "javaRSS": 206868480
+      },
+      {
+        "seconds": 195.149,
+        "unityRSS": 261701632,
+        "javaRSS": 206942208
+      },
+      {
+        "seconds": 200.169,
+        "unityRSS": 261738496,
+        "javaRSS": 206958592
+      },
+      {
+        "seconds": 205.19,
+        "unityRSS": 261779456,
+        "javaRSS": 206966784
+      },
+      {
+        "seconds": 210.012,
+        "unityRSS": 261849088,
+        "javaRSS": 206979072
+      },
+      {
+        "seconds": 215.031,
+        "unityRSS": 261910528,
+        "javaRSS": 206983168
+      },
+      {
+        "seconds": 220.052,
+        "unityRSS": 261918720,
+        "javaRSS": 206991360
+      },
+      {
+        "seconds": 225.073,
+        "unityRSS": 261996544,
+        "javaRSS": 207007744
+      },
+      {
+        "seconds": 230.093,
+        "unityRSS": 262078464,
+        "javaRSS": 207007744
+      },
+      {
+        "seconds": 235.115,
+        "unityRSS": 262127616,
+        "javaRSS": 207011840
+      },
+      {
+        "seconds": 240.135,
+        "unityRSS": 262135808,
+        "javaRSS": 207036416
+      },
+      {
+        "seconds": 245.157,
+        "unityRSS": 262164480,
+        "javaRSS": 207060992
+      },
+      {
+        "seconds": 250.175,
+        "unityRSS": 262225920,
+        "javaRSS": 207081472
+      },
+      {
+        "seconds": 255.189,
+        "unityRSS": 262332416,
+        "javaRSS": 207122432
+      },
+      {
+        "seconds": 260.009,
+        "unityRSS": 262389760,
+        "javaRSS": 207228928
+      },
+      {
+        "seconds": 265.028,
+        "unityRSS": 262463488,
+        "javaRSS": 207228928
+      },
+      {
+        "seconds": 270.043,
+        "unityRSS": 262561792,
+        "javaRSS": 207237120
+      },
+      {
+        "seconds": 275.061,
+        "unityRSS": 262569984,
+        "javaRSS": 207237120
+      },
+      {
+        "seconds": 280.071,
+        "unityRSS": 262635520,
+        "javaRSS": 207237120
+      },
+      {
+        "seconds": 285.089,
+        "unityRSS": 262717440,
+        "javaRSS": 207253504
+      },
+      {
+        "seconds": 290.107,
+        "unityRSS": 262787072,
+        "javaRSS": 207261696
+      },
+      {
+        "seconds": 295.129,
+        "unityRSS": 262836224,
+        "javaRSS": 207306752
+      },
+      {
+        "seconds": 300.15,
+        "unityRSS": 262897664,
+        "javaRSS": 207310848
+      },
+      {
+        "seconds": 305.172,
+        "unityRSS": 262975488,
+        "javaRSS": 207323136
+      },
+      {
+        "seconds": 310.193,
+        "unityRSS": 263073792,
+        "javaRSS": 207364096
+      },
+      {
+        "seconds": 315.008,
+        "unityRSS": 263077888,
+        "javaRSS": 207364096
+      },
+      {
+        "seconds": 320.03,
+        "unityRSS": 263143424,
+        "javaRSS": 207400960
+      },
+      {
+        "seconds": 325.049,
+        "unityRSS": 263208960,
+        "javaRSS": 207400960
+      },
+      {
+        "seconds": 330.069,
+        "unityRSS": 263266304,
+        "javaRSS": 207400960
+      },
+      {
+        "seconds": 335.091,
+        "unityRSS": 263327744,
+        "javaRSS": 207400960
+      },
+      {
+        "seconds": 340.114,
+        "unityRSS": 263385088,
+        "javaRSS": 207409152
+      },
+      {
+        "seconds": 345.135,
+        "unityRSS": 263491584,
+        "javaRSS": 207413248
+      },
+      {
+        "seconds": 350.156,
+        "unityRSS": 263471104,
+        "javaRSS": 207413248
+      },
+      {
+        "seconds": 355.177,
+        "unityRSS": 263553024,
+        "javaRSS": 207429632
+      },
+      {
+        "seconds": 360.198,
+        "unityRSS": 263655424,
+        "javaRSS": 207433728
+      },
+      {
+        "seconds": 365.016,
+        "unityRSS": 263729152,
+        "javaRSS": 207433728
+      },
+      {
+        "seconds": 370.037,
+        "unityRSS": 263725056,
+        "javaRSS": 207441920
+      },
+      {
+        "seconds": 375.056,
+        "unityRSS": 263798784,
+        "javaRSS": 207446016
+      },
+      {
+        "seconds": 380.078,
+        "unityRSS": 263892992,
+        "javaRSS": 207466496
+      },
+      {
+        "seconds": 385.099,
+        "unityRSS": 263966720,
+        "javaRSS": 207626240
+      },
+      {
+        "seconds": 390.118,
+        "unityRSS": 263962624,
+        "javaRSS": 207626240
+      },
+      {
+        "seconds": 395.139,
+        "unityRSS": 264028160,
+        "javaRSS": 207626240
+      },
+      {
+        "seconds": 400.157,
+        "unityRSS": 264110080,
+        "javaRSS": 207626240
+      },
+      {
+        "seconds": 405.176,
+        "unityRSS": 264134656,
+        "javaRSS": 207667200
+      },
+      {
+        "seconds": 410.197,
+        "unityRSS": 264196096,
+        "javaRSS": 207679488
+      },
+      {
+        "seconds": 415.021,
+        "unityRSS": 264253440,
+        "javaRSS": 207679488
+      },
+      {
+        "seconds": 420.041,
+        "unityRSS": 264368128,
+        "javaRSS": 207679488
+      },
+      {
+        "seconds": 425.062,
+        "unityRSS": 264429568,
+        "javaRSS": 207683584
+      },
+      {
+        "seconds": 430.084,
+        "unityRSS": 264474624,
+        "javaRSS": 207691776
+      },
+      {
+        "seconds": 435.105,
+        "unityRSS": 264507392,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 440.123,
+        "unityRSS": 264556544,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 445.142,
+        "unityRSS": 264597504,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 450.162,
+        "unityRSS": 264630272,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 455.182,
+        "unityRSS": 264617984,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 460.003,
+        "unityRSS": 264650752,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 465.018,
+        "unityRSS": 264699904,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 470.039,
+        "unityRSS": 264802304,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 475.061,
+        "unityRSS": 264863744,
+        "javaRSS": 207695872
+      },
+      {
+        "seconds": 480.082,
+        "unityRSS": 264921088,
+        "javaRSS": 207728640
+      },
+      {
+        "seconds": 485.103,
+        "unityRSS": 264978432,
+        "javaRSS": 207728640
+      },
+      {
+        "seconds": 490.123,
+        "unityRSS": 265039872,
+        "javaRSS": 207728640
+      },
+      {
+        "seconds": 495.143,
+        "unityRSS": 265097216,
+        "javaRSS": 207728640
+      },
+      {
+        "seconds": 500.164,
+        "unityRSS": 265158656,
+        "javaRSS": 207728640
+      },
+      {
+        "seconds": 505.185,
+        "unityRSS": 265216000,
+        "javaRSS": 207728640
+      },
+      {
+        "seconds": 510.007,
+        "unityRSS": 265273344,
+        "javaRSS": 207753216
+      },
+      {
+        "seconds": 515.029,
+        "unityRSS": 265330688,
+        "javaRSS": 207847424
+      },
+      {
+        "seconds": 520.05,
+        "unityRSS": 265392128,
+        "javaRSS": 207847424
+      },
+      {
+        "seconds": 525.071,
+        "unityRSS": 265445376,
+        "javaRSS": 207847424
+      },
+      {
+        "seconds": 530.094,
+        "unityRSS": 265502720,
+        "javaRSS": 207847424
+      },
+      {
+        "seconds": 535.117,
+        "unityRSS": 265564160,
+        "javaRSS": 207847424
+      },
+      {
+        "seconds": 540.139,
+        "unityRSS": 265621504,
+        "javaRSS": 207855616
+      },
+      {
+        "seconds": 545.159,
+        "unityRSS": 265678848,
+        "javaRSS": 207855616
+      },
+      {
+        "seconds": 550.178,
+        "unityRSS": 265740288,
+        "javaRSS": 207855616
+      },
+      {
+        "seconds": 555.198,
+        "unityRSS": 265752576,
+        "javaRSS": 207855616
+      },
+      {
+        "seconds": 560.02,
+        "unityRSS": 265809920,
+        "javaRSS": 207867904
+      },
+      {
+        "seconds": 565.041,
+        "unityRSS": 265887744,
+        "javaRSS": 207876096
+      },
+      {
+        "seconds": 570.063,
+        "unityRSS": 265895936,
+        "javaRSS": 207876096
+      },
+      {
+        "seconds": 575.084,
+        "unityRSS": 265969664,
+        "javaRSS": 207876096
+      },
+      {
+        "seconds": 580.105,
+        "unityRSS": 266043392,
+        "javaRSS": 207876096
+      },
+      {
+        "seconds": 585.126,
+        "unityRSS": 266108928,
+        "javaRSS": 207876096
+      },
+      {
+        "seconds": 590.148,
+        "unityRSS": 266166272,
+        "javaRSS": 207876096
+      },
+      {
+        "seconds": 595.165,
+        "unityRSS": 266223616,
+        "javaRSS": 207876096
+      },
+      {
+        "seconds": 600.186,
+        "unityRSS": 266268672,
+        "javaRSS": 207876096
+      }
+    ],
+    "managedHeap": "NOT MEASURED: portable instrumentation not available; RSS observation only",
+    "memoryInvestigationThreshold": "max(64 MiB,25% baseline); observation, not leak certification",
+    "playerExit": 0,
+    "residuals": [],
+    "listeners": {
+      "195285": [
+        {
+          "family": "tcp",
+          "address": "127.0.0.1",
+          "port": 45671
+        },
+        {
+          "family": "tcp",
+          "address": "127.0.0.1",
+          "port": 38421
+        }
+      ]
+    },
+    "events": [
+      {
+        "component": "ipc-unity",
+        "event": "START_REQUESTED",
+        "state": "STARTING",
+        "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+        "generation": 1,
+        "pid": 0,
+        "exitCode": 0,
+        "shutdownMs": 0,
+        "readersMs": 0,
+        "forced": false,
+        "launches": 0,
+        "cleanupComplete": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      {
+        "component": "ipc-unity",
+        "event": "PROCESS_STARTED",
+        "state": "STARTING",
+        "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+        "generation": 1,
+        "pid": 195285,
+        "exitCode": 0,
+        "shutdownMs": 0,
+        "readersMs": 0,
+        "forced": false,
+        "launches": 1,
+        "cleanupComplete": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      {
+        "component": "ipc-unity",
+        "event": "READY_RECEIVED",
+        "state": "CONNECTING",
+        "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+        "generation": 1,
+        "pid": 195285,
+        "exitCode": 0,
+        "shutdownMs": 0,
+        "readersMs": 0,
+        "forced": false,
+        "launches": 1,
+        "cleanupComplete": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      {
+        "component": "ipc-unity",
+        "event": "FIRST_PONG",
+        "state": "RUNNING",
+        "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+        "generation": 1,
+        "pid": 195285,
+        "exitCode": 0,
+        "shutdownMs": 0,
+        "readersMs": 0,
+        "forced": false,
+        "launches": 1,
+        "cleanupComplete": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      {
+        "component": "ipc-unity",
+        "event": "STOP_REQUESTED",
+        "state": "STOPPING",
+        "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+        "generation": 1,
+        "pid": 195285,
+        "exitCode": 0,
+        "shutdownMs": 0,
+        "readersMs": 0,
+        "forced": false,
+        "launches": 1,
+        "cleanupComplete": false,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      {
+        "component": "ipc-unity",
+        "event": "SHUTDOWN_CLEAN",
+        "state": "STOPPING",
+        "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+        "generation": 1,
+        "pid": 195285,
+        "exitCode": 0,
+        "shutdownMs": 54.0375,
+        "readersMs": 0.9524,
+        "forced": false,
+        "launches": 1,
+        "cleanupComplete": true,
+        "errorCode": "",
+        "cleanupError": ""
+      },
+      {
+        "component": "ipc-unity",
+        "event": "STOPPED",
+        "state": "STOPPED",
+        "instanceId": "5138d09b-93cc-484e-a65d-d54e6392949d",
+        "generation": 1,
+        "pid": 195285,
+        "exitCode": 0,
+        "shutdownMs": 54.0375,
+        "readersMs": 0.9524,
+        "forced": false,
+        "launches": 1,
+        "cleanupComplete": true,
+        "errorCode": "",
+        "cleanupError": ""
+      }
+    ],
+    "unityRSSObservation": {
+      "initial": 244961280,
+      "final": 266268672,
+      "peak": 266268672,
+      "investigate": false
+    },
+    "javaRSSObservation": {
+      "initial": 215642112,
+      "final": 207876096,
+      "peak": 215642112,
+      "investigate": false
+    }
+  },
+  "scope": "Linux development IPC only; no phone/gameplay latency or global leak claim"
+}

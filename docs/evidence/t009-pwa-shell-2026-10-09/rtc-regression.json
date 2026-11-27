@@ -1,0 +1,256 @@
+{
+  "scope": "Existing LAB harness regression: real Chrome RTC \u2192 Java \u2192 IPC \u2192 Unity; synthetic input, NOT physical sensor frequency",
+  "physical": "DEFERRED",
+  "gate": "PASS",
+  "runs": [
+    {
+      "hz": 30,
+      "clients": [
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.1000000000931323,
+          "p95Ms": 7.2999999998137355,
+          "maximumMs": 9.400000000139698,
+          "durationMs": 2000.3999999999069
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.300000000046566,
+          "p95Ms": 6.300000000046566,
+          "maximumMs": 13,
+          "durationMs": 2000.5
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 4.100000000093132,
+          "p95Ms": 7.7000000001862645,
+          "maximumMs": 12.699999999953434,
+          "durationMs": 2000.3999999999069
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 4.100000000093132,
+          "p95Ms": 8.400000000139698,
+          "maximumMs": 9.199999999953434,
+          "durationMs": 2000.5
+        }
+      ]
+    },
+    {
+      "hz": 50,
+      "clients": [
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.5,
+          "p95Ms": 4.300000000046566,
+          "maximumMs": 5.600000000093132,
+          "durationMs": 1199.8999999999069
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.9000000001396984,
+          "p95Ms": 4.199999999953434,
+          "maximumMs": 4.599999999860302,
+          "durationMs": 1200.3000000000466
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.6000000000931323,
+          "p95Ms": 4,
+          "maximumMs": 4.7000000001862645,
+          "durationMs": 1199.6000000000931
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.199999999953434,
+          "p95Ms": 4.699999999953434,
+          "maximumMs": 4.800000000046566,
+          "durationMs": 1199.7999999998137
+        }
+      ]
+    },
+    {
+      "hz": 60,
+      "clients": [
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.0999999998603016,
+          "p95Ms": 2.699999999953434,
+          "maximumMs": 3.5,
+          "durationMs": 999.8999999999069
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2,
+          "p95Ms": 2.8999999999068677,
+          "maximumMs": 3.1000000000931323,
+          "durationMs": 999.5
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.199999999953434,
+          "p95Ms": 3.6000000000931323,
+          "maximumMs": 3.9000000001396984,
+          "durationMs": 999.3999999999069
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.1000000000931323,
+          "p95Ms": 3.4000000001396984,
+          "maximumMs": 4.099999999860302,
+          "durationMs": 1000.0999999998603
+        }
+      ]
+    }
+  ],
+  "negatives": [
+    {
+      "case": "operator-unauthorized",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-player",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-version",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-type",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "missing-field",
+      "gate": "PASS"
+    },
+    {
+      "case": "stale",
+      "gate": "PASS"
+    },
+    {
+      "case": "future",
+      "gate": "PASS"
+    },
+    {
+      "case": "malformed",
+      "gate": "PASS"
+    },
+    {
+      "case": "oversized",
+      "gate": "PASS"
+    },
+    {
+      "case": "rate-abuse-isolated-and-recovered",
+      "gate": "PASS"
+    },
+    {
+      "case": "fifth-peer-rejected-at-capacity",
+      "gate": "PASS"
+    },
+    {
+      "case": "duplicate-active-client",
+      "gate": "PASS"
+    },
+    {
+      "case": "credential-replay",
+      "gate": "PASS"
+    },
+    {
+      "case": "invalid-credential",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "one-disconnect-others-live",
+      "gate": "PASS"
+    },
+    {
+      "case": "session-closed",
+      "gate": "PASS"
+    }
+  ],
+  "cleanup": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 0,
+    "lifecycleStopped": {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    },
+    "residualOwnedChildren": 0
+  },
+  "reconnect": "PASS",
+  "unityGate": "PASS"
+}

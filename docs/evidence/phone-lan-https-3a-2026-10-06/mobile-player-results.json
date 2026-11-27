@@ -1,0 +1,23 @@
+{
+  "scope": "PC automated smoke; physical phones and WAN-off NOT RUN",
+  "status": "PASS",
+  "listeners": [
+    {
+      "address": "10.1.125.17",
+      "port": 44769
+    },
+    {
+      "address": "127.0.0.1",
+      "port": 46525
+    }
+  ],
+  "httpsHealth": true,
+  "packagedShell": true,
+  "ipcHandshake": true,
+  "lanToIpcFromPc": "REJECTED",
+  "secondPhysicalDevice": "NOT RUN",
+  "unityExit": 0,
+  "javaExit": 0,
+  "cleanup": true,
+  "ownedJavaResidual": 0
+}

@@ -1,0 +1,980 @@
+{
+  "EditMode63": {
+    "total": 63,
+    "passed": 63,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraFreshPhoneStaleAndPhoneFreshCameraStale",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptSequencesRouteSignalsWithoutSportsSemantics",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptualTracesRetainEverySampleWithoutInferringIntention",
+        "result": "Passed"
+      },
+      {
+        "name": "ContractRejectsNonFiniteAndMissingLandmarks",
+        "result": "Passed"
+      },
+      {
+        "name": "CorpusHasAllRequiredCameraAndConceptualCases",
+        "result": "Passed"
+      },
+      {
+        "name": "DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(0,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneBufferRejectsDuplicateReorderedAndBoundsReplay",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneDisconnectReconnectEpochAndPartialSignals",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerIsolationAndInvalidPlayerNeverBecomeEligible",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerLockLossRecoveryNeverSelectsAnotherSubject",
+        "result": "Passed"
+      },
+      {
+        "name": "SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-camera-aligned\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"both-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"low-confidence\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"partial-capabilities\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"reordered-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-camera\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"player-mismatch\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"wrong-player\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"second-subject\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"recovery-after-loss\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SpatialJumpAndStaleFramesDoNotRefreshLock",
+        "result": "Passed"
+      },
+      {
+        "name": "StaleLostRecoveredAndFutureSamplesAreExplicit",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateOldAndNewEpoch",
+        "result": "Passed"
+      },
+      {
+        "name": "FourPlayersAndClear",
+        "result": "Passed"
+      },
+      {
+        "name": "LatestFreshnessAndMissingAxis",
+        "result": "Passed"
+      },
+      {
+        "name": "RawPhoneInputPreservesPartialAndDisconnect",
+        "result": "Passed"
+      },
+      {
+        "name": "CommonFixtureRoundTripsWithBigEndianLength",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(0)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(4097)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(-1)",
+        "result": "Passed"
+      },
+      {
+        "name": "ActiveAttemptRejectsAnotherStart",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(STARTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(CONNECTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(RUNNING)",
+        "result": "Passed"
+      },
+      {
+        "name": "IncompleteCleanupBlocksRecovery",
+        "result": "Passed"
+      },
+      {
+        "name": "LaunchBudgetAllowsExactlyThreeAttempts",
+        "result": "Passed"
+      },
+      {
+        "name": "OldGenerationCannotChangeNewAttempt",
+        "result": "Passed"
+      },
+      {
+        "name": "SuccessfulLifecycleRequiresHandshakeAndCleanup",
+        "result": "Passed"
+      },
+      {
+        "name": "ConcatenatedFramesAndBoundedOutput",
+        "result": "Passed"
+      },
+      {
+        "name": "InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadyExactSchemaAndDuplicates",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedCorpus",
+        "result": "Passed"
+      },
+      {
+        "name": "UnityReadsTheSameWireFixtureAsJavaAndReact",
+        "result": "Passed"
+      }
+    ]
+  },
+  "PlayMode16": {
+    "total": 16,
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "BootstrapAppliesAndRestoresConfiguredFrameRate",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelStartupIsBoundedAndOwnChildStops",
+        "result": "Passed"
+      },
+      {
+        "name": "ReplayChildFramesReachStoreAndEofReleases",
+        "result": "Passed"
+      },
+      {
+        "name": "StartupDeadlineAndInvalidFramesAreBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "UnavailableAndVisionFailureCleanWithoutAffectingJava",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicatePongFromTestJvmFailsAndCleansUp",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateReadyFromTestJvmFailsBeforeConnect",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelDuringRunningClosesRealChild",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelDuringStartupClosesRealChild",
+        "result": "Passed"
+      },
+      {
+        "name": "DeathManualRetryAndThreeLaunchLimit",
+        "result": "Passed"
+      },
+      {
+        "name": "RealFixtureReadyTimeoutHasBoundedCleanup",
+        "result": "Passed"
+      },
+      {
+        "name": "RealFixtureTcpRefusedIsDifferentiated",
+        "result": "Passed"
+      },
+      {
+        "name": "SingletonRefusesSecondRealChildWithoutHarmingOwner",
+        "result": "Passed"
+      },
+      {
+        "name": "TcpLossStopsLivingOwnedJava",
+        "result": "Passed"
+      },
+      {
+        "name": "MissingExecutableIsRecoverable",
+        "result": "Passed"
+      },
+      {
+        "name": "StartsRealJavaAndClosesOwnedChild",
+        "result": "Passed"
+      }
+    ]
+  },
+  "PlayModeCamera4AfterRepair": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "CancelStartupIsBoundedAndOwnChildStops",
+        "result": "Passed"
+      },
+      {
+        "name": "ReplayChildFramesReachStoreAndEofReleases",
+        "result": "Passed"
+      },
+      {
+        "name": "StartupDeadlineAndInvalidFramesAreBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "UnavailableAndVisionFailureCleanWithoutAffectingJava",
+        "result": "Passed"
+      }
+    ]
+  },
+  "Java": {
+    "total": 48,
+    "passed": 48,
+    "failed": 0,
+    "skipped": 0
+  },
+  "PWA": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0
+  },
+  "LinuxBuild": {
+    "errors": 0,
+    "warnings": 0,
+    "result": "Succeeded"
+  },
+  "PwaBuild": {
+    "result": "PASS"
+  },
+  "EditModeFinal63": {
+    "total": 63,
+    "passed": 63,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraFreshPhoneStaleAndPhoneFreshCameraStale",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptSequencesRouteSignalsWithoutSportsSemantics",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptualTracesRetainEverySampleWithoutInferringIntention",
+        "result": "Passed"
+      },
+      {
+        "name": "ContractRejectsNonFiniteAndMissingLandmarks",
+        "result": "Passed"
+      },
+      {
+        "name": "CorpusHasAllRequiredCameraAndConceptualCases",
+        "result": "Passed"
+      },
+      {
+        "name": "DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(0,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneBufferRejectsDuplicateReorderedAndBoundsReplay",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneDisconnectReconnectEpochAndPartialSignals",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerIsolationAndInvalidPlayerNeverBecomeEligible",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerLockLossRecoveryNeverSelectsAnotherSubject",
+        "result": "Passed"
+      },
+      {
+        "name": "SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-camera-aligned\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"both-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"low-confidence\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"partial-capabilities\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"reordered-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-camera\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"player-mismatch\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"wrong-player\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"second-subject\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"recovery-after-loss\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SpatialJumpAndStaleFramesDoNotRefreshLock",
+        "result": "Passed"
+      },
+      {
+        "name": "StaleLostRecoveredAndFutureSamplesAreExplicit",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateOldAndNewEpoch",
+        "result": "Passed"
+      },
+      {
+        "name": "FourPlayersAndClear",
+        "result": "Passed"
+      },
+      {
+        "name": "LatestFreshnessAndMissingAxis",
+        "result": "Passed"
+      },
+      {
+        "name": "RawPhoneInputPreservesPartialAndDisconnect",
+        "result": "Passed"
+      },
+      {
+        "name": "CommonFixtureRoundTripsWithBigEndianLength",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(0)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(4097)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(-1)",
+        "result": "Passed"
+      },
+      {
+        "name": "ActiveAttemptRejectsAnotherStart",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(STARTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(CONNECTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(RUNNING)",
+        "result": "Passed"
+      },
+      {
+        "name": "IncompleteCleanupBlocksRecovery",
+        "result": "Passed"
+      },
+      {
+        "name": "LaunchBudgetAllowsExactlyThreeAttempts",
+        "result": "Passed"
+      },
+      {
+        "name": "OldGenerationCannotChangeNewAttempt",
+        "result": "Passed"
+      },
+      {
+        "name": "SuccessfulLifecycleRequiresHandshakeAndCleanup",
+        "result": "Passed"
+      },
+      {
+        "name": "ConcatenatedFramesAndBoundedOutput",
+        "result": "Passed"
+      },
+      {
+        "name": "InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadyExactSchemaAndDuplicates",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedCorpus",
+        "result": "Passed"
+      },
+      {
+        "name": "UnityReadsTheSameWireFixtureAsJavaAndReact",
+        "result": "Passed"
+      }
+    ]
+  },
+  "PlayModeFinal16": {
+    "total": 16,
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "BootstrapAppliesAndRestoresConfiguredFrameRate",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelStartupIsBoundedAndOwnChildStops",
+        "result": "Passed"
+      },
+      {
+        "name": "ReplayChildFramesReachStoreAndEofReleases",
+        "result": "Passed"
+      },
+      {
+        "name": "StartupDeadlineAndInvalidFramesAreBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "UnavailableAndVisionFailureCleanWithoutAffectingJava",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicatePongFromTestJvmFailsAndCleansUp",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateReadyFromTestJvmFailsBeforeConnect",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelDuringRunningClosesRealChild",
+        "result": "Passed"
+      },
+      {
+        "name": "CancelDuringStartupClosesRealChild",
+        "result": "Passed"
+      },
+      {
+        "name": "DeathManualRetryAndThreeLaunchLimit",
+        "result": "Passed"
+      },
+      {
+        "name": "RealFixtureReadyTimeoutHasBoundedCleanup",
+        "result": "Passed"
+      },
+      {
+        "name": "RealFixtureTcpRefusedIsDifferentiated",
+        "result": "Passed"
+      },
+      {
+        "name": "SingletonRefusesSecondRealChildWithoutHarmingOwner",
+        "result": "Passed"
+      },
+      {
+        "name": "TcpLossStopsLivingOwnedJava",
+        "result": "Passed"
+      },
+      {
+        "name": "MissingExecutableIsRecoverable",
+        "result": "Passed"
+      },
+      {
+        "name": "StartsRealJavaAndClosesOwnedChild",
+        "result": "Passed"
+      }
+    ]
+  },
+  "EditModeFinal64": {
+    "total": 64,
+    "passed": 64,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraBufferRejectsDuplicatesReorderInvalidAndBoundsHistory",
+        "result": "Passed"
+      },
+      {
+        "name": "CameraFreshPhoneStaleAndPhoneFreshCameraStale",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptSequencesRouteSignalsWithoutSportsSemantics",
+        "result": "Passed"
+      },
+      {
+        "name": "ConceptualTracesRetainEverySampleWithoutInferringIntention",
+        "result": "Passed"
+      },
+      {
+        "name": "ContractRejectsNonFiniteAndMissingLandmarks",
+        "result": "Passed"
+      },
+      {
+        "name": "CorpusHasAllRequiredCameraAndConceptualCases",
+        "result": "Passed"
+      },
+      {
+        "name": "DifferentCadencesSelectNearestHistoricalPairWithoutOneToOne",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(0,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(80,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(-150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "EarlyLateBothDirectionsPreserveDelta(150,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneBufferRejectsDuplicateReorderedAndBoundsReplay",
+        "result": "Passed"
+      },
+      {
+        "name": "PhoneDisconnectReconnectEpochAndPartialSignals",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerIsolationAndInvalidPlayerNeverBecomeEligible",
+        "result": "Passed"
+      },
+      {
+        "name": "PlayerLockLossRecoveryNeverSelectsAnotherSubject",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectedFusionRetainsRawQualityAgeAndTrackingWithoutInventingUsableSignals",
+        "result": "Passed"
+      },
+      {
+        "name": "SecondPersonRoiCrossingLowConfidenceAndAmbiguityLoseLock",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-camera-aligned\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-early\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-late\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"both-stale\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"camera-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-lost\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"phone-recovered\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"low-confidence\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"partial-capabilities\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"reordered-phone\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"duplicate-camera\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"player-mismatch\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"wrong-player\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"second-subject\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedFusionScenarios(\"recovery-after-loss\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SpatialJumpAndStaleFramesDoNotRefreshLock",
+        "result": "Passed"
+      },
+      {
+        "name": "StaleLostRecoveredAndFutureSamplesAreExplicit",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateOldAndNewEpoch",
+        "result": "Passed"
+      },
+      {
+        "name": "FourPlayersAndClear",
+        "result": "Passed"
+      },
+      {
+        "name": "LatestFreshnessAndMissingAxis",
+        "result": "Passed"
+      },
+      {
+        "name": "RawPhoneInputPreservesPartialAndDisconnect",
+        "result": "Passed"
+      },
+      {
+        "name": "CommonFixtureRoundTripsWithBigEndianLength",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(0)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(4097)",
+        "result": "Passed"
+      },
+      {
+        "name": "RejectsFrameSizeBeforeBodyAllocation(-1)",
+        "result": "Passed"
+      },
+      {
+        "name": "ActiveAttemptRejectsAnotherStart",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(STARTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(CONNECTING)",
+        "result": "Passed"
+      },
+      {
+        "name": "FailureMustPassThroughStopping(RUNNING)",
+        "result": "Passed"
+      },
+      {
+        "name": "IncompleteCleanupBlocksRecovery",
+        "result": "Passed"
+      },
+      {
+        "name": "LaunchBudgetAllowsExactlyThreeAttempts",
+        "result": "Passed"
+      },
+      {
+        "name": "OldGenerationCannotChangeNewAttempt",
+        "result": "Passed"
+      },
+      {
+        "name": "SuccessfulLifecycleRequiresHandshakeAndCleanup",
+        "result": "Passed"
+      },
+      {
+        "name": "ConcatenatedFramesAndBoundedOutput",
+        "result": "Passed"
+      },
+      {
+        "name": "InvalidSizeDoesNotRequestBodyAndUtf8OutputIsBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "ReadyExactSchemaAndDuplicates",
+        "result": "Passed"
+      },
+      {
+        "name": "SharedCorpus",
+        "result": "Passed"
+      },
+      {
+        "name": "UnityReadsTheSameWireFixtureAsJavaAndReact",
+        "result": "Passed"
+      }
+    ]
+  },
+  "LinuxBuildFinal": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0,
+    "attempt": "build03 after diagnostic raw metadata preservation"
+  }
+}

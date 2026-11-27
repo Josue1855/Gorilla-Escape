@@ -1,0 +1,72 @@
+{
+  "scope": "T008 JOIN diagnostic candidate; no new physical PASS",
+  "javaVerify": {
+    "total": 56,
+    "pass": 54,
+    "skipped": 2,
+    "fail": 0,
+    "error": 0,
+    "reason": "Legacy LAN tests require both explicit LAN address and interface"
+  },
+  "supplementalMobileHttps": {
+    "total": 8,
+    "pass": 8,
+    "skipped": 0,
+    "fail": 0,
+    "error": 0,
+    "distinctJavaTestsAfterSupplement": 56
+  },
+  "pwa": {
+    "total": 14,
+    "pass": 14,
+    "build": "PASS"
+  },
+  "validators": {
+    "Management": "PASS",
+    "Foundation": "PASS"
+  },
+  "nativeFailedJoin": {
+    "attempts": 5,
+    "consumedAdmissionReplayRejected": "PASS",
+    "newAdmissionAndSlotReuse": "PASS",
+    "peerResiduals": 0
+  },
+  "regression": {
+    "gate": "PASS",
+    "clients": 4,
+    "unityObservations": 640,
+    "negatives": 18,
+    "cleanup": "STOPPED / exit 0 / residual children 0"
+  },
+  "unityFullSuites": "RETAINED, NOT RERUN; Unity sources unchanged",
+  "intermediateRuns": [
+    {
+      "result": "FAIL",
+      "scope": "Initial native diagnostic test",
+      "cause": "JNI setRemoteDescription threw java.lang.Error instead of observer Exception; classified without native message and rollback tested"
+    },
+    {
+      "result": "INVALIDATED",
+      "scope": "Initial full Java run",
+      "cause": "Concurrent Maven compilation replaced shared target classes; serial clean verification used for final candidate"
+    },
+    {
+      "result": "FAIL",
+      "scope": "Supplemental legacy LAN configuration",
+      "cause": "LAN interface option omitted; rerun with both required options; tests unchanged"
+    }
+  ],
+  "productRtcConfiguration": "UNCHANGED",
+  "udpRulesAdded": 0,
+  "sourceSha256": {
+    "PWA/src/input/mobileClient.js": "e26daeac4482b99b513200e65a33b4513fb20ca8754f369ad7e95ea09b5a1915",
+    "PWA/src/input/index.html": "844d86ac95f14a5c72f0e1f27ec53dbf8d7870ada36e0ed45f8026fc7c848186",
+    "Server/src/main/java/com/gorillaescape/server/mobile/MobileOrigin.java": "d74acd319dbc32a7f03da6e37de00d9d7730a394d2761467fdd718b511f89481",
+    "Server/src/main/java/com/gorillaescape/server/mobile/PhoneInputHub.java": "c1e2c86d6a543f6508cf825ffa71463cd5cc428f511dc78c68fe5acc1ef0b4fd",
+    "Server/src/main/java/com/gorillaescape/server/mobile/JoinDiagnostic.java": "e38c19d31bda24ce8e97f006bc2e7012ba575258dc0c93572ec00e0656a40009",
+    "Server/src/main/java/com/gorillaescape/server/mobile/SignalingBounds.java": "18e135699d5f74bf054a1c479395fe798fb0ca220441af3f4a8f6a7bf7d4fafc",
+    "Server/src/main/java/com/gorillaescape/server/mobile/MobileRuntime.java": "d4253cbc3a590f9c614eea6bfb893b1844dae2d7a80edc2b13b0d0b8a7b38a4a",
+    "Server/src/main/java/com/gorillaescape/server/mobile/MobileController.java": "926b258c63314059c4987fef3ed608aa40e1d3df3d6c25e71bcf5a00351b4c95",
+    "Server/src/main/java/com/gorillaescape/server/protocol/TechnicalSession.java": "8f8316fe6097659dbe70227774ac5a5f5b05efd48442c38385bbdda983ebaeaf"
+  }
+}

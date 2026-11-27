@@ -1,0 +1,9 @@
+Gorilla Escape third-party notice
+
+cloudflared 2026.10.0 — Cloudflare, Inc. and contributors.
+Source and release: https://github.com/cloudflare/cloudflared/tree/2026.10.0
+Licensed under Apache License, Version 2.0; see cloudflared-LICENSE.
+Official linux-amd64 binary is distributed unmodified.
+SHA256: d33ff2d14475178d2012c2c56beba87389ac5ded27649519f198a7d3134a99db
+This integration notice is authored by Gorilla Escape; no upstream NOTICE file
+was present at the pinned source path. Cloudflare does not endorse this product.

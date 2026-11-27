@@ -1,0 +1,57 @@
+{
+  "scope": "iPhone physical gentle run; older capture rate policy observed, not final candidate acceptance",
+  "mode": "gentle",
+  "status": "COMPLETE",
+  "durationMs": 25001,
+  "device": "iPhone 15",
+  "osReportedByPO": "iOS 27",
+  "browser": "Safari",
+  "inputState": "INPUT_READY",
+  "motion": {
+    "captured": 751,
+    "rawCallbacks": 751,
+    "validSamples": 751,
+    "durationMs": 24983,
+    "actualMeasuredHz": 30.020413881439378,
+    "tier": 30,
+    "intervalMs": {
+      "min": 1,
+      "median": 17,
+      "p95": 18
+    },
+    "duplicateOrOutOfOrder": 0,
+    "invalidFields": 0,
+    "missingFields": 0
+  },
+  "orientation": {
+    "captured": 749,
+    "rawCallbacks": 751,
+    "validSamples": 749,
+    "durationMs": 24984,
+    "actualMeasuredHz": 29.93916106308037,
+    "tier": 20,
+    "intervalMs": {
+      "min": 1,
+      "median": 17,
+      "p95": 18
+    },
+    "duplicateOrOutOfOrder": 2,
+    "invalidFields": 0,
+    "missingFields": 0
+  },
+  "originalEmission": {
+    "count": 828,
+    "durationMs": 24984,
+    "actualMeasuredHz": 33.101184758245275
+  },
+  "transportDelta": {
+    "motionSubmitted": 1500,
+    "motionSent": 691,
+    "motionAck": 687,
+    "motionErrors": 4,
+    "overwritten": 808,
+    "errors": 4
+  },
+  "rest": "NOT MEASURED in this result",
+  "conclusion": "Preserve actual measured sensor rates and transport errors. Do not relabel gentle as rest. Emission count still follows old strict-increasing clock policy; requires identifiable corrected candidate and repeated final runs. No 50Hz achieved claim."
+}

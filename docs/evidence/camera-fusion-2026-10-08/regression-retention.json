@@ -1,0 +1,14 @@
+{
+  "priorSourceFiles": 126,
+  "priorChangedFiles": [
+    "Unity/Assets/_Project/Scripts/Input/PlayerInput.cs",
+    "Unity/Assets/_Project/Scripts/Network/IpcProbeRunner.cs",
+    "Unity/Assets/_Project/Tests/PlayMode/GorillaEscape.PlayModeTests.asmdef"
+  ],
+  "transportSourceFilesUnchanged": true,
+  "phoneInputDefinitionUnchanged": true,
+  "ipcRunnerOnlyGetter": true,
+  "jarSha256": "8cc8f015a749e76548c9251ca6d4431d1bb9a44961b5d7d9c6ff2ed932ec4a22",
+  "benchmarksRetainedNotRerun": "three independent N1000 and 601.2234171s from mobile-input-runtime-2026-10-07, codec/process regressions freshly run Java/PlayMode and Player2A/2B",
+  "justification": "No wire/codec/writer/deadline/poll/managed Java lifecycle/PhoneInput change; new camera runner inert unless opt-in"
+}

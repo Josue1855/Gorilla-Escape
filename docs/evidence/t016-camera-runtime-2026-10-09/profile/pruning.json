@@ -1,0 +1,47 @@
+[
+  {
+    "component": "Qt",
+    "removed": [
+      "libQt5XcbQpa-44a675a7.so.5.15.18",
+      "libQt5Widgets-da081f00.so.5.15.18",
+      "libQt5Test-0e30c269.so.5.15.18",
+      "libQt5Gui-26aef175.so.5.15.18",
+      "libQt5Core-195a14c9.so.5.15.18"
+    ],
+    "exitCode": 1,
+    "error": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/tmp/gorilla-t016-pruning/Qt/cv2/__init__.py\", line 181, in <module>\n    bootstrap()\n  File \"/tmp/gorilla-t016-pruning/Qt/cv2/__init__.py\", line 153, in bootstrap\n    native_module = importlib.import_module(\"cv2\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/importlib/__init__.py\", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nImportError: libQt5Widgets-da081f00.so.5.15.18: cannot open shared object file: No such file or directory",
+    "scope": "temporary hardlinked copy; deletion of own directory entries only; independent import/linking diagnostic, not qualified bundle"
+  },
+  {
+    "component": "FFmpeg",
+    "removed": [
+      "libavfilter-93b41299.so.11.4.100",
+      "libavdevice-13b3e407.so.62.1.100",
+      "libavcodec-156beeea.so.62.11.100",
+      "libavif-cbf1e83c.so.16.3.0",
+      "libavutil-ec54c519.so.60.8.100",
+      "libavformat-8c8a026e.so.62.3.100",
+      "libswscale-09114b18.so.9.1.100",
+      "libswresample-02b1114a.so.6.1.100"
+    ],
+    "exitCode": 1,
+    "error": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/tmp/gorilla-t016-pruning/FFmpeg/cv2/__init__.py\", line 181, in <module>\n    bootstrap()\n  File \"/tmp/gorilla-t016-pruning/FFmpeg/cv2/__init__.py\", line 153, in bootstrap\n    native_module = importlib.import_module(\"cv2\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/importlib/__init__.py\", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nImportError: libavif-cbf1e83c.so.16.3.0: cannot open shared object file: No such file or directory",
+    "scope": "temporary hardlinked copy; deletion of own directory entries only; independent import/linking diagnostic, not qualified bundle",
+    "qualification": "NOT ISOLATED: initial glob also removed AVIF; corrected below"
+  },
+  {
+    "component": "FFmpeg isolated",
+    "removed": [
+      "libavfilter-93b41299.so.11.4.100",
+      "libavdevice-13b3e407.so.62.1.100",
+      "libavcodec-156beeea.so.62.11.100",
+      "libavutil-ec54c519.so.60.8.100",
+      "libavformat-8c8a026e.so.62.3.100",
+      "libswscale-09114b18.so.9.1.100",
+      "libswresample-02b1114a.so.6.1.100"
+    ],
+    "exitCode": 1,
+    "error": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/tmp/gorilla-t016-pruning/FFmpeg/cv2/__init__.py\", line 181, in <module>\n    bootstrap()\n  File \"/tmp/gorilla-t016-pruning/FFmpeg/cv2/__init__.py\", line 153, in bootstrap\n    native_module = importlib.import_module(\"cv2\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/importlib/__init__.py\", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nImportError: libavcodec-156beeea.so.62.11.100: cannot open shared object file: No such file or directory",
+    "scope": "AVIF restored; only actual FFmpeg libraries removed"
+  }
+]

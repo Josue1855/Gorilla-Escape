@@ -1,0 +1,20 @@
+[
+  {
+    "component": "Qt 5.15.18",
+    "license": "LGPL-3.0 (actual wheel notice)",
+    "required": "Exact Qt library source including wheel patches/build materials, notices and applicable LGPL combined-work/relinking conditions; preserve library replacement capability",
+    "fulfillment": "OPEN; no matching source archive or valid source offer assembled; external distribution blocked"
+  },
+  {
+    "component": "FFmpeg bundled avcodec62/avformat62/avutil60/swscale9/avdevice62",
+    "license": "LGPL-2.1 (actual wheel notice; build options not fully verified)",
+    "required": "Exact corresponding library source and modifications/build configuration, applicable LGPL linking/replacement materials and notices; verify no GPL/nonfree options",
+    "fulfillment": "OPEN; no matching source archive or valid source offer assembled; external distribution blocked"
+  },
+  {
+    "component": "Copied GPL/LGPL system libraries, including readline8 and libdb5.3",
+    "license": "Per-package copyright files, including exceptions",
+    "required": "Matching distro source version, patches and build materials or license-compliant offer/access mechanism; retain full per-file copyright and license notices",
+    "fulfillment": "OPEN; no matching source archive or valid source offer assembled; external distribution blocked"
+  }
+]

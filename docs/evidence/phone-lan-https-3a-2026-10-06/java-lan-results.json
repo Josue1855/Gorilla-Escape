@@ -1,0 +1,90 @@
+{
+  "scope": "Final Java regression plus real TLS / explicit LAN from PC; not phone acceptance",
+  "tests": 26,
+  "pass": 26,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "suites": [
+    {
+      "name": "com.gorillaescape.server.ProtocolContractTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.074"
+    },
+    {
+      "name": "com.gorillaescape.server.ServerIntegrationTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.933"
+    },
+    {
+      "name": "com.gorillaescape.server.hosting.MobileHttpsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.443"
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedLifecycleProcessTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "7.968"
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedProbeProcessTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.423"
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ManagedProcessGuardTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.014"
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeCodecTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.024"
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeCorpusTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.091"
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbePressureProcessTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "20.181"
+    },
+    {
+      "name": "com.gorillaescape.server.ipc.ProbeWriteDeadlineTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "4.226"
+    }
+  ]
+}

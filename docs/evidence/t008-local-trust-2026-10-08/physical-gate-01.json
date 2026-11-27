@@ -1,0 +1,37 @@
+{
+  "scope": "DEC-016 physical gate; trust preparation and join measured separately",
+  "origin": "https://10.1.125.17:8443",
+  "physical": "BLOCKED before certificate download/install",
+  "timings": "NOT MEASURED",
+  "caSha256": "74d0b90d85c686d18bdd89991dadbdf19ab36d465f054557a4c1e1c9b0d6b9a6",
+  "playerExit": 0,
+  "javaResiduals": 0,
+  "cleanup": [
+    {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    }
+  ],
+  "device": "iPhone 15",
+  "ios": "27 (PO reported; exact build and Safari version not verified)",
+  "userObservation": "No carga o muestra error",
+  "trustInstallation": "NOT RUN",
+  "httpsPhone": "NOT RUN",
+  "join": "NOT RUN",
+  "initialPreparationDuration": "NOT MEASURED",
+  "preparedJoinDuration": "NOT MEASURED",
+  "networkDiagnosis": {
+    "evidence": "kernel journal filtered to confirmed phone source and gate TCP destination ports",
+    "matchingUfwBlockEvents": 5,
+    "administrativeStatusRead": {
+      "action": "sudo -n ufw status verbose",
+      "exit": 1,
+      "error": "sudo: a password is required"
+    },
+    "changes": "NONE"
+  },
+  "androidPhysical": "NOT RUN",
+  "nextGate": "Authorized diagnosis/temporary narrowly scoped firewall exception; not applied"
+}

@@ -1,0 +1,11 @@
+DESAFÍO DEL TRONCO — CRÉDITOS
+
+Trunk — gashtan, CC BY 4.0
+https://sketchfab.com/3d-models/trunk-22e47e88a70f4f6e98dd35d3d146b657
+
+Castaway (Vagabundo) — katarzynaszemla, CC BY 4.0
+https://sketchfab.com/3d-models/castaway-6a481c17d68a4a138f726ccb76caedff
+
+Licencia: https://creativecommons.org/licenses/by/4.0/
+Adaptaciones: conversión a FBX, escala, pivotes, materiales y pose procedural.
+Selva, gorilas, fondo, suelo e interfaz: recursos existentes del alpha de Saúl.

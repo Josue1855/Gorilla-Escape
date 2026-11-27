@@ -1,0 +1,19 @@
+{
+  "before": {
+    "auto_exposure": 3,
+    "exposure_time_absolute": 156,
+    "exposure_dynamic_framerate": 1
+  },
+  "during": {
+    "auto_exposure": 1,
+    "exposure_time_absolute": 156,
+    "exposure_dynamic_framerate": 0
+  },
+  "purpose": "Explicit diagnostic only: isolate automatic exposure, same640x480/MJPG/30 and numPoses2. No product exposure change; human quality NOT VALIDATED",
+  "restored": true,
+  "after": {
+    "auto_exposure": 3,
+    "exposure_time_absolute": 156,
+    "exposure_dynamic_framerate": 1
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "audit": "PASS — SOFTWARE/LAB",
+  "phase0": "COMPLETED — SOFTWARE/LAB",
+  "phase1": "READY TO START",
+  "phase1Started": false,
+  "3AproductPhysicalOnboarding": "DEFERRED / IN PROGRESS",
+  "PR94": "OPEN/DRAFT",
+  "scope": "Local laboratory integrated candidate, not remote integration or final physical MVP",
+  "gates": [
+    {
+      "gate": "Foundation",
+      "state": "PASS / MERGED",
+      "evidence": [
+        "github-readonly.json",
+        "test-summary.json"
+      ]
+    },
+    {
+      "gate": "Unity base",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json"
+      ]
+    },
+    {
+      "gate": "Java base",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json"
+      ]
+    },
+    {
+      "gate": "PWA base",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "packaged-pwa-verification.json"
+      ]
+    },
+    {
+      "gate": "IPC 2A",
+      "state": "PASS / MERGED",
+      "evidence": [
+        "github-readonly.json",
+        "ipc-2a-2b-regression.json"
+      ]
+    },
+    {
+      "gate": "IPC 2B",
+      "state": "PASS / MERGED",
+      "evidence": [
+        "github-readonly.json",
+        "ipc-2a-2b-regression.json"
+      ]
+    },
+    {
+      "gate": "IPC 2C",
+      "state": "PASS / MERGED; RETAINED PREVIOUS EVIDENCE",
+      "evidence": [
+        "github-readonly.json",
+        "retention-verification.json",
+        "../mobile-input-runtime-2026-10-07/ipc-2c-regression-final.json",
+        "test-summary.json"
+      ]
+    },
+    {
+      "gate": "WebRTC / DEC-010",
+      "state": "PASS",
+      "evidence": [
+        "architecture-review.json",
+        "mobile-runtime.json"
+      ]
+    },
+    {
+      "gate": "Session / Admission",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "mobile-runtime.json"
+      ]
+    },
+    {
+      "gate": "QR",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "mobile-runtime.json"
+      ]
+    },
+    {
+      "gate": "Gorilla Protocol",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "mobile-runtime.json"
+      ]
+    },
+    {
+      "gate": "Mobile → Unity",
+      "state": "PASS",
+      "evidence": [
+        "mobile-runtime.json"
+      ]
+    },
+    {
+      "gate": "1–4 clients",
+      "state": "PASS",
+      "evidence": [
+        "mobile-runtime.json"
+      ]
+    },
+    {
+      "gate": "CameraInput",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "camera-fusion.json"
+      ]
+    },
+    {
+      "gate": "Player Lock",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "camera-fusion.json"
+      ]
+    },
+    {
+      "gate": "Temporal Alignment",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "camera-fusion.json"
+      ]
+    },
+    {
+      "gate": "Input Fusion Infra",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "camera-fusion.json"
+      ]
+    },
+    {
+      "gate": "Resilience",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "ipc-2a-2b-regression.json",
+        "mobile-runtime.json",
+        "../camera-fusion-2026-10-08/e2e-vision-failure03.json",
+        "../camera-fusion-2026-10-08/e2e-unavailable01.json"
+      ]
+    },
+    {
+      "gate": "Cleanup",
+      "state": "PASS",
+      "evidence": [
+        "cleanup.json"
+      ]
+    },
+    {
+      "gate": "Regression",
+      "state": "PASS",
+      "evidence": [
+        "test-summary.json",
+        "retention-verification.json"
+      ]
+    },
+    {
+      "gate": "Documentation",
+      "state": "PASS",
+      "evidence": [
+        "validations.json",
+        "evidence-review.json",
+        "manifest.json"
+      ]
+    }
+  ],
+  "retainedPreviousEvidenceExplicit": true,
+  "physicalDebts": "deferred-validation.json",
+  "noProductCodeChangesInAudit": true
+}

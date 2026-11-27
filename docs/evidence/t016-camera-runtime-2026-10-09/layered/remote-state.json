@@ -1,0 +1,325 @@
+{
+  "issues": [
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPEw",
+          "name": "needs-device-test",
+          "description": "Requiere prueba f\u00edsica, no reemplazar por mocks.",
+          "color": "fbca04"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPmA",
+          "name": "performance",
+          "description": "Rendimiento o latencia medidos.",
+          "color": "5319e7"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQfQ",
+          "name": "type:task",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Task",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRrA",
+          "name": "area:camera-tracking",
+          "description": "\u00c1rea para b\u00fasqueda global: Camera/Tracking",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 29,
+      "state": "OPEN",
+      "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxO7A",
+          "name": "blocked",
+          "description": "Dependencia t\u00e9cnica sin resolver; retirar al desbloquear.",
+          "color": "b60205"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPEw",
+          "name": "needs-device-test",
+          "description": "Requiere prueba f\u00edsica, no reemplazar por mocks.",
+          "color": "fbca04"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQfQ",
+          "name": "type:task",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Task",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRrA",
+          "name": "area:camera-tracking",
+          "description": "\u00c1rea para b\u00fasqueda global: Camera/Tracking",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 30,
+      "state": "OPEN",
+      "title": "[T017] Validar ROI, Player Lock y recuperaci\u00f3n de tracking"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxO7A",
+          "name": "blocked",
+          "description": "Dependencia t\u00e9cnica sin resolver; retirar al desbloquear.",
+          "color": "b60205"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPEw",
+          "name": "needs-device-test",
+          "description": "Requiere prueba f\u00edsica, no reemplazar por mocks.",
+          "color": "fbca04"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxPmA",
+          "name": "performance",
+          "description": "Rendimiento o latencia medidos.",
+          "color": "5319e7"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQfQ",
+          "name": "type:task",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Task",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRfg",
+          "name": "area:ci-qa",
+          "description": "\u00c1rea para b\u00fasqueda global: CI/QA",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 32,
+      "state": "OPEN",
+      "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQWg",
+          "name": "type:feature",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Feature",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxRrA",
+          "name": "area:camera-tracking",
+          "description": "\u00c1rea para b\u00fasqueda global: Camera/Tracking",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 28,
+      "state": "OPEN",
+      "title": "[F04] C\u00e1mara local y viabilidad de tracking"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQJA",
+          "name": "type:epic",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Epic",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxUDQ",
+          "name": "area:unity-core",
+          "description": "\u00c1rea para b\u00fasqueda global: Unity/Core",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 1,
+      "state": "OPEN",
+      "title": "[E0] Base t\u00e9cnica y viabilidad"
+    },
+    {
+      "labels": [
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxQJA",
+          "name": "type:epic",
+          "description": "Convenci\u00f3n de tipo; usar si Issue Types no disponibles: Epic",
+          "color": "1d76db"
+        },
+        {
+          "id": "LA_kwDOU9aZ0c8AAAAC7JxUDQ",
+          "name": "area:unity-core",
+          "description": "\u00c1rea para b\u00fasqueda global: Unity/Core",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 2,
+      "state": "OPEN",
+      "title": "[E1] Vertical Slice Gorilla Smash"
+    }
+  ],
+  "projectItems": [
+    {
+      "area": "Unity/Core",
+      "content": {
+        "body": "<!-- gorilla-backlog:E0 -->\n\n## Objective\nBase t\u00e9cnica y viabilidad\n\n## Context\nv4 \u00a750; v4 \u00a72; v4 \u00a749. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar features y su aceptaci\u00f3n; no es una tarea de programaci\u00f3n ni se estima sumando otra vez sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar f\u00edsicamente el tel\u00e9fono. No adoptar dependencias candidatas sin prueba/decisi\u00f3n.\n\n## Acceptance Criteria\n- [ ] Aceptar \u00fanicamente con evidencia de todas las features incluidas.\n- [ ] Respetar la fase y la Definition of Done v4.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Epic. \u00c1rea: Unity/Core. Parent: ninguno. Responsabilidades primarias seg\u00fan WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobaci\u00f3n.\n\n## Tests\nUnit/integration/PlayMode aplicables y validaci\u00f3n manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de c\u00e1mara.\n\n## Definition of Done\nAplicar v4 \u00a749: implementaci\u00f3n, build, aceptaci\u00f3n, pruebas aplicables, integraci\u00f3n, PR revisado, recuperaci\u00f3n, logging, tuning y documentaci\u00f3n. Hardware real cuando aplique. Documentaci\u00f3n/spikes: entregar evidencia y decisi\u00f3n revisadas; build s\u00f3lo si existe c\u00f3digo de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliaci\u00f3n Project \u2014 2026-10-08\n\nCheckpoint t\u00e9cnico **PASS \u2014 SOFTWARE/LAB**, no Project Done. Audit Software/Lab PASS; no aceptaci\u00f3n de Epic.\n\n**Cumple:** NO. **Acci\u00f3n:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** Features #9/#13/#18/#23/#28/#31 tienen hijos abiertos. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulaci\u00f3n.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit hist\u00f3rico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato t\u00e9cnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisi\u00f3n/checks/integraci\u00f3n normal. Evidence Required/DoD originales siguen aplicando.\n",
+        "number": 1,
+        "repository": "Josue1855/Gorilla-Escape",
+        "title": "[E0] Base t\u00e9cnica y viabilidad",
+        "type": "Issue",
+        "url": "https://github.com/Josue1855/Gorilla-Escape/issues/1"
+      },
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGm0",
+      "labels": [
+        "type:epic",
+        "area:unity-core"
+      ],
+      "milestone": {
+        "description": "Hito de secci\u00f3n 50 v4; sin fecha nueva ni Sprint asignado. Aceptaci\u00f3n seg\u00fan secciones 49/54.",
+        "dueOn": "",
+        "title": "Fase 0 \u2014 Base t\u00e9cnica y viabilidad"
+      },
+      "phase": "0",
+      "repository": "https://github.com/Josue1855/Gorilla-Escape",
+      "status": "In Progress",
+      "target Release": "v1.0 \u2014 MVP",
+      "title": "[E0] Base t\u00e9cnica y viabilidad"
+    },
+    {
+      "area": "Unity/Core",
+      "content": {
+        "body": "<!-- gorilla-backlog:E1 -->\n\n## Objective\nVertical Slice Gorilla Smash\n\n## Context\nv4 \u00a750; v4 \u00a72; v4 \u00a749. Fase: 1. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar features y su aceptaci\u00f3n; no es una tarea de programaci\u00f3n ni se estima sumando otra vez sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar f\u00edsicamente el tel\u00e9fono. No adoptar dependencias candidatas sin prueba/decisi\u00f3n.\n\n## Acceptance Criteria\n- [ ] Aceptar \u00fanicamente con evidencia de todas las features incluidas.\n- [ ] Respetar la fase y la Definition of Done v4.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Epic. \u00c1rea: Unity/Core. Parent: ninguno. Responsabilidades primarias seg\u00fan WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobaci\u00f3n.\n\n## Tests\nUnit/integration/PlayMode aplicables y validaci\u00f3n manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de c\u00e1mara.\n\n## Definition of Done\nAplicar v4 \u00a749: implementaci\u00f3n, build, aceptaci\u00f3n, pruebas aplicables, integraci\u00f3n, PR revisado, recuperaci\u00f3n, logging, tuning y documentaci\u00f3n. Hardware real cuando aplique. Documentaci\u00f3n/spikes: entregar evidencia y decisi\u00f3n revisadas; build s\u00f3lo si existe c\u00f3digo de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n",
+        "number": 2,
+        "repository": "Josue1855/Gorilla-Escape",
+        "title": "[E1] Vertical Slice Gorilla Smash",
+        "type": "Issue",
+        "url": "https://github.com/Josue1855/Gorilla-Escape/issues/2"
+      },
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xGoI",
+      "labels": [
+        "type:epic",
+        "area:unity-core"
+      ],
+      "milestone": {
+        "description": "Hito de secci\u00f3n 50 v4; sin fecha nueva ni Sprint asignado. Aceptaci\u00f3n seg\u00fan secciones 49/54.",
+        "dueOn": "",
+        "title": "Fase 1 \u2014 Vertical Slice Gorilla Smash"
+      },
+      "phase": "1",
+      "repository": "https://github.com/Josue1855/Gorilla-Escape",
+      "status": "Backlog",
+      "target Release": "v1.0 \u2014 MVP",
+      "title": "[E1] Vertical Slice Gorilla Smash"
+    },
+    {
+      "area": "Camera/Tracking",
+      "content": {
+        "body": "<!-- gorilla-backlog:F04 -->\n\n## Objective\nC\u00e1mara local y viabilidad de tracking\n\n## Context\nv4 \u00a73; v4 \u00a79; v4 \u00a712; v4 \u00a733; v4 \u00a742; v4 \u00a743. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nAgrupar tareas de la capacidad; aceptar con evidencia integrada de todos sus hijos.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar f\u00edsicamente el tel\u00e9fono. No adoptar dependencias candidatas sin prueba/decisi\u00f3n.\n\n## Acceptance Criteria\n- [ ] Captura e inferencia locales en build PC.\n- [ ] ROI y Player Lock sin reasignaci\u00f3n autom\u00e1tica.\n\n## Dependencies\nNinguna dependencia bloqueante declarada; confirmar en Sprint Planning.\n\n## Technical Notes\nTipo: Feature. \u00c1rea: Camera/Tracking. Parent: #1. Responsabilidades primarias seg\u00fan WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobaci\u00f3n.\n\n## Tests\nUnit/integration/PlayMode aplicables y validaci\u00f3n manual en hardware cuando corresponda.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de c\u00e1mara.\n\n## Definition of Done\nAplicar v4 \u00a749: implementaci\u00f3n, build, aceptaci\u00f3n, pruebas aplicables, integraci\u00f3n, PR revisado, recuperaci\u00f3n, logging, tuning y documentaci\u00f3n. Hardware real cuando aplique. Documentaci\u00f3n/spikes: entregar evidencia y decisi\u00f3n revisadas; build s\u00f3lo si existe c\u00f3digo de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliaci\u00f3n Project \u2014 2026-10-08\n\nCheckpoint t\u00e9cnico **PASS \u2014 SOFTWARE/LAB**, no Project Done. MediaPipe\u2192CameraInput t\u00e9cnico; lock fixture/replayPASS.\n\n**Cumple:** NO. **Acci\u00f3n:** KEEP OPEN. **Project Status:** In Progress.\n\n**Pendiente:** T016/T017 f\u00edsicos/model packaging pendientes. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulaci\u00f3n.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit hist\u00f3rico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato t\u00e9cnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisi\u00f3n/checks/integraci\u00f3n normal. Evidence Required/DoD originales siguen aplicando.\n\n## Reconciliaci\u00f3n F04 \u2014 2026-10-09\n\n**OPEN / In Progress; BLOCKED para cierre por #29/#30.** C\u00e1mara/tracking/fusi\u00f3n t\u00e9cnicaLAB existe e integrada en develop `10b02121bc0d2134ba03f39236d18553cbfdd058`; T016 requiere >=30FPS/PCoficial/packaging, T017 requiere20entradas humanas/oclusiones/cero switches. No hijos completos, no cierre Feature; ninguna prueba f\u00edsica nueva. Phase1 NOT STARTED.\n\n",
+        "number": 28,
+        "repository": "Josue1855/Gorilla-Escape",
+        "title": "[F04] C\u00e1mara local y viabilidad de tracking",
+        "type": "Issue",
+        "url": "https://github.com/Josue1855/Gorilla-Escape/issues/28"
+      },
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHSU",
+      "labels": [
+        "type:feature",
+        "area:camera-tracking"
+      ],
+      "milestone": {
+        "description": "Hito de secci\u00f3n 50 v4; sin fecha nueva ni Sprint asignado. Aceptaci\u00f3n seg\u00fan secciones 49/54.",
+        "dueOn": "",
+        "title": "Fase 0 \u2014 Base t\u00e9cnica y viabilidad"
+      },
+      "phase": "0",
+      "repository": "https://github.com/Josue1855/Gorilla-Escape",
+      "status": "In Progress",
+      "target Release": "v1.0 \u2014 MVP",
+      "title": "[F04] C\u00e1mara local y viabilidad de tracking"
+    },
+    {
+      "area": "Camera/Tracking",
+      "content": {
+        "body": "<!-- gorilla-backlog:T016 -->\n\n## Objective\nIntegrar webcam, MediaPipe/OpenCV y CameraInput\n\n## Context\nv4 \u00a73; v4 \u00a79; v4 \u00a714; v4 \u00a733; v4 \u00a736; v4 \u00a742. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposici\u00f3n interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar f\u00edsicamente el tel\u00e9fono. No adoptar dependencias candidatas sin prueba/decisi\u00f3n.\n\n## Acceptance Criteria\n- [ ] Medir captura >=30 FPS e inferencia separada en PC oficial.\n- [ ] Build incluye modelos/nativos/recursos offline.\n- [x] No guardar im\u00e1genes/video ni reconocer caras.\n\n## Dependencies\n- Blocked by #12\n- Blocked by #14\n\n## Technical Notes\nTipo: Task. \u00c1rea: Camera/Tracking. Parent: #28. Responsabilidades primarias seg\u00fan WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobaci\u00f3n.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de c\u00e1mara.\n\n## Definition of Done\nAplicar v4 \u00a749: implementaci\u00f3n, build, aceptaci\u00f3n, pruebas aplicables, integraci\u00f3n, PR revisado, recuperaci\u00f3n, logging, tuning y documentaci\u00f3n. Hardware real cuando aplique. Documentaci\u00f3n/spikes: entregar evidencia y decisi\u00f3n revisadas; build s\u00f3lo si existe c\u00f3digo de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliaci\u00f3n Project \u2014 2026-10-08\n\nCheckpoint t\u00e9cnico **PASS \u2014 SOFTWARE/LAB**, no Project Done. 640\u00d7480 technicalPASS;privacidadPASS;30FPS NOT ACHIEVED.\n\n**Cumple:** NO. **Acci\u00f3n:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** 17.61FPS observado<30; PC oficial/modelos/nativos distribuidos pendientes;#12/#14. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulaci\u00f3n.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit hist\u00f3rico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato t\u00e9cnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisi\u00f3n/checks/integraci\u00f3n normal. Evidence Required/DoD originales siguen aplicando.\n\n## Reevaluaci\u00f3n actual T016 \u2014 2026-10-09\n\n**NEEDS PERFORMANCE WORK; OPEN / Ready.** #12/#14 CLOSED/completed/Done: retirar blocked y preservar historial. Conservar needs-device-test/performance/type:task/area:camera-tracking.\n\nB\u00fasqueda de c\u00f3digo/evidencia actual develop `10b02121bc0d2134ba03f39236d18553cbfdd058`: captura webcam/MediaPipe/OpenCV/CameraInput y privacidad t\u00e9cnica existentes; medici\u00f3n disponible **17.611159 FPS <30**, no evidencia nueva integrada >=30 en PC oficial. Capacidad declarada del driver30FPS no equivale a medici\u00f3n de captura. Inferencia y capture timestamps separados; packaging Python adapter/modelos/nativos oficial todav\u00eda sin acreditaci\u00f3n de build distribuido completo. [docs/evidence/phase0-final-audit-2026-10-08/independent-metrics.json](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/docs/evidence/phase0-final-audit-2026-10-08/independent-metrics.json) \u00b7 [docs/evidence/phase0-final-audit-2026-10-08/deferred-validation.json](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/docs/evidence/phase0-final-audit-2026-10-08/deferred-validation.json) \u00b7 [Unity/Assets/_Project/Scripts/CameraTracking/README.md](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/Unity/Assets/_Project/Scripts/CameraTracking/README.md).\n\nAC1FAIL objetivo/PCoficialpendiente; AC2PARCIAL offlineLAB, distribuci\u00f3n oficial pendiente; AC3PASS t\u00e9cnico sin guardarframes/video/reconocimiento facial. No nueva captura/benchmark ni optimizaci\u00f3n en esta tarea. No cerrar; bloqueaT017/T018/F04.\n\n\n\n## T016 implementaci\u00f3n y medici\u00f3n local \u2014 2026-10-09\n\n**OPEN / In Progress; NO cierre/PR/merge.** Candidato local rama `feature/camera-t016-performance-packaging`, implementaci\u00f3n `f4f110d42b06eac8232402728c91250c6206a4f7`; no publicado. Develop local/remoto sigue `be6980a4651c5278a53804219e6cbbb11f9412ea`.\n\n- **AC1 FAIL:** PC oficial DellLatitude5540/i7-1355U/IrisXe/Pop!_OS24.04/Integrated_Webcam_FHD; MJPG640\u00d7480/driver30/buffer1/num_poses2. Captura independiente del detector: tres corridas19.966909/19.965563/19.964208FPS. Capture-only sinMediaPipe19.967887FPS. Diagn\u00f3sticos temporales de exposici\u00f3n/framerate no alcanzan30; mejor22.001542FPS, no elegido como aceptaci\u00f3n/preset. Controles restaurados. Final5s warmup+35.116s measurement: captura19.940556524680336, inferencia19.95321279017395, salida19.95321650054743FPS. No redondeo/tolerancia ni replay/driverFPS como sustituto. Causa exacta sensor/USB/firmware pendiente; acoplamiento s\u00edncrono hist\u00f3rico eliminado, adquisici\u00f3n sigue limitada.\n- **AC2 PARTIAL:** staging Linux relativo real incluye Python/stdlib,18paquetes pin/model/nativos/notices/hash manifest, sin venv/cache/pip/download al ejecutar. Player construido y trasladado, cache desarrollo oculta/HOME aislado/WAN namespace unavailable: modelo/c\u00e1mara/692CameraInputs f\u00edsicos enUnity PASS. Pero distribuci\u00f3n externa requiere completar inventario copyright/licencias de system natives y obligaciones corresponding-source deQt/FFmpeg; binarios/modelo no subidos. No declararAC2completo ni Windows/macOS/cleanPC validados.\n- **AC3 PASS:** aplicaci\u00f3n pose-only, no image/video save/face recognition; auditor\u00eda nativa f\u00edsica0escrituras imagen/video y0logs f\u00edsicos porframe; s\u00f3lo agregados retenidos. Private stdout aUnity y storebounded.\n\nComponentes13/13; UnityEdit99/99 yPlay19/19 (bundle f\u00edsico/regresiones RTC/lobby/actions), buildLinux0errors/0warnings; Management/Foundation localPASS. Cleanup finalPlayer/vision exit0, camera release/detector close/capture join, noforced/noresiduales. IntentosFAILy todas las corridas preservados; datos humanos20entradas/occlusion/return NOTRUN. DEC-025 LOCAL CANDIDATE / ACCEPTANCE BLOCKED, sin aprobaci\u00f3n adelantada. Reporte local `docs/PHASE0_T016_CAMERA_RUNTIME.md`, evidencia `docs/evidence/t016-camera-runtime-2026-10-09/`; hashes/manifest/corridas disponibles en el checkout, no enlaces a commit no publicado.\n\nConservar needs-device-test/performance yAC1/AC2sinmarcar. T017/T018 siguen OPEN/blocked by #29; F04/E0 OPEN, Phase0 INPROGRESS, Phase1 NOTSTARTED. Siguiente gapreal: adquisici\u00f3n f\u00edsica>=30 y redistribuci\u00f3n offline completa. No iniciar cascada ni gameplay.\n",
+        "number": 29,
+        "repository": "Josue1855/Gorilla-Escape",
+        "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput",
+        "type": "Issue",
+        "url": "https://github.com/Josue1855/Gorilla-Escape/issues/29"
+      },
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHTs",
+      "labels": [
+        "needs-device-test",
+        "performance",
+        "type:task",
+        "area:camera-tracking"
+      ],
+      "milestone": {
+        "description": "Hito de secci\u00f3n 50 v4; sin fecha nueva ni Sprint asignado. Aceptaci\u00f3n seg\u00fan secciones 49/54.",
+        "dueOn": "",
+        "title": "Fase 0 \u2014 Base t\u00e9cnica y viabilidad"
+      },
+      "phase": "0",
+      "repository": "https://github.com/Josue1855/Gorilla-Escape",
+      "status": "In Progress",
+      "target Release": "v1.0 \u2014 MVP",
+      "title": "[T016] Integrar webcam, MediaPipe/OpenCV y CameraInput"
+    },
+    {
+      "area": "Camera/Tracking",
+      "content": {
+        "body": "<!-- gorilla-backlog:T017 -->\n\n## Objective\nValidar ROI, Player Lock y recuperaci\u00f3n de tracking\n\n## Context\nv4 \u00a79; v4 \u00a712; v4 \u00a725; v4 \u00a737; v4 \u00a743. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposici\u00f3n interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar f\u00edsicamente el tel\u00e9fono. No adoptar dependencias candidatas sin prueba/decisi\u00f3n.\n\n## Acceptance Criteria\n- [ ] 20 entradas de otra persona: cero cambios accidentales.\n- [ ] Oclusi\u00f3n/tracking perdido pausa; retorno recuperable.\n- [ ] Nunca seleccionar autom\u00e1ticamente otro jugador.\n\n## Dependencies\n- Blocked by #29\n\n## Technical Notes\nTipo: Task. \u00c1rea: Camera/Tracking. Parent: #28. Responsabilidades primarias seg\u00fan WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobaci\u00f3n.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de c\u00e1mara.\n\n## Definition of Done\nAplicar v4 \u00a749: implementaci\u00f3n, build, aceptaci\u00f3n, pruebas aplicables, integraci\u00f3n, PR revisado, recuperaci\u00f3n, logging, tuning y documentaci\u00f3n. Hardware real cuando aplique. Documentaci\u00f3n/spikes: entregar evidencia y decisi\u00f3n revisadas; build s\u00f3lo si existe c\u00f3digo de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliaci\u00f3n Project \u2014 2026-10-08\n\nCheckpoint t\u00e9cnico **PASS \u2014 SOFTWARE/LAB**, no Project Done. PlayerLock fixtures/replayPASS, no validaci\u00f3n humana.\n\n**Cumple:** NO. **Acci\u00f3n:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** 20 entradas humanas/cero switches/occlusi\u00f3n f\u00edsica NOT RUN;#29. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulaci\u00f3n.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit hist\u00f3rico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato t\u00e9cnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisi\u00f3n/checks/integraci\u00f3n normal. Evidence Required/DoD originales siguen aplicando.\n\n## Reevaluaci\u00f3n actual T017 \u2014 2026-10-09\n\n**NEEDS PHYSICAL QA + BLOCKED; OPEN**, conservar blocked/needs-device-test. #29OPEN. Fixtures/replay y PlayerLock p\u00e9rdida/recuperaci\u00f3n sin auto-selecci\u00f3n PASS LAB con fuentes vigentes; **20 entradas humanas con0 cambios accidentales, oclusi\u00f3n/retorno f\u00edsicos NOT RUN**. [Unity/Assets/_Project/Scripts/Input/Fusion/PlayerLock.cs](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/Unity/Assets/_Project/Scripts/Input/Fusion/PlayerLock.cs) \u00b7 [Unity/Assets/_Project/Tests/EditMode/CameraFusionTests.cs](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/Unity/Assets/_Project/Tests/EditMode/CameraFusionTests.cs) \u00b7 [docs/evidence/phase0-final-audit-2026-10-08/deferred-validation.json](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/docs/evidence/phase0-final-audit-2026-10-08/deferred-validation.json).\n\nNo convertir replay enPASS f\u00edsico ni cerrarF04; Phase1 NOT STARTED.\n\n",
+        "number": 30,
+        "repository": "Josue1855/Gorilla-Escape",
+        "title": "[T017] Validar ROI, Player Lock y recuperaci\u00f3n de tracking",
+        "type": "Issue",
+        "url": "https://github.com/Josue1855/Gorilla-Escape/issues/30"
+      },
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHVk",
+      "labels": [
+        "blocked",
+        "needs-device-test",
+        "type:task",
+        "area:camera-tracking"
+      ],
+      "milestone": {
+        "description": "Hito de secci\u00f3n 50 v4; sin fecha nueva ni Sprint asignado. Aceptaci\u00f3n seg\u00fan secciones 49/54.",
+        "dueOn": "",
+        "title": "Fase 0 \u2014 Base t\u00e9cnica y viabilidad"
+      },
+      "phase": "0",
+      "repository": "https://github.com/Josue1855/Gorilla-Escape",
+      "status": "Validation",
+      "target Release": "v1.0 \u2014 MVP",
+      "title": "[T017] Validar ROI, Player Lock y recuperaci\u00f3n de tracking"
+    },
+    {
+      "area": "CI/QA",
+      "content": {
+        "body": "<!-- gorilla-backlog:T018 -->\n\n## Objective\nInstrumentar latencia, Hz, FPS y errores locales\n\n## Context\nv4 \u00a735; v4 \u00a736; v4 \u00a740; v4 \u00a747. Fase: 0. Alcance: P0. Referencia: https://github.com/Josue1855/Gorilla-Escape/blob/main/docs/Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md\n\n## Scope\nImplementar el resultado definido por los criterios, dentro de su fase; descomposici\u00f3n interna en Sprint Planning.\n\n## Out of Scope\nOtras fases; cloud obligatorio, cuentas, reconocimiento facial y soltar f\u00edsicamente el tel\u00e9fono. No adoptar dependencias candidatas sin prueba/decisi\u00f3n.\n\n## Acceptance Criteria\n- [ ] Trazas correlacionadas con reloj/unidad/error de sincronizaci\u00f3n definidos.\n- [ ] P50/P95, Hz efectivos, FPS y p\u00e9rdidas con tama\u00f1o muestral.\n- [ ] Buffer de telemetr\u00eda no afecta perceptiblemente framerate; sin video.\n\n## Dependencies\n- Blocked by #26\n- Blocked by #29\n\n## Technical Notes\nTipo: Task. \u00c1rea: CI/QA. Parent: #31. Responsabilidades primarias seg\u00fan WORKFLOW; sin Assignee hasta Sprint Planning. Versiones y layout propuestos no equivalen a aprobaci\u00f3n.\n\n## Tests\nEjecutar pruebas aplicables descritas en secciones 38/49; registrar procedimiento, resultado y limitaciones.\n\n## Evidence Required\nReporte reproducible con fecha, commit, versiones, hardware cuando aplique, resultado real y limitaciones. Actualizar TEST_REPORT/DEVELOPMENT_PROGRESS. No inventar PASS ni almacenar video/fotos de c\u00e1mara.\n\n## Definition of Done\nAplicar v4 \u00a749: implementaci\u00f3n, build, aceptaci\u00f3n, pruebas aplicables, integraci\u00f3n, PR revisado, recuperaci\u00f3n, logging, tuning y documentaci\u00f3n. Hardware real cuando aplique. Documentaci\u00f3n/spikes: entregar evidencia y decisi\u00f3n revisadas; build s\u00f3lo si existe c\u00f3digo de prueba. Features/Epics: evidencia integrada de hijos, sin contar como esfuerzo duplicado.\n\n## Reconciliaci\u00f3n Project \u2014 2026-10-08\n\nCheckpoint t\u00e9cnico **PASS \u2014 SOFTWARE/LAB**, no Project Done. M\u00e9tricas IPC/RTC/replay separadas;boundedbuffers; no f\u00edsica sincronizada.\n\n**Cumple:** PARCIAL. **Acci\u00f3n:** BLOCKED. **Project Status:** Validation.\n\n**Pendiente:** Clock f\u00edsico/error incertidumbre y efecto telemetr\u00eda/framerate no medidos;#26/#29. Dependencies nativas/cuerpos se conservan; no se cierran hijos/Features/Epic por replay/emulaci\u00f3n.\n\n[Issue matrix y decisiones](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_PROJECT_RECONCILIATION.md), [audit hist\u00f3rico](https://github.com/Josue1855/Gorilla-Escape/blob/9d45f89bd4120d2dffbf009371bb9814dc28aa7c/docs/PHASE0_FINAL_AUDIT.md). Candidato t\u00e9cnico publicado en PR #94, commit `9d45f89bd4120d2dffbf009371bb9814dc28aa7c`; pendiente revisi\u00f3n/checks/integraci\u00f3n normal. Evidence Required/DoD originales siguen aplicando.\n\n## Reevaluaci\u00f3n actual T018 \u2014 2026-10-09\n\n**NEEDS REVALIDATION ONLY (mediciones) + BLOCKED; OPEN.** #26completed; #29OPEN mantiene blocked. M\u00e9tricas IPC/RTC/Hz/FPS/errors y buffers acotados implementados; P50/P95 LAB conN en evidencia hist\u00f3rica. Pero falta acreditaci\u00f3n de **clocks entre dispositivos con unidad/error/incertidumbre de sincronizaci\u00f3n**, m\u00e9tricas end-to-end f\u00edsicamente correlacionadas (ACKRTT/IPC no son latencia movimiento\u2192resultado) y **comparaci\u00f3n framerate con/sin telemetr\u00eda**. Historial4096/buffers acotados no prueba impacto imperceptible. [docs/evidence/phase0-final-audit-2026-10-08/independent-metrics.json](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/docs/evidence/phase0-final-audit-2026-10-08/independent-metrics.json) \u00b7 [Shared/Protocol/mobile/README.md](https://github.com/Josue1855/Gorilla-Escape/blob/10b02121bc0d2134ba03f39236d18553cbfdd058/Shared/Protocol/mobile/README.md).\n\nNo fallo demostrado de producto ni necesidad de programar todav\u00eda; requiere protocolo/medici\u00f3n reproducible de estos gates tras T016. No cerrar por contadores aislados. Preservar needs-device-test/performance; no iniciar pruebas grandes niPhase1.\n\n\n\n## T015/F03 integraci\u00f3n y reevaluaci\u00f3n \u2014 2026-10-09\n\nReevaluaci\u00f3n de dependencias solamente: F03/#23 cerrado; #26 Done. #29/T016 OPEN/Ready sigue bloqueando T018. Mantener OPEN/Validation/blocked y needs-device-test/performance; no iniciar ni marcar AC adicionales. Correlaci\u00f3n f\u00edsica de clocks/end-to-end y comparaci\u00f3n impacto telemetr\u00eda pendientes. Dependencias/historia intactas.\n\nPR #101, head `f35abd4fdfbbfc4a82a9d8bf0efe56b8b4447fd5`, merge `be6980a4651c5278a53804219e6cbbb11f9412ea`. [Reporte y evidencia](https://github.com/Josue1855/Gorilla-Escape/blob/be6980a4651c5278a53804219e6cbbb11f9412ea/docs/PHASE0_T015_ACTION_LIFECYCLE.md). Management/Foundation PASS. T016 OPEN/Ready como siguiente recomendado, sin iniciar. E0 OPEN, Phase0 IN PROGRESS, Phase1 NOT STARTED.\n",
+        "number": 32,
+        "repository": "Josue1855/Gorilla-Escape",
+        "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales",
+        "type": "Issue",
+        "url": "https://github.com/Josue1855/Gorilla-Escape/issues/32"
+      },
+      "id": "PVTI_lAHOBFweE84Bl2mTzg-xHYE",
+      "labels": [
+        "blocked",
+        "needs-device-test",
+        "performance",
+        "type:task",
+        "area:ci-qa"
+      ],
+      "milestone": {
+        "description": "Hito de secci\u00f3n 50 v4; sin fecha nueva ni Sprint asignado. Aceptaci\u00f3n seg\u00fan secciones 49/54.",
+        "dueOn": "",
+        "title": "Fase 0 \u2014 Base t\u00e9cnica y viabilidad"
+      },
+      "phase": "0",
+      "repository": "https://github.com/Josue1855/Gorilla-Escape",
+      "status": "Validation",
+      "target Release": "v1.0 \u2014 MVP",
+      "title": "[T018] Instrumentar latencia, Hz, FPS y errores locales"
+    }
+  ]
+}

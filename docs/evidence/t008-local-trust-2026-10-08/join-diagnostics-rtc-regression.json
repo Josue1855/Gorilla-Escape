@@ -1,0 +1,345 @@
+{
+  "scope": "Real Chrome/PWA \u2192 RTC \u2192 Java child owned by Unity \u2192 same loopback IPC \u2192 Unity Player PhoneInput",
+  "physical": "DEFERRED",
+  "gate": "PASS",
+  "playerIds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "rtc": [
+    {
+      "pairs": [
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    },
+    {
+      "pairs": [
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    },
+    {
+      "pairs": [
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    },
+    {
+      "pairs": [
+        {
+          "localType": "host",
+          "remoteType": "host",
+          "transport": "udp"
+        }
+      ],
+      "channels": {
+        "control": {
+          "ordered": true,
+          "maxRetransmits": null
+        },
+        "motion": {
+          "ordered": false,
+          "maxRetransmits": 0
+        }
+      },
+      "stunTurnConfigured": 0
+    }
+  ],
+  "negatives": [
+    {
+      "case": "operator-unauthorized",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-player",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-version",
+      "gate": "PASS"
+    },
+    {
+      "case": "unknown-type",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "missing-field",
+      "gate": "PASS"
+    },
+    {
+      "case": "stale",
+      "gate": "PASS"
+    },
+    {
+      "case": "future",
+      "gate": "PASS"
+    },
+    {
+      "case": "malformed",
+      "gate": "PASS"
+    },
+    {
+      "case": "oversized",
+      "gate": "PASS"
+    },
+    {
+      "case": "rate-abuse-isolated-and-recovered",
+      "gate": "PASS"
+    },
+    {
+      "case": "fifth-peer-rejected-at-capacity",
+      "gate": "PASS"
+    },
+    {
+      "case": "duplicate-active-client",
+      "gate": "PASS"
+    },
+    {
+      "case": "credential-replay",
+      "gate": "PASS"
+    },
+    {
+      "case": "invalid-credential",
+      "gate": "PASS"
+    },
+    {
+      "case": "wrong-session",
+      "gate": "PASS"
+    },
+    {
+      "case": "one-disconnect-others-live",
+      "gate": "PASS"
+    },
+    {
+      "case": "session-closed",
+      "gate": "PASS"
+    }
+  ],
+  "reconnect": "PASS",
+  "cleanup": {
+    "java": {
+      "code": 0,
+      "signal": null
+    },
+    "stderrBytes": 0,
+    "lifecycleStopped": {
+      "state": "STOPPED",
+      "exitCode": 0,
+      "cleanupComplete": true,
+      "forced": false
+    },
+    "residualOwnedChildren": 0
+  },
+  "unityGate": "PASS",
+  "unityObservationCount": 640,
+  "nominalRuns": [
+    {
+      "hz": 30,
+      "clients": [
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.900000000372529,
+          "p95Ms": 3.700000001117587,
+          "maximumMs": 6.799999998882413,
+          "durationMs": 1999.7000000011176
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.599999999627471,
+          "p95Ms": 5.400000000372529,
+          "maximumMs": 7.399999998509884,
+          "durationMs": 2000.1000000014901
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 3.600000001490116,
+          "p95Ms": 5.200000001117587,
+          "maximumMs": 8.900000000372529,
+          "durationMs": 2000.5
+        },
+        {
+          "targetSyntheticHz": 30,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 4.100000001490116,
+          "p95Ms": 5.699999999254942,
+          "maximumMs": 7.299999998882413,
+          "durationMs": 1999.7000000011176
+        }
+      ]
+    },
+    {
+      "hz": 50,
+      "clients": [
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 62,
+          "received": 62,
+          "errors": 0,
+          "p50Ms": 2.599999999627471,
+          "p95Ms": 3.700000001117587,
+          "maximumMs": 4.399999998509884,
+          "durationMs": 1199.5
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.700000001117587,
+          "p95Ms": 4.400000000372529,
+          "maximumMs": 6.800000000745058,
+          "durationMs": 1200.199999999255
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.099999999627471,
+          "p95Ms": 4.199999999254942,
+          "maximumMs": 4.700000001117587,
+          "durationMs": 1199.5
+        },
+        {
+          "targetSyntheticHz": 50,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 3.300000000745058,
+          "p95Ms": 4.599999999627471,
+          "maximumMs": 6.899999998509884,
+          "durationMs": 1199.9000000003725
+        }
+      ]
+    },
+    {
+      "hz": 60,
+      "clients": [
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.099999999627471,
+          "p95Ms": 3,
+          "maximumMs": 3.400000000372529,
+          "durationMs": 999.5
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.199999999254942,
+          "p95Ms": 3.200000001117587,
+          "maximumMs": 4,
+          "durationMs": 999.5999999996275
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2.299999998882413,
+          "p95Ms": 3.5,
+          "maximumMs": 4.099999999627471,
+          "durationMs": 999.9000000003725
+        },
+        {
+          "targetSyntheticHz": 60,
+          "n": 60,
+          "source": "synthetic",
+          "sent": 61,
+          "received": 61,
+          "errors": 0,
+          "p50Ms": 2,
+          "p95Ms": 3.599999999627471,
+          "maximumMs": 4.400000000372529,
+          "durationMs": 999.7000000011176
+        }
+      ]
+    }
+  ]
+}

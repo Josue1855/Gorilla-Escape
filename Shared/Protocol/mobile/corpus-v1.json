@@ -1,0 +1,101 @@
+{
+  "clockMilliseconds": 100000,
+  "cases": [
+    {
+      "name": "valid",
+      "expected": "PASS"
+    },
+    {
+      "name": "unknown-version",
+      "expected": "REJECT",
+      "field": "protocolVersion",
+      "value": 2
+    },
+    {
+      "name": "unknown-type",
+      "expected": "REJECT",
+      "field": "messageType",
+      "value": "SMASH"
+    },
+    {
+      "name": "wrong-player",
+      "expected": "REJECT",
+      "field": "playerId",
+      "value": 2
+    },
+    {
+      "name": "wrong-session",
+      "expected": "REJECT",
+      "field": "sessionId",
+      "value": "wrong"
+    },
+    {
+      "name": "stale",
+      "expected": "REJECT",
+      "field": "clientTimestamp",
+      "value": 97000
+    },
+    {
+      "name": "future",
+      "expected": "REJECT",
+      "field": "clientTimestamp",
+      "value": 100251
+    },
+    {
+      "name": "server-stamp",
+      "expected": "REJECT",
+      "field": "serverReceiveTimestamp",
+      "value": 100000
+    },
+    {
+      "name": "negative-sequence",
+      "expected": "REJECT",
+      "field": "sequence",
+      "value": -1
+    },
+    {
+      "name": "unknown-capability",
+      "expected": "REJECT",
+      "field": "capabilities",
+      "value": [
+        "Smash"
+      ]
+    },
+    {
+      "name": "numeric-string",
+      "expected": "REJECT",
+      "field": "sequence",
+      "value": "1"
+    },
+    {
+      "name": "missing-field",
+      "expected": "REJECT",
+      "remove": "quality"
+    },
+    {
+      "name": "malformed",
+      "expected": "REJECT",
+      "raw": "{"
+    },
+    {
+      "name": "trailing-document",
+      "expected": "REJECT",
+      "suffix": "{}"
+    },
+    {
+      "name": "duplicate-json-key",
+      "expected": "REJECT",
+      "duplicate": true
+    },
+    {
+      "name": "oversized",
+      "expected": "REJECT",
+      "oversized": true
+    },
+    {
+      "name": "partial-sensor",
+      "expected": "PASS",
+      "partial": true
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "result": "PASS",
+  "exit": 0,
+  "command": "JAVA_HOME=<existing JDK21> Server/mvnw -o -B -f <isolated-copy>/Server/pom.xml -DskipTests package",
+  "scope": "fresh isolated Java compile/package; tests not executed; no audited original JAR replacement"
+}

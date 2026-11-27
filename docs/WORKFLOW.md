@@ -1,5 +1,7 @@
 # Gorilla Escape — Ramas, integración y trabajo en equipo
 
+> Lectura vigente desde 2026-10-16: [índice único](README.md), [estado del producto](00-product/DEVELOPMENT_STATUS.md) y [decisiones actuales](00-product/ARCHITECTURE_DECISIONS.md). Este documento conserva antecedentes y resultados fechados; no interpretar un estado histórico como aceptación actual.
+
 **Fecha:** 2026-10-05.
 **Estado:** flujo main/develop activado con remoto público y protecciones. Base de trabajo del equipo: develop, con Java/React y fuentes Unity. Repositorio publicado con una base inicial común.
 **Fuente principal:** [Especificación v4](Gorilla_Escape_Gorilimpiadas_Especificacion_Maestra_v4.md), secciones 4, 39, 50 y 51. [Organización del código](MONOREPO_PLAN.md).
@@ -43,9 +45,9 @@ Para recuperar un cambio defectuoso, preferir un revert revisable. No force push
 
 ## Protección activa en GitHub
 
-Para main y develop se configuró: PR obligatorio, al menos una aprobación de otro integrante, conversaciones resueltas, checks aplicables aprobados y prohibición de force push/deletion. No exigir historial lineal si se permite el merge de promoción descrito arriba. Restringir promociones a responsables designados; definir permisos reales con los usuarios GitHub del equipo.
+Para main y develop se conserva PR obligatorio, conversaciones resueltas, checks aplicables aprobados y prohibición de force push/deletion. El 2026-10-06, por autorización explícita del PO ante ausencia de segundo revisor, la protección clásica de develop pasó exclusivamente de una aprobación requerida a cero. main conserva su política anterior; no se modificaron permisos ni se hizo bypass. Evidencia antes/después en [protección 2A](evidence/unity-java-ipc-2a-2026-10-06/protection-change.json). No exigir historial lineal si se permite el merge de promoción descrito arriba. Restringir promociones a responsables designados; definir permisos reales con los usuarios GitHub del equipo.
 
-GitHub confirmó estas protecciones tras autorizar el usuario la visibilidad pública. Check requerido: management-validation, con rama actualizada; reglas aplicadas también a administradores. [Protecciones GitHub](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
+GitHub confirmó estas protecciones tras autorizar el usuario la visibilidad pública. Checks requeridos: management-validation y java-react-foundation, con rama actualizada; reglas aplicadas también a administradores. [Protecciones GitHub](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
 
 CI separa validación automática de aprobación humana: un pipeline pasa/falla tests/build; la revisión sucede en el PR. Para documentación sólo ejecutar validaciones documentales. Al existir código, ejecutar suites del componente y contratos cruzados; en entrega ejecutar build completo e integración. Si un cambio Shared requiere todos los consumidores, no saltarlos sólo por filtros de carpetas.
 

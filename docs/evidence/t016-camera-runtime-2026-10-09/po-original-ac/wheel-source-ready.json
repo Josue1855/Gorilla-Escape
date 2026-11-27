@@ -1,0 +1,70 @@
+{
+  "sourceRpms": [
+    {
+      "url": "https://vault.centos.org/7.9.2009/os/Source/SPackages/gcc-4.8.5-44.el7.src.rpm",
+      "file": "gcc-4.8.5-44.el7.src.rpm",
+      "bytes": 79314655,
+      "sha256": "642c4085f6af9565e39583e54a9d7a5d9e6b93dd8c8e9474aec8a892d6c7aa36"
+    },
+    {
+      "url": "https://vault.almalinux.org/8.10/BaseOS/Source/Packages/gcc-8.5.0-28.el8_10.alma.1.src.rpm",
+      "file": "gcc-8.5.0-28.el8_10.alma.1.src.rpm",
+      "bytes": 65715094,
+      "sha256": "c94dbbd2cd6d5d01a5a6822ea18f8ce34942c25a80e17b4682d547d5e652dbd0"
+    }
+  ],
+  "matchedLibraries": [
+    {
+      "wheelFile": "numpy.libs/libgfortran-83c28eba-468e71e5.so.5.0.0",
+      "wheelSha256": "a6a368328d02a5d8a149746f13f6268f8cc9192df5c18777b25c3c9b5ef52160",
+      "supplierBinary": "libgfortran-8.5.0-28.el8_10.alma.1.x86_64.rpm",
+      "sourceRpm": "gcc-8.5.0-28.el8_10.alma.1.src.rpm",
+      "buildId": "04dbe32dceb80654422140fb7641f732065999c8",
+      "matchedSections": {
+        ".text": "fd69c1360c73d6aa595bbe03bf9d11725de31f9f658fdd74ae11a8114fb0a784",
+        ".rodata": "80d0e692052fb23a9855230d9af7cb1bf8459fc38bdd258671957e1fa9349609"
+      },
+      "codeAndReadonlyDataMatch": true,
+      "elfDifferences": "Wheel repair renamed SONAME/dependencies/RPATH; code and readonly data match supplier package"
+    },
+    {
+      "wheelFile": "numpy.libs/libquadmath-2284e583-a9307bba.so.0.0.0",
+      "wheelSha256": "6bc3069003caec1f075be3c51ae8355332f081fa9465910c4b5724e7fe7d8ad4",
+      "supplierBinary": "libquadmath-8.5.0-28.el8_10.alma.1.x86_64.rpm",
+      "sourceRpm": "gcc-8.5.0-28.el8_10.alma.1.src.rpm",
+      "buildId": "c1c5f8d61f17e5579c4e85718845b74e4b94116c",
+      "matchedSections": {
+        ".text": "4425e7ca4dfe60074f61032f0f97cff167434f95c213057b269580de2002f140",
+        ".rodata": "db684df2071208d9df9abb5a94a2ffd65a48fdc93a678792751ba1d5c18fe7b2"
+      },
+      "codeAndReadonlyDataMatch": true,
+      "elfDifferences": "Wheel repair renamed SONAME/dependencies/RPATH; code and readonly data match supplier package"
+    },
+    {
+      "wheelFile": "opencv_contrib_python_headless.libs/libgfortran-91cc3cb1.so.3.0.0",
+      "wheelSha256": "55e3eb67306c2ff17e6f8a0810eaa0dcb26e94cd83924c5065d5040e87814608",
+      "supplierBinary": "libgfortran-4.8.5-44.el7.x86_64.rpm",
+      "sourceRpm": "gcc-4.8.5-44.el7.src.rpm",
+      "buildId": "53827b36771c70cc3514402ac6e419f0533ad60c",
+      "matchedSections": {
+        ".text": "630ead315fd163df47cbd7cccb09774030c1372b6ece81211a42617c851396e7",
+        ".rodata": "23a04a9fb2e8aaef7615519e0eabcd8b47e7482f3bbcbe70ea80c6eb5e181629"
+      },
+      "codeAndReadonlyDataMatch": true,
+      "elfDifferences": "Wheel repair renamed SONAME/dependencies/RPATH; code and readonly data match supplier package"
+    },
+    {
+      "wheelFile": "opencv_contrib_python_headless.libs/libquadmath-96973f99.so.0.0.0",
+      "wheelSha256": "934c22ded0e7d169c4d4678876c96051adf3d94545da962f60b41659b075da3b",
+      "supplierBinary": "libquadmath-4.8.5-44.el7.x86_64.rpm",
+      "sourceRpm": "gcc-4.8.5-44.el7.src.rpm",
+      "buildId": "549b4c82347785459571c79239872ad31509dcf4",
+      "matchedSections": {
+        ".text": "4dcdf3ba6ed0886a109161a4cdb6701252fb46496c77f1ac425951dfa6860458",
+        ".rodata": "e136180b0009974224ea550f3caadad87dfa57095c50427d0aa0d54e8be69d35"
+      },
+      "codeAndReadonlyDataMatch": true,
+      "elfDifferences": "Wheel repair renamed SONAME/dependencies/RPATH; code and readonly data match supplier package"
+    }
+  ]
+}

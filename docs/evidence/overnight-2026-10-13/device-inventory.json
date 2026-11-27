@@ -1,0 +1,9 @@
+{
+  "utc": "2026-10-14T05:45:14.982875+00:00",
+  "classification": "read-only inventory, no physical test accreditation",
+  "devices": [],
+  "errors": [],
+  "iPhone": "No iOS automation endpoint supplied; historical reference is not an accessible device",
+  "cleanPC": "No second clean physical PC endpoint supplied",
+  "physicalAndroidCount": 0
+}

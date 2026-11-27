@@ -1,0 +1,378 @@
+{
+  "scope": "Built Linux Player/relative Vision; physical webcam; private pipes/Unity store",
+  "wanProbeExit": 0,
+  "wanUnavailable": true,
+  "developerCacheHidden": true,
+  "imagePersistence": false,
+  "gate": "PASS",
+  "humanTracking": "NOT RUN \u2014 technical camera/runtime test only",
+  "javaLifecycleEnabled": true,
+  "ipcLifecycle": {
+    "started": 1,
+    "stopped": 1,
+    "errors": 0,
+    "last": {
+      "event": "STOPPED",
+      "state": "STOPPED",
+      "exitCode": 0,
+      "errorCode": "",
+      "cleanupError": "",
+      "cleanupComplete": true,
+      "forced": false
+    }
+  },
+  "cameraRuntimeErrors": 0,
+  "qaNavigation": {
+    "opened": 0,
+    "closed": 0
+  },
+  "requestedPreview": "OFF",
+  "candidateHashes": {
+    "GorillaEscape_Data/Managed/GorillaEscape.Runtime.dll": "a47efd9bc244fb2b80628265abff3b267b08d8a7ff0d99a8d08386b15c0cb7e5",
+    "Vision/worker.py": "48a96b7cbb065c534aa45fc0c61c6f79e75047c555fde1c5536590ea0688eba0",
+    "Vision/preview.py": "9f0ebb0634c7bc252e0ceb5dcbe474d538d5b53d8b730388e5e9c0fe1d335dcb",
+    "Java/server.jar": "b6cb85e29076f930179525e0e7a500ac4367969c35288e76b9a393bc9ebfc9bd"
+  },
+  "unityFrameTiming": {
+    "N": 5910,
+    "overwritten": 1814,
+    "errors": 0,
+    "retained": 4096,
+    "capacity": 4096,
+    "frameTimeP50Ms": 13.991281999999217,
+    "frameTimeP95Ms": 16.950866999991376,
+    "fpsP50": 71.46905354246846,
+    "fpsP95": 848.5038755400706,
+    "effectiveFps": 96.89229128799806,
+    "sampledSeconds": 60.99556447100003,
+    "clock": "Unity System.Diagnostics.Stopwatch; process-local monotonic ticks / Frequency -> ms",
+    "percentileScope": "nearest rank over retained intervals; N and effectiveFps cover full measurement; FPS percentiles sort reciprocal intervals"
+  },
+  "qaNavigationAtMeasurementEnd": {
+    "opened": 0,
+    "closed": 0
+  },
+  "hostClockBridge": {
+    "N": 55,
+    "offsetUtcMinusMonotonicMsMin": 1792019086789.4805,
+    "offsetUtcMinusMonotonicMsMax": 1792019086789.4822,
+    "maxHalfReadBracketMs": 0.0026555,
+    "method": "monotonic_ns before/time_ns/monotonic_ns after, midpoint offset; descriptive observed range, not bound on future slew or event timestamp error",
+    "cameraUnityUtcQuantizationUncertaintyMs": "<2 ms conservative combined integer-ms quantization only; total error UNKNOWN",
+    "phoneSynchronization": "NOT RUN; no physical-device offset/drift/error measurement"
+  },
+  "rssBytes": {
+    "unity": {
+      "N": 55,
+      "retained": 55,
+      "P50": 273231872,
+      "P95": 273494016,
+      "peak": 273502208,
+      "first": 271822848,
+      "last": 273408000,
+      "delta": 1585152,
+      "source": "/proc VmRSS at 1 Hz; startup included; descriptive first/last drift, not leak diagnosis"
+    },
+    "vision": {
+      "N": 55,
+      "retained": 55,
+      "P50": 270282752,
+      "P95": 271216640,
+      "peak": 271216640,
+      "first": 268820480,
+      "last": 271216640,
+      "delta": 2396160,
+      "source": "/proc VmRSS at 1 Hz; startup included; descriptive first/last drift, not leak diagnosis"
+    },
+    "java": {
+      "N": 55,
+      "retained": 55,
+      "P50": 246054912,
+      "P95": 247717888,
+      "peak": 247721984,
+      "first": 238284800,
+      "last": 247721984,
+      "delta": 9437184,
+      "source": "/proc VmRSS at 1 Hz; startup included; descriptive first/last drift, not leak diagnosis"
+    }
+  },
+  "cpuPercent": {
+    "unity": {
+      "N": 54,
+      "P50": 20.82704720154407,
+      "P95": 24.736390372944154,
+      "definition": "/proc utime+stime over monotonic elapsed; 100%=one CPU core"
+    },
+    "vision": {
+      "N": 54,
+      "P50": 164.3168059701816,
+      "P95": 174.2112504469507,
+      "definition": "/proc utime+stime over monotonic elapsed; 100%=one CPU core"
+    },
+    "java": {
+      "N": 54,
+      "P50": 2.9730787216338332,
+      "P95": 10.787763144480936,
+      "definition": "/proc utime+stime over monotonic elapsed; 100%=one CPU core"
+    }
+  },
+  "qaSurface": {
+    "visualApplied": false,
+    "cameraCleanup": true,
+    "javaCleanup": true,
+    "controlsRestored": true,
+    "qaPhoneObserved": false,
+    "phoneAccepted": 0,
+    "previewOverwritten": 0,
+    "visualFrame": 0,
+    "endOfFrame": 0,
+    "unityUpdateFps": 101.7686241481048,
+    "previewState": ""
+  },
+  "metrics": {
+    "measurementElapsedSeconds": 55.382109768,
+    "telemetryMode": "enabled",
+    "telemetryCapacityPerSeries": 4096,
+    "telemetryErrors": 0,
+    "telemetryRetainedSamples": 21692,
+    "telemetryOverwrittenSamples": 0,
+    "telemetryRejectedBeforeWarmup": "excluded by design; not drops",
+    "captureFrames": 1670,
+    "captureDuration": 55.2204208,
+    "captureFps": 30.224325997892432,
+    "captureReadFrames": 1670,
+    "captureReadDuration": 55.2204208,
+    "captureReadFps": 30.224325997892432,
+    "inferenceFrames": 1668,
+    "inferenceDuration": 55.191809104,
+    "inferenceFps": 30.203757170902104,
+    "outputFrames": 1668,
+    "outputDuration": 55.191814576,
+    "outputFps": 30.20375417634647,
+    "captureReadTimingN": 1670,
+    "captureReadTimingRetained": 1670,
+    "captureReadP50Ms": 31.867429,
+    "captureReadP95Ms": 36.02923,
+    "inferenceTimingN": 1668,
+    "inferenceTimingRetained": 1668,
+    "inferenceP50Ms": 22.637258,
+    "inferenceP95Ms": 39.062018,
+    "captureReadDurationMsStats": {
+      "N": 1670,
+      "retained": 1670,
+      "P05": 31.014735,
+      "P50": 31.867429,
+      "P95": 36.02923,
+      "min": 26.019158,
+      "max": 39.20812
+    },
+    "captureIntervalMsStats": {
+      "N": 1670,
+      "retained": 1670,
+      "P05": 31.318679,
+      "P50": 32.071273,
+      "P95": 36.242777,
+      "min": 27.790616,
+      "max": 39.466828
+    },
+    "cameraDeliveryMsStats": {
+      "N": 1670,
+      "retained": 1670,
+      "P05": 28.807747,
+      "P50": 32.995634,
+      "P95": 33.870505,
+      "min": 28.628798,
+      "max": 37.77293
+    },
+    "handoverMsStats": {
+      "N": 1668,
+      "retained": 1668,
+      "P05": 0.198253,
+      "P50": 0.34094,
+      "P95": 12.377914,
+      "min": 0.147303,
+      "max": 33.759363
+    },
+    "frameAgeAtInferenceMsStats": {
+      "N": 1668,
+      "retained": 1668,
+      "P05": 29.136938,
+      "P50": 33.831852,
+      "P95": 44.855055,
+      "min": 28.82566,
+      "max": 66.215894
+    },
+    "inferenceDurationMsStats": {
+      "N": 1668,
+      "retained": 1668,
+      "P05": 13.957853,
+      "P50": 22.637258,
+      "P95": 39.062018,
+      "min": 12.245464,
+      "max": 58.898272
+    },
+    "readCompleteToOutputMsStats": {
+      "N": 1668,
+      "retained": 1668,
+      "P05": 14.526147,
+      "P50": 25.783629,
+      "P95": 44.99834,
+      "min": 12.714214,
+      "max": 73.504064
+    },
+    "telemetryLegacyRetainedSamples": 5436,
+    "telemetryLegacyCapacity": 20480,
+    "telemetryLegacyFrameWindowOverwrites": 0,
+    "configuration": {
+      "backend": "V4L2",
+      "device": "/dev/video0",
+      "width": 640.0,
+      "height": 480.0,
+      "fourcc": "MJPG",
+      "requestedFps": 30,
+      "reportedFps": 30.0,
+      "reportedBuffer": 2.0,
+      "numPoses": 2,
+      "profile": "candidate",
+      "controlsBefore": {
+        "width": 1920,
+        "height": 1080,
+        "fourcc": "MJPG",
+        "frameInterval": [
+          1,
+          30
+        ],
+        "controls": {
+          "0x9a0901": 1,
+          "0x9a0902": 100,
+          "0x9a0903": 1
+        },
+        "capabilities": {
+          "0x9a0901": {
+            "id": 10094849,
+            "type": 3,
+            "name": "Auto Exposure",
+            "minimum": 0,
+            "maximum": 3,
+            "step": 1,
+            "flags": 0
+          },
+          "0x9a0902": {
+            "id": 10094850,
+            "type": 1,
+            "name": "Exposure Time, Absolute",
+            "minimum": 10,
+            "maximum": 700,
+            "step": 1,
+            "flags": 4096
+          },
+          "0x9a0903": {
+            "id": 10094851,
+            "type": 2,
+            "name": "Exposure, Dynamic Framerate",
+            "minimum": 0,
+            "maximum": 1,
+            "step": 1,
+            "flags": 0
+          }
+        }
+      },
+      "controlsApplied": {
+        "width": 640,
+        "height": 480,
+        "fourcc": "MJPG",
+        "frameInterval": [
+          1,
+          30
+        ],
+        "controls": {
+          "0x9a0901": 1,
+          "0x9a0902": 100,
+          "0x9a0903": 1
+        },
+        "capabilities": {
+          "0x9a0901": {
+            "id": 10094849,
+            "type": 3,
+            "name": "Auto Exposure",
+            "minimum": 0,
+            "maximum": 3,
+            "step": 1,
+            "flags": 0
+          },
+          "0x9a0902": {
+            "id": 10094850,
+            "type": 1,
+            "name": "Exposure Time, Absolute",
+            "minimum": 10,
+            "maximum": 700,
+            "step": 1,
+            "flags": 4096
+          },
+          "0x9a0903": {
+            "id": 10094851,
+            "type": 2,
+            "name": "Exposure, Dynamic Framerate",
+            "minimum": 0,
+            "maximum": 1,
+            "step": 1,
+            "flags": 0
+          }
+        }
+      },
+      "acquisitionTimestampSource": "OpenCV V4L2 CAP_PROP_POS_MSEC / kernel timestamp; validated monotonic range, not optical ground truth",
+      "staleBudgetMs": 100
+    },
+    "capturedFrames": 1814,
+    "inferredFrames": 1812,
+    "cameraInputEmitted": 1812,
+    "overwrittenBeforeInference": 2,
+    "pendingDiscarded": 0,
+    "captureThreadJoined": true,
+    "cameraReleased": true,
+    "detectorClosed": true,
+    "hardwareDroppedFrames": null,
+    "warmupSeconds": 5.0,
+    "staleSkipped": 0,
+    "acquisitionTimestampUnavailable": 0,
+    "controlsRestored": true,
+    "clockCorrelation": "Worker latency monotonic; CameraInput UTC timestamps unchanged",
+    "previewEnabled": false,
+    "previewWasEnabled": false,
+    "previewOverwritten": 0,
+    "previewErrors": 0,
+    "previewThreadsJoined": true,
+    "previewBufferCleared": true
+  },
+  "cleanup": {
+    "complete": true,
+    "forced": false,
+    "controlsRestored": true,
+    "pid": 111888,
+    "exitCode": 0,
+    "accepted": 1808,
+    "source": "physical-webcam"
+  },
+  "playerExitCode": 0,
+  "privacy": {
+    "successfulImageVideoWrites": 0,
+    "physicalObservationLogs": 0,
+    "aggregateOnlyEvidence": true
+  },
+  "residualOwnVision": false,
+  "residualOwnJava": false,
+  "residualOwnedRuntime": {
+    "unity": 0,
+    "vision": 0,
+    "java": 0
+  },
+  "telemetryMode": "enabled",
+  "requestedDurationSeconds": 61.0,
+  "requestedWarmupSeconds": 5.0,
+  "profile": "candidate",
+  "buffers": 2,
+  "captureThresholdPass": true,
+  "qualityAcceptance": "Outside T016 acceptance; no human tests authorized",
+  "stderrBytes": 57,
+  "clockLabelClarification": "QA producer measures intervals with Unity Time.realtimeSinceStartupAsDouble (monotonic seconds). The shared Snapshot inherited a Stopwatch label; final source corrects that label only, without changing samples or computation."
+}

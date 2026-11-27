@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<test-results suite="editmode" total="15" passed="15" failed="0" skipped="0" result="Passed">
+  <case name="FoundationSceneTests.SavedFoundationSceneHasValidSettingsAndIsIncludedInBuild" result="Passed" duration="0.019611" />
+  <case name="IpcFrameCodecTests.CommonFixtureRoundTripsWithBigEndianLength" result="Passed" duration="0.001635" />
+  <case name="IpcFrameCodecTests.ReadsPartialFramesAndRejectsTruncationAndInvalidUtf8" result="Passed" duration="0.002865" />
+  <case name="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(0)" result="Passed" duration="0.000304" />
+  <case name="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(4097)" result="Passed" duration="0.000069" />
+  <case name="IpcFrameCodecTests.RejectsFrameSizeBeforeBodyAllocation(-1)" result="Passed" duration="0.000047" />
+  <case name="IpcLifecycleTests.ActiveAttemptRejectsAnotherStart" result="Passed" duration="0.000479" />
+  <case name="IpcLifecycleTests.FailureMustPassThroughStopping(STARTING)" result="Passed" duration="0.001321" />
+  <case name="IpcLifecycleTests.FailureMustPassThroughStopping(CONNECTING)" result="Passed" duration="0.000093" />
+  <case name="IpcLifecycleTests.FailureMustPassThroughStopping(RUNNING)" result="Passed" duration="0.000060" />
+  <case name="IpcLifecycleTests.IncompleteCleanupBlocksRecovery" result="Passed" duration="0.000172" />
+  <case name="IpcLifecycleTests.LaunchBudgetAllowsExactlyThreeAttempts" result="Passed" duration="0.000371" />
+  <case name="IpcLifecycleTests.OldGenerationCannotChangeNewAttempt" result="Passed" duration="0.000367" />
+  <case name="IpcLifecycleTests.SuccessfulLifecycleRequiresHandshakeAndCleanup" result="Passed" duration="0.000200" />
+  <case name="ProtocolContractTests.UnityReadsTheSameWireFixtureAsJavaAndReact" result="Passed" duration="0.001098" />
+</test-results>

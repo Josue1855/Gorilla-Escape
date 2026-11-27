@@ -1,9 +1,0 @@
-{
-  "name": "GorillaEscape.PlayModeTests",
-  "references": [
-    "GorillaEscape.Runtime"
-  ],
-  "optionalUnityReferences": [
-    "TestAssemblies"
-  ]
-}

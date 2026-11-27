@@ -1,0 +1,18 @@
+{
+  "devices": {
+    "exitCode": 0,
+    "output": "Integrated_Webcam_FHD: Integrat (usb-0000:00:14.0-6):\n\t/dev/video0\n\t/dev/video1\n\t/dev/video2\n\t/dev/video3\n\t/dev/media0\n\t/dev/media1\n\n"
+  },
+  "formatsRGB": {
+    "exitCode": 0,
+    "output": "ioctl: VIDIOC_ENUM_FMT\n\tType: Video Capture\n\n\t[0]: 'MJPG' (Motion-JPEG, compressed)\n\t\tSize: Discrete 1920x1080\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 1280x960\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 1280x720\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 640x480\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 640x360\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t[1]: 'YUYV' (YUYV 4:2:2)\n\t\tSize: Discrete 640x480\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 160x120\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 320x180\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 320x240\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 640x360\n\t\t\tInterval: Discrete 0.033s (30.000 fps)\n\t\tSize: Discrete 1280x720\n\t\t\tInterval: Discrete 0.100s (10.000 fps)\n\t\tSize: Discrete 1920x1080\n\t\t\tInterval: Discrete 0.200s (5.000 fps)\n"
+  },
+  "formatsGREY": {
+    "exitCode": 0,
+    "output": "ioctl: VIDIOC_ENUM_FMT\n\tType: Video Capture\n\n\t[0]: 'GREY' (8-bit Greyscale)\n\t\tSize: Discrete 640x360\n\t\t\tInterval: Discrete 0.067s (15.000 fps)\n"
+  },
+  "effectiveAccess": "Read/capture demonstrated; no chmod/group/system configuration changes",
+  "baselineDeviceObserver": "wireplumber PID3489; preexisting, not terminated",
+  "physicalReliableHumanTracking": "NOT RUN / low-confidence observations are not reliable person acceptance",
+  "safeUnplug": "NOT RUN \u2014 integrated camera, no physical unplug performed"
+}

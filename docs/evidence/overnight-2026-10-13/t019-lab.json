@@ -1,0 +1,211 @@
+{
+  "classification": "LAB / synthetic, host Chrome",
+  "physicalPhones": "NOT RUN",
+  "humanTracking": "NOT RUN",
+  "motionToVisibleResult": "NOT RUN",
+  "gate": "PASS",
+  "initialConnections": {
+    "attempted": 20,
+    "successful": 20,
+    "successPercent": 100
+  },
+  "reconnections": {
+    "attempted": 20,
+    "successful": 20,
+    "successPercent": 100
+  },
+  "runs": [
+    {
+      "run": 1,
+      "classification": "LAB",
+      "syntheticInputsObserved": 4,
+      "simultaneousRtcClients": 4,
+      "clock": {
+        "N": 32,
+        "offsetUtcServerMinusClientMs": {
+          "lower": -4,
+          "upper": 2,
+          "midpoint": -1,
+          "uncertainty": 3
+        },
+        "rttMs": {
+          "P50": 3.2999999998137355,
+          "P95": 4.2000000001862645
+        },
+        "observedDrift": {
+          "durationMs": 1236.7999999998137,
+          "deltaOffsetLowerMs": -7,
+          "deltaOffsetUpperMs": 6,
+          "midpointSlopePpm": -404.2690815007077,
+          "uncertaintyPpm": 5255.4980595092
+        },
+        "method": "server ACK receive timestamp bracketed by client send/receipt; ±2ms integer quantization margin; no path symmetry assumed; stable-clock assumption; scheduling included",
+        "limitations": "Not optical/IMU truth or visible-response latency. Drift interval is descriptive over this run; no future accuracy guarantee. Same-host LAB does not certify phone↔PC clocks."
+      },
+      "gate": "PASS",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "residualOwnedJava": [
+        false
+      ],
+      "stderrBytes": 0
+    },
+    {
+      "run": 2,
+      "classification": "LAB",
+      "syntheticInputsObserved": 4,
+      "simultaneousRtcClients": 4,
+      "clock": {
+        "N": 32,
+        "offsetUtcServerMinusClientMs": {
+          "lower": -3,
+          "upper": 2,
+          "midpoint": -0.5,
+          "uncertainty": 2.5
+        },
+        "rttMs": {
+          "P50": 3.2000000001862645,
+          "P95": 4.099999999627471
+        },
+        "observedDrift": {
+          "durationMs": 1019.7999999998137,
+          "deltaOffsetLowerMs": -6,
+          "deltaOffsetUpperMs": 5,
+          "midpointSlopePpm": -490.2922141597287,
+          "uncertaintyPpm": 5393.214355757015
+        },
+        "method": "server ACK receive timestamp bracketed by client send/receipt; ±2ms integer quantization margin; no path symmetry assumed; stable-clock assumption; scheduling included",
+        "limitations": "Not optical/IMU truth or visible-response latency. Drift interval is descriptive over this run; no future accuracy guarantee. Same-host LAB does not certify phone↔PC clocks."
+      },
+      "gate": "PASS",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "residualOwnedJava": [
+        false
+      ],
+      "stderrBytes": 0
+    },
+    {
+      "run": 3,
+      "classification": "LAB",
+      "syntheticInputsObserved": 4,
+      "simultaneousRtcClients": 4,
+      "clock": {
+        "N": 32,
+        "offsetUtcServerMinusClientMs": {
+          "lower": -3,
+          "upper": 3,
+          "midpoint": 0,
+          "uncertainty": 3
+        },
+        "rttMs": {
+          "P50": 3.2999999998137355,
+          "P95": 3.8999999994412065
+        },
+        "observedDrift": {
+          "durationMs": 266.8999999994412,
+          "deltaOffsetLowerMs": -6,
+          "deltaOffsetUpperMs": 6,
+          "midpointSlopePpm": 0,
+          "uncertaintyPpm": 22480.3297115495
+        },
+        "method": "server ACK receive timestamp bracketed by client send/receipt; ±2ms integer quantization margin; no path symmetry assumed; stable-clock assumption; scheduling included",
+        "limitations": "Not optical/IMU truth or visible-response latency. Drift interval is descriptive over this run; no future accuracy guarantee. Same-host LAB does not certify phone↔PC clocks."
+      },
+      "gate": "PASS",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "residualOwnedJava": [
+        false
+      ],
+      "stderrBytes": 0
+    },
+    {
+      "run": 4,
+      "classification": "LAB",
+      "syntheticInputsObserved": 4,
+      "simultaneousRtcClients": 4,
+      "clock": {
+        "N": 32,
+        "offsetUtcServerMinusClientMs": {
+          "lower": -3,
+          "upper": 3,
+          "midpoint": 0,
+          "uncertainty": 3
+        },
+        "rttMs": {
+          "P50": 3.300000000745058,
+          "P95": 3.7000000001862645
+        },
+        "observedDrift": {
+          "durationMs": 696.7000000001863,
+          "deltaOffsetLowerMs": -7,
+          "deltaOffsetUpperMs": 6,
+          "midpointSlopePpm": -717.6690110519108,
+          "uncertaintyPpm": 9329.69714367484
+        },
+        "method": "server ACK receive timestamp bracketed by client send/receipt; ±2ms integer quantization margin; no path symmetry assumed; stable-clock assumption; scheduling included",
+        "limitations": "Not optical/IMU truth or visible-response latency. Drift interval is descriptive over this run; no future accuracy guarantee. Same-host LAB does not certify phone↔PC clocks."
+      },
+      "gate": "PASS",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "residualOwnedJava": [
+        false
+      ],
+      "stderrBytes": 0
+    },
+    {
+      "run": 5,
+      "classification": "LAB",
+      "syntheticInputsObserved": 4,
+      "simultaneousRtcClients": 4,
+      "clock": {
+        "N": 32,
+        "offsetUtcServerMinusClientMs": {
+          "lower": -4,
+          "upper": 2,
+          "midpoint": -1,
+          "uncertainty": 3
+        },
+        "rttMs": {
+          "P50": 3.099999999627471,
+          "P95": 4.1000000005587935
+        },
+        "observedDrift": {
+          "durationMs": 1500.4000000003725,
+          "deltaOffsetLowerMs": -7,
+          "deltaOffsetUpperMs": 6,
+          "midpointSlopePpm": -333.2444681417461,
+          "uncertaintyPpm": 4332.178085842699
+        },
+        "method": "server ACK receive timestamp bracketed by client send/receipt; ±2ms integer quantization margin; no path symmetry assumed; stable-clock assumption; scheduling included",
+        "limitations": "Not optical/IMU truth or visible-response latency. Drift interval is descriptive over this run; no future accuracy guarantee. Same-host LAB does not certify phone↔PC clocks."
+      },
+      "gate": "PASS",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "residualOwnedJava": [
+        false
+      ],
+      "stderrBytes": 0
+    }
+  ],
+  "utcStart": "2026-10-14T05:33:48.048Z",
+  "browser": "155.0.8059.79",
+  "utcEnd": "2026-10-14T05:35:00.925Z",
+  "sha256": {
+    "player": "26901901cc6dd63212d741b339897f072d34cb7b3f08419fe451fc8e77c79a1f",
+    "jar": "bc10c229b37b7d26f8c90afff6aed0f34b5dc7b026548617f3ecd48f41a9bf41"
+  }
+}

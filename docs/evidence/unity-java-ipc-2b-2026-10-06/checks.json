@@ -1,0 +1,61 @@
+{
+  "editmode": {
+    "total": "15",
+    "passed": "15",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed"
+  },
+  "playmode": {
+    "total": "10",
+    "passed": "10",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed"
+  },
+  "java": {
+    "tests": 13,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "react": {
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "build": "PASS"
+  },
+  "playerBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "base": "9fbb566e5f24af8f4e92fa3c139968161e832d46",
+  "branch": "codex/phase0-ipc-2b-lifecycle",
+  "sourceInventory": "source-sha256.json",
+  "rawEvidence": "Ignored local Unity/Logs/Ipc2BValidation/raw; committed files are normalized/sanitized summaries, not raw logs.",
+  "player": {
+    "scenarioGroups": 11,
+    "result": "PASS",
+    "ownResiduals": 0,
+    "smokeSamples": 100,
+    "normalUnityExit": 0,
+    "normalJavaExit": 0,
+    "crashExitNotClaimedClean": true,
+    "fixtureCases": [
+      "READY never arrives",
+      "TCP refused"
+    ],
+    "realServerCases": [
+      "death",
+      "manual retry/limit",
+      "cancel startup/running",
+      "singleton",
+      "normal EOF/quit",
+      "PONG deadline",
+      "owned fallback",
+      "parent crash EOF"
+    ],
+    "loopbackListeners": "Verified owned listener inodes: TCP IPv4 127.0.0.1 only"
+  }
+}

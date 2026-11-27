@@ -1,0 +1,60 @@
+{
+  "base": "bb90c04d050f35feae8ae1a99968aa9d91ed2e4a",
+  "dateLocal": "2026-10-13",
+  "timezone": "America/Chihuahua",
+  "componentTests": {
+    "passed": 23,
+    "total": 23
+  },
+  "LinuxBuild": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "Management": "PASS",
+  "Foundation": "PASS",
+  "diffCheck": "PASS",
+  "PWA": {
+    "passed": 59,
+    "failed": 0,
+    "build": "PASS"
+  },
+  "Java": {
+    "runtime": "Temurin 25.0.4.1 complete JDK; compile release21; CI JDK21 remains required",
+    "initialRuntime": "cached reduced21 failed keytool; preserved in attempts.json",
+    "totals": {
+      "tests": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    "existingSkips": "2 MobileHttpsTest cases require gorilla.test.lanAddress; not configured; NOT RUN, not PASS"
+  },
+  "physicalPhone": "NOT RUN",
+  "humanTests": "NOT RUN",
+  "editMode": {
+    "total": "101",
+    "passed": "101",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed"
+  },
+  "playMode": {
+    "total": "20",
+    "passed": "20",
+    "failed": "0",
+    "skipped": "0",
+    "result": "Passed",
+    "scope": "Final Unity C# runtime; before final Python nonfinite telemetry-counter refinement. Current Python covered by component23 and final physical ABBA."
+  },
+  "testResultHashes": {
+    "edit": "2b222f1109cb1276bdaa1b111348951dac9e4f36aff7f5f2b33c03e32820c35d",
+    "play": "82f9d4e2c5c6f7a40674e9df6e3fcdb3a8fa93556ff6c3772fe58cdb3d1ea9b3"
+  },
+  "testLogHashes": {
+    "t018-build.log": "49bf12aad13cd854c1b6ef0cd701459fe5b1a0d16267ab953365396a562c51cb",
+    "t018-java-retry.log": "766ce60ae8de1aa8e5eb22487fa893b55ce5957fa8dd529da55b1b4544b7d1cc",
+    "t018-pwa-test.log": "39085d6105bbb319479e040e274fcb84252c7f285477e9b961a2ca8dd4e9925b",
+    "t018-pwa-build.log": "39fca92463de8ca253a95ceb0f40c91d34e7d6e27d040e2da8b09fb5972f01ae"
+  }
+}

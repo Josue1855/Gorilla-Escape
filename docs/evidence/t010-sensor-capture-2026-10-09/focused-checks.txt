@@ -1,0 +1,13 @@
+✔ bounded native alpha diagnostic retains at most eight finite violations (0.497056ms)
+✔ actual emulator alpha violations replay into maintained capture as null; zero beta/gamma retained (2.315905ms)
+✔ unchanged freshness policy keeps old orientation as state, does not invent events or Hz (0.854403ms)
+✔ rest emulator: separate real callback rate and budgeted transport with zero errors (0.137208ms)
+✔ gentle emulator: separate real callback rate and budgeted transport with zero errors (1.051981ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9.041729
