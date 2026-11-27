@@ -9,3 +9,7 @@ S1 fija Unity **6000.3.23f1** en `Unity/ProjectSettings/ProjectVersion.txt`. `Sc
 Shared/CSharp es una biblioteca de contratos sin referencias UnityEngine. Los DTO wire no deben convertirse en MonoBehaviour ni introducir dependencias Java/React al assembly del motor. [IPC](NETWORK_AND_IPC.md) conserva versión y límites.
 
 S2 registra 162/162 EditMode, 29/29 PlayMode y build Linux sin errores/advertencias. Son pruebas previas del candidato integrado, no nuevas ejecuciones del encargo documental ni evidencia de PC limpia. Para implementar juegos, usar [framework propuesto](../02-gameplay/MINIGAME_FRAMEWORK.md), coordinar escenas/prefabs y conservar .meta. Ninguna lógica del prototipo UI se adopta como regla oficial.
+
+## Propuesta UI/UX para revisión
+
+El [Design System Unity/PWA](UI_UX_DESIGN_SYSTEM.md) define dirección artística, pantallas, estados, componentes y backlog UX-01..12 como propuesta. No aprueba tokens, reglas, cola idempotente ni clases existentes. La revisión y trazabilidad se enlazan desde ese documento; no se duplican issues ni se cambia el transporte por este registro.

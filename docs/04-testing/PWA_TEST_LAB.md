@@ -1,26 +1,26 @@
-# Laboratorio PWA, REST y BD
+# Laboratorio PWA, REST y SQLite
 
-Última revisión: 2026-10-16. Fuentes: S1, S2 y S3; identificadores definidos en [inventario de fuentes](../00-product/SOURCE_INVENTORY.md). Las etiquetas describen el alcance indicado, no una certificación global.
+Última sincronización: 2026-10-16. Fuentes S9/S10 y evidencia fechada; [inventario](../00-product/SOURCE_INVENTORY.md). Trabajo documentado en ramas/PR, no integrado automáticamente.
 
-Estado del flujo real PWA UI/UX → backend → BD: **BLOQUEADO** por backend sin implementación y falta de integración. Todos los resultados de ejecución del laboratorio: **PENDIENTE DE EJECUCIÓN**. Los códigos siguientes trazan el encargo PO S3; no reemplazan una rúbrica académica externa que no fue proporcionada.
+El flujo React → Spring Boot → SQLite **está implementado y probado en el fork de laboratorio**, no en el upstream ni en el paquete final del videojuego. [Dossier con procedimientos y evidencia](https://github.com/Josue1855/Gorilla-Escape-Backend/tree/3635186/docs/laboratorio). Fuentes S9/S10. La rúbrica entregada por el PO pide repositorio/documentación y evidencias de SQL, GET/POST, UI, Network/Application/Console y offline.
 
-| ID / entregable | Procedimiento requerido y esperado | Evidencia disponible / faltante |
+| ID / entregable | Estado observado | Evidencia / faltante |
 |---|---|---|
-| LAB-01 Repositorio final | README con commits, diagrama AS-IS/TO-BE y enlaces de los tres proyectos | S1/S4/S7 y esta documentación; tres repositorios enlazados desde backend; falta README cruzado en S4 |
-| LAB-02 Scripts reproducibles | Confirmar motor; preparar esquema/datos ficticios y limpieza idempotente en entorno aislado; segunda ejecución coherente | No scripts oficiales BD confirmados; nombres propuestos `scripts/lab/prepare`, `seed`, `cleanup` con extensión según motor |
-| LAB-03 BD antes/después | Guardar SELECT de conteos/filas/constraints antes y tras POST; IDs coincidentes | Falta BD real, esquema y consultas ejecutadas |
-| LAB-04 Logs GET/POST y JVM | Capturar requestId, método/ruta/HTTP, duración con unidad y memoria JVM antes/durante/después en ambiente declarado | Sin aplicación ni logs/métricas backend; no mezclar HTTP 201 con filas insertadas o SQLSTATE |
-| LAB-05 GET renderizado | Preparar registros; GET de participantes reales; comparar filas de BD, respuesta y lista de UI | S4 tiene sólo demo JSONPlaceholder; falta GET del dominio y captura |
-| LAB-06 Network | Capturar método/URL sanitizada/status, timings, payload, tamaño y headers de GET y POST | Faltan capturas auténticas y mediciones |
-| LAB-07 Application | Manifest/SW activo/scope y recursos cacheados; IndexedDB/cola sólo cuando exista; reconexión confirma operación | Código fuente SW/manifest; S5 detecta dist incompleto; no IndexedDB ni prueba de cola |
-| LAB-08 Console | Registrar errores/advertencias durante carga, fallo, reintento y sincronización; no esconder fallos | Sin ejecución browser en este encargo |
-| LAB-09 POST único | Crear operación autorizada; repetir misma clave en secuencia y concurrencia; una fila; payload distinto→conflicto sin modificación | Diseño candidato, falta API/constraints/test ejecutado |
-| LAB-10 Ambiente y fallos | Identificar versiones/commit/hardware, datos ficticios, pasos/esperado/observado; preservar intentos fallidos | Inventario S1/S4; ambiente backend y ejecución académica faltan |
+| LAB-01 Repositorio final | Documentación y código en ramas para revisión | Backend PR #14 y fork PWA PR #1; upstream/main sin cambios. Backend privado: acceso del docente necesario |
+| LAB-02 Scripts | EJECUTADO para jugadores | scripts/sql/seed.sql, query.sql y cleanup.sql; migración V1 real |
+| LAB-03 BD antes/después | EJECUTADO | SQL2 → POST201/SQL3 → envío manual posterior/SQL4; UUID coincidente e integridad ok |
+| LAB-04 Logs GET/POST/JVM | EJECUTADO | backend-application.log: requestId/status/durationMs/heap y affectedRows. Heap no es RSS; HTTP no es código SQL |
+| LAB-05 GET renderizado | EJECUTADO en Chrome | Capturas02/03/07/11 y registros Network; primera página máximo100 |
+| LAB-06 Network | PARCIAL | Eventos reales CDP con headers/timings/bytes; falta captura literal de pestaña |
+| LAB-07 Application | PARCIAL | SW activated, caché compilada e IndexedDB verificados; recarga offline real emulada. Falta captura literal de pestaña |
+| LAB-08 Console | PARCIAL | console.json auténtico, errores offline esperados y recuperación; falta captura literal de pestaña |
+| LAB-09 POST único/idempotencia futura | Registro validado EJECUTADO; replay idempotente NO IMPLEMENTADO | Dos envíos explícitos produjeron dos UUID/filas. Intento incierto bloqueado; sin retry automático. Idempotencia concurrente de resultados es criterio futuro, no requisito de SQLite ya satisfecho |
+| LAB-10 Ambiente/fallos | EJECUTADO con límites | Chrome escritorio, build/JDK/SQLite/tests identificados, datos ficticios, API inaccesible emulada, validación400 sin escritura; teléfono y LAN/WAN físicos pendientes |
 
-Escenario **A**: cortar sólo Internet WAN manteniendo Wi-Fi/LAN y backend local. Verificar GET/POST locales y control WebRTC; registrar disponibilidad por servicio, no sólo bandera online. Primera visita sin recursos previamente instalados es un caso separado, no un éxito inferido.
+[CI backend Linux/Windows](https://github.com/Josue1855/Gorilla-Escape-Backend/actions/runs/38989509375): 17 tests por plataforma, build y harness Linux PASS. [CI PWA](https://github.com/Josue1855/Dise-o_pwa/actions/runs/38989521358): siete tests, build y npm audit PASS. Son resultados de los commits citados en S9/S10; esta sincronización documental no los transforma en nuevas pruebas físicas.
 
-Escenario **B**: mantener LAN y detener exclusivamente el backend de prueba autorizado. GET muestra indisponibilidad; POST no presenta éxito hasta COMMIT confirmado. Si existe cola, registrar pendiente, reiniciar backend, reenviar la misma clave, confirmar una sola fila y vaciar sólo la operación confirmada. Si no existe cola, registrar limitación y fallo esperado de disponibilidad sin inventar sincronización.
+Escenario A pendiente: cortar sólo WAN conservando LAN/backend local, probar servicios y WebRTC de forma independiente. El caso ya ejecutado desactiva red del navegador con emulación DevTools y verifica shell/consulta/borrador locales; no equivale al corte físico de WAN.
 
-Ficha por ejecución: runId, fecha/zona, repo/branch/SHA, SO/hardware/navegador, servidor/motor/versiones, origen, condición WAN/LAN/backend, datos iniciales, pasos, esperado, observado **PENDIENTE DE EJECUCIÓN**, resultado, evidencia, incidencia y responsable real. No rellenar duraciones, memoria ni capturas con ejemplos simulados. Sanitizar headers sin autorización/cookies y no exportar un HAR con credenciales.
+Escenario B pendiente físico: LAN activa con backend detenido. El caso ya ejecutado bloquea selectivamente la ruta API con red disponible y verifica que no haya falso éxito ni reenvío al recargar. No existe cola con Background Sync: reconexión avisa, consulta y envío requieren acción explícita. POST /api/players no es idempotente.
 
-Capturas planificadas: listado, BD antes/después, consola Spring, Network GET/POST, Application manifest/SW/cache/IndexedDB si existe, Console fallo/recuperación. Logs estructurados y consultas complementan capturas; no afirmar ausencia de errores sin revisar la ventana completa. La ejecución y los scripts vivirán en sus repositorios oficiales, mediante tareas separadas.
+Para completar la parte visual de la rúbrica faltan tres capturas literales de DevTools Network/Application/Console; seguir instrucciones del dossier. Los JSON de CDP son registros auténticos, no imágenes de esas pestañas. No se eludió el bloqueo de páginas internas del navegador ni se fabricaron capturas. Mantener logs/evidencias fechados y sanitizados; no exponer cookies, autorizaciones o BD reales. No se envió la tarea a la plataforma universitaria.

@@ -28,8 +28,8 @@ Cada fila siguiente aporta objetivo, alcance, dependencias, aceptación, evidenc
 | UI-03 Corregir humanos/NPC y revisar accesibilidad móvil | S3, arte aprobado | No confunde avatar NPC con jugador; teclado/foco/contraste/tamaño y permisos revisados en dispositivos objetivo; reporte | UI/UX + Arte/QA, P1 |
 | UI-04 Identidad y estado de sesión | UI-01, contrato de identidad | No usa ID JSONPlaceholder como PlayerId; preserva slot/epoch por reconnect; pruebas de rechazo cruzado | UI/UX + Red, P0 |
 | UI-05 Conectar por LAN y cleanup | UI-01/UI-04, T019 coordinado | JOIN real, permisos denegados, suspensión, desconexión/reconnect manual y sin emisión oculta; evidencia física separada de emulador | UI/UX + QA, P0 |
-| API-01 Acordar contrato REST con backend confirmado | Repositorio S7 disponible; revisión Unity y stack pendiente | Métodos/DTO/roles/errores/idempotencia aprobados y versionados; no Swagger ficticio | Backend + UI/UX, P0 |
-| API-02 Reemplazar listado demo por GET de participantes reales | API-01, endpoint/BD reales | BD→respuesta→lista coinciden; carga/error/vacío y backend inaccesible; LAB-03/05/06 | UI/UX + Backend, P1 |
+| API-01 Acordar contrato REST con backend confirmado | S9 jugadores aprobado/implementado; autorización y contrato de competición pendientes | Métodos/DTO/roles/errores/idempotencia aprobados y versionados; no Swagger ficticio | Backend + UI/UX, P0 |
+| API-02 Reemplazar listado demo por GET de participantes reales | S9/S10 jugadores verificados en fork; incorporación upstream pendiente | BD→respuesta→lista coinciden; carga/error/vacío y backend inaccesible; LAB-03/05/06 | UI/UX + Backend, P1 |
 | OFF-01 Empaquetar SW/manifest/iconos y cache del dist | UI-00, fuente de entrega | Build contiene recursos del manifest y SW; precache sólo emitidos; segunda carga sin WAN; evidencia Application/Network | UI/UX, P0 |
 | OFF-02 Diseñar/implementar cola IndexedDB sólo de operaciones autorizadas | API-01, ownership/outbox aprobado | Pendientes sobreviven recarga; límites/migración/borrado definidos; no tokens ni resultados falsos; tests/storage inspectado | UI/UX + Backend/Unity, P1 |
 | OFF-03 Reintentar y confirmar sin duplicados | OFF-02, idempotencia backend | Misma clave con concurrencia escribe una vez; conflicto distinto payload visible; OFF-02 y LAB-09 | UI/UX + Backend, P1 |
@@ -37,6 +37,14 @@ Cada fila siguiente aporta objetivo, alcance, dependencias, aceptación, evidenc
 | QA-02 Ejecutar LAB-01..10 y escenarios A/B | API-02, OFF-01; OFF-02/03 si aprobados | Cada requisito con ambiente/pasos/esperado/observado/evidencia auténtica; GET/POST/BD/logs/JVM y DevTools | QA + tres equipos, P1 |
 | DOC-01 README propio y referencias cruzadas | Baselines confirmados | Setup/versiones/estado real; demo delimitada, diagramas/enlaces válidos y evidencia fechada | UI/UX, P1 |
 
-Trabajo paralelo Unity propuesto: framework mínimo, reglas High Striker/Shot Put/Bowling/Slice y salida autoritativa; usar issues reales existentes como base antes de crear duplicados. Trabajo backend propuesto: descubrir repo, confirmar motor, DTO/roles/constraints/transacciones, scripts aislados e integración de recibos. Los Projects respectivos conservarán tareas propias con enlaces cruzados, no copias con estados independientes.
+Trabajo paralelo Unity propuesto: framework mínimo, reglas High Striker/Shot Put/Bowling/Slice y salida autoritativa; usar issues reales existentes como base antes de crear duplicados. Backend S9: repositorio, motor SQLite/JDBC, jugadores GET/POST y scripts ya implementados. Sigue propuesto el modelo de competición, roles/publicador e integración de recibos. Los Projects respectivos conservarán tareas propias con enlaces cruzados, no copias con estados independientes.
 
 Definition of Done propuesta: PR revisado e integrado por flujo normal, pruebas requeridas y evidencia ligada al SHA; cierre de una tarea técnica no cierra automáticamente aceptación de producto ni gates físicos.
+
+## Avance posterior S9/S10
+
+API-01/02 para jugadores y empaquetado shell ya implementados/probados en el fork (PR #1), no incorporados al upstream. OFF-02 sólo cubre snapshot/borrador; OFF-03 idempotente sigue propuesto. La tabla anterior es backlog de producto, no estados remotos Done. Backend se sigue en Project #2, issues #3/#4/#10 parciales y #13 en revisión. Ver [laboratorio](../04-testing/PWA_TEST_LAB.md).
+
+## Propuesta UI/UX para revisión
+
+El [Design System Unity/PWA](../01-architecture/UI_UX_DESIGN_SYSTEM.md) define dirección artística, pantallas, estados, componentes y backlog UX-01..12 como propuesta. No aprueba tokens, reglas, cola idempotente ni clases existentes. La revisión y trazabilidad se enlazan desde ese documento; no se duplican issues ni se cambia el transporte por este registro.

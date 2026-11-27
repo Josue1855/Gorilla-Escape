@@ -1,6 +1,6 @@
 # Preparación y ejecución verificable
 
-Última revisión: 2026-10-20. Instrucciones del monorepo `develop`, contrastadas con manifiestos, scripts y menús del editor. Los resultados previos se conservan en el [índice de evidencias](../04-testing/EVIDENCE_INDEX.md); ejecutar un comando no acredita automáticamente su resultado.
+Última revisión: 2026-10-26; reconciliación con las instrucciones de develop del 2026-10-20. Instrucciones del monorepo `develop`, contrastadas con manifiestos, scripts y menús del editor. Los resultados previos se conservan en el [índice de evidencias](../04-testing/EVIDENCE_INDEX.md); ejecutar un comando no acredita automáticamente su resultado.
 
 ## Entorno y rama
 
@@ -52,6 +52,28 @@ La conexión normal usa QR JOIN, HTTPS y WebRTC DataChannel; HTTP LAN no garanti
 
 ## Repositorios independientes
 
-La PWA UI/UX externa tiene su propia preparación y estado, registrados en [repositorios](../00-product/REPOSITORIES.md). El build auditado no valida interacción, instalación ni integración RTC; no aplicar automáticamente los comandos del monorepo. El mantenedor debe preparar `develop` antes de iniciar tareas según la [política de ramas](GIT_WORKFLOW.md).
+Estos componentes no se arrancan desde `Server/` ni reemplazan al servicio técnico de Unity. Su integración dentro del instalador/supervisor del juego sigue pendiente.
 
-El backend separado tiene base documental; no hay aplicación, manifiesto ni comando de arranque acreditados por esta guía. Acordar stack, motor y entorno de datos antes de publicar instrucciones ejecutables. Flutter aún no tiene proyecto en esta base.
+### PWA de laboratorio
+
+En [Josue1855/Dise-o_pwa](https://github.com/Josue1855/Dise-o_pwa), el laboratorio ya está integrado en `develop` mediante el [PR #7](https://github.com/Josue1855/Dise-o_pwa/pull/7). Con Node 24, desde su checkout:
+
+```sh
+npm ci
+npm test
+npm run build
+npm run lab
+```
+
+Abrir http://127.0.0.1:4173/lab.html con el backend en loopback8090. El build genera SW y recursos compilados; el servidor de laboratorio sólo escucha loopback y actúa como proxy. La recarga offline requiere una visita previa con recursos guardados. HTTP LAN no garantiza HTTPS/permisos móviles. El upstream `Quintana-117/Dise-o_pwa` sigue sólo con main y acceso READ; no confundirlo con el fork integrado. /index.html conserva el mando demo, sin integración RTC/Unity.
+
+### Backend de jugadores
+
+En [Gorilla-Escape-Backend](https://github.com/Josue1855/Gorilla-Escape-Backend), el [PR #14](https://github.com/Josue1855/Gorilla-Escape-Backend/pull/14) ya está integrado en `develop`. Con JDK21, desde ese checkout:
+
+```sh
+./mvnw -B -ntp verify
+java -jar target/backend-0.1.0-SNAPSHOT.jar --gorilla.storage.directory=/ruta/aislada/laboratorio
+```
+
+En Windows usar `mvnw.cmd`. La ruta es un ejemplo para un directorio de laboratorio propio; no reutilizar datos reales. Escucha127.0.0.1:8090 por defecto, con SQLite/JDBC y migración local. Los datos quedan fuera del JAR; no se necesita instalar un servidor SQL. La primera restauración requiere red; ejecutar el JAR compilado no descarga componentes. [Dossier y scripts SQL](https://github.com/Josue1855/Gorilla-Escape-Backend/tree/c83b8343f1e37c405b127304567e149a1416eddb/docs/laboratorio). El instalador final con JRE sigue pendiente. Flutter aún no tiene proyecto en esta base.

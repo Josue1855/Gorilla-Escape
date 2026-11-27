@@ -16,6 +16,12 @@ API real S1, condicionada por configuración: `HealthController`, `MobileControl
 
 `PublicIngress` restringe rutas públicas: no expone admission/diagnostics/end/prepare/IPC. Configuración de escucha y TLS determina el origen; no publicar endpoints de operador como API abierta. Los payloads de señalización están en MobileRuntime/MobileController; no duplicar SDP real en documentación.
 
+## API de jugadores implementada en S9
+
+Backend independiente loopback8090, distinto del Java técnico: GET `/api/players?limit=50&offset=0` devuelve200 `{items,limit,offset}`; POST `/api/players` acepta sólo `{"displayName":"Jugador Uno"}` y devuelve201 `{id,displayName,createdAt}` tras COMMIT. [Contrato completo](https://github.com/Josue1855/Gorilla-Escape-Backend/blob/3635186/docs/API_PLAYERS.md), [OpenAPI](https://github.com/Josue1855/Gorilla-Escape-Backend/blob/3635186/src/main/resources/static/openapi.json). Validación400, conflicto409, body413, media415 y almacenamiento503; errores sanitizados y requestId. No hay auth/TLS ni idempotencia POST; LAN opt-in sólo de laboratorio. S10 ya lo consume en /lab.html.
+
+## Modelo de competición futuro
+
 Todo lo siguiente es **PROPUESTO, NO IMPLEMENTADO**. No llamar estas rutas hasta confirmar backend, versión y autorización.
 
 | Método / ruta candidata | Caso de uso | Respuesta propuesta |
@@ -60,3 +66,5 @@ sequenceDiagram
 ```
 
 Confirmar errores con requestId, código y detalle sanitizado, límites de tamaño, CORS por origen real, expiración/roles y política de reintentos. 401/403/409 no se reintentan indefinidamente; red/5xx admiten backoff limitado. HTTP 200 de una demo o de health no demuestra INSERT SQL.
+
+La política candidata de reintentos anterior sólo aplica a futuras operaciones con contrato idempotente. No autoriza reintentar POST /api/players: S10 conserva el envío incierto hasta reconciliación. /api/v1/* no es un alias de las rutas disponibles.

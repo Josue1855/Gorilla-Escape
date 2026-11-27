@@ -1,6 +1,6 @@
 # Documentación de Gorilla Escape: Gorilimpiadas
 
-Última revisión de navegación y arranque: 2026-10-20. Índice único de la documentación vigente. El código y la evidencia fechada prevalecen sobre descripciones históricas. Se auditaron Unity/UI y se creó/verificó el tercer repositorio oficial del backend; su runtime y BD siguen sin implementar.
+Última revisión: 2026-10-26. Se conservan las mejoras de navegación y arranque de develop. El backend de jugadores y el laboratorio PWA ya están integrados en los develop de sus repositorios Josue1855; la propuesta UI/UX sigue para revisión. El upstream de Hiram, el adaptador RTC/UI y el empaquetado final siguen separados. Tres capturas literales DevTools pendientes según el dossier. [Fuentes y estado actual](00-product/SOURCE_INVENTORY.md#s12--reconciliación-del-pr-130-2026-10-26).
 
 Comenzar por [estado verificable](00-product/DEVELOPMENT_STATUS.md), [informe de auditoría](00-product/AUDIT_REPORT.md) y [siguientes acciones](05-management/NEXT_STEPS.md). Las etiquetas, límites de verificación y decisiones están centralizados; los documentos especializados contienen su detalle único.
 
@@ -30,8 +30,9 @@ El inicio de juegos y clientes está autorizado. La aceptación física de Fase 
 - [Modelo relacional propuesto](01-architecture/DATABASE_DESIGN.md)
 - [Red, contratos Shared y supervisión](01-architecture/NETWORK_AND_IPC.md)
 - [Offline LAN y transacciones](01-architecture/OFFLINE_STRATEGY.md)
-- [Backend de persistencia: frontera y desconocidos](01-architecture/PWA_BACKEND.md)
+- [Backend de jugadores: implementación y límites](01-architecture/PWA_BACKEND.md)
 - [PWA UI/UX y cliente técnico](01-architecture/PWA_UI_UX.md)
+- [UI/UX Design System — propuesta para revisión](01-architecture/UI_UX_DESIGN_SYSTEM.md)
 - [Arquitectura actual y objetivo](01-architecture/SYSTEM_CONTEXT.md)
 - [Unity y autoridad del juego](01-architecture/UNITY.md)
 
@@ -58,6 +59,7 @@ El inicio de juegos y clientes está autorizado. La aceptación física de Fase 
 - [Laboratorio PWA, REST y BD](04-testing/PWA_TEST_LAB.md)
 - [Resultados de auditoría y discrepancias](04-testing/RESULTS_AND_GAPS.md)
 - [Matriz de casos requeridos](04-testing/TEST_CASE_MATRIX.md)
+- [Revisión de la propuesta UI/UX](04-testing/UI_UX_DESIGN_REVIEW.md)
 - [Estrategia de pruebas y aceptación](04-testing/TEST_STRATEGY.md)
 
 ## Gestión independiente

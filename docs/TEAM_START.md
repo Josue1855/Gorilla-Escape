@@ -1,6 +1,6 @@
 # Base de trabajo del equipo
 
-Última revisión: 2026-10-20. Guía operativa del monorepo en `develop`; contrastada con sus manifiestos y fuentes. Los resultados de pruebas y sus límites se consultan en el [estado verificable](00-product/DEVELOPMENT_STATUS.md) y el [índice de evidencias](04-testing/EVIDENCE_INDEX.md). Esta revisión documental no ejecuta ni acredita pruebas físicas.
+Última revisión: 2026-10-26; conserva las instrucciones de develop revisadas el 2026-10-20. Guía operativa del monorepo en `develop`; contrastada con sus manifiestos y fuentes. Los resultados de pruebas y sus límites se consultan en el [estado verificable](00-product/DEVELOPMENT_STATUS.md) y el [índice de evidencias](04-testing/EVIDENCE_INDEX.md). Esta revisión documental no ejecuta ni acredita pruebas físicas.
 
 ## Arranque del equipo autorizado 2026-10-16
 
@@ -15,10 +15,11 @@ La autorización permite iniciar implementación; T019, T020, F05 y E0 conservan
 | Unity | Foundation, menú, supervisión Java, admisión, PhoneInput, CameraInput, Player Lock y Fusion de infraestructura | Framework y cuatro minijuegos; validación de controles y equipo físicos |
 | Conectividad | HTTPS, QR JOIN, señalización REST, input WebRTC DataChannel e IPC loopback; validación Software/Lab | T019 con teléfonos físicos y T020 en otra PC |
 | PWA del monorepo | React, admisión RTC, permisos, sensores, lifecycle y service worker | Validación física final e integración acordada con UI/UX independiente |
-| Backend separado | Repositorio oficial y base documental | Aplicación, API, persistencia y decisiones de stack/motor |
+| Backend separado | SQLite/JDBC, migración y GET/POST jugadores integrados en su develop (PR #14) | Publicador autorizado de resultados, idempotencia, backup e instalador final |
+| PWA del fork UI/UX | Laboratorio React/SQLite y shell/IndexedDB integrados en su develop (PR #7) | Incorporación al upstream, adaptador técnico y QA física |
 | Flutter | Inicio autorizado por tarea | Proyecto y cliente por implementar |
 
-El cliente de [UI/UX independiente](00-product/REPOSITORIES.md) y `PWA/` son bases diferentes; no asumir que la demo externa ya integra RTC. `Server/` es el host técnico local, sin reglas de juego ni base de datos empresarial.
+El cliente de [UI/UX independiente](00-product/REPOSITORIES.md) y `PWA/` son bases diferentes. El laboratorio /lab.html del fork ya consume persistencia real; el mando demo /index.html no integra RTC. `Server/` es el host técnico local, sin reglas de juego ni base de datos empresarial.
 
 ## Herramientas
 
