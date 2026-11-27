@@ -40,7 +40,7 @@ jobs:
           (tar -czf gorilla-escape-dev-snapshot.tar.gz Unity Shared docs -C out .)
           sha256sum gorilla-escape-dev-snapshot.tar.gz > gorilla-escape-dev-snapshot.sha256
       - name: Upload development deliverables
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: gorilla-escape-development
           path: |
